@@ -51,10 +51,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNet", "DotNet", "{756AE4
 		..\lib\Json.Net\DotNet\Newtonsoft.Json.xml = ..\lib\Json.Net\DotNet\Newtonsoft.Json.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Api", "Facebook.Api\Facebook.Api.csproj", "{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Api.Tests", "Facebook.Api.Tests\Facebook.Api.Tests.csproj", "{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc.Tests", "Facebook.Web.Mvc.Tests\Facebook.Web.Mvc.Tests.csproj", "{631BAB27-5E58-4F11-AA7A-3358464F155F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Desktop", "Facebook.Desktop\Facebook.Desktop.csproj", "{B619CEBF-663B-4BEA-852A-654552AE187B}"
@@ -71,7 +67,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phone", "Phone", "{6AB88E25
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 11
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
 		SccLocalPath0 = .
@@ -102,25 +98,18 @@ Global
 		SccProjectTopLevelParentUniqueName7 = Facebook.sln
 		SccProjectName7 = Facebook.Web.Mvc
 		SccLocalPath7 = Facebook.Web.Mvc
-		SccProjectUniqueName8 = Facebook.Api\\Facebook.Api.csproj
-		SccProjectName8 = Facebook.Api
-		SccLocalPath8 = Facebook.Api
-		SccProjectUniqueName9 = Facebook.Api.Tests\\Facebook.Api.Tests.csproj
+		SccProjectUniqueName8 = Facebook.Web.Mvc.Tests\\Facebook.Web.Mvc.Tests.csproj
+		SccProjectTopLevelParentUniqueName8 = Facebook.sln
+		SccProjectName8 = Facebook.Web.Mvc.Tests
+		SccLocalPath8 = Facebook.Web.Mvc.Tests
+		SccProjectUniqueName9 = Facebook.Desktop\\Facebook.Desktop.csproj
 		SccProjectTopLevelParentUniqueName9 = Facebook.sln
-		SccProjectName9 = Facebook.Api.Tests
-		SccLocalPath9 = Facebook.Api.Tests
-		SccProjectUniqueName10 = Facebook.Web.Mvc.Tests\\Facebook.Web.Mvc.Tests.csproj
+		SccProjectName9 = Facebook.Desktop
+		SccLocalPath9 = Facebook.Desktop
+		SccProjectUniqueName10 = Facebook.Samples.AuthenticationTool\\Facebook.Samples.AuthenticationTool.csproj
 		SccProjectTopLevelParentUniqueName10 = Facebook.sln
-		SccProjectName10 = Facebook.Web.Mvc.Tests
-		SccLocalPath10 = Facebook.Web.Mvc.Tests
-		SccProjectUniqueName11 = Facebook.Desktop\\Facebook.Desktop.csproj
-		SccProjectTopLevelParentUniqueName11 = Facebook.sln
-		SccProjectName11 = Facebook.Desktop
-		SccLocalPath11 = Facebook.Desktop
-		SccProjectUniqueName12 = Facebook.Samples.AuthenticationTool\\Facebook.Samples.AuthenticationTool.csproj
-		SccProjectTopLevelParentUniqueName12 = Facebook.sln
-		SccProjectName12 = Facebook.Samples.AuthenticationTool
-		SccLocalPath12 = Facebook.Samples.AuthenticationTool
+		SccProjectName10 = Facebook.Samples.AuthenticationTool
+		SccLocalPath10 = Facebook.Samples.AuthenticationTool
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -204,26 +193,6 @@ Global
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|x86.ActiveCfg = Release|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}.Release|x86.ActiveCfg = Release|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D}.Release|x86.ActiveCfg = Release|Any CPU
 		{631BAB27-5E58-4F11-AA7A-3358464F155F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{631BAB27-5E58-4F11-AA7A-3358464F155F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{631BAB27-5E58-4F11-AA7A-3358464F155F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -264,7 +233,6 @@ Global
 		{F1B97557-0717-4D98-86B3-771545C1BBEF} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{0803C098-C7CB-40B7-8B87-67F98660609E} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{804F27BA-B8CA-4A5B-9600-D8E88345DC24} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
-		{C48F2AA4-4D46-4AC8-B5BC-7656D1385C0D} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{631BAB27-5E58-4F11-AA7A-3358464F155F} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{22EA5522-E2C5-41D0-A7F8-B011F9A86EEC} = {8136C239-9CF7-4011-B301-98E375923C74}
 		{247052E2-3C72-4E61-834C-F2484703AAA4} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}

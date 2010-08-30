@@ -63,10 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook.Api\Facebook.Api.csproj">
-      <Project>{6AB3D6E7-262E-4545-81BA-3524E8E5FFA8}</Project>
-      <Name>Facebook.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Facebook.Web.Mvc\Facebook.Web.Mvc.csproj">
       <Project>{7DC5C10F-E871-4202-9014-0F958358389E}</Project>
       <Name>Facebook.Web.Mvc</Name>
