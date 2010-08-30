@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B619CEBF-663B-4BEA-852A-654552AE187B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Facebook</RootNamespace>
+    <AssemblyName>Facebook</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLIENTPROFILE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLIENTPROFILE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Json.Net\DotNet\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Facebook\DynamicDictionary.cs">
+      <Link>DynamicDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookApiException.cs">
+      <Link>FacebookApiException.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookApp.cs">
+      <Link>FacebookApp.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookAppBase.cs">
+      <Link>FacebookAppBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookAppExtensions.cs">
+      <Link>FacebookAppExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookAsyncResult.cs">
+      <Link>FacebookAsyncResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookConfigurationSection.cs">
+      <Link>FacebookConfigurationSection.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookMediaObject.cs">
+      <Link>FacebookMediaObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookOAuthException.cs">
+      <Link>FacebookOAuthException.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookSession.cs">
+      <Link>FacebookSession.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookSettings.cs">
+      <Link>FacebookSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\FacebookSignedRequest.cs">
+      <Link>FacebookSignedRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\HttpMethod.cs">
+      <Link>HttpMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\IFacebookSettings.cs">
+      <Link>IFacebookSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\InvalidProperty.cs">
+      <Link>InvalidProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\DynamicHelper.cs">
+      <Link>Utilities\DynamicHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\ExceptionHelper.cs">
+      <Link>Utilities\ExceptionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\HttpMethodHelper.cs">
+      <Link>Utilities\HttpMethodHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\JsonQueryStringHelper.cs">
+      <Link>Utilities\JsonQueryStringHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\JsonSerializer.cs">
+      <Link>Utilities\JsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\UnixDateConvertor.cs">
+      <Link>Utilities\UnixDateConvertor.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\UnixDateTime.cs">
+      <Link>Utilities\UnixDateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SharedKey.snk">
+      <Link>SharedKey.snk</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

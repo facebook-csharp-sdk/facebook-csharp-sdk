@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>facebook</Word>
+      <Word>IFrame</Word>
+      <Word>Json</Word>
+      <Word>Auth</Word>
+      <Word>Fql</Word>
+      <Word>Mvc</Word>
+      <Word>xfbml</Word>
+      <Word>fbml</Word>
+      <Word>plugin</Word>
+      <Word>facepile</Word>
+    </Recognized>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>Fql</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>

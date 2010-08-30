@@ -1,0 +1,95 @@
+﻿<#+
+
+public class ObjectDef {
+	public string Name { get; set; }
+	public string ProperName { get; set; }
+	public List<ObjectProperty> Properties { get; set; }
+	public List<ObjectProperty> Connections { get; set; }
+	public List<ObjectProperty> PublishProps { get; set; }
+}
+
+public class ObjectProperty {
+
+	public bool Indexable { get; set; }
+	public string Name { get; set; }
+	public string Type { get; set; }
+	public string Description { get; set; }
+
+}
+
+public void WriteCodeComments(string description) {
+	var paragraphs = description.Split('\n');
+	int count = 0;
+	foreach (var p in paragraphs) {
+		if (!string.IsNullOrEmpty(p.Trim())) {
+			Write("\t/// ");
+			if (count > 0)
+				WriteLine("<para>" + p.Trim() + "</para>"); 
+			else 
+				WriteLine(p.Trim());
+		}
+		count++;
+	}
+}
+
+public string ToProperName(string name, string parentName = null) {
+	name = CleanName(name);
+	string[] words = name.Split('_');
+	StringBuilder finalName = new StringBuilder();
+	foreach (var word in words) {
+		char[] chars = word.ToCharArray();
+
+		for (int i = 0; i < chars.Length; i++) {
+			string letter = chars[i].ToString().ToLower();
+			if (i == 0)
+				letter = letter.ToUpper();
+			finalName.Append(letter);
+		}
+	}
+	var result = finalName.ToString();
+	if (parentName == null) {
+		if (result.EndsWith("s") && !result.EndsWith("us")) {
+			result = result.Substring(0, result.Length - 1);
+		}
+	}
+	if (result == parentName) {
+		result = "Value";
+	}
+	return result;
+}
+
+public string CleanName(string name) {
+	// Check to make sure the word isnt some weird multiproperty??
+	if (name.Contains("|")) {
+		var w = name.Split('|');
+		name = w[1].Replace("]", string.Empty).Trim();
+	}
+	return name;
+}
+
+public string GetTypeNameFromProperty(string name) {
+	if (name.ToLower().Contains("time")) {
+		return GetTypeName("time");
+	} else {
+		return GetTypeName("string");
+	}
+}
+
+public string GetTypeName(string type) {
+	switch (type) {
+		case "time":
+			return "DateTime";
+		case "array":
+			return "Collection<dynamic>";
+		default:
+			return type;
+	}
+}
+
+public void WriteObsolete(string description) {
+	if (description.Contains("deprecated")) {
+		Write(", Obsolete");
+	}
+}
+
+#>
