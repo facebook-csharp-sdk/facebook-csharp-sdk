@@ -112,7 +112,7 @@ namespace Facebook
             set { _retryDelay = value; }
         }
 
-        protected internal virtual Collection<string> RetryErrorTypes
+        protected virtual Collection<string> RetryErrorTypes
         {
             get { return _retryErrorTypes; }
         }
@@ -122,7 +122,7 @@ namespace Facebook
         /// <summary>
         /// Gets the Current URL, stripping it of known FB parameters that should not persist.
         /// </summary>
-        protected internal override Uri CurrentUrl
+        protected override Uri CurrentUrl
         {
             get
             {
@@ -228,7 +228,7 @@ namespace Facebook
         /// currently stored session -- you need to explicitly pass it in.
         /// </summary>
         /// <param name="session">The session to use for setting the cookie. Can be null.</param>
-        protected internal void SetCookieFromSession(FacebookSession session)
+        protected void SetCookieFromSession(FacebookSession session)
         {
             // Check to make sure cookies are supported
             // based on the Facebook Settings.
@@ -287,7 +287,7 @@ namespace Facebook
 #endif
 
 #if !SILVERLIGHT
-        protected internal override bool ValidateSessionObject(FacebookSession session)
+        protected override bool ValidateSessionObject(FacebookSession session)
         {
             if (session == null)
             {
@@ -309,7 +309,7 @@ namespace Facebook
         /// <returns>An MD5 signature.</returns>
         /// <exception cref="System.ArgumentNullException">If the session is null.</exception>
         /// <exception cref="System.InvalidOperationException">If there is a problem generating the hash.</exception>
-        protected internal override string GenerateSignature(FacebookSession session)
+        protected override string GenerateSignature(FacebookSession session)
         {
             if (session == null)
             {
@@ -350,24 +350,20 @@ namespace Facebook
         /// <param name="parameters">The parameters of the method call.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal override dynamic RestServer(dynamic parameters, HttpMethod httpMethod)
+        protected override dynamic RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (parameters == null)
             {
                 throw new ArgumentNullException("parameters");
             }
-            if (!(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
-            if (string.IsNullOrEmpty(parameters.method))
+            if (!parameters.ContainsKey("method") || parameters["method"] == null || parameters["method"].ToString() == String.Empty)
             {
                 throw new ArgumentException("A method must be specified in order to make a rest call.");
             }
 
             AddRestParameters(parameters);
 
-            Uri uri = this.GetApiUrl(parameters.method);
+            Uri uri = this.GetApiUrl(parameters["method"].ToString());
             return this.OAuthRequest(uri, parameters, httpMethod);
         }
 
@@ -379,15 +375,11 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal override dynamic Graph(string path, dynamic parameters, HttpMethod httpMethod)
+        protected override dynamic Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
                 throw new ArgumentException("You must supply either the 'path' or 'parameters' argument.");
-            }
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
             }
 
             var uri = GetGraphRequestUri(path);
@@ -402,15 +394,11 @@ namespace Facebook
         /// <param name="parameters">The parameters of the request.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
-        protected internal override dynamic OAuthRequest(Uri uri, dynamic parameters, HttpMethod httpMethod)
+        protected override dynamic OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (uri == null)
             {
                 throw new ArgumentNullException("uri");
-            }
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
             }
 
             Uri requestUrl;
@@ -429,7 +417,7 @@ namespace Facebook
         /// <param name="parameters">The parameters of the method call.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal override void RestServerAsync(FacebookAsyncCallback callback, object state, dynamic parameters, HttpMethod httpMethod)
+        protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (callback == null)
             {
@@ -439,18 +427,14 @@ namespace Facebook
             {
                 throw new ArgumentNullException("parameters");
             }
-            if (!(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
-            if (!string.IsNullOrEmpty(parameters.method))
+            if (!parameters.ContainsKey("method") || parameters["method"] == null || parameters["method"].ToString() == String.Empty)
             {
                 throw new ArgumentException("A method must be specified in order to make a rest call.");
             }
 
             AddRestParameters(parameters);
 
-            Uri uri = this.GetApiUrl(parameters.method);
+            Uri uri = this.GetApiUrl(parameters["method"].ToString());
 
             this.OAuthRequestAsync(callback, state, uri, parameters, httpMethod);
         }
@@ -465,7 +449,7 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal override void GraphAsync(FacebookAsyncCallback callback, object state, string path, dynamic parameters, HttpMethod httpMethod)
+        protected override void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (callback == null)
             {
@@ -474,10 +458,6 @@ namespace Facebook
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
                 throw new ArgumentException("You must supply either the 'path' or 'parameters' argument.");
-            }
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
             }
 
             var uri = GetGraphRequestUri(path);
@@ -496,7 +476,7 @@ namespace Facebook
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        protected internal override void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, dynamic parameters, HttpMethod httpMethod)
+        protected override void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (callback == null)
             {
@@ -505,10 +485,6 @@ namespace Facebook
             if (uri == null)
             {
                 throw new ArgumentNullException("uri");
-            }
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
             }
 
             Uri requestUrl;
@@ -530,13 +506,8 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLoginUrl(dynamic parameters)
+        public override Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
-
             var currentUrl = this.CurrentUrl.ToString();
 
             dynamic defaultParams = new ExpandoObject();
@@ -575,12 +546,8 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
-        public Uri GetOAuthLoginUrl(dynamic parameters)
+        public Uri GetOAuthLoginUrl(IDictionary<string, object> parameters)
         {
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument must be null or cast to IDictionary<string,object>.", "parameters");
-            }
 
             var currentUrl = this.CurrentUrl.ToString();
 
@@ -604,13 +571,8 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLogoutUrl(dynamic parameters)
+        public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
         {
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
-
             dynamic defaultParams = new ExpandoObject();
             defaultParams.api_key = this.AppId;
             defaultParams.no_session = this.CurrentUrl.ToString();
@@ -635,13 +597,8 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLoginStatusUrl(dynamic parameters)
+        public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
         {
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
-
             string currentUrl = this.CurrentUrl.ToString();
 
             dynamic defaultParams = new ExpandoObject();
@@ -661,10 +618,10 @@ namespace Facebook
         /// Adds the standard REST requset parameters.
         /// </summary>
         /// <param name="parameters"></param>
-        private void AddRestParameters(dynamic parameters)
+        private void AddRestParameters(IDictionary<string, object> parameters)
         {
-            parameters.api_key = this.AppId;
-            parameters.format = "json-strings";
+            parameters["api_key"] = this.AppId;
+            parameters["format"] = "json-strings";
         }
 
         /// <summary>
@@ -692,11 +649,11 @@ namespace Facebook
         /// <param name="requestUrl">The outputed request uri.</param>
         /// <param name="contentType">The request content type.</param>
         /// <returns>The request post data.</returns>
-        private byte[] BuildRequestData(Uri uri, dynamic parameters, HttpMethod httpMethod, out Uri requestUrl, out string contentType)
+        private byte[] BuildRequestData(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, out Uri requestUrl, out string contentType)
         {
-            if (!((IDictionary<string, object>)parameters).ContainsKey("access_token"))
+            if (!parameters.ContainsKey("access_token"))
             {
-                parameters.access_token = this.AccessToken;
+                parameters["access_token"] = this.AccessToken;
             }
 
             var requestUrlBuilder = new UriBuilder(uri);
@@ -745,7 +702,7 @@ namespace Facebook
         /// <param name="parameters">The request parameters.</param>
         /// <param name="boundary">The multipart form request boundary.</param>
         /// <returns>The request post data.</returns>
-        private static byte[] BuildMediaObjectPostData(dynamic parameters, string boundary)
+        private static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, string boundary)
         {
             string _prefix = "--";
             string _newLine = "\r\n";
@@ -882,25 +839,25 @@ namespace Facebook
             request.Method = HttpMethodHelper.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
             if (httpMethod == HttpMethod.Post)
             {
-                request.BeginGetRequestStream((ar) => { AsyncRequestReady(ar, postData, callback, state); }, request);
+                request.BeginGetRequestStream((ar) => { RequestReadyAsync(ar, postData, callback, state); }, request);
             }
             else
             {
-                request.BeginGetResponse((ar) => { AsyncResponseReady(ar, callback, state); }, request);
+                request.BeginGetResponse((ar) => { ResponseReadyAsync(ar, callback, state); }, request);
             }
         }
 
-        private static void AsyncRequestReady(IAsyncResult asyncResult, byte[] postData, FacebookAsyncCallback callback, object state)
+        private static void RequestReadyAsync(IAsyncResult asyncResult, byte[] postData, FacebookAsyncCallback callback, object state)
         {
             HttpWebRequest request = asyncResult.AsyncState as HttpWebRequest;
             using (Stream stream = request.EndGetRequestStream(asyncResult))
             {
                 stream.Write(postData, 0, postData.Length);
             }
-            request.BeginGetResponse((ar) => { AsyncResponseReady(ar, callback, state); }, request);
+            request.BeginGetResponse((ar) => { ResponseReadyAsync(ar, callback, state); }, request);
         }
 
-        private static void AsyncResponseReady(IAsyncResult asyncResult, FacebookAsyncCallback callback, object state)
+        private static void ResponseReadyAsync(IAsyncResult asyncResult, FacebookAsyncCallback callback, object state)
         {
             dynamic result = null;
             FacebookApiException exception = null;
@@ -966,7 +923,7 @@ namespace Facebook
         }
 
 
-        protected internal FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
+        protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
         {
             string[] parts = signedRequestValue.Split('.');
             var sig = Base64UrlDecode(parts[0]);
@@ -1006,7 +963,7 @@ namespace Facebook
         }
 #endif
 
-        protected internal FacebookSession ParseFromQuerystring(string cookieValue)
+        protected FacebookSession ParseFromQuerystring(string cookieValue)
         {
             if (String.IsNullOrEmpty(cookieValue))
             {
@@ -1034,7 +991,7 @@ namespace Facebook
             return session;
         }
 
-        protected internal FacebookSession ParseFromCookie(string sessionValue)
+        protected FacebookSession ParseFromCookie(string sessionValue)
         {
             if (String.IsNullOrEmpty(sessionValue))
             {
@@ -1071,7 +1028,7 @@ namespace Facebook
         /// is rethrown.  Other exceptions are not caught and will be visible to callers.
         /// </summary>
         /// <param name="body">The delegate to invoke within the retry code.</param>
-        protected internal void WithMirrorRetry(Action body)
+        protected void WithMirrorRetry(Action body)
         {
             int retryCount = 0;
 
@@ -1105,7 +1062,7 @@ namespace Facebook
         /// <typeparam name="TReturn">The type of object being returned</typeparam>
         /// <param name="body">The delegate to invoke within the retry logic which will produce the value to return</param>
         /// <returns>The value the delegate returns</returns>
-        protected internal TReturn WithMirrorRetry<TReturn>(Func<TReturn> body)
+        protected TReturn WithMirrorRetry<TReturn>(Func<TReturn> body)
         {
             int retryCount = 0;
 

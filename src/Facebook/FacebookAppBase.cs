@@ -143,7 +143,7 @@ namespace Facebook
         /// <summary>
         /// Gets the default Facebook login success url.
         /// </summary>
-        protected internal virtual Uri CurrentUrl
+        protected virtual Uri CurrentUrl
         {
             get
             {
@@ -218,7 +218,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
-        public abstract Uri GetLoginUrl(dynamic parameters);
+        public abstract Uri GetLoginUrl(IDictionary<string, object> parameters);
 
         /// <summary>
         /// Get a Logout URL suitable for use with redirects.
@@ -236,7 +236,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
-        public abstract Uri GetLogoutUrl(dynamic parameters);
+        public abstract Uri GetLogoutUrl(IDictionary<string, object> parameters);
 
         /// <summary>
         /// Get a login status URL to fetch the status from facebook.
@@ -256,9 +256,9 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the logout flow</returns>
-        public abstract Uri GetLoginStatusUrl(dynamic parameters);
+        public abstract Uri GetLoginStatusUrl(IDictionary<string, object> parameters);
 
-        protected internal virtual Uri CleanUrl(Uri uri)
+        protected virtual Uri CleanUrl(Uri uri)
         {
             if (uri == null)
             {
@@ -345,7 +345,7 @@ namespace Facebook
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public dynamic Api(string path, dynamic parameters)
+        public dynamic Api(string path, IDictionary<string, object> parameters)
         {
             return this.Api(path, parameters, HttpMethod.Get);
         }
@@ -358,7 +358,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public virtual dynamic Api(string path, dynamic parameters, HttpMethod httpMethod)
+        public virtual dynamic Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
@@ -393,7 +393,7 @@ namespace Facebook
         /// <param name="state">The async state.</param>
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        public void ApiAsync(FacebookAsyncCallback callback, object state, dynamic parameters)
+        public void ApiAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters)
         {
             this.ApiAsync(callback, state, null, parameters, HttpMethod.Get);
         }
@@ -433,7 +433,7 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public void ApiAsync(FacebookAsyncCallback callback, object state, string path, dynamic parameters)
+        public void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters)
         {
             this.ApiAsync(callback, state, path, parameters, HttpMethod.Get);
         }
@@ -447,7 +447,7 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, dynamic parameters, HttpMethod httpMethod)
+        public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
@@ -479,14 +479,14 @@ namespace Facebook
         /// </summary>
         /// <param name="session">The session to validate.</param>
         /// <returns>True if valid, else false.</returns>
-        protected internal abstract bool ValidateSessionObject(FacebookSession session);
+        protected abstract bool ValidateSessionObject(FacebookSession session);
 
         /// <summary>
         /// Generates a MD5 signature for the facebook session.
         /// </summary>
         /// <param name="session">The session to generate a signature.</param>
         /// <returns>An MD5 signature.</returns>
-        protected internal abstract string GenerateSignature(FacebookSession session);
+        protected abstract string GenerateSignature(FacebookSession session);
 
 
         /// <summary>
@@ -494,7 +494,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">The parameters for the server call.</param>
         /// <returns>The decoded response object.</returns>
-        protected internal abstract dynamic RestServer(dynamic parameters, HttpMethod httpMethod);
+        protected abstract dynamic RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
         /// Invoke the Graph API.
@@ -504,7 +504,7 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal abstract dynamic Graph(string path, dynamic parameters, HttpMethod httpMethod);
+        protected abstract dynamic Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
         /// Make a OAuth Request
@@ -514,7 +514,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal abstract dynamic OAuthRequest(Uri uri, dynamic parameters, HttpMethod httpMethod);
+        protected abstract dynamic OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod);
 #endif
 
         /// <summary>
@@ -523,7 +523,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <param name="state">The async state.</param>
         /// <param name="parameters">The parameters for the server call.</param>
-        protected internal abstract void RestServerAsync(FacebookAsyncCallback callback, object state, dynamic parameters, HttpMethod httpMethod);
+        protected abstract void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
         /// Invoke the Graph API.
@@ -535,7 +535,7 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal abstract void GraphAsync(FacebookAsyncCallback callback, object state, string path, dynamic parameters, HttpMethod httpMethod);
+        protected abstract void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
         /// Make a OAuth Request
@@ -547,14 +547,14 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal abstract void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, dynamic parameters, HttpMethod httpMethod);
+        protected abstract void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
         /// Build the URL for api given parameters.
         /// </summary>
         /// <param name="method">The method name.</param>
         /// <returns>The Url for the given parameters.</returns>
-        protected internal virtual Uri GetApiUrl(string method)
+        protected virtual Uri GetApiUrl(string method)
         {
             string name = "api";
             if (_readOnlyCalls.Contains(method))
@@ -569,7 +569,7 @@ namespace Facebook
         /// </summary>
         /// <param name="name">The name of the domain (from the domain maps).</param>
         /// <returns>The string of the url for the given parameters.</returns>
-        protected internal Uri GetUrl(string name)
+        protected Uri GetUrl(string name)
         {
             return this.GetUrl(name, string.Empty, null);
         }
@@ -580,7 +580,7 @@ namespace Facebook
         /// <param name="name">The name of the domain (from the domain maps).</param>
         /// <param name="path">Path (without a leading slash)</param>
         /// <returns>The string of the url for the given parameters.</returns>
-        protected internal Uri GetUrl(string name, string path)
+        protected Uri GetUrl(string name, string path)
         {
             return this.GetUrl(name, path, null);
         }
@@ -591,7 +591,7 @@ namespace Facebook
         /// <param name="name">The name of the domain (from the domain maps).</param>
         /// <param name="parameters">Optional query parameters</param>
         /// <returns>The string of the url for the given parameters.</returns>
-        protected internal Uri GetUrl(string name, dynamic parameters)
+        protected Uri GetUrl(string name, IDictionary<string, object> parameters)
         {
             return this.GetUrl(name, string.Empty, parameters);
         }
@@ -603,7 +603,7 @@ namespace Facebook
         /// <param name="path">Optional path (without a leading slash)</param>
         /// <param name="parameters">Optional query parameters</param>
         /// <returns>The string of the url for the given parameters.</returns>
-        protected internal virtual Uri GetUrl(string name, string path, dynamic parameters)
+        protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
         {
             if (string.IsNullOrEmpty(name))
             {
