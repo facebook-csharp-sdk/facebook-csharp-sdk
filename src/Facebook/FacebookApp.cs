@@ -878,57 +878,65 @@ namespace Facebook
         private static void MakeRequestAsync(FacebookAsyncCallback callback, object state, HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
+            request.ContentType = contentType;
             request.Method = HttpMethodHelper.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
-
-            if (postData != null)
+            if (httpMethod == HttpMethod.Post)
             {
-                request.ContentType = contentType;
-                request.ContentLength = postData.Length;
-                request.BeginGetRequestStream(
-                    (asyncResult) =>
-                    {
-                        dynamic result = null;
-                        FacebookApiException exception = null;
-                        try
-                        {
-                            HttpWebRequest asyncRequest = (HttpWebRequest)asyncResult.AsyncState;
-                            HttpWebResponse asyncResponse = (HttpWebResponse)asyncRequest.EndGetResponse(asyncResult);
-                            using (var responseStream = asyncResponse.GetResponseStream())
-                            {
-                                result = JsonSerializer.DeserializeObject(responseStream);
-                            }
-                            exception = ExceptionHelper.GetRestException(result);
-                            if (exception != null)
-                            {
-                                throw exception; // Thow the FacebookApiException
-                            }
-                        }
-                        catch (FacebookApiException) // Rest API Errors
-                        {
-                            throw;
-                        }
-                        catch (WebException ex) // Graph API Errors or general web exceptions
-                        {
-                            exception = ExceptionHelper.GetGraphException(ex);
-                            if (exception != null)
-                            {
-                                throw exception; // Thow the FacebookApiException
-                            }
-                            throw;
-                        }
-                        finally
-                        {
-                            // Check to make sure there hasn't been an exception.
-                            // If there has, we want to pass null to the callback.
-                            dynamic data = null;
-                            if (exception == null)
-                            {
-                                data = result;
-                            }
-                            callback(new FacebookAsyncResult(data, state, asyncResult.AsyncWaitHandle, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));
-                        }
-                    },
-                request);
+                request.BeginGetRequestStream((ar) => { AsyncRequestReady(ar, postData, callback, state); }, request);
+            }
+            else
+            {
+                request.BeginGetResponse((ar) => { AsyncResponseReady(ar, callback, state); }, request);
+            }
+        }
+
+        private static void AsyncRequestReady(IAsyncResult asyncResult, byte[] postData, FacebookAsyncCallback callback, object state)
+        {
+            HttpWebRequest request = asyncResult.AsyncState as HttpWebRequest;
+            using (Stream stream = request.EndGetRequestStream(asyncResult))
+            {
+                stream.Write(postData, 0, postData.Length);
+            }
+            request.BeginGetResponse((ar) => { AsyncResponseReady(ar, callback, state); }, request);
+        }
+
+        private static void AsyncResponseReady(IAsyncResult asyncResult, FacebookAsyncCallback callback, object state)
+        {
+            dynamic result = null;
+            FacebookApiException exception = null;
+            try
+            {
+                HttpWebRequest request = asyncResult.AsyncState as HttpWebRequest;
+                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asyncResult);
+
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    result = JsonSerializer.DeserializeObject(responseStream);
+                }
+            }
+            catch (FacebookApiException) // Rest API Errors
+            {
+                throw;
+            }
+            catch (WebException ex) // Graph API Errors or general web exceptions
+            {
+                exception = ExceptionHelper.GetGraphException(ex);
+                if (exception != null)
+                {
+                    throw exception; // Thow the FacebookApiException
+                }
+                throw;
+            }
+            finally
+            {
+                // Check to make sure there hasn't been an exception.
+                // If there has, we want to pass null to the callback.
+                dynamic data = null;
+                if (exception == null)
+                {
+                    data = result;
+                }
+                callback(new FacebookAsyncResult(data, state, asyncResult.AsyncWaitHandle, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));
             }
         }
 

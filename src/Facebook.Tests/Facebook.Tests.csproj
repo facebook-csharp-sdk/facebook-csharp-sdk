@@ -88,6 +88,7 @@
     <Compile Include="FacebookSessionTests.cs" />
     <Compile Include="FacebookSettingsTests.cs" />
     <Compile Include="FacebookSignedRequestTests.cs" />
+    <Compile Include="Graph\AsyncGraphReadTests.cs" />
     <Compile Include="HttpMethodTests.cs" />
     <Compile Include="ServerTests.cs" />
     <Compile Include="Graph\GraphInsiteTests.cs" />
