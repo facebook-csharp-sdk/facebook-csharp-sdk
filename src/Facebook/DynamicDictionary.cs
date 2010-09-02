@@ -189,6 +189,10 @@ namespace Facebook
             }
             set
             {
+                if (String.IsNullOrEmpty(key))
+                {
+                    throw new ArgumentNullException("key");
+                }
                 this.dictionary[key] = value;
                 this.NotifyPropertyChanged(key);
             }
@@ -198,6 +202,10 @@ namespace Facebook
 
         public void Add(KeyValuePair<string, object> item)
         {
+            if (String.IsNullOrEmpty(item.Key))
+            {
+                throw new ArgumentNullException("key");
+            }
             this.dictionary.Add(item.Key, item.Value);
             this.NotifyPropertyChanged(item.Key);
         }
@@ -236,6 +244,10 @@ namespace Facebook
 
         public bool Remove(KeyValuePair<string, object> item)
         {
+            if (String.IsNullOrEmpty(item.Key))
+            {
+                throw new ArgumentNullException("key");
+            }
             var result = this.dictionary.Remove(item.Key);
             if (result)
             {

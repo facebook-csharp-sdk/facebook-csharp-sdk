@@ -39,13 +39,13 @@ namespace Facebook.Utilities
             {
                 throw new ArgumentNullException("unixTime");
             }
-            Contract.EndContractBlock();
-
-            long seconds;
-            if (!long.TryParse(unixTime, out seconds))
+            if (!System.Text.RegularExpressions.Regex.IsMatch(unixTime, @"[0-9]+"))
             {
                 throw new FormatException("Input unixTime was not in the correct format.");
             }
+            Contract.EndContractBlock();
+
+            long seconds = long.Parse(unixTime);
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(seconds);
         }

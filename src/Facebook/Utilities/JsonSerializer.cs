@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Facebook.Utilities
 {
@@ -28,7 +29,14 @@ namespace Facebook.Utilities
             }
             else
             {
-                return Newtonsoft.Json.JsonConvert.SerializeObject(value);
+                try
+                {
+                    return JsonConvert.SerializeObject(value);
+                }
+                catch (JsonWriterException ex)
+                {
+                    throw new FacebookApiException("There was an error serializing the object.", "Serialization", ex);
+                }
             }
         }
 
@@ -61,8 +69,15 @@ namespace Facebook.Utilities
             }
             else
             {
-                object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-
+                object obj;
+                try
+                {
+                    obj = JsonConvert.DeserializeObject(json);
+                }
+                catch (JsonReaderException ex)
+                {
+                    throw new FacebookApiException("The JSON object was not in the correct format.", "Serialization", ex);
+                }
                 // If the object is a JToken we want to
                 // convert it to dynamic, it if is any
                 // other type we just return it.

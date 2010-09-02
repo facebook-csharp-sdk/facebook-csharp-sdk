@@ -490,28 +490,28 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry(T:System.Action)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__30KeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__30(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__2cKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__2c(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__8KeyValuePairOfStringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__8(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__4KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__4(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__9KeyValuePairOfStringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__9(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__5KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__5(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__aKeyValuePairOfStringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__6KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__6(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__47KeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__47(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__43KeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__43(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__48KeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__48(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__44KeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__44(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookApp.AllInstances">
@@ -685,12 +685,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppBase.ApiObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.Object)"/>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppBase.ApiObjectHttpMethod">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.Object,T:Facebook.HttpMethod)"/>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.ApiSecretGet">
@@ -869,12 +869,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.Object)"/>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiObjectHttpMethod">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.Object,T:Facebook.HttpMethod)"/>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiSecretGet">

@@ -460,6 +460,9 @@
     <Compile Include="Utilities\ExceptionHelperTest.GetGraphException.g.cs">
       <DependentUpon>ExceptionHelperTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\ExceptionHelperTest.GetRestException.g.cs">
+      <DependentUpon>ExceptionHelperTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\HttpMethodHelperTest.ConvertToString.g.cs">
       <DependentUpon>HttpMethodHelperTest.cs</DependentUpon>
     </Compile>

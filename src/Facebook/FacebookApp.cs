@@ -459,6 +459,7 @@ namespace Facebook
             {
                 throw new ArgumentException("You must supply either the 'path' or 'parameters' argument.");
             }
+            Contract.EndContractBlock();
 
             var uri = GetGraphRequestUri(path);
 
