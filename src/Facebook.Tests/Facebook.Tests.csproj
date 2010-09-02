@@ -43,12 +43,12 @@
   <ItemGroup>
     <Reference Include="Facebook.Moles, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0ae41878053f6703, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Moles.Framework, Version=0.90.50303.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Pex.Framework, Version=0.90.50303.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Pex.Linq, Version=0.90.50303.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Moles.Framework, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Pex.Framework, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Pex.Linq, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Facebook\bin\Debug\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\lib\Json.Net\DotNet\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -81,6 +81,12 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="..\Facebook.Tests01\Properties\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Tests01\Properties\PexAssemblyInfo.cs">
+      <Link>PexAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Assert2.cs" />
     <Compile Include="DynamicDictionaryTest.Add.g.cs">
       <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
@@ -501,6 +507,9 @@
     <Compile Include="Utilities\UnixDateTimeTest_Unit.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Facebook.Tests01\Facebook.Tests.csproj">
+      <Link>Facebook.Tests.csproj</Link>
+    </Content>
     <Content Include="Facebook.Moles.dll">
       <DependentUpon>Facebook.moles</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

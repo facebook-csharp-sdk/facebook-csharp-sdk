@@ -51,6 +51,8 @@ namespace Facebook.Samples.AuthenticationTool
             "user_work_history",
             "read_friendlists",
             "read_requests",
+            "user_checkins",
+            "friends_checkins",
         };
 
 

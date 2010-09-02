@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56FD3D46-C67F-4989-A739-EB312AF147F0}"
 	ProjectSection(SolutionItems) = preProject
+		Facebook.Tests01\Properties\AssemblyInfo.cs = Facebook.Tests01\Properties\AssemblyInfo.cs
+		Facebook.Tests01\Facebook.Tests.csproj = Facebook.Tests01\Facebook.Tests.csproj
 		Facebook.vsmdi = Facebook.vsmdi
 		Licenses.txt = Licenses.txt
 		Local.testsettings = Local.testsettings
+		Facebook.Tests01\Properties\PexAssemblyInfo.cs = Facebook.Tests01\Properties\PexAssemblyInfo.cs
+		Facebook.Tests01\SharedKey.snk = Facebook.Tests01\SharedKey.snk
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
@@ -101,6 +105,7 @@ Global
 		SccProjectName8 = Facebook.Samples.AuthenticationTool
 		SccLocalPath8 = Facebook.Samples.AuthenticationTool
 		SccProjectUniqueName9 = Facebook.Tests\\Facebook.Tests.csproj
+		SccProjectTopLevelParentUniqueName9 = Facebook.sln
 		SccProjectName9 = Facebook.Tests
 		SccLocalPath9 = Facebook.Tests
 	EndGlobalSection
@@ -215,6 +220,7 @@ Global
 		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{F1B97557-0717-4D98-86B3-771545C1BBEF} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{0803C098-C7CB-40B7-8B87-67F98660609E} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
+		{D7BD434E-F641-4C7B-8C6F-DAA5FED01491} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{22EA5522-E2C5-41D0-A7F8-B011F9A86EEC} = {8136C239-9CF7-4011-B301-98E375923C74}
 		{247052E2-3C72-4E61-834C-F2484703AAA4} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
 		{BD7FFF0C-CE95-469F-8117-D8B3EC2F2A82} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
