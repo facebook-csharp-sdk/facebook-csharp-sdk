@@ -52,11 +52,11 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Read_Likes()
         {
-            var likesResult = app.Api("/totten/likes");
-            var likesData = likesResult.data;
+            dynamic likesResult = app.Api("/totten/likes");
+            dynamic likesData = likesResult.data;
             Assert.IsNotNull(likesData);
 
-            var total = likesData.Count;
+            dynamic total = likesData.Count;
             Assert.AreNotEqual(0, total);
 
             var firstLikePageName = likesData[0].name;
@@ -67,7 +67,7 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Read_Public_Fan_Page_Id()
         {
-            var pageResult = app.Api("/outback");
+            dynamic pageResult = app.Api("/outback");
             Assert.AreEqual(pageResult.id, "48543634386");
         }
 
@@ -75,7 +75,7 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Read_User_Info()
         {
-            var result = app.Api("/me/likes");
+            dynamic result = app.Api("/me/likes");
             Assert.AreEqual(result.name, "Bret Taylor");
         }
 
@@ -83,7 +83,7 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Read_Application_Info()
         {
-            var result = app.Api("/2439131959");
+            dynamic result = app.Api("/2439131959");
             Assert.AreEqual(result.category, "Just For Fun");
         }
 
@@ -91,7 +91,7 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Read_Photo_Info()
         {
-            var result = app.Api("/98423808305");
+            dynamic result = app.Api("/98423808305");
             Assert.AreEqual(result.from.name, "Coca-Cola");
         }
 
@@ -99,7 +99,7 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Read_Event()
         {
-            var result = app.Api("/331218348435");
+            dynamic result = app.Api("/331218348435");
             Assert.AreEqual(result.venue.city, "Austin");
         }
 
@@ -107,7 +107,7 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Bad_Property_Name_Fails_Gracefully()
         {
-            var result = app.Api("/331218348435");
+            dynamic result = app.Api("/331218348435");
             Assert.AreEqual("", result.venue.badname);
             Assert.AreEqual(0, (int)result.venue.badname);
             Assert.AreEqual(false, (bool)result.venue.badname);

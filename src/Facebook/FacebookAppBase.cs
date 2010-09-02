@@ -300,7 +300,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        public dynamic Api(IDictionary<string, object> parameters)
+        public object Api(IDictionary<string, object> parameters)
         {
             return this.Api(null, parameters, HttpMethod.Get);
         }
@@ -311,7 +311,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public dynamic Api(string path)
+        public object Api(string path)
         {
             return this.Api(path, null, HttpMethod.Get);
         }
@@ -322,7 +322,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        public dynamic Api(string path, HttpMethod httpMethod)
+        public object Api(string path, HttpMethod httpMethod)
         {
             return this.Api(path, null, httpMethod);
         }
@@ -333,7 +333,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        public dynamic Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
+        public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             return this.Api(null, parameters, httpMethod);
         }
@@ -345,7 +345,7 @@ namespace Facebook
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public dynamic Api(string path, IDictionary<string, object> parameters)
+        public object Api(string path, IDictionary<string, object> parameters)
         {
             return this.Api(path, parameters, HttpMethod.Get);
         }
@@ -358,7 +358,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public virtual dynamic Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
@@ -391,7 +391,7 @@ namespace Facebook
         /// </summary>
         /// <param name="callback">The async callback.</param>
         /// <param name="state">The async state.</param>
-        /// <param name="parameters">JsonObject of url parameters.</param>
+        /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         public void ApiAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters)
         {
@@ -430,7 +430,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">JsonObject of url parameters.</param>
+        /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         public void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters)
@@ -444,7 +444,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">JsonObject of url parameters.</param>
+        /// <param name="parameters">object of url parameters.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
         public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
@@ -494,17 +494,17 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">The parameters for the server call.</param>
         /// <returns>The decoded response object.</returns>
-        protected abstract dynamic RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod);
+        protected abstract object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
         /// Invoke the Graph API.
         /// </summary>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="httpMethod">The http method for the request.</param>
-        /// <param name="parameters">JsonObject of url parameters.</param>
+        /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected abstract dynamic Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod);
+        protected abstract object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
         /// Make a OAuth Request
@@ -514,7 +514,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected abstract dynamic OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod);
+        protected abstract object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod);
 #endif
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace Facebook
         /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="httpMethod">The http method for the request.</param>
-        /// <param name="parameters">JsonObject of url parameters.</param>
+        /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         protected abstract void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod);

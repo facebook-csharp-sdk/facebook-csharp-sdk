@@ -350,7 +350,7 @@ namespace Facebook
         /// <param name="parameters">The parameters of the method call.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected override dynamic RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (parameters == null)
             {
@@ -375,7 +375,7 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected override dynamic Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
@@ -394,7 +394,7 @@ namespace Facebook
         /// <param name="parameters">The parameters of the request.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
-        protected override dynamic OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (uri == null)
             {
@@ -405,7 +405,7 @@ namespace Facebook
             string contentType;
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, out requestUrl, out contentType);
 
-            return WithMirrorRetry<dynamic>(() => { return MakeRequest(httpMethod, requestUrl, postData, contentType); });
+            return WithMirrorRetry<object>(() => { return MakeRequest(httpMethod, requestUrl, postData, contentType); });
         }
 #endif
 
@@ -511,20 +511,20 @@ namespace Facebook
         {
             var currentUrl = this.CurrentUrl.ToString();
 
-            dynamic defaultParams = new ExpandoObject();
-            defaultParams.api_key = this.AppId;
-            defaultParams.cancel_url = currentUrl;
-            defaultParams.display = "page";
-            defaultParams.fbconnect = 1;
-            defaultParams.next = currentUrl;
-            defaultParams.return_session = 1;
-            defaultParams.session_version = 3;
-            defaultParams.v = "1.0";
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["api_key"] = this.AppId;
+            defaultParams["cancel_url"] = currentUrl;
+            defaultParams["display"] = "page";
+            defaultParams["fbconnect"] = 1;
+            defaultParams["next"] = currentUrl;
+            defaultParams["return_session"] = 1;
+            defaultParams["session_version"] = 3;
+            defaultParams["v"] = "1.0";
 
             return this.GetUrl(
                 "www",
                 "login.php",
-                DynamicHelper.Merge(defaultParams, parameters));
+                defaultParams.Merge(parameters));
         }
 
 #if CLIENTPROFILE || SILVERLIGHT
@@ -552,16 +552,16 @@ namespace Facebook
 
             var currentUrl = this.CurrentUrl.ToString();
 
-            dynamic defaultParams = new ExpandoObject();
-            defaultParams.client_id = this.AppId;
-            defaultParams.display = "popup";
-            //defaultParams.type = "user_agent";
-            defaultParams.redirect_uri = currentUrl;
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["client_id"] = this.AppId;
+            defaultParams["display"] = "popup";
+            //defaultParams["type"] = "user_agent";
+            defaultParams["redirect_uri"] = currentUrl;
 
             return this.GetUrl(
                 "graph",
                 "oauth/authorize",
-                DynamicHelper.Merge(defaultParams, parameters));
+                defaultParams.Merge(parameters));
         }
 #endif
 
@@ -574,21 +574,21 @@ namespace Facebook
         /// <returns>The URL for the login flow.</returns>
         public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
         {
-            dynamic defaultParams = new ExpandoObject();
-            defaultParams.api_key = this.AppId;
-            defaultParams.no_session = this.CurrentUrl.ToString();
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["api_key"] = this.AppId;
+            defaultParams["no_session"] = this.CurrentUrl.ToString();
             if (this.Session != null)
             {
                 // If might be better to throw an exception if the
                 // session is null because you dont need to logout,
                 // but this way makes it easier to build logout links.
-                defaultParams.session_key = this.Session.SessionKey;
+                defaultParams["session_key"] = this.Session.SessionKey;
             }
 
             return this.GetUrl(
                 "www",
                 "logout.php",
-                DynamicHelper.Merge(defaultParams, parameters));
+                defaultParams.Merge(parameters));
         }
 
         /// <summary>
@@ -602,17 +602,17 @@ namespace Facebook
         {
             string currentUrl = this.CurrentUrl.ToString();
 
-            dynamic defaultParams = new ExpandoObject();
-            defaultParams.api_key = this.AppId;
-            defaultParams.no_session = currentUrl;
-            defaultParams.no_user = currentUrl;
-            defaultParams.ok_session = currentUrl;
-            defaultParams.session_version = 3;
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["api_key"] = this.AppId;
+            defaultParams["no_session"] = currentUrl;
+            defaultParams["no_user"] = currentUrl;
+            defaultParams["ok_session"] = currentUrl;
+            defaultParams["session_version"] = 3;
 
             return this.GetUrl(
                 "www",
                 "extern/login_status.php",
-                DynamicHelper.Merge(defaultParams, parameters));
+                defaultParams.Merge(parameters));
         }
 
         /// <summary>
@@ -768,7 +768,7 @@ namespace Facebook
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private dynamic MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
+        private object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
             request.Method = HttpMethodHelper.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
@@ -785,7 +785,7 @@ namespace Facebook
 
             }
 
-            dynamic result = null;
+            object result = null;
             FacebookApiException exception = null;
             try
             {
@@ -860,7 +860,7 @@ namespace Facebook
 
         private static void ResponseReadyAsync(IAsyncResult asyncResult, FacebookAsyncCallback callback, object state)
         {
-            dynamic result = null;
+            object result = null;
             FacebookApiException exception = null;
             try
             {
@@ -889,7 +889,7 @@ namespace Facebook
             {
                 // Check to make sure there hasn't been an exception.
                 // If there has, we want to pass null to the callback.
-                dynamic data = null;
+                object data = null;
                 if (exception == null)
                 {
                     data = result;
@@ -941,7 +941,7 @@ namespace Facebook
             }
 
             var payloadJson = Encoding.UTF8.GetString(Convert.FromBase64String(Base64UrlDecode(payload)));
-            dynamic data = JsonSerializer.DeserializeObject(payloadJson);
+            object data = JsonSerializer.DeserializeObject(payloadJson);
             var dataDict = (IDictionary<string, object>)data;
             var signedRequest = new FacebookSignedRequest();
             foreach (var keyValue in dataDict)

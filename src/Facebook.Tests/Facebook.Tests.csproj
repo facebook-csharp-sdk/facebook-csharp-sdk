@@ -47,9 +47,6 @@
     <Reference Include="Microsoft.Pex.Framework, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Pex.Linq, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\Json.Net\DotNet\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -73,6 +70,7 @@
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
+    <None Include="App.config" />
     <None Include="Facebook.moles">
       <Generator>MolesGenerator</Generator>
       <LastGenOutput>Facebook.Designer.cs</LastGenOutput>
@@ -82,64 +80,6 @@
   <ItemGroup />
   <ItemGroup>
     <Compile Include="Assert2.cs" />
-    <Compile Include="DynamicDictionaryTest.Add.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.Add01.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.Clear.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.Constructor.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.Contains.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.ContainsKey.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.CopyTo.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.CountGet.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.cs" />
-    <Compile Include="DynamicDictionaryTest.GetDynamicMemberNames.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.GetEnumerator.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.IsReadOnlyGet.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.ItemGetSet.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.KeysGet.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.Remove.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.Remove01.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.TryGetMember.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.TryGetValue.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.TrySetMember.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicDictionaryTest.ValuesGet.g.cs">
-      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Facebook.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

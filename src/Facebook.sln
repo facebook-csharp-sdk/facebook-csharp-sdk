@@ -36,18 +36,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Json.Net", "Json.Net", "{22EA5522-E2C5-41D0-A7F8-B011F9A86EEC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{4D2F1E44-5F34-4C47-BD69-2EB97B584F01}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\Json.Net\Silverlight\Newtonsoft.Json.Silverlight.dll = ..\lib\Json.Net\Silverlight\Newtonsoft.Json.Silverlight.dll
-		..\lib\Json.Net\Silverlight\Newtonsoft.Json.Silverlight.pdb = ..\lib\Json.Net\Silverlight\Newtonsoft.Json.Silverlight.pdb
-		..\lib\Json.Net\Silverlight\Newtonsoft.Json.Silverlight.xml = ..\lib\Json.Net\Silverlight\Newtonsoft.Json.Silverlight.xml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNet", "DotNet", "{756AE472-BD14-4D25-BA54-5C62F6C668D7}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\Json.Net\DotNet\Newtonsoft.Json.dll = ..\lib\Json.Net\DotNet\Newtonsoft.Json.dll
-		..\lib\Json.Net\DotNet\Newtonsoft.Json.pdb = ..\lib\Json.Net\DotNet\Newtonsoft.Json.pdb
-		..\lib\Json.Net\DotNet\Newtonsoft.Json.xml = ..\lib\Json.Net\DotNet\Newtonsoft.Json.xml
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Desktop", "Facebook.Desktop\Facebook.Desktop.csproj", "{B619CEBF-663B-4BEA-852A-654552AE187B}"
 EndProject

@@ -4,239 +4,6 @@
         <name>Facebook.Moles</name>
     </assembly>
     <members>
-        <member name="T:Facebook.Moles.MDynamicDictionary">
-            <summary>Mole type of <see cref="T:Facebook.DynamicDictionary"/>
-            .</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.#ctor">
-            <summary>Initializes a new mole</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.#ctor(Facebook.DynamicDictionary)">
-            <summary>Initializes a new mole for the given instance</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.Bind(System.ComponentModel.INotifyPropertyChanged)">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.Bind(System.Collections.IEnumerable)">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.Bind(System.Collections.Generic.ICollection{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.Bind(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MDynamicDictionary.Bind(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AddKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Add(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AddStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Add(T:System.String,T:System.Object)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.Behavior">
-            <summary>Assigns the behavior for all methods of the moled type</summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.Clear">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Clear"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.Constructor">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.#ctor"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.ContainsKeyString">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.ContainsKey(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.ContainsKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Contains(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.CopyToKeyValuePairOfStringObjectArrayInt32">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.CopyTo(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object}[],T:System.Int32)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.CountGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Count"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.GetDynamicMemberNames">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.GetDynamicMemberNames"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.GetEnumerator">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.GetEnumerator"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.InvarientObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.InvarientObject"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.IsReadOnlyGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.IsReadOnly"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.ItemGetString">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Item(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.ItemSetStringObject">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Item(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.KeysGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Keys"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.NotifyPropertyChangedString">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.NotifyPropertyChanged(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.PropertyChangedAddPropertyChangedEventHandler">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.add_PropertyChanged(T:System.ComponentModel.PropertyChangedEventHandler)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.PropertyChangedRemovePropertyChangedEventHandler">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.remove_PropertyChanged(T:System.ComponentModel.PropertyChangedEventHandler)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.RemoveKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Remove(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.RemoveString">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Remove(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.SystemCollectionsIEnumerableGetEnumerator">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.System.Collections.IEnumerable.GetEnumerator"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.TryGetMemberGetMemberBinderObjectOut">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.TryGetValueStringObjectOut">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.TryGetValue(T:System.String,T:System.Object@)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.TrySetMemberSetMemberBinderObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.ValuesGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Values"/>
-            </summary>
-        </member>
-        <member name="T:Facebook.Moles.MDynamicDictionary.AllInstances">
-            <summary>Define moles for all instances members</summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.AddKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Add(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.AddStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Add(T:System.String,T:System.Object)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.Clear">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Clear"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.ContainsKeyString">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.ContainsKey(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.ContainsKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Contains(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.CopyToKeyValuePairOfStringObjectArrayInt32">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.CopyTo(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object}[],T:System.Int32)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.CountGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Count"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.GetDynamicMemberNames">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.GetDynamicMemberNames"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.GetEnumerator">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.GetEnumerator"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.InvarientObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.InvarientObject"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.IsReadOnlyGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.IsReadOnly"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.ItemGetString">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Item(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.ItemSetStringObject">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Item(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.KeysGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Keys"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.NotifyPropertyChangedString">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.NotifyPropertyChanged(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.PropertyChangedAddPropertyChangedEventHandler">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.add_PropertyChanged(T:System.ComponentModel.PropertyChangedEventHandler)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.PropertyChangedRemovePropertyChangedEventHandler">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.remove_PropertyChanged(T:System.ComponentModel.PropertyChangedEventHandler)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.RemoveKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Remove(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.RemoveString">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.Remove(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.SystemCollectionsIEnumerableGetEnumerator">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.System.Collections.IEnumerable.GetEnumerator"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.TryGetMemberGetMemberBinderObjectOut">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.TryGetValueStringObjectOut">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.TryGetValue(T:System.String,T:System.Object@)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.TrySetMemberSetMemberBinderObject">
-            <summary>Sets the mole of <see cref="M:Facebook.DynamicDictionary.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MDynamicDictionary.AllInstances.ValuesGet">
-            <summary>Sets the mole of <see cref="P:Facebook.DynamicDictionary.Values"/>
-            </summary>
-        </member>
         <member name="T:Facebook.Moles.MFacebookApiException">
             <summary>Mole type of <see cref="T:Facebook.FacebookApiException"/>
             .</summary>
@@ -482,8 +249,8 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry(T:System.Action)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__2aKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__2a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__eKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__e(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__2KeyValuePairOfStringString">
@@ -498,12 +265,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__4(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__41KeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__41(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__1aKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__1a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__42KeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__42(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__1bKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__1b(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookApp.AllInstances">
@@ -1739,25 +1506,7 @@
         <member name="M:Facebook.Moles.MInvalidProperty.BehaveAsNotImplemented">
             <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
         </member>
-        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.ComponentModel.INotifyPropertyChanged)">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
         <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.IEquatable{Facebook.InvalidProperty})">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.IEnumerable)">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.Generic.ICollection{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>Binds the members of the interface to the mole.</summary>
-        </member>
-        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
             <summary>Binds the members of the interface to the mole.</summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.Behavior">
@@ -1767,8 +1516,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.#ctor"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MInvalidProperty.EqualsInvalidProperty">
-            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:Facebook.InvalidProperty)"/>
+        <member name="P:Facebook.Moles.MInvalidProperty.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.EqualsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:System.Object)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty">
@@ -1780,6 +1533,14 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty02">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty03">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty04">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
             </summary>
         </member>
@@ -1795,56 +1556,646 @@
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
         <member name="T:Facebook.Moles.MInvalidProperty.AllInstances">
             <summary>Define moles for all instances members</summary>
         </member>
-        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.EqualsInvalidProperty">
-            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:Facebook.InvalidProperty)"/>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.EqualsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:System.Object)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.ToString01">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>
             </summary>
         </member>
-        <member name="T:Facebook.Moles.SDynamicDictionary">
-            <summary>Stub type of <see cref="T:Facebook.DynamicDictionary"/>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonArray">
+            <summary>Mole type of <see cref="T:Facebook.JsonArray"/>
             .</summary>
         </member>
-        <member name="M:Facebook.Moles.SDynamicDictionary.#ctor">
-            <summary>Initializes a new instance</summary>
+        <member name="M:Facebook.Moles.MJsonArray.#ctor">
+            <summary>Initializes a new mole</summary>
         </member>
-        <member name="M:Facebook.Moles.SDynamicDictionary.GetDynamicMemberNames">
-            <summary>Sets the stub of <see cref="M:Facebook.DynamicDictionary.GetDynamicMemberNames"/>
+        <member name="M:Facebook.Moles.MJsonArray.#ctor(Facebook.JsonArray)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.ICollection)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.IEnumerable)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.Generic.ICollection{System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor"/>
             </summary>
         </member>
-        <member name="F:Facebook.Moles.SDynamicDictionary.GetDynamicMemberNames01">
-            <summary>Sets the stub of <see cref="M:Facebook.DynamicDictionary.GetDynamicMemberNames"/>
+        <member name="P:Facebook.Moles.MJsonArray.ConstructorObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor(T:System.Object)"/>
             </summary>
         </member>
-        <member name="M:Facebook.Moles.SDynamicDictionary.InitializeStub">
-            <summary>Initializes a new instance of type SDynamicDictionary</summary>
-        </member>
-        <member name="M:Facebook.Moles.SDynamicDictionary.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
-            <summary>Sets the stub of <see cref="M:Facebook.DynamicDictionary.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+        <member name="P:Facebook.Moles.MJsonArray.ConstructorObjectArray">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor(T:System.Object[])"/>
             </summary>
         </member>
-        <member name="F:Facebook.Moles.SDynamicDictionary.TryGetMemberGetMemberBinderObjectOut">
-            <summary>Sets the stub of <see cref="M:Facebook.DynamicDictionary.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+        <member name="P:Facebook.Moles.MJsonArray.ConstructorObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor(T:System.Object,T:System.Object)"/>
             </summary>
         </member>
-        <member name="M:Facebook.Moles.SDynamicDictionary.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">
-            <summary>Sets the stub of <see cref="M:Facebook.DynamicDictionary.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
+        <member name="P:Facebook.Moles.MJsonArray.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Count"/>
             </summary>
         </member>
-        <member name="F:Facebook.Moles.SDynamicDictionary.TrySetMemberSetMemberBinderObject">
-            <summary>Sets the stub of <see cref="M:Facebook.DynamicDictionary.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
+        <member name="P:Facebook.Moles.MJsonArray.CountSystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_Count"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.SDynamicDictionary.CallBase">
-            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        <member name="P:Facebook.Moles.MJsonArray.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_Count"/>
+            </summary>
         </member>
-        <member name="P:Facebook.Moles.SDynamicDictionary.InstanceBehavior">
-            <summary>Gets or sets the instance behavior.</summary>
+        <member name="P:Facebook.Moles.MJsonArray.IsReadOnlySystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.ItemGetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Item(T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectAddObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Add(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectCopyToObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.CopyTo(T:System.Object[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericIEnumerableSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.IEnumerable&lt;System.Object&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryInvokeMemberInvokeMemberBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryInvokeMember(T:System.Dynamic.InvokeMemberBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonArray.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.CountSystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.IsReadOnlySystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.ItemGetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Item(T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectAddObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Add(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectCopyToObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.CopyTo(T:System.Object[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericIEnumerableSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.IEnumerable&lt;System.Object&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryInvokeMemberInvokeMemberBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryInvokeMember(T:System.Dynamic.InvokeMemberBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonObject">
+            <summary>Mole type of <see cref="T:Facebook.JsonObject"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.#ctor(Facebook.JsonObject)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.ICollection)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.IDictionary)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.IEnumerable)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.Generic.ICollection{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ConstructorObjectArray">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.#ctor(T:System.Object[])"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.CountSystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.GetDynamicMemberNames">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.GetDynamicMemberNames"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.InvarientObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.InvarientObject"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsFixedSizeSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsFixedSize"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsReadOnlySystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsReadOnlySystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemGetString">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSetStringObject">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectgetString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectsetStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.set_Item(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsIDictionarygetObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Item(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsIDictionarysetObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.set_Item(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.KeysSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.KeysSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectAddKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Add(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectContainsKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Contains(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectCopyToKeyValuePairOfStringObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.CopyTo(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object}[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectRemoveKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Remove(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectAddStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Add(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectRemoveString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Remove(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectTryGetValueStringObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.TryGetValue(T:System.String,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIEnumerableSystemCollectionsGenericKeyValuePairSystemStringSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IEnumerable&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryAddObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Add(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryDeleteMemberDeleteMemberBinder">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryDeleteMember(T:System.Dynamic.DeleteMemberBinder)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TrySetMemberSetMemberBinderObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ValuesSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Values"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ValuesSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Values"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonObject.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.CountSystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.GetDynamicMemberNames">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.GetDynamicMemberNames"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.InvarientObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.InvarientObject"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsFixedSizeSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsFixedSize"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsReadOnlySystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsReadOnlySystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemGetString">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSetStringObject">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectgetString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectsetStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.set_Item(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsIDictionarygetObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Item(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsIDictionarysetObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.set_Item(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.KeysSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.KeysSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectAddKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Add(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectContainsKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Contains(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectCopyToKeyValuePairOfStringObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.CopyTo(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object}[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectRemoveKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Remove(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectAddStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Add(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectRemoveString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Remove(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectTryGetValueStringObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.TryGetValue(T:System.String,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIEnumerableSystemCollectionsGenericKeyValuePairSystemStringSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IEnumerable&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryAddObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Add(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryDeleteMemberDeleteMemberBinder">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryDeleteMember(T:System.Dynamic.DeleteMemberBinder)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TrySetMemberSetMemberBinderObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ValuesSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Values"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ValuesSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Values"/>
+            </summary>
         </member>
         <member name="T:Facebook.Moles.SFacebookApiException">
             <summary>Stub type of <see cref="T:Facebook.FacebookApiException"/>

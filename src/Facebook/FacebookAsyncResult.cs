@@ -15,7 +15,7 @@ namespace Facebook
 
     public class FacebookAsyncResult : IAsyncResult
     {
-        dynamic result;
+        JsonObject result;
         object asyncState;
         System.Threading.WaitHandle asyncWaitHandle;
         bool completedSynchronously;
@@ -43,7 +43,7 @@ namespace Facebook
             get { return this.error; }
         }
 
-        public dynamic Result
+        public JsonObject Result
         {
             get { return this.result; }
         }

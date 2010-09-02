@@ -78,9 +78,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Facebook\DynamicDictionary.cs">
-      <Link>DynamicDictionary.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook\FacebookApiException.cs">
       <Link>FacebookApiException.cs</Link>
     </Compile>
@@ -126,8 +123,14 @@
     <Compile Include="..\Facebook\InvalidProperty.cs">
       <Link>InvalidProperty.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook\Utilities\DynamicHelper.cs">
-      <Link>Utilities\DynamicHelper.cs</Link>
+    <Compile Include="..\Facebook\JsonArray.cs">
+      <Link>JsonArray.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\JsonObject.cs">
+      <Link>JsonObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook\Utilities\DictionaryExtensions.cs">
+      <Link>Utilities\DictionaryExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Facebook\Utilities\ExceptionHelper.cs">
       <Link>Utilities\ExceptionHelper.cs</Link>
@@ -138,11 +141,14 @@
     <Compile Include="..\Facebook\Utilities\JsonQueryStringHelper.cs">
       <Link>Utilities\JsonQueryStringHelper.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook\Utilities\JsonReader.cs">
+      <Link>Utilities\JsonReader.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook\Utilities\JsonSerializer.cs">
       <Link>Utilities\JsonSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook\Utilities\UnixDateConvertor.cs">
-      <Link>Utilities\UnixDateConvertor.cs</Link>
+    <Compile Include="..\Facebook\Utilities\JsonWriter.cs">
+      <Link>Utilities\JsonWriter.cs</Link>
     </Compile>
     <Compile Include="..\Facebook\Utilities\UnixDateTime.cs">
       <Link>Utilities\UnixDateTime.cs</Link>
