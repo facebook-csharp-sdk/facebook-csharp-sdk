@@ -1,0 +1,517 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7BD434E-F641-4C7B-8C6F-DAA5FED01491}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Facebook.Tests</RootNamespace>
+    <AssemblyName>Facebook.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Facebook.Moles, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0ae41878053f6703, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Moles.Framework, Version=0.90.50303.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Pex.Framework, Version=0.90.50303.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Pex.Linq, Version=0.90.50303.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Facebook\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Facebook\Facebook.csproj">
+      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
+      <Name>Facebook</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SharedKey.snk">
+      <Link>SharedKey.snk</Link>
+    </None>
+    <None Include="Facebook.moles">
+      <Generator>MolesGenerator</Generator>
+      <LastGenOutput>Facebook.Designer.cs</LastGenOutput>
+    </None>
+    <Shadow Include="Test References\Facebook.accessor" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Assert2.cs" />
+    <Compile Include="DynamicDictionaryTest.Add.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.Add01.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.Clear.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.Constructor.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.Contains.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.ContainsKey.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.CopyTo.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.CountGet.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.cs" />
+    <Compile Include="DynamicDictionaryTest.GetDynamicMemberNames.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.GetEnumerator.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.IsReadOnlyGet.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.ItemGetSet.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.KeysGet.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.Remove.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.Remove01.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.TryGetMember.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.TryGetValue.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.TrySetMember.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicDictionaryTest.ValuesGet.g.cs">
+      <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Facebook.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Facebook.moles</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookApiExceptionTest.Constructor.g.cs">
+      <DependentUpon>FacebookApiExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookApiExceptionTest.Constructor01.g.cs">
+      <DependentUpon>FacebookApiExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookApiExceptionTest.Constructor02.g.cs">
+      <DependentUpon>FacebookApiExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookApiExceptionTest.Constructor03.g.cs">
+      <DependentUpon>FacebookApiExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookApiExceptionTest.cs" />
+    <Compile Include="FacebookAppBaseTest.AccessTokenGet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.Api.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.Api01.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.Api02.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.Api03.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.Api04.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.Api05.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.ApiAsync.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.ApiAsync01.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.ApiAsync02.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.ApiAsync03.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.ApiAsync04.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.ApiSecretGetSet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.AppIdGetSet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.BaseDomainGetSet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.CookieSupportGetSet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.cs" />
+    <Compile Include="FacebookAppBaseTest.DomainMapsGet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.GetLoginStatusUrl.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.GetLoginStatusUrl01.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.GetLoginUrl.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.GetLoginUrl01.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.GetLogoutUrl.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.GetLogoutUrl01.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.SessionGetSet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.SessionLoadedGetSet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppBaseTest.UserIdGet.g.cs">
+      <DependentUpon>FacebookAppBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppExtensionsTest.Api.g.cs">
+      <DependentUpon>FacebookAppExtensionsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppExtensionsTest.Api01.g.cs">
+      <DependentUpon>FacebookAppExtensionsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppExtensionsTest.Api02.g.cs">
+      <DependentUpon>FacebookAppExtensionsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppExtensionsTest.Api03.g.cs">
+      <DependentUpon>FacebookAppExtensionsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppExtensionsTest.cs" />
+    <Compile Include="FacebookAppExtensionsTest.Fql.g.cs">
+      <DependentUpon>FacebookAppExtensionsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppExtensionsTest.Fql01.g.cs">
+      <DependentUpon>FacebookAppExtensionsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.Constructor.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.Constructor01.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.Constructor02.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.cs" />
+    <Compile Include="FacebookAppTest.GetLoginStatusUrl.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.GetLoginUrl.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.GetLogoutUrl.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.MaxRetriesGetSet.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.RetryDelayGetSet.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.SessionGetSet.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest.SignedRequestGet.g.cs">
+      <DependentUpon>FacebookAppTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAppTest_Unit.cs" />
+    <Compile Include="FacebookAsyncResultTest.AsyncStateGet.g.cs">
+      <DependentUpon>FacebookAsyncResultTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAsyncResultTest.AsyncWaitHandleGet.g.cs">
+      <DependentUpon>FacebookAsyncResultTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAsyncResultTest.CompletedSynchronouslyGet.g.cs">
+      <DependentUpon>FacebookAsyncResultTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAsyncResultTest.Constructor.g.cs">
+      <DependentUpon>FacebookAsyncResultTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAsyncResultTest.cs" />
+    <Compile Include="FacebookAsyncResultTest.ErrorGet.g.cs">
+      <DependentUpon>FacebookAsyncResultTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAsyncResultTest.IsCompletedGet.g.cs">
+      <DependentUpon>FacebookAsyncResultTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookAsyncResultTest.ResultGet.g.cs">
+      <DependentUpon>FacebookAsyncResultTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookConfigurationSectionTest.ApiKeyGetSet.g.cs">
+      <DependentUpon>FacebookConfigurationSectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookConfigurationSectionTest.ApiSecretGetSet.g.cs">
+      <DependentUpon>FacebookConfigurationSectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookConfigurationSectionTest.AppIdGetSet.g.cs">
+      <DependentUpon>FacebookConfigurationSectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookConfigurationSectionTest.BaseDomainGetSet.g.cs">
+      <DependentUpon>FacebookConfigurationSectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookConfigurationSectionTest.CookieSupportGetSet.g.cs">
+      <DependentUpon>FacebookConfigurationSectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookConfigurationSectionTest.cs" />
+    <Compile Include="FacebookConfigurationSectionTest.MaxRetriesGetSet.g.cs">
+      <DependentUpon>FacebookConfigurationSectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookConfigurationSectionTest.RetryDelayGetSet.g.cs">
+      <DependentUpon>FacebookConfigurationSectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookMediaObjectTest.ContentTypeGetSet.g.cs">
+      <DependentUpon>FacebookMediaObjectTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookMediaObjectTest.cs" />
+    <Compile Include="FacebookMediaObjectTest.FileNameGetSet.g.cs">
+      <DependentUpon>FacebookMediaObjectTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookMediaObjectTest.ValueGetSet.g.cs">
+      <DependentUpon>FacebookMediaObjectTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookOAuthExceptionTest.Constructor.g.cs">
+      <DependentUpon>FacebookOAuthExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookOAuthExceptionTest.Constructor01.g.cs">
+      <DependentUpon>FacebookOAuthExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookOAuthExceptionTest.Constructor02.g.cs">
+      <DependentUpon>FacebookOAuthExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookOAuthExceptionTest.Constructor03.g.cs">
+      <DependentUpon>FacebookOAuthExceptionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookOAuthExceptionTest.cs" />
+    <Compile Include="FacebookSessionTest.AccessTokenGetSet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.BaseDomainGetSet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.Constructor.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.cs" />
+    <Compile Include="FacebookSessionTest.DictionaryGet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.ExpiresGetSet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.SecretGetSet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.SessionKeyGetSet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.SignatureGetSet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSessionTest.UserIdGetSet.g.cs">
+      <DependentUpon>FacebookSessionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.ApiKeyGetSet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.ApiSecretGetSet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.AppIdGetSet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.BaseDomainGetSet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.CookieSupportGetSet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.cs" />
+    <Compile Include="FacebookSettingsTest.CurrentGet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.MaxRetriesGetSet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSettingsTest.RetryDelayGetSet.g.cs">
+      <DependentUpon>FacebookSettingsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSignedRequestTest.AccessTokenGetSet.g.cs">
+      <DependentUpon>FacebookSignedRequestTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSignedRequestTest.AlgorithmGetSet.g.cs">
+      <DependentUpon>FacebookSignedRequestTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSignedRequestTest.Constructor.g.cs">
+      <DependentUpon>FacebookSignedRequestTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSignedRequestTest.cs" />
+    <Compile Include="FacebookSignedRequestTest.DictionaryGet.g.cs">
+      <DependentUpon>FacebookSignedRequestTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSignedRequestTest.ExpiresGetSet.g.cs">
+      <DependentUpon>FacebookSignedRequestTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSignedRequestTest.ProfileIdGetSet.g.cs">
+      <DependentUpon>FacebookSignedRequestTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookSignedRequestTest.UserIdGetSet.g.cs">
+      <DependentUpon>FacebookSignedRequestTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalAssemblyInfoTest.cs" />
+    <Compile Include="Integration\FqlReadTests.cs" />
+    <Compile Include="Integration\GraphInsiteTests.cs" />
+    <Compile Include="Integration\GraphPublishTests.cs" />
+    <Compile Include="Integration\GraphReadTests.cs" />
+    <Compile Include="Integration\RestPublishTests.cs" />
+    <Compile Include="Integration\RestReadTests.cs" />
+    <Compile Include="InvalidPropertyTest.cs" />
+    <Compile Include="InvalidPropertyTest.Explicit.g.cs">
+      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvalidPropertyTest.Explicit01.g.cs">
+      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvalidPropertyTest.Explicit02.g.cs">
+      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvalidPropertyTest.Implicit.g.cs">
+      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvalidPropertyTest.InstanceGet.g.cs">
+      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\PexAssemblyInfo.cs" />
+    <Compile Include="Utilities\DynamicHelperTests.cs" />
+    <Compile Include="Utilities\ExceptionHelperTest.cs" />
+    <Compile Include="Utilities\ExceptionHelperTest.GetGraphException.g.cs">
+      <DependentUpon>ExceptionHelperTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\HttpMethodHelperTest.ConvertToString.g.cs">
+      <DependentUpon>HttpMethodHelperTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\HttpMethodHelperTest.cs" />
+    <Compile Include="Utilities\JsonQueryStringHelperTest.cs" />
+    <Compile Include="Utilities\JsonQueryStringHelperTest.ToJsonQueryString.g.cs">
+      <DependentUpon>JsonQueryStringHelperTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\JsonQueryStringHelperTest.ToJsonQueryString01.g.cs">
+      <DependentUpon>JsonQueryStringHelperTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\JsonQueryStringHelperTest.ToJsonQueryString02.g.cs">
+      <DependentUpon>JsonQueryStringHelperTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\JsonSerializerTest.cs" />
+    <Compile Include="Utilities\JsonSerializerTest.DeserializeObject.g.cs">
+      <DependentUpon>JsonSerializerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\JsonSerializerTest.DeserializeObject01.g.cs">
+      <DependentUpon>JsonSerializerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\JsonSerializerTest.SerializeObject.g.cs">
+      <DependentUpon>JsonSerializerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\UnixDateConvertorTest.cs" />
+    <Compile Include="Utilities\UnixDateTimeTest.cs" />
+    <Compile Include="Utilities\UnixDateTimeTest.FromUnixTime.g.cs">
+      <DependentUpon>UnixDateTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\UnixDateTimeTest.ToUnixDateTime.g.cs">
+      <DependentUpon>UnixDateTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\UnixDateTimeTest.ToUnixTime.g.cs">
+      <DependentUpon>UnixDateTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\UnixDateTimeTest_Unit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Facebook.Moles.dll">
+      <DependentUpon>Facebook.moles</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Facebook.Moles.xml">
+      <DependentUpon>Facebook.moles</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -300,7 +300,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        public dynamic Api(dynamic parameters)
+        public dynamic Api(IDictionary<string, object> parameters)
         {
             return this.Api(null, parameters, HttpMethod.Get);
         }
@@ -333,7 +333,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        public dynamic Api(dynamic parameters, HttpMethod httpMethod)
+        public dynamic Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             return this.Api(null, parameters, httpMethod);
         }
@@ -615,11 +615,18 @@ namespace Facebook
             }
 
             UriBuilder uri = new UriBuilder(_domainMaps[name]);
-            if (path != null)
+            if (!String.IsNullOrEmpty(path))
             {
                 if (path[0] == '/')
                 {
-                    path = path.Substring(1, path.Length - 1);
+                    if (path.Length > 1)
+                    {
+                        path = path.Substring(1, path.Length - 1);
+                    }
+                    else
+                    {
+                        path = string.Empty;
+                    }
                 }
                 uri.Path = path;
             }

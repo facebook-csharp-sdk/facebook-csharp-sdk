@@ -32,6 +32,12 @@ namespace Facebook
 
         public void Add(string key, object value)
         {
+            if (String.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+            Contract.EndContractBlock();
+
             this.dictionary.Add(key, value);
             this.NotifyPropertyChanged(key);
         }
@@ -130,6 +136,10 @@ namespace Facebook
 
         public bool ContainsKey(string key)
         {
+            if (String.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
             return this.dictionary.ContainsKey(key);
         }
 
@@ -140,6 +150,11 @@ namespace Facebook
 
         public bool Remove(string key)
         {
+            if (String.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+
             var result = this.dictionary.Remove(key);
             if (result)
             {
@@ -150,6 +165,10 @@ namespace Facebook
 
         public bool TryGetValue(string key, out object value)
         {
+            if (String.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
             return this.dictionary.TryGetValue(key, out value);
         }
 
@@ -162,6 +181,10 @@ namespace Facebook
         {
             get
             {
+                if (String.IsNullOrEmpty(key))
+                {
+                    throw new ArgumentNullException("key");
+                }
                 return this.dictionary[key];
             }
             set
@@ -186,11 +209,23 @@ namespace Facebook
 
         public bool Contains(KeyValuePair<string, object> item)
         {
+            if (String.IsNullOrEmpty(item.Key))
+            {
+                throw new ArgumentNullException("key");
+            }
             return this.dictionary.Contains(item);
         }
 
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
+            if (array == null)
+            {
+                throw new ArgumentNullException("array");
+            }
+            if (this.dictionary.Keys.Count < arrayIndex || arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("arrayIndex");
+            }
             this.dictionary.ToList().CopyTo(array, arrayIndex);
         }
 

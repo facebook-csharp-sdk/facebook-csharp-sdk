@@ -41,7 +41,11 @@ namespace Facebook.Utilities
             }
             Contract.EndContractBlock();
 
-            long seconds = long.Parse(unixTime);
+            long seconds;
+            if (!long.TryParse(unixTime, out seconds))
+            {
+                throw new FormatException("Input unixTime was not in the correct format.");
+            }
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(seconds);
         }

@@ -17,3 +17,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Facebook.Api, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Api.Silverlight, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Api.Desktop, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+[assembly: InternalsVisibleTo("Facebook.Explorables, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
