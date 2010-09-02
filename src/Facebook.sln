@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56FD3D46-C67F-4989-A739-EB312AF147F0}"
 	ProjectSection(SolutionItems) = preProject
-		Facebook.Tests01\Properties\AssemblyInfo.cs = Facebook.Tests01\Properties\AssemblyInfo.cs
-		Facebook.Tests01\Facebook.Tests.csproj = Facebook.Tests01\Facebook.Tests.csproj
 		Facebook.vsmdi = Facebook.vsmdi
 		Licenses.txt = Licenses.txt
 		Local.testsettings = Local.testsettings
-		Facebook.Tests01\Properties\PexAssemblyInfo.cs = Facebook.Tests01\Properties\PexAssemblyInfo.cs
-		Facebook.Tests01\SharedKey.snk = Facebook.Tests01\SharedKey.snk
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject

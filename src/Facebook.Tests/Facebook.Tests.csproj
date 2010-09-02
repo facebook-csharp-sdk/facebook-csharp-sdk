@@ -81,12 +81,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\Facebook.Tests01\Properties\AssemblyInfo.cs">
-      <Link>AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Tests01\Properties\PexAssemblyInfo.cs">
-      <Link>PexAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Assert2.cs" />
     <Compile Include="DynamicDictionaryTest.Add.g.cs">
       <DependentUpon>DynamicDictionaryTest.cs</DependentUpon>
@@ -507,9 +501,6 @@
     <Compile Include="Utilities\UnixDateTimeTest_Unit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Facebook.Tests01\Facebook.Tests.csproj">
-      <Link>Facebook.Tests.csproj</Link>
-    </Content>
     <Content Include="Facebook.Moles.dll">
       <DependentUpon>Facebook.moles</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
