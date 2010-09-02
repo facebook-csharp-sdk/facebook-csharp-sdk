@@ -1,0 +1,2812 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Facebook.Moles</name>
+    </assembly>
+    <members>
+        <member name="T:Facebook.Moles.MFacebookApiException">
+            <summary>Mole type of <see cref="T:Facebook.FacebookApiException"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApiException.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApiException.#ctor(Facebook.FacebookApiException)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApiException.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApiException.Bind(System.Runtime.InteropServices._Exception)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApiException.Bind(System.Runtime.Serialization.ISerializable)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ConstructorSerializationInfoStreamingContext">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.#ctor(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ConstructorString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.#ctor(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ConstructorStringException">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.#ctor(T:System.String,T:System.Exception)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ConstructorStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.#ctor(T:System.String,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ConstructorStringStringException">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.#ctor(T:System.String,T:System.String,T:System.Exception)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ErrorTypeGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.ErrorType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ErrorTypeSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.ErrorType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.ToString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.ToString"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookApiException.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.ErrorTypeGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.ErrorType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.ErrorTypeSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.ErrorType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.ToString01">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.ToString"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookApp">
+            <summary>Mole type of <see cref="T:Facebook.FacebookApp"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApp.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApp.#ctor(Facebook.FacebookApp)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApp.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApp.WithMirrorRetryFuncOfTReturn``1(Microsoft.Moles.Framework.MolesDelegates.Func{System.Func{``0},``0})">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry``1(System.Func`1{``0})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AddRestParametersIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.AddRestParameters(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.Base64UrlDecodeString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.Base64UrlDecode(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.BuildMediaObjectPostDataIDictionaryOfStringObjectString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.BuildMediaObjectPostData(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.BuildRequestDataUriIDictionaryOfStringObjectHttpMethodUriOutStringOut">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.BuildRequestData(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod,T:System.Uri@,T:System.String@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ConstructorIFacebookSettings">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.#ctor(T:Facebook.IFacebookSettings)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ConstructorString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.#ctor(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.CreateSessionFromSignedRequestFacebookSignedRequest">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.CreateSessionFromSignedRequest(T:Facebook.FacebookSignedRequest)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.CurrentUrlGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.GenerateSignatureFacebookSession">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GenerateSignature(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.GetGraphRequestUriString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetGraphRequestUri(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.GetLoginStatusUrlIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetLoginStatusUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.GetLoginUrlIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetLoginUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.GetLogoutUrlIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetLogoutUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.GraphAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GraphAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.GraphStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.Graph(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.MakeRequestAsyncFacebookAsyncCallbackObjectHttpMethodUriByteArrayString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.MakeRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:Facebook.HttpMethod,T:System.Uri,T:System.Byte[],T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.MakeRequestHttpMethodUriByteArrayString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.MakeRequest(T:Facebook.HttpMethod,T:System.Uri,T:System.Byte[],T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.MaxRetriesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.MaxRetriesSetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.OAuthRequestAsyncFacebookAsyncCallbackObjectUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.OAuthRequestUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.OAuthRequest(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ParseFromCookieString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromCookie(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ParseFromQuerystringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromQuerystring(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ParseSignedRequestString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseSignedRequest(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.RequestReadyAsyncIAsyncResultByteArrayFacebookAsyncCallbackObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.RequestReadyAsync(T:System.IAsyncResult,T:System.Byte[],T:Facebook.FacebookAsyncCallback,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ResponseReadyAsyncIAsyncResultFacebookAsyncCallbackObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ResponseReadyAsync(T:System.IAsyncResult,T:Facebook.FacebookAsyncCallback,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.RestServerAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.RestServerAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.RestServerIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.RestServer(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.RetryDelayGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.RetryDelaySetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.RetryErrorTypesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.SessionGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.SessionSetFacebookSession">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.SetCookieFromSessionFacebookSession">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.SetCookieFromSession(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.SignedRequestGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.SignedRequest"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ValidateSessionObjectFacebookSession">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ValidateSessionObject(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.WithMirrorRetryAction">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry(T:System.Action)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__eKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__e(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__2KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__2(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__3KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__3(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__4KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__4(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__1aKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__1a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__1bKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__1b(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookApp.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookApp.AllInstances.WithMirrorRetryFuncOfTReturn``1(Microsoft.Moles.Framework.MolesDelegates.Func{Facebook.FacebookApp,System.Func{``0},``0})">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry``1(System.Func`1{``0})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.AddRestParametersIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.AddRestParameters(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.BuildRequestDataUriIDictionaryOfStringObjectHttpMethodUriOutStringOut">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.BuildRequestData(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod,T:System.Uri@,T:System.String@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.CreateSessionFromSignedRequestFacebookSignedRequest">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.CreateSessionFromSignedRequest(T:Facebook.FacebookSignedRequest)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.CurrentUrlGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GenerateSignatureFacebookSession">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GenerateSignature(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GetGraphRequestUriString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetGraphRequestUri(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GetLoginStatusUrlIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetLoginStatusUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GetLoginUrlIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetLoginUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GetLogoutUrlIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GetLogoutUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GraphAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GraphAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GraphStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.Graph(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.MakeRequestHttpMethodUriByteArrayString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.MakeRequest(T:Facebook.HttpMethod,T:System.Uri,T:System.Byte[],T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.MaxRetriesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.MaxRetriesSetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.OAuthRequestAsyncFacebookAsyncCallbackObjectUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.OAuthRequestUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.OAuthRequest(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ParseFromCookieString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromCookie(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ParseFromQuerystringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromQuerystring(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ParseSignedRequestString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseSignedRequest(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RestServerAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.RestServerAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RestServerIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.RestServer(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RetryDelayGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RetryDelaySetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RetryErrorTypesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.SessionGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.SessionSetFacebookSession">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.SetCookieFromSessionFacebookSession">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.SetCookieFromSession(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.SignedRequestGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.SignedRequest"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ValidateSessionObjectFacebookSession">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ValidateSessionObject(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.WithMirrorRetryAction">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry(T:System.Action)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookAppBase">
+            <summary>Mole type of <see cref="T:Facebook.FacebookAppBase"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAppBase.#ctor(Facebook.FacebookAppBase)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAppBase.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AccessTokenGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiAsyncFacebookAsyncCallbackObjectString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiAsyncFacebookAsyncCallbackObjectStringHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiSecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiSecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiStringHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ApiStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AppIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AppIdSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.CleanUrlUri">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.CleanUrl(T:System.Uri)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.CookieSupportGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.CookieSupportSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.CurrentUrlGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.DomainMapsGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.DropQueryParametersGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetApiUrlString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetLoginStatusUrl">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetLoginUrl">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetLogoutUrl">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetUrlString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetUrlStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetUrlStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.GetUrlStringStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.SessionCookieNameGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionCookieName"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.SessionGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.SessionLoadedGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.SessionLoadedSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.SessionSetFacebookSession">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.UserIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.UserId"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookAppBase.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.AccessTokenGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiAsyncFacebookAsyncCallbackObjectString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiAsyncFacebookAsyncCallbackObjectStringHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiSecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiSecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiStringHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.AppIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.AppIdSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CleanUrlUri">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.CleanUrl(T:System.Uri)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CookieSupportGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CookieSupportSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CurrentUrlGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.DomainMapsGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.DropQueryParametersGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetApiUrlString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetLoginStatusUrl">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetLoginUrl">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetLogoutUrl">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetUrlString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetUrlStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetUrlStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetUrlStringStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionCookieNameGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionCookieName"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionLoadedGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionLoadedSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionSetFacebookSession">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.UserIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.UserId"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookAppExtensions">
+            <summary>Mole type of <see cref="T:Facebook.FacebookAppExtensions"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAppExtensions.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAppExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringStringHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,T:System.Object,T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.BuildPathStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.BuildPath(T:System.String,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.FqlFacebookAppString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Fql(T:Facebook.FacebookApp,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.FqlFacebookAppStringArray">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Fql(T:Facebook.FacebookApp,T:System.String[])"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookAsyncResult">
+            <summary>Mole type of <see cref="T:Facebook.FacebookAsyncResult"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAsyncResult.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAsyncResult.#ctor(Facebook.FacebookAsyncResult)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAsyncResult.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookAsyncResult.Bind(System.IAsyncResult)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AsyncStateGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.AsyncState"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AsyncWaitHandleGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.AsyncWaitHandle"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.CompletedSynchronouslyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.CompletedSynchronously"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.ConstructorObjectObjectWaitHandleBooleanBooleanFacebookApiException">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAsyncResult.#ctor(T:System.Object,T:System.Object,T:System.Threading.WaitHandle,T:System.Boolean,T:System.Boolean,T:Facebook.FacebookApiException)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.ErrorGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.Error"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.IsCompletedGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.IsCompleted"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.ResultGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.Result"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookAsyncResult.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AllInstances.AsyncStateGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.AsyncState"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AllInstances.AsyncWaitHandleGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.AsyncWaitHandle"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AllInstances.CompletedSynchronouslyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.CompletedSynchronously"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AllInstances.ErrorGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.Error"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AllInstances.IsCompletedGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.IsCompleted"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAsyncResult.AllInstances.ResultGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAsyncResult.Result"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookConfigurationSection">
+            <summary>Mole type of <see cref="T:Facebook.FacebookConfigurationSection"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookConfigurationSection.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookConfigurationSection.#ctor(Facebook.FacebookConfigurationSection)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookConfigurationSection.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookConfigurationSection.Bind(Facebook.IFacebookSettings)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.ApiKeyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.ApiKeySetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.ApiSecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.ApiSecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AppIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AppIdSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookConfigurationSection.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.CookieSupportGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.CookieSupportSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.MaxRetriesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.MaxRetriesSetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.RetryDelayGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.RetryDelaySetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookConfigurationSection.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.ApiKeyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.ApiKeySetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.ApiSecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.ApiSecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.AppIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.AppIdSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.CookieSupportGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.CookieSupportSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.MaxRetriesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.MaxRetriesSetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.RetryDelayGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookConfigurationSection.AllInstances.RetryDelaySetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookConfigurationSection.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookMediaObject">
+            <summary>Mole type of <see cref="T:Facebook.FacebookMediaObject"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookMediaObject.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookMediaObject.#ctor(Facebook.FacebookMediaObject)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookMediaObject.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookMediaObject.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.ContentTypeGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.ContentType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.ContentTypeSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.ContentType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.FileNameGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.FileName"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.FileNameSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.FileName"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.ValueGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.ValueSetByteArray">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookMediaObject.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.ContentTypeGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.ContentType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.ContentTypeSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.ContentType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.FileNameGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.FileName"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.FileNameSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.FileName"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.ValueGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.ValueSetByteArray">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookOAuthException">
+            <summary>Mole type of <see cref="T:Facebook.FacebookOAuthException"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookOAuthException.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookOAuthException.#ctor(Facebook.FacebookOAuthException)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookOAuthException.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookOAuthException.Bind(System.Runtime.InteropServices._Exception)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookOAuthException.Bind(System.Runtime.Serialization.ISerializable)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookOAuthException.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookOAuthException.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookOAuthException.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookOAuthException.ConstructorSerializationInfoStreamingContext">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookOAuthException.#ctor(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookOAuthException.ConstructorString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookOAuthException.#ctor(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookOAuthException.ConstructorStringException">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookOAuthException.#ctor(T:System.String,T:System.Exception)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookOAuthException.ConstructorStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookOAuthException.#ctor(T:System.String,T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookOAuthException.ConstructorStringStringException">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookOAuthException.#ctor(T:System.String,T:System.String,T:System.Exception)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookOAuthException.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookSession">
+            <summary>Mole type of <see cref="T:Facebook.FacebookSession"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSession.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSession.#ctor(Facebook.FacebookSession)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSession.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AccessTokenGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AccessTokenSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookSession.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.DictionaryGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Dictionary"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.ExpiresGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.ExpiresSetDateTime">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.SecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Secret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.SecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Secret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.SessionKeyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.SessionKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.SessionKeySetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.SessionKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.SignatureGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Signature"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.SignatureSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Signature"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.UserIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.UserId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.UserIdSetInt64">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.UserId"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookSession.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.AccessTokenGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.AccessTokenSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.DictionaryGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Dictionary"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.ExpiresGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.ExpiresSetDateTime">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.SecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Secret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.SecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Secret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.SessionKeyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.SessionKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.SessionKeySetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.SessionKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.SignatureGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Signature"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.SignatureSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.Signature"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.UserIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.UserId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSession.AllInstances.UserIdSetInt64">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSession.UserId"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookSettings">
+            <summary>Mole type of <see cref="T:Facebook.FacebookSettings"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSettings.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSettings.#ctor(Facebook.FacebookSettings)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSettings.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSettings.Bind(Facebook.IFacebookSettings)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.ApiKeyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.ApiKeySetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.ApiSecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.ApiSecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AppIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AppIdSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookSettings.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.CookieSupportGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.CookieSupportSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.CurrentGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.Current"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.MaxRetriesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.MaxRetriesSetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.RetryDelayGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.RetryDelaySetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookSettings.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.ApiKeyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.ApiKeySetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.ApiSecretGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.ApiSecretSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.AppIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.AppIdSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.BaseDomainGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.BaseDomainSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.CookieSupportGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.CookieSupportSetBoolean">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.MaxRetriesGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.MaxRetriesSetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.RetryDelayGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSettings.AllInstances.RetryDelaySetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookSignedRequest">
+            <summary>Mole type of <see cref="T:Facebook.FacebookSignedRequest"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSignedRequest.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSignedRequest.#ctor(Facebook.FacebookSignedRequest)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MFacebookSignedRequest.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AccessTokenGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AccessTokenSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AlgorithmGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Algorithm"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AlgorithmSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Algorithm"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookSignedRequest.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.DictionaryGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Dictionary"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.ExpiresGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.ExpiresSetDateTime">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.ProfileIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.ProfileIdSetInt64">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.UserIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.UserIdSetInt64">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MFacebookSignedRequest.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.AccessTokenGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.AccessTokenSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.AlgorithmGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Algorithm"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.AlgorithmSetString">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Algorithm"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.DictionaryGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Dictionary"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ExpiresGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ExpiresSetDateTime">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ProfileIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ProfileIdSetInt64">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.UserIdGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.UserIdSetInt64">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MInvalidProperty">
+            <summary>Mole type of <see cref="T:Facebook.InvalidProperty"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.#ctor(Facebook.InvalidProperty)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.EqualsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty01">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty02">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty03">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ExplicitOpInvalidProperty04">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ImplicitOpInvalidProperty">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Implicit(T:Facebook.InvalidProperty)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.InstanceGet">
+            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Instance"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ToString">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MInvalidProperty.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.EqualsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.ToString01">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonArray">
+            <summary>Mole type of <see cref="T:Facebook.JsonArray"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.#ctor(Facebook.JsonArray)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.ICollection)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.IEnumerable)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.Generic.ICollection{System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonArray.Bind(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.ConstructorObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.ConstructorObjectArray">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor(T:System.Object[])"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.ConstructorObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.#ctor(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.CountSystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.IsReadOnlySystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.ItemGetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Item(T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectAddObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Add(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectCopyToObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.CopyTo(T:System.Object[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericICollectionSystemObjectRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsGenericIEnumerableSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.IEnumerable&lt;System.Object&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TryInvokeMemberInvokeMemberBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryInvokeMember(T:System.Dynamic.InvokeMemberBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonArray.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.CountSystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.IsReadOnlySystemCollectionsGenericICollectionSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.ItemGetInt32">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonArray.Item(T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectAddObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Add(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectCopyToObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.CopyTo(T:System.Object[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericICollectionSystemObjectRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.ICollection&lt;System.Object&gt;.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsGenericIEnumerableSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.Generic.IEnumerable&lt;System.Object&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TryInvokeMemberInvokeMemberBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TryInvokeMember(T:System.Dynamic.InvokeMemberBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonArray.AllInstances.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonArray.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonObject">
+            <summary>Mole type of <see cref="T:Facebook.JsonObject"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.#ctor">
+            <summary>Initializes a new mole</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.#ctor(Facebook.JsonObject)">
+            <summary>Initializes a new mole for the given instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.ICollection)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.IDictionary)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.IEnumerable)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.Generic.ICollection{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MJsonObject.Bind(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.Behavior">
+            <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.Constructor">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.#ctor"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ConstructorObjectArray">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.#ctor(T:System.Object[])"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.CountSystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.GetDynamicMemberNames">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.GetDynamicMemberNames"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.InvarientObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.InvarientObject"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsFixedSizeSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsFixedSize"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsReadOnlySystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsReadOnlySystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemGetString">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSetStringObject">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectgetString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectsetStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.set_Item(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsIDictionarygetObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Item(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ItemSystemCollectionsIDictionarysetObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.set_Item(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.KeysSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.KeysSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectAddKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Add(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectContainsKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Contains(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectCopyToKeyValuePairOfStringObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.CopyTo(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object}[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectRemoveKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Remove(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectAddStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Add(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectRemoveString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Remove(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIDictionarySystemStringSystemObjectTryGetValueStringObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.TryGetValue(T:System.String,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsGenericIEnumerableSystemCollectionsGenericKeyValuePairSystemStringSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IEnumerable&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryAddObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Add(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIDictionaryRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryDeleteMemberDeleteMemberBinder">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryDeleteMember(T:System.Dynamic.DeleteMemberBinder)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.TrySetMemberSetMemberBinderObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ValuesSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Values"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.ValuesSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Values"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.MJsonObject.AllInstances">
+            <summary>Define moles for all instances members</summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.CountGet">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.CountSystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.GetDynamicMemberNames">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.GetDynamicMemberNames"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.InvarientObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.InvarientObject"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsFixedSizeSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsFixedSize"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsReadOnlySystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsReadOnlySystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemGetString">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSetStringObject">
+            <summary>Sets the mole of <see cref="P:Facebook.JsonObject.Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectgetString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Item(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsGenericIDictionarySystemStringSystemObjectsetStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.set_Item(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsIDictionarygetObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Item(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ItemSystemCollectionsIDictionarysetObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.set_Item(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.KeysSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.KeysSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Keys"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectAddKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Add(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectContainsKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Contains(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectCopyToKeyValuePairOfStringObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.CopyTo(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object}[],T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericICollectionSystemCollectionsGenericKeyValuePairSystemStringSystemObjectRemoveKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.Remove(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectAddStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Add(T:System.String,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectContainsKeyString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.ContainsKey(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectRemoveString">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.Remove(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIDictionarySystemStringSystemObjectTryGetValueStringObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.TryGetValue(T:System.String,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsGenericIEnumerableSystemCollectionsGenericKeyValuePairSystemStringSystemObjectGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IEnumerable&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryAddObjectObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Add(T:System.Object,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryClear">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIDictionaryRemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IEnumerable.GetEnumerator"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryConvertConvertBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryConvert(T:System.Dynamic.ConvertBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryDeleteMemberDeleteMemberBinder">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryDeleteMember(T:System.Dynamic.DeleteMemberBinder)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryGetIndexGetIndexBinderObjectArrayObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TryGetMemberGetMemberBinderObjectOut">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TryGetMember(T:System.Dynamic.GetMemberBinder,T:System.Object@)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TrySetIndexSetIndexBinderObjectArrayObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetIndex(T:System.Dynamic.SetIndexBinder,T:System.Object[],T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.TrySetMemberSetMemberBinderObject">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.TrySetMember(T:System.Dynamic.SetMemberBinder,T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ValuesSystemCollectionsGenericIDictionarySystemStringSystemObjectget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;.get_Values"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MJsonObject.AllInstances.ValuesSystemCollectionsIDictionaryget">
+            <summary>Sets the mole of <see cref="M:Facebook.JsonObject.System.Collections.IDictionary.get_Values"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookApiException">
+            <summary>Stub type of <see cref="T:Facebook.FacebookApiException"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.#ctor(System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.#ctor(System.String,System.String,System.Exception)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookApiException</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.ToString">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApiException.ToString"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApiException.ToString01">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApiException.ToString"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApiException.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApiException.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookApp">
+            <summary>Stub type of <see cref="T:Facebook.FacebookApp"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.#ctor(Facebook.IFacebookSettings)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.#ctor(System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.Api(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.ApiAsync(Facebook.FacebookAsyncCallback,System.Object,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.ApiAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.ApiStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.AttachBackingFieldToSession">
+            <summary>Attaches delegates to emulate SFacebookApp.Session as a property with a backing field</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.CleanUrl(System.Uri)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.CleanUrl(T:System.Uri)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.CleanUrlUri">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.CleanUrl(T:System.Uri)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.CurrentUrlGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.DomainMapsGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.DropQueryParametersGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.GenerateSignature(Facebook.FacebookSession)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GenerateSignature(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GenerateSignatureFacebookSession">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GenerateSignature(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.GetApiUrl(System.String)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GetApiUrlString">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.GetLoginStatusUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GetLoginStatusUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GetLoginStatusUrlIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GetLoginStatusUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.GetLoginUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GetLoginUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GetLoginUrlIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GetLoginUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.GetLogoutUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GetLogoutUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GetLogoutUrlIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GetLogoutUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.GetUrl(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GetUrlStringStringIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.Graph(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.Graph(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.GraphAsync(Facebook.FacebookAsyncCallback,System.Object,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GraphAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GraphAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GraphAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.GraphStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.Graph(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookApp</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.OAuthRequest(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.OAuthRequest(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.OAuthRequestAsync(Facebook.FacebookAsyncCallback,System.Object,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.OAuthRequestAsyncFacebookAsyncCallbackObjectUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.OAuthRequestUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.OAuthRequest(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.RestServer(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.RestServer(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.RestServerAsync(Facebook.FacebookAsyncCallback,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.RestServerAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.RestServerAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.RestServerAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.RestServerIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.RestServer(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.RetryErrorTypesGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.SessionGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.Session"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.SessionSetFacebookSession">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.Session"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApp.ValidateSessionObject(Facebook.FacebookSession)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.ValidateSessionObject(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApp.ValidateSessionObjectFacebookSession">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.ValidateSessionObject(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApp.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApp.CurrentUrl">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApp.DomainMaps">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApp.DropQueryParameters">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApp.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApp.RetryErrorTypes">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApp.Session">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.Session"/>
+            </summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookAppBase">
+            <summary>Stub type of <see cref="T:Facebook.FacebookAppBase"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.Api(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.ApiAsync(Facebook.FacebookAsyncCallback,System.Object,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.ApiAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.ApiStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.CleanUrl(System.Uri)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.CleanUrl(T:System.Uri)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.CleanUrlUri">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.CleanUrl(T:System.Uri)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.CurrentUrlGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.DomainMapsGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.DropQueryParametersGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.GenerateSignature(Facebook.FacebookSession)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GenerateSignature(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GenerateSignatureFacebookSession">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GenerateSignature(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.GetApiUrl(System.String)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GetApiUrlString">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.GetLoginStatusUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GetLoginStatusUrlIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.GetLoginUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GetLoginUrlIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.GetLogoutUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GetLogoutUrlIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.GetUrl(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GetUrlStringStringIDictionaryOfStringObject">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.Graph(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.Graph(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.GraphAsync(Facebook.FacebookAsyncCallback,System.Object,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GraphAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GraphAsyncFacebookAsyncCallbackObjectStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GraphAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.GraphStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.Graph(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookAppBase</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.OAuthRequest(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.OAuthRequest(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.OAuthRequestAsync(Facebook.FacebookAsyncCallback,System.Object,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.OAuthRequestAsyncFacebookAsyncCallbackObjectUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.OAuthRequestUriIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.OAuthRequest(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.RestServer(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.RestServer(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.RestServerAsync(Facebook.FacebookAsyncCallback,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.RestServerAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.RestServerAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.RestServerAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.RestServerIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.RestServer(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAppBase.ValidateSessionObject(Facebook.FacebookSession)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.ValidateSessionObject(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookAppBase.ValidateSessionObjectFacebookSession">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.ValidateSessionObject(T:Facebook.FacebookSession)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookAppBase.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookAppBase.CurrentUrl">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookAppBase.DomainMaps">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookAppBase.DropQueryParameters">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookAppBase.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookAsyncResult">
+            <summary>Stub type of <see cref="T:Facebook.FacebookAsyncResult"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAsyncResult.#ctor(System.Object,System.Object,System.Threading.WaitHandle,System.Boolean,System.Boolean,Facebook.FacebookApiException)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookAsyncResult.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookAsyncResult</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookAsyncResult.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookAsyncResult.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookMediaObject">
+            <summary>Stub type of <see cref="T:Facebook.FacebookMediaObject"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookMediaObject.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookMediaObject.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookMediaObject</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookMediaObject.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookMediaObject.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookOAuthException">
+            <summary>Stub type of <see cref="T:Facebook.FacebookOAuthException"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookOAuthException.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookOAuthException.#ctor(System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookOAuthException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookOAuthException.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookOAuthException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookOAuthException.#ctor(System.String,System.String,System.Exception)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookOAuthException.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookOAuthException</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookOAuthException.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookOAuthException.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookSettings">
+            <summary>Stub type of <see cref="T:Facebook.FacebookSettings"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookSettings.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookSettings.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookSettings</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookSettings.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookSettings.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="T:Facebook.Moles.SFacebookSignedRequest">
+            <summary>Stub type of <see cref="T:Facebook.FacebookSignedRequest"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookSignedRequest.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookSignedRequest.InitializeStub">
+            <summary>Initializes a new instance of type SFacebookSignedRequest</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookSignedRequest.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookSignedRequest.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="T:Facebook.Moles.SIFacebookSettings">
+            <summary>Stub type of <see cref="T:Facebook.IFacebookSettings"/>
+            .</summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.#ctor">
+            <summary>Initializes a new instance of type SIFacebookSettings</summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.ApiKeyGet">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.ApiKey"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.ApiKeySetString">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.ApiKey"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.ApiSecretGet">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.ApiSecretSetString">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.AppIdGet">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.AppId"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.AppIdSetString">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.AppId"/>
+            </summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.AttachBackingFieldToApiKey">
+            <summary>Attaches delegates to emulate SIFacebookSettings.ApiKey as a property with a backing field</summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.AttachBackingFieldToApiSecret">
+            <summary>Attaches delegates to emulate SIFacebookSettings.ApiSecret as a property with a backing field</summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.AttachBackingFieldToAppId">
+            <summary>Attaches delegates to emulate SIFacebookSettings.AppId as a property with a backing field</summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.AttachBackingFieldToBaseDomain">
+            <summary>Attaches delegates to emulate SIFacebookSettings.BaseDomain as a property with a backing field</summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.AttachBackingFieldToCookieSupport">
+            <summary>Attaches delegates to emulate SIFacebookSettings.CookieSupport as a property with a backing field</summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.AttachBackingFieldToMaxRetries">
+            <summary>Attaches delegates to emulate SIFacebookSettings.MaxRetries as a property with a backing field</summary>
+        </member>
+        <member name="M:Facebook.Moles.SIFacebookSettings.AttachBackingFieldToRetryDelay">
+            <summary>Attaches delegates to emulate SIFacebookSettings.RetryDelay as a property with a backing field</summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.BaseDomainGet">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.BaseDomainSetString">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.CookieSupportGet">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.CookieSupportSetBoolean">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.MaxRetriesGet">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.MaxRetriesSetInt32">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.RetryDelayGet">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SIFacebookSettings.RetryDelaySetInt32">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.RetryDelay"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SIFacebookSettings.f::Facebook#IFacebookSettings#ApiKey">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.ApiKey"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SIFacebookSettings.f::Facebook#IFacebookSettings#ApiSecret">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.ApiSecret"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SIFacebookSettings.f::Facebook#IFacebookSettings#AppId">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.AppId"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SIFacebookSettings.f::Facebook#IFacebookSettings#BaseDomain">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.BaseDomain"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SIFacebookSettings.f::Facebook#IFacebookSettings#CookieSupport">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.CookieSupport"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SIFacebookSettings.f::Facebook#IFacebookSettings#MaxRetries">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.MaxRetries"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.SIFacebookSettings.f::Facebook#IFacebookSettings#RetryDelay">
+            <summary>Sets the stub of <see cref="P:Facebook.IFacebookSettings.RetryDelay"/>
+            </summary>
+        </member>
+    </members>
+</doc>

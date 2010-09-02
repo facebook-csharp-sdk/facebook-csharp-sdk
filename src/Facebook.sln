@@ -51,9 +51,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{247052E2-3C7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phone", "Phone", "{6AB88E25-E672-4886-A7EE-0C18720CD7DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests", "Facebook.Tests01\Facebook.Tests.csproj", "{074FCA08-CBF4-4FA3-BF0C-A1459585990F}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
 		SccLocalPath0 = .
@@ -88,6 +90,10 @@ Global
 		SccProjectTopLevelParentUniqueName8 = Facebook.sln
 		SccProjectName8 = Facebook.Samples.AuthenticationTool
 		SccLocalPath8 = Facebook.Samples.AuthenticationTool
+		SccProjectUniqueName9 = Facebook.Tests01\\Facebook.Tests.csproj
+		SccProjectTopLevelParentUniqueName9 = Facebook.sln
+		SccProjectName9 = Facebook.Tests01
+		SccLocalPath9 = Facebook.Tests01
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -181,6 +187,16 @@ Global
 		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|x86.ActiveCfg = Release|x86
 		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|x86.Build.0 = Release|x86
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +206,7 @@ Global
 		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{F1B97557-0717-4D98-86B3-771545C1BBEF} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{0803C098-C7CB-40B7-8B87-67F98660609E} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{22EA5522-E2C5-41D0-A7F8-B011F9A86EEC} = {8136C239-9CF7-4011-B301-98E375923C74}
 		{247052E2-3C72-4E61-834C-F2484703AAA4} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
 		{BD7FFF0C-CE95-469F-8117-D8B3EC2F2A82} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}

@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{074FCA08-CBF4-4FA3-BF0C-A1459585990F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Facebook.Tests</RootNamespace>
+    <AssemblyName>Facebook.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>SharedKey.snk</AssemblyOriginatorKeyFile>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Facebook.Moles, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0ae41878053f6703, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ExtendedReflection, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Moles.Framework, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Pex.Framework, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Pex.Linq, Version=0.92.50603.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Facebook\Facebook.csproj">
+      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
+      <Name>Facebook</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Facebook.moles">
+      <Generator>MolesGenerator</Generator>
+      <LastGenOutput>Facebook.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SharedKey.snk" />
+    <Shadow Include="Test References\Facebook.accessor" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Assert2.cs" />
+    <Compile Include="Facebook.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Facebook.moles</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookApiExceptionTest.cs" />
+    <Compile Include="FacebookAppBaseTest.cs" />
+    <Compile Include="FacebookAppExtensionsTest.cs" />
+    <Compile Include="FacebookAppTest.cs" />
+    <Compile Include="FacebookAppTest_Unit.cs" />
+    <Compile Include="FacebookAsyncResultTest.cs" />
+    <Compile Include="FacebookConfigurationSectionTest.cs" />
+    <Compile Include="FacebookMediaObjectTest.cs" />
+    <Compile Include="FacebookOAuthExceptionTest.cs" />
+    <Compile Include="FacebookSessionTest.cs" />
+    <Compile Include="FacebookSettingsTest.cs" />
+    <Compile Include="FacebookSignedRequestTest.cs" />
+    <Compile Include="GlobalAssemblyInfoTest.cs" />
+    <Compile Include="Integration\FqlReadTests.cs" />
+    <Compile Include="Integration\GraphInsiteTests.cs" />
+    <Compile Include="Integration\GraphPublishTests.cs" />
+    <Compile Include="Integration\GraphReadTests.cs" />
+    <Compile Include="Integration\RestPublishTests.cs" />
+    <Compile Include="Integration\RestReadTests.cs" />
+    <Compile Include="InvalidPropertyTest.cs" />
+    <Compile Include="JsonArrayTest.cs" />
+    <Compile Include="JsonObjectTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\PexAssemblyInfo.cs" />
+    <Compile Include="Utilities\DictionaryExtensionsTest.cs" />
+    <Compile Include="Utilities\ExceptionHelperTest.cs" />
+    <Compile Include="Utilities\HttpMethodHelperTest.cs" />
+    <Compile Include="Utilities\JsonQueryStringHelperTest.cs" />
+    <Compile Include="Utilities\JsonReaderTest.cs" />
+    <Compile Include="Utilities\JsonSerializerTest.cs" />
+    <Compile Include="Utilities\JsonWriterTest.cs" />
+    <Compile Include="Utilities\UnixDateTimeTest.cs" />
+    <Compile Include="Utilities\UnixDateTimeTest_Unit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Facebook.Moles.dll">
+      <DependentUpon>Facebook.moles</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Facebook.Moles.xml">
+      <DependentUpon>Facebook.moles</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
