@@ -51,11 +51,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{247052E2-3C7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phone", "Phone", "{6AB88E25-E672-4886-A7EE-0C18720CD7DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests", "Facebook.Tests01\Facebook.Tests.csproj", "{074FCA08-CBF4-4FA3-BF0C-A1459585990F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNet35", "DotNet35", "{0DDF445E-472D-469E-84F4-8D7F4A76AA7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.DotNet35", "Facebook.DotNet35\Facebook.DotNet35.csproj", "{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests", "Facebook.Tests\Facebook.Tests.csproj", "{074FCA08-CBF4-4FA3-BF0C-A1459585990F}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -94,14 +94,14 @@ Global
 		SccProjectTopLevelParentUniqueName8 = Facebook.sln
 		SccProjectName8 = Facebook.Samples.AuthenticationTool
 		SccLocalPath8 = Facebook.Samples.AuthenticationTool
-		SccProjectUniqueName9 = Facebook.Tests01\\Facebook.Tests.csproj
+		SccProjectUniqueName9 = Facebook.DotNet35\\Facebook.DotNet35.csproj
 		SccProjectTopLevelParentUniqueName9 = Facebook.sln
-		SccProjectName9 = Facebook.Tests01
-		SccLocalPath9 = Facebook.Tests01
-		SccProjectUniqueName10 = Facebook.DotNet35\\Facebook.DotNet35.csproj
+		SccProjectName9 = Facebook.DotNet35
+		SccLocalPath9 = Facebook.DotNet35
+		SccProjectUniqueName10 = Facebook.Tests\\Facebook.Tests.csproj
 		SccProjectTopLevelParentUniqueName10 = Facebook.sln
-		SccProjectName10 = Facebook.DotNet35
-		SccLocalPath10 = Facebook.DotNet35
+		SccProjectName10 = Facebook.Tests
+		SccLocalPath10 = Facebook.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -195,16 +195,6 @@ Global
 		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|x86.ActiveCfg = Release|x86
 		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|x86.Build.0 = Release|x86
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|x86.ActiveCfg = Release|Any CPU
 		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -215,6 +205,16 @@ Global
 		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|x86.ActiveCfg = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
