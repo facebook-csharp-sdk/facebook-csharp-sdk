@@ -53,9 +53,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phone", "Phone", "{6AB88E25
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests", "Facebook.Tests01\Facebook.Tests.csproj", "{074FCA08-CBF4-4FA3-BF0C-A1459585990F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNet35", "DotNet35", "{0DDF445E-472D-469E-84F4-8D7F4A76AA7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.DotNet35", "Facebook.DotNet35\Facebook.DotNet35.csproj", "{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 10
+		SccNumberOfProjects = 11
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
 		SccLocalPath0 = .
@@ -94,6 +98,10 @@ Global
 		SccProjectTopLevelParentUniqueName9 = Facebook.sln
 		SccProjectName9 = Facebook.Tests01
 		SccLocalPath9 = Facebook.Tests01
+		SccProjectUniqueName10 = Facebook.DotNet35\\Facebook.DotNet35.csproj
+		SccProjectTopLevelParentUniqueName10 = Facebook.sln
+		SccProjectName10 = Facebook.DotNet35
+		SccLocalPath10 = Facebook.DotNet35
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -197,6 +205,16 @@ Global
 		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|x86.ActiveCfg = Release|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -212,10 +230,12 @@ Global
 		{BD7FFF0C-CE95-469F-8117-D8B3EC2F2A82} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
 		{4DB3CAA5-68A0-4017-975B-70635D8209BB} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
 		{6AB88E25-E672-4886-A7EE-0C18720CD7DD} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
+		{0DDF445E-472D-469E-84F4-8D7F4A76AA7E} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
 		{73333465-710D-4143-BA9B-201D90EE2BAF} = {247052E2-3C72-4E61-834C-F2484703AAA4}
 		{7DC5C10F-E871-4202-9014-0F958358389E} = {247052E2-3C72-4E61-834C-F2484703AAA4}
 		{4D2F1E44-5F34-4C47-BD69-2EB97B584F01} = {22EA5522-E2C5-41D0-A7F8-B011F9A86EEC}
 		{756AE472-BD14-4D25-BA54-5C62F6C668D7} = {22EA5522-E2C5-41D0-A7F8-B011F9A86EEC}
 		{B619CEBF-663B-4BEA-852A-654552AE187B} = {BD7FFF0C-CE95-469F-8117-D8B3EC2F2A82}
+		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4} = {0DDF445E-472D-469E-84F4-8D7F4A76AA7E}
 	EndGlobalSection
 EndGlobal

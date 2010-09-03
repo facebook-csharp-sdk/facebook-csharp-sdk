@@ -11,10 +11,5 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Facebook")]
-[assembly: InternalsVisibleTo("Facebook.Web, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-[assembly: InternalsVisibleTo("Facebook.Web.Mvc, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-[assembly: InternalsVisibleTo("Facebook.Api, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-[assembly: InternalsVisibleTo("Facebook.Api.Silverlight, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-[assembly: InternalsVisibleTo("Facebook.Api.Desktop, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Explorables, PublicKey=" + GlobalAssemblyInfo.PublicKey)]

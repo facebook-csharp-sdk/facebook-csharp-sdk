@@ -67,7 +67,7 @@ namespace Facebook.Utilities
             {
                 if (ex.Response != null)
                 {
-                    dynamic response = null;
+                    object response = null;
                     using (var stream = ex.Response.GetResponseStream())
                     {
                         if (stream != null)
@@ -77,18 +77,32 @@ namespace Facebook.Utilities
                     }
                     if (response != null)
                     {
-                        // Check to make sure the correct data is in the response
-                        if (response.error.type != InvalidProperty.Instance && response.error.message != InvalidProperty.Instance)
+                        if (response is IDictionary<string, object>)
                         {
-                            // We dont include the inner exception because it is not needed and is always a WebException.
-                            // It is easier to understand the error if we use Facebook's error message.
-                            if (response.error.type == "OAuthException")
+                            var responseDict = (IDictionary<string, object>)response;
+                            if (responseDict.ContainsKey("error"))
                             {
-                                resultException = new FacebookOAuthException(response.error.message, response.error.type);
-                            }
-                            else
-                            {
-                                resultException = new FacebookApiException(response.error.message, response.error.type);
+                                var error = responseDict["error"];
+                                if (error is IDictionary<string, object>)
+                                {
+                                    var errorDict = (IDictionary<string, object>)error;
+                                    var errorType = errorDict["type"];
+                                    var errorMessage = errorDict["message"];
+                                    // Check to make sure the correct data is in the response
+                                    if (errorType != InvalidProperty.Instance && errorMessage != InvalidProperty.Instance)
+                                    {
+                                        // We dont include the inner exception because it is not needed and is always a WebException.
+                                        // It is easier to understand the error if we use Facebook's error message.
+                                        if ((string)errorType == "OAuthException")
+                                        {
+                                            resultException = new FacebookOAuthException((string)errorMessage, (string)errorType);
+                                        }
+                                        else
+                                        {
+                                            resultException = new FacebookApiException((string)errorMessage, (string)errorType);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

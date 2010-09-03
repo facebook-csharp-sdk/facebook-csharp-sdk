@@ -21,7 +21,7 @@ namespace Facebook.Samples.AuthenticationTool {
         private IFacebookSettings GetSettings() {
             IFacebookSettings facebookSettings;
             if (string.IsNullOrEmpty(appId.Text)) {
-                facebookSettings = FacebookSettings.Current;
+                facebookSettings = FacebookSettings.GetCurrent();
             } else {
                 facebookSettings = new FacebookSettings {
                     AppId = appId.Text.Trim(),
