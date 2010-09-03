@@ -69,10 +69,10 @@ namespace Facebook.Tests.Graph {
             //parameters.message = "This is a test photo";
             var mediaObject = new FacebookMediaObject
             {
-                Value = photo,
                 FileName = "test.jpg",
                 ContentType = "image/jpeg",
             };
+            mediaObject.SetValue(photo);
             parameters.source = mediaObject;
             dynamic result = app.Api(parameters, HttpMethod.Post);
             var id = result.id;
@@ -90,10 +90,10 @@ namespace Facebook.Tests.Graph {
             parameters.message = "This is a test photo";
             var mediaObject = new FacebookMediaObject
             {
-                Value = photo,
                 FileName = "test.jpg",
                 ContentType = "image/jpeg",
             };
+            mediaObject.SetValue(photo);
             parameters.source = mediaObject;
            
             dynamic result = app.Api("/16144/photos", parameters, HttpMethod.Post);
@@ -114,12 +114,14 @@ namespace Facebook.Tests.Graph {
             parameters.method = "facebook.photos.upload";
             parameters.uid = ConfigurationManager.AppSettings["UserId"];
             parameters.aid = ConfigurationManager.AppSettings["AlbumId"];
-            parameters.source = new FacebookMediaObject
+            var mediaObject =  new FacebookMediaObject
             {
-                Value = photo,
                 FileName = "test.jpg",
                 ContentType = "image/jpeg",
             };
+            mediaObject.SetValue(photo);
+            parameters.source = mediaObject;
+
 
             dynamic result = app.Api(parameters, HttpMethod.Post);
         }

@@ -12,12 +12,15 @@ using System.Diagnostics.Contracts;
 using System.Dynamic;
 using Facebook.Utilities;
 using System.Collections.Generic;
+using Facebook;
+using System.Diagnostics;
+
 namespace Facebook
 {
     public static class FacebookAppExtensions
     {
 #if (!SILVERLIGHT)
-        public static dynamic Api(this FacebookAppBase app, string id, string path)
+        public static object Api(this FacebookAppBase app, string id, string path)
         {
             if (app == null)
             {
@@ -36,7 +39,7 @@ namespace Facebook
             return app.Api(BuildPath(id, path));
         }
 
-        public static dynamic Api(this FacebookAppBase app, string id, string path, HttpMethod httpMethod)
+        public static object Api(this FacebookAppBase app, string id, string path, HttpMethod httpMethod)
         {
             if (app == null)
             {
@@ -55,7 +58,7 @@ namespace Facebook
             return app.Api(BuildPath(id, path), httpMethod);
         }
 
-        public static dynamic Api(this FacebookAppBase app, string id, string path, dynamic parameters)
+        public static object Api(this FacebookAppBase app, string id, string path, IDictionary<string, object> parameters)
         {
             if (app == null)
             {
@@ -74,7 +77,7 @@ namespace Facebook
             return app.Api(BuildPath(id, path), parameters);
         }
 
-        public static dynamic Api(this FacebookAppBase app, string id, string path, dynamic parameters, HttpMethod httpMethod)
+        public static object Api(this FacebookAppBase app, string id, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             if (app == null)
             {
@@ -109,7 +112,7 @@ namespace Facebook
             }
             if (path.EndsWith("/"))
             {
-                path = path.Substring(0, id.Length - 1);
+                path = path.Substring(0, path.Length - 1);
             }
             return string.Format("/{0}/{1}", id, path);
         }
@@ -120,18 +123,21 @@ namespace Facebook
         /// <param name="app"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public static dynamic Fql(this FacebookApp app, string query)
+        public static object Fql(this FacebookAppBase app, string query)
         {
+            // <pex>
+            if (app == (FacebookAppBase)null)
+                throw new ArgumentNullException("app");
+            // </pex>
             if (string.IsNullOrEmpty(query))
             {
                 throw new ArgumentNullException("query");
             }
 
-            dynamic parameters = new ExpandoObject();
-            parameters.query = query;
-            parameters.method = "fql.query";
-            dynamic result = app.Api(parameters);
-            return result;
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = query;
+            parameters["method"] = "fql.query";
+            return app.Api(parameters);
         }
 
         /// <summary>
@@ -140,24 +146,26 @@ namespace Facebook
         /// <param name="app"></param>
         /// <param name="queries"></param>
         /// <returns></returns>
-        public static dynamic Fql(this FacebookApp app, params string[] queries)
+        public static object Fql(this FacebookAppBase app, params string[] queries)
         {
+            // <pex>
+            if (app == (FacebookAppBase)null)
+                throw new ArgumentNullException("app");
+            // </pex>
             if (queries == null)
             {
                 throw new ArgumentNullException("queries");
             }
 
-            dynamic queryObj = new ExpandoObject();
-            IDictionary<string, object> queryDict = (IDictionary<string, object>)queryObj;
+            var queryDict = new Dictionary<string, object>();
             for (int i = 0; i < queries.Length; i++)
             {
                 queryDict.Add(string.Concat("query", i), queries[i]);
             }
-            dynamic parameters = new ExpandoObject();
-            parameters.queries = JsonSerializer.SerializeObject(queryObj);
-            parameters.method = "fql.multiquery";
-            dynamic result = app.Api(parameters);
-            return result;
+            var parameters = new Dictionary<string, object>();
+            parameters["queries"] = JsonSerializer.SerializeObject(queryDict);
+            parameters["method"] = "fql.multiquery";
+            return app.Api(parameters); ;
         }
 #endif
     }

@@ -478,8 +478,7 @@ namespace Facebook
         /// Validates a session_version=3 style session object.
         /// </summary>
         /// <param name="session">The session to validate.</param>
-        /// <returns>True if valid, else false.</returns>
-        protected abstract bool ValidateSessionObject(FacebookSession session);
+        protected abstract void ValidateSessionObject(FacebookSession session);
 
         /// <summary>
         /// Generates a MD5 signature for the facebook session.

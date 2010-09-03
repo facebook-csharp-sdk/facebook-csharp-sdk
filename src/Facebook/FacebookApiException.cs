@@ -9,6 +9,8 @@
 
 using System;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
+using System.Security;
 
 namespace Facebook
 {
@@ -36,7 +38,6 @@ namespace Facebook
             this.ErrorType = errorType;
         }
 
-
 #if (!SILVERLIGHT)
         protected FacebookApiException(SerializationInfo info, StreamingContext context)
             : base(info, context) {
@@ -56,6 +57,17 @@ namespace Facebook
         public override string ToString()
         {
             return string.Format("({0}) {1}", this.ErrorType ?? "Unknown", this.Message);
+        }
+
+        [SecurityCritical]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+            {
+                throw new ArgumentNullException("info");
+            }
+            info.AddValue("ErrorType", this.ErrorType);
+            base.GetObjectData(info, context);
         }
     }
 }

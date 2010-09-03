@@ -164,7 +164,7 @@ namespace Facebook.Web.Mvc
                 throw new ArgumentNullException("perms");
             }
 
-            var data = app.Fql(string.Format("SELECT {0} FROM permissions WHERE uid == {1}", perms, app.UserId));
+            dynamic data = app.Fql(string.Format("SELECT {0} FROM permissions WHERE uid == {1}", perms, app.UserId));
             if (data.Count == 0)
             {
                 return new string[0];

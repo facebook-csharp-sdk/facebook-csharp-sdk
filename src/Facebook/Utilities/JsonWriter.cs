@@ -1,5 +1,5 @@
 ﻿// --------------------------------
-// <copyright file="JsonWriter.cs">
+// <copyright file="JsonWriter.cs" company="Nikhil Kothari">
 //     Copyright (c) 2010 Nikhil Kothari
 // </copyright>
 // <author>Nikhil Kothari (nikhilk.net)</author>
@@ -22,7 +22,7 @@ namespace Facebook.Utilities
     // TODO: Add date serialization options
     //       ScriptDate, Ticks, Formatted, Object
 
-    internal sealed class JsonWriter
+    internal sealed class JsonWriter : IDisposable
     {
 
         private StringWriter _internalWriter;
@@ -34,6 +34,8 @@ namespace Facebook.Utilities
         {
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
+            Justification = "The disposal occurs in the Dispose method of this class.")]
         public JsonWriter(bool minimizeWhitespace)
             : this(new StringWriter(), minimizeWhitespace)
         {
@@ -456,6 +458,9 @@ namespace Facebook.Utilities
             public IndentedTextWriter(TextWriter writer, bool minimize)
                 : base(CultureInfo.InvariantCulture)
             {
+                // <pex>
+                Debug.Assert(writer != (TextWriter)null, "writer");
+                // </pex>
                 _writer = writer;
                 _minimize = minimize;
 
@@ -617,10 +622,10 @@ namespace Facebook.Utilities
                 _writer.Write(format, arg);
             }
 
-            public void WriteLineNoTabs(string s)
-            {
-                _writer.WriteLine(s);
-            }
+            //public void WriteLineNoTabs(string s)
+            //{
+            //    _writer.WriteLine(s);
+            //}
 
             public override void WriteLine(string s)
             {
@@ -727,18 +732,18 @@ namespace Facebook.Utilities
                 _tabsPending = true;
             }
 
-            public void WriteSignificantNewLine()
-            {
-                WriteLine();
-            }
+            //public void WriteSignificantNewLine()
+            //{
+            //    WriteLine();
+            //}
 
-            public void WriteNewLine()
-            {
-                if (_minimize == false)
-                {
-                    WriteLine();
-                }
-            }
+            //public void WriteNewLine()
+            //{
+            //    if (_minimize == false)
+            //    {
+            //        WriteLine();
+            //    }
+            //}
 
             public void WriteTrimmed(string text)
             {
@@ -750,6 +755,18 @@ namespace Facebook.Utilities
                 {
                     Write(text.Trim());
                 }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_internalWriter != null)
+            {
+                _internalWriter.Dispose();
+            }
+            if (_writer != null)
+            {
+                _writer.Dispose();
             }
         }
     }

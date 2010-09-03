@@ -1,5 +1,5 @@
 ﻿// --------------------------------
-// <copyright file="JsonReader.cs">
+// <copyright file="JsonReader.cs" company="Nikhil Kothari">
 //     Copyright (c) 2010 Nikhil Kothari
 // </copyright>
 // <author>Nikhil Kothari (http://www.nikhilk.net)</author>
@@ -17,7 +17,7 @@ using System.Text;
 namespace Facebook.Utilities
 {
 
-    internal sealed class JsonReader
+    internal sealed class JsonReader : IDisposable
     {
 
         internal static readonly long MinDateTimeTicks = (new DateTime(1970, 1, 1, 0, 0, 0)).Ticks;
@@ -25,6 +25,8 @@ namespace Facebook.Utilities
 
         private TextReader _reader;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
+            Justification = "The disposal occurs in the Dispose method of this class.")]
         public JsonReader(string jsonText)
             : this(new StringReader(jsonText))
         {
@@ -40,15 +42,15 @@ namespace Facebook.Utilities
             return (char)_reader.Read();
         }
 
-        private char GetNextSignificantCharacter()
-        {
-            char ch = (char)_reader.Read();
-            while ((ch != '\0') && Char.IsWhiteSpace(ch))
-            {
-                ch = (char)_reader.Read();
-            }
-            return ch;
-        }
+        //private char GetNextSignificantCharacter()
+        //{
+        //    char ch = (char)_reader.Read();
+        //    while ((ch != '\0') && Char.IsWhiteSpace(ch))
+        //    {
+        //        ch = (char)_reader.Read();
+        //    }
+        //    return ch;
+        //}
 
         private string GetCharacters(int count)
         {
@@ -396,6 +398,14 @@ namespace Facebook.Utilities
                 throw new FormatException("Invalid JSON text.");
             }
             return value;
+        }
+
+        public void Dispose()
+        {
+            if (_reader != null)
+            {
+                _reader.Dispose();
+            }
         }
     }
 }

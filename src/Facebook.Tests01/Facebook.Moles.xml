@@ -58,6 +58,10 @@
             <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.ErrorType"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.GetObjectDataSerializationInfoStreamingContext">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.GetObjectData(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MFacebookApiException.ToString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.ToString"/>
             </summary>
@@ -71,6 +75,10 @@
         </member>
         <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.ErrorTypeSetString">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.ErrorType"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.GetObjectDataSerializationInfoStreamingContext">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.GetObjectData(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.ToString01">
@@ -189,8 +197,8 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromCookie(T:System.String)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp.ParseFromQuerystringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromQuerystring(T:System.String)"/>
+        <member name="P:Facebook.Moles.MFacebookApp.ParseFromQueryStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromQueryString(T:System.String)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.ParseSignedRequestString">
@@ -265,12 +273,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__4(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__1aKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__1a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1aKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQuerystringb__1bKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQuerystring&gt;b__1b(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1bKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1b(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookApp.AllInstances">
@@ -324,10 +332,6 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.Graph(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.MakeRequestHttpMethodUriByteArrayString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.MakeRequest(T:Facebook.HttpMethod,T:System.Uri,T:System.Byte[],T:System.String)"/>
-            </summary>
-        </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.MaxRetriesGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
             </summary>
@@ -342,14 +346,6 @@
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.OAuthRequestUriIDictionaryOfStringObjectHttpMethod">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.OAuthRequest(T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ParseFromCookieString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromCookie(T:System.String)"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ParseFromQuerystringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseFromQuerystring(T:System.String)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ParseSignedRequestString">
@@ -742,12 +738,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,T:Facebook.HttpMethod)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,T:System.Object)"/>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringStringObjectHttpMethod">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,T:System.Object,T:Facebook.HttpMethod)"/>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.ApiFacebookAppBaseStringStringIDictionaryOfStringObjectHttpMethod">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Api(T:Facebook.FacebookAppBase,T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppExtensions.Behavior">
@@ -757,12 +753,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.BuildPath(T:System.String,T:System.String)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppExtensions.FqlFacebookAppString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Fql(T:Facebook.FacebookApp,T:System.String)"/>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.FqlFacebookAppBaseString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Fql(T:Facebook.FacebookAppBase,T:System.String)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookAppExtensions.FqlFacebookAppStringArray">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Fql(T:Facebook.FacebookApp,T:System.String[])"/>
+        <member name="P:Facebook.Moles.MFacebookAppExtensions.FqlFacebookAppBaseStringArray">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppExtensions.Fql(T:Facebook.FacebookAppBase,T:System.String[])"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookAsyncResult">
@@ -1013,12 +1009,12 @@
             <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.FileName"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookMediaObject.ValueGet">
-            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.GetValue">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookMediaObject.GetValue"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookMediaObject.ValueSetByteArray">
-            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.SetValueByteArray">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookMediaObject.SetValue(T:System.Byte[])"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookMediaObject.AllInstances">
@@ -1040,12 +1036,12 @@
             <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.FileName"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.ValueGet">
-            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.GetValue">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookMediaObject.GetValue"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.ValueSetByteArray">
-            <summary>Sets the mole of <see cref="P:Facebook.FacebookMediaObject.Value"/>
+        <member name="P:Facebook.Moles.MFacebookMediaObject.AllInstances.SetValueByteArray">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookMediaObject.SetValue(T:System.Byte[])"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookOAuthException">
@@ -1303,8 +1299,8 @@
             <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.CookieSupport"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookSettings.CurrentGet">
-            <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.Current"/>
+        <member name="P:Facebook.Moles.MFacebookSettings.GetCurrent">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookSettings.GetCurrent"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSettings.MaxRetriesGet">
@@ -1544,6 +1540,10 @@
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.GetHashCode">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetHashCode"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MInvalidProperty.ImplicitOpInvalidProperty">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Implicit(T:Facebook.InvalidProperty)"/>
             </summary>
@@ -1573,6 +1573,10 @@
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.EqualsObject">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.GetHashCode01">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetHashCode"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.ToString01">
@@ -2218,6 +2222,14 @@
         </member>
         <member name="M:Facebook.Moles.SFacebookApiException.#ctor(System.String,System.String,System.Exception)">
             <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Facebook.Moles.SFacebookApiException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApiException.GetObjectData(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
+            </summary>
+        </member>
+        <member name="F:Facebook.Moles.SFacebookApiException.GetObjectDataSerializationInfoStreamingContext">
+            <summary>Sets the stub of <see cref="M:Facebook.FacebookApiException.GetObjectData(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
+            </summary>
         </member>
         <member name="M:Facebook.Moles.SFacebookApiException.InitializeStub">
             <summary>Initializes a new instance of type SFacebookApiException</summary>

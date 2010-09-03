@@ -26,9 +26,13 @@ namespace Facebook.Utilities
 
         public static string SerializeObject(object value)
         {
-            JsonWriter writer = new JsonWriter();
-            writer.WriteValue(value);
-            return writer.Json;
+            string json;
+            using (JsonWriter writer = new JsonWriter())
+            {
+                writer.WriteValue(value);
+                json = writer.Json;
+            }
+            return json;
         }
 
         public static object DeserializeObject(Stream stream)
@@ -60,8 +64,12 @@ namespace Facebook.Utilities
             }
             else
             {
-                JsonReader reader = new JsonReader(json);
-                return reader.ReadValue();
+                object value;
+                using (JsonReader reader = new JsonReader(json))
+                {
+                    value = reader.ReadValue();
+                }
+                return value;
             }
         }
 

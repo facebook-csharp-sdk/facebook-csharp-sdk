@@ -16,7 +16,7 @@ namespace Facebook.Utilities
 {
     internal static class ExceptionHelper
     {
-        internal static FacebookApiException GetRestException(dynamic result)
+        internal static FacebookApiException GetRestException(object result)
         {
             // The REST API does not return a status that causes a WebException
             // even when there is an error. For this reason we have to parse a

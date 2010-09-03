@@ -1,5 +1,5 @@
 ﻿// --------------------------------
-// <copyright file="JsonObject.cs">
+// <copyright file="JsonObject.cs" company="Nikhil Kothari">
 //     Copyright (c) 2010 Nikhil Kothari
 // </copyright>
 // <author>Nikhil Kothari (http://www.nikhilk.net)</author>
@@ -87,6 +87,10 @@ namespace Facebook
 
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
+            // <pex>
+            if (binder == (ConvertBinder)null)
+                throw new ArgumentNullException("binder");
+            // </pex>
             Type targetType = binder.Type;
 
             if ((targetType == typeof(IEnumerable)) ||
@@ -103,11 +107,21 @@ namespace Facebook
 
         public override bool TryDeleteMember(DeleteMemberBinder binder)
         {
+            // <pex>
+            if (binder == (DeleteMemberBinder)null)
+                throw new ArgumentNullException("binder");
+            // </pex>
             return _members.Remove(binder.Name);
         }
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
+            // <pex>
+            if (indexes[0L] != (object)null)
+                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
+            if (indexes == (object[])null)
+                throw new ArgumentNullException("indexes");
+            // </pex>
             if (indexes.Length == 1)
             {
                 result = ((IDictionary<string, object>)this)[(string)indexes[0]];
@@ -125,6 +139,10 @@ namespace Facebook
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
+            // <pex>
+            if (binder == (GetMemberBinder)null)
+                throw new ArgumentNullException("binder");
+            // </pex>
             object value;
             if (_members.TryGetValue(binder.Name, out value))
             {
@@ -143,6 +161,12 @@ namespace Facebook
 
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
+            // <pex>
+            if (indexes[0L] != (object)null)
+                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
+            if (indexes == (object[])null)
+                throw new ArgumentNullException("indexes");
+            // </pex>
             if (indexes.Length == 1)
             {
                 ((IDictionary<string, object>)this)[(string)indexes[0]] = value;
@@ -154,6 +178,10 @@ namespace Facebook
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
+            // <pex>
+            if (binder == (SetMemberBinder)null)
+                throw new ArgumentNullException("binder");
+            // </pex>
             _members[binder.Name] = value;
             return true;
         }

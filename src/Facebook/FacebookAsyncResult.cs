@@ -15,7 +15,7 @@ namespace Facebook
 
     public class FacebookAsyncResult : IAsyncResult
     {
-        JsonObject result;
+        object result;
         object asyncState;
         System.Threading.WaitHandle asyncWaitHandle;
         bool completedSynchronously;
@@ -23,7 +23,7 @@ namespace Facebook
         FacebookApiException error;
 
         public FacebookAsyncResult(
-            dynamic result,
+            object result,
             object asyncState,
             System.Threading.WaitHandle asyncWaitHandle,
             bool completedSynchronously,
@@ -43,7 +43,7 @@ namespace Facebook
             get { return this.error; }
         }
 
-        public JsonObject Result
+        public object Result
         {
             get { return this.result; }
         }

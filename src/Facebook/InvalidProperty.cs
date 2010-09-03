@@ -15,6 +15,7 @@ namespace Facebook
 
         private InvalidProperty() { }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public int Count
         {
             get
@@ -109,6 +110,11 @@ namespace Facebook
             {
                 return false;
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
         }
 
         public override string ToString()

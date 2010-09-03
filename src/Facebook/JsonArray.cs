@@ -1,5 +1,5 @@
 ﻿// --------------------------------
-// <copyright file="JsonArray.cs">
+// <copyright file="JsonArray.cs" company="Nikhil Kothari">
 //     Copyright (c) 2010 Nikhil Kothari
 // </copyright>
 // <author>Nikhil Kothari (http://www.nikhilk.net)</author>
@@ -26,23 +26,23 @@ namespace Facebook
             _members = new List<object>();
         }
 
-        public JsonArray(object o)
+        public JsonArray(object value)
             : this()
         {
-            _members.Add(o);
+            _members.Add(value);
         }
 
-        public JsonArray(object o1, object o2)
+        public JsonArray(object value1, object value2)
             : this()
         {
-            _members.Add(o1);
-            _members.Add(o2);
+            _members.Add(value1);
+            _members.Add(value2);
         }
 
-        public JsonArray(params object[] objects)
+        public JsonArray(params object[] value)
             : this()
         {
-            _members.AddRange(objects);
+            _members.AddRange(value);
         }
 
         public int Count

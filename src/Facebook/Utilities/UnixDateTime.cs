@@ -33,6 +33,7 @@ namespace Facebook.Utilities
             return Math.Floor(range.TotalSeconds).ToString();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "unixTime")]
         public static DateTime FromUnixTime(string unixTime)
         {
             if (string.IsNullOrEmpty(unixTime))

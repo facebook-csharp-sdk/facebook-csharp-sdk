@@ -47,7 +47,7 @@ namespace Facebook
         /// Initializes the Facebook application with values
         /// stored in the application configuration file.
         /// </summary>
-        public FacebookApp() : this(FacebookSettings.Current) { }
+        public FacebookApp() : this(FacebookSettings.GetCurrent()) { }
 #endif
 
         /// <summary>
@@ -165,42 +165,40 @@ namespace Facebook
                     System.Web.HttpContext.Current != null &&
                     System.Web.HttpContext.Current.Request != null)
                 {
-                    bool writeCookie = true;
-
-                    var request = System.Web.HttpContext.Current.Request;
-
-                    // try loading session from signed_request
-                    if (this.SignedRequest != null)
+                    try
                     {
-                        this._session = CreateSessionFromSignedRequest(this.SignedRequest);
-                    }
+                        var request = System.Web.HttpContext.Current.Request;
 
-                    // try loading session from querystring
-                    if (this._session == null && request.Params.AllKeys.Contains("session"))
-                    {
-                        this._session = ParseFromQuerystring(request.Params["session"]);
-                        if (!ValidateSessionObject(this._session))
+                        // try loading session from signed_request
+                        if (this.SignedRequest != null)
                         {
-                            throw new FacebookApiException("The session is not valid. Check to make sure your app secret is correct.");
+                            this._session = CreateSessionFromSignedRequest(this.SignedRequest);
                         }
-                    }
 
-                    // try loading session from cookie if necessary
-                    if (this._session == null && this.CookieSupport)
-                    {
-                        if (request.Params.AllKeys.Contains(this.SessionCookieName))
+                        // try loading session from querystring
+                        if (this._session == null && request.Params.AllKeys.Contains("session"))
                         {
-                            this._session = ParseFromCookie(request.Params[this.SessionCookieName]);
-                            if (!ValidateSessionObject(this._session))
+                            this._session = ParseFromQueryString(request.Params["session"]);
+                            ValidateSessionObject(this._session);
+                        }
+
+                        // try loading session from cookie if necessary
+                        if (this._session == null && this.CookieSupport)
+                        {
+                            if (request.Params.AllKeys.Contains(this.SessionCookieName))
                             {
-                                throw new FacebookApiException("The session is not valid. Check to make sure your app secret is correct.");
+                                this._session = ParseFromCookie(request.Params[this.SessionCookieName]);
+                                ValidateSessionObject(this._session);
                             }
                         }
                     }
-
-                    this.SessionLoaded = true;
-                    if (writeCookie)
+                    catch
                     {
+                        this._session = null;
+                    }
+                    finally
+                    {
+                        this.SessionLoaded = true;
                         this.SetCookieFromSession(this._session);
                     }
                 }
@@ -261,18 +259,13 @@ namespace Facebook
                 return;
             }
 
-            string baseDomain = "";
-            if (!String.IsNullOrEmpty(FacebookSettings.Current.BaseDomain))
-            {
-                baseDomain = FacebookSettings.Current.BaseDomain;
-            }
             // Set the cookie data
             if (request.Cookies.AllKeys.Contains(this.SessionCookieName))
             {
                 var cookie = response.Cookies[this.SessionCookieName];
                 cookie.Value = value;
                 cookie.Expires = expires;
-                cookie.Domain = baseDomain;
+                cookie.Domain = this.BaseDomain;
             }
             else
             {
@@ -280,26 +273,26 @@ namespace Facebook
                 {
                     Expires = expires,
                     Value = value,
-                    Domain = baseDomain
+                    Domain = this.BaseDomain
                 });
             }
         }
 #endif
 
 #if !SILVERLIGHT
-        protected override bool ValidateSessionObject(FacebookSession session)
+        protected override void ValidateSessionObject(FacebookSession session)
         {
             if (session == null)
             {
-                throw new ArgumentNullException("session");
+                return;
             }
 
             var signature = GenerateSignature(session);
             if (session.Signature == signature.ToString())
             {
-                return true;
+                return;
             }
-            return false;
+            session = null;
         }
 
         /// <summary>
@@ -356,7 +349,7 @@ namespace Facebook
             {
                 throw new ArgumentNullException("parameters");
             }
-            if (!parameters.ContainsKey("method") || parameters["method"] == null || parameters["method"].ToString() == String.Empty)
+            if (!parameters.ContainsKey("method") || String.IsNullOrEmpty((string)parameters["method"]))
             {
                 throw new ArgumentException("A method must be specified in order to make a rest call.");
             }
@@ -427,7 +420,7 @@ namespace Facebook
             {
                 throw new ArgumentNullException("parameters");
             }
-            if (!parameters.ContainsKey("method") || parameters["method"] == null || parameters["method"].ToString() == String.Empty)
+            if (!parameters.ContainsKey("method") || String.IsNullOrEmpty((string)parameters["method"]))
             {
                 throw new ArgumentException("A method must be specified in order to make a rest call.");
             }
@@ -665,7 +658,6 @@ namespace Facebook
             string queryString = string.Empty;
             if (parameters != null)
             {
-                List<byte[]> postDataParts = new List<byte[]>();
                 if (httpMethod == HttpMethod.Get)
                 {
                     queryString = ((IDictionary<string, object>)parameters).ToJsonQueryString();
@@ -737,7 +729,7 @@ namespace Facebook
 
             Debug.Assert(mediaObject != null, "The mediaObject is null.");
 
-            if (mediaObject.ContentType == null || mediaObject.Value == null || mediaObject.FileName == null)
+            if (mediaObject.ContentType == null || mediaObject.GetValue() == null || mediaObject.FileName == null)
             {
                 throw new InvalidOperationException("The media object must have a content type, file name, and value set.");
             }
@@ -746,7 +738,7 @@ namespace Facebook
             sb.Append("Content-Type: ").Append(mediaObject.ContentType).Append(_newLine).Append(_newLine);
 
             byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sb.ToString());
-            byte[] fileData = mediaObject.Value;
+            byte[] fileData = mediaObject.GetValue();
             byte[] boundaryBytes = Encoding.UTF8.GetBytes(String.Concat(_newLine, _prefix, boundary, _prefix, _newLine));
 
             // Combine all bytes to post 
@@ -768,7 +760,7 @@ namespace Facebook
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
+        private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
             request.Method = HttpMethodHelper.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
@@ -780,7 +772,7 @@ namespace Facebook
                 using (var dataStream = request.GetRequestStream())
                 {
                     dataStream.Write(postData, 0, postData.Length);
-                    dataStream.Close();
+                    //dataStream.Close();
                 }
 
             }
@@ -926,6 +918,12 @@ namespace Facebook
 
         protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
         {
+            if (String.IsNullOrEmpty(signedRequestValue))
+            {
+                throw new ArgumentNullException("signedRequestValue");
+            }
+            Contract.EndContractBlock();
+
             string[] parts = signedRequestValue.Split('.');
             var sig = Base64UrlDecode(parts[0]);
             var payload = parts[1];
@@ -964,7 +962,7 @@ namespace Facebook
         }
 #endif
 
-        protected FacebookSession ParseFromQuerystring(string cookieValue)
+        protected static FacebookSession ParseFromQueryString(string cookieValue)
         {
             if (String.IsNullOrEmpty(cookieValue))
             {
@@ -992,7 +990,7 @@ namespace Facebook
             return session;
         }
 
-        protected FacebookSession ParseFromCookie(string sessionValue)
+        protected static FacebookSession ParseFromCookie(string sessionValue)
         {
             if (String.IsNullOrEmpty(sessionValue))
             {

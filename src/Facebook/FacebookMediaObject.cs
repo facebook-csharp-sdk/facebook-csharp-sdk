@@ -7,8 +7,19 @@ namespace Facebook
 {
     public class FacebookMediaObject
     {
-        public byte[] Value { get; set; }
+        private byte[] _value;
+
         public string ContentType { get; set; }
         public string FileName { get; set; }
+
+        public void SetValue(byte[] value)
+        {
+            _value = value;
+        }
+
+        public byte[] GetValue()
+        {
+            return _value;
+        }
     }
 }
