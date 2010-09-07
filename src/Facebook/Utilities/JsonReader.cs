@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Utilities
 {
@@ -36,7 +37,19 @@ namespace Facebook.Utilities
 
         public JsonReader(TextReader reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
             _reader = reader;
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_reader != null);
         }
 
         private char GetNextCharacter()
@@ -366,7 +379,7 @@ namespace Facebook.Utilities
             {
                 bool hasLeadingSlash;
                 string s = ReadString(out hasLeadingSlash);
-                if (hasLeadingSlash && s.StartsWith("@") && s.EndsWith("@"))
+                if (hasLeadingSlash && s.StartsWith("@", StringComparison.Ordinal) && s.EndsWith("@", StringComparison.Ordinal))
                 {
                     long ticks;
 

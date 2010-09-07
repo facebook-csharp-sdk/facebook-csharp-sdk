@@ -11,6 +11,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Security;
+using System.Globalization;
 
 namespace Facebook
 {
@@ -56,7 +57,7 @@ namespace Facebook
 
         public override string ToString()
         {
-            return string.Format("({0}) {1}", this.ErrorType ?? "Unknown", this.Message);
+            return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", this.ErrorType ?? "Unknown", this.Message);
         }
 
         [SecurityCritical]

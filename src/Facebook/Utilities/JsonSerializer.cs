@@ -58,7 +58,7 @@ namespace Facebook.Utilities
             {
                 return null;
             }
-            else if (json.Trim().StartsWith("<?xml"))
+            else if (json.Trim().StartsWith("<?xml", StringComparison.Ordinal))
             {
                 return ConvertXml(json);
             }

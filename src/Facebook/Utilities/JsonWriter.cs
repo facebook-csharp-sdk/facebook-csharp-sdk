@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Utilities
 {
@@ -450,24 +451,20 @@ namespace Facebook.Utilities
             private TextWriter _writer;
             private bool _minimize;
 
-            private int _indentLevel;
-            private bool _tabsPending;
-            private string _tabString;
+            private int _indentLevel = 0;
+            private bool _tabsPending = false;
+            private string _tabString = "  ";
 
             public IndentedTextWriter(bool minimize)
                 : base(CultureInfo.InvariantCulture)
             {
-                _writer = new StringWriter();
+                _writer = new StringWriter(CultureInfo.InvariantCulture);
                 _minimize = minimize;
 
                 if (_minimize)
                 {
                     NewLine = "\r";
                 }
-
-                _tabString = "  ";
-                _indentLevel = 0;
-                _tabsPending = false;
             }
 
             public IndentedTextWriter(TextWriter writer, bool minimize)
@@ -483,10 +480,6 @@ namespace Facebook.Utilities
                 {
                     NewLine = "\r";
                 }
-
-                _tabString = "  ";
-                _indentLevel = 0;
-                _tabsPending = false;
             }
 
             public override Encoding Encoding
@@ -762,6 +755,12 @@ namespace Facebook.Utilities
 
             public void WriteTrimmed(string text)
             {
+                if (String.IsNullOrEmpty(text))
+                {
+                    throw new ArgumentNullException("text");
+                }
+                Contract.EndContractBlock();
+
                 if (_minimize == false)
                 {
                     Write(text);
@@ -770,6 +769,15 @@ namespace Facebook.Utilities
                 {
                     Write(text.Trim());
                 }
+            }
+
+            [ContractInvariantMethod]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+            private void InvarientObject()
+            {
+                Contract.Invariant(_writer != null);
+                Contract.Invariant(!String.IsNullOrEmpty(_tabString));
             }
         }
 
@@ -783,6 +791,16 @@ namespace Facebook.Utilities
             {
                 _writer.Dispose();
             }
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_writer != null);
+            Contract.Invariant(_internalWriter != null);
+            Contract.Invariant(_scopes != null);
         }
     }
 }

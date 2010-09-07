@@ -14,6 +14,7 @@ using Facebook.Utilities;
 using System.Collections.Generic;
 using Facebook;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Facebook
 {
@@ -98,23 +99,23 @@ namespace Facebook
 
         private static string BuildPath(string id, string path)
         {
-            if (id.StartsWith("/"))
+            if (id.StartsWith("/", StringComparison.Ordinal))
             {
                 id = id.Substring(1);
             }
-            if (id.EndsWith("/"))
+            if (id.EndsWith("/", StringComparison.Ordinal))
             {
                 id = id.Substring(0, id.Length - 1);
             }
-            if (path.StartsWith("/"))
+            if (path.StartsWith("/", StringComparison.Ordinal))
             {
                 path = path.Substring(1);
             }
-            if (path.EndsWith("/"))
+            if (path.EndsWith("/", StringComparison.Ordinal))
             {
                 path = path.Substring(0, path.Length - 1);
             }
-            return string.Format("/{0}/{1}", id, path);
+            return String.Format(CultureInfo.InvariantCulture, "/{0}/{1}", id, path);
         }
 
         /// <summary>

@@ -9,15 +9,18 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace Facebook.Utilities
 {
     internal static class UnixDateTime
     {
-
         public static string ToUnixDateTime(this DateTime dateTime)
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            if (dateTime < new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+            {
+                throw new ArgumentException("Date time cannot be less than 01/01/1970.");
+            }
             Contract.EndContractBlock();
 
             return UnixDateTime.ToUnixTime(dateTime);
@@ -25,12 +28,14 @@ namespace Facebook.Utilities
 
         public static string ToUnixTime(DateTime dateTime)
         {
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            if (dateTime < new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+            {
+                throw new ArgumentException("Date time cannot be less than 01/01/1970.");
+            }
             Contract.EndContractBlock();
-
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var range = dateTime - epoch;
-            return Math.Floor(range.TotalSeconds).ToString();
+            return Math.Floor(range.TotalSeconds).ToString(CultureInfo.InvariantCulture);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "unixTime")]
@@ -46,7 +51,7 @@ namespace Facebook.Utilities
             }
             Contract.EndContractBlock();
 
-            long seconds = long.Parse(unixTime);
+            long seconds = long.Parse(unixTime, CultureInfo.InvariantCulture);
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(seconds);
         }

@@ -9,19 +9,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace Facebook
 {
     public sealed class FacebookSession
     {
-        private Dictionary<string, string> dictionary = new Dictionary<string, string>();
+        private Dictionary<string, string> _dictionary = new Dictionary<string, string>();
 
 
         public IDictionary<string, string> Dictionary
         {
             get
             {
-                return this.dictionary;
+                return this._dictionary;
             }
         }
 
@@ -29,106 +31,114 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("uid"))
+                if (_dictionary.ContainsKey("uid"))
                 {
-                    return long.Parse(dictionary["uid"]);
+                    return long.Parse(_dictionary["uid"], CultureInfo.InvariantCulture);
                 }
                 return default(long);
             }
             set
             {
-                dictionary["uid"] = value.ToString();
+                _dictionary["uid"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
         public string Secret
         {
             get
             {
-                if (dictionary.ContainsKey("secret"))
+                if (_dictionary.ContainsKey("secret"))
                 {
-                    return dictionary["secret"];
+                    return _dictionary["secret"];
                 }
                 return null;
             }
             set
             {
-                dictionary["secret"] = value;
+                _dictionary["secret"] = value;
             }
         }
         public string AccessToken
         {
             get
             {
-                if (dictionary.ContainsKey("access_token"))
+                if (_dictionary.ContainsKey("access_token"))
                 {
-                    return dictionary["access_token"];
+                    return _dictionary["access_token"];
                 }
                 return null;
             }
             set
             {
-                dictionary["access_token"] = value;
+                _dictionary["access_token"] = value;
             }
         }
         public string SessionKey
         {
             get
             {
-                if (dictionary.ContainsKey("session_key"))
+                if (_dictionary.ContainsKey("session_key"))
                 {
-                    return dictionary["session_key"];
+                    return _dictionary["session_key"];
                 }
                 return null;
             }
             set
             {
-                dictionary["session_key"] = value;
+                _dictionary["session_key"] = value;
             }
         }
         public DateTime Expires
         {
             get
             {
-                if (dictionary.ContainsKey("expires"))
+                if (_dictionary.ContainsKey("expires"))
                 {
-                    return Utilities.UnixDateTime.FromUnixTime(dictionary["expires"]);
+                    return Utilities.UnixDateTime.FromUnixTime(_dictionary["expires"]);
                 }
                 return default(DateTime);
             }
             set
             {
-                dictionary["expires"] = Utilities.UnixDateTime.ToUnixTime(value);
+                _dictionary["expires"] = Utilities.UnixDateTime.ToUnixTime(value);
             }
         }
         public string Signature
         {
             get
             {
-                if (dictionary.ContainsKey("sig"))
+                if (_dictionary.ContainsKey("sig"))
                 {
-                    return dictionary["sig"];
+                    return _dictionary["sig"];
                 }
                 return null;
             }
             set
             {
-                dictionary["sig"] = value;
+                _dictionary["sig"] = value;
             }
         }
         public string BaseDomain
         {
             get
             {
-                if (dictionary.ContainsKey("base_domain"))
+                if (_dictionary.ContainsKey("base_domain"))
                 {
-                    return dictionary["base_domain"];
+                    return _dictionary["base_domain"];
                 }
                 return null;
             }
             set
             {
-                dictionary["base_domain"] = value;
+                _dictionary["base_domain"] = value;
             }
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_dictionary != null);
         }
     }
 }

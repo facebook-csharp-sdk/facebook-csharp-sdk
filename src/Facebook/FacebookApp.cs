@@ -314,7 +314,7 @@ namespace Facebook
             var parts = (from a in args
                          orderby a.Key
                          where a.Key != "sig"
-                         select string.Format("{0}={1}", a.Key, a.Value)).ToList();
+                         select string.Format(CultureInfo.InvariantCulture, "{0}={1}", a.Key, a.Value)).ToList();
             parts.ForEach((s) => { payload.Append(s); });
             payload.Append(this.ApiSecret);
             byte[] hash = null;
@@ -332,7 +332,7 @@ namespace Facebook
             StringBuilder signature = new StringBuilder();
             for (int i = 0; i < hash.Length; i++)
             {
-                signature.Append(hash[i].ToString("x2"));
+                signature.Append(hash[i].ToString("x2", CultureInfo.InvariantCulture));
             }
             return signature.ToString();
         }
@@ -408,6 +408,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <param name="state">The async state.</param>
         /// <param name="parameters">The parameters of the method call.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
@@ -625,7 +626,7 @@ namespace Facebook
         /// <returns>The fully qualified uri for the request.</returns>
         private Uri GetGraphRequestUri(string path)
         {
-            if (!string.IsNullOrEmpty(path) && path.StartsWith("/"))
+            if (!String.IsNullOrEmpty(path) && path.StartsWith("/", StringComparison.Ordinal))
             {
                 path = path.Substring(1, path.Length - 1);
             }
@@ -755,6 +756,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method to use. GET, POST, DELETE.</param>
         /// <param name="requestUrl">The uri of the request.</param>
         /// <param name="postData">The request data.</param>
+        /// <param name="contentType">The request content type.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
@@ -822,6 +824,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method to use. GET, POST, DELETE.</param>
         /// <param name="requestUrl">The uri of the request.</param>
         /// <param name="postData">The request data.</param>
+        /// <param name="contentType">The request content type.</param>
         /// <exception cref="Facebook.FacebookApiException" />
         private static void MakeRequestAsync(FacebookAsyncCallback callback, object state, HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
@@ -913,12 +916,20 @@ namespace Facebook
             return tempSession;
         }
 
-
+        /// <summary>
+        /// Parses a signed request string.
+        /// </summary>
+        /// <param name="signedRequestValue">The encoded signed request value.</param>
+        /// <returns>The valid signed request.</returns>
         protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
         {
             if (String.IsNullOrEmpty(signedRequestValue))
             {
                 throw new ArgumentNullException("signedRequestValue");
+            }
+            if (!signedRequestValue.Contains("."))
+            {
+                throw new ArgumentException("Invalid signed request.");
             }
             Contract.EndContractBlock();
 
@@ -960,20 +971,25 @@ namespace Facebook
         }
 #endif
 
-        protected static FacebookSession ParseFromQueryString(string cookieValue)
+        /// <summary>
+        /// Parses a session value retrieved from a querystring.
+        /// </summary>
+        /// <param name="sessionValue">The session value.</param>
+        /// <returns>The active session.</returns>
+        protected static FacebookSession ParseFromQueryString(string sessionValue)
         {
-            if (String.IsNullOrEmpty(cookieValue))
+            if (String.IsNullOrEmpty(sessionValue))
             {
-                throw new ArgumentNullException("cookieValue");
+                throw new ArgumentNullException("sessionValue");
             }
             Contract.EndContractBlock();
 
             var session = new FacebookSession();
             // Parse the querystring format
-            cookieValue = Uri.UnescapeDataString(cookieValue);
-            if (!string.IsNullOrEmpty(cookieValue))
+            sessionValue = Uri.UnescapeDataString(sessionValue);
+            if (!string.IsNullOrEmpty(sessionValue))
             {
-                var result = JsonSerializer.DeserializeObject(cookieValue);
+                var result = JsonSerializer.DeserializeObject(sessionValue);
                 if (result != null)
                 {
 
@@ -1027,6 +1043,12 @@ namespace Facebook
         /// <param name="body">The delegate to invoke within the retry code.</param>
         protected void WithMirrorRetry(Action body)
         {
+            if (body == null)
+            {
+                throw new ArgumentNullException("body");
+            }
+            Contract.EndContractBlock();
+
             int retryCount = 0;
 
             while (true)
@@ -1061,6 +1083,12 @@ namespace Facebook
         /// <returns>The value the delegate returns</returns>
         protected TReturn WithMirrorRetry<TReturn>(Func<TReturn> body)
         {
+            if (body == null)
+            {
+                throw new ArgumentNullException("body");
+            }
+            Contract.EndContractBlock();
+
             int retryCount = 0;
 
             while (true)

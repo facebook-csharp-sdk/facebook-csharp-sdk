@@ -503,6 +503,7 @@ namespace Facebook
         /// Invoke the old restserver.php endpoint.
         /// </summary>
         /// <param name="parameters">The parameters for the server call.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
         protected abstract object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod);
 
@@ -533,6 +534,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <param name="state">The async state.</param>
         /// <param name="parameters">The parameters for the server call.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
         protected abstract void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod);
 
         /// <summary>
@@ -659,7 +661,7 @@ namespace Facebook
     }
 
     [ContractClassFor(typeof(FacebookAppBase))]
-    public class FacebookAppBaseContracts : FacebookAppBase
+    public abstract class FacebookAppBaseContracts : FacebookAppBase
     {
         public override Uri GetLoginUrl(IDictionary<string, object> parameters)
         {

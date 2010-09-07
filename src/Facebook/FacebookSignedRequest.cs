@@ -9,20 +9,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace Facebook
 {
     public class FacebookSignedRequest
     {
 
-        private Dictionary<string, string> dictionary = new Dictionary<string, string>();
+        private Dictionary<string, string> _dictionary = new Dictionary<string, string>();
 
 
         public IDictionary<string, string> Dictionary
         {
             get
             {
-                return this.dictionary;
+                return this._dictionary;
             }
         }
 
@@ -33,15 +35,15 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("user_id"))
+                if (_dictionary.ContainsKey("user_id"))
                 {
-                    return long.Parse(dictionary["user_id"]);
+                    return long.Parse(_dictionary["user_id"], CultureInfo.InvariantCulture);
                 }
                 return default(long);
             }
             set
             {
-                dictionary["user_id"] = value.ToString();
+                _dictionary["user_id"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -52,15 +54,15 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("oauth_token"))
+                if (_dictionary.ContainsKey("oauth_token"))
                 {
-                    return dictionary["oauth_token"];
+                    return _dictionary["oauth_token"];
                 }
                 return null;
             }
             set
             {
-                dictionary["oauth_token"] = value;
+                _dictionary["oauth_token"] = value;
             }
         }
 
@@ -71,15 +73,15 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("expires"))
+                if (_dictionary.ContainsKey("expires"))
                 {
-                    return Utilities.UnixDateTime.FromUnixTime(dictionary["expires"]);
+                    return Utilities.UnixDateTime.FromUnixTime(_dictionary["expires"]);
                 }
                 return default(DateTime);
             }
             set
             {
-                dictionary["expires"] = Utilities.UnixDateTime.ToUnixTime(value);
+                _dictionary["expires"] = Utilities.UnixDateTime.ToUnixTime(value);
             }
         }
         /// <summary>
@@ -89,15 +91,15 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("profile_id"))
+                if (_dictionary.ContainsKey("profile_id"))
                 {
-                    return long.Parse(dictionary["profile_id"]);
+                    return long.Parse(_dictionary["profile_id"], CultureInfo.InvariantCulture);
                 }
                 return default(long);
             }
             set
             {
-                dictionary["profile_id"] = value.ToString();
+                _dictionary["profile_id"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -105,16 +107,24 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("algorithm"))
+                if (_dictionary.ContainsKey("algorithm"))
                 {
-                    return dictionary["algorithm"];
+                    return _dictionary["algorithm"];
                 }
                 return null;
             }
             set
             {
-                dictionary["algorithm"] = value;
+                _dictionary["algorithm"] = value;
             }
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_dictionary != null);
         }
 
     }

@@ -12,6 +12,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
+using System.Globalization;
+using System.Diagnostics.Contracts;
 
 namespace Facebook
 {
@@ -19,12 +21,9 @@ namespace Facebook
     public sealed class JsonArray : DynamicObject, ICollection<object>, ICollection
     {
 
-        private List<object> _members;
+        private List<object> _members = new List<object>();
 
-        public JsonArray()
-        {
-            _members = new List<object>();
-        }
+        public JsonArray() { }
 
         public JsonArray(object value)
             : this()
@@ -42,7 +41,21 @@ namespace Facebook
         public JsonArray(params object[] value)
             : this()
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            Contract.EndContractBlock();
+
             _members.AddRange(value);
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_members != null);
         }
 
         public int Count
@@ -57,12 +70,22 @@ namespace Facebook
         {
             get
             {
+                if (_members.Count <= index)
+                {
+                    throw new ArgumentOutOfRangeException("index");
+                }
                 return _members[index];
             }
         }
 
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
+            if (binder == null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+            Contract.EndContractBlock();
+
             Type targetType = binder.Type;
 
             if ((targetType == typeof(IEnumerable)) ||
@@ -79,6 +102,16 @@ namespace Facebook
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
+            if (binder == null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+            if (args == null)
+            {
+                throw new ArgumentNullException("args");
+            }
+            Contract.EndContractBlock();
+
             if (String.Compare(binder.Name, "Add", StringComparison.Ordinal) == 0)
             {
                 if (args.Length == 1)
@@ -94,7 +127,7 @@ namespace Facebook
             {
                 if (args.Length == 2)
                 {
-                    _members.Insert(Convert.ToInt32(args[0]), args[1]);
+                    _members.Insert(Convert.ToInt32(args[0], CultureInfo.InvariantCulture), args[1]);
                     result = null;
                     return true;
                 }
@@ -136,7 +169,7 @@ namespace Facebook
             {
                 if (args.Length == 1)
                 {
-                    _members.RemoveAt(Convert.ToInt32(args[0]));
+                    _members.RemoveAt(Convert.ToInt32(args[0], CultureInfo.InvariantCulture));
                     result = null;
                     return true;
                 }
@@ -149,9 +182,19 @@ namespace Facebook
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
+            if (binder == null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+            if (indexes == null)
+            {
+                throw new ArgumentNullException("indexes");
+            }
+            Contract.EndContractBlock();
+
             if (indexes.Length == 1)
             {
-                result = _members[Convert.ToInt32(indexes[0])];
+                result = _members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)];
                 return true;
             }
             else
@@ -166,6 +209,12 @@ namespace Facebook
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
+            if (binder == null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+            Contract.EndContractBlock();
+
             if (String.Compare("Length", binder.Name, StringComparison.Ordinal) == 0)
             {
                 result = _members.Count;
@@ -174,7 +223,7 @@ namespace Facebook
             else
             {
 #if !SILVERLIGHT && TRACE
-                Trace.TraceWarning(string.Format("This instance of JsonArray does not contain the property {0}.", binder.Name));
+                Trace.TraceWarning(String.Format(CultureInfo.InvariantCulture, "This instance of JsonArray does not contain the property {0}.", binder.Name));
 #endif
                 result = InvalidProperty.Instance;
                 return true;
@@ -183,9 +232,19 @@ namespace Facebook
 
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
+            if (binder == null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+            if (indexes == null)
+            {
+                throw new ArgumentNullException("indexes");
+            }
+            Contract.EndContractBlock();
+
             if (indexes.Length == 1)
             {
-                _members[Convert.ToInt32(indexes[0])] = value;
+                _members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)] = value;
                 return true;
             }
 

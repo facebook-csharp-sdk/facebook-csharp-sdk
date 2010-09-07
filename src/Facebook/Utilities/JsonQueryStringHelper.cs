@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace Facebook.Utilities
 {
@@ -56,15 +57,15 @@ namespace Facebook.Utilities
 
                     // Format Object As Json And Remove leading and trailing perenthesis
                     string jsonValue = JsonSerializer.SerializeObject(value);
-                    if (jsonValue.StartsWith("\""))
+                    if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
                     {
                         jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);
                     }
-                    if (jsonValue.EndsWith("\""))
+                    if (jsonValue.EndsWith("\"", StringComparison.Ordinal))
                     {
                         jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
                     }
-                    sb.AppendFormat("{0}={1}", key, Uri.EscapeUriString(jsonValue));
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, Uri.EscapeUriString(jsonValue));
                 }
                 else
                 {

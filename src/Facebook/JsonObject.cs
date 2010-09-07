@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace Facebook
 {
@@ -116,12 +117,20 @@ namespace Facebook
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            // <pex>
-            if (indexes[0L] != (object)null)
-                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
-            if (indexes == (object[])null)
+            if (binder == (GetIndexBinder)null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+            if (indexes == null)
+            {
                 throw new ArgumentNullException("indexes");
-            // </pex>
+            }
+            if (indexes[0L] != (object)null)
+            {
+                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
+            }
+            Contract.EndContractBlock();
+
             if (indexes.Length == 1)
             {
                 result = ((IDictionary<string, object>)this)[(string)indexes[0]];
@@ -139,10 +148,12 @@ namespace Facebook
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            // <pex>
             if (binder == (GetMemberBinder)null)
+            {
                 throw new ArgumentNullException("binder");
-            // </pex>
+            }
+            Contract.EndContractBlock();
+
             object value;
             if (_members.TryGetValue(binder.Name, out value))
             {
@@ -152,7 +163,7 @@ namespace Facebook
             else
             {
 #if !SILVERLIGHT && TRACE
-                Trace.TraceWarning(string.Format("This instance of JsonObject does not contain the property {0}.", binder.Name));
+                Trace.TraceWarning(String.Format(CultureInfo.InvariantCulture, "This instance of JsonObject does not contain the property {0}.", binder.Name));
 #endif
                 result = InvalidProperty.Instance;
                 return true;
@@ -161,12 +172,21 @@ namespace Facebook
 
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
-            // <pex>
-            if (indexes[0L] != (object)null)
-                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
-            if (indexes == (object[])null)
+            if (binder == (SetIndexBinder)null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+            if (indexes == null)
+            {
                 throw new ArgumentNullException("indexes");
-            // </pex>
+            }
+            if (indexes[0L] != (object)null)
+            {
+                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
+            }
+            Contract.EndContractBlock();
+
+
             if (indexes.Length == 1)
             {
                 ((IDictionary<string, object>)this)[(string)indexes[0]] = value;
@@ -417,6 +437,14 @@ namespace Facebook
             public DictionaryEnumerator(IEnumerator<KeyValuePair<string, object>> enumerator)
             {
                 _enumerator = enumerator;
+            }
+
+            [ContractInvariantMethod]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+            private void InvarientObject()
+            {
+                Contract.Invariant(_enumerator != null);
             }
 
             public object Current
