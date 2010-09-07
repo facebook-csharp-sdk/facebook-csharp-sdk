@@ -896,7 +896,7 @@ namespace Facebook
         /// <returns>The facebook session.</returns>
         private FacebookSession CreateSessionFromSignedRequest(FacebookSignedRequest signedRequest)
         {
-            if (signedRequest == null || !string.IsNullOrEmpty(signedRequest.AccessToken))
+            if (signedRequest == null || String.IsNullOrEmpty(signedRequest.AccessToken))
             {
                 return null;
             }
