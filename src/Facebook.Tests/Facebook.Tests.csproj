@@ -62,10 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Facebook.moles">
-      <Generator>MolesGenerator</Generator>
-      <LastGenOutput>Facebook.Designer.cs</LastGenOutput>
-    </None>
     <None Include="SharedKey.snk" />
     <Shadow Include="Test References\Facebook.accessor" />
   </ItemGroup>
@@ -77,11 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assert2.cs" />
-    <Compile Include="Facebook.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Facebook.moles</DependentUpon>
-    </Compile>
     <Compile Include="FacebookApiExceptionTest.Constructor.g.cs">
       <DependentUpon>FacebookApiExceptionTest.cs</DependentUpon>
     </Compile>
@@ -515,15 +506,6 @@
       <DependentUpon>UnixDateTimeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\UnixDateTimeTest_Unit.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Facebook.Moles.dll">
-      <DependentUpon>Facebook.moles</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Facebook.Moles.xml">
-      <DependentUpon>Facebook.moles</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
