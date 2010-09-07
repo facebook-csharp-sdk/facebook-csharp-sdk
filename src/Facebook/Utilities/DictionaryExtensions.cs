@@ -24,6 +24,8 @@ namespace Facebook.Utilities
         /// <returns>The merged dictionary</returns>
         public static IDictionary<string, object> Merge(this IDictionary<string, object> first, IDictionary<string, object> second)
         {
+            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
+
             first = first ?? new Dictionary<string, object>();
             second = second ?? new Dictionary<string, object>();
             var merged = new Dictionary<string, object>();

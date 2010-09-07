@@ -400,7 +400,7 @@ namespace Facebook
         }
         #endregion
 
-        #region IDynamicMetaObjectProvider
+        #region Implementation of IDynamicMetaObjectProvider
 
         public override IEnumerable<string> GetDynamicMemberNames()
         {

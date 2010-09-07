@@ -25,11 +25,13 @@ namespace Facebook.Utilities
 
         private TextReader _reader;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
-            Justification = "The disposal occurs in the Dispose method of this class.")]
         public JsonReader(string jsonText)
-            : this(new StringReader(jsonText))
         {
+            if (String.IsNullOrEmpty(jsonText))
+            {
+                throw new ArgumentNullException("jsonText");
+            }
+            _reader = new StringReader(jsonText);
         }
 
         public JsonReader(TextReader reader)

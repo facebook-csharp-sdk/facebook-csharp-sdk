@@ -28,8 +28,10 @@ namespace Facebook
     /// </summary>
     public class FacebookApp : FacebookAppBase
     {
-        private int _maxRetries;  //How many times to retry a command if an error occurs until we give up.
-        private int _retryDelay; // How long in milliseconds to wait before retrying.
+        private const string _prefix = "--";
+        private const string _newLine = "\r\n";
+        private int _maxRetries = 2;  //How many times to retry a command if an error occurs until we give up.
+        private int _retryDelay = 500; // How long in milliseconds to wait before retrying.
         private FacebookSession _session;
 #if !SILVERLIGHT && !CLIENTPROFILE
         private FacebookSignedRequest _signedRequest;
@@ -68,8 +70,8 @@ namespace Facebook
             this.ApiSecret = settings.ApiSecret;
             this.BaseDomain = settings.BaseDomain;
             this.CookieSupport = settings.CookieSupport;
-            this._retryDelay = settings.RetryDelay == -1 ? 500 : settings.RetryDelay;
-            this._maxRetries = settings.MaxRetries == -1 ? 2 : settings.MaxRetries;
+            this._retryDelay = settings.RetryDelay == -1 ? this._retryDelay : settings.RetryDelay;
+            this._maxRetries = settings.MaxRetries == -1 ? this._maxRetries : settings.MaxRetries;
         }
 
         /// <summary>
@@ -90,8 +92,6 @@ namespace Facebook
             {
                 AccessToken = accessToken,
             };
-            this._retryDelay = 500;
-            this._maxRetries = 2;
         }
 
         /// <summary>
@@ -697,8 +697,6 @@ namespace Facebook
         /// <returns>The request post data.</returns>
         private static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, string boundary)
         {
-            string _prefix = "--";
-            string _newLine = "\r\n";
             var paramDict = (IDictionary<string, object>)parameters;
 
             FacebookMediaObject mediaObject = null;
@@ -1086,6 +1084,16 @@ namespace Facebook
                 System.Threading.Thread.Sleep(_retryDelay);
                 retryCount += 1;
             }
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_maxRetries >= 0);
+            Contract.Invariant(_retryDelay >= 0);
+            Contract.Invariant(_retryErrorTypes != null);
         }
 
     }

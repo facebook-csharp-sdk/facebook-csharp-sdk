@@ -17,6 +17,7 @@ using Facebook.Utilities;
 
 namespace Facebook
 {
+    [ContractClass(typeof(FacebookAppBaseContracts))]
     public abstract class FacebookAppBase
     {
         private static Collection<string> _dropQueryParameters = new Collection<string> {
@@ -93,6 +94,16 @@ namespace Facebook
             "users.isverified",
             "video.getuploadlimits" 
         };
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_domainMaps != null);
+            Contract.Invariant(_dropQueryParameters != null);
+            Contract.Invariant(_readOnlyCalls != null);
+        }
 
         /// <summary>
         /// List of query parameters that get automatically dropped when rebuilding the current URL.
@@ -555,6 +566,12 @@ namespace Facebook
         /// <returns>The Url for the given parameters.</returns>
         protected virtual Uri GetApiUrl(string method)
         {
+            if (String.IsNullOrEmpty("method"))
+            {
+                throw new ArgumentNullException("method");
+            }
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
             string name = "api";
             if (_readOnlyCalls.Contains(method))
             {
@@ -570,6 +587,8 @@ namespace Facebook
         /// <returns>The string of the url for the given parameters.</returns>
         protected Uri GetUrl(string name)
         {
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
             return this.GetUrl(name, string.Empty, null);
         }
 
@@ -581,6 +600,8 @@ namespace Facebook
         /// <returns>The string of the url for the given parameters.</returns>
         protected Uri GetUrl(string name, string path)
         {
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
             return this.GetUrl(name, path, null);
         }
 
@@ -592,6 +613,8 @@ namespace Facebook
         /// <returns>The string of the url for the given parameters.</returns>
         protected Uri GetUrl(string name, IDictionary<string, object> parameters)
         {
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
             return this.GetUrl(name, string.Empty, parameters);
         }
 
@@ -608,10 +631,7 @@ namespace Facebook
             {
                 throw new ArgumentNullException("name");
             }
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
             UriBuilder uri = new UriBuilder(_domainMaps[name]);
             if (!String.IsNullOrEmpty(path))
@@ -631,10 +651,71 @@ namespace Facebook
             }
             if (parameters != null)
             {
-                uri.Query = ((IDictionary<string, object>)parameters).ToJsonQueryString();
+                uri.Query = parameters.ToJsonQueryString();
             }
             return uri.Uri;
         }
 
     }
+
+    [ContractClassFor(typeof(FacebookAppBase))]
+    public class FacebookAppBaseContracts : FacebookAppBase
+    {
+        public override Uri GetLoginUrl(IDictionary<string, object> parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void ValidateSessionObject(FacebookSession session)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override string GenerateSignature(FacebookSession session)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
 }

@@ -34,11 +34,10 @@ namespace Facebook.Utilities
         {
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
-            Justification = "The disposal occurs in the Dispose method of this class.")]
         public JsonWriter(bool minimizeWhitespace)
-            : this(new StringWriter(), minimizeWhitespace)
         {
+            _writer = new IndentedTextWriter(minimizeWhitespace);
+            _scopes = new Stack<Scope>();
             _internalWriter = (StringWriter)_writer.Target;
         }
 
@@ -454,6 +453,22 @@ namespace Facebook.Utilities
             private int _indentLevel;
             private bool _tabsPending;
             private string _tabString;
+
+            public IndentedTextWriter(bool minimize)
+                : base(CultureInfo.InvariantCulture)
+            {
+                _writer = new StringWriter();
+                _minimize = minimize;
+
+                if (_minimize)
+                {
+                    NewLine = "\r";
+                }
+
+                _tabString = "  ";
+                _indentLevel = 0;
+                _tabsPending = false;
+            }
 
             public IndentedTextWriter(TextWriter writer, bool minimize)
                 : base(CultureInfo.InvariantCulture)

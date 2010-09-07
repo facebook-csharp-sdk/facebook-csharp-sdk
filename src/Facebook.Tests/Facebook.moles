@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Moles xmlns="http://schemas.microsoft.com/moles/2010/">
+  <Assembly Name="Facebook" />
+</Moles>
