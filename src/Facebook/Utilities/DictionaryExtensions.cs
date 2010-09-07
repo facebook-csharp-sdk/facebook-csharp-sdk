@@ -19,14 +19,26 @@ namespace Facebook.Utilities
         /// <summary>
         /// Merges two dictionaries.
         /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <returns></returns>
+        /// <param name="first">Default values, only used if second does not contain a value.</param>
+        /// <param name="second">Every value of the merged object is used.</param>
+        /// <returns>The merged dictionary</returns>
         public static IDictionary<string, object> Merge(this IDictionary<string, object> first, IDictionary<string, object> second)
         {
             first = first ?? new Dictionary<string, object>();
             second = second ?? new Dictionary<string, object>();
-            return first.Union(second).ToDictionary(kv => kv.Key, kv => kv.Value);
+            var merged = new Dictionary<string, object>();
+            foreach (var kvp in second)
+            {
+                merged.Add(kvp.Key, kvp.Value);
+            }
+            foreach (var kvp in first)
+            {
+                if (!merged.ContainsKey(kvp.Key))
+                {
+                    merged.Add(kvp.Key, kvp.Value);
+                }
+            }
+            return merged;
         }
     }
 }

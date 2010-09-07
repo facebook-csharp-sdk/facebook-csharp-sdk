@@ -125,10 +125,8 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.Constructor">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookApp.#ctor"/>.</para>
-                        Initializes the Facebook application with values
-                        stored in the application configuration file.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.#ctor"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.ConstructorIFacebookSettings">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.#ctor(T:Facebook.IFacebookSettings)"/>
@@ -143,9 +141,8 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.CurrentUrlGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>.</para>
-                        Gets the Current URL, stripping it of known FB parameters that should not persist.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.GenerateSignatureFacebookSession">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GenerateSignature(T:Facebook.FacebookSession)"/>
@@ -184,14 +181,12 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.MaxRetriesGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>.</para>
-                        How many times to retry a command if an error occurs until we give up.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.MaxRetriesSetInt32">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>.</para>
-                        How many times to retry a command if an error occurs until we give up.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.OAuthRequestAsyncFacebookAsyncCallbackObjectUriIDictionaryOfStringObjectHttpMethod">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
@@ -230,14 +225,12 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.RetryDelayGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>.</para>
-                        How long in seconds to wait before retrying, with exponential roll off.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.RetryDelaySetInt32">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>.</para>
-                        How long in seconds to wait before retrying, with exponential roll off.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.RetryErrorTypesGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
@@ -256,9 +249,8 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.SignedRequestGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.SignedRequest"/>.</para>
-                        The data from the signed_request token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.SignedRequest"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.ValidateSessionObjectFacebookSession">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ValidateSessionObject(T:Facebook.FacebookSession)"/>
@@ -268,28 +260,28 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry(T:System.Action)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__10KeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__10(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__eKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__e(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__2KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__2(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__3KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__3(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__4KeyValuePairOfStringString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__4(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__5KeyValuePairOfStringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__5(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1aKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__6KeyValuePairOfStringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__6(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1cKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1c(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1dKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1d(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1bKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1b(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookApp.AllInstances">
@@ -312,9 +304,8 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.CurrentUrlGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>.</para>
-                        Gets the Current URL, stripping it of known FB parameters that should not persist.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.GenerateSignatureFacebookSession">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.GenerateSignature(T:Facebook.FacebookSession)"/>
@@ -345,14 +336,12 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.MaxRetriesGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>.</para>
-                        How many times to retry a command if an error occurs until we give up.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.MaxRetriesSetInt32">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>.</para>
-                        How many times to retry a command if an error occurs until we give up.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.MaxRetries"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.OAuthRequestAsyncFacebookAsyncCallbackObjectUriIDictionaryOfStringObjectHttpMethod">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.OAuthRequestAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,T:System.Uri,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object},T:Facebook.HttpMethod)"/>
@@ -375,14 +364,12 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RetryDelayGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>.</para>
-                        How long in seconds to wait before retrying, with exponential roll off.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RetryDelaySetInt32">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>.</para>
-                        How long in seconds to wait before retrying, with exponential roll off.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryDelay"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RetryErrorTypesGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
@@ -401,9 +388,8 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.SignedRequestGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.SignedRequest"/>.</para>
-                        The data from the signed_request token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.SignedRequest"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ValidateSessionObjectFacebookSession">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ValidateSessionObject(T:Facebook.FacebookSession)"/>
@@ -427,9 +413,8 @@
             <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AccessTokenGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AccessToken"/>.</para>
-                        Gets a OAuth access token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AccessToken"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.ApiAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObject">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
@@ -460,14 +445,12 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.ApiSecretGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>.</para>
-                        Gets the Application API Secret.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.ApiSecretSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>.</para>
-                        Gets the Application API Secret.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.ApiString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String)"/>
@@ -486,24 +469,20 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AppIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>.</para>
-                        Gets the Application ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AppIdSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>.</para>
-                        Gets the Application ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.BaseDomainGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>.</para>
-                        Gets or sets the base domain of the the application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.BaseDomainSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>.</para>
-                        Gets or sets the base domain of the the application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.Behavior">
             <summary>Assigns the behavior for all methods of the moled type</summary>
@@ -517,49 +496,40 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.CookieSupportGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>.</para>
-                        Gets or sets the Cookie Support status.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.CookieSupportSetBoolean">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>.</para>
-                        Gets or sets the Cookie Support status.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.CurrentUrlGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>.</para>
-                        Gets the default Facebook login success url.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.DomainMapsGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>.</para>
-                        Maps aliases to Facebook domains.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.DropQueryParametersGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>.</para>
-                        List of query parameters that get automatically dropped when rebuilding the current URL.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.GetApiUrlString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.GetLoginStatusUrl">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl"/>.</para>
-                        Get a login status URL to fetch the status from facebook.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.GetLoginUrl">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl"/>.</para>
-                        Get a Login URL for use with redirects. By default,
-                        full page redirect is assumed.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.GetLogoutUrl">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl"/>.</para>
-                        Get a Logout URL suitable for use with redirects.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.GetUrlString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String)"/>
@@ -578,42 +548,35 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.SessionCookieNameGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionCookieName"/>.</para>
-                        Gets the name of the current session cookie.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionCookieName"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.SessionGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>.</para>
-                        The active user session, if one is available.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.SessionLoadedGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>.</para>
-                        Indicates that we already loaded the session as best as we could.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.SessionLoadedSetBoolean">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>.</para>
-                        Indicates that we already loaded the session as best as we could.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.SessionSetFacebookSession">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>.</para>
-                        The active user session, if one is available.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.UserIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.UserId"/>.</para>
-                        Get the UID from the session.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.UserId"/>
+            </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookAppBase.AllInstances">
             <summary>Define moles for all instances members</summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.AccessTokenGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AccessToken"/>.</para>
-                        Gets a OAuth access token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AccessToken"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObject">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ApiAsync(T:Facebook.FacebookAsyncCallback,T:System.Object,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
@@ -644,14 +607,12 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiSecretGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>.</para>
-                        Gets the Application API Secret.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiSecretSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>.</para>
-                        Gets the Application API Secret.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.ApiSecret"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.ApiString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.Api(T:System.String)"/>
@@ -670,73 +631,60 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.AppIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>.</para>
-                        Gets the Application ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.AppIdSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>.</para>
-                        Gets the Application ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.AppId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.BaseDomainGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>.</para>
-                        Gets or sets the base domain of the the application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.BaseDomainSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>.</para>
-                        Gets or sets the base domain of the the application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.BaseDomain"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CleanUrlUri">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.CleanUrl(T:System.Uri)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CookieSupportGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>.</para>
-                        Gets or sets the Cookie Support status.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CookieSupportSetBoolean">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>.</para>
-                        Gets or sets the Cookie Support status.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CookieSupport"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.CurrentUrlGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>.</para>
-                        Gets the default Facebook login success url.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.DomainMapsGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>.</para>
-                        Maps aliases to Facebook domains.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.DropQueryParametersGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>.</para>
-                        List of query parameters that get automatically dropped when rebuilding the current URL.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetApiUrlString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetApiUrl(T:System.String)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetLoginStatusUrl">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl"/>.</para>
-                        Get a login status URL to fetch the status from facebook.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginStatusUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetLoginUrl">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl"/>.</para>
-                        Get a Login URL for use with redirects. By default,
-                        full page redirect is assumed.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLoginUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetLogoutUrl">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl"/>.</para>
-                        Get a Logout URL suitable for use with redirects.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetLogoutUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.GetUrlString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String)"/>
@@ -755,34 +703,28 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionCookieNameGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionCookieName"/>.</para>
-                        Gets the name of the current session cookie.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionCookieName"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>.</para>
-                        The active user session, if one is available.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionLoadedGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>.</para>
-                        Indicates that we already loaded the session as best as we could.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionLoadedSetBoolean">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>.</para>
-                        Indicates that we already loaded the session as best as we could.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.SessionLoaded"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.SessionSetFacebookSession">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>.</para>
-                        The active user session, if one is available.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.Session"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.AllInstances.UserIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookAppBase.UserId"/>.</para>
-                        Get the UID from the session.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookAppBase.UserId"/>
+            </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookAppExtensions">
             <summary>Mole type of <see cref="T:Facebook.FacebookAppExtensions"/>
@@ -1382,9 +1324,8 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSettings.GetCurrent">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookSettings.GetCurrent"/>.</para>
-                        Gets the FacebookSettings stored in the configuration file.
-                        </summary>
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookSettings.GetCurrent"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSettings.MaxRetriesGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.MaxRetries"/>
@@ -1478,14 +1419,12 @@
             <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the moled type</summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AccessTokenGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>.</para>
-                        The users access token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AccessTokenSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>.</para>
-                        The users access token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AlgorithmGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Algorithm"/>
@@ -1507,47 +1446,39 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.ExpiresGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>.</para>
-                        When the access token expires.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.ExpiresSetDateTime">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>.</para>
-                        When the access token expires.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.ProfileIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>.</para>
-                        Whose profile is currently being viewed. It could be a user ID or a Page ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.ProfileIdSetInt64">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>.</para>
-                        Whose profile is currently being viewed. It could be a user ID or a Page ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.UserIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>.</para>
-                        Which user is currently viewing your application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.UserIdSetInt64">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>.</para>
-                        Which user is currently viewing your application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookSignedRequest.AllInstances">
             <summary>Define moles for all instances members</summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.AccessTokenGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>.</para>
-                        The users access token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.AccessTokenSetString">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>.</para>
-                        The users access token.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.AccessToken"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.AlgorithmGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Algorithm"/>
@@ -1562,34 +1493,28 @@
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ExpiresGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>.</para>
-                        When the access token expires.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ExpiresSetDateTime">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>.</para>
-                        When the access token expires.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.Expires"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ProfileIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>.</para>
-                        Whose profile is currently being viewed. It could be a user ID or a Page ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.ProfileIdSetInt64">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>.</para>
-                        Whose profile is currently being viewed. It could be a user ID or a Page ID.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.ProfileId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.UserIdGet">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>.</para>
-                        Which user is currently viewing your application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookSignedRequest.AllInstances.UserIdSetInt64">
-            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>.</para>
-                        Which user is currently viewing your application.
-                        </summary>
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookSignedRequest.UserId"/>
+            </summary>
         </member>
         <member name="T:Facebook.Moles.MInvalidProperty">
             <summary>Mole type of <see cref="T:Facebook.InvalidProperty"/>
@@ -2400,19 +2325,16 @@
             </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookApp.CurrentUrlGet">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>.</para>
-                        Gets the Current URL, stripping it of known FB parameters that should not persist.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookApp.DomainMapsGet">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>.</para>
-                        Maps aliases to Facebook domains.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookApp.DropQueryParametersGet">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>.</para>
-                        List of query parameters that get automatically dropped when rebuilding the current URL.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
         </member>
         <member name="M:Facebook.Moles.SFacebookApp.GenerateSignature(Facebook.FacebookSession)">
             <summary>Sets the stub of <see cref="M:Facebook.FacebookApp.GenerateSignature(T:Facebook.FacebookSession)"/>
@@ -2537,19 +2459,16 @@
             <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookApp.CurrentUrl">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>.</para>
-                        Gets the Current URL, stripping it of known FB parameters that should not persist.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.CurrentUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookApp.DomainMaps">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>.</para>
-                        Maps aliases to Facebook domains.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookApp.DropQueryParameters">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>.</para>
-                        List of query parameters that get automatically dropped when rebuilding the current URL.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookApp.InstanceBehavior">
             <summary>Gets or sets the instance behavior.</summary>
@@ -2594,19 +2513,16 @@
             </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookAppBase.CurrentUrlGet">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>.</para>
-                        Gets the default Facebook login success url.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookAppBase.DomainMapsGet">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>.</para>
-                        Maps aliases to Facebook domains.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookAppBase.DropQueryParametersGet">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>.</para>
-                        List of query parameters that get automatically dropped when rebuilding the current URL.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
         </member>
         <member name="M:Facebook.Moles.SFacebookAppBase.GenerateSignature(Facebook.FacebookSession)">
             <summary>Sets the stub of <see cref="M:Facebook.FacebookAppBase.GenerateSignature(T:Facebook.FacebookSession)"/>
@@ -2719,19 +2635,16 @@
             <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookAppBase.CurrentUrl">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>.</para>
-                        Gets the default Facebook login success url.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.CurrentUrl"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookAppBase.DomainMaps">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>.</para>
-                        Maps aliases to Facebook domains.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DomainMaps"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookAppBase.DropQueryParameters">
-            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>.</para>
-                        List of query parameters that get automatically dropped when rebuilding the current URL.
-                        </summary>
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookAppBase.DropQueryParameters"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookAppBase.InstanceBehavior">
             <summary>Gets or sets the instance behavior.</summary>

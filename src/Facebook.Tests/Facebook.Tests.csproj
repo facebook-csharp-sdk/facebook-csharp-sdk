@@ -449,6 +449,7 @@
     <Compile Include="Utilities\DictionaryExtensionsTest.Merge.g.cs">
       <DependentUpon>DictionaryExtensionsTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DictionaryExtensionsTest_Unit.cs" />
     <Compile Include="Utilities\ExceptionHelperTest.cs" />
     <Compile Include="Utilities\ExceptionHelperTest.GetGraphException.g.cs">
       <DependentUpon>ExceptionHelperTest.cs</DependentUpon>
