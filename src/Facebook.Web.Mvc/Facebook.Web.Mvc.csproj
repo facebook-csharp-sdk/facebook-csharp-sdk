@@ -133,9 +133,6 @@
     <Compile Include="Canvas\CanvasControllerExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HandleInvalidTokenAttribute.cs" />
-    <Compile Include="Xhtml\LikeButtonHelper.cs" />
-    <Compile Include="Xhtml\XfbmlHelpers.cs" />
-    <Compile Include="Xhtml\SocialPluginHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

@@ -115,13 +115,13 @@ namespace Facebook.Utilities
                 // trying to build the FacebookApiException
             }
 
-            if (resultException == null)
-            {
-                // If we have made it to here it means that either  
-                // no detailed error message was recieved by facebook 
-                // or the format of the message was not expected.
-                resultException = new FacebookApiException("Unknown Facebook API Exception.", ex);
-            }
+            //if (resultException == null)
+            //{
+            //    // If we have made it to here it means that either  
+            //    // no detailed error message was recieved by facebook 
+            //    // or the format of the message was not expected.
+            //    resultException = new FacebookApiException("Unknown Facebook API Exception.", ex);
+            //}
 
             return resultException;
         }
