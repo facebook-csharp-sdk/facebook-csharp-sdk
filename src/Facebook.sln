@@ -17,12 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.MvcWebsite
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C3E87ED9-DB22-495A-A232-F239F2902C6C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{8136C239-9CF7-4011-B301-98E375923C74}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\AutoMapper.dll = ..\lib\AutoMapper.dll
-		..\lib\AutoMapper.Silverlight.dll = ..\lib\AutoMapper.Silverlight.dll
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.MvcFacebookApp", "Facebook.Samples.MvcFacebookApp\Facebook.Samples.MvcFacebookApp.csproj", "{F1B97557-0717-4D98-86B3-771545C1BBEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web", "Facebook.Web\Facebook.Web.csproj", "{73333465-710D-4143-BA9B-201D90EE2BAF}"
