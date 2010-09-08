@@ -15,23 +15,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D759
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.MvcWebsite", "Facebook.Samples.MvcWebsite\Facebook.Samples.MvcWebsite.csproj", "{49F3C951-0062-4475-8A13-8DF4555EED45}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{8136C239-9CF7-4011-B301-98E375923C74}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\AutoMapper.dll = ..\lib\AutoMapper.dll
-		..\lib\AutoMapper.Silverlight.dll = ..\lib\AutoMapper.Silverlight.dll
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.WebFormsWebsite", "Facebook.Samples.WebFormsWebsite\Facebook.Samples.WebFormsWebsite.csproj", "{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.MvcFacebookApp", "Facebook.Samples.MvcFacebookApp\Facebook.Samples.MvcFacebookApp.csproj", "{F1B97557-0717-4D98-86B3-771545C1BBEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web", "Facebook.Web\Facebook.Web.csproj", "{73333465-710D-4143-BA9B-201D90EE2BAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc", "Facebook.Web.Mvc\Facebook.Web.Mvc.csproj", "{7DC5C10F-E871-4202-9014-0F958358389E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{2A018765-74CB-498D-8D1C-DC943F94F9F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{33BEF6D6-427C-461B-B4C9-A318C8DB4001}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{4048987C-6C4A-48F5-90B8-853AC351B78A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phone", "Phone", "{56F3004F-F0DA-416B-BCE0-D008CC61D915}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientProfile", "ClientProfile", "{E6D6394B-A231-4312-8FAD-7742C6CF14BC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
 		SccLocalPath0 = .
@@ -42,20 +44,18 @@ Global
 		SccProjectTopLevelParentUniqueName2 = Facebook\u0020-\u0020Core.sln
 		SccProjectName2 = Facebook.Samples.MvcWebsite
 		SccLocalPath2 = Facebook.Samples.MvcWebsite
-		SccProjectUniqueName3 = Facebook.Samples.WebFormsWebsite\\Facebook.Samples.WebFormsWebsite.csproj
+		SccProjectUniqueName3 = Facebook.Samples.MvcFacebookApp\\Facebook.Samples.MvcFacebookApp.csproj
 		SccProjectTopLevelParentUniqueName3 = Facebook\u0020-\u0020Core.sln
-		SccProjectName3 = Facebook.Samples.WebFormsWebsite
-		SccLocalPath3 = Facebook.Samples.WebFormsWebsite
-		SccProjectUniqueName4 = Facebook.Samples.MvcFacebookApp\\Facebook.Samples.MvcFacebookApp.csproj
+		SccProjectName3 = Facebook.Samples.MvcFacebookApp
+		SccLocalPath3 = Facebook.Samples.MvcFacebookApp
+		SccProjectUniqueName4 = Facebook.Web\\Facebook.Web.csproj
 		SccProjectTopLevelParentUniqueName4 = Facebook\u0020-\u0020Core.sln
-		SccProjectName4 = Facebook.Samples.MvcFacebookApp
-		SccLocalPath4 = Facebook.Samples.MvcFacebookApp
-		SccProjectUniqueName5 = Facebook.Web\\Facebook.Web.csproj
-		SccProjectName5 = Facebook.Web
-		SccLocalPath5 = Facebook.Web
-		SccProjectUniqueName6 = Facebook.Web.Mvc\\Facebook.Web.Mvc.csproj
-		SccProjectName6 = Facebook.Web.Mvc
-		SccLocalPath6 = Facebook.Web.Mvc
+		SccProjectName4 = Facebook.Web
+		SccLocalPath4 = Facebook.Web
+		SccProjectUniqueName5 = Facebook.Web.Mvc\\Facebook.Web.Mvc.csproj
+		SccProjectTopLevelParentUniqueName5 = Facebook\u0020-\u0020Core.sln
+		SccProjectName5 = Facebook.Web.Mvc
+		SccLocalPath5 = Facebook.Web.Mvc
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -89,16 +89,6 @@ Global
 		{49F3C951-0062-4475-8A13-8DF4555EED45}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{49F3C951-0062-4475-8A13-8DF4555EED45}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{49F3C951-0062-4475-8A13-8DF4555EED45}.Release|x86.ActiveCfg = Release|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D}.Release|x86.ActiveCfg = Release|Any CPU
 		{F1B97557-0717-4D98-86B3-771545C1BBEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1B97557-0717-4D98-86B3-771545C1BBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1B97557-0717-4D98-86B3-771545C1BBEF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -135,7 +125,12 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{49F3C951-0062-4475-8A13-8DF4555EED45} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
-		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{F1B97557-0717-4D98-86B3-771545C1BBEF} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
+		{33BEF6D6-427C-461B-B4C9-A318C8DB4001} = {2A018765-74CB-498D-8D1C-DC943F94F9F4}
+		{4048987C-6C4A-48F5-90B8-853AC351B78A} = {2A018765-74CB-498D-8D1C-DC943F94F9F4}
+		{56F3004F-F0DA-416B-BCE0-D008CC61D915} = {2A018765-74CB-498D-8D1C-DC943F94F9F4}
+		{E6D6394B-A231-4312-8FAD-7742C6CF14BC} = {2A018765-74CB-498D-8D1C-DC943F94F9F4}
+		{7DC5C10F-E871-4202-9014-0F958358389E} = {33BEF6D6-427C-461B-B4C9-A318C8DB4001}
+		{73333465-710D-4143-BA9B-201D90EE2BAF} = {33BEF6D6-427C-461B-B4C9-A318C8DB4001}
 	EndGlobalSection
 EndGlobal
