@@ -95,7 +95,7 @@ namespace Facebook.Web.Mvc
             FacebookUrlBuilder facebookUrl = new FacebookUrlBuilder(filterContext.HttpContext.Request);
             dynamic parameters = new ExpandoObject();
             parameters.req_perms = Perms;
-            parameters.canvas = null;
+            parameters.canvas = 1;
 
             // set the return url
             Uri returnUrl;
@@ -134,7 +134,6 @@ namespace Facebook.Web.Mvc
 
             }
             parameters.cancel_url = cancelUrl.ToString();
-            parameters.canvas = null;
 
             Uri uri = app.GetLoginUrl(parameters);
             return uri.ToString();
@@ -170,8 +169,8 @@ namespace Facebook.Web.Mvc
                 return new string[0];
             }
 
-            var mydata = (IDictionary<string, object>)data[0];
-            return (from perm in mydata
+            var permData = (IDictionary<string, object>)data[0];
+            return (from perm in permData
                     where perm.Value.ToString() == "1"
                     select perm.Key).ToArray();
         }

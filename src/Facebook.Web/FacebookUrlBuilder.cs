@@ -147,6 +147,10 @@ namespace Facebook.Web
             }
 
             var appPath = request.ApplicationPath;
+            if (appPath != "/")
+            {
+                appPath = string.Concat(appPath, "/");
+            }
 
             string redirectRoot = string.Concat(redirectPath, "/", cancel ? "cancel/" : string.Empty);
 
