@@ -22,7 +22,12 @@ namespace Facebook.Utilities
     {
         private static readonly Regex _stripXmlnsRegex =
             new Regex(@"(xmlns:?[^=]*=[""][^""]*[""])",
-                      RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+#if SILVERLIGHT
+ RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
+#else
+ RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+#endif
+
 
         public static string SerializeObject(object value)
         {

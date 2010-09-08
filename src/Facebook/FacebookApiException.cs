@@ -41,7 +41,8 @@ namespace Facebook
 
 #if (!SILVERLIGHT)
         protected FacebookApiException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(info, context)
+        {
         }
 #endif
         public FacebookApiException(string message, Exception innerException)
@@ -60,6 +61,7 @@ namespace Facebook
             return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", this.ErrorType ?? "Unknown", this.Message);
         }
 
+#if (!SILVERLIGHT)
         [SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -70,5 +72,6 @@ namespace Facebook
             info.AddValue("ErrorType", this.ErrorType);
             base.GetObjectData(info, context);
         }
+#endif
     }
 }

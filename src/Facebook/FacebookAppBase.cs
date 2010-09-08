@@ -677,7 +677,7 @@ namespace Facebook
         {
             throw new NotImplementedException();
         }
-
+#if !SILVERLIGHT
         protected override void ValidateSessionObject(FacebookSession session)
         {
             throw new NotImplementedException();
@@ -702,7 +702,7 @@ namespace Facebook
         {
             throw new NotImplementedException();
         }
-
+#endif
         protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             throw new NotImplementedException();

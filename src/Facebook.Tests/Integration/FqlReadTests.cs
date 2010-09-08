@@ -5,12 +5,39 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using Facebook.Linq;
 using System.Dynamic;
+using System.Configuration;
 
 namespace Facebook.Tests.Fql
 {
     [TestClass]
     public class FqlReadTests
     {
+
+        private FacebookApp app;
+        public FqlReadTests()
+        {
+            app = new FacebookApp();
+            app.Session = new FacebookSession
+            {
+                AccessToken = ConfigurationManager.AppSettings["AccessToken"],
+            };
+        }
+
+        [TestMethod]
+        [TestCategory("RequiresOAuth")]
+        public void Read_Friends()
+        {
+            var query = "SELECT uid, name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())";
+            dynamic results = app.Fql(query);
+
+            foreach (var item in results)
+            {
+                long userID = item.uid;
+                string name = item.name;
+            }
+            Assert.IsNotNull(results);
+        }
+
         //private FacebookApp app;
         //public FqlReadTests()
         //{
@@ -58,5 +85,7 @@ namespace Facebook.Tests.Fql
 
 
         //}
+
+
     }
 }

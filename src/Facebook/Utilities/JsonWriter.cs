@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 
 namespace Facebook.Utilities
 {
@@ -391,14 +392,21 @@ namespace Facebook.Utilities
             else
             {
                 StartObjectScope();
-
+#if SILVERLIGHT
+                var propDescs = o.GetType().GetProperties();
+                foreach (PropertyInfo propDesc in propDescs)
+                {
+                    WriteName(propDesc.Name);
+                    WriteValue(propDesc.GetValue(o, null));
+                }
+#else
                 PropertyDescriptorCollection propDescs = TypeDescriptor.GetProperties(o);
                 foreach (PropertyDescriptor propDesc in propDescs)
                 {
                     WriteName(propDesc.Name);
                     WriteValue(propDesc.GetValue(o));
                 }
-
+#endif
                 EndScope();
             }
         }
