@@ -144,7 +144,7 @@
       <Name>Facebook.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Facebook\Facebook.csproj">
-      <Project>{37B5F863-E576-4AC9-BD7A-2F35914264BC}</Project>
+      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
       <Name>Facebook</Name>
     </ProjectReference>
   </ItemGroup>

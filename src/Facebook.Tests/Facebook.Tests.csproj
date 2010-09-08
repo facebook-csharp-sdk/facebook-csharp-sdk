@@ -70,12 +70,6 @@
     <Shadow Include="Test References\Facebook.accessor" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook\Facebook.csproj">
-      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
-      <Name>Facebook</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assert2.cs" />
     <Compile Include="Facebook.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -523,6 +517,12 @@
     <Content Include="Facebook.Moles.xml">
       <DependentUpon>Facebook.moles</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Facebook\Facebook.csproj">
+      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
+      <Name>Facebook</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

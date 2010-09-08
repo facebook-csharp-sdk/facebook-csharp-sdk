@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D759
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.MvcWebsite", "Facebook.Samples.MvcWebsite\Facebook.Samples.MvcWebsite.csproj", "{49F3C951-0062-4475-8A13-8DF4555EED45}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C3E87ED9-DB22-495A-A232-F239F2902C6C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{8136C239-9CF7-4011-B301-98E375923C74}"
 	ProjectSection(SolutionItems) = preProject
 		..\lib\AutoMapper.dll = ..\lib\AutoMapper.dll
@@ -31,29 +29,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web", "Facebook.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc", "Facebook.Web.Mvc\Facebook.Web.Mvc.csproj", "{7DC5C10F-E871-4202-9014-0F958358389E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Desktop", "Facebook.Desktop\Facebook.Desktop.csproj", "{B619CEBF-663B-4BEA-852A-654552AE187B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.AuthenticationTool", "Facebook.Samples.AuthenticationTool\Facebook.Samples.AuthenticationTool.csproj", "{0803C098-C7CB-40B7-8B87-67F98660609E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client Profile", "Client Profile", "{BD7FFF0C-CE95-469F-8117-D8B3EC2F2A82}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{4DB3CAA5-68A0-4017-975B-70635D8209BB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{247052E2-3C72-4E61-834C-F2484703AAA4}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phone", "Phone", "{6AB88E25-E672-4886-A7EE-0C18720CD7DD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNet35", "DotNet35", "{0DDF445E-472D-469E-84F4-8D7F4A76AA7E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.DotNet35", "Facebook.DotNet35\Facebook.DotNet35.csproj", "{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests", "Facebook.Tests\Facebook.Tests.csproj", "{074FCA08-CBF4-4FA3-BF0C-A1459585990F}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
 		SccLocalPath0 = .
@@ -61,41 +39,23 @@ Global
 		SccProjectName1 = Facebook
 		SccLocalPath1 = Facebook
 		SccProjectUniqueName2 = Facebook.Samples.MvcWebsite\\Facebook.Samples.MvcWebsite.csproj
-		SccProjectTopLevelParentUniqueName2 = Facebook.sln
+		SccProjectTopLevelParentUniqueName2 = Facebook\u0020-\u0020Core.sln
 		SccProjectName2 = Facebook.Samples.MvcWebsite
 		SccLocalPath2 = Facebook.Samples.MvcWebsite
 		SccProjectUniqueName3 = Facebook.Samples.WebFormsWebsite\\Facebook.Samples.WebFormsWebsite.csproj
-		SccProjectTopLevelParentUniqueName3 = Facebook.sln
+		SccProjectTopLevelParentUniqueName3 = Facebook\u0020-\u0020Core.sln
 		SccProjectName3 = Facebook.Samples.WebFormsWebsite
 		SccLocalPath3 = Facebook.Samples.WebFormsWebsite
 		SccProjectUniqueName4 = Facebook.Samples.MvcFacebookApp\\Facebook.Samples.MvcFacebookApp.csproj
-		SccProjectTopLevelParentUniqueName4 = Facebook.sln
+		SccProjectTopLevelParentUniqueName4 = Facebook\u0020-\u0020Core.sln
 		SccProjectName4 = Facebook.Samples.MvcFacebookApp
 		SccLocalPath4 = Facebook.Samples.MvcFacebookApp
 		SccProjectUniqueName5 = Facebook.Web\\Facebook.Web.csproj
-		SccProjectTopLevelParentUniqueName5 = Facebook.sln
 		SccProjectName5 = Facebook.Web
 		SccLocalPath5 = Facebook.Web
 		SccProjectUniqueName6 = Facebook.Web.Mvc\\Facebook.Web.Mvc.csproj
-		SccProjectTopLevelParentUniqueName6 = Facebook.sln
 		SccProjectName6 = Facebook.Web.Mvc
 		SccLocalPath6 = Facebook.Web.Mvc
-		SccProjectUniqueName7 = Facebook.Desktop\\Facebook.Desktop.csproj
-		SccProjectTopLevelParentUniqueName7 = Facebook.sln
-		SccProjectName7 = Facebook.Desktop
-		SccLocalPath7 = Facebook.Desktop
-		SccProjectUniqueName8 = Facebook.Samples.AuthenticationTool\\Facebook.Samples.AuthenticationTool.csproj
-		SccProjectTopLevelParentUniqueName8 = Facebook.sln
-		SccProjectName8 = Facebook.Samples.AuthenticationTool
-		SccLocalPath8 = Facebook.Samples.AuthenticationTool
-		SccProjectUniqueName9 = Facebook.DotNet35\\Facebook.DotNet35.csproj
-		SccProjectTopLevelParentUniqueName9 = Facebook.sln
-		SccProjectName9 = Facebook.DotNet35
-		SccLocalPath9 = Facebook.DotNet35
-		SccProjectUniqueName10 = Facebook.Tests\\Facebook.Tests.csproj
-		SccProjectTopLevelParentUniqueName10 = Facebook.sln
-		SccProjectName10 = Facebook.Tests
-		SccLocalPath10 = Facebook.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -169,46 +129,6 @@ Global
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|x86.ActiveCfg = Release|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{B619CEBF-663B-4BEA-852A-654552AE187B}.Release|x86.ActiveCfg = Release|Any CPU
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Debug|x86.ActiveCfg = Debug|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Debug|x86.Build.0 = Debug|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|Any CPU.ActiveCfg = Release|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|Mixed Platforms.Build.0 = Release|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|x86.ActiveCfg = Release|x86
-		{0803C098-C7CB-40B7-8B87-67F98660609E}.Release|x86.Build.0 = Release|x86
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4}.Release|x86.ActiveCfg = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -217,16 +137,5 @@ Global
 		{49F3C951-0062-4475-8A13-8DF4555EED45} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{7BD0B32C-FD2D-43FE-8CDD-05894A47118D} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
 		{F1B97557-0717-4D98-86B3-771545C1BBEF} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
-		{0803C098-C7CB-40B7-8B87-67F98660609E} = {D759B991-FDD3-43BC-9704-0B5131EF1A1D}
-		{074FCA08-CBF4-4FA3-BF0C-A1459585990F} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
-		{247052E2-3C72-4E61-834C-F2484703AAA4} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
-		{BD7FFF0C-CE95-469F-8117-D8B3EC2F2A82} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
-		{4DB3CAA5-68A0-4017-975B-70635D8209BB} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
-		{6AB88E25-E672-4886-A7EE-0C18720CD7DD} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
-		{0DDF445E-472D-469E-84F4-8D7F4A76AA7E} = {D0FB48BE-9CB2-447D-936F-B0BEC881FEC6}
-		{73333465-710D-4143-BA9B-201D90EE2BAF} = {247052E2-3C72-4E61-834C-F2484703AAA4}
-		{7DC5C10F-E871-4202-9014-0F958358389E} = {247052E2-3C72-4E61-834C-F2484703AAA4}
-		{B619CEBF-663B-4BEA-852A-654552AE187B} = {BD7FFF0C-CE95-469F-8117-D8B3EC2F2A82}
-		{10A8AC51-2CF3-4B0F-ACA9-3B47BD8740F4} = {0DDF445E-472D-469E-84F4-8D7F4A76AA7E}
 	EndGlobalSection
 EndGlobal
