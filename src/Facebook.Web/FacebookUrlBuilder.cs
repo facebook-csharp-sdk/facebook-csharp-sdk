@@ -13,19 +13,33 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Web
 {
     public class FacebookUrlBuilder
     {
         private const string redirectPath = "facebookredirect.axd";
-        private HttpRequestBase request;
+        private HttpRequestBase _request;
 
         public FacebookUrlBuilder(HttpRequestBase request)
         {
-            this.request = request;
+            this._request = request;
         }
 
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_request != null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static string GetCanvasRedirectHtml(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -44,12 +58,12 @@ namespace Facebook.Web
         {
             get
             {
-                Uri clientUrl = request.Url;
+                Uri clientUrl = _request.Url;
 
                 // Fix for Windows Azure
-                if (request.Headers.AllKeys.Contains("Host"))
+                if (_request.Headers.AllKeys.Contains("Host"))
                 {
-                    clientUrl = new Uri("http://" + request.Headers["Host"]);
+                    clientUrl = new Uri("http://" + _request.Headers["Host"]);
                 }
                 return clientUrl;
             }
@@ -91,8 +105,8 @@ namespace Facebook.Web
         {
             get
             {
-                var pathAndQuery = request.Url.PathAndQuery;
-                var appPath = request.ApplicationPath;
+                var pathAndQuery = _request.Url.PathAndQuery;
+                var appPath = _request.ApplicationPath;
                 if (appPath != "/")
                 {
                     pathAndQuery = pathAndQuery.Replace(appPath, string.Empty);
@@ -146,7 +160,7 @@ namespace Facebook.Web
                 path = path + "/";
             }
 
-            var appPath = request.ApplicationPath;
+            var appPath = _request.ApplicationPath;
             if (appPath != "/")
             {
                 appPath = string.Concat(appPath, "/");
