@@ -38,6 +38,19 @@ namespace Facebook.Tests.Fql
             Assert.IsNotNull(results);
         }
 
+        [TestMethod]
+        [TestCategory("RequiresOAuth")]
+        public void Read_Permissions()
+        {
+            var query = string.Format("SELECT {0} FROM permissions WHERE uid == {1}", "email", "120625701301347");
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = query;
+            parameters["method"] = "fql.query";
+            parameters["access_token"] = string.Concat(app.AppId, "|", app.ApiSecret);
+            dynamic result = app.Api(parameters);
+            Assert.IsNotNull(result);
+        }
+
         //private FacebookApp app;
         //public FqlReadTests()
         //{

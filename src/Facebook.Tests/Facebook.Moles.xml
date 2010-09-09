@@ -109,6 +109,10 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.AddRestParameters(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MFacebookApp.ApplySettingsIFacebookSettings">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ApplySettings(T:Facebook.IFacebookSettings)"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MFacebookApp.Base64UrlDecodeString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.Base64UrlDecode(T:System.String)"/>
             </summary>
@@ -242,8 +246,10 @@
                         </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.RetryErrorTypesGet">
-            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
-            </summary>
+            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>.</para>
+                        Gets a collection of Facebook error types that
+                        should be retried in the event of a failure.
+                        </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.SessionGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.Session"/>
@@ -270,32 +276,32 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.WithMirrorRetry(T:System.Action)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__eKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__e(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__2KeyValuePairOfStringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__2(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
-            </summary>
-        </member>
-        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__3KeyValuePairOfStringString">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__3(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._BuildRequestDatab__10KeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;BuildRequestData&gt;b__10(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__4KeyValuePairOfStringString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__4(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__5KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__5(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp._GenerateSignatureb__6KeyValuePairOfStringString">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;GenerateSignature&gt;b__6(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.String})"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MFacebookApp._InvariantMethod">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.$InvariantMethod$"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1aKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1a(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1cKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1c(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1bKeyValuePairOfStringObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1b(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
+        <member name="P:Facebook.Moles.MFacebookApp._ParseFromQueryStringb__1dKeyValuePairOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.&lt;ParseFromQueryString&gt;b__1d(System.Collections.Generic.KeyValuePair`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="T:Facebook.Moles.MFacebookApp.AllInstances">
@@ -307,6 +313,10 @@
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.AddRestParametersIDictionaryOfStringObject">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.AddRestParameters(System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApp.AllInstances.ApplySettingsIFacebookSettings">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ApplySettings(T:Facebook.IFacebookSettings)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.BuildRequestDataUriIDictionaryOfStringObjectHttpMethodUriOutStringOut">
@@ -391,8 +401,10 @@
                         </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.RetryErrorTypesGet">
-            <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
-            </summary>
+            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>.</para>
+                        Gets a collection of Facebook error types that
+                        should be retried in the event of a failure.
+                        </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.AllInstances.SessionGet">
             <summary>Sets the mole of <see cref="P:Facebook.FacebookApp.Session"/>
@@ -2560,8 +2572,10 @@
             </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookApp.RetryErrorTypesGet">
-            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
-            </summary>
+            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>.</para>
+                        Gets a collection of Facebook error types that
+                        should be retried in the event of a failure.
+                        </summary>
         </member>
         <member name="F:Facebook.Moles.SFacebookApp.SessionGet">
             <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.Session"/>
@@ -2601,8 +2615,10 @@
             <summary>Gets or sets the instance behavior.</summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookApp.RetryErrorTypes">
-            <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>
-            </summary>
+            <summary><para>Sets the stub of <see cref="P:Facebook.FacebookApp.RetryErrorTypes"/>.</para>
+                        Gets a collection of Facebook error types that
+                        should be retried in the event of a failure.
+                        </summary>
         </member>
         <member name="P:Facebook.Moles.SFacebookApp.Session">
             <summary>Sets the stub of <see cref="P:Facebook.FacebookApp.Session"/>

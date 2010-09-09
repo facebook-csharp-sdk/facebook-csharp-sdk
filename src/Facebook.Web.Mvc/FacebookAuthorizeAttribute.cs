@@ -163,7 +163,12 @@ namespace Facebook.Web.Mvc
                 throw new ArgumentNullException("perms");
             }
 
-            dynamic data = app.Fql(string.Format("SELECT {0} FROM permissions WHERE uid == {1}", perms, app.UserId));
+            var query = string.Format("SELECT {0} FROM permissions WHERE uid == {1}", perms, app.UserId);
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = query;
+            parameters["method"] = "fql.query";
+            parameters["access_token"] = string.Concat(app.AppId, "|", app.ApiSecret);
+            dynamic data = app.Api(parameters);
             if (data.Count == 0)
             {
                 return new string[0];
