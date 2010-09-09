@@ -44,13 +44,24 @@ namespace Facebook
             "Unknown", // No error info returned by facebook.
         };
 
-#if !SILVERLIGHT // Silverlight does not support System.Configuration
+
+
         /// <summary>
         /// Initializes the Facebook application with values
-        /// stored in the application configuration file.
+        /// stored in the application configuration file or 
+        /// with only the default values if the configuration
+        /// file does not have the values set.
         /// </summary>
-        public FacebookApp() : this(FacebookSettings.GetCurrent()) { }
+        public FacebookApp()
+        {
+#if !SILVERLIGHT // Silverlight does not support System.Configuration
+            var settings = FacebookSettings.Current;
+            if (settings != null)
+            {
+                ApplySettings(settings);
+            }
 #endif
+        }
 
         /// <summary>
         /// Initialized the Facebook application with
@@ -66,12 +77,7 @@ namespace Facebook
             }
             Contract.EndContractBlock();
 
-            this.AppId = settings.AppId;
-            this.ApiSecret = settings.ApiSecret;
-            this.BaseDomain = settings.BaseDomain;
-            this.CookieSupport = settings.CookieSupport;
-            this._retryDelay = settings.RetryDelay == -1 ? this._retryDelay : settings.RetryDelay;
-            this._maxRetries = settings.MaxRetries == -1 ? this._maxRetries : settings.MaxRetries;
+            ApplySettings(settings);
         }
 
         /// <summary>
@@ -112,6 +118,10 @@ namespace Facebook
             set { _retryDelay = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of Facebook error types that
+        /// should be retried in the event of a failure.
+        /// </summary>
         protected virtual Collection<string> RetryErrorTypes
         {
             get { return _retryErrorTypes; }
@@ -656,7 +666,7 @@ namespace Facebook
             }
             Contract.EndContractBlock();
 
-            if (!parameters.ContainsKey("access_token"))
+            if (!parameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
             {
                 parameters["access_token"] = this.AccessToken;
             }
@@ -1121,6 +1131,25 @@ namespace Facebook
                 System.Threading.Thread.Sleep(_retryDelay);
                 retryCount += 1;
             }
+        }
+
+        /// <summary>
+        /// Applies the Facebook settings to the 
+        /// properties of this object.
+        /// </summary>
+        /// <param name="settings">The Facebook settings.</param>
+        private void ApplySettings(IFacebookSettings settings)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException("settings");
+            }
+            this.AppId = settings.AppId;
+            this.ApiSecret = settings.ApiSecret;
+            this.BaseDomain = settings.BaseDomain;
+            this.CookieSupport = settings.CookieSupport;
+            this._retryDelay = settings.RetryDelay == -1 ? this._retryDelay : settings.RetryDelay;
+            this._maxRetries = settings.MaxRetries == -1 ? this._maxRetries : settings.MaxRetries;
         }
 
         [ContractInvariantMethod]

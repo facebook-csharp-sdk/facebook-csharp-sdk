@@ -35,19 +35,20 @@ namespace Facebook
         /// <summary>
         /// Gets the FacebookSettings stored in the configuration file.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public static IFacebookSettings GetCurrent()
+        public static IFacebookSettings Current
         {
-            if (current == null)
+            get
             {
-                var settings = ConfigurationManager.GetSection("facebookSettings");
-                if (settings == null)
+                if (current == null)
                 {
-                    throw new ConfigurationErrorsException("The facebook settings are not set in your application's configuration file.");
+                    var settings = ConfigurationManager.GetSection("facebookSettings");
+                    if (settings != null)
+                    {
+                        current = settings as FacebookConfigurationSection;
+                    }
                 }
-                current = settings as FacebookConfigurationSection;
+                return current;
             }
-            return current;
         }
 #endif
 

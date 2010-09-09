@@ -190,10 +190,11 @@ namespace Facebook
                 {
                     return this.Session.AccessToken;
                 }
-                else
+                else if (!String.IsNullOrEmpty(this.AppId) && !String.IsNullOrEmpty(this.ApiSecret))
                 {
                     return string.Concat(this.AppId, "|", this.ApiSecret);
                 }
+                return null;
             }
         }
 

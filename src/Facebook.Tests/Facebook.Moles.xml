@@ -127,7 +127,9 @@
         <member name="P:Facebook.Moles.MFacebookApp.Constructor">
             <summary><para>Sets the mole of <see cref="M:Facebook.FacebookApp.#ctor"/>.</para>
                         Initializes the Facebook application with values
-                        stored in the application configuration file.
+                        stored in the application configuration file or
+                        with only the default values if the configuration
+                        file does not have the values set.
                         </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.ConstructorIFacebookSettings">
@@ -213,12 +215,12 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ParseSignedRequest(T:System.String)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp.RequestReadyAsyncIAsyncResultByteArrayFacebookAsyncCallbackObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.RequestReadyAsync(T:System.IAsyncResult,T:System.Byte[],T:Facebook.FacebookAsyncCallback,T:System.Object)"/>
+        <member name="P:Facebook.Moles.MFacebookApp.RequestCallbackIAsyncResultByteArrayFacebookAsyncCallbackObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.RequestCallback(T:System.IAsyncResult,T:System.Byte[],T:Facebook.FacebookAsyncCallback,T:System.Object)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookApp.ResponseReadyAsyncIAsyncResultFacebookAsyncCallbackObject">
-            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ResponseReadyAsync(T:System.IAsyncResult,T:Facebook.FacebookAsyncCallback,T:System.Object)"/>
+        <member name="P:Facebook.Moles.MFacebookApp.ResponseCallbackIAsyncResultFacebookAsyncCallbackObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookApp.ResponseCallback(T:System.IAsyncResult,T:Facebook.FacebookAsyncCallback,T:System.Object)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApp.RestServerAsyncFacebookAsyncCallbackObjectIDictionaryOfStringObjectHttpMethod">
@@ -583,6 +585,10 @@
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.GetUrlStringStringIDictionaryOfStringObject">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.GetUrl(T:System.String,T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookAppBase.ParseUrlParametersStringIDictionaryOfStringObject">
+            <summary>Sets the mole of <see cref="M:Facebook.FacebookAppBase.ParseUrlParameters(T:System.String,System.Collections.Generic.IDictionary`2{T:System.String,T:System.Object})"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookAppBase.SessionCookieNameGet">
@@ -1405,8 +1411,8 @@
             <summary>Sets the mole of <see cref="P:Facebook.FacebookSettings.CookieSupport"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MFacebookSettings.GetCurrent">
-            <summary><para>Sets the mole of <see cref="M:Facebook.FacebookSettings.GetCurrent"/>.</para>
+        <member name="P:Facebook.Moles.MFacebookSettings.CurrentGet">
+            <summary><para>Sets the mole of <see cref="P:Facebook.FacebookSettings.Current"/>.</para>
                         Gets the FacebookSettings stored in the configuration file.
                         </summary>
         </member>
