@@ -88,7 +88,7 @@ namespace Facebook
             }
             Contract.EndContractBlock();
 
-            this._session = new FacebookSession
+            this.Session = new FacebookSession
             {
                 AccessToken = accessToken,
             };
@@ -646,6 +646,16 @@ namespace Facebook
         /// <returns>The request post data.</returns>
         private byte[] BuildRequestData(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, out Uri requestUrl, out string contentType)
         {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("parameters");
+            }
+            Contract.EndContractBlock();
+
             if (!parameters.ContainsKey("access_token"))
             {
                 parameters["access_token"] = this.AccessToken;
@@ -657,29 +667,26 @@ namespace Facebook
             contentType = "application/x-www-form-urlencoded";
             byte[] postData = null;
             string queryString = string.Empty;
-            if (parameters != null)
+
+            if (httpMethod == HttpMethod.Get)
             {
-                if (httpMethod == HttpMethod.Get)
+                queryString = ((IDictionary<string, object>)parameters).ToJsonQueryString();
+            }
+            else
+            {
+                queryString = string.Concat("access_token=", parameters["access_token"]);
+                parameters.Remove("access_token");
+
+                var containsMediaObject = parameters.Where(p => p.Value is FacebookMediaObject).Count() > 0;
+                if (containsMediaObject)
                 {
-                    queryString = ((IDictionary<string, object>)parameters).ToJsonQueryString();
+                    string boundary = DateTime.Now.Ticks.ToString("x", CultureInfo.InvariantCulture);
+                    postData = BuildMediaObjectPostData(parameters, boundary);
+                    contentType = String.Concat("multipart/form-data; boundary=", boundary);
                 }
                 else
                 {
-                    var paramDict = (IDictionary<string, object>)parameters;
-                    queryString = string.Concat("access_token=", paramDict["access_token"]);
-                    paramDict.Remove("access_token");
-
-                    var containsMediaObject = paramDict.Where(p => p.Value is FacebookMediaObject).Count() > 0;
-                    if (containsMediaObject)
-                    {
-                        string boundary = DateTime.Now.Ticks.ToString("x", CultureInfo.InvariantCulture);
-                        postData = BuildMediaObjectPostData(parameters, boundary);
-                        contentType = String.Concat("multipart/form-data; boundary=", boundary);
-                    }
-                    else
-                    {
-                        postData = Encoding.UTF8.GetBytes(paramDict.ToJsonQueryString());
-                    }
+                    postData = Encoding.UTF8.GetBytes(parameters.ToJsonQueryString());
                 }
             }
 
@@ -698,13 +705,11 @@ namespace Facebook
         /// <returns>The request post data.</returns>
         private static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, string boundary)
         {
-            var paramDict = (IDictionary<string, object>)parameters;
-
             FacebookMediaObject mediaObject = null;
 
             // Build up the post message header
             var sb = new StringBuilder();
-            foreach (var kvp in paramDict)
+            foreach (var kvp in parameters)
             {
                 if (kvp.Value is FacebookMediaObject)
                 {
@@ -829,36 +834,36 @@ namespace Facebook
         private static void MakeRequestAsync(FacebookAsyncCallback callback, object state, HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.ContentType = contentType;
             request.Method = HttpMethodHelper.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
             if (httpMethod == HttpMethod.Post)
             {
-                request.BeginGetRequestStream((ar) => { RequestReadyAsync(ar, postData, callback, state); }, request);
+                request.ContentType = contentType;
+                request.BeginGetRequestStream((ar) => { RequestCallback(ar, postData, callback, state); }, request);
             }
             else
             {
-                request.BeginGetResponse((ar) => { ResponseReadyAsync(ar, callback, state); }, request);
+                request.BeginGetResponse((ar) => { ResponseCallback(ar, callback, state); }, request);
             }
         }
 
-        private static void RequestReadyAsync(IAsyncResult asyncResult, byte[] postData, FacebookAsyncCallback callback, object state)
+        private static void RequestCallback(IAsyncResult asyncResult, byte[] postData, FacebookAsyncCallback callback, object state)
         {
-            HttpWebRequest request = asyncResult.AsyncState as HttpWebRequest;
+            var request = (HttpWebRequest)asyncResult.AsyncState;
             using (Stream stream = request.EndGetRequestStream(asyncResult))
             {
                 stream.Write(postData, 0, postData.Length);
             }
-            request.BeginGetResponse((ar) => { ResponseReadyAsync(ar, callback, state); }, request);
+            request.BeginGetResponse((ar) => { ResponseCallback(ar, callback, state); }, request);
         }
 
-        private static void ResponseReadyAsync(IAsyncResult asyncResult, FacebookAsyncCallback callback, object state)
+        private static void ResponseCallback(IAsyncResult asyncResult, FacebookAsyncCallback callback, object state)
         {
             object result = null;
             FacebookApiException exception = null;
             try
             {
-                HttpWebRequest request = asyncResult.AsyncState as HttpWebRequest;
-                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asyncResult);
+                var request = (HttpWebRequest)asyncResult.AsyncState;
+                var response = (HttpWebResponse)request.EndGetResponse(asyncResult);
 
                 using (Stream responseStream = response.GetResponseStream())
                 {
@@ -887,7 +892,11 @@ namespace Facebook
                 {
                     data = result;
                 }
+#if SILVERLIGHT
+                callback(new FacebookAsyncResult(data, state, null, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));
+#else
                 callback(new FacebookAsyncResult(data, state, asyncResult.AsyncWaitHandle, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));
+#endif
             }
         }
 

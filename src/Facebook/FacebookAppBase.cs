@@ -14,6 +14,7 @@ using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Linq;
 using Facebook.Utilities;
+using System.Globalization;
 
 namespace Facebook
 {
@@ -375,13 +376,11 @@ namespace Facebook
             {
                 throw new ArgumentException("You must supply either the path or parameters argument.");
             }
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
             Contract.EndContractBlock();
 
             parameters = parameters ?? new ExpandoObject();
+
+            path = ParseUrlParameters(path, parameters);
 
             if (((IDictionary<string, object>)parameters).ContainsKey("method"))
             {
@@ -464,13 +463,11 @@ namespace Facebook
             {
                 throw new ArgumentException("You must supply either the 'path' or 'parameters' argument.");
             }
-            if (parameters != null && !(parameters is IDictionary<string, object>))
-            {
-                throw new ArgumentException("The argument 'parameters' must impliment IDicationary<string, object>.");
-            }
             Contract.EndContractBlock();
 
-            parameters = parameters ?? new ExpandoObject();
+            parameters = parameters ?? new Dictionary<string, object>();
+
+            path = ParseUrlParameters(path, parameters);
 
             if (((IDictionary<string, object>)parameters).ContainsKey("method"))
             {
@@ -656,6 +653,40 @@ namespace Facebook
                 uri.Query = parameters.ToJsonQueryString();
             }
             return uri.Uri;
+        }
+
+        /// <summary>
+        /// Removes the querystring parameters from the path value and adds them
+        /// to the parameters dictionary.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private static string ParseUrlParameters(string path, IDictionary<string, object> parameters)
+        {
+            if (!String.IsNullOrEmpty(path) && path.Contains('?'))
+            {
+                var parts = path.Split('?');
+                path = parts[0]; // Set the path to only the path portion of the url
+                if (parts.Length > 1)
+                {
+                    // Add the query string values to the parameters dictionary
+                    var qs = parts[1];
+                    var keyValPairs = qs.Split('&');
+                    foreach (var kvp in keyValPairs)
+                    {
+                        if (!String.IsNullOrEmpty(kvp))
+                        {
+                            var kv = kvp.Split('=');
+                            if (kv.Length == 2 && !String.IsNullOrEmpty(kv[0]))
+                            {
+                                parameters[kv[0]] = kv[1];
+                            }
+                        }
+                    }
+                }
+            }
+            return path;
         }
 
     }
