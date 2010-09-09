@@ -163,7 +163,7 @@ namespace Facebook.Web.Mvc
                 throw new ArgumentNullException("perms");
             }
 
-            var query = string.Format("SELECT {0} FROM permissions WHERE uid == {1}", perms, app.UserId);
+            var query = string.Format("SELECT {0} FROM permissions WHERE uid == {1}", perms.Replace(" ", string.Empty), app.UserId);
             var parameters = new Dictionary<string, object>();
             parameters["query"] = query;
             parameters["method"] = "fql.query";
