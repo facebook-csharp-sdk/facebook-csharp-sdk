@@ -13,7 +13,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Facebook.Web.Mvc;
-using Facebook.Web.Mvc.Canvas;
 
 namespace Facebook.Samples.MvcFacebookApp.Controllers
 {

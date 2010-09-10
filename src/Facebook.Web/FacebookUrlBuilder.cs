@@ -54,7 +54,15 @@ namespace Facebook.Web
                    "</head><body></body></html>";
         }
 
-        public Uri RealCurrentUrl
+        public Uri HostRootUrl
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Uri HostCurrentUrl
         {
             get
             {
@@ -69,19 +77,7 @@ namespace Facebook.Web
             }
         }
 
-        public string AppCanvasName
-        {
-            get
-            {
-                if (CanvasSettings.Current.CanvasPageUrl == null)
-                {
-                    throw new ConfigurationErrorsException("You must set the canvas page url in the configuraiton settings.");
-                }
-                return CanvasSettings.Current.CanvasPageUrl.AbsolutePath.Replace("/", string.Empty);
-            }
-        }
-
-        public Uri AppRootUrl
+        public Uri FacebookAppRootUrl
         {
             get
             {
@@ -93,15 +89,27 @@ namespace Facebook.Web
             }
         }
 
-        public Uri AppCurrentUrl
+        public Uri CanvasCurrentUrl
         {
             get
             {
-                return BuildFacebookAppUrl(AppCurrentPathAndQuery);
+                return BuildCanvasUrl(CanvasPathAndQuery);
             }
         }
 
-        public string AppCurrentPathAndQuery
+        public string CanvasApplicationPath
+        {
+            get
+            {
+                if (CanvasSettings.Current.CanvasPageUrl == null)
+                {
+                    throw new ConfigurationErrorsException("You must set the canvas page url in the configuraiton settings.");
+                }
+                return CanvasSettings.Current.CanvasPageUrl.AbsolutePath.Replace("/", string.Empty);
+            }
+        }
+
+        public string CanvasPathAndQuery
         {
             get
             {
@@ -138,7 +146,7 @@ namespace Facebook.Web
 
             if (pathAndQuery == null)
             {
-                pathAndQuery = AppCurrentPathAndQuery;
+                pathAndQuery = CanvasPathAndQuery;
             }
 
             string path;
@@ -168,20 +176,20 @@ namespace Facebook.Web
 
             string redirectRoot = string.Concat(redirectPath, "/", cancel ? "cancel/" : string.Empty);
 
-            UriBuilder uriBuilder = new UriBuilder(RealCurrentUrl);
-            uriBuilder.Path = string.Concat(appPath, redirectRoot, AppCanvasName, path);
+            UriBuilder uriBuilder = new UriBuilder(HostCurrentUrl);
+            uriBuilder.Path = string.Concat(appPath, redirectRoot, CanvasApplicationPath, path);
             uriBuilder.Query = null; // No Querystrings allowed in return urls
             return uriBuilder.Uri;
         }
 
-        public Uri BuildFacebookAppUrl(string pathAndQuery)
+        public Uri BuildCanvasUrl(string pathAndQuery)
         {
             if (pathAndQuery.StartsWith("/"))
             {
                 pathAndQuery = pathAndQuery.Substring(1, pathAndQuery.Length - 1);
             }
 
-            var url = string.Concat(AppRootUrl, pathAndQuery);
+            var url = string.Concat(FacebookAppRootUrl, pathAndQuery);
             if (!pathAndQuery.Contains("?") && !url.EndsWith("/"))
             {
                 url += "/";

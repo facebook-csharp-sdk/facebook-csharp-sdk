@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Dynamic;
 using Facebook.Web.Mvc;
-using Facebook.Web.Mvc.Canvas;
 
 namespace Facebook.Samples.MvcWebsite.Controllers
 {

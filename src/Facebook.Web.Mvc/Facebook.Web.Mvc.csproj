@@ -123,14 +123,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FacebookAuthorizeAttribute.cs" />
-    <Compile Include="Canvas\CanvasAuthorizeAttribute.cs" />
+    <Compile Include="CanvasAuthorizeAttribute.cs" />
     <Compile Include="FacebookSoftAuthorizeAttribute.cs" />
-    <Compile Include="Canvas\CanvasHandleInvalidTokenAttribute.cs" />
-    <Compile Include="Canvas\CanvasLinkExtensions.cs" />
-    <Compile Include="Canvas\CanvasRedirectResult.cs" />
-    <Compile Include="Canvas\CanvasRedirectToRouteResult.cs" />
+    <Compile Include="CanvasHandleInvalidTokenAttribute.cs" />
+    <Compile Include="CanvasLinkExtensions.cs" />
+    <Compile Include="CanvasRedirectResult.cs" />
+    <Compile Include="CanvasRedirectToRouteResult.cs" />
     <Compile Include="FacebookAuthorizeInfo.cs" />
-    <Compile Include="Canvas\CanvasControllerExtensions.cs" />
+    <Compile Include="CanvasControllerExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HandleInvalidTokenAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -157,6 +157,9 @@
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Canvas\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
