@@ -14,6 +14,9 @@ namespace Facebook.Web.Mvc
             Justification = "Instance method for consistency with other helpers.")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "0#",
             Justification = "Response.Redirect() takes its URI as a string parameter.")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "1#")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "controller", 
+            Justification="Extension method")]
         public static RedirectResult CanvasRedirect(this Controller controller, string url)
         {
             if (String.IsNullOrEmpty(url))
@@ -48,6 +51,7 @@ namespace Facebook.Web.Mvc
             return CanvasRedirectToAction(controller, actionName, controllerName, new RouteValueDictionary(routeValues));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "controller")]
         public static RedirectToRouteResult CanvasRedirectToAction(this Controller controller, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
             routeValues = routeValues ?? new RouteValueDictionary();
@@ -82,6 +86,8 @@ namespace Facebook.Web.Mvc
             return CanvasRedirectToRoute(controller, routeName, new RouteValueDictionary(routeValues));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "controller",
+            Justification = "Extension method")]
         public static RedirectToRouteResult CanvasRedirectToRoute(this Controller controller, string routeName, RouteValueDictionary routeValues)
         {
             return new CanvasRedirectToRouteResult(routeName, routeValues ?? new RouteValueDictionary());

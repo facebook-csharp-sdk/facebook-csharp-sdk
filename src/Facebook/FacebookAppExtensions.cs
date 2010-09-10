@@ -99,6 +99,10 @@ namespace Facebook
 
         private static string BuildPath(string id, string path)
         {
+            Contract.Requires(!String.IsNullOrEmpty(id));
+            Contract.Requires(!String.IsNullOrEmpty(path));
+            Contract.Requires(path.Length > 1);
+
             if (id.StartsWith("/", StringComparison.Ordinal))
             {
                 id = id.Substring(1);

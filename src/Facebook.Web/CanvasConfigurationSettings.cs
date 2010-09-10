@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using System.Globalization;
 
 namespace Facebook.Web
 {
@@ -10,37 +11,34 @@ namespace Facebook.Web
     {
 
         /// <summary>
-        /// The url to your canvas application.
+        /// The base url of your application on Facebook.
         /// </summary>
-        [ConfigurationProperty("canvasPageUrl", IsRequired = false)]
+        [ConfigurationProperty("canvasPageUrl", IsRequired = true)]
         public Uri CanvasPageUrl
         {
-            get
-            {
-                if (this.Properties.Contains("canvasPageUrl"))
-                {
-                    return (Uri)this["canvasPageUrl"];
-                }
-                return null;
-            }
+            get { return (Uri)this["canvasPageUrl"]; }
             set { this["canvasPageUrl"] = value; }
+        }
+
+        /// <summary>
+        /// Facebook pulls the content for your application's 
+        /// canvas pages from this base url.
+        /// </summary>
+        [ConfigurationProperty("canvasUrl", IsRequired = false, DefaultValue = null)]
+        public Uri CanvasUrl
+        {
+            get { return (Uri)this["canvasUrl"]; }
+            set { this["canvasUrl"] = value; }
         }
 
         /// <summary>
         /// The url to return the user after they
         /// cancel authorization.
         /// </summary>
-        [ConfigurationProperty("authorizeCancelUrl", IsRequired = false)]
+        [ConfigurationProperty("authorizeCancelUrl", IsRequired = false, DefaultValue = null)]
         public Uri AuthorizeCancelUrl
         {
-            get
-            {
-                if (this.Properties.Contains("authorizeCancelUrl"))
-                {
-                    return (Uri)this["authorizeCancelUrl"];
-                }
-                return null;
-            }
+            get { return (Uri)this["authorizeCancelUrl"]; }
             set { this["authorizeCancelUrl"] = value; }
         }
     }

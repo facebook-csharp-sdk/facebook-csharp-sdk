@@ -15,16 +15,22 @@ namespace Facebook.Web
 
         public void ProcessRequest(HttpContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
             string queryString = string.Empty;
             string pathInfo =context.Request.PathInfo;
-            if (pathInfo.StartsWith("/cancel"))
+            if (pathInfo.StartsWith("/cancel", StringComparison.Ordinal))
             {
                 queryString = "cancel=1";
                 pathInfo = pathInfo.Replace("/cancel", string.Empty);
             }
-            UriBuilder uri = new UriBuilder("http://apps.facebook.com" + pathInfo);
-            uri.Query = queryString;
-            context.Response.Redirect(uri.ToString());
+            var uri = new Uri("http://apps.facebook.com" + pathInfo);
+            UriBuilder uriBuilder = new UriBuilder(uri);
+            uriBuilder.Query = queryString;
+            context.Response.Redirect(uriBuilder.ToString());
         }
     }
 }

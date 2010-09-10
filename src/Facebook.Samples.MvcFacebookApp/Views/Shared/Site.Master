@@ -22,9 +22,9 @@
             <div id="menucontainer">
             
                 <ul id="menu">              
-                    <li><%: Html.ActionLink("Home", "Index", "Home")%></li>
-                    <li><%: Html.ActionLink("About", "About", "Home")%></li>
-                    <li><%: Html.ActionLink("Profile", "Index", "Profile")%></li>
+                    <li><%: Html.CanvasActionLink("Home", "Index", "Home")%></li>
+                    <li><%: Html.CanvasActionLink("About", "About", "Home")%></li>
+                    <li><%: Html.CanvasActionLink("Profile", "Index", "Profile")%></li>
                 </ul>
             
             </div>

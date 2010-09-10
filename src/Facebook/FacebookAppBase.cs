@@ -665,11 +665,14 @@ namespace Facebook
         /// <returns></returns>
         private static string ParseUrlParameters(string path, IDictionary<string, object> parameters)
         {
+            Contract.Requires(parameters != null);
+
+
             if (!String.IsNullOrEmpty(path) && path.Contains('?'))
             {
                 var parts = path.Split('?');
                 path = parts[0]; // Set the path to only the path portion of the url
-                if (parts.Length > 1)
+                if (parts.Length > 1 && parts[1] != null)
                 {
                     // Add the query string values to the parameters dictionary
                     var qs = parts[1];
@@ -697,57 +700,70 @@ namespace Facebook
     {
         public override Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
-            throw new NotImplementedException();
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return default(Uri);
         }
 
         public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
         {
-            throw new NotImplementedException();
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return default(Uri);
         }
 
         public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
         {
-            throw new NotImplementedException();
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return default(Uri);
         }
 #if !SILVERLIGHT
         protected override void ValidateSessionObject(FacebookSession session)
         {
-            throw new NotImplementedException();
         }
 
         protected override string GenerateSignature(FacebookSession session)
         {
-            throw new NotImplementedException();
+            Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
+
+            return default(string);
         }
 
         protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            throw new NotImplementedException();
+            Contract.Ensures(Contract.Result<object>() != null);
+
+            return default(object);
         }
 
         protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            throw new NotImplementedException();
+            Contract.Ensures(Contract.Result<object>() != null);
+
+            return default(object);
         }
 
         protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            throw new NotImplementedException();
+            Contract.Ensures(Contract.Result<object>() != null);
+
+            return default(object);
         }
 #endif
         protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            throw new NotImplementedException();
+          
         }
 
         protected override void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            throw new NotImplementedException();
+
         }
 
         protected override void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            throw new NotImplementedException();
+
         }
 
     }

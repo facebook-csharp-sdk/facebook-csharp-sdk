@@ -17,20 +17,28 @@ using System.Configuration;
 using System.Web.Security;
 using System.Dynamic;
 using System.Web.Routing;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes")]
     public class CanvasAuthorizeAttribute : FacebookAuthorizeAttribute
     {
         public CanvasAuthorizeAttribute() : base() { }
 
-        public CanvasAuthorizeAttribute(FacebookApp app) :base(app) { }
+        public CanvasAuthorizeAttribute(FacebookApp facebookApp) :base(facebookApp) { }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
+            if (filterContext == null)
+            {
+                throw new ArgumentNullException("filterContext");
+            }
+            Contract.EndContractBlock();
+
             var url = GetLoginUrl(filterContext);
-            filterContext.Result = new CanvasRedirectResult(url);
+            filterContext.Result = new CanvasRedirectResult(url.ToString());
         }
 
     }

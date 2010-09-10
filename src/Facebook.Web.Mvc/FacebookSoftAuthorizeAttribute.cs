@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
@@ -15,6 +16,7 @@ namespace Facebook.Web.Mvc
     /// are needed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes")]
     public class FacebookSoftAuthorizeAttribute : FacebookAuthorizeAttribute
     {
         private const string _defaultView = "FacebookAuthorize";
@@ -45,15 +47,13 @@ namespace Facebook.Web.Mvc
             }
         }
 
-        protected override void HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext filterContext)
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            var model = new FacebookAuthorizeInfo
-            {
-                AuthorizeUrl = GetLoginUrl(filterContext, true /* cancel to self */),
-                Perms = this.Perms,
-                IsCancelReturn = filterContext.HttpContext.Request.QueryString.AllKeys.Contains("cancel"),
-                RouteValues = filterContext.RouteData.Values ?? new RouteValueDictionary(),
-            };
+            var model = new FacebookAuthorizeInfo(
+                GetLoginUrl(filterContext, true /* cancel to self */),
+                this.Perms,
+                filterContext.HttpContext.Request.QueryString.AllKeys.Contains("cancel"),
+                filterContext.RouteData.Values);
             filterContext.Result = new ViewResult
             {
                 ViewName = View,

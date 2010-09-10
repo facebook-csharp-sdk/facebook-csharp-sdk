@@ -17,17 +17,19 @@ using System.Configuration;
 using System.Web.Security;
 using System.Dynamic;
 using System.Web.Routing;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace Facebook.Web.Mvc
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public abstract class FacebookAuthorizeAttribute : ActionFilterAttribute, IAuthorizationFilter
     {
-        private FacebookApp app;
+        private FacebookApp _facebookApp;
 
-        public FacebookApp App
+        public FacebookApp FacebookApp
         {
-            get { return this.app; }
+            get { return this._facebookApp; }
         }
 
         public string Perms { get; set; }
@@ -35,14 +37,26 @@ namespace Facebook.Web.Mvc
         public string ReturnUrlPath { get; set; }
 
 
-        public FacebookAuthorizeAttribute()
+        protected FacebookAuthorizeAttribute()
         {
-            app = new FacebookApp();
+            _facebookApp = new FacebookApp();
         }
 
-        public FacebookAuthorizeAttribute(FacebookApp app)
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
         {
-            this.app = app;
+            Contract.Invariant(_facebookApp != null);
+        }
+
+        protected FacebookAuthorizeAttribute(FacebookApp facebookApp)
+        {
+            if (facebookApp == null)
+            {
+                throw new ArgumentNullException("facebookApp");
+            }
+            this._facebookApp = facebookApp;
         }
 
         public void OnAuthorization(AuthorizationContext filterContext)
@@ -58,7 +72,10 @@ namespace Facebook.Web.Mvc
 
         protected virtual bool AuthorizeCore(HttpContextBase httpContext)
         {
-            bool authenticated = app.Session != null;
+            Contract.Requires(httpContext != null);
+            Contract.EndContractBlock();
+
+            bool authenticated = _facebookApp.Session != null;
             if (authenticated && !string.IsNullOrEmpty(Perms))
             {
                 var requiredPerms = Perms.Split(',');
@@ -76,9 +93,11 @@ namespace Facebook.Web.Mvc
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (app.Session != null)
+            filterContext.ActionParameters = filterContext.ActionParameters ?? new Dictionary<string, object>();
+
+            if (_facebookApp.Session != null)
             {
-                filterContext.ActionParameters["FacebookId"] = app.Session.UserId;
+                filterContext.ActionParameters["FacebookId"] = _facebookApp.Session.UserId;
             }
 
             base.OnActionExecuting(filterContext);
@@ -88,61 +107,28 @@ namespace Facebook.Web.Mvc
         /// Gets the login url for the current request.
         /// </summary>
         /// <param name="filterContext">The current AuthorizationContext.</param>
+        /// <returns>The cancel url.</returns>
+        protected Uri GetLoginUrl(AuthorizationContext filterContext)
+        {
+            return GetLoginUrl(filterContext, false);
+        }
+
+        /// <summary>
+        /// Gets the login url for the current request.
+        /// </summary>
+        /// <param name="filterContext">The current AuthorizationContext.</param>
         /// <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
         /// <returns>The cancel url.</returns>
-        protected virtual string GetLoginUrl(AuthorizationContext filterContext, bool cancelToSelf = false)
+        protected virtual Uri GetLoginUrl(AuthorizationContext filterContext, bool cancelToSelf)
         {
-            FacebookUrlBuilder facebookUrl = new FacebookUrlBuilder(filterContext.HttpContext.Request);
-            dynamic parameters = new ExpandoObject();
-            parameters.req_perms = Perms;
-            parameters.canvas = 1;
-
-            // set the return url
-            Uri returnUrl;
-            if (!string.IsNullOrEmpty(ReturnUrlPath))
-            {
-                returnUrl = facebookUrl.BuildAuthReturnUrl(ReturnUrlPath);
-            }
-            else
-            {
-                returnUrl = facebookUrl.BuildAuthReturnUrl();
-            }
-            parameters.next = returnUrl.ToString();
-
-
-            // set the cancel url
-            Uri cancelUrl;
-            if (!string.IsNullOrEmpty(CancelUrlPath))
-            {
-                cancelUrl = facebookUrl.BuildAuthReturnUrl(CancelUrlPath);
-            }
-            else if (CanvasSettings.Current.AuthorizeCancelUrl != null)
-            {
-                cancelUrl = CanvasSettings.Current.AuthorizeCancelUrl;
-            }
-            else
-            {
-                if (cancelToSelf)
-                {
-                    cancelUrl = facebookUrl.BuildAuthCancelUrl();
-                }
-                else
-                {
-                    // Cancel url is facebook.com
-                    cancelUrl = new Uri("http://www.facebook.com");
-                }
-
-            }
-            parameters.cancel_url = cancelUrl.ToString();
-
-            Uri uri = app.GetLoginUrl(parameters);
-            return uri.ToString();
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(filterContext.HttpContext.Request);
+            return urlBuilder.GetLoginUrl(_facebookApp, Perms, ReturnUrlPath, CancelUrlPath, cancelToSelf);
         }
 
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             var url = GetLoginUrl(filterContext);
-            filterContext.Result = new RedirectResult(url);
+            filterContext.Result = new RedirectResult(url.ToString());
         }
 
         /// <summary>
@@ -150,34 +136,37 @@ namespace Facebook.Web.Mvc
         /// would be to cache the permission in your local database and subscribe to 
         /// real time updates of user permissions: http://developers.facebook.com/docs/api/realtime
         /// </summary>
-        /// <param name="app"></param>
+        /// <param name="perms">The permission to check.</param>
         /// <returns></returns>
         protected virtual string[] GetCurrentPerms(string perms)
         {
-            if (app.Session == null)
-            {
-                throw new ArgumentException("A valid session must be present to get current permissions.");
-            }
             if (string.IsNullOrEmpty(perms))
             {
                 throw new ArgumentNullException("perms");
             }
+            Contract.Ensures(Contract.Result<string[]>() != null);
 
-            var query = string.Format("SELECT {0} FROM permissions WHERE uid == {1}", perms, app.UserId);
-            var parameters = new Dictionary<string, object>();
-            parameters["query"] = query;
-            parameters["method"] = "fql.query";
-            parameters["access_token"] = string.Concat(app.AppId, "|", app.ApiSecret);
-            dynamic data = app.Api(parameters);
-            if (data.Count == 0)
+            var result = new string[0];
+            if (_facebookApp.UserId != 0)
             {
-                return new string[0];
+                var query = string.Format(CultureInfo.InvariantCulture, "SELECT {0} FROM permissions WHERE uid == {1}", perms, _facebookApp.UserId);
+                var parameters = new Dictionary<string, object>();
+                parameters["query"] = query;
+                parameters["method"] = "fql.query";
+                parameters["access_token"] = string.Concat(_facebookApp.AppId, "|", _facebookApp.ApiSecret);
+                var data = (JsonArray)_facebookApp.Api(parameters);
+                if (data != null && data.Count > 0)
+                {
+                    var permData = data[0] as IDictionary<string, object>;
+                    if (permData != null)
+                    {
+                        result = (from perm in permData
+                                  where perm.Value.ToString() == "1"
+                                  select perm.Key).ToArray();
+                    }
+                }
             }
-
-            var permData = (IDictionary<string, object>)data[0];
-            return (from perm in permData
-                    where perm.Value.ToString() == "1"
-                    select perm.Key).ToArray();
+            return result;
         }
     }
 }

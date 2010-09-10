@@ -13,22 +13,20 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
     public class CanvasRedirectResult : RedirectResult
     {
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "0#")]
         public CanvasRedirectResult(string url) : base(url) { }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2234:PassSystemUriObjectsInsteadOfStrings")]
         public override void ExecuteResult(ControllerContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
-
-            var content = FacebookUrlBuilder.GetCanvasRedirectHtml(this.Url);
+            var content = CanvasUrlBuilder.GetCanvasRedirectHtml(this.Url);
 
             context.Controller.TempData.Keep();
 

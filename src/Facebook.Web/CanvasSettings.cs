@@ -8,8 +8,21 @@ namespace Facebook.Web
 {
     public class CanvasSettings : ICanvasSettings
     {
+        /// <summary>
+        /// The base url of your application on Facebook.
+        /// </summary>
         public Uri CanvasPageUrl { get; set; }
 
+        /// <summary>
+        /// Facebook pulls the content for your application's 
+        /// canvas pages from this base url.
+        /// </summary>
+        public Uri CanvasUrl { get; set; }
+
+        /// <summary>
+        /// The url to return the user after they
+        /// cancel authorization.
+        /// </summary>
         public Uri AuthorizeCancelUrl { get; set; }
 
         private static ICanvasSettings current;
@@ -26,7 +39,7 @@ namespace Facebook.Web
                     var settings = ConfigurationManager.GetSection("canvasSettings");
                     if (settings == null)
                     {
-                        throw new ConfigurationErrorsException("Canvas settings section not found in configuration file.");
+                        return null;
                     }
                     current = settings as CanvasConfigurationSettings;
                 }

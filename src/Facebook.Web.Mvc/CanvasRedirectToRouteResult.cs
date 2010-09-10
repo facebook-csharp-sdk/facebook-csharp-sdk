@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
@@ -14,19 +15,16 @@ namespace Facebook.Web.Mvc
 
         public CanvasRedirectToRouteResult(string routeName, RouteValueDictionary routeValues) : base(routeName, routeValues) { }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2234:PassSystemUriObjectsInsteadOfStrings")]
         public override void ExecuteResult(ControllerContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
             string destinationPathAndQuery = UrlHelper.GenerateUrl(RouteName, null /* actionName */, null /* controllerName */, RouteValues, RouteTable.Routes, context.RequestContext, false /* includeImplicitMvcValues */);
 
-            var canvasUrlBuilder = new FacebookUrlBuilder(context.HttpContext.Request);
+            var canvasUrlBuilder = new CanvasUrlBuilder(context.HttpContext.Request);
 
-            var canvasUrl = canvasUrlBuilder.BuildCanvasUrl(destinationPathAndQuery);
+            var canvasUrl = canvasUrlBuilder.BuildCanvasPageUrl(destinationPathAndQuery);
 
-            var content = FacebookUrlBuilder.GetCanvasRedirectHtml(canvasUrl.ToString());
+            var content = CanvasUrlBuilder.GetCanvasRedirectHtml(canvasUrl.ToString());
 
             context.Controller.TempData.Keep();
 
