@@ -73,5 +73,13 @@ namespace Facebook
             base.GetObjectData(info, context);
         }
 #endif
+
+        public override string Message
+        {
+            get
+            {
+                return base.Message;
+            }
+        }
     }
 }

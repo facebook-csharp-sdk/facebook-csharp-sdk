@@ -24,26 +24,29 @@ namespace Facebook.Utilities
             // If it does have an error message we throw a FacebookApiException.
 
             FacebookApiException resultException = null;
-            if (result != null && result is IDictionary<string, object>)
+            if (result != null)
             {
-                var resultDict = (IDictionary<string, object>)result;
-                if (resultDict.ContainsKey("error_code"))
+                var resultDict = result as IDictionary<string, object>;
+                if (resultDict != null)
                 {
-                    string error_code = resultDict["error_code"].ToString();
-                    string error_msg = null;
-                    if (resultDict.ContainsKey("error_msg"))
+                    if (resultDict.ContainsKey("error_code"))
                     {
-                        error_msg = resultDict["error_msg"].ToString();
-                    }
+                        string error_code = resultDict["error_code"] as String;
+                        string error_msg = null;
+                        if (resultDict.ContainsKey("error_msg"))
+                        {
+                            error_msg = resultDict["error_msg"] as String;
+                        }
 
-                    // Error Details: http://wiki.developers.facebook.com/index.php/Error_codes
-                    if (error_code == "190")
-                    {
-                        resultException = new FacebookOAuthException(error_msg, error_code);
-                    }
-                    else
-                    {
-                        resultException = new FacebookApiException(error_msg, error_code);
+                        // Error Details: http://wiki.developers.facebook.com/index.php/Error_codes
+                        if (error_code == "190")
+                        {
+                            resultException = new FacebookOAuthException(error_msg, error_code);
+                        }
+                        else
+                        {
+                            resultException = new FacebookApiException(error_msg, error_code);
+                        }
                     }
                 }
             }
@@ -77,29 +80,28 @@ namespace Facebook.Utilities
                     }
                     if (response != null)
                     {
-                        if (response is IDictionary<string, object>)
+                        var responseDict = response as IDictionary<string, object>;
+                        if (responseDict != null)
                         {
-                            var responseDict = (IDictionary<string, object>)response;
                             if (responseDict.ContainsKey("error"))
                             {
-                                var error = responseDict["error"];
-                                if (error is IDictionary<string, object>)
+                                var error = responseDict["error"] as IDictionary<string, object>;
+                                if (error != null)
                                 {
-                                    var errorDict = (IDictionary<string, object>)error;
-                                    var errorType = errorDict["type"];
-                                    var errorMessage = errorDict["message"];
+                                    var errorType = error["type"] as String;
+                                    var errorMessage = error["message"] as String;
                                     // Check to make sure the correct data is in the response
-                                    if (errorType != InvalidProperty.Instance && errorMessage != InvalidProperty.Instance)
+                                    if (!String.IsNullOrEmpty(errorType) && !String.IsNullOrEmpty(errorMessage))
                                     {
                                         // We dont include the inner exception because it is not needed and is always a WebException.
                                         // It is easier to understand the error if we use Facebook's error message.
-                                        if ((string)errorType == "OAuthException")
+                                        if (errorType == "OAuthException")
                                         {
-                                            resultException = new FacebookOAuthException((string)errorMessage, (string)errorType);
+                                            resultException = new FacebookOAuthException(errorMessage, errorType);
                                         }
                                         else
                                         {
-                                            resultException = new FacebookApiException((string)errorMessage, (string)errorType);
+                                            resultException = new FacebookApiException(errorMessage, errorType);
                                         }
                                     }
                                 }

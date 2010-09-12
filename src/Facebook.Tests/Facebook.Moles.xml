@@ -62,6 +62,10 @@
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.GetObjectData(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.MessageGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.Message"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MFacebookApiException.ToString">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.ToString"/>
             </summary>
@@ -79,6 +83,10 @@
         </member>
         <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.GetObjectDataSerializationInfoStreamingContext">
             <summary>Sets the mole of <see cref="M:Facebook.FacebookApiException.GetObjectData(T:System.Runtime.Serialization.SerializationInfo,T:System.Runtime.Serialization.StreamingContext)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.MessageGet">
+            <summary>Sets the mole of <see cref="P:Facebook.FacebookApiException.Message"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MFacebookApiException.AllInstances.ToString01">
@@ -2403,6 +2411,10 @@
         <member name="M:Facebook.Moles.SFacebookApiException.InitializeStub">
             <summary>Initializes a new instance of type SFacebookApiException</summary>
         </member>
+        <member name="F:Facebook.Moles.SFacebookApiException.MessageGet">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApiException.Message"/>
+            </summary>
+        </member>
         <member name="M:Facebook.Moles.SFacebookApiException.ToString">
             <summary>Sets the stub of <see cref="M:Facebook.FacebookApiException.ToString"/>
             </summary>
@@ -2416,6 +2428,10 @@
         </member>
         <member name="P:Facebook.Moles.SFacebookApiException.InstanceBehavior">
             <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:Facebook.Moles.SFacebookApiException.Message">
+            <summary>Sets the stub of <see cref="P:Facebook.FacebookApiException.Message"/>
+            </summary>
         </member>
         <member name="T:Facebook.Moles.SFacebookApp">
             <summary>Stub type of <see cref="T:Facebook.FacebookApp"/>

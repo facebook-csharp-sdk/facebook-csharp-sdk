@@ -196,7 +196,10 @@ namespace Facebook.Web
         /// <summary>
         /// Gets the login url for the current request.
         /// </summary>
-        /// <param name="filterContext">The current AuthorizationContext.</param>
+        /// <param name="facebookApp">An instance of FacebookAppBase.</param>
+        /// <param name="permissions">The comma seperated list of requested permissions.</param>
+        /// <param name="returnUrlPath">The path to return the user after autheticating.</param>
+        /// <param name="cancelUrlPath">The path to return the user if they do not authenticate.</param>
         /// <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
         /// <returns>The cancel url.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#")] 

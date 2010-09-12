@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 using Facebook.Utilities;
+using System.Dynamic;
 
 namespace Facebook.Tests.Integration
 {
@@ -19,6 +20,24 @@ namespace Facebook.Tests.Integration
             {
                 AccessToken = ConfigurationManager.AppSettings["AccessToken"],
             };
+        }
+
+        [TestMethod]
+        public void Test_Second_Level_Object_Serialization()
+        {
+            dynamic attachment = new ExpandoObject();
+            attachment.name = "my attachment";
+            attachment.href = "http://apps.facebook.com/canvas";
+
+            dynamic parameters = new ExpandoObject();
+            parameters.method = "stream.publish";
+            parameters.message = "my message";
+            parameters.attachment = attachment;
+
+            var writer = new JsonWriter();
+            writer.WriteValue(parameters);
+            var result = writer.Json;
+            Assert.AreEqual("{\r\n  \"method\": \"stream.publish\", \"message\": \"my message\", \"attachment\": {\r\n    \"name\": \"my attachment\", \"href\": \"http://apps.facebook.com/canvas\"\r\n  }\r\n}", result);
         }
 
         [TestMethod]

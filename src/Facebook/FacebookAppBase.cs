@@ -337,14 +337,16 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         public object Api(string path, HttpMethod httpMethod)
         {
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
             return this.Api(path, null, httpMethod);
         }
 
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {

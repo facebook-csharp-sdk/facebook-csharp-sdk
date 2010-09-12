@@ -52,6 +52,17 @@ namespace Facebook.Utilities
         {
             _writer = new IndentedTextWriter(writer, minimizeWhitespace);
             _scopes = new Stack<Scope>();
+            _internalWriter = (StringWriter)_writer.Target;
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_writer != null);
+            Contract.Invariant(_internalWriter != null);
+            Contract.Invariant(_scopes != null);
         }
 
         public string Json
@@ -87,6 +98,7 @@ namespace Facebook.Utilities
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         internal static string QuoteJScriptString(string s)
         {
             if (String.IsNullOrEmpty(s))
@@ -111,7 +123,7 @@ namespace Facebook.Utilities
                         b = new StringBuilder(s.Length + 6);
                     }
 
-                    if (count > 0)
+                    if (startIndex <= (s.Length - count) && count > 0)
                     {
                         b.Append(s, startIndex, count);
                     }
@@ -156,7 +168,7 @@ namespace Facebook.Utilities
             string processedString = s;
             if (b != null)
             {
-                if (count > 0)
+                if (startIndex <= (s.Length - count) && count > 0)
                 {
                     b.Append(s, startIndex, count);
                 }
@@ -176,6 +188,7 @@ namespace Facebook.Utilities
             StartScope(ScopeType.Object);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
         private void StartScope(ScopeType type)
         {
             if (_scopes.Count != 0)
@@ -205,12 +218,15 @@ namespace Facebook.Utilities
             _writer.WriteLine();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
         public void WriteName(string name)
         {
             if (String.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException("name");
             }
+            Contract.EndContractBlock();
+
             if (_scopes.Count == 0)
             {
                 throw new InvalidOperationException("No active scope to write into.");
@@ -236,6 +252,7 @@ namespace Facebook.Utilities
             _writer.WriteTrimmed("\": ");
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
         private void WriteCore(string text, bool quotes)
         {
             if (_scopes.Count != 0)
@@ -263,6 +280,7 @@ namespace Facebook.Utilities
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(bool value)
         {
             WriteCore(value ? "true" : "false", /* quotes */ false);
@@ -290,6 +308,7 @@ namespace Facebook.Utilities
             WriteCore(value, /* quotes */ true);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(string s)
         {
             if (s == null)
@@ -302,6 +321,7 @@ namespace Facebook.Utilities
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(ICollection items)
         {
             if ((items == null) || (items.Count == 0))
@@ -321,6 +341,7 @@ namespace Facebook.Utilities
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(IDictionary record)
         {
             if ((record == null) || (record.Count == 0))
@@ -347,6 +368,35 @@ namespace Facebook.Utilities
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
+        public void WriteValue(IDictionary<string, object> record)
+        {
+            if ((record == null) || (record.Count == 0))
+            {
+                WriteCore("{}", /* quotes */ false);
+            }
+            else
+            {
+                StartObjectScope();
+
+                foreach (var entry in record)
+                {
+                    string name = entry.Key;
+                    if (String.IsNullOrEmpty(name))
+                    {
+                        throw new ArgumentException("Key of unsupported type contained in Hashtable.");
+                    }
+
+                    WriteName(name);
+                    WriteValue(entry.Value);
+                }
+
+                EndScope();
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Justification = "It is impractical to do this.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(object o)
         {
             if (o == null)
@@ -380,6 +430,10 @@ namespace Facebook.Utilities
             else if (o is IDictionary)
             {
                 WriteValue((IDictionary)o);
+            }
+            else if (o is IDictionary<string, object>)
+            {
+                WriteValue((IDictionary<string, object>)o);
             }
             else if (o is ICollection)
             {
@@ -795,16 +849,6 @@ namespace Facebook.Utilities
             {
                 _writer.Dispose();
             }
-        }
-
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        private void InvarientObject()
-        {
-            Contract.Invariant(_writer != null);
-            Contract.Invariant(_internalWriter != null);
-            Contract.Invariant(_scopes != null);
         }
     }
 }

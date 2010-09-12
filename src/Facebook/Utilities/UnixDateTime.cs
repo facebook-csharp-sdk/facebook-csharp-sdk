@@ -22,6 +22,7 @@ namespace Facebook.Utilities
                 throw new ArgumentException("Date time cannot be less than 01/01/1970.");
             }
             Contract.EndContractBlock();
+
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var range = dateTime - epoch;
             return Math.Floor(range.TotalSeconds).ToString(CultureInfo.InvariantCulture);

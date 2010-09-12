@@ -351,6 +351,7 @@ namespace Facebook
         /// Invoke the old restserver.php endpoint.
         /// </summary>
         /// <param name="parameters">The parameters of the method call.</param>
+        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)

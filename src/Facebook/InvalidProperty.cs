@@ -72,6 +72,7 @@ namespace Facebook
             return default(DateTime);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override bool Equals(object obj)
         {
             if (obj == null)
