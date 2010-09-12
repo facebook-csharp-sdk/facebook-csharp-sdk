@@ -285,13 +285,9 @@ namespace Facebook.Utilities
 
         public void WriteValue(DateTime dateTime)
         {
-            if (dateTime < JsonReader.MinDate)
-            {
-                throw new ArgumentOutOfRangeException("dateTime");
-            }
-
-            long value = ((dateTime.Ticks - JsonReader.MinDateTimeTicks) / 10000);
-            WriteCore("\\@" + value.ToString(CultureInfo.InvariantCulture) + "@", /* quotes */ true);
+            // Uses ISO 8601 format for the dates such as "2010-04-13T15:29:40+0000"
+            string value = dateTime.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
+            WriteCore(value, /* quotes */ true);
         }
 
         public void WriteValue(string s)

@@ -344,6 +344,7 @@
     <Compile Include="Integration\GraphReadTests.cs" />
     <Compile Include="Integration\RestPublishTests.cs" />
     <Compile Include="Integration\RestReadTests.cs" />
+    <Compile Include="Integration\SerializationTests.cs" />
     <Compile Include="InvalidPropertyTest.cs" />
     <Compile Include="InvalidPropertyTest.Explicit.g.cs">
       <DependentUpon>InvalidPropertyTest.cs</DependentUpon>

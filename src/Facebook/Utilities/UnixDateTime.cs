@@ -15,17 +15,6 @@ namespace Facebook.Utilities
 {
     internal static class UnixDateTime
     {
-        public static string ToUnixDateTime(this DateTime dateTime)
-        {
-            if (dateTime < new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-            {
-                throw new ArgumentException("Date time cannot be less than 01/01/1970.");
-            }
-            Contract.EndContractBlock();
-
-            return UnixDateTime.ToUnixTime(dateTime);
-        }
-
         public static string ToUnixTime(DateTime dateTime)
         {
             if (dateTime < new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
@@ -45,13 +34,13 @@ namespace Facebook.Utilities
             {
                 throw new ArgumentNullException("unixTime");
             }
-            if (!System.Text.RegularExpressions.Regex.IsMatch(unixTime, @"[0-9]+"))
-            {
-                throw new FormatException("Input unixTime was not in the correct format.");
-            }
             Contract.EndContractBlock();
 
-            long seconds = long.Parse(unixTime, CultureInfo.InvariantCulture);
+            long seconds;
+            if (!long.TryParse(unixTime, out seconds) || seconds < 0)
+            {
+                throw new FormatException("The unix time provided was not in the correct format.");
+            }
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(seconds);
         }

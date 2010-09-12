@@ -20,10 +20,6 @@ namespace Facebook.Utilities
 
     internal sealed class JsonReader : IDisposable
     {
-
-        internal static readonly long MinDateTimeTicks = (new DateTime(1970, 1, 1, 0, 0, 0)).Ticks;
-        internal static readonly DateTime MinDate = new DateTime(100, 1, 1, 0, 0, 0);
-
         private TextReader _reader;
 
         public JsonReader(string jsonText)
@@ -292,7 +288,7 @@ namespace Facebook.Utilities
                     _reader.Read();
                 }
 
-                object item = ReadValue();
+                object item = ReadValue(name);
                 recordItems[name] = item;
             }
         }
@@ -363,6 +359,11 @@ namespace Facebook.Utilities
 
         public object ReadValue()
         {
+            return ReadValue(null);
+        }
+
+        public object ReadValue(string name)
+        {
             object value = null;
             bool allowNull = false;
 
@@ -379,13 +380,17 @@ namespace Facebook.Utilities
             {
                 bool hasLeadingSlash;
                 string s = ReadString(out hasLeadingSlash);
-                if (hasLeadingSlash && s.StartsWith("@", StringComparison.Ordinal) && s.EndsWith("@", StringComparison.Ordinal))
-                {
-                    long ticks;
 
-                    if (Int64.TryParse(s.Substring(1, s.Length - 2), out ticks))
+                if (!String.IsNullOrEmpty(name))
+                {
+                    // Convert date strings to DateTime values
+                    if (name.EndsWith("_time", StringComparison.Ordinal) || name.EndsWith("_date", StringComparison.Ordinal))
                     {
-                        value = new DateTime(ticks * 10000 + JsonReader.MinDateTimeTicks, DateTimeKind.Utc);
+                        DateTime dtValue;
+                        if (DateTime.TryParse(s, out dtValue))
+                        {
+                            value = dtValue;
+                        }
                     }
                 }
 
