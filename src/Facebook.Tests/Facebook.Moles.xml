@@ -1668,15 +1668,47 @@
         <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Dynamic.IDynamicMetaObjectProvider)">
             <summary>Binds the members of the interface to the mole.</summary>
         </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.ICollection)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.IEnumerable)">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.Generic.ICollection{System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="M:Facebook.Moles.MInvalidProperty.Bind(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>Binds the members of the interface to the mole.</summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AddObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Add(T:System.Object)"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MInvalidProperty.Behavior">
             <summary>Assigns the behavior for all methods of the moled type</summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.Clear">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Clear"/>
+            </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.Constructor">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.#ctor"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.ContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.CopyToObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.CopyTo(T:System.Object[],T:System.Int32)"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MInvalidProperty.CountGet">
             <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.get_Count"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.EqualsObject">
@@ -1703,21 +1735,52 @@
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Explicit(T:Facebook.InvalidProperty)"/>
             </summary>
         </member>
-        <member name="P:Facebook.Moles.MInvalidProperty.GetHashCode">
-            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetHashCode"/>
+        <member name="P:Facebook.Moles.MInvalidProperty.GetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetEnumerator"/>
             </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.GetHashCode">
+            <summary><para>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetHashCode"/>.</para>
+                        Always returns 0.
+                        </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.ImplicitOpInvalidProperty">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.op_Implicit(T:Facebook.InvalidProperty)"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.InstanceGet">
-            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Instance"/>
+            <summary><para>Sets the mole of <see cref="P:Facebook.InvalidProperty.Instance"/>.</para>
+                        The singlton instance of this object.
+                        </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.IsReadOnlyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.RemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.IEnumerable.GetEnumerator"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.ToString">
-            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>
-            </summary>
+            <summary><para>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>.</para>
+                        Always returns an empty string.
+                        </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.TryGetIndexGetIndexBinderObjectArrayObjectOut">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
@@ -1730,21 +1793,71 @@
         <member name="T:Facebook.Moles.MInvalidProperty.AllInstances">
             <summary>Define moles for all instances members</summary>
         </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.AddObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Add(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.Clear">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Clear"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.ContainsObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Contains(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.CopyToObjectArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.CopyTo(T:System.Object[],T:System.Int32)"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.CountGet">
             <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.Count"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.CountSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.get_Count"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.EqualsObject">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Equals(T:System.Object)"/>
             </summary>
         </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.GetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetEnumerator"/>
+            </summary>
+        </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.GetHashCode01">
-            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetHashCode"/>
+            <summary><para>Sets the mole of <see cref="M:Facebook.InvalidProperty.GetHashCode"/>.</para>
+                        Always returns 0.
+                        </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.IsReadOnlyGet">
+            <summary>Sets the mole of <see cref="P:Facebook.InvalidProperty.IsReadOnly"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.IsSynchronizedSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.get_IsSynchronized"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.RemoveObject">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.Remove(T:System.Object)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.SyncRootSystemCollectionsICollectionget">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.get_SyncRoot"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.SystemCollectionsICollectionCopyToArrayInt32">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.ICollection.CopyTo(T:System.Array,T:System.Int32)"/>
+            </summary>
+        </member>
+        <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.SystemCollectionsIEnumerableGetEnumerator">
+            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.System.Collections.IEnumerable.GetEnumerator"/>
             </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.ToString01">
-            <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>
-            </summary>
+            <summary><para>Sets the mole of <see cref="M:Facebook.InvalidProperty.ToString"/>.</para>
+                        Always returns an empty string.
+                        </summary>
         </member>
         <member name="P:Facebook.Moles.MInvalidProperty.AllInstances.TryGetIndexGetIndexBinderObjectArrayObjectOut">
             <summary>Sets the mole of <see cref="M:Facebook.InvalidProperty.TryGetIndex(T:System.Dynamic.GetIndexBinder,T:System.Object[],T:System.Object@)"/>
