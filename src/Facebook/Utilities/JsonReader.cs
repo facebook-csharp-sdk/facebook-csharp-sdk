@@ -204,6 +204,10 @@ namespace Facebook.Utilities
 
                 if (Char.IsDigit(ch) || (ch == '.'))
                 {
+                    if (!hasDecimal)
+                    {
+                        hasDecimal = (ch == '.');
+                    }
                     _reader.Read();
                     sb.Append(ch);
                 }
