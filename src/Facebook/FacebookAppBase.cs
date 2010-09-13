@@ -381,7 +381,7 @@ namespace Facebook
             }
             Contract.EndContractBlock();
 
-            parameters = parameters ?? new ExpandoObject();
+            parameters = parameters ?? new Dictionary<string, object>();
 
             path = ParseUrlParameters(path, parameters);
 

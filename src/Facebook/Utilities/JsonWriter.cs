@@ -258,6 +258,10 @@ namespace Facebook.Utilities
             if (_scopes.Count != 0)
             {
                 Scope currentScope = _scopes.Peek();
+                if (currentScope == null)
+                {
+                    throw new InvalidOperationException("The json write is in an invalid state. The current scope is null.");
+                }
                 if (currentScope.Type == ScopeType.Array)
                 {
                     if (currentScope.ObjectCount != 0)

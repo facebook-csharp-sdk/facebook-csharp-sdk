@@ -383,7 +383,7 @@ namespace Facebook
         {
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
-                throw new ArgumentException("You must supply either the 'path' or 'parameters' argument.");
+                throw ExceptionFactory.PathOrParametersRequired;
             }
 
             var uri = GetGraphRequestUri(path);
@@ -434,7 +434,7 @@ namespace Facebook
             }
             if (!parameters.ContainsKey("method") || String.IsNullOrEmpty((string)parameters["method"]))
             {
-                throw new ArgumentException("A method must be specified in order to make a rest call.");
+                throw ExceptionFactory.MethodRequiredForRestCall;
             }
 
             AddRestParameters(parameters);
@@ -462,7 +462,7 @@ namespace Facebook
             }
             if (string.IsNullOrEmpty(path) && parameters == null)
             {
-                throw new ArgumentException("You must supply either the 'path' or 'parameters' argument.");
+                throw ExceptionFactory.PathOrParametersRequired;
             }
             Contract.EndContractBlock();
 
@@ -727,7 +727,7 @@ namespace Facebook
                     // Check to make sure the file upload hasn't already been set.
                     if (mediaObject != null)
                     {
-                        throw new InvalidOperationException("You cannot include more than one Facebook Media Object in a single request.");
+                        throw ExceptionFactory.CannotIncludeMultipleMediaObjects;
                     }
                     mediaObject = kvp.Value as FacebookMediaObject;
                 }
@@ -746,7 +746,7 @@ namespace Facebook
 
             if (mediaObject.ContentType == null || mediaObject.GetValue() == null || mediaObject.FileName == null)
             {
-                throw new InvalidOperationException("The media object must have a content type, file name, and value set.");
+                throw ExceptionFactory.MediaObjectMustHavePropertiesSet;
             }
             sb.Append(_prefix).Append(boundary).Append(_newLine);
             sb.Append("Content-Disposition: form-data; filename=\"").Append(mediaObject.FileName).Append("\"").Append(_newLine);
@@ -779,7 +779,7 @@ namespace Facebook
         private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = HttpMethodHelper.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = HttpMethodConvertor.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
 
             if (postData != null)
             {
@@ -806,7 +806,7 @@ namespace Facebook
                 response.Close();
 
                 result = JsonSerializer.DeserializeObject(responseData);
-                exception = ExceptionHelper.GetRestException(result);
+                exception = ExceptionFactory.GetRestException(result);
                 if (exception != null)
                 {
                     throw exception; // Thow the FacebookApiException
@@ -821,7 +821,7 @@ namespace Facebook
             catch (WebException ex)
             {
                 // Graph API Errors or general web exceptions
-                exception = ExceptionHelper.GetGraphException(ex);
+                exception = ExceptionFactory.GetGraphException(ex);
                 if (exception != null)
                 {
                     throw exception;
@@ -845,7 +845,7 @@ namespace Facebook
         private static void MakeRequestAsync(FacebookAsyncCallback callback, object state, HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = HttpMethodHelper.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = HttpMethodConvertor.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
             if (httpMethod == HttpMethod.Post)
             {
                 request.ContentType = contentType;
@@ -887,7 +887,7 @@ namespace Facebook
             }
             catch (WebException ex) // Graph API Errors or general web exceptions
             {
-                exception = ExceptionHelper.GetGraphException(ex);
+                exception = ExceptionFactory.GetGraphException(ex);
                 if (exception != null)
                 {
                     throw exception; // Thow the FacebookApiException
@@ -1032,7 +1032,7 @@ namespace Facebook
             }
             if (sessionValue.Contains(","))
             {
-                throw new InvalidOperationException("The cookie value is invalid. The cookie contains multiple value sets.");
+                throw ExceptionFactory.InvalidCookie;
             }
             Contract.EndContractBlock();
 

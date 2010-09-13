@@ -445,12 +445,12 @@
       <DependentUpon>DictionaryExtensionsTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DictionaryExtensionsTest_Unit.cs" />
-    <Compile Include="Utilities\ExceptionHelperTest.cs" />
+    <Compile Include="Utilities\ExceptionFactoryTest.cs" />
     <Compile Include="Utilities\ExceptionHelperTest.GetGraphException.g.cs">
-      <DependentUpon>ExceptionHelperTest.cs</DependentUpon>
+      <DependentUpon>ExceptionFactoryTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\ExceptionHelperTest.GetRestException.g.cs">
-      <DependentUpon>ExceptionHelperTest.cs</DependentUpon>
+      <DependentUpon>ExceptionFactoryTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\HttpMethodHelperTest.ConvertToString.g.cs">
       <DependentUpon>HttpMethodHelperTest.cs</DependentUpon>

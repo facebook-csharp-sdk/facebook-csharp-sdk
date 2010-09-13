@@ -118,14 +118,14 @@
     <Compile Include="JsonObject.cs" />
     <Compile Include="Utilities\JsonReader.cs" />
     <Compile Include="Utilities\JsonWriter.cs" />
-    <Compile Include="Utilities\ExceptionHelper.cs" />
-    <Compile Include="Utilities\HttpMethodHelper.cs" />
+    <Compile Include="Utilities\ExceptionFactory.cs" />
+    <Compile Include="Utilities\HttpMethodConvertor.cs" />
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="Utilities\UnixDateTime.cs" />
     <Compile Include="Utilities\DictionaryExtensions.cs" />
-    <Compile Include="Utilities\JsonQueryStringHelper.cs" />
+    <Compile Include="Utilities\JsonQueryStringExtensions.cs" />
     <Compile Include="IFacebookSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">

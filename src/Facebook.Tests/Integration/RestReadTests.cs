@@ -24,7 +24,7 @@ namespace Facebook.Tests.Rest {
             try
             {
                 FacebookApp app = new FacebookApp();
-
+                
                 dynamic parameters = new ExpandoObject();
                 parameters.method = "user.getInfo";
                 parameters.uids = "14812017";

@@ -22,6 +22,11 @@ namespace Facebook
             get { return instance; }
         }
 
+        public int Count
+        {
+            get { return 0; }
+        }
+
         private InvalidProperty() { }
 
         /// <summary>
