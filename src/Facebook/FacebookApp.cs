@@ -681,7 +681,7 @@ namespace Facebook
 
             if (httpMethod == HttpMethod.Get)
             {
-                queryString = ((IDictionary<string, object>)parameters).ToJsonQueryString();
+                queryString = parameters.ToJsonQueryString();
             }
             else
             {
@@ -968,10 +968,9 @@ namespace Facebook
             }
 
             var payloadJson = Encoding.UTF8.GetString(Convert.FromBase64String(Base64UrlDecode(payload)));
-            object data = JsonSerializer.DeserializeObject(payloadJson);
-            var dataDict = (IDictionary<string, object>)data;
+            var data = (IDictionary<string, object>)JsonSerializer.DeserializeObject(payloadJson);
             var signedRequest = new FacebookSignedRequest();
-            foreach (var keyValue in dataDict)
+            foreach (var keyValue in data)
             {
                 signedRequest.Dictionary.Add(keyValue.Key, keyValue.Value.ToString());
             }

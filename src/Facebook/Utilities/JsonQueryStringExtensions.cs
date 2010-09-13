@@ -23,13 +23,12 @@ namespace Facebook.Utilities
     /// </summary>
     internal static class JsonQueryStringExtensions
     {
-
         /// <summary>
         /// Converts the dictionary to a json formatted query string.
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <returns>A Json formatted querystring.</returns>
-        public static string ToJsonQueryString(this IDictionary<string, string> dictionary)
+        public static string ToJsonQueryString(this IDictionary<string, object> dictionary)
         {
             if (dictionary == null)
             {
@@ -50,13 +49,10 @@ namespace Facebook.Utilities
                 {
                     sb.Append("&");
                 }
-                if (!string.IsNullOrEmpty(dictionary[key]))
+                if (dictionary[key] != null)
                 {
-                    // Just to make sure 
-                    string value = dictionary[key].Replace(", ", ",");
-
                     // Format Object As Json And Remove leading and trailing perenthesis
-                    string jsonValue = JsonSerializer.SerializeObject(value);
+                    string jsonValue = JsonSerializer.SerializeObject(dictionary[key]);
                     if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
                     {
                         jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);
@@ -65,7 +61,8 @@ namespace Facebook.Utilities
                     {
                         jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
                     }
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, Uri.EscapeUriString(jsonValue));
+                    var encodedValue = UrlEncoder.EncodeDataString(jsonValue);
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
                 }
                 else
                 {
@@ -80,7 +77,7 @@ namespace Facebook.Utilities
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <returns>A Json formatted querystring.</returns>
-        public static string ToJsonQueryString(this IDictionary<string, object> dictionary)
+        public static string ToJsonQueryString(this IDictionary<string, string> dictionary)
         {
             if (dictionary == null)
             {
@@ -89,7 +86,7 @@ namespace Facebook.Utilities
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
-            return ToJsonQueryString(dictionary.ToDictionary(d => d.Key, d => (d.Value == null ? string.Empty : d.Value.ToString())));
+            return ToJsonQueryString((IDictionary<string, object>)dictionary);
         }
 
 #if !SILVERLIGHT

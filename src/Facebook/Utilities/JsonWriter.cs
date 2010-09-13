@@ -144,10 +144,10 @@ namespace Facebook.Utilities
                         b.Append("\\\"");
                         break;
                     case '\'':
-                        b.Append("\\\'");
+                        b.Append("\'");
                         break;
                     case '\\':
-                        b.Append("\\\\");
+                        b.Append("\\");
                         break;
                     case '\n':
                         b.Append("\\n");
