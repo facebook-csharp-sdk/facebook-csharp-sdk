@@ -51,6 +51,14 @@ namespace Facebook.Tests.Fql
             Assert.IsNotNull(result);
         }
 
+        [TestMethod]
+        public void MyTestMethod()
+        {
+            var query = "SELECT page_id, name FROM page WHERE page_id='http://www.underarmour.com/shop/us/en/pid1212701?cid=SM|Facebook|Like|1212701'";
+            dynamic results = app.Fql(query);
+            Assert.IsNotNull(results);
+        }
+
         //private FacebookApp app;
         //public FqlReadTests()
         //{
