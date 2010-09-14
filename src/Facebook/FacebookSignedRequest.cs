@@ -75,13 +75,13 @@ namespace Facebook
             {
                 if (_dictionary.ContainsKey("expires"))
                 {
-                    return Utilities.UnixDateTime.FromUnixTime(_dictionary["expires"]);
+                    return Utilities.DateTimeUtils.FromUnixTime(_dictionary["expires"]);
                 }
                 return default(DateTime);
             }
             set
             {
-                _dictionary["expires"] = Utilities.UnixDateTime.ToUnixTime(value);
+                _dictionary["expires"] = Utilities.DateTimeUtils.ToUnixTime(value);
             }
         }
         /// <summary>

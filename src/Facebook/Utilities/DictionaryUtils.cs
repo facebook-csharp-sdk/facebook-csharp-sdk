@@ -1,5 +1,5 @@
 ﻿// --------------------------------
-// <copyright file="JsonQueryStringHelper.cs" company="Thuzi, LLC">
+// <copyright file="DynamicUtilities.cs" company="Thuzi, LLC">
 //     Copyright (c) 2010 Thuzi, LLC (thuzi.com)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
@@ -9,26 +9,49 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
+using System.Collections.Specialized;
 using System.Globalization;
+using System.Text;
 
 namespace Facebook.Utilities
 {
-    /// <summary>
-    /// Extension methods to turn Dictionary type collections
-    /// into Json formatted query strings.
-    /// </summary>
-    internal static class JsonQueryStringExtensions
+    internal static class DictionaryUtils
     {
+        /// <summary>
+        /// Merges two dictionaries.
+        /// </summary>
+        /// <param name="first">Default values, only used if second does not contain a value.</param>
+        /// <param name="second">Every value of the merged object is used.</param>
+        /// <returns>The merged dictionary</returns>
+        internal static IDictionary<string, object> Merge(this IDictionary<string, object> first, IDictionary<string, object> second)
+        {
+            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
+
+            first = first ?? new Dictionary<string, object>();
+            second = second ?? new Dictionary<string, object>();
+            var merged = new Dictionary<string, object>();
+            foreach (var kvp in second)
+            {
+                merged.Add(kvp.Key, kvp.Value);
+            }
+            foreach (var kvp in first)
+            {
+                if (!merged.ContainsKey(kvp.Key))
+                {
+                    merged.Add(kvp.Key, kvp.Value);
+                }
+            }
+            return merged;
+        }
+
         /// <summary>
         /// Converts the dictionary to a json formatted query string.
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <returns>A Json formatted querystring.</returns>
-        public static string ToJsonQueryString(this IDictionary<string, object> dictionary)
+        internal static string ToJsonQueryString(this IDictionary<string, object> dictionary)
         {
             if (dictionary == null)
             {
@@ -61,7 +84,7 @@ namespace Facebook.Utilities
                     {
                         jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
                     }
-                    var encodedValue = UrlEncoder.EncodeDataString(jsonValue);
+                    var encodedValue = Uri.EscapeDataString(jsonValue);
                     sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
                 }
                 else
@@ -77,7 +100,7 @@ namespace Facebook.Utilities
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <returns>A Json formatted querystring.</returns>
-        public static string ToJsonQueryString(this IDictionary<string, string> dictionary)
+        internal static string ToJsonQueryString(this IDictionary<string, string> dictionary)
         {
             if (dictionary == null)
             {
@@ -97,7 +120,7 @@ namespace Facebook.Utilities
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <returns>A Json formatted querystring.</returns>
-        public static string ToJsonQueryString(this NameValueCollection collection)
+        internal static string ToJsonQueryString(this NameValueCollection collection)
         {
             if (collection == null)
             {
@@ -117,6 +140,5 @@ namespace Facebook.Utilities
             return ToJsonQueryString(dictionary);
         }
 #endif
-
     }
 }

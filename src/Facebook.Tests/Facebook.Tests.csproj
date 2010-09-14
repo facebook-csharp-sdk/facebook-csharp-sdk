@@ -440,11 +440,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\PexAssemblyInfo.cs" />
-    <Compile Include="Utilities\DictionaryExtensionsTest.cs" />
-    <Compile Include="Utilities\DictionaryExtensionsTest.Merge.g.cs">
-      <DependentUpon>DictionaryExtensionsTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Utilities\DictionaryExtensionsTest_Unit.cs" />
+    <Compile Include="Utilities\DictionaryUtilsTest.cs" />
+    <Compile Include="Utilities\DictionaryUtilsTest_Unit.cs" />
     <Compile Include="Utilities\ExceptionFactoryTest.cs" />
     <Compile Include="Utilities\ExceptionHelperTest.GetGraphException.g.cs">
       <DependentUpon>ExceptionFactoryTest.cs</DependentUpon>
@@ -453,19 +450,9 @@
       <DependentUpon>ExceptionFactoryTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\HttpMethodHelperTest.ConvertToString.g.cs">
-      <DependentUpon>HttpMethodHelperTest.cs</DependentUpon>
+      <DependentUpon>StringUtilsTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\HttpMethodHelperTest.cs" />
-    <Compile Include="Utilities\JsonQueryStringHelperTest.cs" />
-    <Compile Include="Utilities\JsonQueryStringHelperTest.ToJsonQueryString.g.cs">
-      <DependentUpon>JsonQueryStringHelperTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Utilities\JsonQueryStringHelperTest.ToJsonQueryString01.g.cs">
-      <DependentUpon>JsonQueryStringHelperTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Utilities\JsonQueryStringHelperTest.ToJsonQueryString02.g.cs">
-      <DependentUpon>JsonQueryStringHelperTest.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Utilities\StringUtilsTest.cs" />
     <Compile Include="Utilities\JsonReaderTest.Constructor.g.cs">
       <DependentUpon>JsonReaderTest.cs</DependentUpon>
     </Compile>
@@ -499,17 +486,17 @@
     <Compile Include="Utilities\JsonWriterTest.QuoteJScriptString.g.cs">
       <DependentUpon>JsonWriterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\UnixDateTimeTest.cs" />
+    <Compile Include="Utilities\DateTimeUtilsTest.cs" />
     <Compile Include="Utilities\UnixDateTimeTest.FromUnixTime.g.cs">
-      <DependentUpon>UnixDateTimeTest.cs</DependentUpon>
+      <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\UnixDateTimeTest.ToUnixDateTime.g.cs">
-      <DependentUpon>UnixDateTimeTest.cs</DependentUpon>
+      <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\UnixDateTimeTest.ToUnixTime.g.cs">
-      <DependentUpon>UnixDateTimeTest.cs</DependentUpon>
+      <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\UnixDateTimeTest_Unit.cs" />
+    <Compile Include="Utilities\DateTimeUtilsTest_Unit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Facebook.Moles.dll">

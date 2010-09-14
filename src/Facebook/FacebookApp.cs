@@ -779,7 +779,7 @@ namespace Facebook
         private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = HttpMethodConvertor.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = StringUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
 
             if (postData != null)
             {
@@ -845,7 +845,7 @@ namespace Facebook
         private static void MakeRequestAsync(FacebookAsyncCallback callback, object state, HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = HttpMethodConvertor.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = StringUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
             if (httpMethod == HttpMethod.Post)
             {
                 request.ContentType = contentType;

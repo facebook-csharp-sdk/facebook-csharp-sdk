@@ -649,7 +649,7 @@ namespace Facebook
                         path = string.Empty;
                     }
                 }
-                uri.Path = UrlEncoder.EncodeDataString(path);
+                uri.Path = Uri.EscapeDataString(path);
             }
             if (parameters != null)
             {

@@ -15,13 +15,15 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Text;
+using System.Globalization;
+using System.Collections.Specialized;
 
 namespace Facebook.Utilities
 {
     internal static class JsonSerializer
     {
-        private static readonly Regex _stripXmlnsRegex =
-            new Regex(@"(xmlns:?[^=]*=[""][^""]*[""])",
+        private static readonly Regex _stripXmlnsRegex = new Regex(@"(xmlns:?[^=]*=[""][^""]*[""])",
 #if SILVERLIGHT
  RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
 #else

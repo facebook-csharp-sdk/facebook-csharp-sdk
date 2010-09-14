@@ -93,7 +93,7 @@ namespace Facebook
             {
                 if (_dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(_dictionary["expires"]))
                 {
-                    return Utilities.UnixDateTime.FromUnixTime(_dictionary["expires"]);
+                    return Utilities.DateTimeUtils.FromUnixTime(_dictionary["expires"]);
                 }
                 return default(DateTime);
             }
@@ -105,7 +105,7 @@ namespace Facebook
                 }
                 Contract.EndContractBlock();
 
-                _dictionary["expires"] = Utilities.UnixDateTime.ToUnixTime(value);
+                _dictionary["expires"] = Utilities.DateTimeUtils.ToUnixTime(value);
             }
         }
         public string Signature
