@@ -109,7 +109,7 @@ namespace Facebook.Utilities
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
-            return ToJsonQueryString((IDictionary<string, object>)dictionary);
+            return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
         }
 
 #if !SILVERLIGHT
