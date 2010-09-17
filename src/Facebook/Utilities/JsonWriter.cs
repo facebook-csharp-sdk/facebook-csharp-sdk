@@ -12,11 +12,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Diagnostics.Contracts;
-using System.Reflection;
 
 namespace Facebook.Utilities
 {
@@ -96,86 +95,6 @@ namespace Facebook.Utilities
             {
                 _writer.Write("}");
             }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        internal static string QuoteJScriptString(string s)
-        {
-            if (String.IsNullOrEmpty(s))
-            {
-                return String.Empty;
-            }
-
-            StringBuilder b = null;
-            int startIndex = 0;
-            int count = 0;
-            for (int i = 0; i < s.Length; i++)
-            {
-                char c = s[i];
-
-                // Append the unhandled characters (that do not require special treament)
-                // to the string builder when special characters are detected.
-                if (c == '\r' || c == '\t' || c == '\"' || c == '\'' ||
-                    c == '\\' || c == '\r' || c < ' ' || c > 0x7F)
-                {
-                    if (b == null)
-                    {
-                        b = new StringBuilder(s.Length + 6);
-                    }
-
-                    if (startIndex <= (s.Length - count) && count > 0)
-                    {
-                        b.Append(s, startIndex, count);
-                    }
-
-                    startIndex = i + 1;
-                    count = 0;
-                }
-
-                switch (c)
-                {
-                    case '\r':
-                        b.Append("\\r");
-                        break;
-                    case '\t':
-                        b.Append("\\t");
-                        break;
-                    case '\"':
-                        b.Append("\\\"");
-                        break;
-                    case '\'':
-                        b.Append("\'");
-                        break;
-                    case '\\':
-                        b.Append("\\");
-                        break;
-                    case '\n':
-                        b.Append("\\n");
-                        break;
-                    default:
-                        if ((c < ' ') || (c > 0x7F))
-                        {
-                            b.AppendFormat(CultureInfo.InvariantCulture, "\\u{0:x4}", (int)c);
-                        }
-                        else
-                        {
-                            count++;
-                        }
-                        break;
-                }
-            }
-
-            string processedString = s;
-            if (b != null)
-            {
-                if (startIndex <= (s.Length - count) && count > 0)
-                {
-                    b.Append(s, startIndex, count);
-                }
-                processedString = b.ToString();
-            }
-
-            return processedString;
         }
 
         public void StartArrayScope()
@@ -321,7 +240,7 @@ namespace Facebook.Utilities
             }
             else
             {
-                WriteCore(QuoteJScriptString(s), /* quotes */ true);
+                WriteCore(s, /* quotes */ true);
             }
         }
 
