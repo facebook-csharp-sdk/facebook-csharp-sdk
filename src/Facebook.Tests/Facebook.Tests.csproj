@@ -478,6 +478,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Facebook.Moles.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Facebook.moles</DependentUpon>
     </Content>
     <Content Include="Facebook.Moles.xml">
