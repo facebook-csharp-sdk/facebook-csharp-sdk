@@ -8,125 +8,84 @@
 // ---------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Dynamic;
-using System.Reflection;
-using System.IO;
 using System.Configuration;
+using System.Dynamic;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Facebook.Tests.Graph {
-    
+namespace Facebook.Tests.Graph
+{
+
     [TestClass]
-    public class GraphPublishTests {
-
-
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
-        public void Wall_Post_Publish() {
-            //var app = new FacebookApp(TestHelper.FacebookSettings);
-            //app.Session = new FacebookSession
-            //{
-            //    AccessToken = TestHelper.AuthToken,
-            //};
-
-            //dynamic parameters = new ExpandoObject();
-            //parameters.message = "This is a test wall post.";
-
-            //var postResult = app.Api("/me/feed", parameters, HttpMethod.Post);
-
-            //Assert.IsNotNull(postResult.id);
-
-            //var deleteResult = app.Api(postResult.id, HttpMethod.Delete);
-
-            //Assert.IsTrue(deleteResult);
-        }
+    public class GraphPublishTests
+    {
 
         [TestMethod]
         [TestCategory("RequiresOAuth")]
-        public void Page_Wall_Post_Publish() {
-
-
-
-        }
-
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
-        public void create_new_album()
+        public void Wall_Post_Publish()
         {
-            var photoPath = ConfigurationManager.AppSettings["TestPhotoPath"];
-            byte[] photo = File.ReadAllBytes(photoPath);
             FacebookApp app = new FacebookApp();
             dynamic parameters = new ExpandoObject();
             parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
-            parameters.caption = "This is a test photo";
-            parameters.method = "facebook.photos.upload";
-            parameters.uid = ConfigurationManager.AppSettings["UserId"];
-            //parameters.aid = "16144";
-            //parameters.api_key = "120625701301347";
-            //parameters.message = "This is a test photo";
+            parameters.message = "This is a test message that has been published by the Facebook C# SDK on Codeplex. " + DateTime.UtcNow.Ticks.ToString();
+            parameters.attribution = "Facebook C# SDK";
+
+            var result = app.Api("/me/feed", parameters, HttpMethod.Post);
+
+            Assert.AreNotEqual(null, result.id);
+        }
+
+        [TestMethod]
+        [TestCategory("RequiresOAuth")]
+        public void Wall_Post_Publish_And_Delete()
+        {
+            FacebookApp app = new FacebookApp();
+            dynamic parameters = new ExpandoObject();
+            parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
+            parameters.message = "This is a test message that has been published by the Facebook C# SDK on Codeplex. " + DateTime.UtcNow.Ticks.ToString();
+
+            var result = app.Api("/me/feed", parameters, HttpMethod.Post);
+
+            Assert.AreNotEqual(null, result.id);
+
+            // Delete methods should return 'true'
+            var isDeleted = app.Api(result.id, HttpMethod.Delete);
+
+            Assert.IsTrue(isDeleted);
+        }
+
+        [TestMethod]
+        [TestCategory("RequiresOAuth")]
+        public void Publish_Photo_To_Existing_Album()
+        {
+#if DEBUG
+            string photoPath = @"..\..\..\Facebook.Tests\bin\Debug\monkey.jpg";
+#else
+            string photoPath = @"..\..\..\Facebook.Tests\bin\Release\monkey.jpg";
+#endif
+            string albumId = ConfigurationManager.AppSettings["AlbumId"];
+            byte[] photo = File.ReadAllBytes(photoPath);
+
+            FacebookApp app = new FacebookApp();
+            dynamic parameters = new ExpandoObject();
+            parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
+            parameters.message = "This is a test photo of a monkey that has been uploaded " +
+                                 "by the Facebook C# SDK (http://facebooksdk.codeplex.com)" +
+                                 "using the Graph API";
             var mediaObject = new FacebookMediaObject
             {
-                FileName = "test.jpg",
-                ContentType = "image/jpeg",
-            };
-            mediaObject.SetValue(photo);
-            parameters.source = mediaObject;
-            dynamic result = app.Api(parameters, HttpMethod.Post);
-            var id = result.id;
-        }
-
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
-        public void publish_photo_to_new_album()
-        {
-            var photoPath = ConfigurationManager.AppSettings["TestPhotoPath"];
-            byte[] photo = File.ReadAllBytes(photoPath);
-            FacebookApp app = new FacebookApp();
-            dynamic parameters = new ExpandoObject();
-            parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
-            parameters.message = "This is a test photo";
-            var mediaObject = new FacebookMediaObject
-            {
-                FileName = "test.jpg",
-                ContentType = "image/jpeg",
-            };
-            mediaObject.SetValue(photo);
-            parameters.source = mediaObject;
-           
-            dynamic result = app.Api("/16144/photos", parameters, HttpMethod.Post);
-
-            var id = result.id;
-        }
-
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
-        public void publish_photo_old()
-        {
-            var photoPath = ConfigurationManager.AppSettings["TestPhotoPath"];
-            byte[] photo = File.ReadAllBytes(photoPath);
-            FacebookApp app = new FacebookApp();
-            dynamic parameters = new ExpandoObject();
-            parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
-            parameters.caption = "This is a test photo";
-            parameters.method = "facebook.photos.upload";
-            parameters.uid = ConfigurationManager.AppSettings["UserId"];
-            parameters.aid = ConfigurationManager.AppSettings["AlbumId"];
-            var mediaObject =  new FacebookMediaObject
-            {
-                FileName = "test.jpg",
+                FileName = "monkey.jpg",
                 ContentType = "image/jpeg",
             };
             mediaObject.SetValue(photo);
             parameters.source = mediaObject;
 
+            dynamic result = app.Api(String.Format("/{0}/photos", albumId), parameters, HttpMethod.Post);
 
-            dynamic result = app.Api(parameters, HttpMethod.Post);
+            Assert.IsNotNull(result);
+            Assert.AreNotEqual(null, result.id);
         }
 
-    
     }
 
 

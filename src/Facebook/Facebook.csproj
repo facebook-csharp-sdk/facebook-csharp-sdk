@@ -113,7 +113,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
-    <Compile Include="InvalidProperty.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
     <Compile Include="Utilities\JsonReader.cs" />

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
-using Facebook.Utilities;
 using System.Dynamic;
+using Facebook.Utilities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests.Integration
 {
@@ -70,18 +67,19 @@ namespace Facebook.Tests.Integration
         [TestMethod]
         public void Date_Time_Serialized_Correctly()
         {
-            var writer = new JsonWriter();
-            var dateTime = new DateTime(2010, 6, 15);
+            // We create the datetime this way so that this test passes in all time zones
+            var dateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(new DateTime(2010, 6, 15, 0, 0, 0, DateTimeKind.Utc), TimeZoneInfo.Utc.Id, "Central Standard Time");
 
+            var writer = new JsonWriter();
             writer.WriteValue(dateTime);
             var result = writer.Json;
-            Assert.AreEqual("\"2010-06-15T00:00:00-04:00\"", result);
+            Assert.AreEqual("\"2010-06-14T19:00:00-04:00\"", result);
         }
 
         [TestMethod]
         public void Updated_Time_Returns_As_DateTime()
         {
-            dynamic result = app.Api("/me");
+            dynamic result = app.Api("/331218348435");
             var resultType = result.updated_time.GetType();
             Assert.AreEqual(typeof(DateTime), resultType);
         }
@@ -94,17 +92,19 @@ namespace Facebook.Tests.Integration
             dynamic pageResult3 = app.Api("http://www.underarmour.com/shop/us/en/pid1212701%3Fcid%3DSM|Facebook|Like|1212701");
             dynamic pageResult4 = app.Api("http://www.underarmour.com/shop/us/en/pid1212701?cid=SM|Facebook|Like|1212701");
 
-            Assert.AreEqual(41, pageResult1.shares);
-            Assert.AreEqual(41, pageResult2.shares);
-            Assert.AreEqual(41, pageResult3.shares);
-            Assert.AreEqual(41, pageResult4.shares);
+            Assert.IsTrue(pageResult1.shares > 0);
+            Assert.AreEqual(pageResult1.shares, pageResult2.shares);
+            Assert.AreEqual(pageResult2.shares, pageResult3.shares);
+            Assert.AreEqual(pageResult3.shares, pageResult4.shares);
         }
 
         [TestMethod]
-        public void Test_Uri_Data_Encoder()
+        [TestCategory("RequiresOAuth")]
+        public void Bad_Property_Returns_Null()
         {
-            var resutl = Uri.EscapeDataString("/http://www.underarmour.com/shop/us/en/pid1212701?cid=SM|Facebook|Like|1212701");
-            Assert.IsNotNull(resutl);
+            dynamic result = app.Api("/331218348435");
+            Assert.AreNotEqual(null, result.venue);
+            Assert.AreEqual(null, result.venue.badname);
         }
     }
 }

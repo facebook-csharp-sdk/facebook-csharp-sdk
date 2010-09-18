@@ -11,9 +11,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Globalization;
-using System.Diagnostics.Contracts;
 
 namespace Facebook
 {
@@ -202,7 +202,7 @@ namespace Facebook
 #if !SILVERLIGHT && TRACE
                 Trace.TraceWarning("This instance of JsonArray does not contain a value at this index.");
 #endif
-                result = InvalidProperty.Instance;
+                result = null;
                 return true;
             }
         }
@@ -225,7 +225,7 @@ namespace Facebook
 #if !SILVERLIGHT && TRACE
                 Trace.TraceWarning(String.Format(CultureInfo.InvariantCulture, "This instance of JsonArray does not contain the property {0}.", binder.Name));
 #endif
-                result = InvalidProperty.Instance;
+                result = null;
                 return true;
             }
         }

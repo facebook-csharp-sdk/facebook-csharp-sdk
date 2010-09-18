@@ -345,28 +345,6 @@
     <Compile Include="Integration\RestPublishTests.cs" />
     <Compile Include="Integration\RestReadTests.cs" />
     <Compile Include="Integration\SerializationTests.cs" />
-    <Compile Include="InvalidPropertyTest.cs" />
-    <Compile Include="InvalidPropertyTest.Explicit.g.cs">
-      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InvalidPropertyTest.Explicit01.g.cs">
-      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InvalidPropertyTest.Explicit02.g.cs">
-      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InvalidPropertyTest.Explicit03.g.cs">
-      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InvalidPropertyTest.Explicit04.g.cs">
-      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InvalidPropertyTest.Implicit.g.cs">
-      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InvalidPropertyTest.InstanceGet.g.cs">
-      <DependentUpon>InvalidPropertyTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="JsonArrayTest.Constructor.g.cs">
       <DependentUpon>JsonArrayTest.cs</DependentUpon>
     </Compile>
@@ -504,6 +482,9 @@
     </Content>
     <Content Include="Facebook.Moles.xml">
       <DependentUpon>Facebook.moles</DependentUpon>
+    </Content>
+    <Content Include="monkey.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

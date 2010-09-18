@@ -53,16 +53,6 @@ namespace Facebook.Utilities
             return (char)_reader.Read();
         }
 
-        //private char GetNextSignificantCharacter()
-        //{
-        //    char ch = (char)_reader.Read();
-        //    while ((ch != '\0') && Char.IsWhiteSpace(ch))
-        //    {
-        //        ch = (char)_reader.Read();
-        //    }
-        //    return ch;
-        //}
-
         private string GetCharacters(int count)
         {
             string s = String.Empty;

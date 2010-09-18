@@ -1,11 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Facebook.Linq;
-using System.Dynamic;
+﻿using System.Collections.Generic;
 using System.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests.Fql
 {
@@ -30,12 +25,14 @@ namespace Facebook.Tests.Fql
             var query = "SELECT uid, name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())";
             dynamic results = app.Fql(query);
 
+            Assert.IsNotNull(results);
             foreach (var item in results)
             {
-                long userID = item.uid;
-                string name = item.name;
+                Assert.AreNotEqual(null, item.uid);
+                long id;
+                long.TryParse(item.uid, out id);
+                Assert.IsTrue(id > 0);
             }
-            Assert.IsNotNull(results);
         }
 
         [TestMethod]
@@ -50,63 +47,5 @@ namespace Facebook.Tests.Fql
             dynamic result = app.Api(parameters);
             Assert.IsNotNull(result);
         }
-
-        [TestMethod]
-        public void MyTestMethod()
-        {
-            var query = "SELECT page_id, name FROM page WHERE page_id='http://www.underarmour.com/shop/us/en/pid1212701?cid=SM|Facebook|Like|1212701'";
-            dynamic results = app.Fql(query);
-            Assert.IsNotNull(results);
-        }
-
-        //private FacebookApp app;
-        //public FqlReadTests()
-        //{
-        //    app = new FacebookApp(TestHelper.FacebookSettings);
-        //    app.Session = new FacebookSession
-        //    {
-        //        AccessToken = TestHelper.AuthToken,
-        //    };
-        //}
-        //[TestMethod]
-        //public void Get_Albums()
-        //{
-        //    var db = new FqlDB();
-
-        //    var query = from a in db.album
-        //                where a.Owner == 537883665
-        //                select new { a.Aid, a.Description, a.Name };
-        //    var q = query.ToString();
-
-        //    dynamic parameters = new ExpandoObject();
-        //    parameters.query = q;
-        //    parameters.method = "fql.query";
-        //    dynamic result = app.Api(parameters);
-
-        //    //var q2 = from a in db.album
-        //    //         where a.Owner (from ab in db.album where ab.Owner == 537883665);
-
-        //    // List<int> IdsToFind = new List<int>() {2, 3, 4};
-
-        //    //db.Users
-        //    //.Where(u => SqlMethods.Like(u.LastName, "%fra%"))
-        //    //.Where(u =>
-        //    //    db.CompanyRolesToUsers
-        //    //    .Where(crtu => IdsToFind.Contains(crtu.CompanyRoleId))
-        //    //    .Select(crtu =>  crtu.UserId)
-        //    //    .Contains(u.Id)
-        //    //)
-
-
-        //    //var q2 = db.album
-        //    //    .Where(a =>
-        //    //        db.album
-        //    //        .Where(ab => ab.Owner == 537883665))
-        //    //        .Select(ab => ab.Name));
-
-
-        //}
-
-
     }
 }

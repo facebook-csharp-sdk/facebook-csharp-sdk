@@ -8,11 +8,8 @@
 // ---------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests.Graph
 {
@@ -75,8 +72,8 @@ namespace Facebook.Tests.Graph
         [TestCategory("RequiresOAuth")]
         public void Read_User_Info()
         {
-            dynamic result = app.Api("/me/likes");
-            Assert.AreEqual(result.name, "Bret Taylor");
+            dynamic result = app.Api("/me");
+            Assert.AreEqual(result.name, "Nathan Tester");
         }
 
         [TestMethod]
@@ -101,27 +98,6 @@ namespace Facebook.Tests.Graph
         {
             dynamic result = app.Api("/331218348435");
             Assert.AreEqual(result.venue.city, "Austin");
-        }
-
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
-        public void Bad_Property_Name_Fails_Gracefully()
-        {
-            dynamic result = app.Api("/331218348435");
-            Assert.AreEqual("", result.venue.badname);
-            Assert.AreEqual(0, (int)result.venue.badname);
-            Assert.AreEqual(false, (bool)result.venue.badname);
-            Assert.AreEqual(InvalidProperty.Instance, result.venue.badname.badname);
-            Assert.AreEqual(InvalidProperty.Instance, result.venue.badname.badname.something.something.something.something);
-        }
-
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
-        public void Read_Events_From_Profile()
-        {
-            //var result = app.Api("totten/events");
-            //var first = result.data[0];
-            //Assert.AreEqual(first, "something");
         }
     }
 }

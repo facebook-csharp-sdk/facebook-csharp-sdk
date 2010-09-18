@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Dynamic;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests
 {
@@ -18,13 +16,29 @@ namespace Facebook.Tests
         [DeploymentItem("Facebook.dll")]
         public void BuildMediaObjectPostDataTest()
         {
+#if DEBUG
+            string photoPath = @"..\..\..\Facebook.Tests\bin\Debug\monkey.jpg";
+#else
+            string photoPath = @"..\..\..\Facebook.Tests\bin\Release\monkey.jpg";
+#endif
+            byte[] photo = File.ReadAllBytes(photoPath);
+
             dynamic parameters = new ExpandoObject();
-            parameters.first = "first";
-            parameters.second = "second";
-            parameters.source = null;
+            parameters.message = "This is a test photo of a monkey that has been uploaded " +
+                                 "by the Facebook C# SDK (http://facebooksdk.codeplex.com)" +
+                                 "using the Graph API";
+            var mediaObject = new FacebookMediaObject
+            {
+                FileName = "monkey.jpg",
+                ContentType = "image/jpeg",
+            };
+            mediaObject.SetValue(photo);
+            parameters.source = mediaObject;
+
             string boundary = DateTime.UtcNow.Ticks.ToString("x");
             byte[] actual = FacebookApp_Accessor.BuildMediaObjectPostData(parameters, boundary);
-            Assert.Inconclusive();
+
+            Assert.AreEqual(127231, actual.Length);
         }
 
         [TestMethod]
