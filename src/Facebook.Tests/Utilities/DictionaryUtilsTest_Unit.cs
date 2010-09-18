@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Dynamic;
 using Facebook.Utilities;
+using System.Collections.Specialized;
 
 namespace Facebook.Tests.Utilities
 {
@@ -66,6 +67,54 @@ namespace Facebook.Tests.Utilities
             var result = DictionaryUtils.Merge(first, second);
             Assert.AreEqual(first["prop1"], result["prop1"]);
             Assert.AreEqual(second["prop2"], result["prop2"]);
+        }
+
+        [TestMethod]
+        public void Dictionary_To_Querystring()
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add("key1", "value1");
+            dict.Add("key2", "value2");
+            string actual = DictionaryUtils.ToJsonQueryString(dict);
+            string expected = "key1=value1&key2=value2";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Dictionary2_To_Querystring()
+        {
+            var dict = new Dictionary<string, object>();
+            dict.Add("key1", "value1");
+            dict.Add("key2", "value2");
+            string actual = DictionaryUtils.ToJsonQueryString(dict);
+            string expected = "key1=value1&key2=value2";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void NameValueCollection_To_Querystring()
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("key1", "value1");
+            nvc.Add("key2", "value2");
+            string actual = DictionaryUtils.ToJsonQueryString(nvc);
+            string expected = "key1=value1&key2=value2";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Dictionary_With_Object_To_Querystring()
+        {
+            var dict = new Dictionary<string, object>();
+            dict.Add("key1", "value1");
+            dict.Add("key2", "value2");
+            var list = new List<string>();
+            list.Add("list1");
+            list.Add("list2");
+            dict.Add("key3", list);
+            string actual = DictionaryUtils.ToJsonQueryString(dict);
+            string expected = "key1=value1&key2=value2&key3=%5B%0D%0A%20%20%22list1%22%2C%20%22list2%22%0D%0A%5D";
+            Assert.AreEqual(expected, actual);
         }
 
     }
