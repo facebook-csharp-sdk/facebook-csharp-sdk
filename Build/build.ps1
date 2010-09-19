@@ -12,9 +12,9 @@
   $workingDir = "$baseDir\Working"
   $builds = @(
     @{Name = "Facebook-Net40"; TestsName = $null; Constants=""; FinalDir="DotNet40"; Framework="net-4.0"}
-    @{Name = "Facebook-Net35"; TestsName = $null; Constants=""; FinalDir="DotNet35"; Framework="net-2.0"}
-    @{Name = "Facebook-Silverlight"; TestsName = $null; Constants=""; FinalDir="Silverlight"; Framework="net-4.0"}
-    @{Name = "Facebook-Phone"; TestsName = $null; Constants=""; FinalDir="Phone"; Framework="net-4.0"}
+    @{Name = "Facebook-Net35"; TestsName = $null; Constants="DOTNET35"; FinalDir="DotNet35"; Framework="net-2.0"}
+    @{Name = "Facebook-Silverlight"; TestsName = $null; Constants="SILVERLIGHT"; FinalDir="Silverlight"; Framework="net-4.0"}
+    @{Name = "Facebook-Phone"; TestsName = $null; Constants="SILVERLIGHT;WINDOWS_PHONE"; FinalDir="Phone"; Framework="net-4.0"}
   )
 }
 
