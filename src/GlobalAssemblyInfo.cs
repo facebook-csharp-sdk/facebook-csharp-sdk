@@ -19,7 +19,7 @@ using System.Security;
 [assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
-#if !SILVERLIGHT && !TESTS
+#if !(SILVERLIGHT || TESTS)
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
