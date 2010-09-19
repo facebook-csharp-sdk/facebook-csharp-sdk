@@ -1,7 +1,7 @@
 ﻿properties { 
  
   $zipFileName = "FacebookSDK_V40r1.zip"
-  $buildDocumentation = $true
+  $buildDocumentation = $false
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
@@ -11,7 +11,9 @@
   $releaseDir = "$baseDir\Release"
   $workingDir = "$baseDir\Working"
   $builds = @(
-    @{Name = "Facebook - Core"; TestsName = $null; Constants=""; FinalDir="DotNet40"; Framework="net-4.0"}
+    @{Name = "Facebook-Net40"; TestsName = $null; Constants=""; FinalDir="DotNet40"; Framework="net-4.0"}
+    @{Name = "Facebook-Net35"; TestsName = $null; Constants=""; FinalDir="DotNet35"; Framework="net-2.0"}
+    @{Name = "Facebook-Silverlight"; TestsName = $null; Constants=""; FinalDir="Silverlight"; Framework="net-4.0"}
   )
 }
 
@@ -47,20 +49,19 @@ task Build -depends Clean {
   }
 }
 
-# Merge LinqBridge into .NET 2.0 build
-# task Merge -depends Build {
-#  $binaryDir = "$sourceDir\Newtonsoft.Json\bin\Release\DotNet20"
-#  MergeAssembly "$binaryDir\Newtonsoft.Json.Net20.dll" $signKeyPath "$binaryDir\LinqBridge.dll"
-#  del $binaryDir\LinqBridge.dll
+# Create Merged Versions of the builds that use the DLR
+ task Merge -depends Build {
+  #$binaryDir = "$sourceDir\Facebook\bin\Release\DotNet35"  
+  #MergeAssembly "$binaryDir\Facebook.dll" "v2" $false $signKeyPath @("""$binaryDir\Microsoft.Dynamic.dll""", """$binaryDir\Microsoft.Scripting.dll""", """$binaryDir\Microsoft.Scripting.Core.dll""", """$binaryDir\Microsoft.Scripting.ExtensionAttribute.dll""")
 
-#  $binaryDir = "$sourceDir\Newtonsoft.Json.Tests\bin\Release\DotNet20"
-#  MergeAssembly "$binaryDir\Newtonsoft.Json.Tests.Net20.dll" $signKeyPath "$binaryDir\LinqBridge.dll"
-#  MergeAssembly "$binaryDir\Newtonsoft.Json.Net20.dll" $signKeyPath "$binaryDir\LinqBridge.dll"
-#  del $binaryDir\LinqBridge.dll
-# }
+  #$binaryDir = "$sourceDir\Newtonsoft.Json.Tests\bin\Release\DotNet20"
+  #MergeAssembly "$binaryDir\Newtonsoft.Json.Tests.Net20.dll" $signKeyPath "$binaryDir\LinqBridge.dll"
+  #MergeAssembly "$binaryDir\Newtonsoft.Json.Net20.dll" $signKeyPath "$binaryDir\LinqBridge.dll"
+  #del $binaryDir\LinqBridge.dll
+ }
 
 # Optional build documentation, add files to final zip
-task Package -depends Build {
+task Package -depends Merge {
   foreach ($build in $builds)
   {
     $name = $build.TestsName
@@ -118,26 +119,21 @@ task Test -depends Deploy {
   #}
 }
 
-function MergeAssembly($dllPrimaryAssembly, $signKey, [string[]]$mergedAssemlies)
+function MergeAssembly($dllPrimaryAssembly, $targetPlatform, $internalize, $signKey, [string[]]$mergedAssemlies)
 {
   $mergeAssemblyPaths = [String]::Join(" ", $mergedAssemlies)
   
   $primary = Get-Item $dllPrimaryAssembly
   $mergedAssemblyName = $primary.Name
-  $temporaryDir = $primary.DirectoryName + "\" + [Guid]::NewGuid().ToString()
-  New-Item $temporaryDir -ItemType Directory
+  $mergedDir = $primary.DirectoryName + "\Merged"
+  
+  Remove-Item $mergedDir -recurse
+  New-Item $mergedDir -ItemType Directory
   
   $ilMergeKeyFile = switch($signAssemblies) { $true { "/keyfile:$signKeyPath" } default { "" } }
+  $internalizeSwitch = switch($internalize) { $true { "/internalize" } default { "" } }
   
-  try
-  {
-    exec { .\Lib\ILMerge\ilmerge.exe "/internalize" "/closed" "/log:$workingDir\$mergedAssemblyName.MergeLog.txt" $ilMergeKeyFile "/out:$temporaryDir\$mergedAssemblyName" $dllPrimaryAssembly $mergeAssemblyPaths } "Error executing ILMerge"
-    Copy-Item -Path $temporaryDir\$mergedAssemblyName -Destination $dllPrimaryAssembly -Force
-  }
-  finally
-  {
-    Remove-Item $temporaryDir -Recurse -Force
-  }
+  exec { .\Lib\ILMerge\ilmerge.exe "/targetplatform:$targetPlatform" $internalizeSwitch "/closed" "/log:$workingDir\$mergedAssemblyName.MergeLog.txt" $ilMergeKeyFile "/out:$mergedDir\$mergedAssemblyName" $dllPrimaryAssembly $mergeAssemblyPaths } "Error executing ILMerge"
 }
 
 function GetConstants($constants, $includeSigned)

@@ -16,6 +16,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Reflection;
 
 namespace Facebook.Utilities
 {
