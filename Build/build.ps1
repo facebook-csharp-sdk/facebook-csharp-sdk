@@ -1,9 +1,7 @@
 ﻿properties { 
  
-  $zipFileName = "FacebookSDK_V1_RC2.zip"
-  $signAssemblies = $false
-  $signKeyPath = "D:\Projects\CodePlex\facebookgraphtoolkit\Main\src\SharedKey.snk"
-  $buildDocumentation = $false
+  $zipFileName = "FacebookSDK_V40r1.zip"
+  $buildDocumentation = $true
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
@@ -45,7 +43,7 @@ task Build -depends Clean {
 
     Write-Host -ForegroundColor Green "Building " $name
     Write-Host
-    exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release /p:OutputPath=bin\Release\$finalDir\ /p:AssemblyOriginatorKeyFile=$signKeyPath "/p:SignAssembly=$signAssemblies" (GetConstants $build.Constants $signAssemblies) ".\Src\$name.sln" } "Error building $name"
+    exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release /p:OutputPath=bin\Release\$finalDir\ (GetConstants $build.Constants $signAssemblies) ".\Src\$name.sln" } "Error building $name"
   }
 }
 
@@ -68,7 +66,9 @@ task Package -depends Build {
     $name = $build.TestsName
     $finalDir = $build.FinalDir
     
-    Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\Package\Bin\$finalDir -recurse
+    robocopy $sourceDir\Facebook\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+    robocopy $sourceDir\Facebook.Web\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+    robocopy $sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
   }
   
   if ($buildDocumentation)
@@ -82,7 +82,7 @@ task Package -depends Build {
   Copy-Item -Path $docDir\readme.txt -Destination $workingDir\Package\
   #Copy-Item -Path $docDir\versions.txt -Destination $workingDir\Package\Bin\
 
-  robocopy $sourceDir $workingDir\Package\Source\Src /MIR /NP /XD .svn bin obj /XF *.suo *.user
+  robocopy $sourceDir $workingDir\Package\Source\Src /MIR /NP /XD .svn bin obj TestResults /XF *.suo *.user
   robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD .svn
   robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD .svn
   robocopy $toolsDir $workingDir\Package\Source\Lib /MIR /NP /XD .svn

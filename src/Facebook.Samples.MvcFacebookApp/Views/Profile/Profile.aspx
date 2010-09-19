@@ -7,7 +7,7 @@
     <h2>Profile</h2>
     The user is now authenticated with facebook connect.
     <ul>
-        <li>Name: <%=Model.name %></li>
-        <li>About: <%=Model.about %></li>
+        <li>Name: <%: Model.name %></li>
+        <li>About: <%: Model.about ?? "N/A" %></li>
     </ul>
 </asp:Content>

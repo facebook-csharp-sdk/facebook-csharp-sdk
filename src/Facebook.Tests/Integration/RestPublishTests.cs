@@ -7,6 +7,8 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Dynamic;
 using System.IO;
@@ -51,5 +53,26 @@ namespace Facebook.Tests.Rest
             Assert.AreNotEqual(result.aid, null);
         }
 
+
+        [TestMethod]
+        public void Publish_Global_News()
+        {
+            FacebookApp app = new FacebookApp();
+            dynamic parameters = new ExpandoObject();
+            parameters.method = "dashboard.addGlobalNews";
+
+            var list = new List<object>();
+            dynamic news1 = new ExpandoObject();
+            news1.message = "This is a test news message. " + DateTime.UtcNow.Ticks.ToString();
+            list.Add(news1);
+
+            parameters.news = list;
+
+            dynamic result = app.Api(parameters, HttpMethod.Post);
+
+            long id;
+            long.TryParse(result, out id);
+            Assert.IsTrue(id > 0);
+        }
     }
 }
