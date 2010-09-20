@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Routing;
 
 namespace Facebook.Web.Mvc
@@ -9,6 +6,9 @@ namespace Facebook.Web.Mvc
     public sealed class FacebookAuthorizeInfo
     {
         private RouteValueDictionary _routeValues;
+
+
+        public FacebookAuthorizeInfo() { }
 
         public FacebookAuthorizeInfo(Uri authorizeUrl, string permissions, bool isCancelUrl, RouteValueDictionary routeValues)
         {
