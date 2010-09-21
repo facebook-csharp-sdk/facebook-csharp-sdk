@@ -7,7 +7,6 @@ namespace Facebook.Web.Mvc
     {
         private RouteValueDictionary _routeValues;
 
-
         public FacebookAuthorizeInfo() { }
 
         public FacebookAuthorizeInfo(Uri authorizeUrl, string permissions, bool isCancelUrl, RouteValueDictionary routeValues)
