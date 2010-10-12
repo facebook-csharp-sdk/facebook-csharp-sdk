@@ -25,10 +25,7 @@ namespace Facebook.Web
 
         public CanvasUrlBuilder(HttpRequestBase request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException("request");
-            }
+            Contract.Requires(request != null);
             Contract.Requires(request.Url != null);
             Contract.Requires(request.Headers != null);
 
@@ -184,10 +181,7 @@ namespace Facebook.Web
         System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
         public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath)
         {
-            if (facebookApp == null)
-            {
-                throw new ArgumentNullException("facebookApp");
-            }
+            Contract.Requires(facebookApp != null);
             Contract.Ensures(Contract.Result<Uri>() != null);
 
             return GetLoginUrl(facebookApp, permissions, returnUrlPath, cancelUrlPath, false);
@@ -206,10 +200,7 @@ namespace Facebook.Web
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
         public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath, bool cancelToSelf)
         {
-            if (facebookApp == null)
-            {
-                throw new ArgumentNullException("facebookApp");
-            }
+            Contract.Requires(facebookApp != null);
             Contract.Ensures(Contract.Result<Uri>() != null);
 
             var parameters = new Dictionary<string, object>();
@@ -288,11 +279,7 @@ namespace Facebook.Web
 
         public Uri BuildCanvasPageUrl(string pathAndQuery)
         {
-            if (String.IsNullOrEmpty(pathAndQuery))
-            {
-                throw new ArgumentNullException("pathAndQuery");
-            }
-            Contract.Ensures(Contract.Result<Uri>() != null);
+            Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
 
             if (!pathAndQuery.StartsWith("/", StringComparison.Ordinal))
             {

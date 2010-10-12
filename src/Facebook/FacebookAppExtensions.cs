@@ -23,76 +23,36 @@ namespace Facebook
 #if (!SILVERLIGHT)
         public static object Api(this FacebookAppBase app, string id, string path)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException("app");
-            }
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException("id");
-            }
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentNullException("path");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(app != null);
+            Contract.Requires(!String.IsNullOrEmpty(id));
+            Contract.Requires(!String.IsNullOrEmpty(path));
 
             return app.Api(BuildPath(id, path));
         }
 
         public static object Api(this FacebookAppBase app, string id, string path, HttpMethod httpMethod)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException("app");
-            }
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException("id");
-            }
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentNullException("path");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(app != null);
+            Contract.Requires(!String.IsNullOrEmpty(id));
+            Contract.Requires(!String.IsNullOrEmpty(path));
 
             return app.Api(BuildPath(id, path), httpMethod);
         }
 
         public static object Api(this FacebookAppBase app, string id, string path, IDictionary<string, object> parameters)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException("app");
-            }
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException("id");
-            }
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentNullException("path");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(app != null);
+            Contract.Requires(!String.IsNullOrEmpty(id));
+            Contract.Requires(!String.IsNullOrEmpty(path));
 
             return app.Api(BuildPath(id, path), parameters);
         }
 
         public static object Api(this FacebookAppBase app, string id, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException("app");
-            }
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException("id");
-            }
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentNullException("path");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(app != null);
+            Contract.Requires(!String.IsNullOrEmpty(id));
+            Contract.Requires(!String.IsNullOrEmpty(path));
 
             return app.Api(BuildPath(id, path), parameters, httpMethod);
         }
@@ -130,14 +90,8 @@ namespace Facebook
         /// <returns></returns>
         public static object Fql(this FacebookAppBase app, string query)
         {
-            // <pex>
-            if (app == (FacebookAppBase)null)
-                throw new ArgumentNullException("app");
-            // </pex>
-            if (string.IsNullOrEmpty(query))
-            {
-                throw new ArgumentNullException("query");
-            }
+            Contract.Requires(app != null);
+            Contract.Requires(!String.IsNullOrEmpty(query));
 
             var parameters = new Dictionary<string, object>();
             parameters["query"] = query;
@@ -153,14 +107,8 @@ namespace Facebook
         /// <returns></returns>
         public static object Fql(this FacebookAppBase app, params string[] queries)
         {
-            // <pex>
-            if (app == (FacebookAppBase)null)
-                throw new ArgumentNullException("app");
-            // </pex>
-            if (queries == null)
-            {
-                throw new ArgumentNullException("queries");
-            }
+            Contract.Requires(app != null);
+            Contract.Requires(queries != null);
 
             var queryDict = new Dictionary<string, object>();
             for (int i = 0; i < queries.Length; i++)

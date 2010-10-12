@@ -127,6 +127,8 @@ namespace Facebook.Web.Mvc
 
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
+            Contract.Requires(filterContext != null);
+
             var url = GetLoginUrl(filterContext);
             filterContext.Result = new RedirectResult(url.ToString());
         }
@@ -140,10 +142,7 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         protected virtual string[] GetCurrentPerms(string perms)
         {
-            if (string.IsNullOrEmpty(perms))
-            {
-                throw new ArgumentNullException("perms");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(perms));
             Contract.Ensures(Contract.Result<string[]>() != null);
 
             var result = new string[0];

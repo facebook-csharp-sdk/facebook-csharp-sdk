@@ -141,17 +141,13 @@ namespace Facebook.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
         public void WriteName(string name)
         {
-            if (String.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException("name");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!String.IsNullOrEmpty(name));
 
             if (_scopes.Count == 0)
             {
                 throw new InvalidOperationException("No active scope to write into.");
             }
-            if (_scopes.Peek().Type != ScopeType.Object)
+            if (_scopes.Peek() != null && _scopes.Peek().Type != ScopeType.Object)
             {
                 throw new InvalidOperationException("Names can only be written into Object scopes.");
             }
@@ -737,11 +733,7 @@ namespace Facebook.Utilities
 
             public void WriteTrimmed(string text)
             {
-                if (String.IsNullOrEmpty(text))
-                {
-                    throw new ArgumentNullException("text");
-                }
-                Contract.EndContractBlock();
+                Contract.Requires(!String.IsNullOrEmpty(text));
 
                 if (_minimize == false)
                 {

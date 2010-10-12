@@ -58,10 +58,7 @@ namespace Facebook.Utilities
             Justification = "We don't want to have any exceptions that are part of building the FacebookApiException throw.")]
         internal static FacebookApiException GetGraphException(WebException ex)
         {
-            if (ex == null)
-            {
-                throw new ArgumentNullException("ex");
-            }
+            Contract.Requires(ex != null);
             Contract.Ensures(Contract.Result<FacebookApiException>() != null);
             Contract.EndContractBlock();
 

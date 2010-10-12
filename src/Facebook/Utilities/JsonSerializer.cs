@@ -44,11 +44,7 @@ namespace Facebook.Utilities
 
         public static object DeserializeObject(Stream stream)
         {
-            if (stream == null)
-            {
-                throw new ArgumentNullException("stream");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(stream != null);
 
             object result;
             using (var reader = new StreamReader(stream))
@@ -82,11 +78,7 @@ namespace Facebook.Utilities
 
         private static object ConvertXml(string xml)
         {
-            if (string.IsNullOrEmpty(xml))
-            {
-                throw new ArgumentNullException("xml");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!String.IsNullOrEmpty(xml));
 
             xml = _stripXmlnsRegex.Replace(xml, string.Empty);
 

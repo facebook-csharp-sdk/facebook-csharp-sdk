@@ -24,19 +24,15 @@ namespace Facebook.Utilities
 
         public JsonReader(string jsonText)
         {
-            if (String.IsNullOrEmpty(jsonText))
-            {
-                throw new ArgumentNullException("jsonText");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(jsonText));
+
             _reader = new StringReader(jsonText);
         }
 
         public JsonReader(TextReader reader)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException("reader");
-            }
+            Contract.Requires(reader != null);
+
             _reader = reader;
         }
 

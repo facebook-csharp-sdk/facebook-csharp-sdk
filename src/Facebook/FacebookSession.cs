@@ -99,11 +99,7 @@ namespace Facebook
             }
             set
             {
-                if (value < new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-                {
-                    throw new ArgumentException("Date time cannot be less than 01/01/1970.");
-                }
-                Contract.EndContractBlock();
+                Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
                 _dictionary["expires"] = Utilities.DateTimeUtils.ToUnixTime(value);
             }

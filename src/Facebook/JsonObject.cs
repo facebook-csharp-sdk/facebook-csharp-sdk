@@ -117,20 +117,6 @@ namespace Facebook
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            if (binder == (GetIndexBinder)null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            if (indexes == null)
-            {
-                throw new ArgumentNullException("indexes");
-            }
-            if (indexes[0L] != (object)null)
-            {
-                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
-            }
-            Contract.EndContractBlock();
-
             if (indexes.Length == 1)
             {
                 result = ((IDictionary<string, object>)this)[(string)indexes[0]];
@@ -148,12 +134,6 @@ namespace Facebook
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            if (binder == (GetMemberBinder)null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            Contract.EndContractBlock();
-
             object value;
             if (_members.TryGetValue(binder.Name, out value))
             {
@@ -172,21 +152,6 @@ namespace Facebook
 
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
-            if (binder == (SetIndexBinder)null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            if (indexes == null)
-            {
-                throw new ArgumentNullException("indexes");
-            }
-            if (indexes[0L] != (object)null)
-            {
-                throw new ArgumentException("indexes[0L] != (object)null", "indexes");
-            }
-            Contract.EndContractBlock();
-
-
             if (indexes.Length == 1)
             {
                 ((IDictionary<string, object>)this)[(string)indexes[0]] = value;

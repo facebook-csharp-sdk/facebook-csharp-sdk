@@ -53,10 +53,7 @@ namespace Facebook.Utilities
         /// <returns>A Json formatted querystring.</returns>
         internal static string ToJsonQueryString(this IDictionary<string, object> dictionary)
         {
-            if (dictionary == null)
-            {
-                throw new ArgumentNullException("dictionary");
-            }
+            Contract.Requires(dictionary != null);
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
@@ -102,10 +99,7 @@ namespace Facebook.Utilities
         /// <returns>A Json formatted querystring.</returns>
         internal static string ToJsonQueryString(this IDictionary<string, string> dictionary)
         {
-            if (dictionary == null)
-            {
-                throw new ArgumentNullException("dictionary");
-            }
+            Contract.Requires(dictionary != null);
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
@@ -122,10 +116,7 @@ namespace Facebook.Utilities
         /// <returns>A Json formatted querystring.</returns>
         internal static string ToJsonQueryString(this NameValueCollection collection)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
+            Contract.Requires(collection != null);
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 

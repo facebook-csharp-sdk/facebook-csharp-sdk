@@ -88,10 +88,7 @@ namespace Facebook.Web.Mvc
 
         public static MvcHtmlString CanvasActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            if (String.IsNullOrEmpty(linkText))
-            {
-                throw new ArgumentNullException("linkText");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(linkText));
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
@@ -109,10 +106,7 @@ namespace Facebook.Web.Mvc
 
         public static MvcHtmlString CanvasActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            if (String.IsNullOrEmpty(linkText))
-            {
-                throw new ArgumentNullException("linkText");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(linkText));
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
@@ -193,10 +187,7 @@ namespace Facebook.Web.Mvc
 
         public static MvcHtmlString CanvasRouteLink(this HtmlHelper htmlHelper, string linkText, string routeName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            if (String.IsNullOrEmpty(linkText))
-            {
-                throw new ArgumentNullException("linkText");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(linkText));
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
@@ -214,10 +205,7 @@ namespace Facebook.Web.Mvc
 
         public static MvcHtmlString CanvasRouteLink(this HtmlHelper htmlHelper, string linkText, string routeName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            if (String.IsNullOrEmpty(linkText))
-            {
-                throw new ArgumentNullException("linkText");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(linkText));
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 

@@ -71,11 +71,7 @@ namespace Facebook
         /// <param name="settings">The facebook settings for the application.</param>
         public FacebookApp(IFacebookSettings settings)
         {
-            if (settings == null)
-            {
-                throw new ArgumentNullException("settings");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(settings != null);
 
             ApplySettings(settings);
         }
@@ -88,11 +84,7 @@ namespace Facebook
         /// <param name="accessToken">The Facebook access token.</param>
         public FacebookApp(string accessToken)
         {
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                throw new ArgumentNullException("accessToken");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!String.IsNullOrEmpty(accessToken));
 
             this.Session = new FacebookSession
             {
@@ -314,11 +306,6 @@ namespace Facebook
         /// <exception cref="System.InvalidOperationException">If there is a problem generating the hash.</exception>
         protected override string GenerateSignature(FacebookSession session)
         {
-            if (session == null)
-            {
-                throw new ArgumentNullException("session");
-            }
-
             var args = session.Dictionary;
             StringBuilder payload = new StringBuilder();
             var parts = (from a in args
@@ -356,15 +343,6 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (parameters == null)
-            {
-                throw new ArgumentNullException("parameters");
-            }
-            if (!parameters.ContainsKey("method") || String.IsNullOrEmpty((string)parameters["method"]))
-            {
-                throw new ArgumentException("A method must be specified in order to make a rest call.");
-            }
-
             AddRestParameters(parameters);
 
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
@@ -381,11 +359,6 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-            {
-                throw ExceptionFactory.PathOrParametersRequired;
-            }
-
             var uri = GetGraphRequestUri(path);
 
             return this.OAuthRequest(uri, parameters, httpMethod);
@@ -400,11 +373,6 @@ namespace Facebook
         /// <returns>The decoded response object.</returns>
         protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (uri == null)
-            {
-                throw new ArgumentNullException("uri");
-            }
-
             Uri requestUrl;
             string contentType;
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, out requestUrl, out contentType);
@@ -424,19 +392,6 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
-            if (parameters == null)
-            {
-                throw new ArgumentNullException("parameters");
-            }
-            if (!parameters.ContainsKey("method") || String.IsNullOrEmpty((string)parameters["method"]))
-            {
-                throw ExceptionFactory.MethodRequiredForRestCall;
-            }
-
             AddRestParameters(parameters);
 
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
@@ -456,16 +411,6 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
-            if (string.IsNullOrEmpty(path) && parameters == null)
-            {
-                throw ExceptionFactory.PathOrParametersRequired;
-            }
-            Contract.EndContractBlock();
-
             var uri = GetGraphRequestUri(path);
 
             this.OAuthRequestAsync(callback, state, uri, parameters, httpMethod);
@@ -484,15 +429,6 @@ namespace Facebook
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         protected override void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
-            if (uri == null)
-            {
-                throw new ArgumentNullException("uri");
-            }
-
             Uri requestUrl;
             string contentType;
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, out requestUrl, out contentType);
@@ -554,7 +490,6 @@ namespace Facebook
         /// <returns>The URL for the login flow.</returns>
         public Uri GetOAuthLoginUrl(IDictionary<string, object> parameters)
         {
-
             var currentUrl = this.CurrentUrl.ToString();
 
             var defaultParams = new Dictionary<string, object>();
@@ -657,15 +592,8 @@ namespace Facebook
         /// <returns>The request post data.</returns>
         private byte[] BuildRequestData(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, out Uri requestUrl, out string contentType)
         {
-            if (uri == null)
-            {
-                throw new ArgumentNullException("uri");
-            }
-            if (parameters == null)
-            {
-                throw new ArgumentNullException("parameters");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(uri != null);
+            Contract.Requires(parameters != null);
 
             if (!parameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
             {
@@ -943,15 +871,8 @@ namespace Facebook
         /// <returns>The valid signed request.</returns>
         protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
         {
-            if (String.IsNullOrEmpty(signedRequestValue))
-            {
-                throw new ArgumentNullException("signedRequestValue");
-            }
-            if (!signedRequestValue.Contains("."))
-            {
-                throw new ArgumentException("Invalid signed request.");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
+            Contract.Requires(!signedRequestValue.Contains("."), "Invalid signed request.");
 
             string[] parts = signedRequestValue.Split('.');
             var sig = Base64UrlDecode(parts[0]);
@@ -997,11 +918,7 @@ namespace Facebook
         /// <returns>The active session.</returns>
         protected static FacebookSession ParseFromQueryString(string sessionValue)
         {
-            if (String.IsNullOrEmpty(sessionValue))
-            {
-                throw new ArgumentNullException("sessionValue");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!String.IsNullOrEmpty(sessionValue));
 
             var session = new FacebookSession();
             // Parse the querystring format
@@ -1025,15 +942,8 @@ namespace Facebook
 
         protected static FacebookSession ParseFromCookie(string sessionValue)
         {
-            if (String.IsNullOrEmpty(sessionValue))
-            {
-                throw new ArgumentNullException("sessionValue");
-            }
-            if (sessionValue.Contains(","))
-            {
-                throw ExceptionFactory.InvalidCookie;
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!String.IsNullOrEmpty(sessionValue));
+            Contract.Requires(!sessionValue.Contains(","), "Session value must not contain a comma.");
 
             var session = new FacebookSession();
             // Parse the cookie
@@ -1062,11 +972,7 @@ namespace Facebook
         /// <param name="body">The delegate to invoke within the retry code.</param>
         protected void WithMirrorRetry(Action body)
         {
-            if (body == null)
-            {
-                throw new ArgumentNullException("body");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(body != null);
 
             int retryCount = 0;
 
@@ -1102,11 +1008,7 @@ namespace Facebook
         /// <returns>The value the delegate returns</returns>
         protected TReturn WithMirrorRetry<TReturn>(Func<TReturn> body)
         {
-            if (body == null)
-            {
-                throw new ArgumentNullException("body");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(body != null);
 
             int retryCount = 0;
 
@@ -1140,10 +1042,8 @@ namespace Facebook
         /// <param name="settings">The Facebook settings.</param>
         private void ApplySettings(IFacebookSettings settings)
         {
-            if (settings == null)
-            {
-                throw new ArgumentNullException("settings");
-            }
+            Contract.Requires(settings != null);
+
             this.AppId = settings.AppId;
             this.ApiSecret = settings.ApiSecret;
             this.BaseDomain = settings.BaseDomain;

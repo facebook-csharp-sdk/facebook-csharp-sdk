@@ -41,11 +41,7 @@ namespace Facebook
         public JsonArray(params object[] value)
             : this()
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(value != null);
 
             _members.AddRange(value);
         }
@@ -80,12 +76,6 @@ namespace Facebook
 
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
-            if (binder == null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            Contract.EndContractBlock();
-
             Type targetType = binder.Type;
 
             if ((targetType == typeof(IEnumerable)) ||
@@ -102,16 +92,6 @@ namespace Facebook
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            if (binder == null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            if (args == null)
-            {
-                throw new ArgumentNullException("args");
-            }
-            Contract.EndContractBlock();
-
             if (String.Compare(binder.Name, "Add", StringComparison.Ordinal) == 0)
             {
                 if (args.Length == 1)
@@ -182,16 +162,6 @@ namespace Facebook
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            if (binder == null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            if (indexes == null)
-            {
-                throw new ArgumentNullException("indexes");
-            }
-            Contract.EndContractBlock();
-
             if (indexes.Length == 1)
             {
                 result = _members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)];
@@ -209,12 +179,6 @@ namespace Facebook
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            if (binder == null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            Contract.EndContractBlock();
-
             if (String.Compare("Length", binder.Name, StringComparison.Ordinal) == 0)
             {
                 result = _members.Count;
@@ -232,16 +196,6 @@ namespace Facebook
 
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
-            if (binder == null)
-            {
-                throw new ArgumentNullException("binder");
-            }
-            if (indexes == null)
-            {
-                throw new ArgumentNullException("indexes");
-            }
-            Contract.EndContractBlock();
-
             if (indexes.Length == 1)
             {
                 _members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)] = value;

@@ -273,11 +273,7 @@ namespace Facebook
 
         protected virtual Uri CleanUrl(Uri uri)
         {
-            if (uri == null)
-            {
-                throw new ArgumentNullException("uri");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(uri != null);
 
             UriBuilder builder = new UriBuilder(uri);
             if (!String.IsNullOrEmpty(uri.Query))
@@ -315,6 +311,8 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         public object Api(IDictionary<string, object> parameters)
         {
+            Contract.Requires(parameters != null);
+
             return this.Api(null, parameters, HttpMethod.Get);
         }
 
@@ -326,6 +324,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public object Api(string path)
         {
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
             return this.Api(path, null, HttpMethod.Get);
         }
 
@@ -350,6 +350,8 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
+            Contract.Requires(parameters != null);
+
             return this.Api(null, parameters, httpMethod);
         }
 
@@ -362,6 +364,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public object Api(string path, IDictionary<string, object> parameters)
         {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
             return this.Api(path, parameters, HttpMethod.Get);
         }
 
@@ -375,11 +379,7 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-            {
-                throw new ArgumentException("You must supply either the path or parameters argument.");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             parameters = parameters ?? new Dictionary<string, object>();
 
@@ -408,6 +408,9 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         public void ApiAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(parameters != null);
+
             this.ApiAsync(callback, state, null, parameters, HttpMethod.Get);
         }
 
@@ -421,6 +424,9 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public void ApiAsync(FacebookAsyncCallback callback, object state, string path)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
             this.ApiAsync(callback, state, path, null, HttpMethod.Get);
         }
 
@@ -434,6 +440,9 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         public void ApiAsync(FacebookAsyncCallback callback, object state, string path, HttpMethod httpMethod)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
             this.ApiAsync(callback, state, path, null, httpMethod);
         }
 
@@ -448,6 +457,9 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
             this.ApiAsync(callback, state, path, parameters, HttpMethod.Get);
         }
 
@@ -462,11 +474,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-            {
-                throw new ArgumentException("You must supply either the 'path' or 'parameters' argument.");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             parameters = parameters ?? new Dictionary<string, object>();
 
@@ -568,10 +577,7 @@ namespace Facebook
         /// <returns>The Url for the given parameters.</returns>
         protected virtual Uri GetApiUrl(string method)
         {
-            if (String.IsNullOrEmpty("method"))
-            {
-                throw new ArgumentNullException("method");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(method));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
             string name = "api";
@@ -589,6 +595,7 @@ namespace Facebook
         /// <returns>The string of the url for the given parameters.</returns>
         protected Uri GetUrl(string name)
         {
+            Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
             return this.GetUrl(name, string.Empty, null);
@@ -602,6 +609,7 @@ namespace Facebook
         /// <returns>The string of the url for the given parameters.</returns>
         protected Uri GetUrl(string name, string path)
         {
+            Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
             return this.GetUrl(name, path, null);
@@ -615,6 +623,7 @@ namespace Facebook
         /// <returns>The string of the url for the given parameters.</returns>
         protected Uri GetUrl(string name, IDictionary<string, object> parameters)
         {
+            Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
             return this.GetUrl(name, string.Empty, parameters);
@@ -629,10 +638,7 @@ namespace Facebook
         /// <returns>The string of the url for the given parameters.</returns>
         protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException("name");
-            }
+            Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
             UriBuilder uri = new UriBuilder(_domainMaps[name]);
@@ -724,78 +730,4 @@ namespace Facebook
         }
 
     }
-
-    [ContractClassFor(typeof(FacebookAppBase))]
-    public abstract class FacebookAppBaseContracts : FacebookAppBase
-    {
-        public override Uri GetLoginUrl(IDictionary<string, object> parameters)
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return default(Uri);
-        }
-
-        public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return default(Uri);
-        }
-
-        public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return default(Uri);
-        }
-#if !SILVERLIGHT
-        protected override void ValidateSessionObject(FacebookSession session)
-        {
-        }
-
-        protected override string GenerateSignature(FacebookSession session)
-        {
-            Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
-
-            return default(string);
-        }
-
-        protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Ensures(Contract.Result<object>() != null);
-
-            return default(object);
-        }
-
-        protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Ensures(Contract.Result<object>() != null);
-
-            return default(object);
-        }
-
-        protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Ensures(Contract.Result<object>() != null);
-
-            return default(object);
-        }
-#endif
-        protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-
-        }
-
-        protected override void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-
-        }
-
-        protected override void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-
-        }
-
-    }
-
 }

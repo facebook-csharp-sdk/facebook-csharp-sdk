@@ -31,12 +31,6 @@ namespace Facebook.Web.Mvc
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            if (filterContext == null)
-            {
-                throw new ArgumentNullException("filterContext");
-            }
-            Contract.EndContractBlock();
-
             var url = GetLoginUrl(filterContext);
             filterContext.Result = new CanvasRedirectResult(url.ToString());
         }

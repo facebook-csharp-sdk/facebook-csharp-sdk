@@ -17,11 +17,7 @@ namespace Facebook.Utilities
     {
         public static string ToUnixTime(DateTime dateTime)
         {
-            if (dateTime < new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-            {
-                throw new ArgumentException("Date time cannot be less than 01/01/1970.");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(dateTime >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var range = dateTime - epoch;
@@ -31,11 +27,7 @@ namespace Facebook.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "unixTime")]
         public static DateTime FromUnixTime(string unixTime)
         {
-            if (string.IsNullOrEmpty(unixTime))
-            {
-                throw new ArgumentNullException("unixTime");
-            }
-            Contract.EndContractBlock();
+            Contract.Requires(!String.IsNullOrEmpty(unixTime));
 
             long seconds;
             if (!long.TryParse(unixTime, out seconds) || seconds < 0)

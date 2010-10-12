@@ -97,9 +97,7 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\..\lib\DLR\Microsoft.Dynamic.dll</HintPath>
       <Private>True</Private>
@@ -112,9 +110,8 @@
       <HintPath>..\..\lib\DLR\Microsoft.Scripting.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Scripting.ExtensionAttribute, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>D:\Users\Nathan Totten\Projects\Codeplex\facebookgraphtoolkit\Main\lib\DLR\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Scripting.ExtensionAttribute">
+      <HintPath>..\..\lib\DLR\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

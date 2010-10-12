@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Security;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 
 namespace Facebook
 {
@@ -65,10 +66,8 @@ namespace Facebook
         [SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (info == null)
-            {
-                throw new ArgumentNullException("info");
-            }
+            Contract.Requires(info != null);
+
             info.AddValue("ErrorType", this.ErrorType);
             base.GetObjectData(info, context);
         }
