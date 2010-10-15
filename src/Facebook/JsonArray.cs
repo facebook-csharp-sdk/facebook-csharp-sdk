@@ -97,10 +97,10 @@ namespace Facebook
                 if (args.Length == 1)
                 {
                     _members.Add(args[0]);
-                    result = null;
+                    result = (object)null;
                     return true;
                 }
-                result = null;
+                result = (object)null;
                 return false;
             }
             else if (String.Compare(binder.Name, "Insert", StringComparison.Ordinal) == 0)
@@ -108,10 +108,10 @@ namespace Facebook
                 if (args.Length == 2)
                 {
                     _members.Insert(Convert.ToInt32(args[0], CultureInfo.InvariantCulture), args[1]);
-                    result = null;
+                    result = (object)null;
                     return true;
                 }
-                result = null;
+                result = (object)null;
                 return false;
             }
             else if (String.Compare(binder.Name, "IndexOf", StringComparison.Ordinal) == 0)
@@ -121,7 +121,7 @@ namespace Facebook
                     result = _members.IndexOf(args[0]);
                     return true;
                 }
-                result = null;
+                result = (object)null;
                 return false;
             }
             else if (String.Compare(binder.Name, "Clear", StringComparison.Ordinal) == 0)
@@ -129,10 +129,10 @@ namespace Facebook
                 if (args.Length == 0)
                 {
                     _members.Clear();
-                    result = null;
+                    result = (object)null;
                     return true;
                 }
-                result = null;
+                result = (object)null;
                 return false;
             }
             else if (String.Compare(binder.Name, "Remove", StringComparison.Ordinal) == 0)
@@ -142,7 +142,7 @@ namespace Facebook
                     result = _members.Remove(args[0]);
                     return true;
                 }
-                result = null;
+                result = (object)null;
                 return false;
             }
             else if (String.Compare(binder.Name, "RemoveAt", StringComparison.Ordinal) == 0)
@@ -150,10 +150,10 @@ namespace Facebook
                 if (args.Length == 1)
                 {
                     _members.RemoveAt(Convert.ToInt32(args[0], CultureInfo.InvariantCulture));
-                    result = null;
+                    result = (object)null;
                     return true;
                 }
-                result = null;
+                result = (object)null;
                 return false;
             }
 
@@ -172,7 +172,7 @@ namespace Facebook
 #if !SILVERLIGHT && TRACE
                 Trace.TraceWarning("This instance of JsonArray does not contain a value at this index.");
 #endif
-                result = null;
+                result = (object)null;
                 return true;
             }
         }
@@ -189,7 +189,7 @@ namespace Facebook
 #if !SILVERLIGHT && TRACE
                 Trace.TraceWarning(String.Format(CultureInfo.InvariantCulture, "This instance of JsonArray does not contain the property {0}.", binder.Name));
 #endif
-                result = null;
+                result = (object)null;
                 return true;
             }
         }

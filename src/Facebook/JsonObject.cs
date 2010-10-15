@@ -127,7 +127,7 @@ namespace Facebook
 #if !SILVERLIGHT && TRACE
                 Trace.TraceWarning("This instance of JsonArray does not contain a value at this index.");
 #endif
-                result = null;
+                result = (object)null;
                 return true;
             }
         }
@@ -145,7 +145,7 @@ namespace Facebook
 #if !SILVERLIGHT && TRACE
                 Trace.TraceWarning(String.Format(CultureInfo.InvariantCulture, "This instance of JsonObject does not contain the property {0}.", binder.Name));
 #endif
-                result = null;
+                result = (object)null;
                 return true;
             }
         }
@@ -348,7 +348,7 @@ namespace Facebook
                 {
                     return value;
                 }
-                return null;
+                return (object)null;
             }
             set
             {
