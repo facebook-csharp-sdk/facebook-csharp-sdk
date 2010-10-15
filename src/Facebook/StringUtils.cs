@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Facebook.Utilities
+namespace Facebook
 {
     internal static class StringUtils
     {
