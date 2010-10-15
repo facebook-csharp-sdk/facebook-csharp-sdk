@@ -95,7 +95,9 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Contracts">
+      <HintPath>..\..\lib\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\..\lib\DLR\Microsoft.Dynamic.dll</HintPath>
       <Private>True</Private>
