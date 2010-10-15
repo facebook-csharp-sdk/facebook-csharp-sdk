@@ -458,63 +458,63 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\PexAssemblyInfo.cs" />
-    <Compile Include="Utilities\DictionaryUtilsTest.cs" />
-    <Compile Include="Utilities\DictionaryUtilsTest_Unit.cs" />
-    <Compile Include="Utilities\ExceptionFactoryTest.cs" />
-    <Compile Include="Utilities\ExceptionHelperTest.GetGraphException.g.cs">
+    <Compile Include="DictionaryUtilsTest.cs" />
+    <Compile Include="DictionaryUtilsTest_Unit.cs" />
+    <Compile Include="ExceptionFactoryTest.cs" />
+    <Compile Include="ExceptionHelperTest.GetGraphException.g.cs">
       <DependentUpon>ExceptionFactoryTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\ExceptionHelperTest.GetRestException.g.cs">
+    <Compile Include="ExceptionHelperTest.GetRestException.g.cs">
       <DependentUpon>ExceptionFactoryTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\HttpMethodHelperTest.ConvertToString.g.cs">
+    <Compile Include="HttpMethodHelperTest.ConvertToString.g.cs">
       <DependentUpon>StringUtilsTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\StringUtilsTest.cs" />
-    <Compile Include="Utilities\JsonReaderTest.Constructor.g.cs">
+    <Compile Include="StringUtilsTest.cs" />
+    <Compile Include="JsonReaderTest.Constructor.g.cs">
       <DependentUpon>JsonReaderTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonReaderTest.Constructor01.g.cs">
+    <Compile Include="JsonReaderTest.Constructor01.g.cs">
       <DependentUpon>JsonReaderTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonReaderTest.cs" />
-    <Compile Include="Utilities\JsonSerializerTest.cs" />
-    <Compile Include="Utilities\JsonSerializerTest.DeserializeObject.g.cs">
+    <Compile Include="JsonReaderTest.cs" />
+    <Compile Include="JsonSerializerTest.cs" />
+    <Compile Include="JsonSerializerTest.DeserializeObject.g.cs">
       <DependentUpon>JsonSerializerTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonSerializerTest.DeserializeObject01.g.cs">
+    <Compile Include="JsonSerializerTest.DeserializeObject01.g.cs">
       <DependentUpon>JsonSerializerTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonSerializerTest.SerializeObject.g.cs">
+    <Compile Include="JsonSerializerTest.SerializeObject.g.cs">
       <DependentUpon>JsonSerializerTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonWriterTest.Constructor.g.cs">
+    <Compile Include="JsonWriterTest.Constructor.g.cs">
       <DependentUpon>JsonWriterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonWriterTest.Constructor01.g.cs">
+    <Compile Include="JsonWriterTest.Constructor01.g.cs">
       <DependentUpon>JsonWriterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonWriterTest.Constructor02.g.cs">
+    <Compile Include="JsonWriterTest.Constructor02.g.cs">
       <DependentUpon>JsonWriterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonWriterTest.Constructor03.g.cs">
+    <Compile Include="JsonWriterTest.Constructor03.g.cs">
       <DependentUpon>JsonWriterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\JsonWriterTest.cs" />
-    <Compile Include="Utilities\JsonWriterTest.QuoteJScriptString.g.cs">
+    <Compile Include="JsonWriterTest.cs" />
+    <Compile Include="JsonWriterTest.QuoteJScriptString.g.cs">
       <DependentUpon>JsonWriterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\DateTimeUtilsTest.cs" />
-    <Compile Include="Utilities\UnixDateTimeTest.FromUnixTime.g.cs">
+    <Compile Include="DateTimeUtilsTest.cs" />
+    <Compile Include="UnixDateTimeTest.FromUnixTime.g.cs">
       <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\UnixDateTimeTest.ToUnixDateTime.g.cs">
+    <Compile Include="UnixDateTimeTest.ToUnixDateTime.g.cs">
       <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\UnixDateTimeTest.ToUnixTime.g.cs">
+    <Compile Include="UnixDateTimeTest.ToUnixTime.g.cs">
       <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\DateTimeUtilsTest_Unit.cs" />
+    <Compile Include="DateTimeUtilsTest_Unit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="monkey.jpg">
@@ -526,6 +526,9 @@
       <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
       <Name>Facebook</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
