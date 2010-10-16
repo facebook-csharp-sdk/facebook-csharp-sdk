@@ -7,7 +7,7 @@
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
   $sourceDir = "$baseDir\Src"
-  $toolsDir = "$baseDir\Lib"
+  $toolsDir = "$baseDir\Tools"
   $docDir = "$baseDir\Doc"
   $releaseDir = "$baseDir\Release"
   $workingDir = "$baseDir\Working"
@@ -93,10 +93,10 @@ task Package -depends Merge {
         $finalDir = $build.FinalDir
         $frameworkDir = $build.NuPackDir
         
-        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\lib\$frameworkDir -recurse
+        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Tools\$frameworkDir -recurse
     }
   
-    exec { .\Lib\NuPack\NuPack.exe $workingDir\NuPack\Facebook.nuspec }
+    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\Facebook.nuspec }
     move -Path .\*.nupkg -Destination $workingDir\NuPack
   }
   
@@ -106,14 +106,14 @@ task Package -depends Merge {
   robocopy $sourceDir $workingDir\Package\Source\Src /MIR /NP /XD .svn bin obj TestResults /XF *.suo *.user
   robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD .svn
   robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD .svn
-  robocopy $toolsDir $workingDir\Package\Source\Lib /MIR /NP /XD .svn
+  robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD .svn
   
-  exec { .\Lib\7-zip\7za.exe a -tzip $workingDir\$zipFileName $workingDir\Package\* } "Error zipping"
+  exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName $workingDir\Package\* } "Error zipping"
 }
 
 # Unzip package to a location
 task Deploy -depends Package {
-  exec { .\Lib\7-zip\7za.exe x -y "-o$workingDir\Deployed" $workingDir\$zipFileName } "Error unzipping"
+  exec { .\Tools\7-zip\7za.exe x -y "-o$workingDir\Deployed" $workingDir\$zipFileName } "Error unzipping"
 }
 
 # Run tests on deployed files
@@ -134,7 +134,7 @@ task Test -depends Deploy {
 
   #      Write-Host -ForegroundColor Green "Running tests " $name
   #      Write-Host
-  #      exec { .\Lib\NUnit\nunit-console.exe "$workingDir\Deployed\Bin\$finalDir\$name.dll" /framework=$framework /xml:$workingDir\$name.xml } "Error running $name tests"
+  #      exec { .\Tools\NUnit\nunit-console.exe "$workingDir\Deployed\Bin\$finalDir\$name.dll" /framework=$framework /xml:$workingDir\$name.xml } "Error running $name tests"
   #  }
   #}
 }
@@ -153,7 +153,7 @@ function MergeAssembly($dllPrimaryAssembly, $targetPlatform, $internalize, $sign
   $ilMergeKeyFile = switch($signAssemblies) { $true { "/keyfile:$signKeyPath" } default { "" } }
   $internalizeSwitch = switch($internalize) { $true { "/internalize" } default { "" } }
   
-  exec { .\Lib\ILMerge\ilmerge.exe "/targetplatform:$targetPlatform" $internalizeSwitch "/closed" "/log:$workingDir\$mergedAssemblyName.MergeLog.txt" $ilMergeKeyFile "/out:$mergedDir\$mergedAssemblyName" $dllPrimaryAssembly $mergeAssemblyPaths } "Error executing ILMerge"
+  exec { .\Tools\ILMerge\ilmerge.exe "/targetplatform:$targetPlatform" $internalizeSwitch "/closed" "/log:$workingDir\$mergedAssemblyName.MergeLog.txt" $ilMergeKeyFile "/out:$mergedDir\$mergedAssemblyName" $dllPrimaryAssembly $mergeAssemblyPaths } "Error executing ILMerge"
 }
 
 function GetConstants($constants, $includeSigned)
