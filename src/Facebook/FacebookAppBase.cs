@@ -13,7 +13,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Linq;
-using Facebook.Utilities;
 using System.Globalization;
 
 namespace Facebook

@@ -8,7 +8,7 @@ namespace Facebook
 {
 #pragma warning disable 1591
     [ContractClassFor(typeof(FacebookAppBase))]
-    public abstract class FacebookAppBaseContracts : FacebookAppBase
+    internal abstract class FacebookAppBaseContracts : FacebookAppBase
     {
         public override Uri GetLoginUrl(IDictionary<string, object> parameters)
         {

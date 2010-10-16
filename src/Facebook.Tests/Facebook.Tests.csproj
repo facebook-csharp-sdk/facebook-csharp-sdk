@@ -9,7 +9,7 @@
     <ProjectGuid>{074FCA08-CBF4-4FA3-BF0C-A1459585990F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Facebook.Tests</RootNamespace>
+    <RootNamespace>Facebook</RootNamespace>
     <AssemblyName>Facebook.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

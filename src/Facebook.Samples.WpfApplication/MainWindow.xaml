@@ -1,0 +1,8 @@
+﻿<Window x:Class="Facebook.Samples.WpfApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <!-- http://social.msdn.microsoft.com/Forums/en/wpf/thread/ffdf22f8-0df4-4ce4-bdee-632e4cbb5fbb -->
+    </Grid>
+</Window>

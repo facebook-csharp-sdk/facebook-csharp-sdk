@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Dynamic;
-using Facebook.Utilities;
+using Facebook;
 using System.Collections.Specialized;
 
-namespace Facebook.Tests.Utilities
+namespace Facebook
 {
-    [TestClass]
     public partial class DictionaryExtensionsTest
     {
 

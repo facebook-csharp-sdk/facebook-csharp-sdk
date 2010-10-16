@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Facebook.Utilities;
+using Facebook;
 
-namespace Facebook.Tests.Utilities {
-   [TestClass]
+namespace Facebook {
+
     public partial class UnixDateTimeTest {
 
        [TestMethod]

@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
@@ -19,10 +20,8 @@ namespace Facebook.Web.Mvc
             Justification="Extension method")]
         public static RedirectResult CanvasRedirect(this Controller controller, string url)
         {
-            if (String.IsNullOrEmpty(url))
-            {
-                throw new ArgumentNullException("url");
-            }
+            Contract.Requires(url != null);
+
             return new CanvasRedirectResult(url);
         }
 

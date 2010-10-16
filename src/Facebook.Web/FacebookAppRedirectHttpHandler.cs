@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Diagnostics.Contracts;
 
 namespace Facebook.Web
 {
@@ -15,10 +16,7 @@ namespace Facebook.Web
 
         public void ProcessRequest(HttpContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
+            Contract.Requires(context != null);
 
             string queryString = string.Empty;
             string pathInfo =context.Request.PathInfo;

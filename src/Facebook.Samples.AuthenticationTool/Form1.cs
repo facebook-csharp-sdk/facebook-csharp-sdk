@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Dynamic;
-using Facebook.Utilities;
 using System.Collections.Specialized;
 
 namespace Facebook.Samples.AuthenticationTool {
@@ -67,7 +66,7 @@ namespace Facebook.Samples.AuthenticationTool {
         private void loadProfiles_Click(object sender, EventArgs e) {
             if (!string.IsNullOrEmpty(userId.Text)) {
                 FacebookApp app = new FacebookApp(GetSettings());
-                dynamic result = app.Fql(string.Format("SELECT id,name,type FROM profile WHERE username={0}", userId.Text));
+                dynamic result = app.Fql(string.Format("SELECT id,name,type FROM profile WHERE id={0}", userId.Text));
                 profiles.Items.AddRange(result);
             }
         }

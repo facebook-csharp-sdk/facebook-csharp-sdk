@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56FD3D46-C67F-4989-A739-EB312AF147F0}"
 	ProjectSection(SolutionItems) = preProject
 		Facebook.vsmdi = Facebook.vsmdi
-		Licenses.txt = Licenses.txt
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
@@ -31,11 +30,11 @@ Global
 		SccProjectName1 = Facebook
 		SccLocalPath1 = Facebook
 		SccProjectUniqueName2 = Facebook.Samples.MvcWebsite\\Facebook.Samples.MvcWebsite.csproj
-		SccProjectTopLevelParentUniqueName2 = Facebook\u0020-\u0020Core.sln
+		SccProjectTopLevelParentUniqueName2 = Facebook-Net40.sln
 		SccProjectName2 = Facebook.Samples.MvcWebsite
 		SccLocalPath2 = Facebook.Samples.MvcWebsite
 		SccProjectUniqueName3 = Facebook.Samples.MvcFacebookApp\\Facebook.Samples.MvcFacebookApp.csproj
-		SccProjectTopLevelParentUniqueName3 = Facebook\u0020-\u0020Core.sln
+		SccProjectTopLevelParentUniqueName3 = Facebook-Net40.sln
 		SccProjectName3 = Facebook.Samples.MvcFacebookApp
 		SccLocalPath3 = Facebook.Samples.MvcFacebookApp
 		SccProjectUniqueName4 = Facebook.Web\\Facebook.Web.csproj

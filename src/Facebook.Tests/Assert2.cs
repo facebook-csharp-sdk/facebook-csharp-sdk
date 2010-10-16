@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Facebook.Tests
+namespace Facebook
 {
     public static class Assert2
     {

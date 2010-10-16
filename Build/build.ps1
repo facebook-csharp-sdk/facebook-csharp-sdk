@@ -1,7 +1,8 @@
 ﻿properties { 
  
-  $zipFileName = "FacebookSDK_V40r1.zip"
+  $zipFileName = "FacebookSDK_V40r2.zip"
   $buildDocumentation = $false
+  $buildNuPackage = $true
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
@@ -11,10 +12,11 @@
   $releaseDir = "$baseDir\Release"
   $workingDir = "$baseDir\Working"
   $builds = @(
-    @{Name = "Facebook-Net40"; TestsName = $null; Constants=""; FinalDir="DotNet40"; Framework="net-4.0"}
-    @{Name = "Facebook-Net35"; TestsName = $null; Constants="DOTNET35"; FinalDir="DotNet35"; Framework="net-2.0"}
-    @{Name = "Facebook-Silverlight"; TestsName = $null; Constants="SILVERLIGHT"; FinalDir="Silverlight"; Framework="net-4.0"}
-    @{Name = "Facebook-Phone"; TestsName = $null; Constants="SILVERLIGHT;WINDOWS_PHONE"; FinalDir="Phone"; Framework="net-4.0"}
+    @{Name = "Facebook-Net40"; TestsName = $null; Constants=""; FinalDir="Net40"; Framework="net-4.0"}
+    @{Name = "Facebook-Net40Client"; TestsName = $null; Constants="CLIENTPROFILE"; FinalDir="Net40Client"; Framework="net-4.0"}
+    @{Name = "Facebook-Net35"; TestsName = $null; Constants="DOTNET35"; FinalDir="Net35"; Framework="net-2.0"}
+    @{Name = "Facebook-SL4"; TestsName = $null; Constants="SILVERLIGHT"; FinalDir="SL4"; Framework="net-4.0"}
+    @{Name = "Facebook-WP7"; TestsName = $null; Constants="SILVERLIGHT;WINDOWS_PHONE"; FinalDir="WP7"; Framework="net-4.0"}
   )
 }
 
@@ -79,6 +81,23 @@ task Package -depends Merge {
     
     move -Path $workingDir\Documentation\Documentation.chm -Destination $workingDir\Package\Documentation.chm
     move -Path $workingDir\Documentation\LastBuild.log -Destination $workingDir\Documentation.log
+  }
+  if ($buildNuPackage)
+  {
+    New-Item -Path $workingDir\NuPack -ItemType Directory
+    Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook.nuspec -recurse
+    
+    foreach ($build in $builds)
+    {
+        $name = $build.TestsName
+        $finalDir = $build.FinalDir
+        $frameworkDir = $build.NuPackDir
+        
+        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\lib\$frameworkDir -recurse
+    }
+  
+    exec { .\Lib\NuPack\NuPack.exe $workingDir\NuPack\Facebook.nuspec }
+    move -Path .\*.nupkg -Destination $workingDir\NuPack
   }
   
   Copy-Item -Path $docDir\readme.txt -Destination $workingDir\Package\

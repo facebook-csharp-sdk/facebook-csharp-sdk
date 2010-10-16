@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Dynamic;
-using Facebook.Utilities;
+using Facebook;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests.Integration

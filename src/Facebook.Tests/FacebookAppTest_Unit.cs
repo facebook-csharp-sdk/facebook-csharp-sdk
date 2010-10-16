@@ -3,9 +3,8 @@ using System.Dynamic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Facebook.Tests
+namespace Facebook
 {
-    [TestClass]
     public partial class FacebookAppTest
     {
 

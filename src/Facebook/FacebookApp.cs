@@ -14,7 +14,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Facebook.Utilities;
 using System.IO;
 using System.Globalization;
 using System.Collections.ObjectModel;
@@ -909,7 +908,7 @@ namespace Facebook
             encodedValue = encodedValue.PadRight(encodedValue.Length + pad, '=');
             return encodedValue;
         }
-#endif
+
 
         /// <summary>
         /// Parses a session value retrieved from a querystring.
@@ -962,6 +961,7 @@ namespace Facebook
             }
             return session;
         }
+#endif
 
         /// <summary>
         /// This method invokes the supplied delegate with retry logic wrapped around it.  No values are returned.  If the delegate raises 
