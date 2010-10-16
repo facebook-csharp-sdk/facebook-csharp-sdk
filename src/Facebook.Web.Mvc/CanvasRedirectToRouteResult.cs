@@ -1,20 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
-using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
+    /// <summary>
+    /// Represents a result that performs a canvas redirection by using the specified route values dictionary.
+    /// </summary>
     public class CanvasRedirectToRouteResult : RedirectToRouteResult
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasRedirectToRouteResult"/> class.
+        /// </summary>
+        /// <param name="routeValues">The route values.</param>
         public CanvasRedirectToRouteResult(RouteValueDictionary routeValues) : base(routeValues) { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasRedirectToRouteResult"/> class.
+        /// </summary>
+        /// <param name="routeName">The name of the route.</param>
+        /// <param name="routeValues">The route values.</param>
         public CanvasRedirectToRouteResult(string routeName, RouteValueDictionary routeValues) : base(routeName, routeValues) { }
 
+        /// <summary>
+        /// Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult"/> class.
+        /// </summary>
+        /// <param name="context">The context within which the result is executed.</param>
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> parameter is null.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2234:PassSystemUriObjectsInsteadOfStrings")]
         public override void ExecuteResult(ControllerContext context)
         {

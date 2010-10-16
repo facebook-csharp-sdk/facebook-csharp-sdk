@@ -7,22 +7,29 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using System.Web;
-using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
+    /// <summary>
+    /// Controls the processing of application actions by redirecting to a specified canvas iFrame URI.
+    /// </summary>
     public class CanvasRedirectResult : RedirectResult
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasRedirectResult"/> class.
+        /// </summary>
+        /// <param name="url">The target URL.</param>
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="url"/> parameter is null.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "0#")]
         public CanvasRedirectResult(string url) : base(url) { }
 
+        /// <summary>
+        /// Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult"/> class.
+        /// </summary>
+        /// <param name="context">The context within which the result is executed.</param>
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> parameter is null.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2234:PassSystemUriObjectsInsteadOfStrings")]
         public override void ExecuteResult(ControllerContext context)
         {

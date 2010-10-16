@@ -16,7 +16,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Reflection;
 
 namespace Facebook
 {
@@ -108,7 +107,7 @@ namespace Facebook
             StartScope(ScopeType.Object);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
         private void StartScope(ScopeType type)
         {
             if (_scopes.Count != 0)
@@ -138,7 +137,7 @@ namespace Facebook
             _writer.WriteLine();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
         public void WriteName(string name)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
@@ -168,7 +167,7 @@ namespace Facebook
             _writer.WriteTrimmed("\": ");
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter+IndentedTextWriter.WriteTrimmed(System.String)")]
         private void WriteCore(string text, bool quotes)
         {
             if (_scopes.Count != 0)
@@ -200,7 +199,7 @@ namespace Facebook
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(bool value)
         {
             WriteCore(value ? "true" : "false", /* quotes */ false);
@@ -228,7 +227,7 @@ namespace Facebook
             WriteCore(value, /* quotes */ true);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(string s)
         {
             if (s == null)
@@ -241,7 +240,7 @@ namespace Facebook
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(ICollection items)
         {
             if ((items == null) || (items.Count == 0))
@@ -261,7 +260,7 @@ namespace Facebook
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(IDictionary record)
         {
             if ((record == null) || (record.Count == 0))
@@ -288,7 +287,7 @@ namespace Facebook
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(IDictionary<string, object> record)
         {
             if ((record == null) || (record.Count == 0))
@@ -316,7 +315,7 @@ namespace Facebook
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Justification = "It is impractical to do this.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.Utilities.JsonWriter.WriteCore(System.String,System.Boolean)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Facebook.JsonWriter.WriteCore(System.String,System.Boolean)")]
         public void WriteValue(object o)
         {
             if (o == null)

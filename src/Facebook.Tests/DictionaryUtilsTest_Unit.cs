@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Dynamic;
-using Facebook;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook
 {
@@ -18,7 +13,7 @@ namespace Facebook
             var first = new Dictionary<string, object>();
             first["prop1"] = "value1";
             first["prop2"] = "value2";
-            var result = DictionaryUtils.Merge(first, null);
+            var result = DictionaryUtilities.Merge(first, null);
             Assert.AreEqual(first["prop1"], result["prop1"]);
             Assert.AreEqual(first["prop2"], result["prop2"]);
         }
@@ -29,7 +24,7 @@ namespace Facebook
             var second = new Dictionary<string, object>();
             second["prop1"] = "value1";
             second["prop2"] = "value2";
-            var result = DictionaryUtils.Merge(null, second);
+            var result = DictionaryUtilities.Merge(null, second);
             Assert.AreEqual(second["prop1"], result["prop1"]);
             Assert.AreEqual(second["prop2"], result["prop2"] );
         }
@@ -43,7 +38,7 @@ namespace Facebook
             var second = new Dictionary<string, object>();
             second["prop1"] = "value1-second";
             second["prop3"] = "value3";
-            var result = DictionaryUtils.Merge(first, second);
+            var result = DictionaryUtilities.Merge(first, second);
             Assert.AreEqual(second["prop1"], result["prop1"]);
             Assert.AreEqual(first["prop2"], result["prop2"]);
             Assert.AreEqual(second["prop3"], result["prop3"]);
@@ -52,7 +47,7 @@ namespace Facebook
         [TestMethod]
         public void Merge_Both_Null()
         {
-            var result = DictionaryUtils.Merge(null, null);
+            var result = DictionaryUtilities.Merge(null, null);
             Assert.AreEqual(0, ((IDictionary<string, object>)result).Count);
         }
 
@@ -63,7 +58,7 @@ namespace Facebook
             first["prop1"] = "value1";
             var second = new Dictionary<string, object> ();
             second["prop2"] = "value2";
-            var result = DictionaryUtils.Merge(first, second);
+            var result = DictionaryUtilities.Merge(first, second);
             Assert.AreEqual(first["prop1"], result["prop1"]);
             Assert.AreEqual(second["prop2"], result["prop2"]);
         }
@@ -74,7 +69,7 @@ namespace Facebook
             var dict = new Dictionary<string, string>();
             dict.Add("key1", "value1");
             dict.Add("key2", "value2");
-            string actual = DictionaryUtils.ToJsonQueryString(dict);
+            string actual = DictionaryUtilities.ToJsonQueryString(dict);
             string expected = "key1=value1&key2=value2";
             Assert.AreEqual(expected, actual);
         }
@@ -85,7 +80,7 @@ namespace Facebook
             var dict = new Dictionary<string, object>();
             dict.Add("key1", "value1");
             dict.Add("key2", "value2");
-            string actual = DictionaryUtils.ToJsonQueryString(dict);
+            string actual = DictionaryUtilities.ToJsonQueryString(dict);
             string expected = "key1=value1&key2=value2";
             Assert.AreEqual(expected, actual);
         }
@@ -96,7 +91,7 @@ namespace Facebook
             var nvc = new NameValueCollection();
             nvc.Add("key1", "value1");
             nvc.Add("key2", "value2");
-            string actual = DictionaryUtils.ToJsonQueryString(nvc);
+            string actual = DictionaryUtilities.ToJsonQueryString(nvc);
             string expected = "key1=value1&key2=value2";
             Assert.AreEqual(expected, actual);
         }
@@ -111,7 +106,7 @@ namespace Facebook
             list.Add("list1");
             list.Add("list2");
             dict.Add("key3", list);
-            string actual = DictionaryUtils.ToJsonQueryString(dict);
+            string actual = DictionaryUtilities.ToJsonQueryString(dict);
             string expected = "key1=value1&key2=value2&key3=%5B%0D%0A%20%20%22list1%22%2C%20%22list2%22%0D%0A%5D";
             Assert.AreEqual(expected, actual);
         }

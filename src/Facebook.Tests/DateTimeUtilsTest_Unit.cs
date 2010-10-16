@@ -7,12 +7,7 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Facebook;
 
 namespace Facebook {
 
@@ -21,8 +16,8 @@ namespace Facebook {
        [TestMethod]
        public void Convert_To_Unix_Time() {
            string s = "1213513200";
-           var fbUnix = DateTimeUtils.FromUnixTime(s);
-           var unixTime = DateTimeUtils.ToUnixTime(fbUnix);
+           var fbUnix = DateTimeUtilities.FromUnixTime(s);
+           var unixTime = DateTimeUtilities.ToUnixTime(fbUnix);
            Assert.AreEqual(s, unixTime);
        }
    

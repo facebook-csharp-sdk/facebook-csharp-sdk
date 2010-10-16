@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Web;
 using System.Collections.Specialized;
+using System.Web;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Web.Tests
 {

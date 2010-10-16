@@ -9,15 +9,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Dynamic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.IO;
-using System.Globalization;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace Facebook
 {
@@ -157,6 +156,10 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Gets or sets the active user session.
+        /// </summary>
+        /// <value>The session.</value>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public override FacebookSession Session
         {
@@ -281,6 +284,10 @@ namespace Facebook
 #endif
 
 #if !SILVERLIGHT
+        /// <summary>
+        /// Validates a session_version=3 style session object.
+        /// </summary>
+        /// <param name="session">The session to validate.</param>
         protected override void ValidateSessionObject(FacebookSession session)
         {
             if (session == null)
@@ -706,7 +713,7 @@ namespace Facebook
         private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = StringUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = StringUtilities.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
 
             if (postData != null)
             {
@@ -772,7 +779,7 @@ namespace Facebook
         private static void MakeRequestAsync(FacebookAsyncCallback callback, object state, HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = StringUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = StringUtilities.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
             if (httpMethod == HttpMethod.Post)
             {
                 request.ContentType = contentType;
@@ -939,6 +946,11 @@ namespace Facebook
             return session;
         }
 
+        /// <summary>
+        /// Parses the session value from a cookie.
+        /// </summary>
+        /// <param name="sessionValue">The session value.</param>
+        /// <returns></returns>
         protected static FacebookSession ParseFromCookie(string sessionValue)
         {
             Contract.Requires(!String.IsNullOrEmpty(sessionValue));

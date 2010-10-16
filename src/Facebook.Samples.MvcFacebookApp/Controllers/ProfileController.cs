@@ -8,11 +8,8 @@
 // ---------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.Dynamic;
+using System.Web.Mvc;
 using Facebook.Web.Mvc;
 
 namespace Facebook.Samples.MvcFacebookApp.Controllers

@@ -9,34 +9,51 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using System.Web;
-using System.Configuration;
-using System.Web.Security;
-using System.Dynamic;
-using System.Web.Routing;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Facebook.Web.Mvc
 {
+    /// <summary>
+    /// Represents the base class for restricting access to controllers or actions based on Facebook permissions.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public abstract class FacebookAuthorizeAttribute : ActionFilterAttribute, IAuthorizationFilter
     {
         private FacebookApp _facebookApp;
 
+        /// <summary>
+        /// Gets the facebook app.
+        /// </summary>
+        /// <value>The facebook app.</value>
         public FacebookApp FacebookApp
         {
             get { return this._facebookApp; }
         }
 
+        /// <summary>
+        /// Gets or sets the extended permissions.
+        /// </summary>
+        /// <value>The perms.</value>
         public string Perms { get; set; }
+        /// <summary>
+        /// Gets or sets the cancel URL path.
+        /// </summary>
+        /// <value>The cancel URL path.</value>
         public string CancelUrlPath { get; set; }
+        /// <summary>
+        /// Gets or sets the return URL path.
+        /// </summary>
+        /// <value>The return URL path.</value>
         public string ReturnUrlPath { get; set; }
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookAuthorizeAttribute"/> class.
+        /// </summary>
         protected FacebookAuthorizeAttribute()
         {
             _facebookApp = new FacebookApp();
@@ -50,6 +67,10 @@ namespace Facebook.Web.Mvc
             Contract.Invariant(_facebookApp != null);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookAuthorizeAttribute"/> class.
+        /// </summary>
+        /// <param name="facebookApp">The facebook app.</param>
         protected FacebookAuthorizeAttribute(FacebookApp facebookApp)
         {
             if (facebookApp == null)
@@ -59,6 +80,10 @@ namespace Facebook.Web.Mvc
             this._facebookApp = facebookApp;
         }
 
+        /// <summary>
+        /// Called when authorization is required.
+        /// </summary>
+        /// <param name="filterContext">The filter context.</param>
         public void OnAuthorization(AuthorizationContext filterContext)
         {
             // The user is inside the iframe, now we need to check to make
@@ -70,6 +95,11 @@ namespace Facebook.Web.Mvc
             }
         }
 
+        /// <summary>
+        /// Authorizes the core.
+        /// </summary>
+        /// <param name="httpContext">The HTTP context.</param>
+        /// <returns></returns>
         protected virtual bool AuthorizeCore(HttpContextBase httpContext)
         {
             Contract.Requires(httpContext != null);
@@ -91,6 +121,10 @@ namespace Facebook.Web.Mvc
             return authenticated;
         }
 
+        /// <summary>
+        /// Called by the MVC framework before the action method executes.
+        /// </summary>
+        /// <param name="filterContext">The filter context.</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             filterContext.ActionParameters = filterContext.ActionParameters ?? new Dictionary<string, object>();
@@ -125,6 +159,10 @@ namespace Facebook.Web.Mvc
             return urlBuilder.GetLoginUrl(_facebookApp, Perms, ReturnUrlPath, CancelUrlPath, cancelToSelf);
         }
 
+        /// <summary>
+        /// Handles the unauthorized request.
+        /// </summary>
+        /// <param name="filterContext">The filter context.</param>
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             Contract.Requires(filterContext != null);
@@ -134,10 +172,11 @@ namespace Facebook.Web.Mvc
         }
 
         /// <summary>
-        /// Gets the current user's permission using FQL. A better method 
-        /// would be to cache the permission in your local database and subscribe to 
-        /// real time updates of user permissions: http://developers.facebook.com/docs/api/realtime
+        /// Gets the current user's permission using FQL.
         /// </summary>
+        /// <remarks>
+        /// A better method would be to cache the permission in your local database and subscribe to 
+        /// real time updates of user permissions: http://developers.facebook.com/docs/api/realtime</remarks>
         /// <param name="perms">The permission to check.</param>
         /// <returns></returns>
         protected virtual string[] GetCurrentPerms(string perms)

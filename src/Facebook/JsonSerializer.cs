@@ -8,16 +8,11 @@
 // ---------------------------------
 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Text;
-using System.Globalization;
-using System.Collections.Specialized;
+using System.Xml.Linq;
 
 namespace Facebook
 {

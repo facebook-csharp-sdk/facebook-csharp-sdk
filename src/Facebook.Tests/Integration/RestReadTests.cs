@@ -7,12 +7,8 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Dynamic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests.Rest {
     [TestClass]

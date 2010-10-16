@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using System.Web.Routing;
-using System.Diagnostics.Contracts;
 
 namespace Facebook.Web.Mvc
 {
@@ -23,6 +19,10 @@ namespace Facebook.Web.Mvc
         private string _view;
         private string _master;
 
+        /// <summary>
+        /// Gets or sets the view.
+        /// </summary>
+        /// <value>The view.</value>
         public string View
         {
             get
@@ -35,6 +35,10 @@ namespace Facebook.Web.Mvc
             }
         }
 
+        /// <summary>
+        /// Gets or sets the master.
+        /// </summary>
+        /// <value>The master.</value>
         public string Master
         {
             get
@@ -47,6 +51,10 @@ namespace Facebook.Web.Mvc
             }
         }
 
+        /// <summary>
+        /// Handles the unauthorized request.
+        /// </summary>
+        /// <param name="filterContext">The filter context.</param>
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             var model = new FacebookAuthorizeInfo(

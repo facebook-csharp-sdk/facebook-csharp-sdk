@@ -1,6 +1,5 @@
 // <copyright file="CanvasConfigurationSettingsTest.cs" company="Thuzi, LLC">Microsoft Public License (Ms-PL)</copyright>
 using System;
-using Facebook.Web;
 using Microsoft.Pex.Framework;
 using Microsoft.Pex.Framework.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

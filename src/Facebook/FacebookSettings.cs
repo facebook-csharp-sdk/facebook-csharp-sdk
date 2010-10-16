@@ -7,33 +7,63 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
 using System.Configuration;
 
 namespace Facebook
 {
+    /// <summary>
+    /// Represents the settings of a Facebook application.
+    /// </summary>
     public class FacebookSettings : IFacebookSettings
     {
 
+        /// <summary>
+        /// Gets or sets the API key.
+        /// </summary>
+        /// <value>The API key.</value>
         public string ApiKey { get; set; }
 
+        /// <summary>
+        /// Gets or sets the API secret.
+        /// </summary>
+        /// <value>The API secret.</value>
         public string ApiSecret { get; set; }
 
+        /// <summary>
+        /// Gets or sets the app id.
+        /// </summary>
+        /// <value>The app id.</value>
         public string AppId { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [cookie support].
+        /// </summary>
+        /// <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
         public bool CookieSupport { get; set; }
 
+        /// <summary>
+        /// Gets or sets the base domain.
+        /// </summary>
+        /// <value>The base domain.</value>
         public string BaseDomain { get; set; }
 
+        /// <summary>
+        /// Gets or sets the max retries.
+        /// </summary>
+        /// <value>The max retries.</value>
         public int MaxRetries { get; set; }
 
+        /// <summary>
+        /// Gets or sets the retry delay.
+        /// </summary>
+        /// <value>The retry delay.</value>
         public int RetryDelay { get; set; }
 
 #if (!SILVERLIGHT) // Silverlight does not support System.Configuration
         private static IFacebookSettings current;
 
         /// <summary>
-        /// Gets the FacebookSettings stored in the configuration file.
+        /// Gets the Facebook settings stored in the configuration file.
         /// </summary>
         public static IFacebookSettings Current
         {

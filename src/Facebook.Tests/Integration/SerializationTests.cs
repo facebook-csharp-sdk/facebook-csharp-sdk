@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Dynamic;
-using Facebook;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests.Integration
@@ -49,7 +48,7 @@ namespace Facebook.Tests.Integration
             parameters.message = "my message";
             parameters.attachment = attachment;
 
-            string result = DictionaryUtils.ToJsonQueryString(parameters);
+            string result = DictionaryUtilities.ToJsonQueryString(parameters);
             Assert.AreEqual("method=stream.publish&message=my%20message&attachment=%7B%0D%0A%20%20%22name%22%3A%20%22my%20attachment%22%2C%20%22href%22%3A%20%22http%3A%2F%2Fapps.facebook.com%2Fcanvas%22%0D%0A%7D", result);
         }
 
@@ -60,7 +59,7 @@ namespace Facebook.Tests.Integration
             parameters.method = "stream.publish";
             parameters.query = "SELECT metric, value FROM insights WHERE object_id=111605505520003 AND end_time=1272276000 AND period=86400 AND metric='page_like_adds'";
 
-            string result = DictionaryUtils.ToJsonQueryString(parameters);
+            string result = DictionaryUtilities.ToJsonQueryString(parameters);
             Assert.AreEqual("method=stream.publish&query=SELECT%20metric%2C%20value%20FROM%20insights%20WHERE%20object_id%3D111605505520003%20AND%20end_time%3D1272276000%20AND%20period%3D86400%20AND%20metric%3D'page_like_adds'", result);
         }
 

@@ -14,11 +14,18 @@ using System.Globalization;
 
 namespace Facebook
 {
+    /// <summary>
+    /// Represents a Facebook session.
+    /// </summary>
     public sealed class FacebookSession
     {
         private Dictionary<string, string> _dictionary = new Dictionary<string, string>();
 
 
+        /// <summary>
+        /// Gets the internal dictionary store.
+        /// </summary>
+        /// <value>The dictionary.</value>
         public IDictionary<string, string> Dictionary
         {
             get
@@ -27,6 +34,10 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Gets or sets the user id.
+        /// </summary>
+        /// <value>The user id.</value>
         public long UserId
         {
             get
@@ -42,6 +53,10 @@ namespace Facebook
                 _dictionary["uid"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
+        /// <summary>
+        /// Gets or sets the secret.
+        /// </summary>
+        /// <value>The secret.</value>
         public string Secret
         {
             get
@@ -57,6 +72,11 @@ namespace Facebook
                 _dictionary["secret"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the access token.
+        /// </summary>
+        /// <value>The access token.</value>
         public string AccessToken
         {
             get
@@ -72,6 +92,11 @@ namespace Facebook
                 _dictionary["access_token"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the session key.
+        /// </summary>
+        /// <value>The session key.</value>
         public string SessionKey
         {
             get
@@ -87,13 +112,18 @@ namespace Facebook
                 _dictionary["session_key"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the expires.
+        /// </summary>
+        /// <value>The expires.</value>
         public DateTime Expires
         {
             get
             {
                 if (_dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(_dictionary["expires"]))
                 {
-                    return DateTimeUtils.FromUnixTime(_dictionary["expires"]);
+                    return DateTimeUtilities.FromUnixTime(_dictionary["expires"]);
                 }
                 return default(DateTime);
             }
@@ -101,9 +131,14 @@ namespace Facebook
             {
                 Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
-                _dictionary["expires"] = DateTimeUtils.ToUnixTime(value);
+                _dictionary["expires"] = DateTimeUtilities.ToUnixTime(value);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the signature.
+        /// </summary>
+        /// <value>The signature.</value>
         public string Signature
         {
             get
@@ -119,6 +154,11 @@ namespace Facebook
                 _dictionary["sig"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the base domain.
+        /// </summary>
+        /// <value>The base domain.</value>
         public string BaseDomain
         {
             get

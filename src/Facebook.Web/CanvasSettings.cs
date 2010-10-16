@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 
 namespace Facebook.Web
 {
+    /// <summary>
+    /// Represents the Facebook application's canvas settings.
+    /// </summary>
     public class CanvasSettings : ICanvasSettings
     {
         /// <summary>

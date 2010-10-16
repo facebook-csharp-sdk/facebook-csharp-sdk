@@ -14,12 +14,19 @@ using System.Globalization;
 
 namespace Facebook
 {
+    /// <summary>
+    /// Rerpesents a Facebook signed request.
+    /// </summary>
     public class FacebookSignedRequest
     {
 
         private Dictionary<string, string> _dictionary = new Dictionary<string, string>();
 
 
+        /// <summary>
+        /// Gets the underlying dictionary store.
+        /// </summary>
+        /// <value>The dictionary.</value>
         public IDictionary<string, string> Dictionary
         {
             get
@@ -29,8 +36,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Which user is currently viewing your application.
+        /// Gets or sets the user id.
         /// </summary>
+        /// <value>The user id.</value>
         public long UserId
         {
             get
@@ -48,8 +56,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// The users access token.
+        /// Gets or sets the access token.
         /// </summary>
+        /// <value>The access token.</value>
         public string AccessToken
         {
             get
@@ -67,27 +76,31 @@ namespace Facebook
         }
 
         /// <summary>
-        /// When the access token expires.
+        /// Gets or sets the expires.
         /// </summary>
+        /// <value>The expires.</value>
         public DateTime Expires
         {
             get
             {
                 if (_dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(_dictionary["expires"]))
                 {
-                    return DateTimeUtils.FromUnixTime(_dictionary["expires"]);
+                    return DateTimeUtilities.FromUnixTime(_dictionary["expires"]);
                 }
                 return default(DateTime);
             }
             set
             {
                 Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-                _dictionary["expires"] = DateTimeUtils.ToUnixTime(value);
+                _dictionary["expires"] = DateTimeUtilities.ToUnixTime(value);
             }
         }
+
+
         /// <summary>
-        /// Whose profile is currently being viewed. It could be a user ID or a Page ID.
+        /// Gets or sets the profile id.
         /// </summary>
+        /// <value>The profile id.</value>
         public long ProfileId
         {
             get
@@ -104,6 +117,10 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Gets or sets the algorithm.
+        /// </summary>
+        /// <value>The algorithm.</value>
         public string Algorithm
         {
             get

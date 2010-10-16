@@ -8,79 +8,17 @@
 // ---------------------------------
 
 using System;
-using System.Diagnostics.Contracts;
-using System.Dynamic;
 using System.Collections.Generic;
-using Facebook;
-using System.Diagnostics;
-using System.Globalization;
+using System.Diagnostics.Contracts;
 
 namespace Facebook
 {
+    /// <summary>
+    /// Extension methods that add non-standard funcationality to the FacebookAppBase object.
+    /// </summary>
     public static class FacebookAppExtensions
     {
 #if (!SILVERLIGHT)
-        public static object Api(this FacebookAppBase app, string id, string path)
-        {
-            Contract.Requires(app != null);
-            Contract.Requires(!String.IsNullOrEmpty(id));
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return app.Api(BuildPath(id, path));
-        }
-
-        public static object Api(this FacebookAppBase app, string id, string path, HttpMethod httpMethod)
-        {
-            Contract.Requires(app != null);
-            Contract.Requires(!String.IsNullOrEmpty(id));
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return app.Api(BuildPath(id, path), httpMethod);
-        }
-
-        public static object Api(this FacebookAppBase app, string id, string path, IDictionary<string, object> parameters)
-        {
-            Contract.Requires(app != null);
-            Contract.Requires(!String.IsNullOrEmpty(id));
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return app.Api(BuildPath(id, path), parameters);
-        }
-
-        public static object Api(this FacebookAppBase app, string id, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Requires(app != null);
-            Contract.Requires(!String.IsNullOrEmpty(id));
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return app.Api(BuildPath(id, path), parameters, httpMethod);
-        }
-
-        private static string BuildPath(string id, string path)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(id));
-            Contract.Requires(!String.IsNullOrEmpty(path));
-            Contract.Requires(path.Length > 1);
-
-            if (id.StartsWith("/", StringComparison.Ordinal))
-            {
-                id = id.Substring(1);
-            }
-            if (id.EndsWith("/", StringComparison.Ordinal))
-            {
-                id = id.Substring(0, id.Length - 1);
-            }
-            if (path.StartsWith("/", StringComparison.Ordinal))
-            {
-                path = path.Substring(1);
-            }
-            if (path.EndsWith("/", StringComparison.Ordinal))
-            {
-                path = path.Substring(0, path.Length - 1);
-            }
-            return String.Format(CultureInfo.InvariantCulture, "/{0}/{1}", id, path);
-        }
-
         /// <summary>
         /// Executes a FQL query.
         /// </summary>

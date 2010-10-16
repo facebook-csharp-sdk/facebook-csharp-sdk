@@ -97,22 +97,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts">
-      <HintPath>..\..\lib\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
+      <HintPath>..\..\Tools\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\..\lib\DLR\Microsoft.Dynamic.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Microsoft.Dynamic.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Scripting">
-      <HintPath>..\..\lib\DLR\Microsoft.Scripting.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Microsoft.Scripting.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Scripting.Core">
-      <HintPath>..\..\lib\DLR\Microsoft.Scripting.Core.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Microsoft.Scripting.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Scripting.ExtensionAttribute">
-      <HintPath>..\..\lib\DLR\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

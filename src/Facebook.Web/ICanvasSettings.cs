@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics.Contracts;
 
 namespace Facebook.Web
 {
+    /// <summary>
+    /// Represents the Facebook application's canvas settings.
+    /// </summary>
     [ContractClass(typeof(CanvasSettingsContracts))]
     public interface ICanvasSettings
     {
@@ -27,9 +27,9 @@ namespace Facebook.Web
         Uri AuthorizeCancelUrl { get; set; }
     }
 
-  
+#pragma warning disable 1591
     [ContractClassFor(typeof(ICanvasSettings))]
-    public abstract class CanvasSettingsContracts : ICanvasSettings
+    internal abstract class CanvasSettingsContracts : ICanvasSettings
     {
         public Uri CanvasPageUrl
         {
@@ -68,5 +68,5 @@ namespace Facebook.Web
             }
         }
     }
-
+#pragma warning restore 1591
 }

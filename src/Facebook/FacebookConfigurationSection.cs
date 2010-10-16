@@ -7,14 +7,20 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
 using System.Configuration;
 
 namespace Facebook
 {
+    /// <summary>
+    /// Represents the Facebook section in a configuration file.
+    /// </summary>
     public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookSettings
     {
 
+        /// <summary>
+        /// Gets or sets the API key.
+        /// </summary>
+        /// <value>The API key.</value>
         [ConfigurationProperty("apiKey", IsRequired = true)]
         public string ApiKey
         {
@@ -22,6 +28,10 @@ namespace Facebook
             set { this["apiKey"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the API secret.
+        /// </summary>
+        /// <value>The API secret.</value>
         [ConfigurationProperty("apiSecret", IsRequired = true)]
         public string ApiSecret
         {
@@ -29,6 +39,10 @@ namespace Facebook
             set { this["apiSecret"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the app id.
+        /// </summary>
+        /// <value>The app id.</value>
         [ConfigurationProperty("appId", IsRequired = true)]
         public string AppId
         {
@@ -36,6 +50,10 @@ namespace Facebook
             set { this["appId"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [cookie support].
+        /// </summary>
+        /// <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
         [ConfigurationProperty("cookieSupport", IsRequired = false, DefaultValue = false)]
         public bool CookieSupport
         {
@@ -43,6 +61,10 @@ namespace Facebook
             set { this["cookieSupport"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the base domain.
+        /// </summary>
+        /// <value>The base domain.</value>
         [ConfigurationProperty("baseDomain", IsRequired = false)]
         public string BaseDomain
         {
@@ -50,6 +72,10 @@ namespace Facebook
             set { this["baseDomain"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the max retries.
+        /// </summary>
+        /// <value>The max retries.</value>
         [ConfigurationProperty("maxRetries", IsRequired = false, DefaultValue = -1)]
         public int MaxRetries
         {
@@ -57,6 +83,10 @@ namespace Facebook
             set { this["maxRetries"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the retry delay.
+        /// </summary>
+        /// <value>The retry delay.</value>
         [ConfigurationProperty("retryDelay", IsRequired = false, DefaultValue = -1)]
         public int RetryDelay
         {

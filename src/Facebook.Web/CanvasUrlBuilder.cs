@@ -9,20 +9,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Configuration;
 using System.Diagnostics.Contracts;
-using System.Globalization;
+using System.Linq;
+using System.Web;
 
 namespace Facebook.Web
 {
+    /// <summary>
+    /// Provides a tool for building and retreiving Facebook canvas uniform resource identifiers (URIs).
+    /// </summary>
     public class CanvasUrlBuilder
     {
         private const string redirectPath = "facebookredirect.axd";
         private HttpRequestBase _request;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
+        /// </summary>
+        /// <param name="request">The request.</param>
         public CanvasUrlBuilder(HttpRequestBase request)
         {
             Contract.Requires(request != null);
@@ -42,6 +46,11 @@ namespace Facebook.Web
             Contract.Invariant(_request.Url != null);
         }
 
+        /// <summary>
+        /// Gets the canvas redirect HTML.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns></returns>
         public static string GetCanvasRedirectHtml(Uri url)
         {
             if (url == null) {
@@ -50,6 +59,11 @@ namespace Facebook.Web
             return GetCanvasRedirectHtml(url.ToString());
         }
 
+        /// <summary>
+        /// Gets the canvas redirect HTML.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1057:StringUriOverloadsCallSystemUriOverloads")]
         public static string GetCanvasRedirectHtml(string url)
         {
@@ -65,10 +79,12 @@ namespace Facebook.Web
                    "</head><body></body></html>";
         }
 
+
         /// <summary>
-        /// Facebook pulls the content for your application's 
-        /// canvas pages from this base url.
+        /// Gets the URL where Facebook pulls the content 
+        /// for your application's canvas pages.
         /// </summary>
+        /// <value>The canvas URL.</value>
         public Uri CanvasUrl
         {
             get
@@ -93,10 +109,12 @@ namespace Facebook.Web
             }
         }
 
+
         /// <summary>
-        /// The current url of your application being
-        /// pulled by Facebook.
+        /// Gets the current URL of your application that Facebook
+        /// is pulling..
         /// </summary>
+        /// <value>The current canvas URL.</value>
         public Uri CurrentCanvasUrl
         {
             get
@@ -108,7 +126,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// The current Path and query of the application 
+        /// Gets the current Path and query of the application 
         /// being pulled by Facebook.
         /// </summary>
         public string CurrentCanvasPathAndQuery
@@ -129,7 +147,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// The base url of your application on Facebook.
+        /// Gets the base url of your application on Facebook.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public Uri CanvasPageUrl
@@ -147,7 +165,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// The current url of the application on facebook.
+        /// Gets the current url of the application on facebook.
         /// </summary>
         public Uri CanvasPageCurrentUrl
         {
@@ -177,6 +195,14 @@ namespace Facebook.Web
             }
         }
 
+        /// <summary>
+        /// Gets the Facebook login URL.
+        /// </summary>
+        /// <param name="facebookApp">The facebook app.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="returnUrlPath">The return URL path.</param>
+        /// <param name="cancelUrlPath">The cancel URL path.</param>
+        /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#"), 
         System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
         public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath)
@@ -249,6 +275,10 @@ namespace Facebook.Web
             return facebookApp.GetLoginUrl(parameters);
         }
 
+        /// <summary>
+        /// Builds a Facebook authorization cancel URL.
+        /// </summary>
+        /// <returns></returns>
         public Uri BuildAuthCancelUrl()
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -256,6 +286,11 @@ namespace Facebook.Web
             return BuildAuthCancelUrl(null);
         }
 
+        /// <summary>
+        /// Builds a Facebook authorization cancel URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <returns></returns>
         public Uri BuildAuthCancelUrl(string pathAndQuery)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -263,6 +298,10 @@ namespace Facebook.Web
             return BuildAuthReturnUrl(pathAndQuery, true);
         }
 
+        /// <summary>
+        /// Builds a Facebook authorization return URL.
+        /// </summary>
+        /// <returns></returns>
         public Uri BuildAuthReturnUrl()
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -270,6 +309,11 @@ namespace Facebook.Web
             return BuildAuthReturnUrl(null);
         }
 
+        /// <summary>
+        /// Builds a Facebook authorization return URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <returns></returns>
         public Uri BuildAuthReturnUrl(string pathAndQuery)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -277,9 +321,15 @@ namespace Facebook.Web
             return BuildAuthReturnUrl(pathAndQuery, false);
         }
 
+        /// <summary>
+        /// Builds a Facebook canvas return URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <returns></returns>
         public Uri BuildCanvasPageUrl(string pathAndQuery)
         {
             Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
+            Contract.Ensures(Contract.Result<Uri>() != null);
 
             if (!pathAndQuery.StartsWith("/", StringComparison.Ordinal))
             {
@@ -290,6 +340,12 @@ namespace Facebook.Web
             return new Uri(url);
         }
 
+        /// <summary>
+        /// Builds a Facebook canvas return URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <param name="cancel">if set to <c>true</c> [cancel].</param>
+        /// <returns></returns>
         private Uri BuildAuthReturnUrl(string pathAndQuery, bool cancel)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);

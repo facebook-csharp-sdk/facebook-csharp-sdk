@@ -104,13 +104,13 @@
   <ItemGroup>
     <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\..\lib\DLR\Silverlight\Microsoft.Dynamic.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Silverlight\Microsoft.Dynamic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting">
-      <HintPath>..\..\lib\DLR\Silverlight\Microsoft.Scripting.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Silverlight\Microsoft.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting.Core">
-      <HintPath>..\..\lib\DLR\Silverlight\Microsoft.Scripting.Core.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Silverlight\Microsoft.Scripting.Core.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />

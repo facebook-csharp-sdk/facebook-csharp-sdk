@@ -11,12 +11,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
-using System.Dynamic;
 using System.Linq;
-using System.Globalization;
 
 namespace Facebook
 {
+    /// <summary>
+    /// Represents the core Facebook functionality.
+    /// </summary>
     [ContractClass(typeof(FacebookAppBaseContracts))]
     public abstract class FacebookAppBase
     {
@@ -106,7 +107,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// List of query parameters that get automatically dropped when rebuilding the current URL.
+        /// Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
         /// </summary>
         protected virtual ICollection<string> DropQueryParameters
         {
@@ -114,7 +115,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Maps aliases to Facebook domains.
+        /// Gets the aliases to Facebook domains.
         /// </summary>
         public virtual Dictionary<string, Uri> DomainMaps
         {
@@ -131,29 +132,38 @@ namespace Facebook
         /// </summary>
         public string ApiSecret { get; set; }
 
+
         /// <summary>
-        /// The active user session, if one is available.
+        /// Gets or sets the active user session.
         /// </summary>
+        /// <value>The session.</value>
         public virtual FacebookSession Session { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Cookie Support status.
-        /// </summary>
-        public bool CookieSupport { get; set; }
 
         /// <summary>
-        /// Indicates that we already loaded the session as best as we could.
+        /// Gets or sets a value indicating whether cookies are supported.
         /// </summary>
+        /// <value><c>true</c> if cookies are supported; otherwise, <c>false</c>.</value>
+        public bool CookieSupport { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the session has attempted to be loaded.
+        /// </summary>
+        /// <value><c>true</c> if [session loaded]; otherwise, <c>false</c>.</value>
         public bool SessionLoaded { get; set; }
 
         /// <summary>
-        /// Gets or sets the base domain of the the application.
+        /// Gets or sets the base domain.
         /// </summary>
+        /// <value>The base domain.</value>
         public string BaseDomain { get; set; }
 
+
         /// <summary>
-        /// Gets the default Facebook login success url.
+        /// Gets the current URL.
         /// </summary>
+        /// <value>The current URL.</value>
         protected virtual Uri CurrentUrl
         {
             get
@@ -163,8 +173,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Get the UID from the session.
+        /// Gets the user id.
         /// </summary>
+        /// <value>The user id.</value>
         public long UserId
         {
             get
@@ -178,8 +189,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets a OAuth access token.
+        /// Gets the access token.
         /// </summary>
+        /// <value>The access token.</value>
         public string AccessToken
         {
             get
@@ -197,9 +209,11 @@ namespace Facebook
             }
         }
 
+
         /// <summary>
-        /// Gets the name of the current session cookie.
+        /// Gets the name of the session cookie.
         /// </summary>
+        /// <value>The name of the session cookie.</value>
         protected string SessionCookieName
         {
             get
@@ -270,6 +284,11 @@ namespace Facebook
         /// <returns>The URL for the logout flow</returns>
         public abstract Uri GetLoginStatusUrl(IDictionary<string, object> parameters);
 
+        /// <summary>
+        /// Cleans the URL or known Facebook querystring values.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns></returns>
         protected virtual Uri CleanUrl(Uri uri)
         {
             Contract.Requires(uri != null);
