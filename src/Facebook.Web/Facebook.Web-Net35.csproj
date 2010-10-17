@@ -51,7 +51,7 @@
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>bin\Debug\DotNet35\Facebook.Web.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Net35\Facebook.Web.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -86,7 +86,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
-    <DocumentationFile>bin\Release\DotNet35\Facebook.Web.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Net35\Facebook.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -96,22 +96,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts">
-      <HintPath>..\..\lib\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
+      <HintPath>..\..\Tools\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\..\lib\DLR\Microsoft.Dynamic.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\Tools\DLR\Microsoft.Dynamic.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Scripting">
-      <HintPath>..\..\lib\DLR\Microsoft.Scripting.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\Tools\DLR\Microsoft.Scripting.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Scripting.Core">
-      <HintPath>..\..\lib\DLR\Microsoft.Scripting.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\Tools\DLR\Microsoft.Scripting.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Scripting.ExtensionAttribute">
-      <HintPath>..\..\lib\DLR\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
+      <HintPath>..\..\Tools\DLR\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -149,6 +151,7 @@
     <ProjectReference Include="..\Facebook\Facebook-Net35.csproj">
       <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
       <Name>Facebook-Net35</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

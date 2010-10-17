@@ -3,10 +3,10 @@ using System.Runtime.Serialization;
 
 namespace Facebook
 {
-#if (!SILVERLIGHT)
     /// <summary>
     /// Represents errors that occur as a result of problems with the OAuth access token.
     /// </summary>
+#if (!SILVERLIGHT)
     [Serializable]
 #endif
     public class FacebookOAuthException : FacebookApiException

@@ -85,15 +85,30 @@ task Package -depends Merge {
   if ($buildNuPackage)
   {
     New-Item -Path $workingDir\NuPack -ItemType Directory
-    Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook.nuspec -recurse
+    New-Item -Path $workingDir\NuPack\Facebook\ -ItemType Directory
+    New-Item -Path $workingDir\NuPack\FacebookWeb\ -ItemType Directory
+    New-Item -Path $workingDir\NuPack\FacebookWebMvc\ -ItemType Directory
+    Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook\Facebook.nuspec -recurse
+    Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuPack\FacebookWeb\FacebookWeb.nuspec -recurse
+    Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuPack\FacebookWebMvc\FacebookWebMvc.nuspec -recurse
     
     foreach ($build in $builds)
     {
         $name = $build.TestsName
         $finalDir = $build.FinalDir
-        $frameworkDir = $build.NuPackDir
         
-        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Tools\$frameworkDir -recurse
+        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\lib\$finalDir -recurse
+        get-childitem $workingDir\NuPack\Facebook\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+        
+        if (Test-Path -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir") {
+            Copy-Item -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\lib\$finalDir -recurse
+            get-childitem $workingDir\NuPack\FacebookWeb\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+        }
+        
+        if (Test-Path -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir") {
+            Copy-Item -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\lib\$finalDir -recurse
+            get-childitem $workingDir\NuPack\FacebookWebMvc\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+        }
     }
   
     exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\Facebook.nuspec }

@@ -30,7 +30,9 @@ namespace Facebook
         private const string _newLine = "\r\n";
         private int _maxRetries = 2;  //How many times to retry a command if an error occurs until we give up.
         private int _retryDelay = 500; // How long in milliseconds to wait before retrying.
+#if !SILVERLIGHT
         private FacebookSession _session;
+#endif
 #if !SILVERLIGHT && !CLIENTPROFILE
         private FacebookSignedRequest _signedRequest;
 #endif

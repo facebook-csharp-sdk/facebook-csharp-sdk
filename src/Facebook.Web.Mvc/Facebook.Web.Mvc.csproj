@@ -52,7 +52,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>bin\Debug\DotNet40\Facebook.Web.Mvc.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Net40\Facebook.Web.Mvc.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -87,7 +87,7 @@
     <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
     <CodeContractsExtraRewriteOptions />
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>bin\Release\DotNet40\Facebook.Web.Mvc.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Net40\Facebook.Web.Mvc.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -131,10 +131,12 @@
     <ProjectReference Include="..\Facebook.Web\Facebook.Web.csproj">
       <Project>{73333465-710D-4143-BA9B-201D90EE2BAF}</Project>
       <Name>Facebook.Web</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Facebook\Facebook.csproj">
       <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
       <Name>Facebook</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

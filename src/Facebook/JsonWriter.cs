@@ -363,7 +363,7 @@ namespace Facebook
                 StartObjectScope();
 #if SILVERLIGHT
                 var propDescs = o.GetType().GetProperties();
-                foreach (PropertyInfo propDesc in propDescs)
+                foreach (System.Reflection.PropertyInfo propDesc in propDescs)
                 {
                     WriteName(propDesc.Name);
                     WriteValue(propDesc.GetValue(o, null));

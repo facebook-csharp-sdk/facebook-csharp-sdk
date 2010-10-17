@@ -15,10 +15,10 @@ using System.Security;
 
 namespace Facebook
 {
-#if (!SILVERLIGHT)
     /// <summary>
     /// Represent erros that occur while calling a Facebook API.
     /// </summary>
+#if (!SILVERLIGHT)
     [Serializable]
 #endif
     public class FacebookApiException : Exception
