@@ -131,7 +131,7 @@ namespace Facebook
             {
                 Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
-                _dictionary["expires"] = DateTimeUtilities.ToUnixTime(value);
+                _dictionary["expires"] = DateTimeUtilities.ToUnixTime(value).ToString();
             }
         }
 

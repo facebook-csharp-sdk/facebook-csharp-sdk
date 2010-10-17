@@ -23,13 +23,15 @@ namespace Facebook
         /// </summary>
         /// <param name="dateTime">The date time.</param>
         /// <returns></returns>
-        public static string ToUnixTime(DateTime dateTime)
+        public static double ToUnixTime(this DateTime dateTime)
         {
-            Contract.Requires(dateTime >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            Contract.Requires(dateTime >= new DateTime(1970, 1, 1, 0, 0, 0));
 
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            var range = dateTime - epoch;
-            return Math.Floor(range.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0);
+            // For some reason when we use utc time and convert it to 'facebook'
+            // time it apears to be in UTC+7. This doesn't seem right though...
+            var range = dateTime.AddHours(7) - epoch; 
+            return Math.Floor(range.TotalSeconds);
         }
 
         /// <summary>
@@ -37,18 +39,26 @@ namespace Facebook
         /// </summary>
         /// <param name="unixTime"></param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "unixTime")]
         internal static DateTime FromUnixTime(string unixTime)
         {
-            Contract.Requires(!String.IsNullOrEmpty(unixTime));
-
-            long seconds;
-            if (!long.TryParse(unixTime, out seconds) || seconds < 0)
+            double d;
+            if (!double.TryParse(unixTime, out d))
             {
-                throw new FormatException("The unix time provided was not in the correct format.");
+                throw new ArgumentOutOfRangeException("Invalid unix time specified.");
             }
+            return FromUnixTime(d);
+        }
+
+        /// <summary>
+        /// Converts a unix time string to a DateTime object.
+        /// </summary>
+        /// <param name="unixTime"></param>
+        /// <returns></returns>
+        internal static DateTime FromUnixTime(double unixTime)
+        {
+            Contract.Requires(unixTime > 0);
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            return epoch.AddSeconds(seconds);
+            return epoch.AddSeconds(unixTime);
         }
     }
 }
