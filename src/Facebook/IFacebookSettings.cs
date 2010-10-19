@@ -51,5 +51,12 @@ namespace Facebook
         /// <value>The retry delay.</value>
         int RetryDelay { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether attempts to access invalid properties should be traced as warnings.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if attempts to access invalid properties should be traced as warnings; otherwise, <c>false</c>.
+        /// </value>
+        //bool TraceInvalidProperties { get; set; }
     }
 }
