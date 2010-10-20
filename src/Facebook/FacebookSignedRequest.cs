@@ -92,7 +92,7 @@ namespace Facebook
             set
             {
                 Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-                _dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString();
+                _dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
             }
         }
 

@@ -1,22 +1,25 @@
 ﻿// --------------------------------
-// <copyright file="DynamicUtilities.cs" company="Thuzi, LLC">
+// <copyright file="DictionaryUtilities.cs" company="Thuzi, LLC">
 //     Copyright (c) 2010 Thuzi, LLC (thuzi.com)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
 // <website>http://facebooksdk.codeplex.com</website>
-// ---------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+// --------------------------------
 
 namespace Facebook
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Diagnostics.Contracts;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+
+    /// <summary>
+    /// Extension methods on Dicationry objects.
+    /// </summary>
     internal static class DictionaryUtilities
     {
         /// <summary>
@@ -36,6 +39,7 @@ namespace Facebook
             {
                 merged.Add(kvp.Key, kvp.Value);
             }
+
             foreach (var kvp in first)
             {
                 if (!merged.ContainsKey(kvp.Key))
@@ -43,6 +47,7 @@ namespace Facebook
                     merged.Add(kvp.Key, kvp.Value);
                 }
             }
+
             return merged;
         }
 
@@ -69,6 +74,7 @@ namespace Facebook
                 {
                     sb.Append("&");
                 }
+
                 if (dictionary[key] != null)
                 {
                     // Format Object As Json And Remove leading and trailing perenthesis
@@ -77,10 +83,12 @@ namespace Facebook
                     {
                         jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);
                     }
+
                     if (jsonValue.EndsWith("\"", StringComparison.Ordinal))
                     {
                         jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
                     }
+
                     var encodedValue = Uri.EscapeDataString(jsonValue);
                     sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
                 }
@@ -89,6 +97,7 @@ namespace Facebook
                     sb.Append(key);
                 }
             }
+
             return sb.ToString();
         }
 
@@ -107,7 +116,6 @@ namespace Facebook
         }
 
 #if !SILVERLIGHT
-
 
         /// <summary>
         /// Converts the NameValueCollection to a json formatted query string.

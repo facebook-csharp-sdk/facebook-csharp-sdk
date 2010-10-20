@@ -2,7 +2,7 @@
 namespace Facebook
 {
     /// <summary>
-    /// Represents a media object sucha as a photo or video.
+    /// Represents a media object such as a photo or video.
     /// </summary>
     public class FacebookMediaObject
     {

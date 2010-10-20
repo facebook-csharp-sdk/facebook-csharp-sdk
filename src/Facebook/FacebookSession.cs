@@ -19,8 +19,7 @@ namespace Facebook
     /// </summary>
     public sealed class FacebookSession
     {
-        private Dictionary<string, string> _dictionary = new Dictionary<string, string>();
-
+        private Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets the internal dictionary store.
@@ -30,7 +29,7 @@ namespace Facebook
         {
             get
             {
-                return this._dictionary;
+                return this.dictionary;
             }
         }
 
@@ -42,15 +41,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("uid"))
+                if (dictionary.ContainsKey("uid"))
                 {
-                    return long.Parse(_dictionary["uid"], CultureInfo.InvariantCulture);
+                    return long.Parse(dictionary["uid"], CultureInfo.InvariantCulture);
                 }
                 return default(long);
             }
             set
             {
-                _dictionary["uid"] = value.ToString(CultureInfo.InvariantCulture);
+                dictionary["uid"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
         /// <summary>
@@ -61,15 +60,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("secret"))
+                if (dictionary.ContainsKey("secret"))
                 {
-                    return _dictionary["secret"];
+                    return dictionary["secret"];
                 }
                 return null;
             }
             set
             {
-                _dictionary["secret"] = value;
+                dictionary["secret"] = value;
             }
         }
 
@@ -81,15 +80,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("access_token"))
+                if (dictionary.ContainsKey("access_token"))
                 {
-                    return _dictionary["access_token"];
+                    return dictionary["access_token"];
                 }
                 return null;
             }
             set
             {
-                _dictionary["access_token"] = value;
+                dictionary["access_token"] = value;
             }
         }
 
@@ -101,15 +100,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("session_key"))
+                if (dictionary.ContainsKey("session_key"))
                 {
-                    return _dictionary["session_key"];
+                    return dictionary["session_key"];
                 }
                 return null;
             }
             set
             {
-                _dictionary["session_key"] = value;
+                dictionary["session_key"] = value;
             }
         }
 
@@ -121,9 +120,9 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(_dictionary["expires"]))
+                if (dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(dictionary["expires"]))
                 {
-                    return DateTimeConvertor.FromUnixTime(_dictionary["expires"]);
+                    return DateTimeConvertor.FromUnixTime(dictionary["expires"]);
                 }
                 return default(DateTime);
             }
@@ -131,7 +130,7 @@ namespace Facebook
             {
                 Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
-                _dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString();
+                dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -143,15 +142,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("sig"))
+                if (dictionary.ContainsKey("sig"))
                 {
-                    return _dictionary["sig"];
+                    return dictionary["sig"];
                 }
                 return null;
             }
             set
             {
-                _dictionary["sig"] = value;
+                dictionary["sig"] = value;
             }
         }
 
@@ -163,15 +162,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("base_domain"))
+                if (dictionary.ContainsKey("base_domain"))
                 {
-                    return _dictionary["base_domain"];
+                    return dictionary["base_domain"];
                 }
                 return null;
             }
             set
             {
-                _dictionary["base_domain"] = value;
+                dictionary["base_domain"] = value;
             }
         }
 
@@ -180,7 +179,7 @@ namespace Facebook
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         private void InvarientObject()
         {
-            Contract.Invariant(_dictionary != null);
+            Contract.Invariant(dictionary != null);
         }
     }
 }
