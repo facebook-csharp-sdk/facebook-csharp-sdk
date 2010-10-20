@@ -30,10 +30,8 @@ namespace Facebook
         private const string _newLine = "\r\n";
         private int _maxRetries = 2;  //How many times to retry a command if an error occurs until we give up.
         private int _retryDelay = 500; // How long in milliseconds to wait before retrying.
-#if !SILVERLIGHT
-        private FacebookSession _session;
-#endif
 #if !SILVERLIGHT && !CLIENTPROFILE
+        private FacebookSession _session;
         private FacebookSignedRequest _signedRequest;
 #endif
 
@@ -46,10 +44,11 @@ namespace Facebook
 
 
 
+
         /// <summary>
-        /// Initializes the Facebook application with values
-        /// stored in the application configuration file or 
-        /// with only the default values if the configuration
+        /// Initializes a new instance of the <see cref="FacebookApp"/> 
+        /// class with values stored in the application configuration file
+        /// or with only the default values if the configuration
         /// file does not have the values set.
         /// </summary>
         public FacebookApp()
@@ -63,9 +62,10 @@ namespace Facebook
 #endif
         }
 
+
         /// <summary>
-        /// Initialized the Facebook application with
-        /// values provided. Does not require configuration
+        /// Initializes a new instance of the <see cref="FacebookApp"/> 
+        /// class with values provided. Does not require configuration
         /// file to be set.
         /// </summary>
         /// <param name="settings">The facebook settings for the application.</param>
@@ -77,8 +77,8 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes the Facebook application with
-        /// only an access_token set. From this state 
+        /// Initializes a new instance of the <see cref="FacebookApp"/> 
+        /// class with only an access_token set. From this state 
         /// sessions will not be accessable.
         /// </summary>
         /// <param name="accessToken">The Facebook access token.</param>
@@ -93,8 +93,10 @@ namespace Facebook
         }
 
         /// <summary>
-        /// How many times to retry a command if an error occurs until we give up.
+        /// Gets or sets the maximum number of times to retry an api
+        /// call after experiencing a recoverable exception.
         /// </summary>
+        /// <value>The max retries.</value>
         public int MaxRetries
         {
             get { return _maxRetries; }
@@ -102,8 +104,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// How long in seconds to wait before retrying, with exponential roll off.
+        /// Gets or sets the value in seconds to wait before retrying, with exponential roll off.
         /// </summary>
+        /// <value>The retry delay.</value>
         public int RetryDelay
         {
             get { return _retryDelay; }
@@ -880,7 +883,7 @@ namespace Facebook
         protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
         {
             Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(!signedRequestValue.Contains("."), "Invalid signed request.");
+            Contract.Requires(signedRequestValue.Contains("."), "Invalid signed request.");
 
             string[] parts = signedRequestValue.Split('.');
             var sig = Base64UrlDecode(parts[0]);

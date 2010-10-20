@@ -22,7 +22,7 @@
     <AssemblyOriginatorKeyFile>SharedKey.snk</AssemblyOriginatorKeyFile>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -504,17 +504,17 @@
     <Compile Include="JsonWriterTest.QuoteJScriptString.g.cs">
       <DependentUpon>JsonWriterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="DateTimeUtilsTest.cs" />
+    <Compile Include="DateTimeConvertorTest.cs" />
     <Compile Include="UnixDateTimeTest.FromUnixTime.g.cs">
-      <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
+      <DependentUpon>DateTimeConvertorTest.cs</DependentUpon>
     </Compile>
     <Compile Include="UnixDateTimeTest.ToUnixDateTime.g.cs">
-      <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
+      <DependentUpon>DateTimeConvertorTest.cs</DependentUpon>
     </Compile>
     <Compile Include="UnixDateTimeTest.ToUnixTime.g.cs">
-      <DependentUpon>DateTimeUtilsTest.cs</DependentUpon>
+      <DependentUpon>DateTimeConvertorTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="DateTimeUtilsTest_Unit.cs" />
+    <Compile Include="DateTimeConvertorTest_Unit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="monkey.jpg">

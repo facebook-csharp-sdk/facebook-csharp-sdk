@@ -104,6 +104,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />
     <Compile Include="FacebookAppExtensions.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
-    <Compile Include="DateTimeUtilities.cs" />
     <Compile Include="DictionaryUtilities.cs" />
     <Compile Include="IFacebookSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,11 +137,6 @@
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
-      <Link>CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

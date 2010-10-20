@@ -42,10 +42,7 @@ namespace Facebook
         public static DateTime FromUnixTime(string unixTime)
         {
             double d;
-            if (!double.TryParse(unixTime, out d) || d <= 0)
-            {
-                throw new ArgumentOutOfRangeException("Invalid unix time specified.");
-            }
+            double.TryParse(unixTime, out d);
             return FromUnixTime(d);
         }
 
@@ -56,7 +53,6 @@ namespace Facebook
         /// <returns></returns>
         public static DateTime FromUnixTime(double unixTime)
         {
-            Contract.Requires(unixTime > 0);
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(unixTime);
         }
