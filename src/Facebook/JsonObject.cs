@@ -172,7 +172,7 @@ namespace Facebook
             else
             {
 #if !SILVERLIGHT && TRACE
-                Trace.TraceWarning("This instance of JsonArray does not contain a value at this index.");
+                Trace.TraceInformation("This instance of JsonArray does not contain a value at this index.");
 #endif
                 result = (object)null;
                 return true;
@@ -198,7 +198,7 @@ namespace Facebook
             else
             {
 #if !SILVERLIGHT && TRACE
-                Trace.TraceWarning(String.Format(CultureInfo.InvariantCulture, "This instance of JsonObject does not contain the property {0}.", binder.Name));
+                Trace.TraceInformation(String.Format(CultureInfo.InvariantCulture, "This instance of JsonObject does not contain the property {0}.", binder.Name));
 #endif
                 result = (object)null;
                 return true;
