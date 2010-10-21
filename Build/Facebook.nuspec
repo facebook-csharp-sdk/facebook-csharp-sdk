@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Facebook</id>
+    <version>4.0.2</version>
+    <authors>
+      <author>Nathan Totten</author>
+      <author>Jim Zimmerman</author>
+    </authors>
+    <description>The Facebook C# SDK core.</description>
+    <language>en-US</language>
+  </metadata>
+</package>

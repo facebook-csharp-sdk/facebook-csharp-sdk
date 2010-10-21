@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>FacebookWeb</id>
+    <version>4.0.2</version>
+    <authors>
+      <author>Nathan Totten</author>
+      <author>Jim Zimmerman</author>
+    </authors>
+    <description>The Facebook C# SDK web component.</description>
+    <language>en-US</language>
+  </metadata>
+  <dependencies>
+    <dependency id="Facebook" version="4.0.2" />
+  </dependencies> 
+</package>
