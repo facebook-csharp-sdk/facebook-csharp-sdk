@@ -7,12 +7,12 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-
 namespace Facebook
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Extension methods that add non-standard funcationality to the FacebookAppBase object.
     /// </summary>
@@ -22,9 +22,9 @@ namespace Facebook
         /// <summary>
         /// Executes a FQL query.
         /// </summary>
-        /// <param name="app"></param>
-        /// <param name="query"></param>
-        /// <returns></returns>
+        /// <param name="app">The Facebook app.</param>
+        /// <param name="query">The FQL query.</param>
+        /// <returns>The FQL query result.</returns>
         public static object Fql(this FacebookAppBase app, string query)
         {
             Contract.Requires(app != null);
@@ -39,9 +39,9 @@ namespace Facebook
         /// <summary>
         /// Executes a FQL multiquery.
         /// </summary>
-        /// <param name="app"></param>
-        /// <param name="queries"></param>
-        /// <returns></returns>
+        /// <param name="app">The Facebook app.</param>
+        /// <param name="queries">The FQL queries.</param>
+        /// <returns>A collection of the FQL query results.</returns>
         public static object Fql(this FacebookAppBase app, params string[] queries)
         {
             Contract.Requires(app != null);
@@ -52,10 +52,11 @@ namespace Facebook
             {
                 queryDict.Add(string.Concat("query", i), queries[i]);
             }
+
             var parameters = new Dictionary<string, object>();
             parameters["queries"] = JsonSerializer.SerializeObject(queryDict);
             parameters["method"] = "fql.multiquery";
-            return app.Api(parameters); ;
+            return app.Api(parameters);
         }
 #endif
     }

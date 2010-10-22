@@ -7,18 +7,21 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-
 namespace Facebook
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Globalization;
+
     /// <summary>
     /// Represents a Facebook session.
     /// </summary>
     public sealed class FacebookSession
     {
+        /// <summary>
+        /// The internal dictionary store.
+        /// </summary>
         private Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         /// <summary>
@@ -41,17 +44,20 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("uid"))
+                if (this.dictionary.ContainsKey("uid"))
                 {
-                    return long.Parse(dictionary["uid"], CultureInfo.InvariantCulture);
+                    return long.Parse(this.dictionary["uid"], CultureInfo.InvariantCulture);
                 }
+
                 return default(long);
             }
+
             set
             {
-                dictionary["uid"] = value.ToString(CultureInfo.InvariantCulture);
+                this.dictionary["uid"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
+
         /// <summary>
         /// Gets or sets the secret.
         /// </summary>
@@ -60,15 +66,17 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("secret"))
+                if (this.dictionary.ContainsKey("secret"))
                 {
-                    return dictionary["secret"];
+                    return this.dictionary["secret"];
                 }
+
                 return null;
             }
+
             set
             {
-                dictionary["secret"] = value;
+                this.dictionary["secret"] = value;
             }
         }
 
@@ -80,15 +88,17 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("access_token"))
+                if (this.dictionary.ContainsKey("access_token"))
                 {
-                    return dictionary["access_token"];
+                    return this.dictionary["access_token"];
                 }
+
                 return null;
             }
+
             set
             {
-                dictionary["access_token"] = value;
+                this.dictionary["access_token"] = value;
             }
         }
 
@@ -100,15 +110,17 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("session_key"))
+                if (this.dictionary.ContainsKey("session_key"))
                 {
-                    return dictionary["session_key"];
+                    return this.dictionary["session_key"];
                 }
+
                 return null;
             }
+
             set
             {
-                dictionary["session_key"] = value;
+                this.dictionary["session_key"] = value;
             }
         }
 
@@ -120,17 +132,19 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(dictionary["expires"]))
+                if (this.dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(this.dictionary["expires"]))
                 {
-                    return DateTimeConvertor.FromUnixTime(dictionary["expires"]);
+                    return DateTimeConvertor.FromUnixTime(this.dictionary["expires"]);
                 }
+
                 return default(DateTime);
             }
+
             set
             {
                 Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
-                dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
+                this.dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -142,15 +156,17 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("sig"))
+                if (this.dictionary.ContainsKey("sig"))
                 {
-                    return dictionary["sig"];
+                    return this.dictionary["sig"];
                 }
+
                 return null;
             }
+
             set
             {
-                dictionary["sig"] = value;
+                this.dictionary["sig"] = value;
             }
         }
 
@@ -162,24 +178,29 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("base_domain"))
+                if (this.dictionary.ContainsKey("base_domain"))
                 {
-                    return dictionary["base_domain"];
+                    return this.dictionary["base_domain"];
                 }
+
                 return null;
             }
+
             set
             {
-                dictionary["base_domain"] = value;
+                this.dictionary["base_domain"] = value;
             }
         }
 
+        /// <summary>
+        /// The code contracts invarient object method.
+        /// </summary>
         [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Code contracts invarient method.")]
         private void InvarientObject()
         {
-            Contract.Invariant(dictionary != null);
+            Contract.Invariant(this.dictionary != null);
         }
     }
 }

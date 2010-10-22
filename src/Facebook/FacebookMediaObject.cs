@@ -1,4 +1,12 @@
-﻿
+﻿// --------------------------------
+// <copyright file="FacebookMediaObject.cs" company="Thuzi, LLC">
+//     Copyright (c) 2010 Thuzi, LLC (thuzi.com)
+// </copyright>
+// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
+// <website>http://facebooksdk.codeplex.com</website>
+// ---------------------------------
+
 namespace Facebook
 {
     /// <summary>
@@ -6,7 +14,10 @@ namespace Facebook
     /// </summary>
     public class FacebookMediaObject
     {
-        private byte[] _value;
+        /// <summary>
+        /// The value of the media object.
+        /// </summary>
+        private byte[] value;
 
         /// <summary>
         /// Gets or sets the type of the content.
@@ -26,16 +37,16 @@ namespace Facebook
         /// <param name="value">The media object value.</param>
         public void SetValue(byte[] value)
         {
-            _value = value;
+            this.value = value;
         }
 
         /// <summary>
         /// Gets the value of the media object.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The value of the media object.</returns>
         public byte[] GetValue()
         {
-            return _value;
+            return this.value;
         }
     }
 }

@@ -7,27 +7,50 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-
 namespace Facebook
 {
+    using System;
+
     /// <summary>
     /// Represents the method that handles the post-call result.
     /// </summary>
-    /// <param name="ar"></param>
-    public delegate void FacebookAsyncCallback(FacebookAsyncResult ar);
+    /// <param name="asyncResult">The Facebook asynchronous result.</param>
+    public delegate void FacebookAsyncCallback(FacebookAsyncResult asyncResult);
 
     /// <summary>
     /// Represents the status of an asynchronous Facebook api call.
     /// </summary>
     public class FacebookAsyncResult : IAsyncResult
     {
-        object result;
-        object asyncState;
-        System.Threading.WaitHandle asyncWaitHandle;
-        bool completedSynchronously;
-        bool isCompleted;
-        FacebookApiException error;
+        /// <summary>
+        /// The result of the asynchronous operation.
+        /// </summary>
+        private object result;
+
+        /// <summary>
+        /// The user-defined object that qualifies or contains information about an asynchronous operation
+        /// </summary>
+        private object asyncState;
+
+        /// <summary>
+        /// A <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.
+        /// </summary>
+        private System.Threading.WaitHandle asyncWaitHandle;
+
+        /// <summary>
+        /// A value that indicates whether the asynchronous operation completed synchronously.
+        /// </summary>
+        private bool completedSynchronously;
+
+        /// <summary>
+        /// A value that indicates whether the asynchronous operation has completed.
+        /// </summary>
+        private bool isCompleted;
+
+        /// <summary>
+        /// The error that occurred processing this api call.
+        /// </summary>
+        private FacebookApiException error;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAsyncResult"/> class.
@@ -64,7 +87,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the result.
+        /// Gets the result of an asynchronous operation.
         /// </summary>
         /// <value>The result.</value>
         public object Result
@@ -93,7 +116,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the asynchronous operation completed synchronously.
+        /// Gets a value indicating whether the asynchronous operation completed synchronously.
         /// </summary>
         /// <value></value>
         /// <returns>true if the asynchronous operation completed synchronously; otherwise, false.</returns>
@@ -103,7 +126,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the asynchronous operation has completed.
+        /// Gets a value indicating whether the asynchronous operation has completed.
         /// </summary>
         /// <value></value>
         /// <returns>true if the operation is complete; otherwise, false.</returns>

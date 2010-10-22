@@ -7,20 +7,20 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-
 namespace Facebook
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Globalization;
+
     /// <summary>
     /// Rerpesents a Facebook signed request.
     /// </summary>
     public class FacebookSignedRequest
     {
 
-        private Dictionary<string, string> _dictionary = new Dictionary<string, string>();
+        private Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Facebook
         {
             get
             {
-                return this._dictionary;
+                return this.dictionary;
             }
         }
 
@@ -43,15 +43,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("user_id"))
+                if (dictionary.ContainsKey("user_id"))
                 {
-                    return long.Parse(_dictionary["user_id"], CultureInfo.InvariantCulture);
+                    return long.Parse(dictionary["user_id"], CultureInfo.InvariantCulture);
                 }
                 return default(long);
             }
             set
             {
-                _dictionary["user_id"] = value.ToString(CultureInfo.InvariantCulture);
+                dictionary["user_id"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -63,15 +63,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("oauth_token"))
+                if (dictionary.ContainsKey("oauth_token"))
                 {
-                    return _dictionary["oauth_token"];
+                    return dictionary["oauth_token"];
                 }
                 return null;
             }
             set
             {
-                _dictionary["oauth_token"] = value;
+                dictionary["oauth_token"] = value;
             }
         }
 
@@ -83,16 +83,16 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(_dictionary["expires"]))
+                if (dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(dictionary["expires"]))
                 {
-                    return DateTimeConvertor.FromUnixTime(_dictionary["expires"]);
+                    return DateTimeConvertor.FromUnixTime(dictionary["expires"]);
                 }
                 return default(DateTime);
             }
             set
             {
                 Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-                _dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
+                dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -105,15 +105,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("profile_id"))
+                if (dictionary.ContainsKey("profile_id"))
                 {
-                    return long.Parse(_dictionary["profile_id"], CultureInfo.InvariantCulture);
+                    return long.Parse(dictionary["profile_id"], CultureInfo.InvariantCulture);
                 }
                 return default(long);
             }
             set
             {
-                _dictionary["profile_id"] = value.ToString(CultureInfo.InvariantCulture);
+                dictionary["profile_id"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -125,15 +125,15 @@ namespace Facebook
         {
             get
             {
-                if (_dictionary.ContainsKey("algorithm"))
+                if (dictionary.ContainsKey("algorithm"))
                 {
-                    return _dictionary["algorithm"];
+                    return dictionary["algorithm"];
                 }
                 return null;
             }
             set
             {
-                _dictionary["algorithm"] = value;
+                dictionary["algorithm"] = value;
             }
         }
 
@@ -142,7 +142,7 @@ namespace Facebook
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         private void InvarientObject()
         {
-            Contract.Invariant(_dictionary != null);
+            Contract.Invariant(dictionary != null);
         }
 
     }

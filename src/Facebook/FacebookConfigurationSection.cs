@@ -7,16 +7,15 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System.Configuration;
-
 namespace Facebook
 {
+    using System.Configuration;
+
     /// <summary>
     /// Represents the Facebook section in a configuration file.
     /// </summary>
     public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookSettings
     {
-
         /// <summary>
         /// Gets or sets the API key.
         /// </summary>
