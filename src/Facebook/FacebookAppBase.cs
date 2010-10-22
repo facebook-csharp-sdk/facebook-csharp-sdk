@@ -701,6 +701,26 @@ namespace Facebook
                 return string.Empty;
             }
 
+            Uri url;
+            if (Uri.TryCreate(path, UriKind.Absolute, out url))
+            {
+                if (url.Host == "graph.facebook.com")
+                {
+                    // If the host is graph.facebook.com the user has passed in the full url.
+                    // We remove the host part and continue with the parsing.
+                    path = url.PathAndQuery;
+                }
+                else
+                {
+                    // If the url is a valid absolute url we are passing the full url as the 'id'
+                    // parameter of the query. For example, if path is something like
+                    // http://www.microsoft.com/page.aspx?id=23 it means that we are trying
+                    // to make the request https://graph.facebook.com/http://www.microsoft.com/page.aspx%3Fid%3D23
+                    // So we are just going to return the path
+                    return path;
+                }
+            }
+
             // Clean the path, remove leading '/'. 
             // If the path is '/' just return.
             if (path[0] == '/' && path.Length > 1)
@@ -708,46 +728,33 @@ namespace Facebook
                 path = path.Substring(1);
             }
 
-            Uri url;
-            if (Uri.TryCreate(path, UriKind.Absolute, out url))
+            // If the url does not have a host it means we are using a url
+            // like /me or /me?fields=first_name,last_name so we want to
+            // remove the querystring info and add it to parameters
+            if (!String.IsNullOrEmpty(path) && path.Contains('?'))
             {
-                // If the url is a valid absolute url we are passing the full url as the 'id'
-                // parameter of the query. For example, if path is something like
-                // http://www.microsoft.com/page.aspx?id=23 it means that we are trying
-                // to make the request https://graph.facebook.com/http://www.microsoft.com/page.aspx%3Fid%3D23
-                // So we are just going to return the path
-                return path;
-            }
-            else
-            {
-                // If the url does not have a host it means we are using a url
-                // like /me or /me?fields=first_name,last_name so we want to
-                // remove the querystring info and add it to parameters
-                if (!String.IsNullOrEmpty(path) && path.Contains('?'))
+                var parts = path.Split('?');
+                path = parts[0]; // Set the path to only the path portion of the url
+                if (parts.Length > 1 && parts[1] != null)
                 {
-                    var parts = path.Split('?');
-                    path = parts[0]; // Set the path to only the path portion of the url
-                    if (parts.Length > 1 && parts[1] != null)
+                    // Add the query string values to the parameters dictionary
+                    var qs = parts[1];
+                    var keyValPairs = qs.Split('&');
+                    foreach (var kvp in keyValPairs)
                     {
-                        // Add the query string values to the parameters dictionary
-                        var qs = parts[1];
-                        var keyValPairs = qs.Split('&');
-                        foreach (var kvp in keyValPairs)
+                        if (!String.IsNullOrEmpty(kvp))
                         {
-                            if (!String.IsNullOrEmpty(kvp))
+                            var kv = kvp.Split('=');
+                            if (kv.Length == 2 && !String.IsNullOrEmpty(kv[0]))
                             {
-                                var kv = kvp.Split('=');
-                                if (kv.Length == 2 && !String.IsNullOrEmpty(kv[0]))
-                                {
-                                    parameters[kv[0]] = kv[1];
-                                }
+                                parameters[kv[0]] = kv[1];
                             }
                         }
                     }
-
                 }
-                return path;
             }
+
+            return path;
         }
 
     }

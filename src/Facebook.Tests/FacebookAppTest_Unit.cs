@@ -2,6 +2,7 @@
 using System.Dynamic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace Facebook
 {
@@ -53,6 +54,26 @@ namespace Facebook
             FacebookApp_Accessor app = new FacebookApp_Accessor(settings);
             var signedRequest = app.ParseSignedRequest(signed_request);
             Assert.AreEqual("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", signedRequest.AccessToken);
+        }
+
+        [TestMethod]
+        public void Full_Paging_Url_Returns_Correct_Path_And_Parameters()
+        {
+            string next = "http://graph.facebook.com/me/likes?limit=3&offset=3";
+            var parameters = new Dictionary<string, object>();
+            var path = FacebookAppBase_Accessor.ParseUrlParameters(next, parameters);
+            Assert.AreEqual(2, parameters.Count);
+            Assert.AreEqual("me/likes", path);
+        }
+
+        [TestMethod]
+        public void Path_And_Query_Return_Correct_Path_And_Parameters()
+        {
+            string next = "/me/likes?limit=3&offset=3";
+            var parameters = new Dictionary<string, object>();
+            var path = FacebookAppBase_Accessor.ParseUrlParameters(next, parameters);
+            Assert.AreEqual(2, parameters.Count);
+            Assert.AreEqual("me/likes", path);
         }
 
     }
