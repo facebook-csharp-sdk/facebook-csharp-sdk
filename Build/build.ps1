@@ -15,6 +15,7 @@
     @{Name = "Facebook-Net40"; TestsName = $null; Constants=""; FinalDir="Net40"; Framework="net-4.0"}
     @{Name = "Facebook-Net40Client"; TestsName = $null; Constants="CLIENTPROFILE"; FinalDir="Net40Client"; Framework="net-4.0"}
     @{Name = "Facebook-Net35"; TestsName = $null; Constants="DOTNET35"; FinalDir="Net35"; Framework="net-2.0"}
+    @{Name = "Facebook-Net35Client"; TestsName = $null; Constants="CLIENTPROFILE"; FinalDir="Net35Client"; Framework="net-2.0"}
     @{Name = "Facebook-SL4"; TestsName = $null; Constants="SILVERLIGHT"; FinalDir="SL4"; Framework="net-4.0"}
     @{Name = "Facebook-WP7"; TestsName = $null; Constants="SILVERLIGHT;WINDOWS_PHONE"; FinalDir="WP7"; Framework="net-4.0"}
   )

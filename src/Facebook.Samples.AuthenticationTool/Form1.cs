@@ -30,6 +30,9 @@ namespace Facebook.Samples.AuthenticationTool {
         }
 
         private void login_Click(object sender, EventArgs e) {
+#if NET35
+
+#else
             FacebookApp app = new FacebookApp(GetSettings());
 
             dynamic parameters = new ExpandoObject();
@@ -49,6 +52,7 @@ namespace Facebook.Samples.AuthenticationTool {
 
             webBrowser1.Navigate(loginUrl);
             webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
+#endif
         }
 
         void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e) {

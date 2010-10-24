@@ -184,27 +184,9 @@ namespace Facebook.Web.Mvc
             Contract.Requires(!String.IsNullOrEmpty(perms));
             Contract.Ensures(Contract.Result<string[]>() != null);
 
-            var result = new string[0];
-            if (_facebookApp.UserId != 0)
-            {
-                var query = string.Format(CultureInfo.InvariantCulture, "SELECT {0} FROM permissions WHERE uid == {1}", perms, _facebookApp.UserId);
-                var parameters = new Dictionary<string, object>();
-                parameters["query"] = query;
-                parameters["method"] = "fql.query";
-                parameters["access_token"] = string.Concat(_facebookApp.AppId, "|", _facebookApp.ApiSecret);
-                var data = (JsonArray)_facebookApp.Api(parameters);
-                if (data != null && data.Count > 0)
-                {
-                    var permData = data[0] as IDictionary<string, object>;
-                    if (permData != null)
-                    {
-                        result = (from perm in permData
-                                  where perm.Value.ToString() == "1"
-                                  select perm.Key).ToArray();
-                    }
-                }
-            }
-            return result;
+            var authUtil = new Authorizer(this._facebookApp);
+            var requiredPerms = Perms.Replace(" ", String.Empty).Split(',');
+            return authUtil.HasPermissions(requiredPerms);
         }
     }
 }

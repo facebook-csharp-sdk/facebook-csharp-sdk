@@ -81,7 +81,7 @@
   <ItemGroup>
     <Compile Include="CanvasConfigurationSettingsTest.cs" />
     <Compile Include="CanvasSettingsTest.cs" />
-    <Compile Include="CanvasUriBuilderTest_Unit.cs" />
+    <Compile Include="CanvasUrlBuilderTest_Unit.cs" />
     <Compile Include="CanvasUrlBuilderTest.cs" />
     <Compile Include="FacebookAppRedirectHttpHandlerTest.cs" />
     <Compile Include="GlobalAssemblyInfoTest.cs" />

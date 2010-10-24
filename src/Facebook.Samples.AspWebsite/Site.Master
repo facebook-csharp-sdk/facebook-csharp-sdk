@@ -5,6 +5,7 @@
 <head runat="server">
     <title></title>
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.4.2.js"></script>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -33,6 +34,7 @@
                     <Items>
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
                         <asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>
+                        <asp:MenuItem NavigateUrl="~/Profile.aspx" Text="Profile"/>
                     </Items>
                 </asp:Menu>
             </div>
