@@ -500,8 +500,9 @@ namespace Facebook.Web.Mvc
             {
                 throw new ConfigurationErrorsException("The canvas settings were not found or are invalid in the application configuration file.");
             }
-            var canvasPageUrl = canvasSettings.CanvasPageUrl.ToString();
-            string url = String.Concat(canvasPageUrl, UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues));
+            string webUrl = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(requestContext.HttpContext.Request);
+            string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
             TagBuilder tagBuilder = new TagBuilder("a")
             {
                 InnerHtml = (!String.IsNullOrEmpty(linkText)) ? HttpUtility.HtmlEncode(linkText) : String.Empty

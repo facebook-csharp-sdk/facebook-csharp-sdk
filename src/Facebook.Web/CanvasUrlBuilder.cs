@@ -336,6 +336,11 @@ namespace Facebook.Web
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
+            if (pathAndQuery.StartsWith(_request.ApplicationPath))
+            {
+                pathAndQuery = pathAndQuery.Substring(_request.ApplicationPath.Length);
+            }
+
             var url = string.Concat(CanvasPageUrl, pathAndQuery);
             return new Uri(url);
         }

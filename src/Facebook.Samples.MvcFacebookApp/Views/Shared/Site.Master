@@ -26,8 +26,9 @@
                     <li><%: Html.CanvasActionLink("About", "About", "Home")%></li>
                     <li><%: Html.CanvasActionLink("Profile", "Index", "Profile")%></li>
                 </ul>
-            
+                
             </div>
+            <%: Url.CanvasAction("About") %>
         </div>
 
         <div id="main">
