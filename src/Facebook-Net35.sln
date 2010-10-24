@@ -17,21 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc-Net35", "Facebook.Web.Mvc\Facebook.Web.Mvc-Net35.csproj", "{7DC5C10F-E871-4202-9014-0F958358389E}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Facebook\\Facebook-Net35.csproj
-		SccProjectName1 = Facebook
-		SccLocalPath1 = Facebook
-		SccProjectUniqueName2 = Facebook.Web.Mvc\\Facebook.Web.Mvc-Net35.csproj
-		SccProjectName2 = Facebook.Web.Mvc
-		SccLocalPath2 = Facebook.Web.Mvc
-		SccProjectUniqueName3 = Facebook.Web\\Facebook.Web-Net35.csproj
-		SccProjectName3 = Facebook.Web
-		SccLocalPath3 = Facebook.Web
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
 	EndGlobalSection

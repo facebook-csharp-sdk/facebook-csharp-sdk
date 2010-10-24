@@ -12,11 +12,15 @@
     <AssemblyName>Facebook.Web</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -127,10 +131,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authorizer.cs" />
+    <Compile Include="CanvasAuthorizer.cs" />
     <Compile Include="CanvasConfigurationSettings.cs" />
     <Compile Include="CanvasSettings.cs" />
     <Compile Include="CanvasUrlBuilder.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ICanvasSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">

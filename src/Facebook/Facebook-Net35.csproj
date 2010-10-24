@@ -12,10 +12,14 @@
     <AssemblyName>Facebook</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -144,7 +148,7 @@
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
-    <Compile Include="DateTimeUtilities.cs" />
+    <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DictionaryUtilities.cs" />
     <Compile Include="IFacebookSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

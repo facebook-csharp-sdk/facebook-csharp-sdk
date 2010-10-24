@@ -1,7 +1,7 @@
 ﻿properties { 
  
   $zipFileName = "FacebookSDK_V40r2.zip"
-  $buildDocumentation = $false
+  $buildDocumentation = $true
   $buildNuPackage = $true
   
   $baseDir  = resolve-path ..

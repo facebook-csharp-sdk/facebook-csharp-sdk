@@ -23,16 +23,15 @@
     </FeedbackEMailAddress>
     <HelpTitle>Facebook C# SDK</HelpTitle>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\src\Facebook\bin\Release\DotNet40\CodeContracts\Facebook.Contracts.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook\bin\Release\DotNet40\Facebook.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook.Web\bin\Release\DotNet40\CodeContracts\Facebook.Web.Contracts.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook.Web\bin\Release\DotNet40\Facebook.Web.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook.Web.Mvc\bin\Release\DotNet40\CodeContracts\Facebook.Web.Mvc.Contracts.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook.Web.Mvc\bin\Release\DotNet40\Facebook.Web.Mvc.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook.Web.Mvc\bin\Release\DotNet40\Facebook.Web.Mvc.xml" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook.Web\bin\Release\DotNet40\Facebook.Web.xml" xmlns="" />
-      <DocumentationSource sourceFile="..\src\Facebook\bin\Release\DotNet40\Facebook.xml" xmlns="" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="..\src\Facebook\bin\Release\Net40\CodeContracts\Facebook.Contracts.dll" />
+<DocumentationSource sourceFile="..\src\Facebook\bin\Release\Net40\Facebook.dll" />
+<DocumentationSource sourceFile="..\src\Facebook.Web\bin\Release\Net40\CodeContracts\Facebook.Web.Contracts.dll" />
+<DocumentationSource sourceFile="..\src\Facebook.Web\bin\Release\Net40\Facebook.Web.dll" />
+<DocumentationSource sourceFile="..\src\Facebook.Web.Mvc\bin\Release\Net40\CodeContracts\Facebook.Web.Mvc.Contracts.dll" />
+<DocumentationSource sourceFile="..\src\Facebook.Web.Mvc\bin\Release\Net40\Facebook.Web.Mvc.dll" />
+<DocumentationSource sourceFile="..\src\Facebook.Web.Mvc\bin\Release\Net40\Facebook.Web.Mvc.xml" />
+<DocumentationSource sourceFile="..\src\Facebook.Web\bin\Release\Net40\Facebook.Web.xml" />
+<DocumentationSource sourceFile="..\src\Facebook\bin\Release\Net40\Facebook.xml" /></DocumentationSources>
     <NamingMethod>MemberName</NamingMethod>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in

@@ -7,14 +7,14 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
-using System.Linq;
-
 namespace Facebook
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+
     /// <summary>
     /// Represents the core Facebook functionality.
     /// </summary>
@@ -708,7 +708,7 @@ namespace Facebook
                 {
                     // If the host is graph.facebook.com the user has passed in the full url.
                     // We remove the host part and continue with the parsing.
-                    path = url.PathAndQuery;
+                    path = String.Concat(url.AbsolutePath, url.Query);
                 }
                 else
                 {

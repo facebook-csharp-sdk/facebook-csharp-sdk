@@ -19,10 +19,14 @@
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -131,6 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="FacebookAppExtensions.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
@@ -150,7 +155,6 @@
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
-    <Compile Include="DateTimeUtilities.cs" />
     <Compile Include="DictionaryUtilities.cs" />
     <Compile Include="IFacebookSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -17,23 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.WpfApplication", "Facebook.Samples.WpfApplication\Facebook.Samples.WpfApplication.csproj", "{0D299F9A-7EF8-4A5E-BBF2-A982A331F484}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Facebook.Samples.AuthenticationTool\\Facebook.Samples.AuthenticationTool.csproj
-		SccProjectTopLevelParentUniqueName1 = Facebook-Net40Client.sln
-		SccProjectName1 = Facebook.Samples.AuthenticationTool
-		SccLocalPath1 = Facebook.Samples.AuthenticationTool
-		SccProjectUniqueName2 = Facebook\\Facebook-Net40Client.csproj
-		SccProjectName2 = Facebook
-		SccLocalPath2 = Facebook
-		SccProjectUniqueName3 = Facebook.Samples.WpfApplication\\Facebook.Samples.WpfApplication.csproj
-		SccProjectTopLevelParentUniqueName3 = Facebook-Net40Client.sln
-		SccProjectName3 = Facebook.Samples.WpfApplication
-		SccLocalPath3 = Facebook.Samples.WpfApplication
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
 	EndGlobalSection

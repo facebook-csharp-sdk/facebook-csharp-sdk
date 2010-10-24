@@ -13,15 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-WP7", "Facebook\Facebook-WP7.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Facebook\\Facebook-WP7.csproj
-		SccProjectName1 = Facebook
-		SccLocalPath1 = Facebook
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
 	EndGlobalSection
