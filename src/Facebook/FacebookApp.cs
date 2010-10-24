@@ -162,8 +162,6 @@ namespace Facebook
         /// Gets or sets the active user session.
         /// </summary>
         /// <value>The session.</value>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
-            Justification = "This is an attempt to read the Facebook cookie. The authentication errors should be handled by the caller.")]
         public override FacebookSession Session
         {
             get
@@ -201,8 +199,8 @@ namespace Facebook
                     }
                     catch
                     {
-                        Trace.TraceWarning("An error has occurred while reading the Facebook session.");
                         this.session = null;
+                        throw;
                     }
                     finally
                     {
@@ -587,13 +585,20 @@ namespace Facebook
                 return;
             }
 
+            // prepend dot if domain is found
+            string domain = this.BaseDomain;
+            if (!String.IsNullOrEmpty(domain))
+            {
+                domain = "." + domain;
+            }
+
             // Set the cookie data
             if (request.Cookies.AllKeys.Contains(this.SessionCookieName))
             {
-                var cookie = response.Cookies[this.SessionCookieName];
+                var cookie = request.Cookies[this.SessionCookieName];
                 cookie.Value = value;
                 cookie.Expires = expires;
-                cookie.Domain = this.BaseDomain;
+                cookie.Domain = domain;
             }
             else
             {
@@ -601,7 +606,7 @@ namespace Facebook
                 {
                     Expires = expires,
                     Value = value,
-                    Domain = this.BaseDomain
+                    Domain = domain,
                 });
             }
         }
