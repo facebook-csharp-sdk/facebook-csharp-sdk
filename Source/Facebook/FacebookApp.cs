@@ -65,6 +65,16 @@ namespace Facebook
         /// The current Facebook signed request.
         /// </summary>
         private FacebookSignedRequest signedRequest;
+
+        /// <summary>
+        /// The current HTTP request.
+        /// </summary>
+        private System.Web.HttpRequestBase request;
+
+        /// <summary>
+        /// The current HTTP response.
+        /// </summary>
+        private System.Web.HttpResponseBase response;
 #endif
 
         /// <summary>
@@ -143,12 +153,9 @@ namespace Facebook
         {
             get
             {
-                if (this.signedRequest == null &&
-                    System.Web.HttpContext.Current != null &&
-                    System.Web.HttpContext.Current.Request != null)
+                if (this.signedRequest == null && this.Request != null)
                 {
-                    var request = System.Web.HttpContext.Current.Request;
-                    if (request.Params.AllKeys.Contains("signed_request"))
+                    if (this.Request.Params.AllKeys.Contains("signed_request"))
                     {
                         this.signedRequest = this.ParseSignedRequest(request.Params["signed_request"]);
                     }
@@ -166,14 +173,10 @@ namespace Facebook
         {
             get
             {
-                if (!this.SessionLoaded &&
-                    System.Web.HttpContext.Current != null &&
-                    System.Web.HttpContext.Current.Request != null)
+                if (!this.SessionLoaded && this.Request != null)
                 {
                     try
                     {
-                        var request = System.Web.HttpContext.Current.Request;
-
                         // try loading session from signed_request
                         if (this.SignedRequest != null)
                         {
@@ -181,18 +184,18 @@ namespace Facebook
                         }
 
                         // try loading session from querystring
-                        if (this.session == null && request.Params.AllKeys.Contains("session"))
+                        if (this.session == null && this.Request.Params.AllKeys.Contains("session"))
                         {
-                            this.session = ParseFromQueryString(request.Params["session"]);
+                            this.session = ParseFromQueryString(this.Request.Params["session"]);
                             this.ValidateSessionObject(this.session);
                         }
 
                         // try loading session from cookie if necessary
                         if (this.session == null && this.CookieSupport)
                         {
-                            if (request.Params.AllKeys.Contains(this.SessionCookieName))
+                            if (this.Request.Params.AllKeys.Contains(this.SessionCookieName))
                             {
-                                this.session = ParseFromCookie(request.Params[this.SessionCookieName]);
+                                this.session = ParseFromCookie(this.Request.Params[this.SessionCookieName]);
                                 this.ValidateSessionObject(this.session);
                             }
                         }
@@ -241,6 +244,49 @@ namespace Facebook
         }
 
 #if !SILVERLIGHT && !CLIENTPROFILE
+
+        /// <summary>
+        /// Gets or sets the HTTP request.
+        /// </summary>
+        /// <value>The request.</value>
+        protected virtual System.Web.HttpRequestBase Request
+        {
+            get {
+                if (this.request == null)
+                {
+                    this.request = new System.Web.HttpRequestWrapper(System.Web.HttpContext.Current.Request);
+                }
+                return this.request;
+            }
+            set {
+                Contract.Requires(value != null);
+
+                this.request = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the current HTTP response.
+        /// </summary>
+        /// <value>The response.</value>
+        protected virtual System.Web.HttpResponseBase Response
+        {
+            get
+            {
+                if (this.response == null)
+                {
+                    this.response = new System.Web.HttpResponseWrapper(System.Web.HttpContext.Current.Response);
+                }
+                return this.response;
+            }
+            set
+            {
+                Contract.Requires(value != null);
+
+                this.response = value;
+            }
+        }
+
         /// <summary>
         /// Gets the Current URL, stripping it of known FB parameters that should not persist.
         /// </summary>
@@ -248,26 +294,25 @@ namespace Facebook
         {
             get
             {
-                if (System.Web.HttpContext.Current == null ||
-                    System.Web.HttpContext.Current.Request == null)
+                if (this.Request == null)
                 {
                     return new Uri("http://www.facebook.com/connect/login_success.html");
                 }
 
-                return CleanUrl(System.Web.HttpContext.Current.Request.Url);
+                return CleanUrl(this.Request.Url);
             }
         }
 #endif
 
         /// <summary>
-        /// Get a Login URL for use with redirects. By default, full page redirect is
+        /// <para>Get a Login URL for use with redirects. By default, full page redirect is
         /// assumed. If you are using the generated URL with a window.open() call in
-        /// JavaScript, you can pass in display=popup as part of the parameters.
-        /// The parameters:
-        ///     - next: the url to go to after a successful login
-        ///     - cancel_url: the url to go to after the user cancels
-        ///     - req_perms: comma separated list of requested extended perms
-        ///     - display: can be "page" (default, full page) or "popup"
+        /// JavaScript, you can pass in display=popup as part of the parameters.</para>
+        /// <para>The parameters:</para>
+        /// <para>   - next: the url to go to after a successful login</para>
+        /// <para>   - cancel_url: the url to go to after the user cancels</para>
+        /// <para>   - req_perms: comma separated list of requested extended perms</para>
+        /// <para>   - display: can be "page" (default, full page) or "popup"</para>
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
@@ -292,9 +337,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Get a Logout URL suitable for use with redirects.
-        /// The parameters:
-        ///     - next: the url to go to after a successful logout
+        /// <para>Get a Logout URL suitable for use with redirects.</para>
+        /// <para>The parameters:</para>
+        /// <para>   - next: the url to go to after a successful logout</para>
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
@@ -318,9 +363,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Get a Logout URL suitable for use with redirects.
-        /// The parameters:
-        ///     - next: the url to go to after a successful logout
+        /// <para>Get a Logout URL suitable for use with redirects.</para>
+        /// <para>The parameters:</para>
+        /// <para>    - next: the url to go to after a successful logout</para>
         /// </summary>
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the login flow.</returns>
@@ -557,15 +602,11 @@ namespace Facebook
             // Check to make sure cookies are supported
             // based on the Facebook Settings.
             if (!this.CookieSupport ||
-                System.Web.HttpContext.Current == null ||
-                System.Web.HttpContext.Current.Request == null ||
-                System.Web.HttpContext.Current.Response == null)
+                this.Request == null ||
+                this.Response == null)
             {
                 return;
             }
-
-            var request = System.Web.HttpContext.Current.Request;
-            var response = System.Web.HttpContext.Current.Response;
 
             string value = "deleted";
             DateTime expires = DateTime.Now.AddSeconds(-3600);
@@ -580,7 +621,7 @@ namespace Facebook
             }
 
             // if an existing cookie is not set, we dont need to delete it
-            if (value == "deleted" && !request.Cookies.AllKeys.Contains(this.SessionCookieName))
+            if (value == "deleted" && !this.Request.Cookies.AllKeys.Contains(this.SessionCookieName))
             {
                 return;
             }
@@ -593,16 +634,16 @@ namespace Facebook
             }
 
             // Set the cookie data
-            if (request.Cookies.AllKeys.Contains(this.SessionCookieName))
+            if (this.Request.Cookies.AllKeys.Contains(this.SessionCookieName))
             {
-                var cookie = request.Cookies[this.SessionCookieName];
+                var cookie = this.Request.Cookies[this.SessionCookieName];
                 cookie.Value = value;
                 cookie.Expires = expires;
                 cookie.Domain = domain;
             }
             else
             {
-                response.Cookies.Add(new System.Web.HttpCookie(this.SessionCookieName)
+               this.Response.Cookies.Add(new System.Web.HttpCookie(this.SessionCookieName)
                 {
                     Expires = expires,
                     Value = value,
@@ -666,8 +707,8 @@ namespace Facebook
         /// <summary>
         /// This method invokes the supplied delegate with retry logic wrapped around it.  No values are returned.  If the delegate raises 
         /// recoverable Facebook server or client errors, then the supplied delegate is reinvoked after a certain amount of delay
-        /// (which grows exponentially for each retry) until the retry limit is exceeded, at which point the exception
-        /// is rethrown.  Other exceptions are not caught and will be visible to callers.
+        /// until the retry limit is exceeded, at which point the exception is rethrown. Other exceptions are not caught and will 
+        /// be visible to callers.
         /// </summary>
         /// <param name="body">The delegate to invoke within the retry code.</param>
         protected void WithMirrorRetry(Action body)
@@ -712,7 +753,10 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Similar to the above method, but a return value is allowed from the delegate.
+        /// This method invokes the supplied delegate with retry logic wrapped around it and returns the value of the delegate.  
+        /// If the delegate raises recoverable Facebook server or client errors, then the supplied delegate is reinvoked after
+        /// a certain amount of delay until the retry limit is exceeded, at which point the exception is rethrown. Other 
+        /// exceptions are not caught and will be visible to callers.
         /// </summary>
         /// <typeparam name="TReturn">The type of object being returned</typeparam>
         /// <param name="body">The delegate to invoke within the retry logic which will produce the value to return</param>
@@ -759,7 +803,7 @@ namespace Facebook
 
 #if !SILVERLIGHT
         /// <summary>
-        /// Parses a signed request string.
+        /// Parses the signed request string.
         /// </summary>
         /// <param name="signedRequestValue">The encoded signed request value.</param>
         /// <returns>The valid signed request.</returns>
@@ -794,7 +838,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Converts a base 64 url encoded string to standard base 64 encoding.
+        /// Converts the base 64 url encoded string to standard base 64 encoding.
         /// </summary>
         /// <param name="encodedValue">The encoded value.</param>
         /// <returns>The base 64 string.</returns>

@@ -1,3 +1,7 @@
 glob:bin/*
 glob:obj/*
 glob:*.suo
+glob:*.Cache
+glob:*.user
+glob:TestResults/*
+glob:Working/*

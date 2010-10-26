@@ -4,7 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook
 {
-    public partial class DictionaryExtensionsTest
+    [TestClass]
+    public class DictionaryExtensionsTest
     {
 
         [TestMethod]

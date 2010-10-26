@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc", "Faceboo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests", "Facebook.Tests\Facebook.Tests.csproj", "{C08F42B4-6FF6-488E-90D6-8A47387BCDE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Tests", "Facebook.Web.Tests\Facebook.Web.Tests.csproj", "{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc.Tests", "Facebook.Web.Mvc.Tests\Facebook.Web.Mvc.Tests.csproj", "{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -71,6 +75,26 @@ Global
 		{C08F42B4-6FF6-488E-90D6-8A47387BCDE3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C08F42B4-6FF6-488E-90D6-8A47387BCDE3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C08F42B4-6FF6-488E-90D6-8A47387BCDE3}.Release|x86.ActiveCfg = Release|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}.Release|x86.ActiveCfg = Release|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,5 +102,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{56FD3D46-C67F-4989-A739-EB312AF147F0} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{C08F42B4-6FF6-488E-90D6-8A47387BCDE3} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
+		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
+		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 	EndGlobalSection
 EndGlobal

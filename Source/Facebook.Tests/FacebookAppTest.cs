@@ -7,19 +7,27 @@ using Facebook;
 
 namespace Facebook
 {
-    public partial class FacebookAppTest
+    [TestClass]
+    public class FacebookAppTest
     {
 
         [TestMethod()]
         [DeploymentItem("Facebook.dll")]
         public void Build_Media_Object_Post_Data()
         {
-#if DEBUG
-            string photoPath = @"..\..\..\Facebook.Tests\bin\Debug\monkey.jpg";
-#else
-            string photoPath = @"..\..\..\Facebook.Tests\bin\Release\monkey.jpg";
-#endif
-            byte[] photo = File.ReadAllBytes(photoPath);
+            var assmebly = System.Reflection.Assembly.GetExecutingAssembly();
+            var stream = assmebly.GetManifestResourceStream("Facebook.Tests.monkey.jpg");
+            byte[] photo = new byte[stream.Length];
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                photo = ms.ToArray();
+            }
 
             dynamic parameters = new ExpandoObject();
             parameters.message = "This is a test photo of a monkey that has been uploaded " +
