@@ -69,6 +69,8 @@
     <Compile Include="Integration\GraphReadTests.cs" />
     <Compile Include="Integration\RestPublishTests.cs" />
     <Compile Include="Integration\RestReadTests.cs" />
+    <Compile Include="Mocks\HttpRequestMock.cs" />
+    <Compile Include="Mocks\HttpResponseMock.cs" />
     <Compile Include="SerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
