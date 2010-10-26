@@ -18,6 +18,20 @@ namespace Facebook
     /// </summary>
     public static class DateTimeConvertor
     {
+        private const double secondsFromUtc = 25200;
+
+        /// <summary>
+        /// Gets the epoch time.
+        /// </summary>
+        /// <value>The epoch time.</value>
+        public static DateTime Epoch
+        {
+            get
+            {
+                return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            }
+        }
+
         /// <summary>
         /// Converts a DateTime object to unix time.
         /// </summary>
@@ -25,14 +39,8 @@ namespace Facebook
         /// <returns>The unix date time.</returns>
         public static double ToUnixTime(this DateTime dateTime)
         {
-            Contract.Requires(dateTime >= new DateTime(1970, 1, 1, 0, 0, 0));
-
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-            // For some reason when we use utc time and convert it to 'facebook'
-            // time it apears to be in UTC+7. This doesn't seem right though.
-            var range = dateTime.AddHours(7) - epoch; 
-            return Math.Floor(range.TotalSeconds);
+            Contract.Requires(dateTime >= Epoch);
+            return (double)((dateTime.ToUniversalTime() - Epoch).TotalSeconds) + secondsFromUtc;
         }
 
         /// <summary>
@@ -58,8 +66,7 @@ namespace Facebook
         /// <returns>The DateTime object.</returns>
         public static DateTime FromUnixTime(double unixTime)
         {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            return epoch.AddSeconds(unixTime);
+            return Epoch.AddSeconds(unixTime - secondsFromUtc);
         }
     }
 }
