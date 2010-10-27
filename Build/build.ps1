@@ -1,5 +1,5 @@
 ﻿properties { 
- 
+  $version = '4.0.2'
   $zipFileName = "FacebookSDK_V40r2.zip"
   $buildDocumentation = $true
   $buildNuPackage = $true
@@ -86,33 +86,35 @@ task Package -depends Merge {
   if ($buildNuPackage)
   {
     New-Item -Path $workingDir\NuPack -ItemType Directory
-    New-Item -Path $workingDir\NuPack\Facebook\ -ItemType Directory
-    New-Item -Path $workingDir\NuPack\FacebookWeb\ -ItemType Directory
-    New-Item -Path $workingDir\NuPack\FacebookWebMvc\ -ItemType Directory
-    Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook\Facebook.nuspec -recurse
-    Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuPack\FacebookWeb\FacebookWeb.nuspec -recurse
-    Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuPack\FacebookWebMvc\FacebookWebMvc.nuspec -recurse
+    New-Item -Path $workingDir\NuPack\Facebook\$version\ -ItemType Directory
+    New-Item -Path $workingDir\NuPack\FacebookWeb\$version\ -ItemType Directory
+    New-Item -Path $workingDir\NuPack\FacebookWebMvc\$version\ -ItemType Directory
+    Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook\$version\Facebook.nuspec -recurse
+    Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec -recurse
+    Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
     
     foreach ($build in $builds)
     {
         $name = $build.TestsName
         $finalDir = $build.FinalDir
         
-        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\lib\$finalDir -recurse
-        get-childitem $workingDir\NuPack\Facebook\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir -recurse
+        get-childitem $workingDir\NuPack\Facebook\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
         
         if (Test-Path -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir") {
-            Copy-Item -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\lib\$finalDir -recurse
-            get-childitem $workingDir\NuPack\FacebookWeb\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+            Copy-Item -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -recurse
+            get-childitem $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
         }
         
         if (Test-Path -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir") {
-            Copy-Item -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\lib\$finalDir -recurse
-            get-childitem $workingDir\NuPack\FacebookWebMvc\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+            Copy-Item -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir -recurse
+            get-childitem $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
         }
     }
   
-    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\Facebook.nuspec }
+    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\Facebook\$version\Facebook.nuspec }
+    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec }
+    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec }
     move -Path .\*.nupkg -Destination $workingDir\NuPack
   }
   

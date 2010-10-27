@@ -46,7 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="CanvasUrlBuilderTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Facebook.TestUtils\Facebook.TestUtils.csproj">
+      <Project>{54AA4B0B-3D96-4670-80F5-20E996BF4272}</Project>
+      <Name>Facebook.TestUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Tests", "Faceb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc.Tests", "Facebook.Web.Mvc.Tests\Facebook.Web.Mvc.Tests.csproj", "{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.TestUtils", "Facebook.TestUtils\Facebook.TestUtils.csproj", "{54AA4B0B-3D96-4670-80F5-20E996BF4272}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -95,6 +97,16 @@ Global
 		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130}.Release|x86.ActiveCfg = Release|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,5 +116,6 @@ Global
 		{C08F42B4-6FF6-488E-90D6-8A47387BCDE3} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
+		{54AA4B0B-3D96-4670-80F5-20E996BF4272} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 	EndGlobalSection
 EndGlobal
