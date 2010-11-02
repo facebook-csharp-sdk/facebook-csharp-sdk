@@ -14,6 +14,7 @@ namespace Facebook
     using System.Globalization;
     using System.Runtime.Serialization;
     using System.Security;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represent erros that occur while calling a Facebook API.
@@ -131,7 +132,7 @@ namespace Facebook
         ///     <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
         ///     <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
         /// </PermissionSet>
-        [SecurityCritical]
+        [SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             Contract.Requires(info != null);

@@ -32,6 +32,5 @@ namespace Facebook.Web
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(request);
             return urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath);
         }
-
     }
 }
