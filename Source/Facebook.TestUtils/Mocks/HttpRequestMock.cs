@@ -10,10 +10,18 @@ namespace Facebook.Tests.Mocks
     public class HttpRequestMock : HttpRequestBase
     {
         private Uri url;
+        private System.Collections.Specialized.NameValueCollection headersCollection;
+        private HttpCookieCollection cookies;
+        private NameValueCollection paramsCollection;
+        private string applicationPath;
 
         public HttpRequestMock(Uri url)
         {
             this.url = url;
+            this.headersCollection = new NameValueCollection();
+            this.cookies = new HttpCookieCollection();
+            this.paramsCollection = new NameValueCollection();
+            this.applicationPath = "/";
         }
 
         public override Uri Url
@@ -28,7 +36,7 @@ namespace Facebook.Tests.Mocks
         {
             get
             {
-                return base.Headers;
+                return this.headersCollection;
             }
         }
 
@@ -36,7 +44,7 @@ namespace Facebook.Tests.Mocks
         {
             get
             {
-                return base.Cookies;
+                return this.cookies;
             }
         }
 
@@ -44,7 +52,15 @@ namespace Facebook.Tests.Mocks
         {
             get
             {
-                return base.Params;
+                return this.paramsCollection;
+            }
+        }
+
+        public override string ApplicationPath
+        {
+            get
+            {
+                return this.applicationPath;
             }
         }
 

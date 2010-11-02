@@ -95,7 +95,6 @@ namespace Facebook.Web
                    "</head><body></body></html>";
         }
 
-
         /// <summary>
         /// Gets the URL where Facebook pulls the content 
         /// for your application's canvas pages.
@@ -115,7 +114,6 @@ namespace Facebook.Web
                     // This will attempt to get the url based on the host
                     // in case we are behind a load balancer (such as with azure)
                     url = string.Concat(request.Url.Scheme, "://", request.Headers["Host"]);
-
                 }
                 else
                 {
@@ -124,7 +122,6 @@ namespace Facebook.Web
                 return new Uri(url);
             }
         }
-
 
         /// <summary>
         /// Gets the current URL of your application that Facebook
@@ -135,9 +132,14 @@ namespace Facebook.Web
         {
             get
             {
-                var pathAndQuery = request.Url.PathAndQuery;
-                var currentCanvasUrl = string.Concat(CanvasUrl, pathAndQuery);
-                return new Uri(currentCanvasUrl);
+                var uriBuilder = new UriBuilder(this.CanvasUrl);
+                var parts = request.Url.PathAndQuery.Split('?');
+                uriBuilder.Path = parts[0];
+                if (parts.Length > 1)
+                {
+                    uriBuilder.Query = parts[1];
+                }
+                return uriBuilder.Uri;
             }
         }
 
@@ -152,7 +154,7 @@ namespace Facebook.Web
                 Contract.Ensures(Contract.Result<string>() != null);
 
                 var pathAndQuery = request.Url.PathAndQuery;
-                var appPath = this.CanvasPageUrl.AbsolutePath;
+                var appPath = this.CanvasUrl.AbsolutePath.Replace(this.CanvasPageApplicationPath, String.Empty);
                 if (appPath != null && appPath != "/" && appPath.Length > 0)
                 {
                     pathAndQuery = pathAndQuery.Replace(appPath, string.Empty);
@@ -166,19 +168,19 @@ namespace Facebook.Web
         /// Gets the base url of your application on Facebook.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public Uri CanvasPageUrl
+        public Uri CanvasPage
         {
             get
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
-                return this.canvasSettings.CanvasPageUrl;
+                return this.canvasSettings.CanvasPage;
             }
         }
 
         /// <summary>
         /// Gets the current url of the application on facebook.
         /// </summary>
-        public Uri CanvasPageCurrentUrl
+        public Uri CurrentCanvasPage
         {
             get
             {
@@ -197,12 +199,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
 
-                var path = CanvasPageUrl.AbsolutePath.Replace("/", string.Empty);
-                if (String.IsNullOrEmpty(path))
-                {
-                    throw new InvalidOperationException("Invalid path.");
-                }
-                return path;
+                return CanvasPage.AbsolutePath;
             }
         }
 
@@ -347,12 +344,16 @@ namespace Facebook.Web
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
-            if (pathAndQuery.StartsWith(request.ApplicationPath))
-            {
-                pathAndQuery = pathAndQuery.Substring(request.ApplicationPath.Length);
-            }
+            //if (this.CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(this.CanvasUrl.PathAndQuery))
+            //{
+            //    pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
+            //}
 
-            var url = string.Concat(CanvasPageUrl, pathAndQuery);
+            var url = string.Concat(CanvasPage, pathAndQuery);
+            if (url.EndsWith("/"))
+            {
+                url = url.Substring(0, url.Length - 1);
+            }
             return new Uri(url);
         }
 

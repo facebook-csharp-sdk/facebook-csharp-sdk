@@ -12,7 +12,7 @@ namespace Facebook.Web
         /// <summary>
         /// The base url of your application on Facebook.
         /// </summary>
-        Uri CanvasPageUrl { get; set; }
+        Uri CanvasPage { get; set; }
 
         /// <summary>
         /// Facebook pulls the content for your application's 
@@ -31,17 +31,15 @@ namespace Facebook.Web
     [ContractClassFor(typeof(ICanvasSettings))]
     internal abstract class CanvasSettingsContracts : ICanvasSettings
     {
-        public Uri CanvasPageUrl
+        public Uri CanvasPage
         {
             get
             {
-                Contract.Ensures(Contract.Result<Uri>() != null);
-
                 return default(Uri);
             }
             set
             {
-                
+
             }
         }
 
