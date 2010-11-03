@@ -21,19 +21,33 @@ namespace Facebook.Web
     public class CanvasUrlBuilder
     {
         private const string redirectPath = "facebookredirect.axd";
-        private HttpRequestBase _request;
+        private HttpRequestBase request;
+        private ICanvasSettings canvasSettings;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
         /// </summary>
         /// <param name="request">The request.</param>
         public CanvasUrlBuilder(HttpRequestBase request)
+            : this(request, CanvasSettings.Current)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="canvasSettings">The canvas settings.</param>
+        public CanvasUrlBuilder(HttpRequestBase request, ICanvasSettings canvasSettings)
         {
             Contract.Requires(request != null);
             Contract.Requires(request.Url != null);
             Contract.Requires(request.Headers != null);
+            Contract.Requires(canvasSettings != null);
 
-            this._request = request;
+            this.request = request;
+            this.canvasSettings = canvasSettings;
         }
 
         [ContractInvariantMethod]
@@ -41,9 +55,10 @@ namespace Facebook.Web
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         private void InvarientObject()
         {
-            Contract.Invariant(_request != null);
-            Contract.Invariant(_request.Headers != null);
-            Contract.Invariant(_request.Url != null);
+            Contract.Invariant(request != null);
+            Contract.Invariant(request.Headers != null);
+            Contract.Invariant(request.Url != null);
+            Contract.Invariant(canvasSettings != null);
         }
 
         /// <summary>
@@ -53,7 +68,8 @@ namespace Facebook.Web
         /// <returns></returns>
         public static string GetCanvasRedirectHtml(Uri url)
         {
-            if (url == null) {
+            if (url == null)
+            {
                 throw new ArgumentNullException("url");
             }
             return GetCanvasRedirectHtml(url.ToString());
@@ -79,7 +95,6 @@ namespace Facebook.Web
                    "</head><body></body></html>";
         }
 
-
         /// <summary>
         /// Gets the URL where Facebook pulls the content 
         /// for your application's canvas pages.
@@ -90,25 +105,23 @@ namespace Facebook.Web
             get
             {
                 string url;
-                if (CanvasSettings.Current.CanvasUrl != null)
+                if (this.canvasSettings.CanvasUrl != null)
                 {
-                    url = CanvasSettings.Current.CanvasUrl.ToString();
+                    url = this.canvasSettings.CanvasUrl.ToString();
                 }
-                else if (_request.Headers.AllKeys.Contains("Host"))
+                else if (request.Headers.AllKeys.Contains("Host"))
                 {
                     // This will attempt to get the url based on the host
                     // in case we are behind a load balancer (such as with azure)
-                    url = string.Concat(_request.Url.Scheme, "://", _request.Headers["Host"]);
-
+                    url = string.Concat(request.Url.Scheme, "://", request.Headers["Host"]);
                 }
                 else
                 {
-                    url = string.Concat(_request.Url.Scheme, "://", _request.Url.Host, ":", _request.Url.Port);
+                    url = string.Concat(request.Url.Scheme, "://", request.Url.Host, ":", request.Url.Port);
                 }
                 return new Uri(url);
             }
         }
-
 
         /// <summary>
         /// Gets the current URL of your application that Facebook
@@ -119,9 +132,14 @@ namespace Facebook.Web
         {
             get
             {
-                var pathAndQuery = _request.Url.PathAndQuery;
-                var currentCanvasUrl = string.Concat(CanvasUrl, pathAndQuery);
-                return new Uri(currentCanvasUrl);
+                var uriBuilder = new UriBuilder(this.CanvasUrl);
+                var parts = request.Url.PathAndQuery.Split('?');
+                uriBuilder.Path = parts[0];
+                if (parts.Length > 1)
+                {
+                    uriBuilder.Query = parts[1];
+                }
+                return uriBuilder.Uri;
             }
         }
 
@@ -135,8 +153,8 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<string>() != null);
 
-                var pathAndQuery = _request.Url.PathAndQuery;
-                var appPath = _request.ApplicationPath;
+                var pathAndQuery = request.Url.PathAndQuery;
+                var appPath = this.CanvasUrl.AbsolutePath.Replace(this.CanvasPageApplicationPath, String.Empty);
                 if (appPath != null && appPath != "/" && appPath.Length > 0)
                 {
                     pathAndQuery = pathAndQuery.Replace(appPath, string.Empty);
@@ -150,24 +168,19 @@ namespace Facebook.Web
         /// Gets the base url of your application on Facebook.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public Uri CanvasPageUrl
+        public Uri CanvasPage
         {
             get
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
-
-                if (CanvasSettings.Current == null)
-                {
-                    throw new InvalidOperationException("Canvas settings not found in application configuration.");
-                }
-                return CanvasSettings.Current.CanvasPageUrl;
+                return this.canvasSettings.CanvasPage;
             }
         }
 
         /// <summary>
         /// Gets the current url of the application on facebook.
         /// </summary>
-        public Uri CanvasPageCurrentUrl
+        public Uri CurrentCanvasPage
         {
             get
             {
@@ -186,12 +199,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
 
-                var path = CanvasPageUrl.AbsolutePath.Replace("/", string.Empty);
-                if (String.IsNullOrEmpty(path))
-                {
-                    throw new InvalidOperationException("Invalid path.");
-                }
-                return path;
+                return CanvasPage.AbsolutePath;
             }
         }
 
@@ -203,7 +211,7 @@ namespace Facebook.Web
         /// <param name="returnUrlPath">The return URL path.</param>
         /// <param name="cancelUrlPath">The cancel URL path.</param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#"), 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#"),
         System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
         public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath)
         {
@@ -222,7 +230,7 @@ namespace Facebook.Web
         /// <param name="cancelUrlPath">The path to return the user if they do not authenticate.</param>
         /// <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
         /// <returns>The cancel url.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#")] 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
         public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath, bool cancelToSelf)
         {
@@ -252,9 +260,9 @@ namespace Facebook.Web
             {
                 cancelUrl = BuildAuthReturnUrl(cancelUrlPath);
             }
-            else if (CanvasSettings.Current.AuthorizeCancelUrl != null)
+            else if (this.canvasSettings.AuthorizeCancelUrl != null)
             {
-                cancelUrl = CanvasSettings.Current.AuthorizeCancelUrl;
+                cancelUrl = this.canvasSettings.AuthorizeCancelUrl;
             }
             else
             {
@@ -336,12 +344,16 @@ namespace Facebook.Web
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
-            if (pathAndQuery.StartsWith(_request.ApplicationPath))
-            {
-                pathAndQuery = pathAndQuery.Substring(_request.ApplicationPath.Length);
-            }
+            //if (this.CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(this.CanvasUrl.PathAndQuery))
+            //{
+            //    pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
+            //}
 
-            var url = string.Concat(CanvasPageUrl, pathAndQuery);
+            var url = string.Concat(CanvasPage, pathAndQuery);
+            if (url.EndsWith("/"))
+            {
+                url = url.Substring(0, url.Length - 1);
+            }
             return new Uri(url);
         }
 
@@ -381,7 +393,7 @@ namespace Facebook.Web
                 path = "/" + path;
             }
 
-            var appPath = _request.ApplicationPath;
+            var appPath = request.ApplicationPath;
             if (appPath != "/")
             {
                 appPath = string.Concat(appPath, "/");

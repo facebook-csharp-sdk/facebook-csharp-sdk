@@ -495,11 +495,6 @@ namespace Facebook.Web.Mvc
         {
             htmlAttributes = htmlAttributes ?? new Dictionary<string, object>();
             htmlAttributes["target"] = "_top";
-            var canvasSettings = CanvasSettings.Current;
-            if (canvasSettings == null || canvasSettings.CanvasPageUrl == null)
-            {
-                throw new ConfigurationErrorsException("The canvas settings were not found or are invalid in the application configuration file.");
-            }
             string webUrl = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
