@@ -22,6 +22,8 @@ namespace Facebook
 #if (!SILVERLIGHT)
     [Serializable]
 #endif
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly",
+        Justification = "There are security issues associated with this method that make it difficult to support when running in partial trust.")]
     public class FacebookApiException : Exception
     {
         /// <summary>
@@ -120,26 +122,5 @@ namespace Facebook
         {
             return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", this.ErrorType ?? "Unknown", this.Message);
         }
-
-        //#if (!SILVERLIGHT)
-        //        /// <summary>
-        //        /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
-        //        /// </summary>
-        //        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-        //        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
-        //        /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is a null reference (Nothing in Visual Basic). </exception>
-        //        /// <PermissionSet>
-        //        ///     <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
-        //        ///     <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
-        //        /// </PermissionSet>
-        //        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter = true)]
-        //        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        //        {
-        //            Contract.Requires(info != null);
-
-        //            info.AddValue("ErrorType", this.ErrorType);
-        //            base.GetObjectData(info, context);
-        //        }
-        //#endif
     }
 }

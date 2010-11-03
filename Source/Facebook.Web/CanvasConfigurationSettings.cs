@@ -12,11 +12,11 @@ namespace Facebook.Web
         /// <summary>
         /// The base url of your application on Facebook.
         /// </summary>
-        [ConfigurationProperty("canvasPageUrl", IsRequired = true)]
+        [ConfigurationProperty("canvasPage", IsRequired = true)]
         public Uri CanvasPage
         {
             get { return (Uri)this["canvasPage"]; }
-            set { this["canvasPageUrl"] = value; }
+            set { this["canvasPage"] = value; }
         }
 
         /// <summary>
@@ -40,5 +40,6 @@ namespace Facebook.Web
             get { return (Uri)this["authorizeCancelUrl"]; }
             set { this["authorizeCancelUrl"] = value; }
         }
+
     }
 }

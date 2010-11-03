@@ -11,7 +11,6 @@ namespace Facebook
 {
     using System;
     using System.Diagnostics.Contracts;
-    using System.Globalization;
 
     /// <summary>
     /// Utilities to convert dates to and from unix time.
