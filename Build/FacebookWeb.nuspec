@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>FacebookWeb</id>
-    <version>4.0.2</version>
+    <version>{version}</version>
     <authors>
       <author>Nathan Totten</author>
       <author>Jim Zimmerman</author>

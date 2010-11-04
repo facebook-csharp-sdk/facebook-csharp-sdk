@@ -1,6 +1,6 @@
 ﻿properties { 
   $version = '4.0.2'
-  $zipFileName = "FacebookSDK_V40r2.zip"
+  $zipFileName = "FacebookSDK_V$version.zip"
   $buildDocumentation = $true
   $buildNuPackage = $true
   
@@ -85,13 +85,26 @@ task Package -depends Merge {
   }
   if ($buildNuPackage)
   {
-    New-Item -Path $workingDir\NuPack -ItemType Directory
     New-Item -Path $workingDir\NuPack\Facebook\$version\ -ItemType Directory
     New-Item -Path $workingDir\NuPack\FacebookWeb\$version\ -ItemType Directory
     New-Item -Path $workingDir\NuPack\FacebookWebMvc\$version\ -ItemType Directory
+    
     Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook\$version\Facebook.nuspec -recurse
+    (Get-Content $workingDir\NuPack\Facebook\$version\Facebook.nuspec) | 
+    Foreach-Object {$_ -replace "{version}", $version} | 
+    Set-Content $workingDir\NuPack\Facebook\$version\Facebook.nuspec
+    
     Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec -recurse
+    (Get-Content $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec) | 
+    Foreach-Object {$_ -replace "{version}", $version} | 
+    Set-Content $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec
+    
+    
     Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
+    (Get-Content $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec) | 
+    Foreach-Object {$_ -replace "{version}", $version} | 
+    Set-Content $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec
+    
     
     foreach ($build in $builds)
     {
