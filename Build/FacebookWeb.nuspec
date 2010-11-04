@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package>
-  <metadata>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>FacebookWeb</id>
     <version>{version}</version>
-    <authors>
-      <author>Nathan Totten</author>
-      <author>Jim Zimmerman</author>
-    </authors>
+    <authors>Jim Zimmerman, Nathan Totten</authors>
     <description>The Facebook C# SDK web component.</description>
     <language>en-US</language>
+	<licenseUrl>http://facebooksdk.codeplex.com/license</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+	<projectUrl>http://facebooksdk.codeplex.com</projectUrl>
+	<dependencies>
+		<dependency id="Facebook" version="{version}" />
+	</dependencies> 
   </metadata>
-  <dependencies>
-    <dependency id="Facebook" version="4.0.2" />
-  </dependencies> 
 </package>
