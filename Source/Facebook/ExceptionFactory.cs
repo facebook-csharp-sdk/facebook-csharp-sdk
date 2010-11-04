@@ -116,8 +116,6 @@ namespace Facebook
         internal static FacebookApiException GetGraphException(WebException exception)
         {
             Contract.Requires(exception != null);
-            Contract.Ensures(Contract.Result<FacebookApiException>() != null);
-            Contract.EndContractBlock();
 
             FacebookApiException resultException = null;
             try

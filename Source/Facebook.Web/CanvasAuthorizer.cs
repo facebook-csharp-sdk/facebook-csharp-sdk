@@ -16,7 +16,8 @@ namespace Facebook.Web
             if (!this.IsAuthorized())
             {
                 var url = GetLoginUrl(request);
-                response.Redirect(url.ToString());
+                response.ContentType = "text/html";
+                response.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(url));
             }
         }
 

@@ -10,11 +10,8 @@
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Runtime.Serialization;
-    using System.Security;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represent erros that occur while calling a Facebook API.
