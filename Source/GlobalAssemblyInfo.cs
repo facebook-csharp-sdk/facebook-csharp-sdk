@@ -24,7 +24,7 @@ using System.Security;
 #endif
 
 // Version
-[assembly: AssemblyVersion("4.0.2")]
+[assembly: AssemblyVersion("4.0.3")]
 
 
 internal static class GlobalAssemblyInfo

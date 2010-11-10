@@ -1,12 +1,12 @@
 ﻿properties { 
-  $version = '4.0.2'
+  $version = '4.0.3'
   $zipFileName = "FacebookSDK_V$version.zip"
   $buildDocumentation = $true
   $buildNuPackage = $true
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
-  $sourceDir = "$baseDir\Src"
+  $sourceDir = "$baseDir\Source"
   $toolsDir = "$baseDir\Tools"
   $docDir = "$baseDir\Doc"
   $releaseDir = "$baseDir\Release"
@@ -49,7 +49,7 @@ task Build -depends Clean {
 
     Write-Host -ForegroundColor Green "Building " $name
     Write-Host
-    exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release /p:OutputPath=bin\Release\$finalDir\ (GetConstants $build.Constants $signAssemblies) ".\Src\$name.sln" } "Error building $name"
+    exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release /p:OutputPath=bin\Release\$finalDir\ (GetConstants $build.Constants $signAssemblies) ".\Source\$name.sln" } "Error building $name"
   }
 }
 
@@ -134,7 +134,7 @@ task Package -depends Merge {
   Copy-Item -Path $docDir\readme.txt -Destination $workingDir\Package\
   #Copy-Item -Path $docDir\versions.txt -Destination $workingDir\Package\Bin\
 
-  robocopy $sourceDir $workingDir\Package\Source\Src /MIR /NP /XD .svn bin obj TestResults /XF *.suo *.user
+  robocopy $sourceDir $workingDir\Package\Source\Source /MIR /NP /XD .svn bin obj TestResults /XF *.suo *.user
   robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD .svn
   robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD .svn
   robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD .svn
@@ -159,9 +159,9 @@ task Test -depends Deploy {
   #      
   #      Write-Host -ForegroundColor Green "Copying test assembly $name to deployed directory"
   #      Write-Host
-  #      robocopy ".\Src\Newtonsoft.Json.Tests\bin\Release\$finalDir" $workingDir\Deployed\Bin\$finalDir /NP /XO /XF LinqBridge.dll
+  #      robocopy ".\Source\Newtonsoft.Json.Tests\bin\Release\$finalDir" $workingDir\Deployed\Bin\$finalDir /NP /XO /XF LinqBridge.dll
   #      
-  #      Copy-Item -Path ".\Src\Newtonsoft.Json.Tests\bin\Release\$finalDir\$name.dll" -Destination $workingDir\Deployed\Bin\$finalDir\
+  #      Copy-Item -Path ".\Source\Newtonsoft.Json.Tests\bin\Release\$finalDir\$name.dll" -Destination $workingDir\Deployed\Bin\$finalDir\
 
   #      Write-Host -ForegroundColor Green "Running tests " $name
   #      Write-Host
