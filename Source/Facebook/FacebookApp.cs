@@ -1,6 +1,6 @@
 ﻿// --------------------------------
-// <copyright file="FacebookApp.cs" company="Thuzi, LLC">
-//     Copyright (c) 2010 Thuzi, LLC (thuzi.com)
+// <copyright file="FacebookApp.cs" company="Facebook C# SDK">
+//     Microsoft Public License (Ms-PL)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
@@ -279,12 +279,14 @@ namespace Facebook
                 }
                 return this.response;
             }
+
             set
             {
                 Contract.Requires(value != null);
 
                 this.response = value;
             }
+
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿// --------------------------------
-// <copyright file="FacebookSession.cs" company="Thuzi, LLC">
-//     Copyright (c) 2010 Thuzi, LLC (thuzi.com)
+// <copyright file="FacebookSession.cs" company="Facebook C# SDK">
+//     Microsoft Public License (Ms-PL)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
