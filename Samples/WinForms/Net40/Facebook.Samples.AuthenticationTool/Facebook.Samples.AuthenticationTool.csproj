@@ -11,8 +11,7 @@
     <RootNamespace>Facebook.Samples.AuthenticationTool</RootNamespace>
     <AssemblyName>Facebook.Samples.AuthenticationTool</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -216,7 +215,7 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook, Version=4.0.2.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+    <Reference Include="Facebook">
       <HintPath>packages\Facebook.4.0.2\lib\Net40Client\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="System" />
