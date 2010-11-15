@@ -68,6 +68,11 @@ namespace Facebook
 
         public static object DeserializeObject(string json)
         {
+            return DeserializeObject(json, null);
+        }
+
+        public static object DeserializeObject(string json, Type type)
+        {
             if (string.IsNullOrEmpty(json))
             {
                 return null;
@@ -82,7 +87,7 @@ namespace Facebook
                 
                 try
                 {
-                    obj = JsonConvert.DeserializeObject(json, null, SerializerSettings);
+                    obj = JsonConvert.DeserializeObject(json, type, SerializerSettings);
                 }
                 catch (JsonSerializationException ex)
                 {

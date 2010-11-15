@@ -106,6 +106,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -124,6 +125,7 @@
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="ExceptionFactory.cs" />
+    <Compile Include="Graph\User.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
     <Compile Include="StringUtilities.cs" />

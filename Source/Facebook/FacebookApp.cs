@@ -251,14 +251,16 @@ namespace Facebook
         /// <value>The request.</value>
         protected virtual System.Web.HttpRequestBase Request
         {
-            get {
+            get
+            {
                 if (this.request == null && System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Request != null)
                 {
                     this.request = new System.Web.HttpRequestWrapper(System.Web.HttpContext.Current.Request);
                 }
                 return this.request;
             }
-            set {
+            set
+            {
                 Contract.Requires(value != null);
 
                 this.request = value;
@@ -553,12 +555,12 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             this.AddRestParameters(parameters);
 
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
-            return this.OAuthRequest(uri, parameters, httpMethod);
+            return this.OAuthRequest(uri, parameters, httpMethod, resultType, true);
         }
 
         /// <summary>
@@ -569,11 +571,11 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             var uri = this.GetGraphRequestUri(path);
 
-            return this.OAuthRequest(uri, parameters, httpMethod);
+            return this.OAuthRequest(uri, parameters, httpMethod, resultType, false);
         }
 
         /// <summary>
@@ -583,14 +585,15 @@ namespace Facebook
         /// <param name="parameters">The parameters of the request.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <returns>The decoded response object.</returns>
-        protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi)
         {
             Uri requestUrl;
             string contentType;
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, this.AccessToken, out requestUrl, out contentType);
 
-            return WithMirrorRetry<object>(() => { return MakeRequest(httpMethod, requestUrl, postData, contentType); });
+            return WithMirrorRetry<object>(() => { return MakeRequest(httpMethod, requestUrl, postData, contentType, resultType, restApi); });
         }
+
 #endif
 
 #if !SILVERLIGHT && !CLIENTPROFILE
@@ -645,12 +648,12 @@ namespace Facebook
             }
             else
             {
-               this.Response.Cookies.Add(new System.Web.HttpCookie(this.SessionCookieName)
-                {
-                    Expires = expires,
-                    Value = value,
-                    Domain = domain,
-                });
+                this.Response.Cookies.Add(new System.Web.HttpCookie(this.SessionCookieName)
+                 {
+                     Expires = expires,
+                     Value = value,
+                     Domain = domain,
+                 });
             }
         }
 #endif
@@ -663,13 +666,13 @@ namespace Facebook
         /// <param name="parameters">The parameters of the method call.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected override void RestServerAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override void RestServerAsync(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
             this.AddRestParameters(parameters);
 
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
 
-            this.OAuthRequestAsync(callback, state, uri, parameters, httpMethod);
+            this.OAuthRequestAsync(uri, parameters, httpMethod, resultType, true, callback, state);
         }
 
         /// <summary>
@@ -681,11 +684,11 @@ namespace Facebook
         /// <param name="parameters">JsonObject of url parameters.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected override void GraphAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override void GraphAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
             var uri = this.GetGraphRequestUri(path);
 
-            this.OAuthRequestAsync(callback, state, uri, parameters, httpMethod);
+            this.OAuthRequestAsync(uri, parameters, httpMethod, resultType, false, callback, state);
         }
 
         /// <summary>
@@ -697,13 +700,13 @@ namespace Facebook
         /// <param name="parameters">The parameters of the request.</param>
         /// <param name="httpMethod">The http method of the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected override void OAuthRequestAsync(FacebookAsyncCallback callback, object state, Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        protected override void OAuthRequestAsync(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi, FacebookAsyncCallback callback, object state)
         {
             Uri requestUrl;
             string contentType;
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, this.AccessToken, out requestUrl, out contentType);
 
-            MakeRequestAsync(callback, state, httpMethod, requestUrl, postData, contentType);
+            MakeRequestAsync(httpMethod, requestUrl, postData, contentType, resultType, restApi, callback, state);
         }
 
         /// <summary>
@@ -983,7 +986,7 @@ namespace Facebook
         /// <param name="contentType">The request content type.</param>
         /// <returns>The decoded response object.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
+        private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType, Type resultType, bool restApi)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
             request.Method = StringUtilities.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
@@ -1011,12 +1014,24 @@ namespace Facebook
 
                 response.Close();
 
-                result = JsonSerializer.DeserializeObject(responseData);
-                exception = ExceptionFactory.GetRestException(result);
+                // If we are using the REST API we need to check for an exception
+                if (resultType == null || restApi)
+                {
+                    result = JsonSerializer.DeserializeObject(responseData);
+                    exception = ExceptionFactory.GetRestException(result);
+                }
+
                 if (exception != null)
                 {
                     throw exception; // Thow the FacebookApiException
                 }
+
+                // Deserialize the final result if the result type is set
+                if (resultType != null)
+                {
+                    result = JsonSerializer.DeserializeObject(responseData, resultType);
+                }
+
             }
             catch (FacebookApiException)
             {
@@ -1049,7 +1064,7 @@ namespace Facebook
         /// <param name="postData">The request data.</param>
         /// <param name="contentType">The request content type.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        private static void MakeRequestAsync(FacebookAsyncCallback callback, object state, HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
+        private static void MakeRequestAsync(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType, Type resultType, bool restApi, FacebookAsyncCallback callback, object state)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
             request.Method = StringUtilities.ConvertToString(httpMethod); // Set the http method GET, POST, etc.

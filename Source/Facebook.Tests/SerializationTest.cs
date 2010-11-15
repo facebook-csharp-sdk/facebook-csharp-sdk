@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Facebook.Tests
 {
     [TestClass]
-    public class SerializationTests
+    public class SerializationTest
     {
         [TestMethod]
         public void Second_Level_Object_Serialization_Querystring()

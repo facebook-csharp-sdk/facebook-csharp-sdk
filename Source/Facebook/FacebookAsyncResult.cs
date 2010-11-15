@@ -18,6 +18,12 @@ namespace Facebook
     public delegate void FacebookAsyncCallback(FacebookAsyncResult asyncResult);
 
     /// <summary>
+    /// Represents the method that handles the post-call result.
+    /// </summary>
+    /// <param name="asyncResult">The Facebook asynchronous result.</param>
+    public delegate void FacebookAsyncCallback<T>(FacebookAsyncResult<T> asyncResult);
+
+    /// <summary>
     /// Represents the status of an asynchronous Facebook api call.
     /// </summary>
     public class FacebookAsyncResult : IAsyncResult
@@ -134,5 +140,41 @@ namespace Facebook
         {
             get { return this.isCompleted; }
         }
+    }
+
+    public class FacebookAsyncResult<T> : FacebookAsyncResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookAsyncResult"/> class.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="asyncState">State of the async.</param>
+        /// <param name="asyncWaitHandle">The async wait handle.</param>
+        /// <param name="completedSynchronously">if set to <c>true</c> [completed synchronously].</param>
+        /// <param name="isCompleted">if set to <c>true</c> [is completed].</param>
+        /// <param name="error">The error.</param>
+        public FacebookAsyncResult(
+            object result,
+            object asyncState,
+            System.Threading.WaitHandle asyncWaitHandle,
+            bool completedSynchronously,
+            bool isCompleted,
+            FacebookApiException error)
+            : base(result, asyncState, asyncWaitHandle, completedSynchronously, isCompleted, error)
+        {
+        }
+
+        /// <summary>
+        /// Gets the result of an asynchronous operation.
+        /// </summary>
+        /// <value>The result.</value>
+        public new T Result
+        {
+            get
+            {
+                return (T)base.Result;
+            }
+        }
+
     }
 }
