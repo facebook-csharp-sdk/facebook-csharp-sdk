@@ -10,6 +10,7 @@
 using System;
 using System.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Dynamic;
 
 namespace Facebook.Tests.Graph
 {
@@ -39,6 +40,7 @@ namespace Facebook.Tests.Graph
         public GraphReadTests()
         {
             app = new FacebookApp();
+            app.MaxRetries = 0;
             app.Session = new FacebookSession
             {
                 AccessToken = ConfigurationManager.AppSettings["AccessToken"],
@@ -46,7 +48,6 @@ namespace Facebook.Tests.Graph
         }
 
         [TestMethod]
-        [TestCategory("RequiresOAuth")]
         public void Read_Likes()
         {
             dynamic likesResult = app.Api("/totten/likes");
@@ -61,7 +62,6 @@ namespace Facebook.Tests.Graph
         }
 
         [TestMethod]
-        [TestCategory("RequiresOAuth")]
         public void Read_Public_Fan_Page_Id()
         {
             dynamic pageResult = app.Api("/outback");
@@ -69,7 +69,6 @@ namespace Facebook.Tests.Graph
         }
 
         [TestMethod]
-        [TestCategory("RequiresOAuth")]
         public void Read_User_Info()
         {
             dynamic result = app.Api("/me");
@@ -77,7 +76,6 @@ namespace Facebook.Tests.Graph
         }
 
         [TestMethod]
-        [TestCategory("RequiresOAuth")]
         public void Read_Application_Info()
         {
             dynamic result = app.Api("/2439131959");
@@ -85,7 +83,6 @@ namespace Facebook.Tests.Graph
         }
 
         [TestMethod]
-        [TestCategory("RequiresOAuth")]
         public void Read_Photo_Info()
         {
             dynamic result = app.Api("/98423808305");
@@ -93,11 +90,27 @@ namespace Facebook.Tests.Graph
         }
 
         [TestMethod]
-        [TestCategory("RequiresOAuth")]
         public void Read_Event()
         {
             dynamic result = app.Api("/331218348435");
             Assert.AreEqual(result.venue.city, "Austin");
+        }
+
+        [TestMethod]
+        public void ReadPublicProfile()
+        {
+            dynamic result = app.Api("/totten");
+            Assert.AreEqual("Nathan", result.first_name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FacebookOAuthException))]
+        public void get_user_likes_should_throw_oauth()
+        {
+            dynamic parameters = new ExpandoObject();
+            parameters.access_token = "invalidtoken";
+            dynamic result = app.Api("/totten/likes", parameters);
+            Assert.Fail();
         }
     }
 }

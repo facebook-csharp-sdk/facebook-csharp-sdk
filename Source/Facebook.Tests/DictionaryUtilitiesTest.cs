@@ -108,7 +108,7 @@ namespace Facebook
             list.Add("list2");
             dict.Add("key3", list);
             string actual = DictionaryUtilities.ToJsonQueryString(dict);
-            string expected = "key1=value1&key2=value2&key3=%5B%0D%0A%20%20%22list1%22%2C%20%22list2%22%0D%0A%5D";
+            string expected = "key1=value1&key2=value2&key3=%5B%22list1%22%2C%22list2%22%5D";
             Assert.AreEqual(expected, actual);
         }
 

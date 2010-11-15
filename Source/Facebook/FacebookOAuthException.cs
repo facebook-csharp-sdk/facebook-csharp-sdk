@@ -43,9 +43,8 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="errorType">Type of the error.</param>
         public FacebookOAuthException(string message, string errorType)
-            : base(message)
+            : this(message, errorType, null)
         {
-            this.ErrorType = errorType;
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
         public FacebookOAuthException(string message, Exception innerException)
-            : base(message, innerException)
+            : this(message, null, innerException)
         {
         }
 
@@ -65,7 +64,7 @@ namespace Facebook
         /// <param name="errorType">Type of the facebook error.</param>
         /// <param name="innerException">The inner exception.</param>
         public FacebookOAuthException(string message, string errorType, Exception innerException)
-            : base(message, innerException)
+            : base(String.Format("({0}) {1}", errorType ?? "Unknown", message), innerException)
         {
             this.ErrorType = errorType;
         }

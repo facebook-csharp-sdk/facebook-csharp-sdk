@@ -12,7 +12,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+#if !NET35 && !WINDOWS_PHONE
 using System.Dynamic;
+#endif
 using System.Globalization;
 
 namespace Facebook
@@ -21,48 +23,21 @@ namespace Facebook
     /// Represents a JSON array.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    public sealed class JsonArray : DynamicObject, ICollection<object>, ICollection
+    public sealed class JsonArray :
+#if !NET35 && !WINDOWS_PHONE
+ DynamicObject,
+#endif
+ IList<object>
     {
 
-        private List<object> _members = new List<object>();
+        private List<object> members;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonArray"/> class.
         /// </summary>
-        public JsonArray() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JsonArray"/> class.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public JsonArray(object value)
-            : this()
+        public JsonArray()
         {
-            _members.Add(value);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JsonArray"/> class.
-        /// </summary>
-        /// <param name="value1">The first value.</param>
-        /// <param name="value2">The second value.</param>
-        public JsonArray(object value1, object value2)
-            : this()
-        {
-            _members.Add(value1);
-            _members.Add(value2);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JsonArray"/> class.
-        /// </summary>
-        /// <param name="value">The values.</param>
-        public JsonArray(params object[] value)
-            : this()
-        {
-            Contract.Requires(value != null);
-
-            _members.AddRange(value);
+            this.members = new List<object>();
         }
 
         [ContractInvariantMethod]
@@ -70,7 +45,92 @@ namespace Facebook
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         private void InvarientObject()
         {
-            Contract.Invariant(_members != null);
+            Contract.Invariant(members != null);
+        }
+
+        /// <summary>
+        /// Searches for the specified object and returns the zero-based index of the
+        /// first occurrence within the entire list.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public int IndexOf(object item)
+        {
+            return this.members.IndexOf(item);
+        }
+
+        /// <summary>
+        /// Inserts the specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="item">The item.</param>
+        public void Insert(int index, object item)
+        {
+            this.members.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Removes at.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        public void RemoveAt(int index)
+        {
+            this.members.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> at the specified index.
+        /// </summary>
+        /// <value></value>
+        public object this[int index]
+        {
+            get
+            {
+                return this.members[index];
+            }
+            set
+            {
+                this.members[index] = value;
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public void Add(object item)
+        {
+            this.members.Add(item);
+        }
+
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
+        public void Clear()
+        {
+            this.members.Clear();
+        }
+
+        /// <summary>
+        /// Determines whether [contains] [the specified item].
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>
+        /// 	<c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Contains(object item)
+        {
+            return this.members.Contains(item);
+        }
+
+        /// <summary>
+        /// Copies to.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="arrayIndex">Index of the array.</param>
+        public void CopyTo(object[] array, int arrayIndex)
+        {
+            this.members.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -79,28 +139,51 @@ namespace Facebook
         /// <value>The count.</value>
         public int Count
         {
-            get
-            {
-                return _members.Count;
-            }
+            get { return this.members.Count; }
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Object"/> at the specified index.
+        /// Gets a value indicating whether this instance is read only.
         /// </summary>
-        /// <value></value>
-        public object this[int index]
+        /// <value>
+        /// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsReadOnly
         {
-            get
-            {
-                if (_members.Count <= index)
-                {
-                    throw new ArgumentOutOfRangeException("index");
-                }
-                return _members[index];
-            }
+            get { return false; }
         }
 
+        /// <summary>
+        /// Removes the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public bool Remove(object item)
+        {
+            return this.members.Remove(item);
+        }
+
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<object> GetEnumerator()
+        {
+            return this.members.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.members.GetEnumerator();
+        }
+
+#if !NET35 && !WINDOWS_PHONE
         /// <summary>
         /// Provides implementation for type conversion operations. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations that convert an object from one type to another.
         /// </summary>
@@ -140,7 +223,7 @@ namespace Facebook
             {
                 if (args.Length == 1)
                 {
-                    _members.Add(args[0]);
+                    members.Add(args[0]);
                     result = (object)null;
                     return true;
                 }
@@ -151,7 +234,7 @@ namespace Facebook
             {
                 if (args.Length == 2)
                 {
-                    _members.Insert(Convert.ToInt32(args[0], CultureInfo.InvariantCulture), args[1]);
+                    members.Insert(Convert.ToInt32(args[0], CultureInfo.InvariantCulture), args[1]);
                     result = (object)null;
                     return true;
                 }
@@ -162,7 +245,7 @@ namespace Facebook
             {
                 if (args.Length == 1)
                 {
-                    result = _members.IndexOf(args[0]);
+                    result = members.IndexOf(args[0]);
                     return true;
                 }
                 result = (object)null;
@@ -172,7 +255,7 @@ namespace Facebook
             {
                 if (args.Length == 0)
                 {
-                    _members.Clear();
+                    members.Clear();
                     result = (object)null;
                     return true;
                 }
@@ -183,7 +266,7 @@ namespace Facebook
             {
                 if (args.Length == 1)
                 {
-                    result = _members.Remove(args[0]);
+                    result = members.Remove(args[0]);
                     return true;
                 }
                 result = (object)null;
@@ -193,7 +276,7 @@ namespace Facebook
             {
                 if (args.Length == 1)
                 {
-                    _members.RemoveAt(Convert.ToInt32(args[0], CultureInfo.InvariantCulture));
+                    members.RemoveAt(Convert.ToInt32(args[0], CultureInfo.InvariantCulture));
                     result = (object)null;
                     return true;
                 }
@@ -217,14 +300,11 @@ namespace Facebook
         {
             if (indexes.Length == 1)
             {
-                result = _members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)];
+                result = members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)];
                 return true;
             }
             else
             {
-#if !SILVERLIGHT && TRACE
-                Trace.TraceInformation("This instance of JsonArray does not contain a value at this index.");
-#endif
                 result = (object)null;
                 return true;
             }
@@ -242,14 +322,11 @@ namespace Facebook
         {
             if (String.Compare("Length", binder.Name, StringComparison.Ordinal) == 0)
             {
-                result = _members.Count;
+                result = members.Count;
                 return true;
             }
             else
             {
-#if !SILVERLIGHT && TRACE
-                Trace.TraceInformation(String.Format(CultureInfo.InvariantCulture, "This instance of JsonArray does not contain the property {0}.", binder.Name));
-#endif
                 result = (object)null;
                 return true;
             }
@@ -268,169 +345,12 @@ namespace Facebook
         {
             if (indexes.Length == 1)
             {
-                _members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)] = value;
+                members[Convert.ToInt32(indexes[0], CultureInfo.InvariantCulture)] = value;
                 return true;
             }
 
             return base.TrySetIndex(binder, indexes, value);
         }
-
-        #region Implementation of IEnumerable
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _members.GetEnumerator();
-        }
-        #endregion
-
-        #region Implementation of IEnumerable<object>
-        /// <summary>
-        /// Gets the enumerator.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator<object> IEnumerable<object>.GetEnumerator()
-        {
-            return _members.GetEnumerator();
-        }
-        #endregion
-
-        #region Implementation of ICollection
-        /// <summary>
-        /// Gets the count.
-        /// </summary>
-        /// <value>The count.</value>
-        int ICollection.Count
-        {
-            get
-            {
-                return _members.Count;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe).
-        /// </summary>
-        /// <value></value>
-        /// <returns>true if access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe); otherwise, false.</returns>
-        bool ICollection.IsSynchronized
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.
-        /// </summary>
-        /// <value></value>
-        /// <returns>An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.</returns>
-        object ICollection.SyncRoot
-        {
-            get
-            {
-                return this;
-            }
-        }
-
-        /// <summary>
-        /// Copies the elements of the <see cref="T:System.Collections.ICollection"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
-        /// </summary>
-        /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.ICollection"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
-        /// <param name="index">The zero-based index in <paramref name="array"/> at which copying begins.</param>
-        /// <exception cref="T:System.ArgumentNullException">
-        /// 	<paramref name="array"/> is null. </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        /// 	<paramref name="index"/> is less than zero. </exception>
-        /// <exception cref="T:System.ArgumentException">
-        /// 	<paramref name="array"/> is multidimensional.-or- The number of elements in the source <see cref="T:System.Collections.ICollection"/> is greater than the available space from <paramref name="index"/> to the end of the destination <paramref name="array"/>. </exception>
-        /// <exception cref="T:System.ArgumentException">The type of the source <see cref="T:System.Collections.ICollection"/> cannot be cast automatically to the type of the destination <paramref name="array"/>. </exception>
-        void ICollection.CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region Implementation of ICollection<object>
-        /// <summary>
-        /// Gets the count.
-        /// </summary>
-        /// <value>The count.</value>
-        int ICollection<object>.Count
-        {
-            get
-            {
-                return _members.Count;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is read only.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
-        /// </value>
-        bool ICollection<object>.IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Adds the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        void ICollection<object>.Add(object item)
-        {
-            ((ICollection<object>)_members).Add(item);
-        }
-
-        /// <summary>
-        /// Clears this instance.
-        /// </summary>
-        void ICollection<object>.Clear()
-        {
-            ((ICollection<object>)_members).Clear();
-        }
-
-        /// <summary>
-        /// Determines whether [contains] [the specified item].
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns>
-        /// 	<c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.
-        /// </returns>
-        bool ICollection<object>.Contains(object item)
-        {
-            return ((ICollection<object>)_members).Contains(item);
-        }
-
-        /// <summary>
-        /// Copies to.
-        /// </summary>
-        /// <param name="array">The array.</param>
-        /// <param name="arrayIndex">Index of the array.</param>
-        void ICollection<object>.CopyTo(object[] array, int arrayIndex)
-        {
-            ((ICollection<object>)_members).CopyTo(array, arrayIndex);
-        }
-
-        /// <summary>
-        /// Removes the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns></returns>
-        bool ICollection<object>.Remove(object item)
-        {
-            return ((ICollection<object>)_members).Remove(item);
-        }
-        #endregion
+#endif
     }
 }

@@ -11,5 +11,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Facebook")]
-[assembly: InternalsVisibleTo("Facebook.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-[assembly: InternalsVisibleTo("Facebook.Explorables, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+#if !WINDOWS_PHONE
+[assembly: InternalsVisibleTo("Facebook.Tests")]
+//[assembly: InternalsVisibleTo("Facebook.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+#endif

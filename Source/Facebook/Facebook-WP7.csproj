@@ -110,19 +110,10 @@
       <HintPath>..\..\Tools\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\..\Tools\DLR\Silverlight\Microsoft.Dynamic.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Scripting">
-      <HintPath>..\..\Tools\DLR\Silverlight\Microsoft.Scripting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Scripting.Core">
-      <HintPath>..\..\Tools\DLR\Silverlight\Microsoft.Scripting.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json.Silverlight">
+      <HintPath>..\..\Tools\Newtonsoft.Json.3.5.8\lib\SL\Newtonsoft.Json.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -148,8 +139,6 @@
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
-    <Compile Include="JsonReader.cs" />
-    <Compile Include="JsonWriter.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="StringUtilities.cs" />
     <Compile Include="FacebookSession.cs" />

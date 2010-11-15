@@ -13,19 +13,19 @@
     <p>
         <img id="fbLogin" src="../../Content/login-button.png" />
     </p>
-    
-    <div id="fb-root"></div>
+    <div id="fb-root">
+    </div>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script>
         FB.init({ appId: '<%:FacebookSettings.Current.AppId %>', status: true, cookie: true, xfbml: true });
-        $('#fbLogin').click(function() {
+        $('#fbLogin').click(function () {
             FB.login(function (response) {
                 if (response.session) {
                     window.location = '<%:Url.Action("Profile") %>'
                 } else {
                     // user cancelled login
                 }
-            });
+            }, { perms: "publish_stream" });
         });
     </script>
 </asp:Content>

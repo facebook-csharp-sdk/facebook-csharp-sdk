@@ -14,7 +14,7 @@ using System.Security;
 
 [assembly: AssemblyDescription("Facebook C# SDK")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Thuzi, LLC")]
+[assembly: AssemblyCompany("Facebook C# SDK")]
 [assembly: AssemblyProduct("Facebook C# SDK")]
 [assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: ComVisible(false)]

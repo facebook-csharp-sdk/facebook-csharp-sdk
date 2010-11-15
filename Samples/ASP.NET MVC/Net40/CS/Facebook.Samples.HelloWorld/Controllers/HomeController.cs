@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Facebook.Web.Mvc;
+using System.Dynamic;
 
 namespace Facebook.Samples.HelloWorld.Controllers
 {
@@ -25,6 +26,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
             return View();
         }
 
+        [CanvasAuthorize(Perms = "stream_publish")]
         public ActionResult Profile()
         {
             var app = new FacebookApp();
@@ -35,10 +37,10 @@ namespace Facebook.Samples.HelloWorld.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Get the user info from the Graph API
-            dynamic me = app.Api("/me");
-            ViewData["FirstName"] = me.first_name;
-            ViewData["LastName"] = me.last_name;
+            dynamic parameters = new ExpandoObject();
+            parameters.message = "First wall post!";
+
+            dynamic result = app.Api("/me/feed", parameters, HttpMethod.Post);
 
             return View();
         }

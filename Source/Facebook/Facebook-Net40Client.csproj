@@ -94,12 +94,15 @@
     <DocumentationFile>bin\Release\Net40Client\Facebook.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Tools\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -121,8 +124,6 @@
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
-    <Compile Include="JsonReader.cs" />
-    <Compile Include="JsonWriter.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="StringUtilities.cs" />
     <Compile Include="FacebookSession.cs" />

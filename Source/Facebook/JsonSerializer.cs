@@ -8,11 +8,15 @@
 // ---------------------------------
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 
 namespace Facebook
 {
@@ -25,16 +29,28 @@ namespace Facebook
  RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 #endif
 
+        private static JsonSerializerSettings SerializerSettings
+        {
+            get
+            {
+                var isoDate = new IsoDateTimeConverter();
+                isoDate.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
+                var settings = new JsonSerializerSettings();
+                settings.Converters = settings.Converters ?? new List<JsonConverter>();
+                settings.Converters.Add(isoDate);
+                settings.MissingMemberHandling = MissingMemberHandling.Ignore;
+                settings.NullValueHandling = NullValueHandling.Include;
+                settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                settings.TypeNameHandling = TypeNameHandling.None;
+                settings.ConstructorHandling = ConstructorHandling.Default;
+                return settings;
+            }
+        }
+
 
         public static string SerializeObject(object value)
         {
-            string json;
-            using (JsonWriter writer = new JsonWriter())
-            {
-                writer.WriteValue(value);
-                json = writer.Json;
-            }
-            return json;
+            return JsonConvert.SerializeObject(value, Formatting.None, SerializerSettings);
         }
 
         public static object DeserializeObject(Stream stream)
@@ -62,13 +78,62 @@ namespace Facebook
             }
             else
             {
-                object value;
-                using (JsonReader reader = new JsonReader(json))
+                object obj;
+                
+                try
                 {
-                    value = reader.ReadValue();
+                    obj = JsonConvert.DeserializeObject(json, null, SerializerSettings);
                 }
-                return value;
+                catch (JsonSerializationException ex)
+                {
+                    throw new System.Runtime.Serialization.SerializationException(ex.Message, ex);
+                }
+
+                // If the object is a JToken we want to
+                // convert it to dynamic, it if is any
+                // other type we just return it.
+                if (obj is JToken)
+                {
+                    return ConvertJTokenToDictionary((JToken)obj);
+                }
+                else
+                {
+                    return obj;
+                }
             }
+        }
+
+        private static object ConvertJTokenToDictionary(JToken token)
+        {
+            if (token == null)
+            {
+                return null;
+            }
+            else if (token is JValue)
+            {
+                return ((JValue)token).Value;
+            }
+            else if (token is JObject)
+            {
+                var jsonObject = new JsonObject();
+                var jsonDict = (IDictionary<string, object>)jsonObject;
+                (from childToken in ((JToken)token) where childToken is JProperty select childToken as JProperty).ToList().ForEach(property =>
+                {
+                    jsonDict.Add(property.Name, ConvertJTokenToDictionary(property.Value));
+                });
+                return jsonObject;
+            }
+            else if (token is JContainer)
+            {
+                var jsonArray = new JsonArray();
+                var jsonColl = (ICollection<object>)jsonArray;
+                foreach (JToken arrayItem in (JContainer)token)
+                {
+                    jsonColl.Add(ConvertJTokenToDictionary(arrayItem));
+                }
+                return jsonArray;
+            }
+            throw new ArgumentException(string.Format("Unknown token type '{0}'", token.GetType()), "token");
         }
 
         private static object ConvertXml(string xml)

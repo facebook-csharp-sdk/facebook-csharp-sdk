@@ -28,7 +28,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\Net35Client\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CODE_ANALYSIS;CLIENTPROFILE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CLIENTPROFILE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -63,7 +63,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\Net40Client\</OutputPath>
-    <DefineConstants>TRACE;CLIENTPROFILE</DefineConstants>
+    <DefineConstants>TRACE;CLIENTPROFILE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -115,6 +115,9 @@
     <Reference Include="Microsoft.Scripting.ExtensionAttribute">
       <HintPath>..\..\Tools\DLR\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Tools\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -135,8 +138,6 @@
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
-    <Compile Include="JsonReader.cs" />
-    <Compile Include="JsonWriter.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="StringUtilities.cs" />
     <Compile Include="FacebookSession.cs" />

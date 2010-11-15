@@ -10,9 +10,11 @@
 namespace Facebook
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Net;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// A utility for generating facebook exceptions.
@@ -78,28 +80,26 @@ namespace Facebook
             FacebookApiException resultException = null;
             if (result != null)
             {
-                var resultDict = result as IDictionary<string, object>;
-                if (resultDict != null)
+                var jObject = result as JObject;
+                if (jObject != null)
                 {
-                    if (resultDict.ContainsKey("error_code"))
+                    JToken error_code;
+                    if (jObject.TryGetValue("error_code", out error_code))
                     {
-                        string error_code = resultDict["error_code"] as string;
-                        string error_msg = null;
-                        if (resultDict.ContainsKey("error_msg"))
-                        {
-                            error_msg = resultDict["error_msg"] as string;
-                        }
+                        JToken error_msg;
+                        jObject.TryGetValue("error_msg", out error_msg);
 
-                        // Error Details: http://wiki.developers.facebook.com/index.php/Error_codes
-                        if (error_code == "190")
+                        // 190 is the REST OAuth error code
+                        if ((string)error_code == "190")
                         {
-                            resultException = new FacebookOAuthException(error_msg, error_code);
+                            resultException = new FacebookOAuthException((string)error_msg, (string)error_code);
                         }
                         else
                         {
-                            resultException = new FacebookApiException(error_msg, error_code);
+                            resultException = new FacebookApiException((string)error_msg, (string)error_code);
                         }
                     }
+
                 }
             }
 
@@ -133,31 +133,24 @@ namespace Facebook
 
                     if (response != null)
                     {
-                        var responseDict = response as IDictionary<string, object>;
-                        if (responseDict != null)
+                        var jObject = response as JObject;
+                        if (jObject != null)
                         {
-                            if (responseDict.ContainsKey("error"))
+                            JToken error;
+                            if (jObject.TryGetValue("error", out error))
                             {
-                                var error = responseDict["error"] as IDictionary<string, object>;
-                                if (error != null)
-                                {
-                                    var errorType = error["type"] as string;
-                                    var errorMessage = error["message"] as string;
+                                var errorType = (string)error["type"];
+                                var errorMessage = (string)error["message"];
 
-                                    // Check to make sure the correct data is in the response
-                                    if (!String.IsNullOrEmpty(errorType) && !String.IsNullOrEmpty(errorMessage))
-                                    {
-                                        // We dont include the inner exception because it is not needed and is always a WebException.
-                                        // It is easier to understand the error if we use Facebook's error message.
-                                        if (errorType == "OAuthException")
-                                        {
-                                            resultException = new FacebookOAuthException(errorMessage, errorType);
-                                        }
-                                        else
-                                        {
-                                            resultException = new FacebookApiException(errorMessage, errorType);
-                                        }
-                                    }
+                                // We dont include the inner exception because it is not needed and is always a WebException.
+                                // It is easier to understand the error if we use Facebook's error message.
+                                if (errorType == "OAuthException")
+                                {
+                                    resultException = new FacebookOAuthException(errorMessage, errorType);
+                                }
+                                else
+                                {
+                                    resultException = new FacebookApiException(errorMessage, errorType);
                                 }
                             }
                         }

@@ -157,7 +157,7 @@ namespace Facebook
                 {
                     if (this.Request.Params.AllKeys.Contains("signed_request"))
                     {
-                        this.signedRequest = this.ParseSignedRequest(request.Params["signed_request"]);
+                        this.signedRequest = this.ParseSignedRequest(this.Request.Params["signed_request"]);
                     }
                 }
 
@@ -252,7 +252,7 @@ namespace Facebook
         protected virtual System.Web.HttpRequestBase Request
         {
             get {
-                if (this.request == null)
+                if (this.request == null && System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Request != null)
                 {
                     this.request = new System.Web.HttpRequestWrapper(System.Web.HttpContext.Current.Request);
                 }
@@ -273,7 +273,7 @@ namespace Facebook
         {
             get
             {
-                if (this.response == null)
+                if (this.response == null && System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Response != null)
                 {
                     this.response = new System.Web.HttpResponseWrapper(System.Web.HttpContext.Current.Response);
                 }

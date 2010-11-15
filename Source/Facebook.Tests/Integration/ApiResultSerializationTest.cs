@@ -14,10 +14,10 @@ namespace Facebook.Tests.Integration
         public ApiResultSerializationTest()
         {
             app = new FacebookApp();
-            app.Session = new FacebookSession
-            {
-                AccessToken = ConfigurationManager.AppSettings["AccessToken"],
-            };
+            //app.Session = new FacebookSession
+            //{
+            //    AccessToken = ConfigurationManager.AppSettings["AccessToken"],
+            //};
         }
 
         [TestMethod]

@@ -54,7 +54,7 @@ namespace Facebook
             }
 
             var parameters = new Dictionary<string, object>();
-            parameters["queries"] = JsonSerializer.SerializeObject(queryDict);
+            parameters["queries"] = queryDict;
             parameters["method"] = "fql.multiquery";
             return app.Api(parameters);
         }
