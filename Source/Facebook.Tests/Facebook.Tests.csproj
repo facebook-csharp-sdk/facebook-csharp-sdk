@@ -71,7 +71,7 @@
     <Compile Include="Integration\RestReadTests.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Integration\TypeObjectTests.cs" />
+    <Compile Include="Integration\TypedObjectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facebook\Facebook.csproj">
@@ -83,7 +83,9 @@
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <Shadow Include="Test References\Facebook.accessor" />
   </ItemGroup>

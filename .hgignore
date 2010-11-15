@@ -5,3 +5,4 @@ glob:*.Cache
 glob:*.user
 glob:TestResults/*
 glob:Working/*
+glob:*.orig

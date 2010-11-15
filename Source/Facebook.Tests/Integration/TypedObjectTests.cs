@@ -9,17 +9,17 @@ using Facebook.Graph;
 namespace Facebook.Tests
 {
     [TestClass]
-    public class TypeObjectTests
+    public class TypedObjectTests
     {
         private FacebookApp app;
-        public TypeObjectTests()
+        public TypedObjectTests()
         {
             app = new FacebookApp();
             app.MaxRetries = 0;
-            app.Session = new FacebookSession
-            {
-                AccessToken = ConfigurationManager.AppSettings["AccessToken"],
-            };
+            //app.Session = new FacebookSession
+            //{
+            //    AccessToken = ConfigurationManager.AppSettings["AccessToken"],
+            //};
         }
 
         [TestMethod]

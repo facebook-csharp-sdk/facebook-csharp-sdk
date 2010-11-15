@@ -1018,7 +1018,10 @@ namespace Facebook
                 if (resultType == null || restApi)
                 {
                     result = JsonSerializer.DeserializeObject(responseData);
-                    exception = ExceptionFactory.GetRestException(result);
+                    if (restApi)
+                    {
+                        exception = ExceptionFactory.GetRestException(result);
+                    }
                 }
 
                 if (exception != null)
