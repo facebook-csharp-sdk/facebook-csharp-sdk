@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Graph\EducationHistoryItem.cs" />
+    <Compile Include="Graph\Insight.cs" />
     <Compile Include="Graph\NameIdPair.cs" />
     <Compile Include="Graph\Services\GraphService.cs" />
     <Compile Include="Graph\User.cs" />
