@@ -31,6 +31,9 @@ namespace Facebook
  IDictionary<string, object>
     {
 
+        /// <summary>
+        /// The internal member dictionary.
+        /// </summary>
         private Dictionary<string, object> members;
 
         /// <summary>
@@ -49,36 +52,83 @@ namespace Facebook
             Contract.Invariant(members != null);
         }
 
+        /// <summary>
+        /// Gets the <see cref="System.Object"/> at the specified index.
+        /// </summary>
+        /// <value></value>
+        public object this[int index]
+        {
+            get
+            {
+                return this.members.ToList()[index];
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         public void Add(string key, object value)
         {
             this.members.Add(key, value);
         }
 
+        /// <summary>
+        /// Determines whether the specified key contains key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        /// 	<c>true</c> if the specified key contains key; otherwise, <c>false</c>.
+        /// </returns>
         public bool ContainsKey(string key)
         {
             return this.members.ContainsKey(key);
         }
 
+        /// <summary>
+        /// Gets the keys.
+        /// </summary>
+        /// <value>The keys.</value>
         public ICollection<string> Keys
         {
             get { return this.members.Keys; }
         }
 
+        /// <summary>
+        /// Removes the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public bool Remove(string key)
         {
             return this.members.Remove(key);
         }
 
+        /// <summary>
+        /// Tries the get value.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public bool TryGetValue(string key, out object value)
         {
             return this.members.TryGetValue(key, out value);
         }
 
+        /// <summary>
+        /// Gets the values.
+        /// </summary>
+        /// <value>The values.</value>
         public ICollection<object> Values
         {
             get { return this.members.Values; }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified key.
+        /// </summary>
+        /// <value></value>
         public object this[string key]
         {
             get
@@ -91,46 +141,90 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Adds the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
         public void Add(KeyValuePair<string, object> item)
         {
             this.members.Add(item.Key, item.Value);
         }
 
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
         public void Clear()
         {
             this.members.Clear();
         }
 
+        /// <summary>
+        /// Determines whether [contains] [the specified item].
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>
+        /// 	<c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.
+        /// </returns>
         public bool Contains(KeyValuePair<string, object> item)
         {
             return this.members.ContainsKey(item.Key) && this.members[item.Key] == item.Value;
         }
 
+        /// <summary>
+        /// Copies to.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="arrayIndex">Index of the array.</param>
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>The count.</value>
         public int Count
         {
             get { return this.members.Count; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is read only.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// </value>
         public bool IsReadOnly
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Removes the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         public bool Remove(KeyValuePair<string, object> item)
         {
             return this.members.Remove(item.Key);
         }
 
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
             return this.members.GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.members.GetEnumerator();

@@ -6,3 +6,4 @@ glob:*.user
 glob:TestResults/*
 glob:Working/*
 glob:*.orig
+glob:Source/App.config

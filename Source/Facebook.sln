@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.TestUtils", "Faceb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Extensions", "Facebook.Extensions\Facebook.Extensions.csproj", "{E953153C-8797-4E91-8650-E142AC1B8C0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Extensions.Tests", "Facebook.Extensions.Tests\Facebook.Extensions.Tests.csproj", "{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -119,6 +121,16 @@ Global
 		{E953153C-8797-4E91-8650-E142AC1B8C0D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E953153C-8797-4E91-8650-E142AC1B8C0D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E953153C-8797-4E91-8650-E142AC1B8C0D}.Release|x86.ActiveCfg = Release|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,5 +141,6 @@ Global
 		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{54AA4B0B-3D96-4670-80F5-20E996BF4272} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
+		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 	EndGlobalSection
 EndGlobal

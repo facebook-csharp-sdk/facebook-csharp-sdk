@@ -33,4 +33,24 @@ namespace Facebook.Graph
         [DataMember(Name = "end_time")]
         public DateTime EndTime { get; set; }
     }
+
+    [DataContract]
+    public class InsightCollectionItem
+    {
+        [DataMember(Name = "data")]
+        public List<Insight> Data { get; set; }
+
+        [DataMember(Name = "paging")]
+        public Paging Paging { get; set; }
+    }
+
+    [DataContract]
+    public class Paging
+    {
+        [DataMember(Name = "next")]
+        public string Next { get; set; }
+        [DataMember(Name = "previous")]
+        public string Previous { get; set; }
+    }
+
 }
