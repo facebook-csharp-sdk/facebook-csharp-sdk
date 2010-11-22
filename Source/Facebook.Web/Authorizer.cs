@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Web;
+using Newtonsoft.Json.Linq;
 
 namespace Facebook.Web
 {
@@ -80,15 +81,15 @@ namespace Facebook.Web
                 parameters["query"] = query;
                 parameters["method"] = "fql.query";
                 parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.ApiSecret);
-                var data = (JsonArray)FacebookApp.Api(parameters);
+                var data = (JArray)FacebookApp.Api(parameters);
                 if (data != null && data.Count > 0)
                 {
-                    var permData = data[0] as IDictionary<string, object>;
+                    var permData = data[0] as JObject;
                     if (permData != null)
                     {
-                        result = (from perm in permData
-                                  where perm.Value.ToString() == "1"
-                                  select perm.Key).ToArray();
+                        result = (from perm in permData.Properties()
+                                  where perm.Value<string>() == "1"
+                                  select perm.Name).ToArray();
                     }
                 }
             }

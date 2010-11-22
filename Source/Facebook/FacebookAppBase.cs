@@ -325,80 +325,17 @@ namespace Facebook
         #region API Calls
 
 #if (!SILVERLIGHT) // Silverlight should only have async calls
-        /// <summary>
-        /// Make an API call.
-        /// </summary>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        public object Api(IDictionary<string, object> parameters)
-        {
-            Contract.Requires(parameters != null);
-
-            return this.Api(null, parameters, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        public object Api(string path)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return this.Api(path, null, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        public object Api(string path, HttpMethod httpMethod)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return this.Api(path, null, httpMethod);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Requires(parameters != null);
-
-            return this.Api(null, parameters, httpMethod);
-        }
 
         /// <summary>
         /// Make an api call.
         /// </summary>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        public object Api(string path, IDictionary<string, object> parameters)
-        {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
-
-            return this.Api(path, parameters, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <param name="resultType">The type of the API request result to deserialize the response data.</param>
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        internal virtual object Api(string path, IDictionary<string, object> parameters, Type resultType, HttpMethod httpMethod)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -412,12 +349,63 @@ namespace Facebook
                 {
                     throw new ArgumentException("You must specify a value for the method parameter.");
                 }
-                return this.RestServer(parameters, httpMethod, null);
+                return this.RestServer(parameters, httpMethod, resultType);
             }
             else
             {
-                return this.Graph(path, parameters, httpMethod, null);
+                return this.Graph(path, parameters, httpMethod, resultType);
             }
+        }
+
+        public void Delete(string path)
+        {
+            this.Api(path, null, null, HttpMethod.Delete);
+        }
+
+        public void Delete(string path, string accessToken)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("access_token", accessToken);
+            this.Api(path, parameters, null, HttpMethod.Delete);
+        }
+
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        public object Get(IDictionary<string, object> parameters)
+        {
+            Contract.Requires(parameters != null);
+
+            return this.Api(null, parameters, null, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public object Get(string path)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            return this.Api(path, null, null, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public object Get(string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            return this.Api(path, parameters, null, HttpMethod.Get);
         }
 
         /// <summary>
@@ -428,11 +416,11 @@ namespace Facebook
         /// <returns>
         /// A dynamic object with the resulting data.
         /// </returns>
-        public T Api<T>(IDictionary<string, object> parameters)
+        public T Get<T>(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
-            return this.Api<T>(null, parameters, HttpMethod.Get);
+            return (T)this.Api(null, parameters, typeof(T), HttpMethod.Get);
         }
 
         /// <summary>
@@ -444,43 +432,11 @@ namespace Facebook
         /// A dynamic object with the resulting data.
         /// </returns>
         /// <exception cref="Facebook.FacebookApiException"/>
-        public T Api<T>(string path)
+        public T Get<T>(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return this.Api<T>(path, null, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <typeparam name="T">The result of the API call.</typeparam>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>
-        /// A dynamic object with the resulting data.
-        /// </returns>
-        public T Api<T>(string path, HttpMethod httpMethod)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return this.Api<T>(path, null, httpMethod);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <typeparam name="T">The result of the API call.</typeparam>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>
-        /// A dynamic object with the resulting data.
-        /// </returns>
-        public T Api<T>(IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Requires(parameters != null);
-
-            return this.Api<T>(null, parameters, httpMethod);
+            return (T)this.Api(path, null, typeof(T), HttpMethod.Get);
         }
 
         /// <summary>
@@ -493,44 +449,21 @@ namespace Facebook
         /// A dynamic object with the resulting data.
         /// </returns>
         /// <exception cref="Facebook.FacebookApiException"/>
-        public T Api<T>(string path, IDictionary<string, object> parameters)
+        public T Get<T>(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return this.Api<T>(path, parameters, HttpMethod.Get);
+            return (T)this.Api(path, parameters, typeof(T), HttpMethod.Get);
         }
 
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <typeparam name="T">The result of the API call.</typeparam>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>
-        /// A dynamic object with the resulting data.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        public virtual T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        public string Post(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            return (string)this.Api(path, parameters, null, HttpMethod.Post);
+        }
 
-            parameters = parameters ?? new Dictionary<string, object>();
-
-            path = ParseUrlParameters(path, parameters);
-
-            if (parameters.ContainsKey("method"))
-            {
-                if (String.IsNullOrEmpty((string)parameters["method"]))
-                {
-                    throw new ArgumentException("You must specify a value for the method parameter.");
-                }
-                return (T)this.RestServer(parameters, httpMethod, typeof(T));
-            }
-            else
-            {
-                return (T)this.Graph(path, parameters, httpMethod, typeof(T));
-            }
+        public string Post(string path, object parameters)
+        {
+            return (string)this.Api(path, parameters, null, HttpMethod.Post);
         }
 
 #endif
@@ -665,7 +598,7 @@ namespace Facebook
             this.ApiAsync(path, parameters, HttpMethod.Get, callback, null);
         }
 
-                /// <summary>
+        /// <summary>
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
