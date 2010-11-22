@@ -1,0 +1,73 @@
+﻿<%@ page language="C#" autoeventwireup="true" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>SL OOB Auth & Allow Sample For C# Facebook SDK</title>
+    <style type="text/css">
+        html, body
+        {
+            height: 100%;
+            overflow: auto;
+        }
+        body
+        {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <script src="http://connect.facebook.net/en_US/all.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var requestedPermissions = "";
+        function facebook_init(appid, permissions) {
+            FB.init({ apiKey: appid });
+            facebook_login();
+        }
+        function isUserConnected() {
+            FB.ensureInit(function () {
+                FB.Connect.get_status().waitUntilReady(function (status) {
+                    var plugin = document.getElementById('_sl_facebookapp');
+                    facebook_getSession();
+                });
+            });
+        }
+
+        function facebook_login() {
+            FB.ensureInit(function () {
+                FB.Connect.requireSession(facebook_getSession, true);
+            });
+        }
+
+        function facebook_logout() {
+            FB.Connect.logout(facebook_onlogout);
+        }
+
+        function facebook_getSession() {
+
+            FB.Facebook.get_sessionState().waitUntilReady(function () {
+                var session = FB.Facebook.apiClient.get_session();
+                window.external.notify('{"resultType":"gotSession","sessionkey":"' + session.session_key + '", "sessionSecret":"' + session.secret + '", "sessionExpires":"' + session.expires + '", "sessionUid":"' + session.uid + '"}');
+                if (requestedPermissions != "") {
+                    facebook_prompt_permission(requestedPermissions);
+                }
+            });
+        }
+
+        function facebook_onpermission(accepted) {
+            window.external.notify('{"resultType":"gotPermissions","acceptedThese":"' + accepted + '"}');
+
+        }
+
+        function facebook_prompt_permission(permission) {
+            FB.ensureInit(function () {
+                FB.Connect.showPermissionDialog(permission, facebook_onpermission);
+            });
+        }
+
+    </script>
+    <form id="form1" runat="server" style="height: 100%">
+    </form>
+</body>
+</html>
