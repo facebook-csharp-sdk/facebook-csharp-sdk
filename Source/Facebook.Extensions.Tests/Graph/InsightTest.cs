@@ -22,7 +22,7 @@ namespace Facebook.Extensions.Tests.Graph
             parameters.endtime = (int)DateTime.UtcNow.Date.ToUnixTime();
 
             var app = new FacebookApp(ConfigurationManager.AppSettings["AccessToken"]);
-            var result = app.Api<List<KeyValuePair<string, InsightCollectionItem>>>("/insights", (IDictionary<string, object>)parameters);
+            var result = app.Get<List<KeyValuePair<string, InsightCollectionItem>>>("/insights", (IDictionary<string, object>)parameters);
 
             Assert.AreEqual(2, result.Count);
 

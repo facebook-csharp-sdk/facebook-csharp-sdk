@@ -23,7 +23,7 @@ namespace Facebook.Tests.Fql
         public void Read_Friends()
         {
             var query = "SELECT uid, name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())";
-            dynamic results = app.Fql(query);
+            dynamic results = app.Query(query);
 
             Assert.IsNotNull(results);
             foreach (var item in results)
@@ -44,7 +44,7 @@ namespace Facebook.Tests.Fql
             parameters["query"] = query;
             parameters["method"] = "fql.query";
             parameters["access_token"] = string.Concat(app.AppId, "|", app.ApiSecret);
-            dynamic result = app.Api(parameters);
+            dynamic result = app.Get(parameters);
             Assert.IsNotNull(result);
         }
     }

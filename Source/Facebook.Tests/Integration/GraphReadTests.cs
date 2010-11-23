@@ -50,7 +50,7 @@ namespace Facebook.Tests.Graph
         [TestMethod]
         public void Read_Likes()
         {
-            dynamic likesResult = app.Api("/totten/likes");
+            dynamic likesResult = app.Get("/totten/likes");
             dynamic likesData = likesResult.data;
             Assert.IsNotNull(likesData);
 
@@ -64,42 +64,42 @@ namespace Facebook.Tests.Graph
         [TestMethod]
         public void Read_Public_Fan_Page_Id()
         {
-            dynamic pageResult = app.Api("/outback");
+            dynamic pageResult = app.Get("/outback");
             Assert.AreEqual(pageResult.id, "48543634386");
         }
 
         [TestMethod]
         public void Read_User_Info()
         {
-            dynamic result = app.Api("/me");
+            dynamic result = app.Get("/me");
             Assert.AreEqual(result.name, "Nathan Tester");
         }
 
         [TestMethod]
         public void Read_Application_Info()
         {
-            dynamic result = app.Api("/2439131959");
+            dynamic result = app.Get("/2439131959");
             Assert.AreEqual(result.category, "Just For Fun");
         }
 
         [TestMethod]
         public void Read_Photo_Info()
         {
-            dynamic result = app.Api("/98423808305");
+            dynamic result = app.Get("/98423808305");
             Assert.AreEqual(result.from.name, "Coca-Cola");
         }
 
         [TestMethod]
         public void Read_Event()
         {
-            dynamic result = app.Api("/331218348435");
+            dynamic result = app.Get("/331218348435");
             Assert.AreEqual(result.venue.city, "Austin");
         }
 
         [TestMethod]
         public void ReadPublicProfile()
         {
-            dynamic result = app.Api("/totten");
+            dynamic result = app.Get("/totten");
             Assert.AreEqual("Nathan", result.first_name);
         }
 
@@ -109,7 +109,7 @@ namespace Facebook.Tests.Graph
         {
             dynamic parameters = new ExpandoObject();
             parameters.access_token = "invalidtoken";
-            dynamic result = app.Api("/totten/likes", parameters);
+            dynamic result = app.Get("/totten/likes", parameters);
             Assert.Fail();
         }
     }

@@ -13,7 +13,7 @@ namespace Facebook
     /// <summary>
     /// Represents an HTTP request type.
     /// </summary>
-    internal enum HttpMethod
+    public enum HttpMethod
     {
         /// <summary>
         /// A GET Request

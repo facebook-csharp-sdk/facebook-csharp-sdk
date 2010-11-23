@@ -47,7 +47,7 @@ namespace Facebook.Tests.Rest
             };
             mediaObject.SetValue(photo);
             parameters.source = mediaObject;
-            dynamic result = app.Api(parameters, HttpMethod.Post);
+            dynamic result = app.Post(parameters);
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(result.aid, null);
@@ -68,7 +68,7 @@ namespace Facebook.Tests.Rest
 
             parameters.news = list;
 
-            dynamic result = app.Api(parameters, HttpMethod.Post);
+            dynamic result = app.Post(parameters);
 
             long id;
             long.TryParse(result, out id);

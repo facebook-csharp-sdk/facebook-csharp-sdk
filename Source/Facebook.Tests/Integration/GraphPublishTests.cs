@@ -30,7 +30,7 @@ namespace Facebook.Tests.Graph
             parameters.message = "This is a test message that has been published by the Facebook C# SDK on Codeplex. " + DateTime.UtcNow.Ticks.ToString();
             parameters.attribution = "Facebook C# SDK";
 
-            var result = app.Api("/me/feed", parameters, HttpMethod.Post);
+            dynamic result = app.Post("/me/feed", parameters);
 
             Assert.AreNotEqual(null, result.id);
         }
@@ -44,12 +44,12 @@ namespace Facebook.Tests.Graph
             parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
             parameters.message = "This is a test message that has been published by the Facebook C# SDK on Codeplex. " + DateTime.UtcNow.Ticks.ToString();
 
-            var result = app.Api("/me/feed", parameters, HttpMethod.Post);
+            dynamic result = app.Post("/me/feed", parameters);
 
             Assert.AreNotEqual(null, result.id);
 
             // Delete methods should return 'true'
-            var isDeleted = app.Api(result.id, HttpMethod.Delete);
+            var isDeleted = app.Delete(result.id);
 
             Assert.IsTrue(isDeleted);
         }
@@ -80,7 +80,7 @@ namespace Facebook.Tests.Graph
             mediaObject.SetValue(photo);
             parameters.source = mediaObject;
 
-            dynamic result = app.Api(String.Format("/{0}/photos", albumId), parameters, HttpMethod.Post);
+            dynamic result = app.Post(String.Format("/{0}/photos", albumId), parameters);
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(null, result.id);

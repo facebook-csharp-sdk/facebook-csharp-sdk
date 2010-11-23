@@ -38,7 +38,7 @@ namespace Facebook.Tests.Rest
             parameters.fields = "first_name,last_name";
             parameters.access_token = "invalidtoken";
 
-            var result = app.Api(parameters);
+            var result = app.Get(parameters);
 
             var firstName = result[0].first_name;
             Assert.Fail(); // Should have thown by now

@@ -81,7 +81,7 @@ namespace Facebook.Web
                 parameters["query"] = query;
                 parameters["method"] = "fql.query";
                 parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.ApiSecret);
-                var data = (JArray)FacebookApp.Api(parameters);
+                var data = (JArray)FacebookApp.Get(parameters);
                 if (data != null && data.Count > 0)
                 {
                     var permData = data[0] as JObject;

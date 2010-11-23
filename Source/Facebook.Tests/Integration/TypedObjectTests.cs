@@ -25,7 +25,7 @@ namespace Facebook.Tests
         [TestMethod]
         public void Get_User_Info_Typed()
         {
-            var user = app.Api<User>("/totten");
+            var user = app.Get<User>("/totten");
             Assert.IsNotNull(user.FirstName);
 
         }

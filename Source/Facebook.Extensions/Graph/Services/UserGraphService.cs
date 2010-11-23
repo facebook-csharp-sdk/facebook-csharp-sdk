@@ -20,17 +20,17 @@ namespace Facebook.Graph
 
         public UserInfo GetCurrentUserInfo()
         {
-            return this.App.Api<UserInfo>("/me");
+            return this.App.Get<UserInfo>("/me");
         }
 
         public UserInfo GetUserInfo(long facebookId)
         {
-            return this.App.Api<UserInfo>(facebookId.ToString());
+            return this.App.Get<UserInfo>(facebookId.ToString());
         }
 
         public UserInfo GetUserInfo(string username)
         {
-            return this.App.Api<UserInfo>(username);
+            return this.App.Get<UserInfo>(username);
         }
 
     }

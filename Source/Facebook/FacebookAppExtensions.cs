@@ -25,7 +25,7 @@ namespace Facebook
         /// <param name="app">The Facebook app.</param>
         /// <param name="query">The FQL query.</param>
         /// <returns>The FQL query result.</returns>
-        public static object Fql(this FacebookAppBase app, string query)
+        public static object Query(this FacebookAppBase app, string query)
         {
             Contract.Requires(app != null);
             Contract.Requires(!String.IsNullOrEmpty(query));
@@ -33,7 +33,7 @@ namespace Facebook
             var parameters = new Dictionary<string, object>();
             parameters["query"] = query;
             parameters["method"] = "fql.query";
-            return app.Api(parameters);
+            return app.Get(parameters);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Facebook
         /// <param name="app">The Facebook app.</param>
         /// <param name="queries">The FQL queries.</param>
         /// <returns>A collection of the FQL query results.</returns>
-        public static object Fql(this FacebookAppBase app, params string[] queries)
+        public static object Query(this FacebookAppBase app, params string[] queries)
         {
             Contract.Requires(app != null);
             Contract.Requires(queries != null);
@@ -56,7 +56,7 @@ namespace Facebook
             var parameters = new Dictionary<string, object>();
             parameters["queries"] = queryDict;
             parameters["method"] = "fql.multiquery";
-            return app.Api(parameters);
+            return app.Get(parameters);
         }
 #endif
     }
