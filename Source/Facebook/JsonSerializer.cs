@@ -24,7 +24,13 @@ namespace Facebook
 {
     internal static class JsonSerializer
     {
-        
+        private static readonly Regex _stripXmlnsRegex = new Regex(@"(xmlns:?[^=]*=[""][^""]*[""])",
+#if SILVERLIGHT
+ RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
+#else
+ RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+#endif
+
         private static JsonSerializerSettings SerializerSettings
         {
             get
@@ -79,18 +85,98 @@ namespace Facebook
             }
             else
             {
-                return JsonConvert.DeserializeObject(json, type);
+                object obj;
+
+                try
+                {
+                    obj = JsonConvert.DeserializeObject(json, type, SerializerSettings);
+                }
+                catch (JsonSerializationException ex)
+                {
+                    throw new System.Runtime.Serialization.SerializationException(ex.Message, ex);
+                }
+
+                // If the object is a JToken we want to
+                // convert it to dynamic, it if is any
+                // other type we just return it.
+                if (obj is JToken)
+                {
+                    return ConvertJTokenToDictionary((JToken)obj);
+                }
+                else
+                {
+                    return obj;
+                }
             }
+        }
+
+        private static object ConvertJTokenToDictionary(JToken token)
+        {
+            if (token == null)
+            {
+                return null;
+            }
+            else if (token is JValue)
+            {
+                return ((JValue)token).Value;
+            }
+            else if (token is JObject)
+            {
+                var jsonObject = new JsonObject();
+                var jsonDict = (IDictionary<string, object>)jsonObject;
+                (from childToken in ((JToken)token) where childToken is JProperty select childToken as JProperty).ToList().ForEach(property =>
+                {
+                    jsonDict.Add(property.Name, ConvertJTokenToDictionary(property.Value));
+                });
+                return jsonObject;
+            }
+            else if (token is JContainer)
+            {
+                var jsonArray = new JsonArray();
+                var jsonColl = (ICollection<object>)jsonArray;
+                foreach (JToken arrayItem in (JContainer)token)
+                {
+                    jsonColl.Add(ConvertJTokenToDictionary(arrayItem));
+                }
+                return jsonArray;
+            }
+            throw new ArgumentException(string.Format("Unknown token type '{0}'", token.GetType()), "token");
         }
 
         private static object ConvertXml(string xml)
         {
             Contract.Requires(!String.IsNullOrEmpty(xml));
 
-            var doc = new System.Xml.XmlDocument();
-            doc.LoadXml(xml);
-            string json = JsonConvert.SerializeXmlNode(doc);
-            return DeserializeObject(json);
+            xml = _stripXmlnsRegex.Replace(xml, string.Empty);
+
+            XDocument doc = XDocument.Parse(xml);
+            if (doc != null && doc.Root != null)
+            {
+                return ConvertXElementToDictionary(doc.Root);
+            }
+            return null;
+        }
+
+        private static object ConvertXElementToDictionary(XElement element)
+        {
+            if (element == null)
+            {
+                return null;
+            }
+            else if (element.HasElements)
+            {
+                JsonObject jsonObject = new JsonObject();
+                var jsonDict = (IDictionary<string, object>)jsonObject;
+                foreach (var child in element.Elements())
+                {
+                    jsonDict.Add(child.Name.ToString(), ConvertXElementToDictionary(child));
+                }
+                return jsonObject;
+            }
+            else
+            {
+                return element.Value;
+            }
         }
 
     }
