@@ -8,3 +8,6 @@ glob:Working/*
 glob:*.orig
 glob:Source/App.config
 glob:Source/lint.db
+glob:_ReSharper.*/
+glob:*.resharper.user
+glob:*.TeamCity.user
