@@ -43,7 +43,7 @@ namespace SL4_InBrowser
             FbLoginButton.Visibility = Visibility.Collapsed;
             InfoBox.Visibility = Visibility.Visible;
 
-            fbApp.ApiAsync("me", (val) =>
+            fbApp.GetAsync("me", (val) =>
             {
                 if (val.Error == null)
                 {

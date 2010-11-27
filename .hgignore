@@ -8,3 +8,8 @@ glob:Working/*
 glob:*.orig
 glob:Source/App.config
 glob:Source/lint.db
+glob:Samples/Silverlight/Net40/CS/OutOfBrowser/Facebook.Samples.AuthenticationTool/Bin/Debug/de/Microsoft.CSharp.resources.dll
+glob:Samples/Silverlight/Net40/CS/OutOfBrowser/Facebook.Samples.AuthenticationTool/Bin/Debug/ru/Microsoft.CSharp.resources.dll
+glob:Samples/Silverlight/Net40/CS/OutOfBrowser/Facebook.Samples.AuthenticationTool/Bin/Debug/AppManifest.xaml
+glob:*.vs10x
+glob:*.gpstate

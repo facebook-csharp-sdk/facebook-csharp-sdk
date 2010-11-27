@@ -42,7 +42,7 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;
             InfoBox.Visibility = Visibility.Visible;
 
-            fbApp.ApiAsync("me", (val) =>
+            fbApp.GetAsync("me", (val) =>
             {
                 var result = (IDictionary<string, object>)val.Result;
                 Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
