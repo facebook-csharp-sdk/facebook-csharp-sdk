@@ -357,19 +357,22 @@ namespace Facebook
             Xunit.Assert.Equal(expected, result);
         }
 
-        [TestMethod]
-        public void Dictionary_With_Object_To_Querystring()
+        [Fact(DisplayName = "ToJsonQueryString: When Object dictionary contains object as list of string Then it should be decoded with square brackets")]
+        public void ToJsonQueryString_WhenObjectDictionaryContainsObjectAsListOfString_ThenItShouldBeDecodedWithSquareBrackets()
         {
-            var dict = new Dictionary<string, object>();
-            dict.Add("key1", "value1");
-            dict.Add("key2", "value2");
-            var list = new List<string>();
-            list.Add("list1");
-            list.Add("list2");
-            dict.Add("key3", list);
-            string actual = DictionaryUtilities.ToJsonQueryString(dict);
-            string expected = "key1=value1&key2=value2&key3=%5B%22list1%22%2C%22list2%22%5D";
-            Assert.AreEqual(expected, actual);
+            var dict = new Dictionary<string, object>
+                           {
+                               {"key1", "value1"},
+                               {"key2", "value2"},
+                               {"key3", new List<string> {"list_item1", "list_item2"}}
+                           };
+
+            // key1=value1&key2=value2&key3=["list_item1","list_item2"]
+            var expected = "key1=value1&key2=value2&key3=%5B%22list_item1%22%2C%22list_item2%22%5D";
+
+            var result = DictionaryUtilities.ToJsonQueryString(dict);
+
+            Xunit.Assert.Equal(expected, result);
         }
     }
 }
