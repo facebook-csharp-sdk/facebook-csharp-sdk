@@ -80,9 +80,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\App.config">
-      <Link>App.config</Link>
-    </None>
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
