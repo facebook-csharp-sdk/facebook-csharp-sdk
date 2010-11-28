@@ -25,12 +25,14 @@ namespace Facebook.Tests
             Assert.AreEqual(s, unixTime.ToString());
         }
 
-        [TestMethod]
-        public void Convert_To_And_From_Unix_Time_Double()
+        [Fact(DisplayName = "Convert to and from unix time (double)")]
+        public void ConvertToAndFromUnixTime_Double()
         {
             var s = 1213513200;
+
             var fbUnix = DateTimeConvertor.FromUnixTime(s);
             var unixTime = DateTimeConvertor.ToUnixTime(fbUnix);
+
             Assert.AreEqual(s, unixTime);
         }
 
