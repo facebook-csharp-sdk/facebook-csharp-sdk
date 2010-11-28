@@ -43,8 +43,8 @@ namespace Facebook.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [Fact(DisplayName = "ToUnixTime: Given a unix time in string Returns DateTime equivalent")]
-        public void ToUnixTime_GivenAUnixTimeInString_ReturnsDateTimeEquivalent()
+        [Fact(DisplayName = "FromUnixTime: Given a unix time in string Returns DateTime equivalent")]
+        public void FromUnixTime_GivenAUnixTimeInString_ReturnsDateTimeEquivalent()
         {
             var unixTime = "1284620400";
             var expected = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
