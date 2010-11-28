@@ -104,19 +104,83 @@ namespace Facebook
             Xunit.Assert.Equal(second["prop2"], result["prop2"]);
         }
 
-        [TestMethod]
-        public void Merge_Both_Provided()
+        [Fact(DisplayName = "Merge: When merging two object dictionaries that has doesn't contain unique values Then the result should not be null")]
+        public void Merge_WhenMergingTwoObjectDictionariesThatHasDoesnotContainUniqueValues_ThenTheResultShouldNotBeNull()
         {
-            var first = new Dictionary<string, object>();
-            first["prop1"] = "value1-first";
-            first["prop2"] = "value2";
-            var second = new Dictionary<string, object>();
-            second["prop1"] = "value1-second";
-            second["prop3"] = "value3";
+            var first = new Dictionary<string, object>
+                            {
+                                {"prop1", "value1-first"},
+                                {"prop2", "value2"}
+                            };
+            var second = new Dictionary<string, object>
+                             {
+                                 {"prop1", "value1-second"},
+                                 {"prop3", "value3"}
+                             };
+
             var result = DictionaryUtilities.Merge(first, second);
-            Assert.AreEqual(second["prop1"], result["prop1"]);
-            Assert.AreEqual(first["prop2"], result["prop2"]);
-            Assert.AreEqual(second["prop3"], result["prop3"]);
+
+            Xunit.Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Merge: When merging two object dictionaries that has does not contain unique values Then the count of result should be equal to number of unique keys")]
+        public void Merge_WhenMergingTwoObjectDictionariesThatHasDoesNotContainUniqueValues_ThenTheCountOfResultShouldBeEqualToNumberOfUniqueKeys()
+        {
+            var first = new Dictionary<string, object>
+                            {
+                                {"prop1", "value1-first"},
+                                {"prop2", "value2"}
+                            };
+            var second = new Dictionary<string, object>
+                             {
+                                 {"prop1", "value1-second"},
+                                 {"prop3", "value3"}
+                             };
+            var expected = 3;
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.Equal(expected, result.Count);
+        }
+
+        [Fact(DisplayName = "Merge: When merging two object dictionaries that has does not contain unique values Then the values of non-unique keys of result should be overriden by second")]
+        public void Merge_WhenMergingTwoObjectDictionariesThatHasDoesNotContainUniqueValues_ThenTheValuesOfNonUniqueKeysOfResultShouldBeOverridenBySecond()
+        {
+
+            var first = new Dictionary<string, object>
+                            {
+                                {"prop1", "value1-first"},
+                                {"prop2", "value2"}
+                            };
+            var second = new Dictionary<string, object>
+                             {
+                                 {"prop1", "value1-second"},
+                                 {"prop3", "value3"}
+                             };
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.Equal(second["prop1"], result["prop1"]);
+        }
+
+        [Fact(DisplayName = "Merge: When merging two object dictionaries that has does not contain unique values Then the value unique keys of result should be that of the input")]
+        public void Merge_WhenMergingTwoObjectDictionariesThatHasDoesNotContainUniqueValues_ThenTheValueUniqueKeysOfResultShouldBeThatOfTheInput()
+        {
+            var first = new Dictionary<string, object>
+                            {
+                                {"prop1", "value1-first"},
+                                {"prop2", "value2"}
+                            };
+            var second = new Dictionary<string, object>
+                             {
+                                 {"prop1", "value1-second"},
+                                 {"prop3", "value3"}
+                             };
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.Equal(first["prop2"], result["prop2"]);
+            Xunit.Assert.Equal(second["prop3"], result["prop3"]);
         }
 
         [Fact(DisplayName = "Merge: When both inputs are null, the result should not be null")]
