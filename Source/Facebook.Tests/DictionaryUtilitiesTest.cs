@@ -321,15 +321,40 @@ namespace Facebook
             Xunit.Assert.Equal(exepected, result);
         }
 
-        [TestMethod]
-        public void NameValueCollection_To_Querystring()
+        [Fact(DisplayName = "ToJsonQueryString: When NameValueCollection is not null and empty Then the result should be empty string")]
+        public void ToJsonQueryString_WhenNameValueCollectionIsNotNullAndEmpty_ThenTheResultShouldBeEmptyString()
+        {
+            var nvc = new NameValueCollection();
+
+            string result = DictionaryUtilities.ToJsonQueryString(nvc);
+
+            Xunit.Assert.Equal(string.Empty, result);
+        }
+
+        [Fact(DisplayName = "ToJsonQueryString: When NameValueCollection has values Then the result should not be empty string or null")]
+        public void ToJsonQueryString_WhenNameValueCollectionHasValues_ThenTheResultShouldNotBeEmptyStringOrNull()
         {
             var nvc = new NameValueCollection();
             nvc.Add("key1", "value1");
             nvc.Add("key2", "value2");
-            string actual = DictionaryUtilities.ToJsonQueryString(nvc);
-            string expected = "key1=value1&key2=value2";
-            Assert.AreEqual(expected, actual);
+
+            var result = DictionaryUtilities.ToJsonQueryString(nvc);
+
+            Xunit.Assert.False(string.IsNullOrEmpty(result));
+        }
+
+        [Fact(DisplayName = "ToJsonQueryString: When NameValueCollection has values Then the result should be querystring formatted")]
+        public void ToJsonQueryString_WhenNameValueCollectionHasValues_ThenTheResultShouldBeQuerystringFormatted()
+        {
+            var nvc = new NameValueCollection();
+            nvc.Add("key1", "value1");
+            nvc.Add("key2", "value2");
+            var expected = "key1=value1&key2=value2";
+
+            var result = DictionaryUtilities.ToJsonQueryString(nvc);
+
+            // TODO: more tests for encoded values.
+            Xunit.Assert.Equal(expected, result);
         }
 
         [TestMethod]
