@@ -276,20 +276,49 @@ namespace Facebook
             var exepected = "key1=value1&key2=value2";
 
             var result = DictionaryUtilities.ToJsonQueryString(dict);
-            
+
             // TODO: check key and values that needs to be encoded too
             Xunit.Assert.Equal(exepected, result);
         }
 
-        [TestMethod]
-        public void Dictionary2_To_Querystring()
+        [Fact(DisplayName = "ToJsonQueryString: When object dictionary is not null and empty Then the result should be empty string")]
+        public void ToJsonQueryString_WhenObjectDictionaryIsNotNullAndEmpty_ThenTheResultShouldBeEmptyString()
         {
             var dict = new Dictionary<string, object>();
-            dict.Add("key1", "value1");
-            dict.Add("key2", "value2");
-            string actual = DictionaryUtilities.ToJsonQueryString(dict);
-            string expected = "key1=value1&key2=value2";
-            Assert.AreEqual(expected, actual);
+
+            var result = DictionaryUtilities.ToJsonQueryString(dict);
+
+            Xunit.Assert.Equal(string.Empty, result);
+        }
+
+        [Fact(DisplayName = "ToJsonQueryString: When object dictionary has values Then the result should not be empty string or null")]
+        public void ToJsonQueryString_WhenObjectDictionaryHasValues_ThenTheResultShouldNotBeEmptyStringOrNull()
+        {
+            var dict = new Dictionary<string, object>
+                           {
+                               {"key1", "value1"},
+                               {"key2", "value2"}
+                           };
+
+            var result = DictionaryUtilities.ToJsonQueryString(dict);
+
+            Xunit.Assert.False(string.IsNullOrEmpty(result));
+        }
+
+        [Fact(DisplayName = "ToJsonQueryString: When object dictionary has values Then the result should be querystring formatted")]
+        public void ToJsonQueryString_WhenObjectDictionaryHasValues_ThenTheResultShouldBeQuerystringFormatted()
+        {
+            var dict = new Dictionary<string, object>
+                           {
+                               {"key1", "value1"},
+                               {"key2", "value2"}
+                           };
+            var exepected = "key1=value1&key2=value2";
+
+            var result = DictionaryUtilities.ToJsonQueryString(dict);
+
+            // TODO: check key and values that needs to be encoded too
+            Xunit.Assert.Equal(exepected, result);
         }
 
         [TestMethod]
