@@ -34,13 +34,15 @@ namespace Facebook.Tests
             Assert.AreEqual(s, unixTime);
         }
 
-        [TestMethod]
-        public void Convert_From_Unix_Time_Double_Correct_Date()
+        [Fact(DisplayName = "FromUnixTime: Given a unix time in double Returns DateTime equivalent")]
+        public void FromUnixTime_GivenAUnixTimeInDouble_ReturnsDateTimeEquivalent()
         {
             var unixTime = 1284620400;
             var expected = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
+
             var actual = DateTimeConvertor.FromUnixTime(unixTime);
-            Assert.AreEqual(expected, actual);
+
+            Xunit.Assert.Equal(expected, actual);
         }
 
         [Fact(DisplayName = "FromUnixTime: Given a unix time in string Returns DateTime equivalent")]
