@@ -1,11 +1,13 @@
 ﻿using Facebook;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Xunit;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Facebook.Tests
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for DateTimeConvertorTest and is intended
     ///to contain all DateTimeConvertorTest Unit Tests
@@ -50,13 +52,15 @@ namespace Facebook.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Convert_Date_To_Unix_Time()
+        [Fact(DisplayName = "ToUnixTime: Given a DateTime object Returns unix time equivalent")]
+        public void ToUnixTime_GivenADateTimeObject_ReturnsUnixTimeEquivalent()
         {
             var dateTime = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
             var expected = 1284620400;
+
             var actual = DateTimeConvertor.ToUnixTime(dateTime);
-            Assert.AreEqual(expected, actual);
+
+            Xunit.Assert.Equal(expected, actual);
         }
 
     }
