@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Xunit;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
-namespace Facebook
+﻿namespace Facebook
 {
-    [TestClass]
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using Xunit;
+
     public class DictionaryExtensionsTest
     {
         [Fact(DisplayName = "Merge: When first input contains values and second is null The the result should not be null")]
@@ -22,7 +18,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: When first input contains values and second is null The the count of result should be equal to the count of first input")]
@@ -37,7 +33,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(first.Count, result.Count);
+            Assert.Equal(first.Count, result.Count);
         }
 
         [Fact(DisplayName = "Merge: When first input contains values and second is null The values of result should be same as values of first input")]
@@ -52,8 +48,8 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(first["prop1"], result["prop1"]);
-            Xunit.Assert.Equal(first["prop2"], result["prop2"]);
+            Assert.Equal(first["prop1"], result["prop1"]);
+            Assert.Equal(first["prop2"], result["prop2"]);
         }
 
         [Fact(DisplayName = "Merge: When first input is null and second contains values Then the result should not be null")]
@@ -69,7 +65,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: When first input is null and second contains values Then the count of the result should be equal to count of second input")]
@@ -85,7 +81,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(second.Count, result.Count);
+            Assert.Equal(second.Count, result.Count);
         }
 
         [Fact(DisplayName = "Merge: When first input is null and second contains values Then the values of result should be same as values of second input")]
@@ -100,8 +96,8 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(second["prop1"], result["prop1"]);
-            Xunit.Assert.Equal(second["prop2"], result["prop2"]);
+            Assert.Equal(second["prop1"], result["prop1"]);
+            Assert.Equal(second["prop2"], result["prop2"]);
         }
 
         [Fact(DisplayName = "Merge: When merging two object dictionaries that has doesn't contain unique values Then the result should not be null")]
@@ -120,7 +116,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: When merging two object dictionaries that has does not contain unique values Then the count of result should be equal to number of unique keys")]
@@ -140,7 +136,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(expected, result.Count);
+            Assert.Equal(expected, result.Count);
         }
 
         [Fact(DisplayName = "Merge: When merging two object dictionaries that has does not contain unique values Then the values of non-unique keys of result should be overriden by second")]
@@ -160,7 +156,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(second["prop1"], result["prop1"]);
+            Assert.Equal(second["prop1"], result["prop1"]);
         }
 
         [Fact(DisplayName = "Merge: When merging two object dictionaries that has does not contain unique values Then the value unique keys of result should be that of the input")]
@@ -179,8 +175,8 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(first["prop2"], result["prop2"]);
-            Xunit.Assert.Equal(second["prop3"], result["prop3"]);
+            Assert.Equal(first["prop2"], result["prop2"]);
+            Assert.Equal(second["prop3"], result["prop3"]);
         }
 
         [Fact(DisplayName = "Merge: When both inputs are null, the result should not be null")]
@@ -191,7 +187,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: When both inputs are null, the count of result should be 0")]
@@ -202,7 +198,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(0, result.Count);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact(DisplayName = "Merge: when both inputs are empty and not null, the result should not be null")]
@@ -213,7 +209,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: when both inputs are empty and not null, the count of result should be 0")]
@@ -224,7 +220,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(0, result.Count);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact(DisplayName = "Merge: When first input is null and second is empty and not null, the result should not be null")]
@@ -235,7 +231,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: When first input is null and second is empty and not null, the count of result should be 0")]
@@ -246,7 +242,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(0, result.Count);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact(DisplayName = "Merge: When first input is empty and not null and second input is null Then the result should not be null")]
@@ -257,7 +253,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: When first input is empty and not null and second input is null Then the count of the result should be 0")]
@@ -268,7 +264,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(0, result.Count);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact(DisplayName = "Merge: When both the combination of first input and second input contains unique keys Then the result should not be null")]
@@ -279,7 +275,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.NotNull(result);
+            Assert.NotNull(result);
         }
 
         [Fact(DisplayName = "Merge: When both the combination of first input and second input contains unique keys Then the count of result should be equal to count of first and second inputs")]
@@ -290,7 +286,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(2, result.Count);
+            Assert.Equal(2, result.Count);
         }
 
         [Fact(DisplayName = "Merge: When both the combination of first input and second input contains unique keys Then the values should be equal to the one inserted from first or second")]
@@ -301,8 +297,8 @@ namespace Facebook
 
             var result = DictionaryUtilities.Merge(first, second);
 
-            Xunit.Assert.Equal(first["prop1"], result["prop1"]);
-            Xunit.Assert.Equal(second["prop2"], result["prop2"]);
+            Assert.Equal(first["prop1"], result["prop1"]);
+            Assert.Equal(second["prop2"], result["prop2"]);
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When string dictionary is not null and empty Then the result should be empty string")]
@@ -312,7 +308,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.ToJsonQueryString(dict);
 
-            Xunit.Assert.Equal(string.Empty, result);
+            Assert.Equal(string.Empty, result);
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When string dictionary has values Then the result  should not be empty string or null")]
@@ -326,7 +322,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.ToJsonQueryString(dict);
 
-            Xunit.Assert.False(string.IsNullOrEmpty(result));
+            Assert.False(string.IsNullOrEmpty(result));
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When string dictionary has values Then the result should be querstring formatted")]
@@ -342,7 +338,7 @@ namespace Facebook
             var result = DictionaryUtilities.ToJsonQueryString(dict);
 
             // TODO: check key and values that needs to be encoded too
-            Xunit.Assert.Equal(exepected, result);
+            Assert.Equal(exepected, result);
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When object dictionary is not null and empty Then the result should be empty string")]
@@ -352,7 +348,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.ToJsonQueryString(dict);
 
-            Xunit.Assert.Equal(string.Empty, result);
+            Assert.Equal(string.Empty, result);
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When object dictionary has values Then the result should not be empty string or null")]
@@ -366,7 +362,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.ToJsonQueryString(dict);
 
-            Xunit.Assert.False(string.IsNullOrEmpty(result));
+            Assert.False(string.IsNullOrEmpty(result));
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When object dictionary has values Then the result should be querystring formatted")]
@@ -382,7 +378,7 @@ namespace Facebook
             var result = DictionaryUtilities.ToJsonQueryString(dict);
 
             // TODO: check key and values that needs to be encoded too
-            Xunit.Assert.Equal(exepected, result);
+            Assert.Equal(exepected, result);
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When NameValueCollection is not null and empty Then the result should be empty string")]
@@ -392,7 +388,7 @@ namespace Facebook
 
             string result = DictionaryUtilities.ToJsonQueryString(nvc);
 
-            Xunit.Assert.Equal(string.Empty, result);
+            Assert.Equal(string.Empty, result);
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When NameValueCollection has values Then the result should not be empty string or null")]
@@ -404,7 +400,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.ToJsonQueryString(nvc);
 
-            Xunit.Assert.False(string.IsNullOrEmpty(result));
+            Assert.False(string.IsNullOrEmpty(result));
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When NameValueCollection has values Then the result should be querystring formatted")]
@@ -418,7 +414,7 @@ namespace Facebook
             var result = DictionaryUtilities.ToJsonQueryString(nvc);
 
             // TODO: more tests for encoded values.
-            Xunit.Assert.Equal(expected, result);
+            Assert.Equal(expected, result);
         }
 
         [Fact(DisplayName = "ToJsonQueryString: When Object dictionary contains object as list of string Then it should be decoded with square brackets")]
@@ -436,7 +432,7 @@ namespace Facebook
 
             var result = DictionaryUtilities.ToJsonQueryString(dict);
 
-            Xunit.Assert.Equal(expected, result);
+            Assert.Equal(expected, result);
         }
     }
 }
