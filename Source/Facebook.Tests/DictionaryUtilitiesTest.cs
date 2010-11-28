@@ -13,7 +13,7 @@ namespace Facebook
         [Fact(DisplayName = "Merge: When first input contains values and second is null The the result should not be null")]
         public void Merge_WhenFirstInputContainsValuesAndSecondIsNull_TheTheResultShouldNotBeNull()
         {
-            IDictionary<string, object> first = new Dictionary<string, object>()
+            IDictionary<string, object> first = new Dictionary<string, object>
                                                     {
                                                         {"prop1", "value1"},
                                                         {"prop2", "value2"}
@@ -28,7 +28,7 @@ namespace Facebook
         [Fact(DisplayName = "Merge: When first input contains values and second is null The the count of result should be equal to the count of first input")]
         public void Merge_WhenFirstInputContainsValuesAndSecondIsNull_TheTheCountOfResultShouldBeEqualToTheCountOfFirstInput()
         {
-            IDictionary<string, object> first = new Dictionary<string, object>()
+            IDictionary<string, object> first = new Dictionary<string, object>
                                                     {
                                                         {"prop1", "value1"},
                                                         {"prop2", "value2"}
@@ -43,7 +43,7 @@ namespace Facebook
         [Fact(DisplayName = "Merge: When first input contains values and second is null The values of result should be same as values of first input")]
         public void Merge_WhenFirstInputContainsValuesAndSecondIsNull_TheValuesOfResultShouldBeSameAsValuesOfFirstInput()
         {
-            IDictionary<string, object> first = new Dictionary<string, object>()
+            IDictionary<string, object> first = new Dictionary<string, object>
                                                     {
                                                         {"prop1", "value1"},
                                                         {"prop2", "value2"}
@@ -56,15 +56,52 @@ namespace Facebook
             Xunit.Assert.Equal(first["prop2"], result["prop2"]);
         }
 
-        [TestMethod]
-        public void Merge_Only_Second_Provided()
+        [Fact(DisplayName = "Merge: When first input is null and second contains values Then the result should not be null")]
+        public void Merge_WhenFirstInputIsNullAndSecondContainsValues_ThenTheResultShouldNotBeNull()
         {
-            var second = new Dictionary<string, object>();
-            second["prop1"] = "value1";
-            second["prop2"] = "value2";
-            var result = DictionaryUtilities.Merge(null, second);
-            Assert.AreEqual(second["prop1"], result["prop1"]);
-            Assert.AreEqual(second["prop2"], result["prop2"]);
+            IDictionary<string, object> first = null;
+            IDictionary<string, object> second = new Dictionary<string, object>
+                                                     {
+                                                        {"prop1", "value1"},
+                                                        {"prop2", "value2"}
+                                                    };
+
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Merge: When first input is null and second contains values Then the count of the result should be equal to count of second input")]
+        public void Merge_WhenFirstInputIsNullAndSecondContainsValues_ThenTheCountOfTheResultShouldBeEqualToCountOfSecondInput()
+        {
+            IDictionary<string, object> first = null;
+            IDictionary<string, object> second = new Dictionary<string, object>
+                                                     {
+                                                        {"prop1", "value1"},
+                                                        {"prop2", "value2"}
+                                                    };
+
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.Equal(second.Count, result.Count);
+        }
+
+        [Fact(DisplayName = "Merge: When first input is null and second contains values Then the values of result should be same as values of second input")]
+        public void Merge_WhenFirstInputIsNullAndSecondContainsValues_ThenTheValuesOfResultShouldBeSameAsValuesOfSecondInput()
+        {
+            IDictionary<string, object> first = null;
+            IDictionary<string, object> second = new Dictionary<string, object>
+                                                    {
+                                                        {"prop1", "value1"},
+                                                        {"prop2", "value2"}
+                                                    };
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.Equal(second["prop1"], result["prop1"]);
+            Xunit.Assert.Equal(second["prop2"], result["prop2"]);
         }
 
         [TestMethod]
@@ -170,16 +207,38 @@ namespace Facebook
             Xunit.Assert.Equal(0, result.Count);
         }
 
-        [TestMethod]
-        public void Merge_Simple()
+        [Fact(DisplayName = "Merge: When both the combination of first input and second input contains unique keys Then the result should not be null")]
+        public void Merge_WhenBothTheCombinationOfFirstInputAndSecondInputContainsUniqueKeys_ThenTheResultShouldNotBeNull()
         {
-            var first = new Dictionary<string, object>();
-            first["prop1"] = "value1";
-            var second = new Dictionary<string, object>();
-            second["prop2"] = "value2";
+            var first = new Dictionary<string, object> { { "prop1", "value1" } };
+            var second = new Dictionary<string, object> { { "prop2", "value2" } };
+
             var result = DictionaryUtilities.Merge(first, second);
-            Assert.AreEqual(first["prop1"], result["prop1"]);
-            Assert.AreEqual(second["prop2"], result["prop2"]);
+
+            Xunit.Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Merge: When both the combination of first input and second input contains unique keys Then the count of result should be equal to count of first and second inputs")]
+        public void Merge_WhenBothTheCombinationOfFirstInputAndSecondInputContainsUniqueKeys_ThenTheCountOfResultShouldBeEqualToCountOfFirstAndSecondInputs()
+        {
+            var first = new Dictionary<string, object> { { "prop1", "value1" } };
+            var second = new Dictionary<string, object> { { "prop2", "value2" } };
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.Equal(2, result.Count);
+        }
+
+        [Fact(DisplayName = "Merge: When both the combination of first input and second input contains unique keys Then the values should be equal to the one inserted from first or second")]
+        public void Merge_WhenBothTheCombinationOfFirstInputAndSecondInputContainsUniqueKeys_ThenTheValuesShouldBeEqualToTheOneInsertedFromFirstOrSecond()
+        {
+            var first = new Dictionary<string, object> { { "prop1", "value1" } };
+            var second = new Dictionary<string, object> { { "prop2", "value2" } };
+
+            var result = DictionaryUtilities.Merge(first, second);
+
+            Xunit.Assert.Equal(first["prop1"], result["prop1"]);
+            Xunit.Assert.Equal(second["prop2"], result["prop2"]);
         }
 
         [TestMethod]
