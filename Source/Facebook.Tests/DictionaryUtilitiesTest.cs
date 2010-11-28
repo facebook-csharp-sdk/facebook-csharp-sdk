@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Facebook
 {
     [TestClass]
     public class DictionaryExtensionsTest
     {
-
         [TestMethod]
         public void Merge_Only_First_Provided()
         {
@@ -27,7 +29,7 @@ namespace Facebook
             second["prop2"] = "value2";
             var result = DictionaryUtilities.Merge(null, second);
             Assert.AreEqual(second["prop1"], result["prop1"]);
-            Assert.AreEqual(second["prop2"], result["prop2"] );
+            Assert.AreEqual(second["prop2"], result["prop2"]);
         }
 
         [TestMethod]
@@ -45,11 +47,92 @@ namespace Facebook
             Assert.AreEqual(second["prop3"], result["prop3"]);
         }
 
-        [TestMethod]
-        public void Merge_Both_Null()
+        [Fact(DisplayName = "Merge: When both inputs are null, the result should not be null")]
+        public void Merge_WhenBothInputsAreNull_TheResultShouldNotBeNull()
         {
-            var result = DictionaryUtilities.Merge(null, null);
-            Assert.AreEqual(0, ((IDictionary<string, object>)result).Count);
+            IDictionary<string, object> input1 = null;
+            IDictionary<string, object> input2 = null;
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Merge: When both inputs are null, the count of result should be 0")]
+        public void Merge_WhenBothInputsAreNull_TheCountOfResultShouldBe0()
+        {
+            IDictionary<string, object> input1 = null;
+            IDictionary<string, object> input2 = null;
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.Equal(0, result.Count);
+        }
+
+        [Fact(DisplayName = "Merge: when both inputs are empty and not null, the result should not be null")]
+        public void Merge_WhenBothInputsAreEmptyAndNotNull_TheResultShouldNotBeNull()
+        {
+            var input1 = new Dictionary<string, object>();
+            var input2 = new Dictionary<string, object>();
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Merge: when both inputs are empty and not null, the count of result should be 0")]
+        public void Merge_WhenBothInputsAreEmptyAndNotNull_TheCountOfResultShouldBe0()
+        {
+            var input1 = new Dictionary<string, object>();
+            var input2 = new Dictionary<string, object>();
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.Equal(0, result.Count);
+        }
+
+        [Fact(DisplayName = "Merge: When first input is null and second is empty and not null, the result should not be null")]
+        public void Merge_WhenFirstInputIsNullAndSecondIsEmptyAndNotNull_TheResultShouldNotBeNull()
+        {
+            IDictionary<string, object> input1 = null;
+            IDictionary<string, object> input2 = new Dictionary<string, object>();
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Merge: When first input is null and second is empty and not null, the count of result should be 0")]
+        public void Merge_WhenFirstInputIsNullAndSecondIsEmptyAndNotNull_TheCountOfResultShouldBe0()
+        {
+            IDictionary<string, object> input1 = null;
+            IDictionary<string, object> input2 = new Dictionary<string, object>();
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.Equal(0, result.Count);
+        }
+
+        [Fact(DisplayName = "Merge: When first input is empty and not null and second input is null Then the result should not be null")]
+        public void Merge_WhenFirstInputIsEmptyAndNotNullAndSecondInputIsNull_ThenTheResultShouldNotBeNull()
+        {
+            IDictionary<string, object> input1 = new Dictionary<string, object>();
+            IDictionary<string, object> input2 = null;
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Merge: When first input is empty and not null and second input is null Then the count of the result should be 0")]
+        public void Merge_WhenFirstInputIsEmptyAndNotNullAndSecondInputIsNull_ThenTheCountOfTheResultShouldBe0()
+        {
+            IDictionary<string, object> input1 = new Dictionary<string, object>();
+            IDictionary<string, object> input2 = null;
+
+            var result = DictionaryUtilities.Merge(input1, input2);
+
+            Xunit.Assert.Equal(0, result.Count);
         }
 
         [TestMethod]
@@ -57,7 +140,7 @@ namespace Facebook
         {
             var first = new Dictionary<string, object>();
             first["prop1"] = "value1";
-            var second = new Dictionary<string, object> ();
+            var second = new Dictionary<string, object>();
             second["prop2"] = "value2";
             var result = DictionaryUtilities.Merge(first, second);
             Assert.AreEqual(first["prop1"], result["prop1"]);
@@ -111,6 +194,5 @@ namespace Facebook
             string expected = "key1=value1&key2=value2&key3=%5B%22list1%22%2C%22list2%22%5D";
             Assert.AreEqual(expected, actual);
         }
-
     }
 }
