@@ -1,61 +1,58 @@
-﻿using Facebook;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Xunit;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
-namespace Facebook.Tests
+﻿namespace Facebook.Tests
 {
+    using System;
+    using Facebook;
+    using Xunit;
 
 
     /// <summary>
     ///This is a test class for DateTimeConvertorTest and is intended
     ///to contain all DateTimeConvertorTest Unit Tests
     ///</summary>
-    [TestClass]
     public class DateTimeConvertorTest
     {
-
-        [TestMethod]
-        public void Convert_To_And_From_Unix_Time_String()
+        [Fact(DisplayName = "Convert to and from unix time (string)")]
+        public void ConvertToAndFromUnixTime_String()
         {
-            var s = "1213513200";
-            var fbUnix = DateTimeConvertor.FromUnixTime(s);
+            var unixTimeInString = "1213513200";
+
+            var fbUnix = DateTimeConvertor.FromUnixTime(unixTimeInString);
             var unixTime = DateTimeConvertor.ToUnixTime(fbUnix);
-            Assert.AreEqual(s, unixTime.ToString());
+
+            Assert.Equal(unixTimeInString, unixTime.ToString());
         }
 
         [Fact(DisplayName = "Convert to and from unix time (double)")]
         public void ConvertToAndFromUnixTime_Double()
         {
-            var s = 1213513200;
+            var unixTimeInDouble = 1213513200;
 
-            var fbUnix = DateTimeConvertor.FromUnixTime(s);
+            var fbUnix = DateTimeConvertor.FromUnixTime(unixTimeInDouble);
             var unixTime = DateTimeConvertor.ToUnixTime(fbUnix);
 
-            Assert.AreEqual(s, unixTime);
+            Assert.Equal(unixTimeInDouble, unixTime);
         }
 
         [Fact(DisplayName = "FromUnixTime: Given a unix time in double Returns DateTime equivalent")]
         public void FromUnixTime_GivenAUnixTimeInDouble_ReturnsDateTimeEquivalent()
         {
-            var unixTime = 1284620400;
+            var unixTimeinDouble = 1284620400;
             var expected = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
 
-            var actual = DateTimeConvertor.FromUnixTime(unixTime);
+            var actual = DateTimeConvertor.FromUnixTime(unixTimeinDouble);
 
-            Xunit.Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact(DisplayName = "FromUnixTime: Given a unix time in string Returns DateTime equivalent")]
         public void FromUnixTime_GivenAUnixTimeInString_ReturnsDateTimeEquivalent()
         {
-            var unixTime = "1284620400";
+            var unixTimeInString = "1284620400";
             var expected = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
 
-            var actual = DateTimeConvertor.FromUnixTime(unixTime);
+            var actual = DateTimeConvertor.FromUnixTime(unixTimeInString);
 
-            Xunit.Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact(DisplayName = "ToUnixTime: Given a DateTime object Returns unix time equivalent")]
@@ -66,7 +63,7 @@ namespace Facebook.Tests
 
             var actual = DateTimeConvertor.ToUnixTime(dateTime);
 
-            Xunit.Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
     }
