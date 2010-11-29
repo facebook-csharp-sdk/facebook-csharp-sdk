@@ -308,6 +308,72 @@ namespace Facebook
         }
 #endif
 
+#if CLIENTPROFILE || SILVERLIGHT
+
+        /// <summary>
+        /// <para>Get a Login URL for use with redirects. By default,  a popup redirect is
+        /// assumed.</para>
+        /// <para>The parameters:</para>
+        /// <para>   - display: can be "page" (default, full page) or "popup"</para>
+        /// </summary>
+        /// <param name="parameters">Custom url parameters.</param>
+        /// <returns>The URL for the login flow.</returns>
+        public override Uri GetLoginUrl(IDictionary<string, object> parameters)
+        {
+            var currentUrl = this.CurrentUrl.ToString();
+
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["client_id"] = this.AppId;
+            defaultParams["display"] = "popup";
+            //defaultParams["type"] = "user_agent";
+            defaultParams["redirect_uri"] = currentUrl;
+
+            return this.GetUrl(
+                "graph",
+                "oauth/authorize",
+                defaultParams.Merge(parameters));
+        }
+
+                /// <summary>
+        /// <para>Get a Logout URL suitable for use with redirects.</para>
+        /// <para>The parameters:</para>
+        /// <para>   - next: the url to go to after a successful logout</para>
+        /// </summary>
+        /// <param name="parameters">Custom url parameters.</param>
+        /// <returns>The URL for the login flow.</returns>
+        public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
+        {
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["api_key"] = this.AppId;
+            defaultParams["no_session"] = this.CurrentUrl.ToString();
+            if (this.Session != null)
+            {
+                // If might be better to throw an exception if the
+                // session is null because you dont need to logout,
+                // but this way makes it easier to build logout links.
+                defaultParams["session_key"] = this.Session.SessionKey;
+            }
+
+            return this.GetUrl(
+                "www",
+                "logout.php",
+                defaultParams.Merge(parameters));
+        }
+
+        /// <summary>
+        /// <para>Get a Logout URL suitable for use with redirects.</para>
+        /// <para>The parameters:</para>
+        /// <para>    - next: the url to go to after a successful logout</para>
+        /// </summary>
+        /// <param name="parameters">Custom url parameters.</param>
+        /// <returns>The URL for the login flow.</returns>
+        public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
+        {
+            throw new PlatformNotSupportedException();
+        }
+
+#else
+
         /// <summary>
         /// <para>Get a Login URL for use with redirects. By default, full page redirect is
         /// assumed. If you are using the generated URL with a window.open() call in
@@ -387,42 +453,6 @@ namespace Facebook
             return this.GetUrl(
                 "www",
                 "extern/login_status.php",
-                defaultParams.Merge(parameters));
-        }
-
-#if CLIENTPROFILE || SILVERLIGHT
-
-        /// <summary>
-        /// Gets an OAuth Login URL for use with redirects.
-        /// This method is only for use with mobile or desktop
-        /// clients.
-        /// </summary>
-        /// <returns>The URL for the login flow.</returns>
-        public Uri GetOAuthLoginUrl()
-        {
-            return GetOAuthLoginUrl(null);
-        }
-
-        /// <summary>
-        /// Gets an OAuth Login URL for use with redirects.
-        /// This method is only for use with mobile or desktop
-        /// clients.
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public Uri GetOAuthLoginUrl(IDictionary<string, object> parameters)
-        {
-            var currentUrl = this.CurrentUrl.ToString();
-
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["client_id"] = this.AppId;
-            defaultParams["display"] = "popup";
-            //defaultParams["type"] = "user_agent";
-            defaultParams["redirect_uri"] = currentUrl;
-
-            return this.GetUrl(
-                "graph",
-                "oauth/authorize",
                 defaultParams.Merge(parameters));
         }
 #endif
