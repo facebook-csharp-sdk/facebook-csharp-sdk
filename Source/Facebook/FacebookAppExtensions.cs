@@ -58,6 +58,38 @@ namespace Facebook
             parameters["method"] = "fql.multiquery";
             return app.Get(parameters);
         }
+
+        /// <summary>
+        /// Executes a FQL query.
+        /// </summary>
+        /// <param name="app">The Facebook app.</param>
+        /// <param name="query">The FQL query.</param>
+        /// <returns>The FQL query result.</returns>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("You should use Query rather than this method. This method will be removed in the next version.")]
+        public static object Fql(this FacebookAppBase app, string query)
+        {
+            Contract.Requires(app != null);
+            Contract.Requires(!String.IsNullOrEmpty(query));
+
+            return app.Query(query);
+        }
+
+        /// <summary>
+        /// Executes a FQL multiquery.
+        /// </summary>
+        /// <param name="app">The Facebook app.</param>
+        /// <param name="queries">The FQL queries.</param>
+        /// <returns>A collection of the FQL query results.</returns>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("You should use Query rather than this method. This method will be removed in the next version.")]
+        public static object Fql(this FacebookAppBase app, params string[] queries)
+        {
+            Contract.Requires(app != null);
+            Contract.Requires(queries != null);
+
+            return app.Query(queries);
+        }
 #endif
     }
 }
