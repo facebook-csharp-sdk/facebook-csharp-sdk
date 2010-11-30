@@ -48,20 +48,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook, Version=4.0.2.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Contracts">
-      <HintPath>..\..\..\Source\Facebook\bin\Release\WP7\Microsoft.Contracts.dll</HintPath>
+    <Reference Include="Facebook">
+      <HintPath>..\..\..\..\..\..\Source\Facebook\bin\Release\WP7\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\..\..\Source\Facebook\bin\Release\WP7\Microsoft.Dynamic.dll</HintPath>
+    <Reference Include="Microsoft.Contracts">
+      <HintPath>..\..\..\..\..\..\Source\Facebook\bin\Release\WP7\Microsoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.Scripting">
-      <HintPath>..\..\..\Source\Facebook\bin\Release\WP7\Microsoft.Scripting.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Scripting.Core">
-      <HintPath>..\..\..\Source\Facebook\bin\Release\WP7\Microsoft.Scripting.Core.dll</HintPath>
+    <Reference Include="Newtonsoft.Json.WindowsPhone">
+      <HintPath>..\..\..\..\..\..\Source\Facebook\bin\Release\WP7\Newtonsoft.Json.WindowsPhone.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />

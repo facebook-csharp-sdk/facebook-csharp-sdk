@@ -24,7 +24,7 @@ public partial class _Default : CanvasPage
 
     private void LoggedIn()
     {
-        dynamic myInfo = fbApp.Api("me");
+        dynamic myInfo = fbApp.Get("me");
         lblName.Text = myInfo.name;
         pnlHello.Visible = true;
     }
