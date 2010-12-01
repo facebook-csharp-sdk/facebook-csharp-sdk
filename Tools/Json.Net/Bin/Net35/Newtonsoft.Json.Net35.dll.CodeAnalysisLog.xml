@@ -32,7 +32,7 @@
   </Exception>
   <Exception Keyword="CA0063" Kind="Engine" TreatAsWarning="True">
    <Type>Microsoft.FxCop.Sdk.FxCopException</Type>
-   <ExceptionMessage>* Failed to load rule set file 'D:\Projects\json.net\svn\trunk\Src\Newtonsoft.Json\..\..\..\..\trunk\Src\Newtonsoft.Json\Newtonsoft.Json.ruleset' or one of its dependent rule set files. </ExceptionMessage>
+   <ExceptionMessage>* Failed to load rule set file 'D:\Projects\Json.Net\svn\trunk\Src\Newtonsoft.Json\..\..\..\..\trunk\Src\Newtonsoft.Json\Newtonsoft.Json.ruleset' or one of its dependent rule set files. </ExceptionMessage>
   </Exception>
  </Exceptions>
 </FxCopReport>

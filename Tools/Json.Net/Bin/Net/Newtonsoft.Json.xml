@@ -1925,6 +1925,15 @@
             A hash code for the current <see cref="T:System.Object"/>.
             </returns>
         </member>
+        <member name="M:Newtonsoft.Json.Linq.JValue.GetMetaObject(System.Linq.Expressions.Expression)">
+            <summary>
+            Returns the <see cref="T:System.Dynamic.DynamicMetaObject"/> responsible for binding operations performed on this object.
+            </summary>
+            <param name="parameter">The expression tree representation of the runtime value.</param>
+            <returns>
+            The <see cref="T:System.Dynamic.DynamicMetaObject"/> to bind this object.
+            </returns>
+        </member>
         <member name="P:Newtonsoft.Json.Linq.JValue.HasValues">
             <summary>
             Gets a value indicating whether this token has childen tokens.
@@ -5477,6 +5486,18 @@
             Gets or sets a predicate used to determine whether the property should be serialize.
             </summary>
             <value>A predicate used to determine whether the property should be serialize.</value>
+        </member>
+        <member name="P:Newtonsoft.Json.Serialization.JsonProperty.GetIsSpecified">
+            <summary>
+            Gets or sets a predicate used to determine whether the property should be serialized.
+            </summary>
+            <value>A predicate used to determine whether the property should be serialized.</value>
+        </member>
+        <member name="P:Newtonsoft.Json.Serialization.JsonProperty.SetIsSpecified">
+            <summary>
+            Gets or sets an action used to set whether the property has been deserialized.
+            </summary>
+            <value>An action used to set whether the property has been deserialized.</value>
         </member>
         <member name="T:Newtonsoft.Json.Serialization.JsonPropertyCollection">
             <summary>

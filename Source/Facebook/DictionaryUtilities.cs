@@ -89,8 +89,11 @@ namespace Facebook
                         jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
                     }
 
-                    var encodedValue = Uri.EscapeDataString(jsonValue);
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
+                    if (!String.IsNullOrEmpty(jsonValue))
+                    {
+                        var encodedValue = UriEncoder.EscapeDataString(jsonValue);
+                        sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
+                    }
                 }
                 else
                 {
