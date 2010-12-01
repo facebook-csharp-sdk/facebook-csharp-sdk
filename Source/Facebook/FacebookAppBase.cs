@@ -12,6 +12,7 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Diagnostics.Contracts;
     using System.Linq;
 
@@ -1049,7 +1050,10 @@ namespace Facebook
                         path = string.Empty;
                     }
                 }
-                uri.Path = Uri.EscapeDataString(path);
+                if (!String.IsNullOrEmpty(path))
+                {
+                    uri.Path = UriEncoder.EscapeDataString(path);
+                }
             }
             if (parameters != null)
             {
@@ -1138,7 +1142,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public object Api(IDictionary<string, object> parameters)
         {
@@ -1153,7 +1157,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public object Api(string path)
         {
@@ -1168,7 +1172,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public object Api(string path, HttpMethod httpMethod)
         {
@@ -1183,7 +1187,7 @@ namespace Facebook
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
@@ -1199,7 +1203,7 @@ namespace Facebook
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public object Api(string path, IDictionary<string, object> parameters)
         {
@@ -1216,7 +1220,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
@@ -1236,7 +1240,7 @@ namespace Facebook
         /// <param name="state">The async state.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public void ApiAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters)
         {
@@ -1254,7 +1258,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public void ApiAsync(FacebookAsyncCallback callback, object state, string path)
         {
@@ -1272,7 +1276,7 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public void ApiAsync(FacebookAsyncCallback callback, object state, string path, HttpMethod httpMethod)
         {
@@ -1291,7 +1295,7 @@ namespace Facebook
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters)
         {
@@ -1310,7 +1314,7 @@ namespace Facebook
         /// <param name="parameters">object of url parameters.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
         public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
@@ -1322,5 +1326,55 @@ namespace Facebook
 
         #endregion
 
+        #region Hide System.Object inherited methods
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><filterpriority>2</filterpriority>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+#pragma warning disable 0108
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Type GetType()
+        {
+            return base.GetType();
+        }
+#pragma warning restore 0108
+
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        #endregion
     }
 }
