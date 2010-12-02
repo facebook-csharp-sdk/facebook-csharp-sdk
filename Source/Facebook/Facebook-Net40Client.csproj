@@ -137,6 +137,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="JsonSerializer.cs" />
+    <Compile Include="UrlEncoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">
