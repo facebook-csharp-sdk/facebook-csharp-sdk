@@ -46,12 +46,12 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;
             InfoPanel.Visibility = Visibility.Visible;
 
-            FbApp.ApiAsync((val) =>
+            FbApp.GetAsync("me", (val) =>
             {
                 // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
                 var result = (IDictionary<string, object>)val.Result;
                 Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
-            }, null, "me");
+            });
         }
 
         // We can use this event to capture the HTML or to make a script call (we use it right now to push an HTML fix)

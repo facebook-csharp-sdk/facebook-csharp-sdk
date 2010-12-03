@@ -5246,6 +5246,18 @@
             </summary>
             <value>A predicate used to determine whether the property should be serialize.</value>
         </member>
+        <member name="P:Newtonsoft.Json.Serialization.JsonProperty.GetIsSpecified">
+            <summary>
+            Gets or sets a predicate used to determine whether the property should be serialized.
+            </summary>
+            <value>A predicate used to determine whether the property should be serialized.</value>
+        </member>
+        <member name="P:Newtonsoft.Json.Serialization.JsonProperty.SetIsSpecified">
+            <summary>
+            Gets or sets an action used to set whether the property has been deserialized.
+            </summary>
+            <value>An action used to set whether the property has been deserialized.</value>
+        </member>
         <member name="T:Newtonsoft.Json.Serialization.JsonPropertyCollection">
             <summary>
             A collection of <see cref="T:Newtonsoft.Json.Serialization.JsonProperty"/> objects.

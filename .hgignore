@@ -11,3 +11,5 @@ glob:Source/lint.db
 glob:_ReSharper.*/
 glob:*.resharper.user
 glob:*.TeamCity.user
+glob:*.vs10x
+glob:*.gpstate

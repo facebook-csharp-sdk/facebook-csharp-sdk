@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FluentGraphInfo.cs" />
     <Compile Include="Graph\EducationHistoryItem.cs" />
     <Compile Include="Graph\Insight.cs" />
     <Compile Include="Graph\NameIdPair.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Graph\UserInfo.cs" />
     <Compile Include="Graph\WorkHistoryItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Rest\" />
