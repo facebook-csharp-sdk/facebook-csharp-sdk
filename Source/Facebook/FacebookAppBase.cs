@@ -1069,7 +1069,7 @@ namespace Facebook
         /// <param name="path"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private static string ParseUrlParameters(string path, IDictionary<string, object> parameters)
+        internal static string ParseUrlParameters(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 

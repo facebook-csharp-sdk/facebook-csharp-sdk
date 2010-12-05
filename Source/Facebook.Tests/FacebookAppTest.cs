@@ -4,6 +4,8 @@ using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Facebook;
+using Xunit;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Facebook
 {
@@ -82,5 +84,71 @@ namespace Facebook
             Assert.AreEqual("me/likes", path);
         }
 
+        [Fact(DisplayName = "ParseUrlParameters: Given a path as empty string and empty parameters Then count of parameters equals 0")]
+        public void ParseUrlParameters_GivenAPathAsEmptyStringAndEmptyParameters_ThenCountOfParametersEquals0()
+        {
+            string path = string.Empty;
+            var parameters = new Dictionary<string, object>();
+
+            FacebookAppBase.ParseUrlParameters(path, parameters);
+
+            Xunit.Assert.Equal(0, parameters.Count);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a path without querystring and empty parameters Then count of parameters equals 0")]
+        public void ParseUrlParameters_GivenAPathWithoutQuerystringAndEmptyParameters_ThenCountOfParametersEquals0()
+        {
+            var path = "/me/likes";
+            var parameters = new Dictionary<string, object>();
+
+            FacebookAppBase.ParseUrlParameters(path, parameters);
+
+            Xunit.Assert.Equal(0, parameters.Count);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a path with 2 querystrings and empty parameters Then count of parameters equals 2")]
+        public void ParseUrlParameters_GivenAPathWith2QuerystringsAndEmptyParameters_ThenCountOfParametersEquals2()
+        {
+            string path = "/me/likes?limit=3&offset=3";
+            var parameters = new Dictionary<string, object>();
+
+            FacebookAppBase.ParseUrlParameters(path, parameters);
+
+            Xunit.Assert.Equal(2, parameters.Count);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters:  Given a path with 2 querystrings and empty parameters Then parameter values equal the 2 querystrings")]
+        public void ParseUrlParameters_GivenAPathWith2QuerystringsAndEmptyParameters_ThenParameterValuesEqualThe2Querystrings()
+        {
+            string path = "/me/likes?limit=3&offset=2";
+            var parameters = new Dictionary<string, object>();
+
+            FacebookAppBase.ParseUrlParameters(path, parameters);
+
+            Xunit.Assert.Equal("3", parameters["limit"]);
+            Xunit.Assert.Equal("2", parameters["offset"]);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a path with 2 querystrings and empty parameters Then return path equals the path without querystring")]
+        public void ParseUrlParameters_GivenAPathWith2QuerystringsAndEmptyParameters_ThenReturnPathEqualsThePathWithoutQuerystring()
+        {
+            string originalPath = "/me/likes?limit=3&offset=3";
+            var parameters = new Dictionary<string, object>();
+
+            var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
+
+            Xunit.Assert.Equal(path, "me/likes");
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a path starting with Forward slash and empty parameters Then return path equals the path without forward slash")]
+        public void ParseUrlParameters_GivenAPathStartingWithForwardSlashAndEmptyParameters_ThenReturnPathEqualsThePathWithoutForwardSlash()
+        {
+            string originalPath = "/me/likes";
+            var parameters = new Dictionary<string, object>();
+
+            var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
+
+            Xunit.Assert.NotEqual('/', path[0]);
+        }
     }
 }
