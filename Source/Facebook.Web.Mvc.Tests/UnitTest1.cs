@@ -1,15 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Facebook.Web.Mvc.Tests
+﻿namespace Facebook.Web.Mvc.Tests
 {
-    [TestClass]
+    using Xunit;
+
     public class UnitTest1
     {
-        [TestMethod]
+        [Fact]
         public void TestMethod1()
         {
         }
