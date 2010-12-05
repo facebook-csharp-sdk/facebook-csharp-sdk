@@ -89,7 +89,6 @@
       <Link>SharedKey.snk</Link>
     </None>
     <None Include="packages.config" />
-    <Shadow Include="Test References\Facebook.accessor" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="monkey.jpg" />

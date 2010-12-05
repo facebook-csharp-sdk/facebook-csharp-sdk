@@ -1,21 +1,14 @@
-﻿using System;
-using System.Dynamic;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using Facebook;
-using Xunit;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
-namespace Facebook
+﻿namespace Facebook
 {
-    [TestClass]
+    using System.Collections.Generic;
+    using System.Dynamic;
+    using System.IO;
+    using Xunit;
+
     public class FacebookAppTest
     {
-
-        [TestMethod()]
-        [DeploymentItem("Facebook.dll")]
-        public void Build_Media_Object_Post_Data()
+        [Fact]
+        public void BuildMediaObjectPostData_Tests()
         {
             var assmebly = System.Reflection.Assembly.GetExecutingAssembly();
             var stream = assmebly.GetManifestResourceStream("Facebook.Tests.monkey.jpg");
@@ -43,14 +36,14 @@ namespace Facebook
             mediaObject.SetValue(photo);
             parameters.source = mediaObject;
 
-            string boundary = DateTime.UtcNow.Ticks.ToString("x");
-            byte[] actual = FacebookApp_Accessor.BuildMediaObjectPostData(parameters, boundary);
+            string boundary = "8cd62a36054bd4c";
+            byte[] actual = FacebookApp.BuildMediaObjectPostData(parameters, boundary);
 
-            Assert.AreEqual(127231, actual.Length);
+            Assert.Equal(127231, actual.Length);
         }
 
-        [TestMethod]
-        public void Test_Signed_Request()
+        [Fact(DisplayName = "ParseSignedRequest test")]
+        public void ParseSignedRequest_Test()
         {
             var signed_request = "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0";
             var settings = new FacebookSettings
@@ -59,9 +52,11 @@ namespace Facebook
                 AppId = "120625701301347",
                 ApiSecret = "543690fae0cd186965412ac4a49548b5",
             };
-            FacebookApp_Accessor app = new FacebookApp_Accessor(settings);
-            var signedRequest = app.ParseSignedRequest(signed_request);
-            Assert.AreEqual("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", signedRequest.AccessToken);
+            var fb = new FacebookApp(settings);
+
+            var signedRequest = fb.ParseSignedRequest(signed_request);
+            
+            Assert.Equal("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", signedRequest.AccessToken);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph without querystring and parameter is empty Then return path does not start with forward slash")]
@@ -72,7 +67,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(url, parameters);
 
-            Xunit.Assert.NotEqual('/', path[0]);
+            Assert.NotEqual('/', path[0]);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the return path does not start with forward slash")]
@@ -84,7 +79,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
 
-            Xunit.Assert.NotEqual('/', path[0]);
+            Assert.NotEqual('/', path[0]);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph without querystring and parameter is empty Then return path equals path without uri host and doesnt start with forward slash")]
@@ -96,7 +91,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(url, parameters);
 
-            Xunit.Assert.Equal(originalPathWithoutForwardSlash, path);
+            Assert.Equal(originalPathWithoutForwardSlash, path);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the return path equals path without uri host and does not start with forward slash")]
@@ -108,7 +103,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
 
-            Xunit.Assert.Equal(originalPathWithoutForwardSlashAndWithoutQueryString, path);
+            Assert.Equal(originalPathWithoutForwardSlashAndWithoutQueryString, path);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph without querystring and parameter is empty Then count of parameter is 0")]
@@ -119,7 +114,7 @@ namespace Facebook
 
             FacebookAppBase.ParseUrlParameters(url, parameters);
 
-            Xunit.Assert.Equal(0, parameters.Count);
+            Assert.Equal(0, parameters.Count);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the count of parameter is equal to the count of querystring")]
@@ -130,7 +125,7 @@ namespace Facebook
 
             FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
 
-            Xunit.Assert.Equal(2, parameters.Count);
+            Assert.Equal(2, parameters.Count);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path as empty string and empty parameters Then count of parameters equals 0")]
@@ -141,7 +136,7 @@ namespace Facebook
 
             FacebookAppBase.ParseUrlParameters(path, parameters);
 
-            Xunit.Assert.Equal(0, parameters.Count);
+            Assert.Equal(0, parameters.Count);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path without querystring and empty parameters Then count of parameters equals 0")]
@@ -152,7 +147,7 @@ namespace Facebook
 
             FacebookAppBase.ParseUrlParameters(path, parameters);
 
-            Xunit.Assert.Equal(0, parameters.Count);
+            Assert.Equal(0, parameters.Count);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path with 2 querystrings and empty parameters Then count of parameters equals 2")]
@@ -163,7 +158,7 @@ namespace Facebook
 
             FacebookAppBase.ParseUrlParameters(path, parameters);
 
-            Xunit.Assert.Equal(2, parameters.Count);
+            Assert.Equal(2, parameters.Count);
         }
 
         [Fact(DisplayName = "ParseUrlParameters:  Given a path with 2 querystrings and empty parameters Then parameter values equal to the querystrings")]
@@ -174,8 +169,8 @@ namespace Facebook
 
             FacebookAppBase.ParseUrlParameters(path, parameters);
 
-            Xunit.Assert.Equal("3", parameters["limit"]);
-            Xunit.Assert.Equal("2", parameters["offset"]);
+            Assert.Equal("3", parameters["limit"]);
+            Assert.Equal("2", parameters["offset"]);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the parameter values are equal to the querystrings")]
@@ -186,8 +181,8 @@ namespace Facebook
 
             FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
 
-            Xunit.Assert.Equal("3", parameters["limit"]);
-            Xunit.Assert.Equal("2", parameters["offset"]);
+            Assert.Equal("3", parameters["limit"]);
+            Assert.Equal("2", parameters["offset"]);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path with 2 querystrings and empty parameters Then return path equals the path without querystring")]
@@ -198,7 +193,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
 
-            Xunit.Assert.Equal(path, "me/likes");
+            Assert.Equal(path, "me/likes");
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path starting with Forward slash and empty parameters Then return path equals the path without forward slash")]
@@ -210,7 +205,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
 
-            Xunit.Assert.Equal(pathWithoutForwardSlash, path);
+            Assert.Equal(pathWithoutForwardSlash, path);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path starting with Forward slash with querystring and empty parameters Then return path does not start with forward slash")]
@@ -221,7 +216,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(originalPathWithQueryString, parameters);
 
-            Xunit.Assert.NotEqual('/', path[0]);
+            Assert.NotEqual('/', path[0]);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path starting with Forward slash with querystring and empty parameters Then return path equals the path without forward slash and querystring")]
@@ -233,7 +228,7 @@ namespace Facebook
 
             var path = FacebookAppBase.ParseUrlParameters(originalPathWithQueryString, parameters);
 
-            Xunit.Assert.Equal(pathWithoutForwardSlashAndQueryString, path);
+            Assert.Equal(pathWithoutForwardSlashAndQueryString, path);
         }
     }
 }
