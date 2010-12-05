@@ -64,14 +64,73 @@ namespace Facebook
             Assert.AreEqual("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", signedRequest.AccessToken);
         }
 
-        [TestMethod]
-        public void Full_Paging_Url_Returns_Correct_Path_And_Parameters()
+        [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph without querystring and parameter is empty Then return path does not start with forward slash")]
+        public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithoutQuerystringAndParameterIsEmpty_ThenReturnPathDoesNotStartWithForwardSlash()
         {
-            string next = "http://graph.facebook.com/me/likes?limit=3&offset=3";
+            string url = "http://graph.facebook.com/me/likes";
             var parameters = new Dictionary<string, object>();
-            var path = FacebookAppBase_Accessor.ParseUrlParameters(next, parameters);
-            Assert.AreEqual(2, parameters.Count);
-            Assert.AreEqual("me/likes", path);
+
+            var path = FacebookAppBase.ParseUrlParameters(url, parameters);
+
+            Xunit.Assert.NotEqual('/', path[0]);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the return path does not start with forward slash")]
+        public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithQuerystringAndParameterIsEmpty_ThenTheReturnPathDoesNotStartWithForwardSlash()
+        {
+            string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
+
+            var parameters = new Dictionary<string, object>();
+
+            var path = FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+
+            Xunit.Assert.NotEqual('/', path[0]);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph without querystring and parameter is empty Then return path equals path without uri host and doesnt start with forward slash")]
+        public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithoutQuerystringAndParameterIsEmpty_ThenReturnPathEqualsPathWithoutUriHostAndDoesntStartWithForwardSlash()
+        {
+            string url = "http://graph.facebook.com/me/likes";
+            string originalPathWithoutForwardSlash = "me/likes";
+            var parameters = new Dictionary<string, object>();
+
+            var path = FacebookAppBase.ParseUrlParameters(url, parameters);
+
+            Xunit.Assert.Equal(originalPathWithoutForwardSlash, path);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the return path equals path without uri host and does not start with forward slash")]
+        public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithQuerystringAndParameterIsEmpty_ThenTheReturnPathEqualsPathWithoutUriHostAndDoesNotStartWithForwardSlash()
+        {
+            string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
+            string originalPathWithoutForwardSlashAndWithoutQueryString = "me/likes";
+            var parameters = new Dictionary<string, object>();
+
+            var path = FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+
+            Xunit.Assert.Equal(originalPathWithoutForwardSlashAndWithoutQueryString, path);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph without querystring and parameter is empty Then count of parameter is 0")]
+        public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithoutQuerystringAndParameterIsEmpty_ThenCountOfParameterIs0()
+        {
+            string url = "http://graph.facebook.com/me/likes";
+            var parameters = new Dictionary<string, object>();
+
+            FacebookAppBase.ParseUrlParameters(url, parameters);
+
+            Xunit.Assert.Equal(0, parameters.Count);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the count of parameter is equal to the count of querystring")]
+        public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithQuerystringAndParameterIsEmpty_ThenTheCountOfParameterIsEqualToTheCountOfQuerystring()
+        {
+            string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
+            var parameters = new Dictionary<string, object>();
+
+            FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+
+            Xunit.Assert.Equal(2, parameters.Count);
         }
 
         [Fact(DisplayName = "ParseUrlParameters: Given a path as empty string and empty parameters Then count of parameters equals 0")]
@@ -99,7 +158,7 @@ namespace Facebook
         [Fact(DisplayName = "ParseUrlParameters: Given a path with 2 querystrings and empty parameters Then count of parameters equals 2")]
         public void ParseUrlParameters_GivenAPathWith2QuerystringsAndEmptyParameters_ThenCountOfParametersEquals2()
         {
-            string path = "/me/likes?limit=3&offset=3";
+            string path = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
             FacebookAppBase.ParseUrlParameters(path, parameters);
@@ -107,8 +166,8 @@ namespace Facebook
             Xunit.Assert.Equal(2, parameters.Count);
         }
 
-        [Fact(DisplayName = "ParseUrlParameters:  Given a path with 2 querystrings and empty parameters Then parameter values equal the 2 querystrings")]
-        public void ParseUrlParameters_GivenAPathWith2QuerystringsAndEmptyParameters_ThenParameterValuesEqualThe2Querystrings()
+        [Fact(DisplayName = "ParseUrlParameters:  Given a path with 2 querystrings and empty parameters Then parameter values equal to the querystrings")]
+        public void ParseUrlParameters_GivenAPathWith2QuerystringsAndEmptyParameters_ThenParameterValuesEqualToTheQuerystrings()
         {
             string path = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
@@ -119,10 +178,22 @@ namespace Facebook
             Xunit.Assert.Equal("2", parameters["offset"]);
         }
 
+        [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph with querystring and parameter is empty Then the parameter values are equal to the querystrings")]
+        public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithQuerystringAndParameterIsEmpty_ThenTheParameterValuesAreEqualToTheQuerystrings()
+        {
+            string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
+            var parameters = new Dictionary<string, object>();
+
+            FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+
+            Xunit.Assert.Equal("3", parameters["limit"]);
+            Xunit.Assert.Equal("2", parameters["offset"]);
+        }
+
         [Fact(DisplayName = "ParseUrlParameters: Given a path with 2 querystrings and empty parameters Then return path equals the path without querystring")]
         public void ParseUrlParameters_GivenAPathWith2QuerystringsAndEmptyParameters_ThenReturnPathEqualsThePathWithoutQuerystring()
         {
-            string originalPath = "/me/likes?limit=3&offset=3";
+            string originalPath = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
             var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
@@ -134,11 +205,35 @@ namespace Facebook
         public void ParseUrlParameters_GivenAPathStartingWithForwardSlashAndEmptyParameters_ThenReturnPathEqualsThePathWithoutForwardSlash()
         {
             string originalPath = "/me/likes";
+            string pathWithoutForwardSlash = "me/likes";
             var parameters = new Dictionary<string, object>();
 
             var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
 
+            Xunit.Assert.Equal(pathWithoutForwardSlash, path);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a path starting with Forward slash with querystring and empty parameters Then return path does not start with forward slash")]
+        public void ParseUrlParameters_GivenAPathStartingWithForwardSlashWithQuerystringAndEmptyParameters_ThenReturnPathDoesNotStartWithForwardSlash()
+        {
+            string originalPathWithQueryString = "/me/likes?limit=3&offset=2";
+            var parameters = new Dictionary<string, object>();
+
+            var path = FacebookAppBase.ParseUrlParameters(originalPathWithQueryString, parameters);
+
             Xunit.Assert.NotEqual('/', path[0]);
+        }
+
+        [Fact(DisplayName = "ParseUrlParameters: Given a path starting with Forward slash with querystring and empty parameters Then return path equals the path without forward slash and querystring")]
+        public void ParseUrlParameters_GivenAPathStartingWithForwardSlashWithQuerystringAndEmptyParameters_ThenReturnPathEqualsThePathWithoutForwardSlashAndQuerystring()
+        {
+            string originalPathWithQueryString = "/me/likes?limit=3&offset=2";
+            string pathWithoutForwardSlashAndQueryString = "me/likes";
+            var parameters = new Dictionary<string, object>();
+
+            var path = FacebookAppBase.ParseUrlParameters(originalPathWithQueryString, parameters);
+
+            Xunit.Assert.Equal(pathWithoutForwardSlashAndQueryString, path);
         }
     }
 }
