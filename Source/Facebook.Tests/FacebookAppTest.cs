@@ -74,16 +74,6 @@ namespace Facebook
             Assert.AreEqual("me/likes", path);
         }
 
-        [TestMethod]
-        public void Path_And_Query_Return_Correct_Path_And_Parameters()
-        {
-            string next = "/me/likes?limit=3&offset=3";
-            var parameters = new Dictionary<string, object>();
-            var path = FacebookAppBase_Accessor.ParseUrlParameters(next, parameters);
-            Assert.AreEqual(2, parameters.Count);
-            Assert.AreEqual("me/likes", path);
-        }
-
         [Fact(DisplayName = "ParseUrlParameters: Given a path as empty string and empty parameters Then count of parameters equals 0")]
         public void ParseUrlParameters_GivenAPathAsEmptyStringAndEmptyParameters_ThenCountOfParametersEquals0()
         {
