@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Collections.Specialized;
-
-namespace Facebook.Tests.Mocks
+﻿namespace Facebook.Tests.Fakes
 {
-    public class HttpRequestMock : HttpRequestBase
+    using System;
+    using System.Collections.Specialized;
+    using System.Web;
+
+    public class FakeHttpRequest : HttpRequestBase
     {
         private Uri url;
         private System.Collections.Specialized.NameValueCollection headersCollection;
@@ -15,7 +12,7 @@ namespace Facebook.Tests.Mocks
         private NameValueCollection paramsCollection;
         private string applicationPath;
 
-        public HttpRequestMock(Uri url)
+        public FakeHttpRequest(Uri url)
         {
             this.url = url;
             this.headersCollection = new NameValueCollection();

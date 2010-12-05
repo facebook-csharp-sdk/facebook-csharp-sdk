@@ -1,7 +1,7 @@
 ﻿namespace Facebook.Web.Tests
 {
     using System;
-    using Facebook.Tests.Mocks;
+    using Facebook.Tests.Fakes;
     using Xunit;
 
     public class CanvasUrlBuilderTests
@@ -12,7 +12,7 @@
             var settings = new CanvasSettings();
             settings.CanvasPage = new Uri("http://apps.facebook.com/facebooksdktest");
             settings.CanvasUrl = new Uri("http://www.facebooksdk.net/area/client/controller");
-            var request = new HttpRequestMock(new Uri("http://www.facebooksdk.net/area/client/controller/action"));
+            var request = new FakeHttpRequest(new Uri("http://www.facebooksdk.net/area/client/controller/action"));
             
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(request, settings);
 
@@ -31,7 +31,7 @@
             var settings = new CanvasSettings();
             settings.CanvasPage = new Uri("http://apps.facebook.com/facebooksdktest");
             settings.CanvasUrl = new Uri("http://www.facebooksdk.net");
-            var request = new HttpRequestMock(new Uri("http://www.facebooksdk.net/action"));
+            var request = new FakeHttpRequest(new Uri("http://www.facebooksdk.net/action"));
 
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(request, settings);
 
