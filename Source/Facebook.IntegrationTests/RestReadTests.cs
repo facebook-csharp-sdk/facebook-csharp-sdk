@@ -7,14 +7,12 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System.Dynamic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Configuration;
-
 namespace Facebook.Tests.Rest
 {
-    [TestClass]
+    using System.Configuration;
+    using System.Dynamic;
+    using Xunit;
+
     public class RestReadTests
     {
         private FacebookApp app;
@@ -28,8 +26,7 @@ namespace Facebook.Tests.Rest
             };
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FacebookOAuthException))]
+        [Fact]
         public void user_getInfo_rest_should_throw_oauth()
         {
             dynamic parameters = new ExpandoObject();
@@ -38,10 +35,12 @@ namespace Facebook.Tests.Rest
             parameters.fields = "first_name,last_name";
             parameters.access_token = "invalidtoken";
 
-            var result = app.Get(parameters);
-
-            var firstName = result[0].first_name;
-            Assert.Fail(); // Should have thown by now
+            Assert.Throws<FacebookOAuthException>(
+                () =>
+                    {
+                        var result = app.Get(parameters);
+                        // var firstName = result[0].first_name;
+                    });
         }
 
     }

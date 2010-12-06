@@ -7,21 +7,20 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Configuration;
-using System.Dynamic;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Facebook.Tests.Graph
 {
+    using System;
+    using System.Configuration;
+    using System.Dynamic;
+    using System.IO;
+    using Xunit;
 
-    [TestClass]
+
     public class GraphPublishTests
     {
 
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
+        [Fact]
+        // [TestCategory("RequiresOAuth")]
         public void Wall_Post_Publish()
         {
             FacebookApp app = new FacebookApp();
@@ -32,11 +31,11 @@ namespace Facebook.Tests.Graph
 
             dynamic result = app.Post("/me/feed", parameters);
 
-            Assert.AreNotEqual(null, result.id);
+            Assert.NotEqual(null, result.id);
         }
 
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
+        [Fact]
+        // [TestCategory("RequiresOAuth")]
         public void Wall_Post_Publish_And_Delete()
         {
             FacebookApp app = new FacebookApp();
@@ -46,16 +45,16 @@ namespace Facebook.Tests.Graph
 
             dynamic result = app.Post("/me/feed", parameters);
 
-            Assert.AreNotEqual(null, result.id);
+            Assert.NotEqual(null, result.id);
 
             // Delete methods should return 'true'
             var isDeleted = app.Delete(result.id);
 
-            Assert.IsTrue(isDeleted);
+            Assert.True(isDeleted);
         }
 
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
+        [Fact]        
+        // [TestCategory("RequiresOAuth")]
         public void Publish_Photo_To_Existing_Album()
         {
 #if DEBUG
@@ -82,8 +81,8 @@ namespace Facebook.Tests.Graph
 
             dynamic result = app.Post(String.Format("/{0}/photos", albumId), parameters);
 
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(null, result.id);
+            Assert.NotNull(result);
+            Assert.NotEqual(null, result.id);
         }
 
     }

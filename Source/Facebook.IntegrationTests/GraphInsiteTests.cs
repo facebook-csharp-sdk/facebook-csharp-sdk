@@ -7,11 +7,9 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Facebook.Tests.Graph {
     
-    [TestClass]
     public class GraphInsiteTests {
     }
 }

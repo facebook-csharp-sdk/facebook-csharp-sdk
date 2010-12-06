@@ -7,13 +7,12 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Dynamic;
-
 namespace Facebook.Tests.Graph
 {
+    using System;
+    using System.Configuration;
+    using System.Dynamic;
+    using Xunit;
 
     /*
         * All objects in Facebook can be accessed in the same way:
@@ -32,7 +31,6 @@ namespace Facebook.Tests.Graph
 
         */
 
-    [TestClass]
     public class GraphReadTests
     {
 
@@ -47,70 +45,73 @@ namespace Facebook.Tests.Graph
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void Read_Likes()
         {
             dynamic likesResult = app.Get("/totten/likes");
             dynamic likesData = likesResult.data;
-            Assert.IsNotNull(likesData);
+            Assert.NotNull(likesData);
 
             dynamic total = likesData.Count;
-            Assert.AreNotEqual(0, total);
+            Assert.NotEqual(0, total);
 
             var firstLikePageName = likesData[0].name;
-            Assert.AreNotEqual(String.Empty, firstLikePageName);
+            Assert.NotEqual(String.Empty, firstLikePageName);
         }
 
-        [TestMethod]
+        [Fact]
         public void Read_Public_Fan_Page_Id()
         {
             dynamic pageResult = app.Get("/outback");
-            Assert.AreEqual(pageResult.id, "48543634386");
+            Assert.Equal(pageResult.id, "48543634386");
         }
 
-        [TestMethod]
+        [Fact]
         public void Read_User_Info()
         {
             dynamic result = app.Get("/me");
-            Assert.AreEqual(result.name, "Nathan Tester");
+            Assert.Equal(result.name, "Nathan Tester");
         }
 
-        [TestMethod]
+        [Fact]
         public void Read_Application_Info()
         {
             dynamic result = app.Get("/2439131959");
-            Assert.AreEqual(result.category, "Just For Fun");
+            Assert.Equal(result.category, "Just For Fun");
         }
 
-        [TestMethod]
+        [Fact]
         public void Read_Photo_Info()
         {
             dynamic result = app.Get("/98423808305");
-            Assert.AreEqual(result.from.name, "Coca-Cola");
+            Assert.Equal(result.from.name, "Coca-Cola");
         }
 
-        [TestMethod]
+        [Fact]
         public void Read_Event()
         {
             dynamic result = app.Get("/331218348435");
-            Assert.AreEqual(result.venue.city, "Austin");
+            Assert.Equal(result.venue.city, "Austin");
         }
 
-        [TestMethod]
+        [Fact]
         public void ReadPublicProfile()
         {
             dynamic result = app.Get("/totten");
-            Assert.AreEqual("Nathan", result.first_name);
+            Assert.Equal("Nathan", result.first_name);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FacebookOAuthException))]
+        [Fact]
         public void get_user_likes_should_throw_oauth()
         {
             dynamic parameters = new ExpandoObject();
             parameters.access_token = "invalidtoken";
-            dynamic result = app.Get("/totten/likes", parameters);
-            Assert.Fail();
+
+            Assert.Throws<FacebookOAuthException>(
+                () =>
+                    {
+                        dynamic result = app.Get("/totten/likes", parameters);
+                    });
         }
     }
 }
