@@ -28,11 +28,18 @@ namespace Facebook.Web
 
         public void Authorize()
         {
+            Contract.Requires(HttpContext.Current != null);
+            Contract.Requires(HttpContext.Current.Request != null);
+            Contract.Requires(HttpContext.Current.Response != null);
+
             Authorize(HttpContext.Current.Request, HttpContext.Current.Response);
         }
 
         public virtual void Authorize(HttpRequestBase request, HttpResponseBase response)
         {
+            Contract.Requires(request != null);
+            Contract.Requires(response != null);
+
             if (!this.IsAuthorized())
             {
                 var url = GetLoginUrl(request);
@@ -43,6 +50,9 @@ namespace Facebook.Web
 
         public virtual void Authorize(HttpRequest request, HttpResponse response)
         {
+            Contract.Requires(request != null);
+            Contract.Requires(response != null);
+
             var requestWrapper = new HttpRequestWrapper(request);
             var responseWrapper = new HttpResponseWrapper(response);
             Authorize(requestWrapper, responseWrapper);
@@ -50,6 +60,8 @@ namespace Facebook.Web
 
         public virtual Uri GetLoginUrl(HttpRequestBase request)
         {
+            Contract.Requires(request != null);
+
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(request, canvasSettings);
             return urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath);
         }

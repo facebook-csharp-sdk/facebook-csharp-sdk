@@ -95,6 +95,10 @@ namespace Facebook
                         {
                             resultException = new FacebookOAuthException(error_msg, error_code);
                         }
+                        else if (error_code == "4" || error_code == "API_EC_TOO_MANY_CALLS" || (error_msg != null && error_msg.Contains("request limit reached")))
+                        {
+                            resultException = new FacebookApiLimitException(error_msg, error_code);
+                        }
                         else
                         {
                             resultException = new FacebookApiException(error_msg, error_code);
@@ -152,6 +156,10 @@ namespace Facebook
                                         if (errorType == "OAuthException")
                                         {
                                             resultException = new FacebookOAuthException(errorMessage, errorType);
+                                        }
+                                        else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage != null && errorMessage.Contains("request limit reached")))
+                                        {
+                                            resultException = new FacebookApiLimitException(errorMessage, errorType);
                                         }
                                         else
                                         {
