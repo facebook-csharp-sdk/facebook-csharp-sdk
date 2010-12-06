@@ -1,13 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56FD3D46-C67F-4989-A739-EB312AF147F0}"
-	ProjectSection(SolutionItems) = preProject
-		Facebook.vsmdi = Facebook.vsmdi
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook", "Facebook\Facebook.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C3E87ED9-DB22-495A-A232-F239F2902C6C}"
@@ -160,7 +153,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{56FD3D46-C67F-4989-A739-EB312AF147F0} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{C08F42B4-6FF6-488E-90D6-8A47387BCDE3} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
