@@ -107,7 +107,7 @@ namespace Facebook.Samples.AuthenticationTool
             parms["scope"] = requestedFbPermissions;
             parms["type"] = "user_agent";
 
-            loggingInUri = FbApp.GetOAuthLoginUrl(parms);
+            loggingInUri = FbApp.GetLoginUrl(parms);
             FacebookLoginBrowser.Navigate(loggingInUri);
         }
 
