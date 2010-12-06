@@ -18,10 +18,7 @@ namespace Facebook.Samples.AuthenticationTool
     public partial class MainPage : PhoneApplicationPage
     {
         private const string apiKey = "Your Application ID goes here";
-        private string requestedFbPermissions = "user_about_me"; //"email,user_likes,user_checkins,publish_checkins"; //etc.
-
-        // Manual step: you need to look at the number of permissions you require and see how the allow dialog looks in the emulate and adjust this accordingly
-        private string allowButtonPosition = "250px"; // Facebook will eventually fix their HTML and resolve this issue
+        private string requestedFbPermissions = "user_about_me,"; //email,user_likes,user_checkins"; //"email,user_likes,user_checkins,publish_checkins"; //etc
 
         private string accessToken;
 
@@ -69,8 +66,8 @@ namespace Facebook.Samples.AuthenticationTool
             try
             {
                 // HACK: Giant flaming hack to resolve an issue with Facebook's HTML in the allow screen
-                // You need to adjust this accordingly
-                FacebookLoginBrowser.InvokeScript("eval", string.Format("document.getElementById('platform_dialog_bottom_bar').style.top=\"{0}\"", allowButtonPosition));
+                // Eventually this will be unneeded, but for now it should resolve the issue and won't hurt things in the future
+                FacebookLoginBrowser.InvokeScript("eval", "(function() { var aboveFooter=document.getElementById('platform_dialog_bottom_bar').previousSibling; document.getElementById('platform_dialog_bottom_bar').style.top=aboveFooter.offsetHeight + aboveFooter.offsetTop + 'px' })()");
             }
             catch (Exception ex) { }
         }
