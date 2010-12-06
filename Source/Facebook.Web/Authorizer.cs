@@ -80,7 +80,7 @@ namespace Facebook.Web
                 parameters["query"] = query;
                 parameters["method"] = "fql.query";
                 parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.ApiSecret);
-                var data = (JsonArray)FacebookApp.Get(parameters);
+                var data = (IList<object>)FacebookApp.Get(parameters);
                 if (data != null && data.Count > 0)
                 {
                     var permData = data[0] as IDictionary<string, object>;

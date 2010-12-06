@@ -142,7 +142,7 @@ namespace Facebook
 
             set
             {
-                Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+                Contract.Requires(value >= DateTimeConvertor.Epoch);
 
                 this.dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
             }

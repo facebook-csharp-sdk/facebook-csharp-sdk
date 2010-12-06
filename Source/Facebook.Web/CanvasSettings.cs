@@ -11,7 +11,7 @@ namespace Facebook.Web
         /// <summary>
         /// The base url of your application on Facebook.
         /// </summary>
-        public Uri CanvasPage { get; set; }
+        public Uri CanvasPageUrl { get; set; }
 
         /// <summary>
         /// Facebook pulls the content for your application's 

@@ -36,7 +36,7 @@ namespace Facebook.Tests
         public void Convert_From_Unix_Time_Double_Correct_Date()
         {
             var unixTime = 1284620400;
-            var expected = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
+            var expected = new DateTimeOffset(2010, 9, 16, 0, 0, 0, TimeSpan.FromHours(-7));
             var actual = DateTimeConvertor.FromUnixTime(unixTime);
             Assert.AreEqual(expected, actual);
         }
@@ -45,7 +45,7 @@ namespace Facebook.Tests
         public void Convert_From_Unix_Time_String_Correct_Date()
         {
             var unixTime = "1284620400";
-            var expected = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
+            var expected = new DateTimeOffset(2010, 9, 16, 0, 0, 0, TimeSpan.FromHours(-7));
             var actual = DateTimeConvertor.FromUnixTime(unixTime);
             Assert.AreEqual(expected, actual);
         }
@@ -53,7 +53,7 @@ namespace Facebook.Tests
         [TestMethod]
         public void Convert_Date_To_Unix_Time()
         {
-            var dateTime = new DateTime(2010, 9, 16, 0, 0, 0, DateTimeKind.Utc);
+            DateTimeOffset dateTime = new DateTimeOffset(2010, 9, 16, 0, 0, 0, TimeSpan.FromHours(-7));
             var expected = 1284620400;
             var actual = DateTimeConvertor.ToUnixTime(dateTime);
             Assert.AreEqual(expected, actual);

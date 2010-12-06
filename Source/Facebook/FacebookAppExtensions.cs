@@ -23,15 +23,15 @@ namespace Facebook
         /// Executes a FQL query.
         /// </summary>
         /// <param name="app">The Facebook app.</param>
-        /// <param name="query">The FQL query.</param>
+        /// <param name="fql">The FQL query.</param>
         /// <returns>The FQL query result.</returns>
-        public static object Query(this FacebookAppBase app, string query)
+        public static object Query(this FacebookAppBase app, string fql)
         {
             Contract.Requires(app != null);
-            Contract.Requires(!String.IsNullOrEmpty(query));
+            Contract.Requires(!String.IsNullOrEmpty(fql));
 
             var parameters = new Dictionary<string, object>();
-            parameters["query"] = query;
+            parameters["query"] = fql;
             parameters["method"] = "fql.query";
             return app.Get(parameters);
         }
@@ -40,17 +40,17 @@ namespace Facebook
         /// Executes a FQL multiquery.
         /// </summary>
         /// <param name="app">The Facebook app.</param>
-        /// <param name="queries">The FQL queries.</param>
+        /// <param name="fql">The FQL queries.</param>
         /// <returns>A collection of the FQL query results.</returns>
-        public static object Query(this FacebookAppBase app, params string[] queries)
+        public static object Query(this FacebookAppBase app, params string[] fql)
         {
             Contract.Requires(app != null);
-            Contract.Requires(queries != null);
+            Contract.Requires(fql != null);
 
             var queryDict = new Dictionary<string, object>();
-            for (int i = 0; i < queries.Length; i++)
+            for (int i = 0; i < fql.Length; i++)
             {
-                queryDict.Add(string.Concat("query", i), queries[i]);
+                queryDict.Add(string.Concat("query", i), fql[i]);
             }
 
             var parameters = new Dictionary<string, object>();

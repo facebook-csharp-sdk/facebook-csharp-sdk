@@ -104,8 +104,9 @@
       <HintPath>..\..\Tools\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json.Net35">
-      <HintPath>..\..\Tools\Json.Net\Bin\Net35\Newtonsoft.Json.Net35.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -148,6 +149,7 @@
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

@@ -99,9 +99,10 @@ namespace Facebook
                 // If the object is a JToken we want to
                 // convert it to dynamic, it if is any
                 // other type we just return it.
-                if (obj is JToken)
+                var jToken = obj as JToken;
+                if (jToken != null)
                 {
-                    return ConvertJTokenToDictionary((JToken)obj);
+                    return ConvertJTokenToDictionary(jToken);
                 }
                 else
                 {
@@ -116,31 +117,31 @@ namespace Facebook
             {
                 return null;
             }
-            else if (token is JValue)
+
+            var jValue = token as JValue;
+            if (jValue != null)
             {
-                return ((JValue)token).Value;
+                return jValue.Value;
             }
-            else if (token is JObject)
+
+            var jContainer = token as JArray;
+            if (jContainer != null)
             {
-                var jsonObject = new JsonObject();
-                var jsonDict = (IDictionary<string, object>)jsonObject;
-                (from childToken in ((JToken)token) where childToken is JProperty select childToken as JProperty).ToList().ForEach(property =>
+                var jsonList = new List<object>();
+                foreach (JToken arrayItem in jContainer)
                 {
-                    jsonDict.Add(property.Name, ConvertJTokenToDictionary(property.Value));
-                });
-                return jsonObject;
-            }
-            else if (token is JContainer)
-            {
-                var jsonArray = new JsonArray();
-                var jsonColl = (ICollection<object>)jsonArray;
-                foreach (JToken arrayItem in (JContainer)token)
-                {
-                    jsonColl.Add(ConvertJTokenToDictionary(arrayItem));
+                    jsonList.Add(ConvertJTokenToDictionary(arrayItem));
                 }
-                return jsonArray;
+                return jsonList;
             }
-            throw new ArgumentException(string.Format("Unknown token type '{0}'", token.GetType()), "token");
+
+            var jsonObject = new JsonObject();
+            var jsonDict = (IDictionary<string, object>)jsonObject;
+            (from childToken in token where childToken is JProperty select childToken as JProperty).ToList().ForEach(property =>
+            {
+                jsonDict.Add(property.Name, ConvertJTokenToDictionary(property.Value));
+            });
+            return jsonObject;
         }
 
         private static object ConvertXml(string xml)
@@ -169,7 +170,10 @@ namespace Facebook
                 var jsonDict = (IDictionary<string, object>)jsonObject;
                 foreach (var child in element.Elements())
                 {
-                    jsonDict.Add(child.Name.ToString(), ConvertXElementToDictionary(child));
+                    if (child != null)
+                    {
+                        jsonDict.Add(child.Name.ToString(), ConvertXElementToDictionary(child));
+                    }
                 }
                 return jsonObject;
             }

@@ -167,13 +167,12 @@ namespace Facebook.Web
         /// <summary>
         /// Gets the base url of your application on Facebook.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public Uri CanvasPage
         {
             get
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
-                return this.canvasSettings.CanvasPage;
+                return this.canvasSettings.CanvasPageUrl;
             }
         }
 

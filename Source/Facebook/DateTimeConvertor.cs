@@ -17,8 +17,6 @@ namespace Facebook
     /// </summary>
     public static class DateTimeConvertor
     {
-        private const double SecondsFromUtc = 25200;
-
         /// <summary>
         /// Gets the epoch time.
         /// </summary>
@@ -36,10 +34,10 @@ namespace Facebook
         /// </summary>
         /// <param name="dateTime">The date time.</param>
         /// <returns>The unix date time.</returns>
-        public static double ToUnixTime(this DateTime dateTime)
+        public static double ToUnixTime(this DateTimeOffset dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds + SecondsFromUtc;
+            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -65,7 +63,7 @@ namespace Facebook
         /// <returns>The DateTime object.</returns>
         public static DateTime FromUnixTime(double unixTime)
         {
-            return Epoch.AddSeconds(unixTime - SecondsFromUtc);
+            return Epoch.AddSeconds(unixTime);
         }
     }
 }
