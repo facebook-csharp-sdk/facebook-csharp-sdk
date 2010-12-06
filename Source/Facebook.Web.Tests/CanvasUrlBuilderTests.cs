@@ -15,7 +15,7 @@ namespace Facebook.Web.Tests
         public void Url_With_Canvas_Page_Subfolder_Produces_Correct_Urls()
         {
             var settings = new CanvasSettings();
-            settings.CanvasPage = new Uri("http://apps.facebook.com/facebooksdktest");
+            settings.CanvasPageUrl = new Uri("http://apps.facebook.com/facebooksdktest");
             settings.CanvasUrl = new Uri("http://www.facebooksdk.net/area/client/controller");
             var request = new HttpRequestMock(new Uri("http://www.facebooksdk.net/area/client/controller/action"));
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(request, settings);
@@ -39,7 +39,7 @@ namespace Facebook.Web.Tests
         public void Url_With_Canvas_Page_Produces_Correct_Urls()
         {
             var settings = new CanvasSettings();
-            settings.CanvasPage = new Uri("http://apps.facebook.com/facebooksdktest");
+            settings.CanvasPageUrl = new Uri("http://apps.facebook.com/facebooksdktest");
             settings.CanvasUrl = new Uri("http://www.facebooksdk.net");
             var request = new HttpRequestMock(new Uri("http://www.facebooksdk.net/action"));
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(request, settings);

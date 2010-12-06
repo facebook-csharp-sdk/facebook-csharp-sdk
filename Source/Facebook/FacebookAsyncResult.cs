@@ -10,6 +10,7 @@
 namespace Facebook
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the method that handles the post-call result.
@@ -172,7 +173,14 @@ namespace Facebook
         {
             get
             {
-                return (T)base.Result;
+                if (this.Result == null)
+                {
+                    return default(T);
+                }
+                else
+                {
+                    return (T)base.Result;
+                }
             }
         }
 

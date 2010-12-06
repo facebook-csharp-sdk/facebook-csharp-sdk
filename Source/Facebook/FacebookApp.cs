@@ -130,8 +130,16 @@ namespace Facebook
         /// <value>The max retries.</value>
         public int MaxRetries
         {
-            get { return this.maxRetries; }
-            set { this.maxRetries = value; }
+            get
+            {
+                return this.maxRetries;
+            }
+            set
+            {
+                Contract.Requires(value >= 0);
+
+                this.maxRetries = value;
+            }
         }
 
         /// <summary>
@@ -140,8 +148,16 @@ namespace Facebook
         /// <value>The retry delay.</value>
         public int RetryDelay
         {
-            get { return this.retryDelay; }
-            set { this.retryDelay = value; }
+            get
+            {
+                return this.retryDelay;
+            }
+            set
+            {
+                Contract.Requires(value >= 0);
+
+                this.retryDelay = value;
+            }
         }
 
 #if !SILVERLIGHT && !CLIENTPROFILE
@@ -638,7 +654,8 @@ namespace Facebook
             // based on the Facebook Settings.
             if (!this.CookieSupport ||
                 this.Request == null ||
-                this.Response == null)
+                this.Response == null ||
+                this.Request.Cookies == null)
             {
                 return;
             }
@@ -845,10 +862,16 @@ namespace Facebook
         protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
         {
             Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(signedRequestValue.Contains("."), "Invalid signed request.");
+            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
 
             string[] parts = signedRequestValue.Split('.');
-            var sig = Base64UrlDecode(parts[0]);
+            var encodedValue = parts[0];
+            if (String.IsNullOrEmpty(encodedValue))
+            {
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+            }
+
+            var sig = Base64UrlDecode(encodedValue);
             var payload = parts[1];
 
             using (var cryto = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(this.ApiSecret)))
@@ -879,6 +902,8 @@ namespace Facebook
         /// <returns>The base 64 string.</returns>
         private static string Base64UrlDecode(string encodedValue)
         {
+            Contract.Requires(!String.IsNullOrEmpty(encodedValue));
+
             encodedValue = encodedValue.Replace('+', '-').Replace('/', '_').Trim();
             int pad = encodedValue.Length % 4;
             if (pad > 0)

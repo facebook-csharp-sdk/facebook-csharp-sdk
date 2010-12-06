@@ -11,6 +11,7 @@ namespace Facebook
 {
     using System;
     using System.Runtime.Serialization;
+using System.Globalization;
 
     /// <summary>
     /// Represents errors that occur as a result of problems with the OAuth access token.
@@ -64,7 +65,7 @@ namespace Facebook
         /// <param name="errorType">Type of the facebook error.</param>
         /// <param name="innerException">The inner exception.</param>
         public FacebookOAuthException(string message, string errorType, Exception innerException)
-            : base(String.Format("({0}) {1}", errorType ?? "Unknown", message), innerException)
+            : base(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message), innerException)
         {
             this.ErrorType = errorType;
         }

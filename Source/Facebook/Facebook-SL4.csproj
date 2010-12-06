@@ -106,7 +106,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json.Silverlight">
+    <Reference Include="Newtonsoft.Json.Silverlight, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Tools\Json.Net\Bin\Silverlight\Newtonsoft.Json.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
