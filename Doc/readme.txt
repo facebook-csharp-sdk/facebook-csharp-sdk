@@ -4,15 +4,6 @@ Website:
 
 http://facebooksdk.codeplex.com
 
-Description:
-
-TODO
-
-Insructions:
-
-TODO
-
-
 License:
 
 Microsoft Public License (Ms-PL)
