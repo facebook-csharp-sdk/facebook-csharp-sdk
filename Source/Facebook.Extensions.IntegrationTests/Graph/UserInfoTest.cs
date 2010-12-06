@@ -1,15 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Facebook.Extensions.Tests.Graph
+﻿namespace Facebook.Extensions.Tests.Graph
 {
-    [TestClass]
+    using Xunit;
+
     public class UserInfoTest
     {
-        [TestMethod]
+        [Fact]
         public void TestMethod1()
         {
         }
