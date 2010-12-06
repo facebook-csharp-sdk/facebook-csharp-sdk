@@ -26,6 +26,11 @@ namespace Facebook.Web
             this.canvasSettings = canvasSettings;
         }
 
+        public void Authorize()
+        {
+            Authorize(HttpContext.Current.Request, HttpContext.Current.Response);
+        }
+
         public virtual void Authorize(HttpRequestBase request, HttpResponseBase response)
         {
             if (!this.IsAuthorized())

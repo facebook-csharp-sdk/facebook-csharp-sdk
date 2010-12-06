@@ -30,11 +30,22 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Converts a DateTime object to unix time.
+        /// Converts a DateTimeOffset object to unix time.
         /// </summary>
         /// <param name="dateTime">The date time.</param>
         /// <returns>The unix date time.</returns>
         public static double ToUnixTime(this DateTimeOffset dateTime)
+        {
+            Contract.Requires(dateTime >= Epoch);
+            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+        }
+
+        /// <summary>
+        /// Converts a DateTime object to unix time.
+        /// </summary>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns>The unix date time.</returns>
+        public static double ToUnixTime(this DateTime dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
             return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
