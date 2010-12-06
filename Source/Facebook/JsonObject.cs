@@ -230,6 +230,11 @@ namespace Facebook
             return this.members.GetEnumerator();
         }
 
+        public override string ToString()
+        {
+            return JsonSerializer.SerializeObject(this);
+        }
+
 
 #if !NET35 && !WINDOWS_PHONE
         /// <summary>
