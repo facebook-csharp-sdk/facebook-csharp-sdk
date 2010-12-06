@@ -19,6 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Auth-And-Allow-cs", "Auth-A
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "3522"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
@@ -39,6 +40,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Auth-And-Allow-vb", "Auth-A
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "3523"
 		DefaultWebSiteLanguage = "Visual Basic"
 	EndProjectSection
 EndProject

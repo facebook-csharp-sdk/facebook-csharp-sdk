@@ -25,7 +25,7 @@ Partial Class _Default
 
     End Sub
     Private Sub LoggedIn()
-        Dim myInfo As Object = fbApp.Api("me")
+        Dim myInfo As Object = fbApp.Get("me")
         lblName.Text = myInfo.name
         pnlHello.Visible = True
 
