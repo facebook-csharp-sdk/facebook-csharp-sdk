@@ -113,6 +113,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthExtensions.cs" />
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />

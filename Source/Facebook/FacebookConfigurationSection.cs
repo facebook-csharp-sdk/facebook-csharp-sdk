@@ -9,6 +9,7 @@
 
 namespace Facebook
 {
+    using System;
     using System.Configuration;
 
     /// <summary>
@@ -16,17 +17,6 @@ namespace Facebook
     /// </summary>
     public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookSettings
     {
-        /// <summary>
-        /// Gets or sets the API key.
-        /// </summary>
-        /// <value>The API key.</value>
-        [ConfigurationProperty("apiKey", IsRequired = true)]
-        public string ApiKey
-        {
-            get { return (string)this["apiKey"]; }
-            set { this["apiKey"] = value; }
-        }
-
         /// <summary>
         /// Gets or sets the API secret.
         /// </summary>
@@ -91,6 +81,38 @@ namespace Facebook
         {
             get { return (int)this["retryDelay"]; }
             set { this["retryDelay"] = value; }
+        }
+
+        /// <summary>
+        /// The base url of your application on Facebook.
+        /// </summary>
+        [ConfigurationProperty("canvasPageUrl", IsRequired = true)]
+        public Uri CanvasPageUrl
+        {
+            get { return (Uri)this["canvasPageUrl"]; }
+            set { this["canvasPageUrl"] = value; }
+        }
+
+        /// <summary>
+        /// Facebook pulls the content for your application's 
+        /// canvas pages from this base url.
+        /// </summary>
+        [ConfigurationProperty("canvasUrl", IsRequired = false, DefaultValue = null)]
+        public Uri CanvasUrl
+        {
+            get { return (Uri)this["canvasUrl"]; }
+            set { this["canvasUrl"] = value; }
+        }
+
+        /// <summary>
+        /// The url to return the user after they
+        /// cancel authorization.
+        /// </summary>
+        [ConfigurationProperty("authorizeCancelUrl", IsRequired = false, DefaultValue = null)]
+        public Uri AuthorizeCancelUrl
+        {
+            get { return (Uri)this["authorizeCancelUrl"]; }
+            set { this["authorizeCancelUrl"] = value; }
         }
     }
 }

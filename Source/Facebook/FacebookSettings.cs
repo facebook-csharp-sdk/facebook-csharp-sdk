@@ -9,6 +9,7 @@
 
 namespace Facebook
 {
+    using System;
     using System.Configuration;
 
     /// <summary>
@@ -43,13 +44,6 @@ namespace Facebook
             }
         }
 #endif
-
-        /// <summary>
-        /// Gets or sets the API key.
-        /// </summary>
-        /// <value>The API key.</value>
-        public string ApiKey { get; set; }
-
         /// <summary>
         /// Gets or sets the API secret.
         /// </summary>
@@ -85,5 +79,22 @@ namespace Facebook
         /// </summary>
         /// <value>The retry delay.</value>
         public int RetryDelay { get; set; }
+
+        /// <summary>
+        /// The base url of your application on Facebook.
+        /// </summary>
+        public Uri CanvasPageUrl { get; set; }
+
+        /// <summary>
+        /// Facebook pulls the content for your application's 
+        /// canvas pages from this base url.
+        /// </summary>
+        public Uri CanvasUrl { get; set; }
+
+        /// <summary>
+        /// The url to return the user after they
+        /// cancel authorization.
+        /// </summary>
+        public Uri AuthorizeCancelUrl { get; set; }
     }
 }

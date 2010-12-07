@@ -9,17 +9,13 @@
 
 namespace Facebook
 {
+    using System;
+
     /// <summary>
     /// Represents the settings of a Facebook application.
     /// </summary>
     public interface IFacebookSettings
     {
-
-        /// <summary>
-        /// Gets or sets the API key.
-        /// </summary>
-        /// <value>The API key.</value>
-        string ApiKey { get; set; }
         /// <summary>
         /// Gets or sets the API secret.
         /// </summary>
@@ -31,9 +27,9 @@ namespace Facebook
         /// <value>The app id.</value>
         string AppId { get; set; }
         /// <summary>
-        /// Gets or sets a value indicating whether [cookie support].
+        /// Gets or sets a value indicating whether cookies are supported.
         /// </summary>
-        /// <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if cookies are supported; otherwise, <c>false</c>.</value>
         bool CookieSupport { get; set; }
         /// <summary>
         /// Gets or sets the base domain.
@@ -50,5 +46,22 @@ namespace Facebook
         /// </summary>
         /// <value>The retry delay.</value>
         int RetryDelay { get; set; }
+
+        /// <summary>
+        /// The base url of your application on Facebook.
+        /// </summary>
+        Uri CanvasPageUrl { get; set; }
+
+        /// <summary>
+        /// Facebook pulls the content for your application's 
+        /// canvas pages from this base url.
+        /// </summary>
+        Uri CanvasUrl { get; set; }
+
+        /// <summary>
+        /// The url to return the user after they
+        /// cancel authorization.
+        /// </summary>
+        Uri AuthorizeCancelUrl { get; set; }
     }
 }
