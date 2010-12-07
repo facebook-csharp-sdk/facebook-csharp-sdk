@@ -78,7 +78,7 @@ namespace Facebook
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/> 
+        /// Initializes a new instance of the <see cref="FacebookApp"/>
         /// class with values stored in the application configuration file
         /// or with only the default values if the configuration
         /// file does not have the values set.
@@ -95,7 +95,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/> 
+        /// Initializes a new instance of the <see cref="FacebookApp"/>
         /// class with values provided. Does not require configuration
         /// file to be set.
         /// </summary>
@@ -108,8 +108,8 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/> 
-        /// class with only an access_token set. From this state 
+        /// Initializes a new instance of the <see cref="FacebookApp"/>
+        /// class with only an access_token set. From this state
         /// sessions will not be accessable.
         /// </summary>
         /// <param name="accessToken">The Facebook access token.</param>
@@ -237,7 +237,7 @@ namespace Facebook
                 this.session = value;
 
                 // facebook.php validates the session when you set it.
-                // We dont think this is the best approach and so 
+                // We dont think this is the best approach and so
                 // we have commented this out. If you want to validate
                 // the session object before it is set, uncomment the
                 // next four lines.
@@ -304,7 +304,6 @@ namespace Facebook
 
                 this.response = value;
             }
-
         }
 
         /// <summary>
@@ -350,7 +349,7 @@ namespace Facebook
                 defaultParams.Merge(parameters));
         }
 
-                /// <summary>
+        /// <summary>
         /// <para>Get a Logout URL suitable for use with redirects.</para>
         /// <para>The parameters:</para>
         /// <para>   - next: the url to go to after a successful logout</para>
@@ -474,6 +473,7 @@ namespace Facebook
 #endif
 
 #if !SILVERLIGHT
+
         /// <summary>
         /// Parses a session value retrieved from a querystring.
         /// </summary>
@@ -757,9 +757,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// This method invokes the supplied delegate with retry logic wrapped around it.  No values are returned.  If the delegate raises 
+        /// This method invokes the supplied delegate with retry logic wrapped around it.  No values are returned.  If the delegate raises
         /// recoverable Facebook server or client errors, then the supplied delegate is reinvoked after a certain amount of delay
-        /// until the retry limit is exceeded, at which point the exception is rethrown. Other exceptions are not caught and will 
+        /// until the retry limit is exceeded, at which point the exception is rethrown. Other exceptions are not caught and will
         /// be visible to callers.
         /// </summary>
         /// <param name="body">The delegate to invoke within the retry code.</param>
@@ -805,9 +805,9 @@ namespace Facebook
         }
 
         /// <summary>
-        /// This method invokes the supplied delegate with retry logic wrapped around it and returns the value of the delegate.  
+        /// This method invokes the supplied delegate with retry logic wrapped around it and returns the value of the delegate.
         /// If the delegate raises recoverable Facebook server or client errors, then the supplied delegate is reinvoked after
-        /// a certain amount of delay until the retry limit is exceeded, at which point the exception is rethrown. Other 
+        /// a certain amount of delay until the retry limit is exceeded, at which point the exception is rethrown. Other
         /// exceptions are not caught and will be visible to callers.
         /// </summary>
         /// <typeparam name="TReturn">The type of object being returned</typeparam>
@@ -854,6 +854,7 @@ namespace Facebook
         }
 
 #if !SILVERLIGHT
+
         /// <summary>
         /// Parses the signed request string.
         /// </summary>
@@ -914,6 +915,7 @@ namespace Facebook
             encodedValue = encodedValue.PadRight(encodedValue.Length + pad, '=');
             return encodedValue;
         }
+
 #endif
 
         /// <summary>
@@ -1022,7 +1024,7 @@ namespace Facebook
             byte[] fileData = mediaObject.GetValue();
             byte[] boundaryBytes = Encoding.UTF8.GetBytes(String.Concat(NewLine, Prefix, boundary, Prefix, NewLine));
 
-            // Combine all bytes to post 
+            // Combine all bytes to post
             var postData = new byte[postHeaderBytes.Length + fileData.Length + boundaryBytes.Length];
             Buffer.BlockCopy(postHeaderBytes, 0, postData, 0, postHeaderBytes.Length);
             Buffer.BlockCopy(fileData, 0, postData, postHeaderBytes.Length, fileData.Length);
@@ -1032,6 +1034,7 @@ namespace Facebook
         }
 
 #if !SILVERLIGHT
+
         /// <summary>
         /// Make the API Request
         /// </summary>
@@ -1089,7 +1092,6 @@ namespace Facebook
                 {
                     result = JsonSerializer.DeserializeObject(responseData, resultType);
                 }
-
             }
             catch (FacebookApiException)
             {
@@ -1110,6 +1112,7 @@ namespace Facebook
 
             return result;
         }
+
 #endif
 
         /// <summary>
@@ -1220,7 +1223,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Applies the Facebook settings to the 
+        /// Applies the Facebook settings to the
         /// properties of this object.
         /// </summary>
         /// <param name="settings">The Facebook settings.</param>
@@ -1237,6 +1240,7 @@ namespace Facebook
         }
 
 #if !SILVERLIGHT
+
         /// <summary>
         /// Creates a facebook session from a signed request.
         /// </summary>
@@ -1260,6 +1264,7 @@ namespace Facebook
 
             return tempSession;
         }
+
 #endif
 
         /// <summary>
