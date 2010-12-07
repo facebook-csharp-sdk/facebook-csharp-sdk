@@ -18,7 +18,7 @@ namespace SL4_InBrowser
     [ScriptableType]
     public partial class MainPage : UserControl
     {
-        private string apiKey = "{Insert your App's apiKey here}";
+        private string apiKey = "{Your api key goes here}";
         private string RequestedFbPermissions = "user_about_me";
 
         private const string successUrl = @"http://localhost:18201/LoginSuccessful.htm";
