@@ -7,21 +7,20 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Dynamic;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Facebook.Tests.Rest
 {
-    [TestClass]
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Dynamic;
+    using System.IO;
+    using Xunit;
+
     public class RestPublishTests
     {
 
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
+        [Fact]
+        // [TestCategory("RequiresOAuth")]
         public void publish_photo_to_application_album()
         {
 
@@ -49,12 +48,12 @@ namespace Facebook.Tests.Rest
             parameters.source = mediaObject;
             dynamic result = app.Post(parameters);
 
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(result.aid, null);
+            Assert.NotNull(result);
+            Assert.NotEqual(result.aid, null);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Publish_Global_News()
         {
             FacebookApp app = new FacebookApp();
@@ -72,7 +71,7 @@ namespace Facebook.Tests.Rest
 
             long id;
             long.TryParse(result, out id);
-            Assert.IsTrue(id > 0);
+            Assert.True(id > 0);
         }
     }
 }

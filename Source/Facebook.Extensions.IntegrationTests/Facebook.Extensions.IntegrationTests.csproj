@@ -3,17 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6FC38278-BA10-40A8-8CB5-DF64A302A6BC}</ProjectGuid>
+    <ProjectGuid>{8DBC7C62-D10D-443D-994C-5BFD21850E2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Facebook.Web.Tests</RootNamespace>
-    <AssemblyName>Facebook.Web.Tests</AssemblyName>
+    <RootNamespace>Facebook.Extensions.IntegrationTests</RootNamespace>
+    <AssemblyName>Facebook.Extensions.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,39 +32,33 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="xunit">
       <HintPath>..\..\Tools\xunit\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
-      <Visible>False</Visible>
-    </CodeAnalysisDependentAssemblyPaths>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Graph\InsightTest.cs" />
+    <Compile Include="Graph\UserInfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CanvasUrlBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook.TestUtils\Facebook.TestUtils.csproj">
-      <Project>{54AA4B0B-3D96-4670-80F5-20E996BF4272}</Project>
-      <Name>Facebook.TestUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Facebook.Web\Facebook.Web.csproj">
-      <Project>{73333465-710D-4143-BA9B-201D90EE2BAF}</Project>
-      <Name>Facebook.Web</Name>
+    <ProjectReference Include="..\Facebook.Extensions\Facebook.Extensions.csproj">
+      <Project>{E953153C-8797-4E91-8650-E142AC1B8C0D}</Project>
+      <Name>Facebook.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Facebook\Facebook.csproj">
       <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
       <Name>Facebook</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

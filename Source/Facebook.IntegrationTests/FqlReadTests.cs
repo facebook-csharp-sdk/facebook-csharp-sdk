@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Facebook.Tests.Fql
+﻿namespace Facebook.Tests.Fql
 {
-    [TestClass]
+    using System.Collections.Generic;
+    using System.Configuration;
+    using Xunit;
+
     public class FqlReadTests
     {
-
         private FacebookApp app;
         public FqlReadTests()
         {
@@ -18,25 +16,25 @@ namespace Facebook.Tests.Fql
             };
         }
 
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
+        [Fact]
+        // [TestCategory("RequiresOAuth")]
         public void Read_Friends()
         {
             var query = "SELECT uid, name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())";
             dynamic results = app.Query(query);
 
-            Assert.IsNotNull(results);
+            Assert.NotNull(results);
             foreach (var item in results)
             {
-                Assert.AreNotEqual(null, item.uid);
+                Assert.NotEqual(null, item.uid);
                 long id;
                 long.TryParse(item.uid, out id);
-                Assert.IsTrue(id > 0);
+                Assert.True(id > 0);
             }
         }
 
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
+        [Fact]
+        // [TestCategory("RequiresOAuth")]
         public void Read_Permissions()
         {
             var query = string.Format("SELECT {0} FROM permissions WHERE uid == '{1}'", "email", "120625701301347");
@@ -45,7 +43,7 @@ namespace Facebook.Tests.Fql
             parameters["method"] = "fql.query";
             parameters["access_token"] = string.Concat(app.AppId, "|", app.ApiSecret);
             dynamic result = app.Get(parameters);
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
     }
 }

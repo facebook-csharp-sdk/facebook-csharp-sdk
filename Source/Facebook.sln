@@ -1,13 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56FD3D46-C67F-4989-A739-EB312AF147F0}"
-	ProjectSection(SolutionItems) = preProject
-		Facebook.vsmdi = Facebook.vsmdi
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook", "Facebook\Facebook.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C3E87ED9-DB22-495A-A232-F239F2902C6C}"
@@ -27,6 +20,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Extensions", "Facebook.Extensions\Facebook.Extensions.csproj", "{E953153C-8797-4E91-8650-E142AC1B8C0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Extensions.Tests", "Facebook.Extensions.Tests\Facebook.Extensions.Tests.csproj", "{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.IntegrationTests", "Facebook.IntegrationTests\Facebook.IntegrationTests.csproj", "{D88FEEF7-946A-4147-8567-FBA08C0AD725}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Extensions.IntegrationTests", "Facebook.Extensions.IntegrationTests\Facebook.Extensions.IntegrationTests.csproj", "{8DBC7C62-D10D-443D-994C-5BFD21850E2E}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -131,16 +128,37 @@ Global
 		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D}.Release|x86.ActiveCfg = Release|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725}.Release|x86.ActiveCfg = Release|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{56FD3D46-C67F-4989-A739-EB312AF147F0} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{C08F42B4-6FF6-488E-90D6-8A47387BCDE3} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{6FC38278-BA10-40A8-8CB5-DF64A302A6BC} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{A570783C-AFC0-4B5B-AAD0-7EB06ED3C130} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{54AA4B0B-3D96-4670-80F5-20E996BF4272} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 		{E1877507-BCCD-4BE8-924E-0AFD87CFBA5D} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
+		{D88FEEF7-946A-4147-8567-FBA08C0AD725} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
+		{8DBC7C62-D10D-443D-994C-5BFD21850E2E} = {C3E87ED9-DB22-495A-A232-F239F2902C6C}
 	EndGlobalSection
 EndGlobal

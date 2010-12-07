@@ -1,8 +1,8 @@
-﻿namespace Facebook.Extensions.Tests
+﻿namespace Facebook.Extensions.Tests.Graph
 {
     using Xunit;
 
-    public class UnitTest1
+    public class UserInfoTest
     {
         [Fact]
         public void TestMethod1()

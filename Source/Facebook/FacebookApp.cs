@@ -859,7 +859,7 @@ namespace Facebook
         /// </summary>
         /// <param name="signedRequestValue">The encoded signed request value.</param>
         /// <returns>The valid signed request.</returns>
-        protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
+        internal protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
         {
             Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
             Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
@@ -978,7 +978,7 @@ namespace Facebook
         /// <param name="parameters">The request parameters.</param>
         /// <param name="boundary">The multipart form request boundary.</param>
         /// <returns>The request post data.</returns>
-        private static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, string boundary)
+        internal static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, string boundary)
         {
             FacebookMediaObject mediaObject = null;
 

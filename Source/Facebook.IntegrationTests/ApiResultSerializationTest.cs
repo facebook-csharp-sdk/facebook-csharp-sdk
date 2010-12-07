@@ -1,13 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Configuration;
-
-namespace Facebook.Tests.Integration
+﻿namespace Facebook.Tests.Integration
 {
-    [TestClass]
+    using System;
+    using Xunit;
+
     public class ApiResultSerializationTest
     {
         private FacebookApp app;
@@ -20,15 +15,15 @@ namespace Facebook.Tests.Integration
             //};
         }
 
-        [TestMethod]
+        [Fact]
         public void Updated_Time_Returns_As_DateTime()
         {
             dynamic result = app.Get("/331218348435");
             var resultType = result.updated_time.GetType();
-            Assert.AreEqual(typeof(DateTime), resultType);
+            Assert.Equal(typeof(DateTime), resultType);
         }
 
-        [TestMethod]
+        [Fact]
         public void Url_Formats_Return_Same_Result()
         {
             dynamic pageResult1 = app.Get("/http://www.underarmour.com/shop/us/en/pid1212701%3Fcid%3DSM|Facebook|Like|1212701");
@@ -36,19 +31,19 @@ namespace Facebook.Tests.Integration
             dynamic pageResult3 = app.Get("http://www.underarmour.com/shop/us/en/pid1212701%3Fcid%3DSM|Facebook|Like|1212701");
             dynamic pageResult4 = app.Get("http://www.underarmour.com/shop/us/en/pid1212701?cid=SM|Facebook|Like|1212701");
 
-            Assert.IsTrue(pageResult1.shares > 0);
-            Assert.AreEqual(pageResult1.shares, pageResult2.shares);
-            Assert.AreEqual(pageResult2.shares, pageResult3.shares);
-            Assert.AreEqual(pageResult3.shares, pageResult4.shares);
+            Assert.True(pageResult1.shares > 0);
+            Assert.Equal(pageResult1.shares, pageResult2.shares);
+            Assert.Equal(pageResult2.shares, pageResult3.shares);
+            Assert.Equal(pageResult3.shares, pageResult4.shares);
         }
 
-        [TestMethod]
-        [TestCategory("RequiresOAuth")]
+        [Fact]
+        // [TestCategory("RequiresOAuth")]
         public void Bad_Property_Returns_Null()
         {
             dynamic result = app.Get("/331218348435");
-            Assert.AreNotEqual(null, result.venue);
-            Assert.AreEqual(null, result.venue.badname);
+            Assert.NotEqual(null, result.venue);
+            Assert.Equal(null, result.venue.badname);
         }
     }
 }

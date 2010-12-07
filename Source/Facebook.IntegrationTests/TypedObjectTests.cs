@@ -1,14 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Configuration;
-using Facebook.Graph;
-
-namespace Facebook.Tests
+﻿namespace Facebook.Tests
 {
-    [TestClass]
+    using Facebook.Graph;
+    using Xunit;
+
     public class TypedObjectTests
     {
         private FacebookApp app;
@@ -22,12 +16,11 @@ namespace Facebook.Tests
             //};
         }
 
-        [TestMethod]
+        [Fact]
         public void Get_User_Info_Typed()
         {
             var user = app.Get<User>("/totten");
-            Assert.IsNotNull(user.FirstName);
-
+            Assert.NotNull(user.FirstName);
         }
     }
 }

@@ -56,6 +56,12 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit">
+      <HintPath>..\..\Tools\xunit\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\..\Tools\xunit\xunit.extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -66,17 +72,8 @@
     <Compile Include="DateTimeConvertorTest.cs" />
     <Compile Include="DictionaryUtilitiesTest.cs" />
     <Compile Include="FacebookAppTest.cs" />
-    <Compile Include="Integration\ApiResultSerializationTest.cs" />
-    <Compile Include="Integration\FqlReadTests.cs" />
-    <Compile Include="Integration\GraphInsiteTests.cs" />
-    <Compile Include="Integration\GraphPublishTests.cs" />
-    <Compile Include="Integration\GraphReadTests.cs" />
-    <Compile Include="Integration\RestPublishTests.cs" />
-    <Compile Include="Integration\RestReadTests.cs" />
-    <Compile Include="Integration\User.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Integration\TypedObjectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facebook\Facebook.csproj">
@@ -85,14 +82,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\App.config">
-      <Link>App.config</Link>
-    </None>
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
     <None Include="packages.config" />
-    <Shadow Include="Test References\Facebook.accessor" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="monkey.jpg" />

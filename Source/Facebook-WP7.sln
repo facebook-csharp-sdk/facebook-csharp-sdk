@@ -1,13 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56FD3D46-C67F-4989-A739-EB312AF147F0}"
-	ProjectSection(SolutionItems) = preProject
-		Facebook.vsmdi = Facebook.vsmdi
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{508B353E-DC09-4EF6-9918-550336415F79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-WP7", "Facebook\Facebook-WP7.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
