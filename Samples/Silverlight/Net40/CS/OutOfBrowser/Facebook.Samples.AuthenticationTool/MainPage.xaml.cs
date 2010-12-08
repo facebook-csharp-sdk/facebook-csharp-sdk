@@ -78,7 +78,7 @@ namespace Facebook.Samples.AuthenticationTool
             parms.type = "user_agent";
 
             // TODO: figure out why this temporary hack is necessary
-            loggingInUri = new Uri(fbApp.GetOAuthLoginUrl(parms).ToString());
+            loggingInUri = new Uri(fbApp.GetLoginUrl(parms).ToString());
 
             FacebookLoginBrowser.Source = (loggingInUri);
         }
