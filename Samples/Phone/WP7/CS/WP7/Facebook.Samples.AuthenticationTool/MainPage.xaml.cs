@@ -28,7 +28,7 @@ namespace Facebook.Samples.AuthenticationTool
 
         private bool loggedIn = false;
 
-        private FacebookApp FbApp;
+        private FacebookApp fbApp;
         Uri loggingInUri;
 
         private void loginFailed(bool error)
@@ -43,7 +43,7 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;
             InfoPanel.Visibility = Visibility.Visible;
 
-            FbApp.GetAsync("me", (val) =>
+            fbApp.GetAsync("me", (val) =>
             {
                 // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
                 var result = (IDictionary<string, object>)val.Result;
@@ -76,7 +76,7 @@ namespace Facebook.Samples.AuthenticationTool
         public MainPage()
         {
             InitializeComponent();
-            FbApp = new FacebookApp();
+            fbApp = new FacebookApp();
             FacebookLoginBrowser.Loaded += new RoutedEventHandler(FacebookLoginBrowser_Loaded);
         }
 
@@ -104,7 +104,7 @@ namespace Facebook.Samples.AuthenticationTool
             parms["scope"] = requestedFbPermissions;
             parms["type"] = "user_agent";
 
-            loggingInUri = FbApp.GetLoginUrl(parms);
+            loggingInUri = fbApp.GetLoginUrl(parms);
             FacebookLoginBrowser.Navigate(loggingInUri);
         }
 
@@ -151,7 +151,7 @@ namespace Facebook.Samples.AuthenticationTool
 
                 loggedIn = true;
 
-                FbApp = new FacebookApp(accessToken);
+                fbApp = new FacebookApp(accessToken);
 
                 loginSucceeded();
             }
