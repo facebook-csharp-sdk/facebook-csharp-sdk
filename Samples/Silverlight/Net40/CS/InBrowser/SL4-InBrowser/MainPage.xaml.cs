@@ -116,7 +116,7 @@ namespace SL4_InBrowser
             parms.scope = RequestedFbPermissions;
             parms.type = "user_agent";
 
-            var uri = fbApp.GetOAuthLoginUrl(parms);
+            var uri = fbApp.GetLoginUrl(parms);
 
             HtmlPage.Window.Eval(String.Format("fbLogin('{0}')", uri));
         }
