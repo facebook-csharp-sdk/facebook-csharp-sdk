@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeConvertor.cs" />
+    <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookAppExtensions.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
@@ -134,7 +135,6 @@
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
-    <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="StringUtilities.cs" />
