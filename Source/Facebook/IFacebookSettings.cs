@@ -46,22 +46,5 @@ namespace Facebook
         /// </summary>
         /// <value>The retry delay.</value>
         int RetryDelay { get; set; }
-
-        /// <summary>
-        /// The base url of your application on Facebook.
-        /// </summary>
-        Uri CanvasPageUrl { get; set; }
-
-        /// <summary>
-        /// Facebook pulls the content for your application's 
-        /// canvas pages from this base url.
-        /// </summary>
-        Uri CanvasUrl { get; set; }
-
-        /// <summary>
-        /// The url to return the user after they
-        /// cancel authorization.
-        /// </summary>
-        Uri AuthorizeCancelUrl { get; set; }
     }
 }
