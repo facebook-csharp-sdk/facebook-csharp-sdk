@@ -127,7 +127,7 @@ namespace Facebook
             var jContainer = token as JArray;
             if (jContainer != null)
             {
-                var jsonList = new List<object>();
+                var jsonList = new JsonArray();
                 foreach (JToken arrayItem in jContainer)
                 {
                     jsonList.Add(ConvertJTokenToDictionary(arrayItem));
