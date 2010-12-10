@@ -119,7 +119,6 @@ namespace Facebook
         protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
-            Contract.Ensures(Contract.Result<object>() != null);
 
             return default(object);
         }
@@ -135,7 +134,6 @@ namespace Facebook
         protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi)
         {
             Contract.Requires(uri != null);
-            Contract.Ensures(Contract.Result<object>() != null);
 
             return default(object);
         }
