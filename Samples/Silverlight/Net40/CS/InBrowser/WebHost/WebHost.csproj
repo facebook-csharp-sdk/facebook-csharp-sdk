@@ -43,7 +43,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\SL4-InBrowser.xap" />
+    <Content Include="ClientBin\Facebook.Samples.AuthenticationTool.xap" />
     <Content Include="Default.aspx" />
     <Content Include="Default.html" />
     <Resource Include="FacebookUtils.js">
