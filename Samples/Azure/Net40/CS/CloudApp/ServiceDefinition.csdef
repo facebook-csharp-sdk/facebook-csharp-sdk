@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="CloudApp" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
-  <WebRole name="Auth-And-Allow">
+  <WebRole name="Facebook.Samples.AuthenticationTool">
     <Sites>
       <Site name="Web">
         <Bindings>
-          <Binding name="HttpIn" endpointName="HttpIn" />
+          <Binding name="Endpoint1" endpointName="Endpoint1" />
         </Bindings>
       </Site>
     </Sites>
-    <ConfigurationSettings>
-      <Setting name="DiagnosticsConnectionString" />
-    </ConfigurationSettings>
     <Endpoints>
-      <InputEndpoint name="HttpIn" protocol="http" port="80" />
+      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
     </Endpoints>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+    </Imports>
   </WebRole>
 </ServiceDefinition>
