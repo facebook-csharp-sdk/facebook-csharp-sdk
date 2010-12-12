@@ -25,6 +25,7 @@ namespace Facebook
     /// </summary>
     public class FacebookApp : FacebookAppBase
     {
+        //
         /// <summary>
         /// The multi-part form prefix characters.
         /// </summary>
