@@ -20,7 +20,16 @@ namespace Facebook
         /// Gets or sets the API secret.
         /// </summary>
         /// <value>The API secret.</value>
+        [Obsolete("User AppSecret. Facebook renamed this property.")]
         string ApiSecret { get; set; }
+
+        /// <summary>
+        /// Gets or sets the App secret.
+        /// </summary>
+        /// <value>The App secret.</value>
+        [Obsolete("User AppSecret. Facebook renamed this property.")]
+        string AppSecret { get; set; }
+
         /// <summary>
         /// Gets or sets the app id.
         /// </summary>

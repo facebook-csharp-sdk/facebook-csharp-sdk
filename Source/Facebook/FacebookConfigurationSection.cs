@@ -22,10 +22,22 @@ namespace Facebook
         /// </summary>
         /// <value>The API secret.</value>
         [ConfigurationProperty("apiSecret", IsRequired = true)]
+        [Obsolete("Use AppSecret. Facebook renamed this property.")]
         public string ApiSecret
         {
             get { return (string)this["apiSecret"]; }
             set { this["apiSecret"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the API secret.
+        /// </summary>
+        /// <value>The API secret.</value>
+        [ConfigurationProperty("appSecret", IsRequired = true)]
+        public string AppSecret
+        {
+            get { return (string)this["appSecret"]; }
+            set { this["appSecret"] = value; }
         }
 
         /// <summary>
