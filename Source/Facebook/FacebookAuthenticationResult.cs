@@ -12,11 +12,12 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
 
-    public class FacebookAuthenticationResult
+    public sealed class FacebookAuthenticationResult
     {
         private readonly string accessToken;
         private readonly long expiresIn;
-        private readonly string errorReasonText;
+        private readonly string errorReason;
+        private readonly string errorDescription;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAuthenticationResult"/> class.
@@ -30,11 +31,11 @@ namespace Facebook
         /// <param name="errorReasonText">
         /// The error reason text.
         /// </param>
-        public FacebookAuthenticationResult(string accessToken, long expiresIn, string errorReasonText)
+        private FacebookAuthenticationResult(string accessToken, long expiresIn, string errorReasonText)
         {
             this.accessToken = accessToken;
             this.expiresIn = expiresIn;
-            this.errorReasonText = errorReasonText;
+            this.errorReason = errorReasonText;
         }
 
         private FacebookAuthenticationResult(IDictionary<string, object> parameters)
@@ -52,73 +53,99 @@ namespace Facebook
 
             if (parameters.ContainsKey("error_reason"))
             {
-                this.errorReasonText = Uri.UnescapeDataString((string)parameters["error_reason"]);
+                this.errorReason = Uri.UnescapeDataString((string)parameters["error_reason"]);
+            }
+            if (parameters.ContainsKey("error_description"))
+            {
+                this.errorDescription = Uri.UnescapeDataString((string)parameters["error_description"]);
             }
         }
 
-        public string ErrorReasonText
+        public string ErrorReason
         {
-            get { return errorReasonText; }
+            get { return this.errorReason; }
+        }
+
+        public string ErrorDescription
+        {
+            get { return this.errorDescription; }
         }
 
         public long ExpiresIn
         {
-            get { return expiresIn; }
+            get { return this.expiresIn; }
         }
 
         public string AccessToken
         {
-            get { return accessToken; }
+            get { return this.accessToken; }
         }
 
-        public bool IsSuccess
+        public static FacebookAuthenticationResult Parse(string uriString)
         {
-            get { return string.IsNullOrEmpty(ErrorReasonText) && !string.IsNullOrEmpty(AccessToken); }
-        }
-
-        public static FacebookAuthenticationResult Parse(string url)
-        {
-            return Parse(url, null);
-        }
-
-        public static FacebookAuthenticationResult Parse(string url, IFacebookSettings facebookSettings)
-        {
-            return Parse(new Uri(url), facebookSettings);
+            return Parse(uriString);
         }
 
         public static FacebookAuthenticationResult Parse(Uri uri)
         {
-            return Parse(uri, null);
+            return Parse(uri, true);
         }
 
-        public static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings)
+        public static bool TryParse(string uriString, out FacebookAuthenticationResult result)
+        {
+            if (Uri.IsWellFormedUriString(uriString, UriKind.RelativeOrAbsolute))
+            {
+                return TryParse(new Uri(uriString), out result);
+            }
+            result = null;
+            return false;
+        }
+
+        public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
+        {
+            result = Parse(uri, false);
+            return result != null;
+        }
+
+        private static FacebookAuthenticationResult Parse(Uri uri, bool throws)
         {
             var parameters = new Dictionary<string, object>();
-
-            if (uri.AbsoluteUri.StartsWith("http://www.facebook.com/connect/login_success.html"))
+            try
             {
-                // if it is a desktop login
-                if (!string.IsNullOrEmpty(uri.Fragment))
+                if (uri.AbsoluteUri.StartsWith("http://www.facebook.com/connect/login_success.html"))
                 {
-                    // contains #access_token so replace # with ?
-                    var queryFragment = "?" + uri.Fragment.Substring(1);
-                    FacebookAppBase.ParseUrlParameters(queryFragment, parameters);
-                }
-                else
-                {
-                    // else it is part of querystring
-                    // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
-                    FacebookAppBase.ParseUrlParameters(uri.Query, parameters);
-                }
+                    // if it is a desktop login
+                    if (!string.IsNullOrEmpty(uri.Fragment))
+                    {
+                        // contains #access_token so replace # with ?
+                        var queryFragment = "?" + uri.Fragment.Substring(1);
+                        FacebookAppBase.ParseUrlParameters(queryFragment, parameters);
+                    }
+                    else
+                    {
+                        // else it is part of querystring
+                        // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
+                        FacebookAppBase.ParseUrlParameters(uri.Query, parameters);
+                    }
 
-                return new FacebookAuthenticationResult(parameters);
+                    return new FacebookAuthenticationResult(parameters);
+                }
+            }
+            catch
+            {
+                if (throws)
+                {
+                    throw;
+                }
+                return null;
             }
 
-            // NOTE: throw error or return null or return FacebookAuthenticationResult with IsSuccess false.
-            // return null or throwing error might not be so good idea
-            // coz the user would have to wrap it with try catch or check for if null
-            // extra headache for the user consuming this sdk.
+            if (throws)
+            {
+                throw new InvalidOperationException("Could not parse authentication url.");
+            }
             return null;
         }
+
     }
 }

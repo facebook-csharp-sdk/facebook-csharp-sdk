@@ -28,7 +28,7 @@ namespace Facebook
         /// Gets the internal dictionary store.
         /// </summary>
         /// <value>The dictionary.</value>
-        public IDictionary<string, string> Dictionary
+        internal IDictionary<string, string> Dictionary
         {
             get
             {
@@ -70,7 +70,7 @@ namespace Facebook
                 {
                     return this.dictionary["secret"];
                 }
-
+ 
                 return null;
             }
 
