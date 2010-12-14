@@ -30,7 +30,10 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(stringToEscape));
 
             // Escape the uri string. Also, escap = and ?. Last, the | (pipe) must be double encoded
-            return Uri.EscapeUriString(stringToEscape).Replace("?", "%3F").Replace("=", "%3D").Replace("%7C", "%257C");
+            string escaped = Uri.EscapeUriString(stringToEscape);
+            StringBuilder sb = new StringBuilder(escaped, escaped.Length + (escaped.Length % 10));
+            return sb.Replace("?", "%3F").Replace("=", "%3D").Replace("%7C", "%257C").ToString();
         }
+
     }
 }
