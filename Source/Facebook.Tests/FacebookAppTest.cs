@@ -49,7 +49,7 @@
             var settings = new FacebookSettings
             {
                 AppId = "120625701301347",
-                ApiSecret = "543690fae0cd186965412ac4a49548b5",
+                AppSecret = "543690fae0cd186965412ac4a49548b5",
             };
             var fb = new FacebookApp(settings);
 

@@ -142,7 +142,7 @@ namespace Facebook
         /// <summary>
         /// Gets the Application API Secret.
         /// </summary>
-        public string ApiSecret { get; set; }
+        public string AppSecret { get; set; }
 
         /// <summary>
         /// Gets or sets the active user session.
@@ -210,9 +210,9 @@ namespace Facebook
                 {
                     return this.Session.AccessToken;
                 }
-                else if (!String.IsNullOrEmpty(this.AppId) && !String.IsNullOrEmpty(this.ApiSecret))
+                else if (!String.IsNullOrEmpty(this.AppId) && !String.IsNullOrEmpty(this.AppSecret))
                 {
-                    return string.Concat(this.AppId, "|", this.ApiSecret);
+                    return string.Concat(this.AppId, "|", this.AppSecret);
                 }
                 return null;
             }

@@ -17,13 +17,6 @@ namespace Facebook
     public interface IFacebookSettings
     {
         /// <summary>
-        /// Gets or sets the API secret.
-        /// </summary>
-        /// <value>The API secret.</value>
-        [Obsolete("User AppSecret. Facebook renamed this property.")]
-        string ApiSecret { get; set; }
-
-        /// <summary>
         /// Gets or sets the App secret.
         /// </summary>
         /// <value>The App secret.</value>
@@ -55,5 +48,6 @@ namespace Facebook
         /// </summary>
         /// <value>The retry delay.</value>
         int RetryDelay { get; set; }
+
     }
 }

@@ -41,7 +41,7 @@
             var parameters = new Dictionary<string, object>();
             parameters["query"] = query;
             parameters["method"] = "fql.query";
-            parameters["access_token"] = string.Concat(app.AppId, "|", app.ApiSecret);
+            parameters["access_token"] = string.Concat(app.AppId, "|", app.AppSecret);
             dynamic result = app.Get(parameters);
             Assert.NotNull(result);
         }

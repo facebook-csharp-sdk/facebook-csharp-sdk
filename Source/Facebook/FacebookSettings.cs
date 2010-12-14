@@ -44,18 +44,11 @@ namespace Facebook
             }
         }
 #endif
-        /// <summary>
-        /// Gets or sets the API secret.
-        /// </summary>
-        /// <value>The API secret.</value>
-        [Obsolete("User AppSecret. Facebook renamed this property.")]
-        public string ApiSecret { get; set; }
 
         /// <summary>
         /// Gets or sets the Application secret.
         /// </summary>
         /// <value>The Application secret.</value>
-        [Obsolete("User AppSecret. Facebook renamed this property.")]
         public string AppSecret { get; set; }
 
         /// <summary>
@@ -87,5 +80,6 @@ namespace Facebook
         /// </summary>
         /// <value>The retry delay.</value>
         public int RetryDelay { get; set; }
+
     }
 }

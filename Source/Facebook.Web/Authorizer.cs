@@ -79,7 +79,7 @@ namespace Facebook.Web
                 var parameters = new Dictionary<string, object>();
                 parameters["query"] = query;
                 parameters["method"] = "fql.query";
-                parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.ApiSecret);
+                parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.AppSecret);
                 var data = (IList<object>)FacebookApp.Get(parameters);
                 if (data != null && data.Count > 0)
                 {

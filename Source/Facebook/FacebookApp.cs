@@ -199,13 +199,6 @@ namespace Facebook
                             this.session = this.CreateSessionFromSignedRequest(this.SignedRequest);
                         }
 
-                        // try loading session from querystring
-                        if (this.session == null && this.Request.Params.AllKeys.Contains("session"))
-                        {
-                            this.session = ParseFromQueryString(this.Request.Params["session"]);
-                            this.ValidateSessionObject(this.session);
-                        }
-
                         // try loading session from cookie if necessary
                         if (this.session == null && this.CookieSupport)
                         {
@@ -349,44 +342,6 @@ namespace Facebook
                 defaultParams.Merge(parameters));
         }
 
-        /// <summary>
-        /// <para>Get a Logout URL suitable for use with redirects.</para>
-        /// <para>The parameters:</para>
-        /// <para>   - next: the url to go to after a successful logout</para>
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
-        {
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["api_key"] = this.AppId;
-            defaultParams["no_session"] = this.CurrentUrl.ToString();
-            if (this.Session != null)
-            {
-                // If might be better to throw an exception if the
-                // session is null because you dont need to logout,
-                // but this way makes it easier to build logout links.
-                defaultParams["session_key"] = this.Session.SessionKey;
-            }
-
-            return this.GetUrl(
-                "www",
-                "logout.php",
-                defaultParams.Merge(parameters));
-        }
-
-        /// <summary>
-        /// <para>Get a Logout URL suitable for use with redirects.</para>
-        /// <para>The parameters:</para>
-        /// <para>    - next: the url to go to after a successful logout</para>
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
-        {
-            throw new PlatformNotSupportedException();
-        }
-
 #else
 
         /// <summary>
@@ -420,6 +375,8 @@ namespace Facebook
                 "login.php",
                 defaultParams.Merge(parameters));
         }
+
+#endif
 
         /// <summary>
         /// <para>Get a Logout URL suitable for use with redirects.</para>
@@ -470,39 +427,8 @@ namespace Facebook
                 "extern/login_status.php",
                 defaultParams.Merge(parameters));
         }
-#endif
 
 #if !SILVERLIGHT
-
-        /// <summary>
-        /// Parses a session value retrieved from a querystring.
-        /// </summary>
-        /// <param name="sessionValue">The session value.</param>
-        /// <returns>The active session.</returns>
-        protected static FacebookSession ParseFromQueryString(string sessionValue)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(sessionValue));
-
-            var session = new FacebookSession();
-
-            // Parse the querystring format
-            sessionValue = Uri.UnescapeDataString(sessionValue);
-            if (!string.IsNullOrEmpty(sessionValue))
-            {
-                var result = JsonSerializer.DeserializeObject(sessionValue);
-                if (result != null)
-                {
-                    var resultDict = (IDictionary<string, object>)result;
-                    resultDict.ToDictionary(d => d.Key, d => d.Value != null ? d.Value.ToString() : string.Empty);
-                    foreach (var key in resultDict.Keys)
-                    {
-                        session.Dictionary.Add(key, resultDict[key].ToString());
-                    }
-                }
-            }
-
-            return session;
-        }
 
         /// <summary>
         /// Parses the session value from a cookie.
@@ -570,7 +496,7 @@ namespace Facebook
                          where a.Key != "sig"
                          select string.Format(CultureInfo.InvariantCulture, "{0}={1}", a.Key, a.Value)).ToList();
             parts.ForEach((s) => { payload.Append(s); });
-            payload.Append(this.ApiSecret);
+            payload.Append(this.AppSecret);
             byte[] hash = null;
             using (var md5 = System.Security.Cryptography.MD5CryptoServiceProvider.Create())
             {
@@ -875,7 +801,7 @@ namespace Facebook
             var sig = Base64UrlDecode(encodedValue);
             var payload = parts[1];
 
-            using (var cryto = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(this.ApiSecret)))
+            using (var cryto = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(this.AppSecret)))
             {
                 var hash = Convert.ToBase64String(cryto.ComputeHash(Encoding.UTF8.GetBytes(payload)));
                 var hashDecoded = Base64UrlDecode(hash);
@@ -1232,7 +1158,7 @@ namespace Facebook
             Contract.Requires(settings != null);
 
             this.AppId = settings.AppId;
-            this.ApiSecret = settings.ApiSecret;
+            this.AppSecret = settings.AppSecret;
             this.BaseDomain = settings.BaseDomain;
             this.CookieSupport = settings.CookieSupport;
             this.retryDelay = settings.RetryDelay == -1 ? this.retryDelay : settings.RetryDelay;
