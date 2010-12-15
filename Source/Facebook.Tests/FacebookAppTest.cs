@@ -64,7 +64,7 @@
             string url = "http://graph.facebook.com/me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(url, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(url, parameters);
 
             Assert.NotEqual('/', path[0]);
         }
@@ -76,7 +76,7 @@
 
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.NotEqual('/', path[0]);
         }
@@ -88,7 +88,7 @@
             string originalPathWithoutForwardSlash = "me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(url, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(url, parameters);
 
             Assert.Equal(originalPathWithoutForwardSlash, path);
         }
@@ -100,7 +100,7 @@
             string originalPathWithoutForwardSlashAndWithoutQueryString = "me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.Equal(originalPathWithoutForwardSlashAndWithoutQueryString, path);
         }
@@ -111,7 +111,7 @@
             string url = "http://graph.facebook.com/me/likes";
             var parameters = new Dictionary<string, object>();
 
-            FacebookAppBase.ParseUrlParameters(url, parameters);
+            FacebookAppBase.ParseQueryParametersToDictionary(url, parameters);
 
             Assert.Equal(0, parameters.Count);
         }
@@ -122,7 +122,7 @@
             string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+            FacebookAppBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.Equal(2, parameters.Count);
         }
@@ -133,7 +133,7 @@
             string path = string.Empty;
             var parameters = new Dictionary<string, object>();
 
-            FacebookAppBase.ParseUrlParameters(path, parameters);
+            FacebookAppBase.ParseQueryParametersToDictionary(path, parameters);
 
             Assert.Equal(0, parameters.Count);
         }
@@ -144,7 +144,7 @@
             var path = "/me/likes";
             var parameters = new Dictionary<string, object>();
 
-            FacebookAppBase.ParseUrlParameters(path, parameters);
+            FacebookAppBase.ParseQueryParametersToDictionary(path, parameters);
 
             Assert.Equal(0, parameters.Count);
         }
@@ -155,7 +155,7 @@
             string path = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookAppBase.ParseUrlParameters(path, parameters);
+            FacebookAppBase.ParseQueryParametersToDictionary(path, parameters);
 
             Assert.Equal(2, parameters.Count);
         }
@@ -166,7 +166,7 @@
             string path = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookAppBase.ParseUrlParameters(path, parameters);
+            FacebookAppBase.ParseQueryParametersToDictionary(path, parameters);
 
             Assert.Equal("3", parameters["limit"]);
             Assert.Equal("2", parameters["offset"]);
@@ -178,7 +178,7 @@
             string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookAppBase.ParseUrlParameters(urlWithQueryString, parameters);
+            FacebookAppBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.Equal("3", parameters["limit"]);
             Assert.Equal("2", parameters["offset"]);
@@ -190,7 +190,7 @@
             string originalPath = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(originalPath, parameters);
 
             Assert.Equal(path, "me/likes");
         }
@@ -202,7 +202,7 @@
             string pathWithoutForwardSlash = "me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(originalPath, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(originalPath, parameters);
 
             Assert.Equal(pathWithoutForwardSlash, path);
         }
@@ -213,7 +213,7 @@
             string originalPathWithQueryString = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(originalPathWithQueryString, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(originalPathWithQueryString, parameters);
 
             Assert.NotEqual('/', path[0]);
         }
@@ -225,7 +225,7 @@
             string pathWithoutForwardSlashAndQueryString = "me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookAppBase.ParseUrlParameters(originalPathWithQueryString, parameters);
+            var path = FacebookAppBase.ParseQueryParametersToDictionary(originalPathWithQueryString, parameters);
 
             Assert.Equal(pathWithoutForwardSlashAndQueryString, path);
         }

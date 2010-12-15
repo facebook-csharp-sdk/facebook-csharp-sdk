@@ -327,9 +327,88 @@ namespace Facebook
             return builder.Uri;
         }
 
-        #region API Calls
+        #region Api Methods
 
 #if (!SILVERLIGHT) // Silverlight should only have async calls
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        public object Api(IDictionary<string, object> parameters)
+        {
+            Contract.Requires(parameters != null);
+
+            return this.Api(null, parameters, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public object Api(string path)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            return this.Api(path, null, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        public object Api(string path, HttpMethod httpMethod)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            return this.Api(path, null, httpMethod);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            Contract.Requires(parameters != null);
+
+            return this.Api(null, parameters, httpMethod);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public object Api(string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            return this.Api(path, parameters, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">Dynamic object of the request parameters.</param>
+        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            return this.Api(path, parameters, null, httpMethod);
+        }
 
         /// <summary>
         /// Make an api call.
@@ -340,13 +419,13 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal virtual object Api(string path, IDictionary<string, object> parameters, Type resultType, HttpMethod httpMethod)
+        public virtual object Api(string path, IDictionary<string, object> parameters, Type resultType, HttpMethod httpMethod)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             parameters = parameters ?? new Dictionary<string, object>();
 
-            path = ParseUrlParameters(path, parameters);
+            path = ParseQueryParametersToDictionary(path, parameters);
 
             if (parameters.ContainsKey("method"))
             {
@@ -361,6 +440,13 @@ namespace Facebook
                 return this.Graph(path, parameters, httpMethod, resultType);
             }
         }
+
+#endif
+        #endregion
+
+        #region Api Get/Post/Delete Methods
+
+#if (!SILVERLIGHT) // Silverlight should only have async calls
 
         public object Delete(string path)
         {
@@ -487,9 +573,73 @@ namespace Facebook
         }
 
 #endif
+
         #endregion
 
-        #region Async API Calls
+        #region Async Api Methods
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        public void ApiAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(parameters != null);
+
+            this.ApiAsync(callback, state, null, parameters, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public void ApiAsync(string path, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            this.ApiAsync(callback, state, path, null, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        public void ApiAsync(string path, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            this.ApiAsync(callback, state, path, null, httpMethod);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public void ApiAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            this.ApiAsync(callback, state, path, parameters, HttpMethod.Get);
+        }
 
         /// <summary>
         /// Make an api call.
@@ -500,14 +650,32 @@ namespace Facebook
         /// <param name="parameters">object of url parameters.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
+        public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            this.ApiAsync(path, parameters, httpMethod, callback, state);
+        }
+
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             parameters = parameters ?? new Dictionary<string, object>();
 
-            path = ParseUrlParameters(path, parameters);
+            path = ParseQueryParametersToDictionary(path, parameters);
 
             if (parameters.ContainsKey("method"))
             {
@@ -532,14 +700,14 @@ namespace Facebook
         /// <param name="parameters">object of url parameters.</param>
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
-        protected internal virtual void ApiAsync<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback<T> callback, object state)
+        public virtual void ApiAsync<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback<T> callback, object state)
         {
             Contract.Requires(callback != null);
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             parameters = parameters ?? new Dictionary<string, object>();
 
-            path = ParseUrlParameters(path, parameters);
+            path = ParseQueryParametersToDictionary(path, parameters);
 
             var callback2 = new FacebookAsyncCallback((ar) =>
             {
@@ -560,6 +728,10 @@ namespace Facebook
             }
 
         }
+
+        #endregion
+
+        #region Async Api Get/Post/Delete Methods
 
         /// <summary>
         /// Make an api call.
@@ -1066,10 +1238,10 @@ namespace Facebook
         /// Removes the querystring parameters from the path value and adds them
         /// to the parameters dictionary.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="parameters"></param>
+        /// <param name="path">The path to parse.</param>
+        /// <param name="parameters">The dictionary</param>
         /// <returns></returns>
-        internal static string ParseUrlParameters(string path, IDictionary<string, object> parameters)
+        internal static string ParseQueryParametersToDictionary(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -1133,197 +1305,5 @@ namespace Facebook
 
             return path;
         }
-
-        #region Obsolete API Calls
-
-#if (!SILVERLIGHT) // Silverlight should only have async calls
-        /// <summary>
-        /// Make an API call.
-        /// </summary>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public object Api(IDictionary<string, object> parameters)
-        {
-            Contract.Requires(parameters != null);
-
-            return this.Api(null, parameters, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public object Api(string path)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return this.Api(path, null, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public object Api(string path, HttpMethod httpMethod)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            return this.Api(path, null, httpMethod);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Requires(parameters != null);
-
-            return this.Api(null, parameters, httpMethod);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public object Api(string path, IDictionary<string, object> parameters)
-        {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
-
-            return this.Api(path, parameters, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
-
-            return this.Api(path, parameters, null, httpMethod);
-        }
-
-#endif
-        #endregion
-
-        #region Obsolete Async API Calls
-        /// <summary>
-        /// Make an API call.
-        /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public void ApiAsync(FacebookAsyncCallback callback, object state, IDictionary<string, object> parameters)
-        {
-            Contract.Requires(callback != null);
-            Contract.Requires(parameters != null);
-
-            this.ApiAsync(callback, state, null, parameters, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public void ApiAsync(FacebookAsyncCallback callback, object state, string path)
-        {
-            Contract.Requires(callback != null);
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            this.ApiAsync(callback, state, path, null, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public void ApiAsync(FacebookAsyncCallback callback, object state, string path, HttpMethod httpMethod)
-        {
-            Contract.Requires(callback != null);
-            Contract.Requires(!String.IsNullOrEmpty(path));
-
-            this.ApiAsync(callback, state, path, null, httpMethod);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters)
-        {
-            Contract.Requires(callback != null);
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
-
-            this.ApiAsync(callback, state, path, parameters, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Make an api call.
-        /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("You should use Get, Post, or Delete rather than this method. This method will be removed in the next version.")]
-        public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            Contract.Requires(callback != null);
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
-
-            this.ApiAsync(path, parameters, httpMethod, callback, state);
-        }
-
-        #endregion
     }
 }
