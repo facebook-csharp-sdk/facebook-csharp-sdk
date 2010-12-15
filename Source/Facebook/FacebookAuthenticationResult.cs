@@ -28,14 +28,14 @@ namespace Facebook
         /// <param name="expiresIn">
         /// The expires in.
         /// </param>
-        /// <param name="errorReasonText">
+        /// <param name="errorReason">
         /// The error reason text.
         /// </param>
-        private FacebookAuthenticationResult(string accessToken, long expiresIn, string errorReasonText)
+        private FacebookAuthenticationResult(string accessToken, long expiresIn, string errorReason)
         {
             this.accessToken = accessToken;
             this.expiresIn = expiresIn;
-            this.errorReason = errorReasonText;
+            this.errorReason = errorReason;
         }
 
         private FacebookAuthenticationResult(IDictionary<string, object> parameters)
@@ -83,19 +83,29 @@ namespace Facebook
 
         public static FacebookAuthenticationResult Parse(string uriString)
         {
-            return Parse(uriString);
+            return Parse(new Uri(uriString));
         }
 
         public static FacebookAuthenticationResult Parse(Uri uri)
         {
-            return Parse(uri, true);
+            return Parse(uri, null);
+        }
+
+        public static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings)
+        {
+            return Parse(uri, facebookSettings, true);
         }
 
         public static bool TryParse(string uriString, out FacebookAuthenticationResult result)
         {
+            return TryParse(uriString, null, out result);
+        }
+
+        public static bool TryParse(string uriString, IFacebookSettings settings, out FacebookAuthenticationResult result)
+        {
             if (Uri.IsWellFormedUriString(uriString, UriKind.RelativeOrAbsolute))
             {
-                return TryParse(new Uri(uriString), out result);
+                return TryParse(new Uri(uriString), settings, out result);
             }
             result = null;
             return false;
@@ -103,11 +113,16 @@ namespace Facebook
 
         public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
         {
-            result = Parse(uri, false);
+            return TryParse(uri, null, out result);
+        }
+
+        public static bool TryParse(Uri uri, IFacebookSettings facebookSettings, out FacebookAuthenticationResult result)
+        {
+            result = Parse(uri, facebookSettings, false);
             return result != null;
         }
 
-        private static FacebookAuthenticationResult Parse(Uri uri, bool throws)
+        private static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings, bool throws)
         {
             var parameters = new Dictionary<string, object>();
             try
