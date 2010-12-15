@@ -81,6 +81,11 @@ namespace Facebook
             get { return this.accessToken; }
         }
 
+        public bool IsSuccess
+        {
+            get { return string.IsNullOrEmpty(this.ErrorReason) && !string.IsNullOrEmpty(this.AccessToken); }
+        }
+
         public static FacebookAuthenticationResult Parse(string uriString)
         {
             return Parse(new Uri(uriString));
