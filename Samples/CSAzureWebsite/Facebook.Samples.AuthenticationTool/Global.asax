@@ -1,1 +1,0 @@
-﻿<%@ Application CodeBehind="Global.asax.cs" Inherits="Auth_And_Allow.MvcApplication"Language="C#" %>
