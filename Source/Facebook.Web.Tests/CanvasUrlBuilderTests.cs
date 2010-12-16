@@ -1,7 +1,7 @@
 ﻿namespace Facebook.Web.Tests
 {
     using System;
-    using Facebook.Tests.Fakes;
+    using Facebook.TestUtils.Fakes;
     using Xunit;
 
     public class CanvasUrlBuilderTests

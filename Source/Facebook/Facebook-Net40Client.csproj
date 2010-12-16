@@ -27,7 +27,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\Net40Client\</OutputPath>
+    <OutputPath>..\..\Bin\Facebook\Debug\Net40Client\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CLIENTPROFILE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,13 +56,13 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
-    <DocumentationFile>bin\Debug\Net40Client\Facebook.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Facebook\Debug\Net40Client\Facebook.XML</DocumentationFile>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\Net40Client\</OutputPath>
+    <OutputPath>..\..\Bin\Facebook\Release\Net40Client\</OutputPath>
     <DefineConstants>TRACE;CLIENTPROFILE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -91,17 +91,18 @@
     <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>bin\Release\Net40Client\Facebook.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Facebook\Release\Net40Client\Facebook.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Tools\Json.Net\Bin\Net\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -117,12 +118,14 @@
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApp.cs" />
+    <Compile Include="FacebookAuthenticationResult.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
+    <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

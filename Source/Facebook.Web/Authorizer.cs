@@ -10,7 +10,7 @@ namespace Facebook.Web
 {
     public class Authorizer
     {
-        protected FacebookAppBase FacebookApp { get; set; }
+        public FacebookAppBase FacebookApp { get; private set; }
 
         /// <summary>
         /// Gets or sets the extended permissions.
@@ -22,6 +22,7 @@ namespace Facebook.Web
         /// </summary>
         /// <value>The cancel URL path.</value>
         public string CancelUrlPath { get; set; }
+
         /// <summary>
         /// Gets or sets the return URL path.
         /// </summary>
@@ -96,5 +97,14 @@ namespace Facebook.Web
 
         }
 
+        /// <summary>
+        /// The code contracts invarient object method.
+        /// </summary>
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(this.FacebookApp != null);
+        }
     }
 }

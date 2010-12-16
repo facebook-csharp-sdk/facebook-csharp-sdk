@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D759B991-FDD3-43BC-9704-0B5131EF1A1D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-Net35", "Facebook\Facebook-Net35.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web-Net35", "Facebook.Web\Facebook.Web-Net35.csproj", "{73333465-710D-4143-BA9B-201D90EE2BAF}"

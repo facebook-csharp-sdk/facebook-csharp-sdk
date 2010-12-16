@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7D5E4338-5E9D-442A-AB3B-6C23A5478337}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-SL4", "Facebook\Facebook-SL4.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
 EndProject
 Global

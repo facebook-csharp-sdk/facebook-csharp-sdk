@@ -1,5 +1,5 @@
 ﻿properties { 
-  $version = '4.0.3'
+  $version = '4.1.0'
   $zipFileName = "FacebookSDK_V$version.zip"
   $buildDocumentation = $true
   $buildNuPackage = $true
