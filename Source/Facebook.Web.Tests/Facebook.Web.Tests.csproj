@@ -53,10 +53,6 @@
     <Compile Include="CanvasUrlBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook.TestUtils\Facebook.TestUtils.csproj">
-      <Project>{54AA4B0B-3D96-4670-80F5-20E996BF4272}</Project>
-      <Name>Facebook.TestUtils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Facebook.Web\Facebook.Web.csproj">
       <Project>{73333465-710D-4143-BA9B-201D90EE2BAF}</Project>
       <Name>Facebook.Web</Name>

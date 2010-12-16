@@ -73,6 +73,8 @@
     <Compile Include="DictionaryUtilitiesTest.cs" />
     <Compile Include="FacebookAppTest.cs" />
     <Compile Include="FacebookAuthenticationResultTests.cs" />
+    <Compile Include="Fakes\FakeHttpRequest.cs" />
+    <Compile Include="Fakes\FakeHttpResponse.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
