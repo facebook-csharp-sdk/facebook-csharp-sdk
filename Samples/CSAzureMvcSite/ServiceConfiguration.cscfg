@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ServiceConfiguration serviceName="CloudApp" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration">
-  <Role name="Facebook.Samples.AuthenticationTool">
+  <Role name="SimpleAuth.Web">
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />

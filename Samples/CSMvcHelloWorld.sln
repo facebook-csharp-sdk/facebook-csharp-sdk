@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.HelloWorld", "C:\projects\facebookSDK\Samples\ASP.NET MVC\Net40\CS\Facebook.Samples.HelloWorld\Facebook.Samples.HelloWorld.csproj", "{4E38126F-4410-400F-97A2-8970175FE371}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Web", "CSMvcHelloWorld\HelloWorld.Web.csproj", "{4E38126F-4410-400F-97A2-8970175FE371}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

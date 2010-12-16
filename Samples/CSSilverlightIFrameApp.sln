@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.AuthenticationTool", "Silverlight\Net40\CS\IFramedInBrowser\Facebook.Samples.AuthenticationTool\Facebook.Samples.AuthenticationTool.csproj", "{B630CBF2-276B-4043-9404-5A303014BE4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightApp", "CSSilverlightIFrameApp\SilverlightApp\SilverlightApp.csproj", "{B630CBF2-276B-4043-9404-5A303014BE4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.AuthenticationTool.Web", "Silverlight\Net40\CS\IFramedInBrowser\Facebook.Samples.AuthenticationTool.Web\Facebook.Samples.AuthenticationTool.Web.csproj", "{6F8BCF8E-C103-4FE5-BDE8-CB19A928BFD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightApp.Web", "CSSilverlightIFrameApp\SilverlightApp.Web\SilverlightApp.Web.csproj", "{6F8BCF8E-C103-4FE5-BDE8-CB19A928BFD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

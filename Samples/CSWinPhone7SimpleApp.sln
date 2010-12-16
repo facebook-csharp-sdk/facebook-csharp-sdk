@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Samples.AuthenticationTool", "Windows Phone 7\CS\Facebook.Samples.AuthenticationTool\Facebook.Samples.AuthenticationTool.csproj", "{F5B1EBE7-0DC2-472D-9E78-0823E5818145}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "CSWinPhone7SimpleApp\SimpleApp.csproj", "{F5B1EBE7-0DC2-472D-9E78-0823E5818145}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
