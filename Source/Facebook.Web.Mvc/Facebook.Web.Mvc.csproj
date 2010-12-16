@@ -116,8 +116,9 @@
   <ItemGroup>
     <Compile Include="CanvasUrlExtensions.cs" />
     <Compile Include="FacebookAuthorizeAttribute.cs" />
+    <Compile Include="FacebookAuthorizeAttributeBase.cs" />
     <Compile Include="CanvasAuthorizeAttribute.cs" />
-    <Compile Include="FacebookSoftAuthorizeAttribute.cs" />
+    <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
     <Compile Include="CanvasLinkExtensions.cs" />
     <Compile Include="CanvasRedirectResult.cs" />
     <Compile Include="CanvasRedirectToRouteResult.cs" />

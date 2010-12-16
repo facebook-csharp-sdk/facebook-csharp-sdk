@@ -34,15 +34,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>packages\Facebook.4.0.2\lib\Net40\Facebook.dll</HintPath>
+      <HintPath>..\..\Bin\Facebook\Release\Net40\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Facebook.Web">
-      <HintPath>packages\FacebookWeb.4.0.2\lib\Net40\Facebook.Web.dll</HintPath>
+      <HintPath>..\..\Bin\Facebook.Web\Release\Net40\Facebook.Web.dll</HintPath>
     </Reference>
     <Reference Include="Facebook.Web.Mvc">
-      <HintPath>packages\FacebookWebMvc.4.0.2\lib\Net40\Facebook.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\Bin\Facebook.Web.Mvc\Release\Net40\Facebook.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Source\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -85,7 +88,6 @@
     <Content Include="Content\login-button.png" />
     <Content Include="Global.asax" />
     <Content Include="Views\Home\GettingStarted.aspx" />
-    <Content Include="Views\Home\Profile.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -135,7 +137,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>4545</DevelopmentServerPort>
+          <DevelopmentServerPort>36828</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

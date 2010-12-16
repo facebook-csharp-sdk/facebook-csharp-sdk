@@ -19,7 +19,7 @@
             Getting Started</a> guide on codeplex for more help with configuration.</p>
     <p>
         After you have setup your application, you must configure your web.config file with
-        your App ID, Secret, and Key.</p>
+        your App ID and Secret.</p>
     <p>
         After you save your web.config file and refresh or reload this sample, you will
         see a Facebook login button.</p>

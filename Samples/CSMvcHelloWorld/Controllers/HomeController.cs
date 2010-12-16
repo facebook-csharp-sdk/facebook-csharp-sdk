@@ -13,7 +13,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
     {
         public ActionResult Index()
         {
-            if (FacebookSettings.Current.AppId == "your_app_id")
+            if (FacebookSettings.Current.AppId == "{put your appId here}")
             {
                 return View("GettingStarted");
             }
@@ -21,28 +21,33 @@ namespace Facebook.Samples.HelloWorld.Controllers
             return View();
         }
 
+        [FacebookAuthorize()]
         public ActionResult About()
         {
-            return View();
+
+            var app = new FacebookApp();
+
+            dynamic me = app.Get("me");
+            dynamic friends = app.Get("/me/friends");
+
+            dynamic model = new ExpandoObject();
+            model.Name = me.name;
+            model.FriendCount = friends.data.Count;
+
+            return View(model);
         }
 
-        [CanvasAuthorize(Perms = "stream_publish")]
-        public ActionResult Profile()
+        [FacebookAuthorize(LoginUrl = "/", Perms = "publish_stream")]
+        public ActionResult Publish()
         {
             var app = new FacebookApp();
-            if (app.Session == null)
-            {
-                // The user isnt logged in to Facebook
-                // send them to the home page
-                return RedirectToAction("Index");
-            }
 
             dynamic parameters = new ExpandoObject();
             parameters.message = "First wall post!";
 
             dynamic result = app.Api("/me/feed", parameters, HttpMethod.Post);
 
-            return View();
+            return RedirectToAction("About");
         }
     }
 }

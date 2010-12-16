@@ -21,7 +21,7 @@
         $('#fbLogin').click(function () {
             FB.login(function (response) {
                 if (response.session) {
-                    window.location = '<%:Url.Action("Profile") %>'
+                    window.location = '<%:Url.Action("About") %>'
                 } else {
                     // user cancelled login
                 }

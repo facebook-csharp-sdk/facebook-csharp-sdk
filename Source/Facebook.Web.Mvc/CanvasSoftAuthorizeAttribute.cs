@@ -13,7 +13,7 @@ namespace Facebook.Web.Mvc
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes")]
-    public class FacebookSoftAuthorizeAttribute : FacebookAuthorizeAttribute
+    public class CanvasSoftAuthorizeAttribute : CanvasAuthorizeAttribute
     {
         private const string _defaultView = "FacebookAuthorize";
         private string _view;
