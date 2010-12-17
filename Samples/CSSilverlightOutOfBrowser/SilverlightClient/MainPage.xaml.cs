@@ -15,7 +15,7 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : UserControl
     {
-        private const string apiKey = "{Insert your app's API Key here}";
+        private const string appId = "{your_app_id_here}";
 
         private string requestedFbPermissions = "user_about_me";
 
@@ -71,7 +71,7 @@ namespace Facebook.Samples.AuthenticationTool
 
             dynamic parms = new System.Dynamic.ExpandoObject();
             parms.display = "popup";
-            parms.client_id = apiKey;
+            parms.client_id = appId;
             parms.redirect_uri = successUrl;
             parms.cancel_url = failedUrl;
             parms.scope = requestedFbPermissions;

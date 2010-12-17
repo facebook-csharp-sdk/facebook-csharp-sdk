@@ -18,16 +18,13 @@ namespace SL4_InBrowser
     [ScriptableType]
     public partial class MainPage : UserControl
     {
-        private string apiKey = "{Your api key goes here}";
+        private string appId = "{your_app_id_here}";
         private string RequestedFbPermissions = "user_about_me";
 
         private const string successUrl = @"http://localhost:18201/LoginSuccessful.htm";
         private const string failedUrl = @"http://localhost:18201/LoginUnsuccessful.htm";
 
         private FacebookApp fbApp;
-
-        private bool loggedIn;
-        private string accessToken;
 
         private void failedLogin()
         {
@@ -69,30 +66,16 @@ namespace SL4_InBrowser
         [ScriptableMember]
         public void LoggedIn(string uri) //string sessionKey, string sessionSecret, int expires, string userId, string allowedPermissions)
         {
-            var qsLoc = uri.IndexOfAny(new[] { '?', '#' });
-
-            var queryString = (qsLoc == -1 ? uri : uri.Substring(qsLoc));
-            var accessToken = "";
-            var queryVars = queryString.Split('&');
-            foreach (var line in queryVars)
+            FacebookAuthenticationResult authResult;
+            if (FacebookAuthenticationResult.TryParse(uri, out authResult))
             {
-                var KeyValue = line.Split('=');
-                if (KeyValue.Length > 1 && KeyValue[0].Contains("access_token"))
-                {
-                    accessToken = KeyValue[1];
-                }
+                fbApp.Session = authResult.ToSession();
+                loginSucceeded();
             }
-            // Logged in with a session (convert the session to a secret and we are in business)
-            if (string.IsNullOrEmpty(accessToken))
+            else
             {
                 failedLogin();
-                return;
             }
-            this.accessToken = accessToken;
-
-            loggedIn = true;
-            fbApp = new FacebookApp(accessToken);
-            loginSucceeded();
         }
 
         [ScriptableMember]
@@ -110,7 +93,7 @@ namespace SL4_InBrowser
             //// Now we can call the JS Api to checkLogin
             dynamic parms = new System.Dynamic.ExpandoObject();
             parms.display = "popup";
-            parms.client_id = apiKey;
+            parms.client_id = appId;
             parms.redirect_uri = successUrl;
             parms.cancel_url = failedUrl;
             parms.scope = RequestedFbPermissions;

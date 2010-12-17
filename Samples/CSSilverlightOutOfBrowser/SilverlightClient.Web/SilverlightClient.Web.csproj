@@ -13,7 +13,7 @@
     <RootNamespace>WebHost</RootNamespace>
     <AssemblyName>WebHost</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SilverlightApplicationList>{43B9CFC7-0391-4B7A-A8D4-991305EEA929}|..\Facebook.Samples.AuthenticationTool\Facebook.Samples.AuthenticationTool.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{43B9CFC7-0391-4B7A-A8D4-991305EEA929}|..\SilverlightClient\SilverlightClient.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

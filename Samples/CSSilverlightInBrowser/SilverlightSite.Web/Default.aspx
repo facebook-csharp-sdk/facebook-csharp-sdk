@@ -92,7 +92,7 @@
     <div id="silverlightControlHost">
         <object data="data:application/x-silverlight-2," type="application/x-silverlight-2"
             width="100%" height="100%" id="silverlightFacebook">
-            <param name="source" value="ClientBin/SilverlightSite.xap" />
+            <param name="source" value="ClientBin/SilverlightSite.xap?v1" />
             <param name="onError" value="onSilverlightError" />
             <param name="onLoad" value="slLoaded" />
             <param name="background" value="white" />
