@@ -26,44 +26,12 @@ namespace Facebook.Web
             this.canvasSettings = canvasSettings;
         }
 
-        public void Authorize()
+        public override void HandleUnauthorizedRequest(HttpContextBase httpContext)
         {
-            Contract.Requires(HttpContext.Current != null);
-            Contract.Requires(HttpContext.Current.Request != null);
-            Contract.Requires(HttpContext.Current.Response != null);
-
-            Authorize(HttpContext.Current.Request, HttpContext.Current.Response);
-        }
-
-        public virtual void Authorize(HttpRequestBase request, HttpResponseBase response)
-        {
-            Contract.Requires(request != null);
-            Contract.Requires(response != null);
-
-            if (!this.IsAuthorized())
-            {
-                var url = GetLoginUrl(request);
-                response.ContentType = "text/html";
-                response.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(url));
-            }
-        }
-
-        public virtual void Authorize(HttpRequest request, HttpResponse response)
-        {
-            Contract.Requires(request != null);
-            Contract.Requires(response != null);
-
-            var requestWrapper = new HttpRequestWrapper(request);
-            var responseWrapper = new HttpResponseWrapper(response);
-            Authorize(requestWrapper, responseWrapper);
-        }
-
-        public virtual Uri GetLoginUrl(HttpRequestBase request)
-        {
-            Contract.Requires(request != null);
-
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(request, canvasSettings);
-            return urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(httpContext.Request, canvasSettings);
+            var url = urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath);
+            httpContext.Response.ContentType = "text/html";
+            httpContext.Response.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(url));
         }
 
     }

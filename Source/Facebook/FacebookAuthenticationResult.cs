@@ -15,27 +15,16 @@ namespace Facebook
     public sealed class FacebookAuthenticationResult
     {
         private readonly string accessToken;
-        private readonly long expiresIn;
+        private readonly DateTime expires;
         private readonly string errorReason;
         private readonly string errorDescription;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookAuthenticationResult"/> class.
-        /// </summary>
-        /// <param name="accessToken">
-        /// The access token.
-        /// </param>
-        /// <param name="expiresIn">
-        /// The expires in.
-        /// </param>
-        /// <param name="errorReason">
-        /// The error reason text.
-        /// </param>
-        private FacebookAuthenticationResult(string accessToken, long expiresIn, string errorReason)
+        private FacebookAuthenticationResult(string accessToken, DateTime expires, string errorReason, string errorDescription)
         {
             this.accessToken = accessToken;
-            this.expiresIn = expiresIn;
+            this.expires = expires;
             this.errorReason = errorReason;
+            this.errorDescription = errorDescription;
         }
 
         private FacebookAuthenticationResult(IDictionary<string, object> parameters)
@@ -48,7 +37,8 @@ namespace Facebook
 
             if (parameters.ContainsKey("expires_in"))
             {
-                this.expiresIn = Convert.ToInt64(parameters["expires_in"]);
+                var expiresIn = Convert.ToDouble(parameters["expires_in"]);
+                this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
             }
 
             if (parameters.ContainsKey("error_reason"))
@@ -71,9 +61,9 @@ namespace Facebook
             get { return this.errorDescription; }
         }
 
-        public long ExpiresIn
+        public DateTime Expires
         {
-            get { return this.expiresIn; }
+            get { return this.expires; }
         }
 
         public string AccessToken

@@ -31,7 +31,8 @@ namespace Facebook.Tests
 
             var result = FacebookAuthenticationResult.Parse(url);
 
-            Assert.Equal(0, result.ExpiresIn);
+            var expiresIn = DateTimeConvertor.ToUnixTime(result.Expires);
+            Assert.Equal(0, expiresIn);
         }
 
         [Fact(DisplayName = "Parse: Given a url containing access_token and expires in fragment Then ErrorReasonText is null")]

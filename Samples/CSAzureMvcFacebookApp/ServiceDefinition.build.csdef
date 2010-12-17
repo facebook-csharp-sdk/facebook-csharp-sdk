@@ -9,7 +9,7 @@
   **********************************************************************************************
 -->
 <ServiceDefinition name="CloudApp" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
-  <WebRole name="Facebook.Samples.AuthenticationTool">
+  <WebRole name="SimpleAuth.Web">
     <Sites>
       <Site name="Web">
         <Bindings>

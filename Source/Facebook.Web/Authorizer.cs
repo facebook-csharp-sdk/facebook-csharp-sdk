@@ -17,6 +17,7 @@ namespace Facebook.Web
         /// </summary>
         /// <value>The permissions required.</value>
         public string Perms { get; set; }
+
         /// <summary>
         /// Gets or sets the cancel URL path.
         /// </summary>
@@ -97,6 +98,38 @@ namespace Facebook.Web
 
         }
 
+        public bool Authorize()
+        {
+            Contract.Requires(HttpContext.Current != null);
+
+            return Authorize(HttpContext.Current);
+        }
+
+        public bool Authorize(HttpContext httpContext)
+        {
+            Contract.Requires(httpContext != null);
+
+            var httpContextWrapper = new HttpContextWrapper(httpContext);
+            return Authorize(httpContextWrapper);
+        }
+
+        public bool Authorize(HttpContextBase httpContext)
+        {
+            Contract.Requires(httpContext != null);
+
+            if (!this.IsAuthorized())
+            {
+                HandleUnauthorizedRequest(httpContext);
+            }
+            return true;
+        }
+
+        public virtual void HandleUnauthorizedRequest(HttpContextBase httpContext)
+        {
+            // Redirect to cancel URL to login.
+            httpContext.Response.Redirect(CancelUrlPath);
+        }
+
         /// <summary>
         /// The code contracts invarient object method.
         /// </summary>
@@ -106,5 +139,6 @@ namespace Facebook.Web
         {
             Contract.Invariant(this.FacebookApp != null);
         }
+
     }
 }
