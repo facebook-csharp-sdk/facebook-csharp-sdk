@@ -8,7 +8,6 @@
   $sourceDir = "$baseDir\Source"
   $toolsDir = "$baseDir\Tools"
   $docDir = "$baseDir\Doc"
-  $releaseDir = "$baseDir\Release"
   $workingDir = "$baseDir\Working"
   $builds = @(
     @{Name = "Facebook-Net40"; TestsName = $null; Constants=""; FinalDir="Net40"; Framework="net-4.0"}
@@ -71,9 +70,7 @@ task Package -depends Merge {
             $name = $build.TestsName
             $finalDir = $build.FinalDir
 
-            robocopy $sourceDir\Facebook\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
-            robocopy $sourceDir\Facebook.Web\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
-            robocopy $sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+            robocopy $baseDir\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
         }
           
         exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release "/p:DocumentationSourcePath=$workingDir\Package\Bin\DotNet40" $docDir\doc.shfbproj } "Error building documentation. Check that you have Sandcastle, Sandcastle Help File Builder and HTML Help Workshop installed."
@@ -107,16 +104,16 @@ task Package -depends Merge {
             $name = $build.TestsName
             $finalDir = $build.FinalDir
 
-            Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir -recurse
+            Copy-Item -Path "$baseDir\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir -recurse
             get-childitem $workingDir\NuPack\Facebook\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
 
-            if (Test-Path -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir") {
-                Copy-Item -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -recurse
+            if (Test-Path -Path "$baseDir\bin\Release\$finalDir") {
+                Copy-Item -Path "$baseDir\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -recurse
                 get-childitem $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
             }
 
-            if (Test-Path -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir") {
-                Copy-Item -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir -recurse
+            if (Test-Path -Path "$sourceDir\bin\Release\$finalDir") {
+                Copy-Item -Path "$sourceDir\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir -recurse
                 get-childitem $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
             }
         }
