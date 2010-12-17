@@ -1,8 +1,7 @@
 ﻿properties { 
   $version = '4.1.0'
   $zipFileName = "FacebookSDK_V$version.zip"
-  $buildDocumentation = $true
-  $buildNuPackage = $true
+  $buildPackage = $false
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
@@ -49,7 +48,7 @@ task Build -depends Clean {
 
     Write-Host -ForegroundColor Green "Building " $name
     Write-Host
-    exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release /p:OutputPath=bin\Release\$finalDir\ (GetConstants $build.Constants $signAssemblies) ".\Source\$name.sln" } "Error building $name"
+    exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release (GetConstants $build.Constants $signAssemblies) ".\Source\$name.sln" } "Error building $name"
   }
 }
 
@@ -66,89 +65,81 @@ task Build -depends Clean {
 
 # Optional build documentation, add files to final zip
 task Package -depends Merge {
-  foreach ($build in $builds)
-  {
-    $name = $build.TestsName
-    $finalDir = $build.FinalDir
-    
-    robocopy $sourceDir\Facebook\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
-    robocopy $sourceDir\Facebook.Web\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
-    robocopy $sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
-  }
-  
-  if ($buildDocumentation)
-  {
-    exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release "/p:DocumentationSourcePath=$workingDir\Package\Bin\DotNet40" $docDir\doc.shfbproj } "Error building documentation. Check that you have Sandcastle, Sandcastle Help File Builder and HTML Help Workshop installed."
-    
-    move -Path $workingDir\Documentation\Documentation.chm -Destination $workingDir\Package\Documentation.chm
-    move -Path $workingDir\Documentation\LastBuild.log -Destination $workingDir\Documentation.log
-  }
-  if ($buildNuPackage)
-  {
-    New-Item -Path $workingDir\NuPack\Facebook\$version\ -ItemType Directory
-    New-Item -Path $workingDir\NuPack\FacebookWeb\$version\ -ItemType Directory
-    New-Item -Path $workingDir\NuPack\FacebookWebMvc\$version\ -ItemType Directory
-    
-    Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook\$version\Facebook.nuspec -recurse
-    (Get-Content $workingDir\NuPack\Facebook\$version\Facebook.nuspec) | 
-    Foreach-Object {$_ -replace "{version}", $version} | 
-    Set-Content $workingDir\NuPack\Facebook\$version\Facebook.nuspec
-    
-    Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec -recurse
-    (Get-Content $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec) | 
-    Foreach-Object {$_ -replace "{version}", $version} | 
-    Set-Content $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec
-    
-    
-    Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
-    (Get-Content $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec) | 
-    Foreach-Object {$_ -replace "{version}", $version} | 
-    Set-Content $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec
-    
-    
-    foreach ($build in $builds)
-    {
-        $name = $build.TestsName
-        $finalDir = $build.FinalDir
-        
-        Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir -recurse
-        get-childitem $workingDir\NuPack\Facebook\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
-        
-        if (Test-Path -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir") {
-            Copy-Item -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -recurse
-            get-childitem $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
-        }
-        
-        if (Test-Path -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir") {
-            Copy-Item -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir -recurse
-            get-childitem $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
-        }
-    }
-  
-    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\Facebook\$version\Facebook.nuspec }
-    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec }
-    exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec }
-    move -Path .\*.nupkg -Destination $workingDir\NuPack
-  }
-  
-  Copy-Item -Path $docDir\readme.txt -Destination $workingDir\Package\
-  #Copy-Item -Path $docDir\versions.txt -Destination $workingDir\Package\Bin\
+   if($buildPackage) {
+        foreach ($build in $builds)
+        {
+            $name = $build.TestsName
+            $finalDir = $build.FinalDir
 
-  robocopy $sourceDir $workingDir\Package\Source\Source /MIR /NP /XD .svn bin obj TestResults /XF *.suo *.user
-  robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD .svn
-  robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD .svn
-  robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD .svn
-  
-  exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName $workingDir\Package\* } "Error zipping"
-}
+            robocopy $sourceDir\Facebook\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+            robocopy $sourceDir\Facebook.Web\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+            robocopy $sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+        }
+          
+        exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release "/p:DocumentationSourcePath=$workingDir\Package\Bin\DotNet40" $docDir\doc.shfbproj } "Error building documentation. Check that you have Sandcastle, Sandcastle Help File Builder and HTML Help Workshop installed."
 
-# Unzip package to a location
-task Deploy -depends Package {
-  exec { .\Tools\7-zip\7za.exe x -y "-o$workingDir\Deployed" $workingDir\$zipFileName } "Error unzipping"
+        move -Path $workingDir\Documentation\Documentation.chm -Destination $workingDir\Package\Documentation.chm
+        move -Path $workingDir\Documentation\LastBuild.log -Destination $workingDir\Documentation.log
+
+        New-Item -Path $workingDir\NuPack\Facebook\$version\ -ItemType Directory
+        New-Item -Path $workingDir\NuPack\FacebookWeb\$version\ -ItemType Directory
+        New-Item -Path $workingDir\NuPack\FacebookWebMvc\$version\ -ItemType Directory
+
+        Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuPack\Facebook\$version\Facebook.nuspec -recurse
+        (Get-Content $workingDir\NuPack\Facebook\$version\Facebook.nuspec) | 
+        Foreach-Object {$_ -replace "{version}", $version} | 
+        Set-Content $workingDir\NuPack\Facebook\$version\Facebook.nuspec
+
+        Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec -recurse
+        (Get-Content $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec) | 
+        Foreach-Object {$_ -replace "{version}", $version} | 
+        Set-Content $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec
+
+
+        Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
+        (Get-Content $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec) | 
+        Foreach-Object {$_ -replace "{version}", $version} | 
+        Set-Content $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec
+
+
+        foreach ($build in $builds)
+        {
+            $name = $build.TestsName
+            $finalDir = $build.FinalDir
+
+            Copy-Item -Path "$sourceDir\Facebook\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir -recurse
+            get-childitem $workingDir\NuPack\Facebook\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+
+            if (Test-Path -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir") {
+                Copy-Item -Path "$sourceDir\Facebook.Web\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -recurse
+                get-childitem $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+            }
+
+            if (Test-Path -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir") {
+                Copy-Item -Path "$sourceDir\Facebook.Web.Mvc\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir -recurse
+                get-childitem $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+            }
+        }
+          
+        exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\Facebook\$version\Facebook.nuspec }
+        exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec }
+        exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec }
+        move -Path .\*.nupkg -Destination $workingDir\NuPack
+
+        Copy-Item -Path $docDir\readme.txt -Destination $workingDir\Package\
+        #Copy-Item -Path $docDir\versions.txt -Destination $workingDir\Package\Bin\
+
+        robocopy $sourceDir $workingDir\Package\Source\Source /MIR /NP /XD .svn bin obj TestResults /XF *.suo *.user
+        robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD .svn
+        robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD .svn
+        robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD .svn
+          
+        exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName $workingDir\Package\* } "Error zipping"
+  }
 }
 
 # Run tests on deployed files
-task Test -depends Deploy {
+task Test -depends Package {
   #foreach ($build in $builds)
   #{
   #  $name = $build.TestsName
