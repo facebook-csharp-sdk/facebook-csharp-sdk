@@ -1,7 +1,7 @@
 ﻿properties { 
   $version = '4.1.0'
   $zipFileName = "FacebookSDK_V$version.zip"
-  $buildPackage = $false
+  $buildPackage = $true
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"

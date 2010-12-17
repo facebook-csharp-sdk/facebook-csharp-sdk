@@ -1,4 +1,4 @@
-<OutOfBrowserSettings ShortName="Facebook.Samples.AuthenticationTool Application" EnableGPUAcceleration="False" ShowInstallMenuItem="True">
+<OutOfBrowserSettings ShortName="Facebook.Samples.AuthenticationTool Application" EnableGPUAcceleration="True" ShowInstallMenuItem="True">
   <OutOfBrowserSettings.Blurb>Facebook.Samples.AuthenticationTool Application on your desktop; at home, at work or on the go.</OutOfBrowserSettings.Blurb>
   <OutOfBrowserSettings.WindowSettings>
     <WindowSettings Title="Facebook.Samples.AuthenticationTool Application" Height="768" Width="1024" />
