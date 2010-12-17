@@ -43,7 +43,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\Facebook.Samples.AuthenticationTool.xap" />
+    <Content Include="ClientBin\SilverlightClient.xap" />
     <Content Include="LoginUnsuccessful.htm" />
     <Content Include="Default.aspx" />
     <Content Include="Default.html" />

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="CloudApp" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
-  <WebRole name="SimpleAuth.Web">
+  <WebRole name="AzureFacebookApp.Web">
     <Sites>
       <Site name="Web">
         <Bindings>

@@ -35,12 +35,12 @@
     <ServiceConfiguration Include="ServiceConfiguration.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSMvcSimpleAuth\SimpleAuth.Web.csproj">
-      <Name>SimpleAuth.Web</Name>
+    <ProjectReference Include="..\CSMvcFacebookApp\AzureFacebookApp.Web.csproj">
+      <Name>AzureFacebookApp.Web</Name>
       <Project>{b2af2cde-7139-452a-b73b-c5b8805c2ba6}</Project>
       <Private>True</Private>
       <RoleType>Web</RoleType>
-      <RoleName>SimpleAuth.Web</RoleName>
+      <RoleName>AzureFacebookApp.Web</RoleName>
     </ProjectReference>
   </ItemGroup>
   <!-- Import the target files for this project template -->

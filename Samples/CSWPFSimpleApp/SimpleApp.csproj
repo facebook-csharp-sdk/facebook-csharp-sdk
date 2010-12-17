@@ -37,10 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\..\..\..\..\Source\Facebook\bin\Release\Net40Client\Facebook.dll</HintPath>
+      <HintPath>..\..\Bin\Release\Net40Client\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\Source\Facebook\bin\Release\Net40Client\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\Bin\Release\Net40Client\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

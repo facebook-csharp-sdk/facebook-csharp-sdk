@@ -61,11 +61,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\..\..\..\..\..\Source\Facebook\bin\Release\SL4\Facebook.dll</HintPath>
+      <HintPath>..\..\..\Bin\Release\SL4\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json.Silverlight">
-      <HintPath>..\..\..\..\..\..\Source\Facebook\bin\Release\SL4\Newtonsoft.Json.Silverlight.dll</HintPath>
+      <HintPath>..\..\..\Bin\Release\SL4\Newtonsoft.Json.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />

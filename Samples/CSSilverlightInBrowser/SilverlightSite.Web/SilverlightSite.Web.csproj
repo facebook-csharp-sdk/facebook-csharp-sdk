@@ -13,7 +13,7 @@
     <RootNamespace>WebHost</RootNamespace>
     <AssemblyName>WebHost</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SilverlightApplicationList>{53B7247B-B7BA-4D6D-8BA2-03EB6C9FB6F0}|..\SL4-InBrowser\SL4-InBrowser.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{53B7247B-B7BA-4D6D-8BA2-03EB6C9FB6F0}|..\SilverlightSite\SilverlightSite.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,12 +43,9 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\Facebook.Samples.AuthenticationTool.xap" />
+    <Content Include="ClientBin\SilverlightSite.xap" />
     <Content Include="Default.aspx" />
     <Content Include="Default.html" />
-    <Resource Include="FacebookUtils.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Content Include="LoginSuccessful.htm" />
     <Content Include="LoginUnsuccessful.htm" />
     <Content Include="Silverlight.js" />

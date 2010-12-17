@@ -31,11 +31,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.appId = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.profiles = new System.Windows.Forms.CheckedListBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.userId = new System.Windows.Forms.TextBox();
-            this.loadProfiles = new System.Windows.Forms.Button();
+            this.appSecret = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -48,7 +45,7 @@
             // 
             // login
             // 
-            this.login.Location = new System.Drawing.Point(839, 484);
+            this.login.Location = new System.Drawing.Point(646, 483);
             this.login.Name = "login";
             this.login.Size = new System.Drawing.Size(75, 23);
             this.login.TabIndex = 1;
@@ -59,16 +56,16 @@
             // permissions
             // 
             this.permissions.FormattingEnabled = true;
-            this.permissions.Location = new System.Drawing.Point(727, 28);
+            this.permissions.Location = new System.Drawing.Point(534, 117);
             this.permissions.Name = "permissions";
-            this.permissions.Size = new System.Drawing.Size(187, 409);
+            this.permissions.Size = new System.Drawing.Size(187, 334);
             this.permissions.TabIndex = 2;
             // 
             // accessToken
             // 
             this.accessToken.Location = new System.Drawing.Point(94, 457);
             this.accessToken.Name = "accessToken";
-            this.accessToken.Size = new System.Drawing.Size(820, 20);
+            this.accessToken.Size = new System.Drawing.Size(627, 20);
             this.accessToken.TabIndex = 3;
             // 
             // label1
@@ -83,7 +80,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(724, 9);
+            this.label2.Location = new System.Drawing.Point(530, 99);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 13);
             this.label2.TabIndex = 5;
@@ -101,63 +98,33 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(531, 12);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "AppId";
-            // 
-            // profiles
-            // 
-            this.profiles.FormattingEnabled = true;
-            this.profiles.Location = new System.Drawing.Point(534, 150);
-            this.profiles.Name = "profiles";
-            this.profiles.Size = new System.Drawing.Size(187, 289);
-            this.profiles.TabIndex = 8;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(531, 134);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Profiles";
+            this.label3.Text = "App Id";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(531, 52);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 13);
+            this.label5.Size = new System.Drawing.Size(60, 13);
             this.label5.TabIndex = 11;
-            this.label5.Text = "UserId";
+            this.label5.Text = "App Secret";
             // 
-            // userId
+            // appSecret
             // 
-            this.userId.Location = new System.Drawing.Point(534, 68);
-            this.userId.Name = "userId";
-            this.userId.Size = new System.Drawing.Size(187, 20);
-            this.userId.TabIndex = 10;
-            // 
-            // loadProfiles
-            // 
-            this.loadProfiles.Location = new System.Drawing.Point(613, 94);
-            this.loadProfiles.Name = "loadProfiles";
-            this.loadProfiles.Size = new System.Drawing.Size(108, 23);
-            this.loadProfiles.TabIndex = 12;
-            this.loadProfiles.Text = "Load Profiles";
-            this.loadProfiles.UseVisualStyleBackColor = true;
-            this.loadProfiles.Click += new System.EventHandler(this.loadProfiles_Click);
+            this.appSecret.Location = new System.Drawing.Point(534, 68);
+            this.appSecret.Name = "appSecret";
+            this.appSecret.Size = new System.Drawing.Size(187, 20);
+            this.appSecret.TabIndex = 10;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(930, 518);
-            this.Controls.Add(this.loadProfiles);
+            this.ClientSize = new System.Drawing.Size(733, 514);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.userId);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.profiles);
+            this.Controls.Add(this.appSecret);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.appId);
             this.Controls.Add(this.label2);
@@ -168,7 +135,6 @@
             this.Controls.Add(this.webBrowser1);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -184,11 +150,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox appId;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckedListBox profiles;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox userId;
-        private System.Windows.Forms.Button loadProfiles;
+        private System.Windows.Forms.TextBox appSecret;
     }
 }
 

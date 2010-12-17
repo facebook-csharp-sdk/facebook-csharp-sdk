@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleAuth.Web", "CSMvcSimpleAuth\SimpleAuth.Web.csproj", "{B2AF2CDE-7139-452A-B73B-C5B8805C2BA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookApp.Web", "CSMvcFacebookApp\FacebookApp.Web.csproj", "{B2AF2CDE-7139-452A-B73B-C5B8805C2BA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

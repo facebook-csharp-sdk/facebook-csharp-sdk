@@ -78,7 +78,7 @@ namespace Facebook.Samples.AuthenticationTool
             parms.type = "user_agent";
 
             // TODO: figure out why this temporary hack is necessary
-            loggingInUri = new Uri(fbApp.GetLoginUrl(parms).ToString());
+            loggingInUri = fbApp.GetLoginUrl(parms);
 
             FacebookLoginBrowser.Source = (loggingInUri);
         }
@@ -87,30 +87,17 @@ namespace Facebook.Samples.AuthenticationTool
         {
             if (e.Value != "Failed")
             {
-                var uri = new Uri(e.Value);
-
-                // We're on the success page
-                accessToken = "";
-                var queryVars = uri.Fragment.Split('&');
-                foreach (var line in queryVars)
+                FacebookAuthenticationResult authResult;
+                if (FacebookAuthenticationResult.TryParse(e.Value, out authResult))
                 {
-                    var KeyValue = line.Split('=');
-                    if (KeyValue.Length > 1 && KeyValue[0].Contains("access_token"))
-                    {
-                        accessToken = KeyValue[1];
-                    }
+                    fbApp.Session = authResult.ToSession();
+                    loggedIn = true;
+                    loginSucceeded(e);
                 }
-                if (String.IsNullOrEmpty(accessToken))
-                {
-                    //return;
-                    failedLogin();
-                }
-                fbApp = new FacebookApp(accessToken);
-
-                loggedIn = true;
-                loginSucceeded(e);
             }
-            else // failed
+
+
+            if (fbApp.Session == null)
             {
                 failedLogin();
             }

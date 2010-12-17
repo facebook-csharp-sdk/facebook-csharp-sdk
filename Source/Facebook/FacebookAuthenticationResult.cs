@@ -76,6 +76,15 @@ namespace Facebook
             get { return string.IsNullOrEmpty(this.ErrorReason) && !string.IsNullOrEmpty(this.AccessToken); }
         }
 
+        public FacebookSession ToSession()
+        {
+            return new FacebookSession
+            {
+                AccessToken = this.AccessToken,
+                Expires = this.Expires,
+            };
+        }
+
         public static FacebookAuthenticationResult Parse(string uriString)
         {
             return Parse(new Uri(uriString));

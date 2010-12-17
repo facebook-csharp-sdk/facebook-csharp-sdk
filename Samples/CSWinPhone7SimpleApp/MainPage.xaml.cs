@@ -17,7 +17,7 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string apiKey = "Your Application ID goes here";
+        private const string apiKey = "120625701301347";
         private string requestedFbPermissions = "user_about_me,"; //email,user_likes,user_checkins"; //"email,user_likes,user_checkins,publish_checkins"; //etc
 
         private string accessToken;
@@ -29,12 +29,6 @@ namespace Facebook.Samples.AuthenticationTool
         private bool loggedIn = false;
 
         private FacebookApp fbApp;
-        Uri loggingInUri;
-
-        private void loginFailed(bool error)
-        {
-            // TODO: you should notify the user or do something else
-        }
 
         // At this point we have an access token so we can get information from facebook
         private void loginSucceeded()
@@ -104,61 +98,19 @@ namespace Facebook.Samples.AuthenticationTool
             parms["scope"] = requestedFbPermissions;
             parms["type"] = "user_agent";
 
-            loggingInUri = fbApp.GetLoginUrl(parms);
-            FacebookLoginBrowser.Navigate(loggingInUri);
+            var loginUrl = fbApp.GetLoginUrl(parms);
+            FacebookLoginBrowser.Navigate(loginUrl);
         }
 
         private void FacebookLoginBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             Debug.WriteLine(e.Uri);
-            if (e.Uri == loggingInUri)
+
+            FacebookAuthenticationResult authResult;
+            if (FacebookAuthenticationResult.TryParse(e.Uri, out authResult))
             {
-                // this event will fire when we first navigate the browser control to log in
-                // when the Uri is the same as the one for logging in then we can skip this one
-                // (we want the one that happens after logging in)
-                return;
-            }
-            var uri = e.Uri;
-
-            if (successUrl.EndsWith(uri.LocalPath))
-            {
-                // We're on the success page
-                accessToken = "";
-                string[] queryVars;
-                if (String.IsNullOrEmpty(uri.Fragment) && uri.Query != null)
-                {
-                    queryVars = uri.Query.Split('&');
-                }
-                else
-                {
-                    queryVars = uri.Fragment.Split('&');
-                }
-                foreach (var line in queryVars)
-                {
-                    var KeyValue = line.Split('=');
-                    if (KeyValue.Length > 1 && KeyValue[0].Contains("access_token"))
-                    {
-                        accessToken = KeyValue[1];
-                    }
-                }
-
-                if (String.IsNullOrEmpty(accessToken))
-                {
-                    // TODO: if this happens you might have an error in your app or your AppId (consult our docs on proper setup)
-                    loginFailed(true);
-                    return;
-                }
-
-                loggedIn = true;
-
-                fbApp = new FacebookApp(accessToken);
-
+                fbApp.Session = authResult.ToSession();
                 loginSucceeded();
-            }
-            if (failedUrl.EndsWith(uri.LocalPath))
-            {
-                // We're on the failed page
-                loginFailed(false);
             }
         }
     }

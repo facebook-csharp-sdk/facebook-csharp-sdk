@@ -33,14 +33,7 @@ namespace Facebook.Samples.AuthenticationTool
 
         Uri loggingInUri;
 
-        private string accessToken;
-
         private FacebookApp fbApp;
-
-        private void loginFailed(bool error)
-        {
-            // TODO: you should notify the user or do something else
-        }
 
         private void loginSucceeded()
         {
@@ -96,54 +89,11 @@ namespace Facebook.Samples.AuthenticationTool
         void FacebookLoginBrowser_Navigated(object sender, NavigationEventArgs e)
         {
             Debug.WriteLine(e.Uri);
-            if (e.Uri == loggingInUri)
+            FacebookAuthenticationResult authResult;
+            if (FacebookAuthenticationResult.TryParse(e.Uri, out authResult))
             {
-                // this event will fire when we first navigate the browser control to log in
-                // when the Uri is the same as the one for logging in then we can skip this one
-                // (we want the one that happens after logging in)
-                return;
-            }
-            var uri = e.Uri;
-
-            if (successUrl.EndsWith(uri.LocalPath))
-            {
-                // We're on the success page
-                accessToken = "";
-                string[] queryVars;
-                if (String.IsNullOrEmpty(uri.Fragment) && uri.Query != null)
-                {
-                    queryVars = uri.Query.Split('&');
-                }
-                else
-                {
-                    queryVars = uri.Fragment.Split('&');
-                }
-                foreach (var line in queryVars)
-                {
-                    var KeyValue = line.Split('=');
-                    if (KeyValue.Length > 1 && KeyValue[0].Contains("access_token"))
-                    {
-                        accessToken = KeyValue[1];
-                    }
-                }
-
-                if (String.IsNullOrEmpty(accessToken))
-                {
-                    // TODO: if this happens you might have an error in your app or your AppId (consult our docs on proper setup)
-                    loginFailed(true);
-                    return;
-                }
-
-                loggedIn = true;
-
-                fbApp = new FacebookApp(accessToken);
-
+                fbApp.Session = authResult.ToSession();
                 loginSucceeded();
-            }
-            if (failedUrl.EndsWith(uri.LocalPath))
-            {
-                // We're on the failed page
-                loginFailed(false);
             }
         }
     }

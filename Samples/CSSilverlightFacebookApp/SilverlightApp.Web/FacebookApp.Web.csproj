@@ -35,17 +35,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\..\..\..\..\..\Source\Facebook\bin\Release\Net40\Facebook.dll</HintPath>
+      <HintPath>..\..\..\Bin\Release\Net40\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Facebook.Web">
-      <HintPath>..\..\..\..\..\..\Source\Facebook.Web\bin\Release\Net40\Facebook.Web.dll</HintPath>
+      <HintPath>..\..\..\Bin\Release\Net40\Facebook.Web.dll</HintPath>
     </Reference>
     <Reference Include="Facebook.Web.Mvc">
-      <HintPath>..\..\..\..\..\..\Source\Facebook.Web.Mvc\bin\Release\Net40\Facebook.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\Bin\Release\Net40\Facebook.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\..\Source\Facebook\bin\Release\Net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\Bin\Release\Net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
