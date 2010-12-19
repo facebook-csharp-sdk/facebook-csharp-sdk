@@ -2,11 +2,13 @@
   $version = '4.1.0'
   $zipFileName = "FacebookSDK_V$version.zip"
   $buildPackage = $true
+  $buildDocs = $true
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
   $sourceDir = "$baseDir\Source"
   $toolsDir = "$baseDir\Tools"
+  $sampleDir = "$baseDir\Samples"
   $docDir = "$baseDir\Doc"
   $workingDir = "$baseDir\Working"
   $builds = @(
@@ -39,7 +41,6 @@ task Clean {
 
 # Build each solution, optionally signed
 task Build -depends Clean { 
-  
   foreach ($build in $builds)
   {
     $name = $build.Name
@@ -70,14 +71,31 @@ task Package -depends Merge {
             $name = $build.TestsName
             $finalDir = $build.FinalDir
 
-            robocopy $baseDir\bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+            robocopy $baseDir\Bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
         }
+         
+        if ($buildDocs) {
+            exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release "/p:DocumentationSourcePath=$workingDir\Package\Bin\DotNet40" $docDir\doc.shfbproj } "Error building documentation. Check that you have Sandcastle, Sandcastle Help File Builder and HTML Help Workshop installed."
+
+            move -Path $workingDir\Documentation\Documentation.chm -Destination $workingDir\Package\Documentation.chm
+            move -Path $workingDir\Documentation\LastBuild.log -Destination $workingDir\Documentation.log
+
+            Copy-Item -Path $docDir\readme.txt -Destination $workingDir\Package\
+            #Copy-Item -Path $docDir\versions.txt -Destination $workingDir\Package\Bin\
+        }
+
+        robocopy $sourceDir $workingDir\Package\Source\Source /MIR /NP /XD bin obj TestResults /XF *.suo *.user
+        robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD
+        robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD
+        robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD
+        robocopy $sampleDir $workingDir\Package\Samples /MIR /NP /XD bin obj TestResults /XF *.suo *.user
           
-        exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release "/p:DocumentationSourcePath=$workingDir\Package\Bin\DotNet40" $docDir\doc.shfbproj } "Error building documentation. Check that you have Sandcastle, Sandcastle Help File Builder and HTML Help Workshop installed."
+        exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName $workingDir\Package\* } "Error zipping"
+  }
+}
 
-        move -Path $workingDir\Documentation\Documentation.chm -Destination $workingDir\Package\Documentation.chm
-        move -Path $workingDir\Documentation\LastBuild.log -Destination $workingDir\Documentation.log
-
+task NuGetPackage -depends Package {
+    if($buildPackage) {
         New-Item -Path $workingDir\NuPack\Facebook\$version\ -ItemType Directory
         New-Item -Path $workingDir\NuPack\FacebookWeb\$version\ -ItemType Directory
         New-Item -Path $workingDir\NuPack\FacebookWebMvc\$version\ -ItemType Directory
@@ -104,17 +122,45 @@ task Package -depends Merge {
             $name = $build.TestsName
             $finalDir = $build.FinalDir
 
-            Copy-Item -Path "$baseDir\bin\Release\$finalDir" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir -recurse
-            get-childitem $workingDir\NuPack\Facebook\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+            New-Item -Path $workingDir\NuPack\Facebook\$version\lib\$finalDir -ItemType Directory
+            New-Item -Path $workingDir\NuPack\Facebook\$version\lib\$finalDir\CodeContracts -ItemType Directory
+            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.dll" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.XML" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.dll" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir\CodeContracts
+            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir\CodeContracts
 
-            if (Test-Path -Path "$baseDir\bin\Release\$finalDir") {
-                Copy-Item -Path "$baseDir\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -recurse
-                get-childitem $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+            # Temporary Copy Json.Net 4.0 for SL and WP7
+            if ($finalDir -eq "SL4") {
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.Silverlight.dll" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.Silverlight.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.Silverlight.xml" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+            }
+            if ($finalDir -eq "WP7") {
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.WindowsPhone.dll" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.WindowsPhone.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.WindowsPhone.xml" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
             }
 
-            if (Test-Path -Path "$sourceDir\bin\Release\$finalDir") {
-                Copy-Item -Path "$sourceDir\bin\Release\$finalDir" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir -recurse
-                get-childitem $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\*.* -include *.old,*.sdf -recurse | remove-item
+            
+            if ($finalDir -eq "Net40" -or $finalDir -eq "Net35") {
+                New-Item -Path $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -ItemType Directory
+                New-Item -Path $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\CodeContracts -ItemType Directory
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.dll" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.pdb" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.XML" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Contracts.dll" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\CodeContracts
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Contracts.pdb" -Destination $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\CodeContracts
+            }
+
+            if ($finalDir -eq "Net40" -or $finalDir -eq "Net35") {
+                New-Item -Path $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir -ItemType Directory
+                New-Item -Path $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\CodeContracts -ItemType Directory
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc.dll" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc.pdb" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc.XML" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Mvc.Contracts.dll" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\CodeContracts
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Mvc.Contracts.pdb" -Destination $workingDir\NuPack\FacebookWebMvc\$version\lib\$finalDir\CodeContracts
             }
         }
           
@@ -122,21 +168,11 @@ task Package -depends Merge {
         exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWeb\$version\FacebookWeb.nuspec }
         exec { .\Tools\NuPack\NuPack.exe $workingDir\NuPack\FacebookWebMvc\$version\FacebookWebMvc.nuspec }
         move -Path .\*.nupkg -Destination $workingDir\NuPack
-
-        Copy-Item -Path $docDir\readme.txt -Destination $workingDir\Package\
-        #Copy-Item -Path $docDir\versions.txt -Destination $workingDir\Package\Bin\
-
-        robocopy $sourceDir $workingDir\Package\Source\Source /MIR /NP /XD .svn bin obj TestResults /XF *.suo *.user
-        robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD .svn
-        robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD .svn
-        robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD .svn
-          
-        exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName $workingDir\Package\* } "Error zipping"
-  }
+    }
 }
 
 # Run tests on deployed files
-task Test -depends Package {
+task Test -depends NuGetPackage {
   #foreach ($build in $builds)
   #{
   #  $name = $build.TestsName
