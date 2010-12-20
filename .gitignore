@@ -33,3 +33,6 @@ lint.db
 # Misc Ignores
 Thumbs.db
 !libs/*/[Bb]in/
+
+#FacebookSDK ignores
+Working/
