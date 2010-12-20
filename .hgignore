@@ -14,3 +14,4 @@ glob:*.TeamCity.user
 glob:*.vs10x
 glob:*.gpstate
 glob:Bin/*
+glob:.git/*
