@@ -58,7 +58,7 @@ namespace Facebook.Web.Mvc
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             var model = new FacebookAuthorizeInfo(
-                GetLoginUrl(filterContext, true /* cancel to self */),
+                GetLoginUrl(filterContext),
                 this.Perms,
                 filterContext.HttpContext.Request.QueryString.AllKeys.Contains("cancel"),
                 filterContext.RouteData.Values);
