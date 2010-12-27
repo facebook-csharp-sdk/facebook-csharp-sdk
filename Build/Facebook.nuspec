@@ -9,6 +9,9 @@
 	<licenseUrl>http://facebooksdk.codeplex.com/license</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
 	<projectUrl>http://facebooksdk.codeplex.com</projectUrl>
+	<dependencies>
+		<dependency id="Newtonsoft.Json" version="3.5.8" />
+	</dependencies> 
   </metadata>
   <dependencies>
 	<dependency id="Newtonsoft.Json" version="3.5.8" />
