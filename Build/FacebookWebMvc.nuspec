@@ -12,6 +12,7 @@
 	<dependencies>
 		<dependency id="Facebook" version="{version}" />
 		<dependency id="FacebookWeb" version="{version}" />
+		<dependency id="Newtonsoft.Json" version="3.5.8" />
 	</dependencies> 
   </metadata>
 </package>
