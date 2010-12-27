@@ -25,6 +25,7 @@ namespace Facebook.Web.Mvc
         /// </summary>
         /// <value>The cancel URL path.</value>
         public string CancelUrlPath { get; set; }
+
         /// <summary>
         /// Gets or sets the return URL path.
         /// </summary>
@@ -42,7 +43,6 @@ namespace Facebook.Web.Mvc
         /// <param name="facebookApp">The facebook app.</param>
         public CanvasAuthorizeAttribute(FacebookApp facebookApp) :base(facebookApp) { }
 
-
         /// <summary>
         /// Gets the login url for the current request.
         /// </summary>
@@ -50,21 +50,9 @@ namespace Facebook.Web.Mvc
         /// <returns>The cancel url.</returns>
         protected Uri GetLoginUrl(AuthorizationContext filterContext)
         {
-            return GetLoginUrl(filterContext, false);
-        }
-
-        /// <summary>
-        /// Gets the login url for the current request.
-        /// </summary>
-        /// <param name="filterContext">The current AuthorizationContext.</param>
-        /// <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
-        /// <returns>The cancel url.</returns>
-        protected virtual Uri GetLoginUrl(AuthorizationContext filterContext, bool cancelToSelf)
-        {
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(filterContext.HttpContext.Request);
-            return urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath, cancelToSelf);
+            return urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath);
         }
-
 
         /// <summary>
         /// Handles the unauthorized request.

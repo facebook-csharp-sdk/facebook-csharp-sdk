@@ -126,9 +126,6 @@
     <Compile Include="CanvasUrlBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FacebookAppRedirectHttpHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="GlobalSuppressions.cs">
       <SubType>Code</SubType>
     </Compile>

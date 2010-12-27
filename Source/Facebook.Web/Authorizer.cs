@@ -117,11 +117,12 @@ namespace Facebook.Web
         {
             Contract.Requires(httpContext != null);
 
-            if (!this.IsAuthorized())
+            bool isAuthorized = this.IsAuthorized();
+            if (!isAuthorized)
             {
                 HandleUnauthorizedRequest(httpContext);
             }
-            return true;
+            return isAuthorized;
         }
 
         public virtual void HandleUnauthorizedRequest(HttpContextBase httpContext)

@@ -23,7 +23,7 @@ namespace Facebook.Web.Mvc
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public abstract class FacebookAuthorizeAttributeBase : ActionFilterAttribute, IAuthorizationFilter
     {
-        private FacebookApp _facebookApp;
+        private FacebookApp facebookApp;
 
         /// <summary>
         /// Gets the facebook app.
@@ -31,7 +31,7 @@ namespace Facebook.Web.Mvc
         /// <value>The facebook app.</value>
         public FacebookApp FacebookApp
         {
-            get { return this._facebookApp; }
+            get { return this.facebookApp; }
         }
 
         /// <summary>
@@ -47,15 +47,7 @@ namespace Facebook.Web.Mvc
         /// </summary>
         protected FacebookAuthorizeAttributeBase()
         {
-            _facebookApp = new FacebookApp();
-        }
-
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        private void InvarientObject()
-        {
-            Contract.Invariant(_facebookApp != null);
+            facebookApp = new FacebookApp();
         }
 
         /// <summary>
@@ -64,11 +56,16 @@ namespace Facebook.Web.Mvc
         /// <param name="facebookApp">The facebook app.</param>
         protected FacebookAuthorizeAttributeBase(FacebookApp facebookApp)
         {
-            if (facebookApp == null)
-            {
-                throw new ArgumentNullException("facebookApp");
-            }
-            this._facebookApp = facebookApp;
+            Contract.Requires(facebookApp != null);
+            this.facebookApp = facebookApp;
+        }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(facebookApp != null);
         }
 
         /// <summary>
@@ -96,7 +93,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(httpContext != null);
             Contract.EndContractBlock();
 
-            bool authenticated = _facebookApp.Session != null;
+            bool authenticated = facebookApp.Session != null;
             if (authenticated && !string.IsNullOrEmpty(Perms))
             {
                 var requiredPerms = Perms.Split(',');
@@ -120,9 +117,9 @@ namespace Facebook.Web.Mvc
         {
             filterContext.ActionParameters = filterContext.ActionParameters ?? new Dictionary<string, object>();
 
-            if (_facebookApp.Session != null)
+            if (facebookApp.Session != null)
             {
-                filterContext.ActionParameters["FacebookId"] = _facebookApp.Session.UserId;
+                filterContext.ActionParameters["FacebookId"] = facebookApp.Session.UserId;
             }
 
             base.OnActionExecuting(filterContext);
@@ -147,7 +144,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(!String.IsNullOrEmpty(perms));
             Contract.Ensures(Contract.Result<string[]>() != null);
 
-            var authUtil = new Authorizer(this._facebookApp);
+            var authUtil = new Authorizer(this.facebookApp);
             var requiredPerms = Perms.Replace(" ", String.Empty).Split(',');
             return authUtil.HasPermissions(requiredPerms);
         }
