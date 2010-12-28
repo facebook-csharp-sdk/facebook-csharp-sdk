@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
@@ -274,41 +273,12 @@ namespace Facebook.Web
             //    pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
             //}
 
-            // remove signed request from the query string, but keep the rest of the query string there
-            var pathArray = pathAndQuery.Split("?".ToCharArray());
-            if (pathArray.Length > 1)
-            {
-                var queryStrings = pathArray[1];
-                var col = HttpUtility.ParseQueryString("?" + queryStrings);
-                if (!string.IsNullOrEmpty(col["signed_request"]))
-                {
-                    col.Remove("signed_request");
-                }
-
-                // if more than one facebook will forward one query string param
-                string query = "";
-                if (col.AllKeys.Length > 1)
-                {
-                    query = "?";
-                    foreach (var c in col.AllKeys)
-                    {
-                        query += c + "=" + col[c] + "&";
-                    }
-                    query = query.TrimEnd("&".ToCharArray());
-                    
-                }
-                pathAndQuery = pathArray[0] + query;
-            }
-
-
             var url = string.Concat(CanvasPage, pathAndQuery);
             if (url.EndsWith("/"))
             {
                 url = url.Substring(0, url.Length - 1);
             }
-
-
-            return new Uri(HttpUtility.HtmlEncode(url));
+            return new Uri(url);
         }
 
     }
