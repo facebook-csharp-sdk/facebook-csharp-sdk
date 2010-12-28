@@ -20,6 +20,7 @@ namespace Facebook.Web
     /// </summary>
     public class CanvasUrlBuilder
     {
+        private const string redirectPath = "facebookredirect.axd";
         private HttpRequestBase request;
         private ICanvasSettings canvasSettings;
 
@@ -201,6 +202,24 @@ namespace Facebook.Web
         }
 
         /// <summary>
+        /// Gets the Facebook login URL.
+        /// </summary>
+        /// <param name="facebookApp">The facebook app.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="returnUrlPath">The return URL path.</param>
+        /// <param name="cancelUrlPath">The cancel URL path.</param>
+        /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#"),
+        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
+        public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath)
+        {
+            Contract.Requires(facebookApp != null);
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return GetLoginUrl(facebookApp, permissions, returnUrlPath, cancelUrlPath, false);
+        }
+
+        /// <summary>
         /// Gets the login url for the current request.
         /// </summary>
         /// <param name="facebookApp">An instance of FacebookAppBase.</param>
@@ -211,7 +230,7 @@ namespace Facebook.Web
         /// <returns>The cancel url.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
-        public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath)
+        public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath, bool cancelToSelf)
         {
             Contract.Requires(facebookApp != null);
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -224,11 +243,11 @@ namespace Facebook.Web
             Uri returnUrl;
             if (!string.IsNullOrEmpty(returnUrlPath))
             {
-                returnUrl = BuildCanvasPageUrl(returnUrlPath);
+                returnUrl = BuildAuthReturnUrl(returnUrlPath);
             }
             else
             {
-                returnUrl = BuildCanvasPageUrl(this.CurrentCanvasPathAndQuery);
+                returnUrl = BuildAuthReturnUrl();
             }
             parameters["next"] = returnUrl.ToString();
 
@@ -237,7 +256,7 @@ namespace Facebook.Web
             Uri cancelUrl;
             if (!string.IsNullOrEmpty(cancelUrlPath))
             {
-                cancelUrl = BuildCanvasPageUrl(cancelUrlPath);
+                cancelUrl = BuildAuthReturnUrl(cancelUrlPath);
             }
             else if (this.canvasSettings.AuthorizeCancelUrl != null)
             {
@@ -245,12 +264,67 @@ namespace Facebook.Web
             }
             else
             {
-                cancelUrl = BuildCanvasPageUrl(this.CurrentCanvasPathAndQuery);
+                if (cancelToSelf)
+                {
+                    cancelUrl = BuildAuthCancelUrl();
+                }
+                else
+                {
+                    // Cancel url is facebook.com
+                    cancelUrl = new Uri("http://www.facebook.com");
+                }
+
             }
             parameters["cancel_url"] = cancelUrl.ToString();
 
 
             return facebookApp.GetLoginUrl(parameters);
+        }
+
+        /// <summary>
+        /// Builds a Facebook authorization cancel URL.
+        /// </summary>
+        /// <returns></returns>
+        public Uri BuildAuthCancelUrl()
+        {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return BuildAuthCancelUrl(null);
+        }
+
+        /// <summary>
+        /// Builds a Facebook authorization cancel URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <returns></returns>
+        public Uri BuildAuthCancelUrl(string pathAndQuery)
+        {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return BuildAuthReturnUrl(pathAndQuery, true);
+        }
+
+        /// <summary>
+        /// Builds a Facebook authorization return URL.
+        /// </summary>
+        /// <returns></returns>
+        public Uri BuildAuthReturnUrl()
+        {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return BuildAuthReturnUrl(null);
+        }
+
+        /// <summary>
+        /// Builds a Facebook authorization return URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <returns></returns>
+        public Uri BuildAuthReturnUrl(string pathAndQuery)
+        {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            return BuildAuthReturnUrl(pathAndQuery, false);
         }
 
         /// <summary>
@@ -279,6 +353,56 @@ namespace Facebook.Web
                 url = url.Substring(0, url.Length - 1);
             }
             return new Uri(url);
+        }
+
+        /// <summary>
+        /// Builds a Facebook canvas return URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <param name="cancel">if set to <c>true</c> [cancel].</param>
+        /// <returns></returns>
+        private Uri BuildAuthReturnUrl(string pathAndQuery, bool cancel)
+        {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+
+            if (!string.IsNullOrEmpty(pathAndQuery) && pathAndQuery.StartsWith("/", StringComparison.Ordinal))
+            {
+                pathAndQuery = pathAndQuery.Substring(1);
+            }
+
+            if (pathAndQuery == null)
+            {
+                pathAndQuery = CurrentCanvasPathAndQuery;
+            }
+
+            string path;
+            if (pathAndQuery.Contains('?'))
+            {
+                path = pathAndQuery.Split('?')[0];
+            }
+            else
+            {
+                path = pathAndQuery;
+            }
+
+            if (!path.StartsWith("/", StringComparison.Ordinal))
+            {
+                path = "/" + path;
+            }
+
+            var appPath = request.ApplicationPath;
+            if (appPath != "/")
+            {
+                appPath = string.Concat(appPath, "/");
+            }
+
+            string redirectRoot = string.Concat(redirectPath, "/", cancel ? "cancel" : string.Empty);
+
+            UriBuilder uriBuilder = new UriBuilder(CurrentCanvasUrl);
+            uriBuilder.Path = string.Concat(appPath, redirectRoot, CanvasPageApplicationPath, path);
+            uriBuilder.Query = null; // No Querystrings allowed in return urls
+            return uriBuilder.Uri;
         }
 
     }
