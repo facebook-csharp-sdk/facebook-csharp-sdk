@@ -10,13 +10,29 @@
 </head>
 <body>
     <div class="page">
+
         <div id="header">
-            <br />
-                <h1>
-                    Facebook C# SDK - Auth and Allow MVC Sample</h1>
+            <div id="title">
+                <h1>My Facebook App</h1>
+            </div>
+              
+            <div id="logindisplay">
+                Welcome!
+            </div> 
+            
+            <div id="menucontainer">
+            
+                <ul id="menu">              
+                    <li><%: Html.CanvasActionLink("Home", "Index", "Home")%></li>
+                    <li><%: Html.CanvasActionLink("About", "About", "Home")%></li>
+                </ul>
+            
+            </div>
         </div>
+
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+
             <div id="footer">
             </div>
         </div>

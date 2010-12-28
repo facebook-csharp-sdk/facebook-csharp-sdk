@@ -34,7 +34,10 @@ namespace Facebook.Web
             var uri = new Uri("http://apps.facebook.com" + pathInfo);
             UriBuilder uriBuilder = new UriBuilder(uri);
             uriBuilder.Query = queryString;
-            context.Response.Redirect(uriBuilder.ToString());
+            var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url=" 
+                + uriBuilder.Uri.ToString() + 
+                "\"></head></html>";
+            context.Response.Write(html);
         }
     }
 }

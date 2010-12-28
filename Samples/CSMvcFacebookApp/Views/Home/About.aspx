@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Home Page
+    Facebook C# SDK - Auth and Allow IFrame Sample
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <p>
-        To learn more about the Facebook C# SDK visit <a href="http://facebooksdk.codeplex.com"
-            title="Facebook C# SDK">http://facebooksdk.codeplex.com</a>.
-    </p>
+    <h2>
+        Hello
+        <%: ViewData["Firstname"]%>
+        <%: ViewData["Lastname"]%>!</h2>
 </asp:Content>

@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace Auth_And_Allow_cs.Models
+namespace FacebookDemo.Web.Models
 {
 
     #region Models
