@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "VBASPNETSimpleAuth", "VBASPNETSimpleAuth\", "{69564D97-4834-484B-AED3-A16CCE776374}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "VBASPNETSimpleAuth", "VBASPNETFacebookApp\", "{69564D97-4834-484B-AED3-A16CCE776374}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/VBASPNETSimpleAuth"
-		Debug.AspNetCompiler.PhysicalPath = "VBASPNETSimpleAuth\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\VBASPNETSimpleAuth\"
+		Debug.AspNetCompiler.VirtualPath = "/VBASPNETFacebookApp"
+		Debug.AspNetCompiler.PhysicalPath = "VBASPNETFacebookApp\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\VBASPNETFacebookApp\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/VBASPNETSimpleAuth"
-		Release.AspNetCompiler.PhysicalPath = "VBASPNETSimpleAuth\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\VBASPNETSimpleAuth\"
+		Release.AspNetCompiler.VirtualPath = "/VBASPNETFacebookApp"
+		Release.AspNetCompiler.PhysicalPath = "VBASPNETFacebookApp\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\VBASPNETFacebookApp\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
