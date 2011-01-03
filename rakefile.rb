@@ -24,7 +24,7 @@ task :configure do
         :paths  => {
             :root   => root_path,
             :src    => "#{root_path}Source/",
-            :output => "#{root_path}Bin/",
+            :output  => "#{root_path}Bin/",
             :dist   => "#{root_path}Dist/",
             :tools  => "#{root_path}Tools/"
         },
@@ -99,6 +99,12 @@ msbuild :sl4 do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:sl4]
     msb.targets :Build
+end
+
+msbuild :clean_sl4 do |msb|
+    msb.properties :configuration => build_config[:configuration]
+    msb.solution = build_config[:sln][:sl4]
+    msb.targets :Clean
 end
 
 desc "Build Windows Phone 7 binaries"
