@@ -5,6 +5,7 @@ PROJECT_NAME_SAFE = PROJECT_NAME
 LOG               = true                # TODO: enable albacore logging from ENV
 
 build_config = nil
+
 task :configure do
     # do configuration stuffs here
     Albacore.configure do |config|
@@ -28,7 +29,7 @@ task :configure do
             :tools  => "#{root_path}Tools/"
         },
         :version => {
-			:base =>   "#{base_version}",
+			:base => "#{base_version}",
             :full => "#{base_version}",
             :long => "#{base_version}"
 		},
@@ -41,7 +42,8 @@ task :configure do
 			:build_number_param_name => 'BUILD_NUMBER',
             :is_nightly              => true,
             :build_number            => 0
-		}
+		},
+        :configuration => :Release
     }
     
     begin
@@ -84,3 +86,8 @@ task :configure do
 end
 
 Rake::Task["configure"].invoke
+
+desc "Build Windows Phone 7 binaries"
+task :msbuild do |msb|
+   msb.properties :configuration => build_config[:configuration]
+end
