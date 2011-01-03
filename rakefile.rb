@@ -43,8 +43,13 @@ task :configure do
             :is_nightly              => true,
             :build_number            => 0
 		},
-        :configuration => :Release
+        :configuration => :Release,
+        :sln => {
+            :wp7 => ''
+        }
     }
+    
+    build_config[:sln][:wp7] = "#{build_config[:paths][:src]}Facebook-WP7.sln"
     
     begin
         # TODO: support mercurial and svn
@@ -88,6 +93,21 @@ end
 Rake::Task["configure"].invoke
 
 desc "Build Windows Phone 7 binaries"
-task :msbuild do |msb|
+msbuild :wp7 do |msb|
    msb.properties :configuration => build_config[:configuration]
+   msb.solution = build_config[:sln][:wp7]
+   msb.use :net40
+   msb.targets :Build
+end
+
+msbuild :clean_wp7 do |msb|
+   msb.properties :configuration => build_config[:configuration]
+   msb.solution = build_config[:sln][:wp7]
+   msb.use :net40
+   msb.targets :Clean
+end
+
+desc "Clean"
+task :clean => [:clean_wp7] do
+    FileUtils.rm_rf build_config[:paths][:output]
 end
