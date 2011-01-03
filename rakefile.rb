@@ -29,6 +29,12 @@ task :configure do
         }
     }
     
+    puts
+	puts build_config if build_config[:log]
+	puts
+    puts "     Project Name: #{PROJECT_NAME}"
+	puts "Safe Project Name: #{PROJECT_NAME_SAFE}"
+    
 end
 
 Rake::Task["configure"].invoke
