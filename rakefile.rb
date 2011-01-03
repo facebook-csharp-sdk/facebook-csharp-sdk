@@ -4,7 +4,7 @@ task :default => [:rebuild]
 
 PROJECT_NAME      = "Facebook C# SDK"
 PROJECT_NAME_SAFE = PROJECT_NAME
-LOG               = true                # TODO: enable albacore logging from ENV
+LOG               = false                # TODO: enable albacore logging from ENV
 
 build_config = nil
 
@@ -127,7 +127,7 @@ end
 desc "Build All"
 task :all => [:sl4,:wp7]
 
-desc "Clean and Rebuild All"
+desc "Clean and Rebuild All (default)"
 task :rebuild => [:clean,:all]
 
 desc "Clean All"
