@@ -45,11 +45,13 @@ task :configure do
 		},
         :configuration => :Release,
         :sln => {
-            :wp7 => ''
+            :wp7 => '',
+            :sl4 => ''
         }
     }
     
     build_config[:sln][:wp7] = "#{build_config[:paths][:src]}Facebook-WP7.sln"
+    build_config[:sln][:sl4] = "#{build_config[:paths][:src]}Facebook-SL4.sln"
     
     begin
         # TODO: support mercurial and svn
@@ -92,6 +94,13 @@ end
 
 Rake::Task["configure"].invoke
 
+desc "Build Silverlight 4 binaries"
+msbuild :sl4 do |msb|
+    msb.properties :configuration => build_config[:configuration]
+    msb.solution = build_config[:sln][:sl4]
+    msb.targets :Build
+end
+
 desc "Build Windows Phone 7 binaries"
 msbuild :wp7 do |msb|
    msb.properties :configuration => build_config[:configuration]
@@ -107,7 +116,7 @@ msbuild :clean_wp7 do |msb|
    msb.targets :Clean
 end
 
-desc "Clean"
+desc "Clean All"
 task :clean => [:clean_wp7] do
     FileUtils.rm_rf build_config[:paths][:output]
 end
