@@ -208,4 +208,5 @@ task :rebuild => [:clean,:all]
 desc "Clean All"
 task :clean => [:clean_net35full, :clean_net35client, :clean_net40full, :clean_net40client, :clean_sl4, :clean_wp7] do
     FileUtils.rm_rf build_config[:paths][:output]
+    FileUtils.rm_rf build_config[:paths][:working]
 end
