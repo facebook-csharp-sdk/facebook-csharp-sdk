@@ -14,7 +14,19 @@ task :configure do
     root_path    = "#{File.dirname(__FILE__)}/"
     base_version = 0
     
+    File.open("#{root_path}VERSION",'r') do |f|
+        base_version = f.gets.chomp
+    end
+    
     build_config = {
+        :log    => LOG,
+        :paths  => {
+            :root   => root_path,
+            :src    => "#{root_path}Source/",
+            :output => "#{root_path}Bin/",
+            :dist   => "#{root_path}Dist/",
+            :tools  => "#{root_path}Tools/"
+        }
     }
     
 end
