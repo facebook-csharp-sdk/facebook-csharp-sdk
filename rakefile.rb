@@ -140,12 +140,14 @@ msbuild :net35full do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35full]
     msb.targets :Build
+    msb.use :net35
 end
 
 msbuild :clean_net35full do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35full]
     msb.targets :Clean
+    msb.use :net35
 end
 
 desc "Build .NET 3.5 Client Profile binaries"
@@ -153,12 +155,14 @@ msbuild :net35client do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35client]
     msb.targets :Build
+    msb.use :net35
 end
 
 msbuild :clean_net35client do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35client]
     msb.targets :Clean
+    msb.use :net35
 end
 
 desc "Build .NET 3.5 binaries (client and full profile)"
