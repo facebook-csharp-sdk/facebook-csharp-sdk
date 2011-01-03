@@ -30,7 +30,17 @@ task :configure do
         :version => {
 			:base		=> "#{base_version}"
 		},
+        :vcs => { 				# version control system
+			:name   => '',		# version control name
+			:rev_id => ''		# revision number
+		},
     }
+    
+    begin
+		build_config[:vcs][:rev_id]	= `git log -1 --pretty=format:%H`.chomp
+		build_config[:vcs][:name] = 'git'
+	rescue
+	end
     
     puts
 	puts build_config if build_config[:log]
@@ -39,6 +49,12 @@ task :configure do
 	puts "Safe Project Name: #{PROJECT_NAME_SAFE}"
     puts "     Base Version: #{build_config[:version][:base]}"
 	puts "        Root Path: #{build_config[:paths][:root]}"
+    puts
+	puts "              VCS: #{build_config[:vcs][:name]}"
+	print "     Revision ID: #{build_config[:vcs][:rev_id]}"
+	print "  (#{build_config[:vcs][:rev_id][0..7]})" if build_config[:vcs][:name] == 'git'
+	puts	
+	puts
     
 end
 
