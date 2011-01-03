@@ -50,12 +50,14 @@ task :configure do
             :wp7 => '',
             :sl4 => '',
             :net40client => '',
+            :net40full => '',
         }
     }
     
     build_config[:sln][:wp7]         = "#{build_config[:paths][:src]}Facebook-WP7.sln"
     build_config[:sln][:sl4]         = "#{build_config[:paths][:src]}Facebook-SL4.sln"
-    build_config[:sln][:net40client] = "#{build_config[:paths][:src]}Facebook-Net40Client.sln"    
+    build_config[:sln][:net40client] = "#{build_config[:paths][:src]}Facebook-Net40Client.sln"
+    build_config[:sln][:net40full]   = "#{build_config[:paths][:src]}Facebook-Net40.sln"    
     
     begin
         # TODO: support mercurial and svn
@@ -98,6 +100,19 @@ end
 
 Rake::Task["configure"].invoke
 
+desc "Build .NET 4 Full Profile binaries"
+msbuild :net40full do |msb|
+    msb.properties :configuration => build_config[:configuration]
+    msb.solution = build_config[:sln][:net40full]
+    msb.targets :Build
+end
+
+msbuild :clean_net40full do |msb|
+    msb.properties :configuration => build_config[:configuration]
+    msb.solution = build_config[:sln][:net40full]
+    msb.targets :Clean
+end
+
 desc "Build .NET 4 Client Profile binaries"
 msbuild :net40client do |msb|
     msb.properties :configuration => build_config[:configuration]
@@ -110,6 +125,11 @@ msbuild :clean_net40client do |msb|
     msb.solution = build_config[:sln][:net40client]
     msb.targets :Clean
 end
+
+desc "Build .NET 4 binaries (client and full profile)"
+task :net40 => [:net40full, :net40client]
+
+task :clean_net40 => [:clean_net40full, :clean_net40client]
 
 desc "Build Silverlight 4 binaries"
 msbuild :sl4 do |msb|
@@ -140,12 +160,12 @@ msbuild :clean_wp7 do |msb|
 end
 
 desc "Build All"
-task :all => [:net40client,:sl4,:wp7]
+task :all => [:net40full, :net40client,:sl4,:wp7]
 
 desc "Clean and Rebuild All (default)"
 task :rebuild => [:clean,:all]
 
 desc "Clean All"
-task :clean => [:clean_net40client, :clean_sl4, :clean_wp7] do
+task :clean => [:clean_net40full, :clean_net40client, :clean_sl4, :clean_wp7] do
     FileUtils.rm_rf build_config[:paths][:output]
 end
