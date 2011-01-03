@@ -70,6 +70,9 @@ task :configure do
 	puts "Safe Project Name: #{PROJECT_NAME_SAFE}"
     puts "          Version: #{build_config[:version][:full]} (#{build_config[:version][:long]})"
     puts "     Base Version: #{build_config[:version][:base]}"
+    print "  CI Build Number: #{build_config[:ci][:build_number]}"
+    print " (not running under CI mode)" if build_config[:ci][:build_number] == 0
+    puts
 	puts "        Root Path: #{build_config[:paths][:root]}"
     puts
 	puts "              VCS: #{build_config[:vcs][:name]}"
