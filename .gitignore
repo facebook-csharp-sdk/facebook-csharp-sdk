@@ -2,6 +2,7 @@
 [Bb]in/
 obj/
 
+*.sln.cache
 *.suo
 *.user
 
