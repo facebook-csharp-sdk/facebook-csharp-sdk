@@ -1,5 +1,7 @@
 require File.join(File.dirname(__FILE__), 'Build/albacore/albacore.rb')
 
+task :default => [:rebuild]
+
 PROJECT_NAME      = "Facebook C# SDK"
 PROJECT_NAME_SAFE = PROJECT_NAME
 LOG               = true                # TODO: enable albacore logging from ENV
@@ -121,6 +123,12 @@ msbuild :clean_wp7 do |msb|
    msb.use :net40
    msb.targets :Clean
 end
+
+desc "Build All"
+task :all => [:sl4,:wp7]
+
+desc "Clean and Rebuild All"
+task :rebuild => [:clean,:all]
 
 desc "Clean All"
 task :clean => [:clean_wp7] do
