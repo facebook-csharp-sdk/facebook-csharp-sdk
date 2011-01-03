@@ -197,6 +197,17 @@ end
 
 task :create_working_dir do
     mkdir build_config[:paths][:working] unless File.exists?(build_config[:paths][:working])
+    
+    nuget_dir = "#{build_config[:paths][:working]}NuGet/"
+    FileUtils.rm_rf nuget_dir
+    mkdir nuget_dir
+    
+    mkdir "#{nuget_dir}Facebook/"
+    mkdir "#{nuget_dir}FacebookWeb/"
+    mkdir "#{nuget_dir}FacebookWebMvc/"
+end
+
+task :prepare_facebook_nuget => [:create_working_dir] do
 end
 
 desc "Build All"
