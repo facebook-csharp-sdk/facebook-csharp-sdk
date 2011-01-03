@@ -24,18 +24,19 @@ task :configure do
     build_config = {
         :log    => LOG,
         :paths  => {
-            :root   => root_path,
-            :src    => "#{root_path}Source/",
+            :root    => root_path,
+            :src     => "#{root_path}Source/",
             :output  => "#{root_path}Bin/",
-            :dist   => "#{root_path}Dist/",
-            :tools  => "#{root_path}Tools/"
+            :dist    => "#{root_path}Dist/",
+            :tools   => "#{root_path}Tools/",
+            :working => "#{root_path}Working/"
         },
         :version => {
 			:base => "#{base_version}",
             :full => "#{base_version}",
             :long => "#{base_version}"
 		},
-        :vcs => { 				# version control system
+        :vcs => { # version control system
 			:name         => '',		# version control name
 			:rev_id       => '',		# revision number
             :short_rev_id => ''         # short revision id
@@ -47,12 +48,12 @@ task :configure do
 		},
         :configuration => :Release,
         :sln => {
-            :wp7 => '',
-            :sl4 => '',
+            :wp7         => '',
+            :sl4         => '',
             :net40client => '',
-            :net40full => '',
+            :net40full   => '',
             :net35client => '',
-            :net35full => ''
+            :net35full   => ''
         }
     }
     
@@ -196,6 +197,10 @@ msbuild :clean_wp7 do |msb|
    msb.solution = build_config[:sln][:wp7]
    msb.use :net40
    msb.targets :Clean
+end
+
+task :create_working_dir do
+    mkdir build_config[:paths][:working] unless File.exists?(build_config[:paths][:working])
 end
 
 desc "Build All"
