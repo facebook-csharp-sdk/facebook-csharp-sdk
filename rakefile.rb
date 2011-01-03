@@ -105,7 +105,6 @@ end
 
 Rake::Task["configure"].invoke
 
-desc "Build .NET 4 Full Profile binaries"
 msbuild :net40full do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net40full]
@@ -118,7 +117,6 @@ msbuild :clean_net40full do |msb|
     msb.targets :Clean
 end
 
-desc "Build .NET 4 Client Profile binaries"
 msbuild :net40client do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net40client]
@@ -136,7 +134,6 @@ task :net40 => [:net40full, :net40client]
 
 task :clean_net40 => [:clean_net40full, :clean_net40client]
 
-desc "Build .NET 3.5 Full Profile binaries"
 msbuild :net35full do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35full]
@@ -151,7 +148,6 @@ msbuild :clean_net35full do |msb|
     msb.use :net35
 end
 
-desc "Build .NET 3.5 Client Profile binaries"
 msbuild :net35client do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35client]
