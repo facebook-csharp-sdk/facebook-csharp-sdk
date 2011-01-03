@@ -26,7 +26,10 @@ task :configure do
             :output => "#{root_path}Bin/",
             :dist   => "#{root_path}Dist/",
             :tools  => "#{root_path}Tools/"
-        }
+        },
+        :version => {
+			:base		=> "#{base_version}"
+		},
     }
     
     puts
@@ -34,6 +37,8 @@ task :configure do
 	puts
     puts "     Project Name: #{PROJECT_NAME}"
 	puts "Safe Project Name: #{PROJECT_NAME_SAFE}"
+    puts "     Base Version: #{build_config[:version][:base]}"
+	puts "        Root Path: #{build_config[:paths][:root]}"
     
 end
 
