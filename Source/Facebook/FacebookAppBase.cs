@@ -30,6 +30,7 @@ namespace Facebook
         private static Dictionary<string, Uri> _domainMaps = new Dictionary<string, Uri> {
             { "api", new Uri("https://api.facebook.com/") },
             { "api_read", new Uri("https://api-read.facebook.com/") },
+            { "api_video", new Uri("https://api-video.facebook.com/") },
             { "graph", new Uri("https://graph.facebook.com/") },
             { "www", new Uri("https://www.facebook.com/") }
         };
@@ -1142,10 +1143,16 @@ namespace Facebook
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
             string name = "api";
+
+            if (method.Equals("video.upload"))
+            {
+                name = "api_video";
+            }
             if (_readOnlyCalls.Contains(method))
             {
                 name = "api_read";
             }
+
             return this.GetUrl(name, "restserver.php");
         }
 
