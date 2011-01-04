@@ -29,7 +29,8 @@ task :configure do
             :output  => "#{root_path}Bin/",
             :dist    => "#{root_path}Dist/",
             :tools   => "#{root_path}Tools/",
-            :working => "#{root_path}Working/"
+            :working => "#{root_path}Working/",
+            :doc     => "#{root_path}Doc/"
         },
         :version => {
 			:base => "#{base_version}",
@@ -53,7 +54,8 @@ task :configure do
             :net40client => '',
             :net40full   => '',
             :net35client => '',
-            :net35full   => ''
+            :net35full   => '',
+            :shfb        => '', # sandcastle help file builder doc project
         }
     }
     
@@ -62,7 +64,8 @@ task :configure do
     build_config[:sln][:net40client] = "#{build_config[:paths][:src]}Facebook-Net40Client.sln"
     build_config[:sln][:net40full]   = "#{build_config[:paths][:src]}Facebook-Net40.sln"
     build_config[:sln][:net35client] = "#{build_config[:paths][:src]}Facebook-Net35Client.sln"
-    build_config[:sln][:net35full]   = "#{build_config[:paths][:src]}Facebook-Net35.sln"    
+    build_config[:sln][:net35full]   = "#{build_config[:paths][:src]}Facebook-Net35.sln"
+    build_config[:sln][:shfb]        = "#{build_config[:paths][:doc]}doc.shfbproj"
     
     begin
         # TODO: support mercurial and svn
@@ -208,6 +211,25 @@ task :create_working_dir do
 end
 
 task :prepare_facebook_nuget => [:create_working_dir] do
+end
+
+desc "Build help documentation"
+msbuild :docs => [:net40full] do |msb|
+    msb.properties :configuration => build_config[:configuration]
+    msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Release/Net40/" if build_config[:configuration] = :Release
+    msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Debug/Net40/" if build_config[:configuration] = :Debug                   
+    msb.solution = build_config[:sln][:shfb]
+    msb.targets [:Clean,:Rebuild]
+    msb.properties
+end
+
+msbuild :clean_docs do |msb|
+    msb.properties :configuration => build_config[:configuration]
+    msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Release/Net40/" if build_config[:configuration] = :Release
+    msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Debug/Net40/" if build_config[:configuration] = :Debug                   
+    msb.solution = build_config[:sln][:shfb]
+    msb.targets [:Clean]
+    msb.properties
 end
 
 desc "Build All"
