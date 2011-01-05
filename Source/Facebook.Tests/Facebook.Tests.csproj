@@ -73,6 +73,7 @@
     <Compile Include="DictionaryUtilitiesTest.cs" />
     <Compile Include="FacebookAppTest.cs" />
     <Compile Include="FacebookAuthenticationResultTests.cs" />
+    <Compile Include="GetApiUrlTests.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
