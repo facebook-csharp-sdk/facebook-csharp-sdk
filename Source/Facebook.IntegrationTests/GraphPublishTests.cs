@@ -53,7 +53,7 @@ namespace Facebook.Tests.Graph
             Assert.True(isDeleted);
         }
 
-        [Fact]        
+        [Fact]
         // [TestCategory("RequiresOAuth")]
         public void Publish_Photo_To_Existing_Album()
         {
@@ -85,6 +85,30 @@ namespace Facebook.Tests.Graph
             Assert.NotEqual(null, result.id);
         }
 
+        [Fact]
+        public void Publish_Video_To_Wall()
+        {
+            var videoPath = TestHelpers.GetPathRelativeToExecutable("do-beer-not-drugs.3gp");
+            byte[] video = File.ReadAllBytes(videoPath);
+
+            var mediaObject = new FacebookMediaObject
+                                  {
+                                      FileName = "do-beer-not-drugs.3gp",
+                                      ContentType = "video/3gpp"
+                                  };
+            mediaObject.SetValue(video);
+
+            dynamic parameters = new ExpandoObject();
+            parameters.source = mediaObject;
+            parameters.method = "video.upload";
+            parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
+
+            var fb = new FacebookApp();
+            dynamic result = fb.Post(parameters);
+
+            Assert.NotNull(result);
+            Assert.NotEqual(null, result.vid);
+        }
     }
 
 
