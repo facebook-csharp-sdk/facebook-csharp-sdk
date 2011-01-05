@@ -87,6 +87,18 @@ namespace Facebook.Tests
             Assert.Equal("https://api-read.facebook.com/restserver.php", uri.AbsoluteUri);
         }
 
+        [InlineData("admin.banUsers")]
+        [InlineData("admin.getMetrics")]
+        [Theory(DisplayName = "GetApiUrl: When method are not read only or video.upload The uri should start with api facebook domain")]
+        public void GetApiUrl_WhenMethodAreNotReadOnlyOrVideoUpload_TheUriShouldStartWithApiFacebookDomain(string method)
+        {
+            var fb = new FakeFacebookApp();
+
+            var uri = fb.GetApiUrl(method);
+
+            Assert.Equal("https://api.facebook.com/restserver.php", uri.AbsoluteUri);
+        }
+
         class FakeFacebookApp : FacebookAppBase
         {
             #region not implemented
