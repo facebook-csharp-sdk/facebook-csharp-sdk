@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-
 namespace Facebook.OAuth
 {
     using System;
+    using System.Collections.Generic;
 
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
     {
@@ -45,9 +44,25 @@ namespace Facebook.OAuth
             get { return this.redirectUri; }
         }
 
-        public Uri GetLoginUri(IDictionary<string, object> parameters)
+        public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
         {
-            throw new NotImplementedException();
+            var uriBuilder = new UriBuilder(AuthorizationServerUri + "authorize");
+
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["client_id"] = this.ClientID;
+            defaultParams["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+
+#if WINDOWS_PHONE
+            defaultParams["display"] = "touch";
+#else
+            defaultParams["display"] = "popup";
+#endif
+
+            var mergedParameters = defaultParams.Merge(parameters);
+
+            uriBuilder.Query = mergedParameters.ToJsonQueryString();
+
+            return uriBuilder.Uri;
         }
 
         #endregion

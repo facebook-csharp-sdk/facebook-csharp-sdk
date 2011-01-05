@@ -10,6 +10,6 @@ namespace Facebook.OAuth
         string ClientSecret { get; }
         Uri RedirectUri { get; }
 
-        Uri GetLoginUri(IDictionary<string, object> parameters);
+        Uri GetDesktopLoginUri(IDictionary<string, object> parameters);
     }
 }
