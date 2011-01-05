@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Facebook.OAuth;
 
 namespace Facebook.Samples.AuthenticationTool
 {
@@ -27,7 +28,8 @@ namespace Facebook.Samples.AuthenticationTool
                 isReady = false;
                 appId.Text = "REQUIRED!";
             }
-            if (String.IsNullOrEmpty(appSecret.Text.Trim())) {
+            if (String.IsNullOrEmpty(appSecret.Text.Trim()))
+            {
                 isReady = false;
                 appSecret.Text = "REQUIRED!";
             }
@@ -56,7 +58,8 @@ namespace Facebook.Samples.AuthenticationTool
             }
             parameters.scope = perms.ToString();
 
-            Uri loginUrl = app.GetLoginUrl(parameters);
+            var oAuthClientAuthorizer = new FacebookOAuthClientAuthorizer(appId.Text.Trim(), appSecret.Text.Trim(), null);
+            Uri loginUrl = oAuthClientAuthorizer.GetDesktopLoginUri(null);
 
             webBrowser1.Navigate(loginUrl);
             webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
