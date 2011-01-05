@@ -58,8 +58,9 @@ namespace Facebook.Samples.AuthenticationTool
             }
             parameters.scope = perms.ToString();
 
-            var oAuthClientAuthorizer = new FacebookOAuthClientAuthorizer(appId.Text.Trim(), appSecret.Text.Trim(), null);
-            Uri loginUrl = oAuthClientAuthorizer.GetDesktopLoginUri(null);
+            Uri loginUrl = app.GetLoginUrl(parameters);
+            //var oAuthClientAuthorizer = new FacebookOAuthClientAuthorizer(appId.Text.Trim(), appSecret.Text.Trim(), null);
+            //Uri loginUrl = oAuthClientAuthorizer.GetDesktopLoginUri(null);
 
             webBrowser1.Navigate(loginUrl);
             webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
