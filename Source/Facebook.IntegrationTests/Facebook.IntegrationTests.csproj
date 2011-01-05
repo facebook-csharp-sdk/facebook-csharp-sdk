@@ -57,6 +57,7 @@
     <Compile Include="GraphInsiteTests.cs" />
     <Compile Include="GraphPublishTests.cs" />
     <Compile Include="GraphReadTests.cs" />
+    <Compile Include="Helpers\TestHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
