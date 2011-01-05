@@ -2,6 +2,7 @@ namespace Facebook.OAuth
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
     {
@@ -11,6 +12,7 @@ namespace Facebook.OAuth
         private readonly Uri authorizationServerUri;
 
         public FacebookOAuthClientAuthorizer()
+            : this(null, null, null)
         {
         }
 
@@ -46,6 +48,8 @@ namespace Facebook.OAuth
 
         public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
         {
+            Contract.Requires(this.ClientID != null);
+
             var uriBuilder = new UriBuilder(AuthorizationServerUri + "authorize");
 
             var defaultParams = new Dictionary<string, object>();
