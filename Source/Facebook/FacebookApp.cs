@@ -190,7 +190,7 @@ namespace Facebook
         {
             get
             {
-                if (!this.SessionLoaded && this.Request != null)
+                if (this.session == null && this.Request != null)
                 {
                     try
                     {
