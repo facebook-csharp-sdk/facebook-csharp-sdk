@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Facebook.OAuth
 {
     using System;
@@ -41,6 +43,11 @@ namespace Facebook.OAuth
         public Uri RedirectUri
         {
             get { return this.redirectUri; }
+        }
+
+        public Uri GetLoginUri(IDictionary<string, object> parameters)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
