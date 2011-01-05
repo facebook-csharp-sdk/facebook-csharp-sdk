@@ -5,7 +5,7 @@ namespace Facebook.OAuth
     public interface IOAuthClientAuthorizer
     {
         string ClientID { get; }
-        string ClientSecret { get; set; }
-        Uri RedirectUri { get; set; }
+        string ClientSecret { get; }
+        Uri RedirectUri { get; }
     }
 }
