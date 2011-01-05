@@ -11,5 +11,6 @@ namespace Facebook.OAuth
         Uri RedirectUri { get; }
 
         Uri GetDesktopLoginUri(IDictionary<string, object> parameters);
+        Uri GetDesktopLogoutUri(IDictionary<string, object> parameters);
     }
 }

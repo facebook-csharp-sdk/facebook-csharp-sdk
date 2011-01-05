@@ -69,6 +69,23 @@ namespace Facebook.OAuth
             return uriBuilder.Uri;
         }
 
+        public Uri GetDesktopLogoutUri(IDictionary<string, object> parameters)
+        {
+            Contract.Requires(this.ClientID != null);
+
+            var uriBuilder = new UriBuilder("https://www.facebook.com/logout.php");
+
+            var defaultParams = new Dictionary<string, object>();
+            defaultParams["client_id"] = this.ClientID;
+            defaultParams["no_session"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+
+            var mergedParameters = defaultParams.Merge(parameters);
+
+            uriBuilder.Query = mergedParameters.ToJsonQueryString();
+
+            return uriBuilder.Uri;
+        }
+
         #endregion
     }
 }
