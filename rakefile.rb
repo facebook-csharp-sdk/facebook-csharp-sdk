@@ -27,6 +27,7 @@ task :configure do
             :root    => root_path,
             :src     => "#{root_path}Source/",
             :output  => "#{root_path}Bin/",
+            :build   => "#{root_path}Build/",
             :dist    => "#{root_path}Dist/",
             :tools   => "#{root_path}Tools/",
             :working => "#{root_path}Working/",
@@ -198,19 +199,62 @@ msbuild :clean_wp7 do |msb|
    msb.targets :Clean
 end
 
-task :create_working_dir do
-    mkdir build_config[:paths][:working] unless File.exists?(build_config[:paths][:working])
+directory "#{build_config[:paths][:working]}"
+directory "#{build_config[:paths][:working]}NuGet/Facebook"
+
+task :nuget_facebook_prepare => ["#{build_config[:paths][:working]}NuGet/Facebook"] do
+    working_dir = build_config[:paths][:working]
+    nuget_working_dir = "#{working_dir}NuGet/Facebook/"
     
-    nuget_dir = "#{build_config[:paths][:working]}NuGet/"
-    FileUtils.rm_rf nuget_dir
-    mkdir nuget_dir
     
-    mkdir "#{nuget_dir}Facebook/"
-    mkdir "#{nuget_dir}FacebookWeb/"
-    mkdir "#{nuget_dir}FacebookWebMvc/"
+    FileUtils.rm_rf "#{nuget_working_dir}lib/"
+    mkdir "#{nuget_working_dir}lib/"
+    
+    nuget_dirs = [ "lib/Net35/",
+                   "lib/Net35Client/",
+                   "lib/Net40/",
+                   "lib/Net40Client/",
+                   "lib/SL4/",
+                   "lib/WP7/" ]
+        
+    nuget_dirs.each do |d|
+        mkdir "#{nuget_working_dir + d}"
+        mkdir "#{nuget_working_dir + d}CodeContracts/"
+    end
+    
+    output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] = :Release
+    output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] = :Release
+    
+    [ "Facebook.dll", "Facebook.pdb", "Facebook.XML" ].each do |f|
+        # copy these 3 files of each differnet framework
+        cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
+        cp "#{output_path}Net35Client/#{f}", "#{nuget_working_dir}lib/Net35Client/"
+        cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
+        cp "#{output_path}Net40Client/#{f}", "#{nuget_working_dir}lib/Net40Client/"
+        cp "#{output_path}SL4/#{f}", "#{nuget_working_dir}lib/SL4/"
+        cp "#{output_path}WP7/#{f}", "#{nuget_working_dir}lib/WP7/"
+    end
+    
+    # temporarily copy Json.Net for SL and WP7
+    cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.dll", "#{nuget_working_dir}lib/SL4/"
+    cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.pdb", "#{nuget_working_dir}lib/SL4/"
+    cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.xml", "#{nuget_working_dir}lib/SL4/"
+    cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.dll", "#{nuget_working_dir}lib/WP7/"
+    cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.pdb", "#{nuget_working_dir}lib/WP7/"
+    cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.xml", "#{nuget_working_dir}lib/WP7/"
+    
+    # TODO copy code contracts
+    
+    version = build_config[:version][:full] #[:full]
+    File.open("#{nuget_working_dir}Facebook.nuspec",'w+') do |f|
+        f.puts File.read("#{build_config[:paths][:build]}Facebook.nuspec").gsub(/{version}/,version)
+    end
+    
 end
 
-task :prepare_facebook_nuget => [:create_working_dir] do
+exec :nuget_facebook => [:nuget_facebook_prepare] do |cmd|
+    cmd.command = "NuGet.exe"
+    cmd.parameters = "pack \"#{build_config[:paths][:working]}NuGet/Facebook/Facebook.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
 end
 
 desc "Build help documentation"
