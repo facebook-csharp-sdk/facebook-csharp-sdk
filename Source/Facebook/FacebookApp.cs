@@ -121,6 +121,7 @@ namespace Facebook
             this.Session = new FacebookSession
             {
                 AccessToken = accessToken,
+                UserId = ParseUserIdFromAccessToken(accessToken)
             };
         }
 
