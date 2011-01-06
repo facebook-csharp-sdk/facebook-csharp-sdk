@@ -1,10 +1,9 @@
-using System.IO;
-
 namespace Facebook.OAuth
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.IO;
     using System.Net;
 
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
@@ -12,7 +11,6 @@ namespace Facebook.OAuth
         private readonly string clientId;
         private readonly string clientSecret;
         private readonly Uri redirectUri;
-        private readonly Uri authorizationServerUri;
 
         public FacebookOAuthClientAuthorizer()
             : this(null, null, null)
@@ -24,15 +22,9 @@ namespace Facebook.OAuth
             this.clientId = clientId;
             this.clientSecret = clientSecret;
             this.redirectUri = redirectUri;
-            this.authorizationServerUri = new Uri("https://graph.facebook.com/oauth/");
         }
 
         #region Implementation of IOAuthClientAuthorizer
-
-        public Uri AuthorizationServerUri
-        {
-            get { return this.authorizationServerUri; }
-        }
 
         public string ClientID
         {
@@ -53,7 +45,7 @@ namespace Facebook.OAuth
         {
             Contract.Requires(this.ClientID != null);
 
-            var uriBuilder = new UriBuilder(AuthorizationServerUri + "authorize");
+            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/authorize");
 
             var defaultParams = new Dictionary<string, object>();
             defaultParams["client_id"] = this.ClientID;
