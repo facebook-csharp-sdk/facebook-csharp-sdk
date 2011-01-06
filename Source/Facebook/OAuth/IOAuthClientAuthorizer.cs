@@ -15,7 +15,7 @@ namespace Facebook.OAuth
 #if !SILVERLIGHT // silverlight should have only async calls
 
         // TODO: implement async version of ExchangeAccessTokenForCode
-        object ExchangeAccessTokenForCode(string code, IDictionary<string, object> parameters);
+        object ExchangeCodeForAccessToken(string code, IDictionary<string, object> parameters);
 
 #endif
 

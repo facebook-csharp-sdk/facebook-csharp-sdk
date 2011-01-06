@@ -82,7 +82,7 @@ namespace Facebook.OAuth
             return uriBuilder.Uri;
         }
 
-        public object ExchangeAccessTokenForCode(string code, IDictionary<string, object> parameters)
+        public object ExchangeCodeForAccessToken(string code, IDictionary<string, object> parameters)
         {
             Contract.Requires(!string.IsNullOrEmpty(code));
 
