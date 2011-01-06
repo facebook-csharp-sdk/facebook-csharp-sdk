@@ -1311,5 +1311,10 @@ namespace Facebook
 
             return path;
         }
+
+        protected long ParseUserIdFromAccessToken(string accessToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
