@@ -58,8 +58,10 @@ namespace Facebook.OAuth
 
 #if WINDOWS_PHONE
             defaultParams["display"] = "touch";
-#else
+#elif CLIENTPROFILE || SILVERLIGHT
             defaultParams["display"] = "popup";
+#else
+            defaultParams["display"] = "page";
 #endif
 
             var mergedParameters = defaultParams.Merge(parameters);
@@ -71,13 +73,12 @@ namespace Facebook.OAuth
 
         public Uri GetDesktopLogoutUri(IDictionary<string, object> parameters)
         {
-            Contract.Requires(this.ClientID != null);
-
-            var uriBuilder = new UriBuilder("https://www.facebook.com/logout.php");
+            // more information on this at http://stackoverflow.com/questions/2764436/facebook-oauth-logout
+            var uriBuilder = new UriBuilder("http://m.facebook.com/logout.php");
 
             var defaultParams = new Dictionary<string, object>();
-            defaultParams["client_id"] = this.ClientID;
-            defaultParams["no_session"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+            defaultParams["confirm"] = 1;
+            defaultParams["next"] = this.RedirectUri ?? new Uri("http://www.facebook.com");
 
             var mergedParameters = defaultParams.Merge(parameters);
 

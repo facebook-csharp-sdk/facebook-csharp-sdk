@@ -31,8 +31,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.appId = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.appSecret = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -56,9 +54,9 @@
             // permissions
             // 
             this.permissions.FormattingEnabled = true;
-            this.permissions.Location = new System.Drawing.Point(534, 117);
+            this.permissions.Location = new System.Drawing.Point(534, 72);
             this.permissions.Name = "permissions";
-            this.permissions.Size = new System.Drawing.Size(187, 334);
+            this.permissions.Size = new System.Drawing.Size(187, 379);
             this.permissions.TabIndex = 2;
             // 
             // accessToken
@@ -80,7 +78,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(530, 99);
+            this.label2.Location = new System.Drawing.Point(531, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 13);
             this.label2.TabIndex = 5;
@@ -102,29 +100,11 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "App Id";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(531, 52);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "App Secret";
-            // 
-            // appSecret
-            // 
-            this.appSecret.Location = new System.Drawing.Point(534, 68);
-            this.appSecret.Name = "appSecret";
-            this.appSecret.Size = new System.Drawing.Size(187, 20);
-            this.appSecret.TabIndex = 10;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(733, 514);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.appSecret);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.appId);
             this.Controls.Add(this.label2);
@@ -150,8 +130,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox appId;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox appSecret;
     }
 }
 
