@@ -8,8 +8,8 @@ namespace Facebook.Tests
 
     public class ParseUserIdFromAcessTokenTests
     {
-        [Fact(DisplayName = "ParseUserIdFromAccessToken: Given a valid user access token Then the result should not be 0")]
-        public void ParseUserIdFromAccessToken_GivenAValidUserAccessToken_ThenTheResultShouldNotBe0()
+        [Fact(DisplayName = "ParseUserIdFromAccessToken: Given a valid user access token which expires Then the result should not be 0")]
+        public void ParseUserIdFromAccessToken_GivenAValidUserAccessTokenWhichExpires_ThenTheResultShouldNotBe0()
         {
             var fb = new FakeFacebookApp();
 
@@ -20,8 +20,18 @@ namespace Facebook.Tests
             Assert.NotEqual(0, userId);
         }
 
-        [Fact(DisplayName = "ParseUserIdFromAccessToken: Given a valid user access token Then the user id should be correctly extracted from the access token")]
-        public void ParseUserIdFromAccessToken_GivenAValidUserAccessToken_ThenTheUserIdShouldBeCorrectlyExtractedFromTheAccessToken()
+        [Fact(DisplayName = "ParseUserIdFromAccessToken: Given a valid user access token which does not expire Then the result should not be 0")]
+        public void ParseUserIdFromAccessToken_GivenAValidUserAccessTokenWhichDoesNotExpire_ThenTheResultShouldNotBe0()
+        {
+            var fb = new FakeFacebookApp();
+
+            var userId = fb.ParseUserIdFromAccessToken("1249203702|76a68f298-100001327642026|q_BXv8TmYg");
+
+            Assert.NotEqual(0, userId);
+        }
+
+        [Fact(DisplayName = "ParseUserIdFromAccessToken: Given a valid user access token which expires Then the user id should be correctly extracted from the access token")]
+        public void ParseUserIdFromAccessToken_GivenAValidUserAccessTokenWhichExpires_ThenTheUserIdShouldBeCorrectlyExtractedFromTheAccessToken()
         {
             var fb = new FakeFacebookApp();
 
@@ -30,6 +40,16 @@ namespace Facebook.Tests
                     "1249203702|2.h1MTNeLqcLqw__.86400.129394400-605430316|-WE1iH_CV-afTgyhDPc");
 
             Assert.Equal(605430316, userId);
+        }
+
+        [Fact(DisplayName = "ParseUserIdFromAccessToken: Given a valid user access token which does not expir Then the user id should be correctly extracted from the access token")]
+        public void ParseUserIdFromAccessToken_GivenAValidUserAccessTokenWhichDoesNotExpire_ThenTheUserIdShouldBeCorrectlyExtractedFromTheAccessToken()
+        {
+            var fb = new FakeFacebookApp();
+
+            var userId = fb.ParseUserIdFromAccessToken("1249203702|76a68f298-100001327642026|q_BXv8TmYg");
+
+            Assert.Equal(100001327642026, userId);
         }
 
         [Fact(DisplayName = "ParseUserIdFromAccessToken: Given an application access token Then the user id should be 0")]
