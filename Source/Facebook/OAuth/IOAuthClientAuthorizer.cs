@@ -12,5 +12,13 @@ namespace Facebook.OAuth
 
         Uri GetDesktopLoginUri(IDictionary<string, object> parameters);
         Uri GetDesktopLogoutUri(IDictionary<string, object> parameters);
+
+#if !SILVERLIGHT // silverlight should have only async calls
+
+        // TODO: implement async version of ExchangeAccessTokenForCode
+        object ExchangeAccessTokenForCode(string code);
+
+#endif
+        
     }
 }

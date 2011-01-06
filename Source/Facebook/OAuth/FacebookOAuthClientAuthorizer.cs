@@ -87,6 +87,11 @@ namespace Facebook.OAuth
             return uriBuilder.Uri;
         }
 
+        public object ExchangeAccessTokenForCode(string code)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
