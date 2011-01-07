@@ -6,16 +6,37 @@ namespace Facebook
     using System.IO;
     using System.Net;
 
+    /// <summary>
+    /// Represents the Facebook OAuth Helpers
+    /// </summary>
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
     {
         #region Implementation of IOAuthClientAuthorizer
 
+        /// <summary>
+        /// Gets or sets the client Id.
+        /// </summary>
         public string ClientID { get; set; }
 
+        /// <summary>
+        /// Gets or sets the client secret.
+        /// </summary>
         public string ClientSecret { get; set; }
 
+        /// <summary>
+        /// Gets or sets the redirect uri.
+        /// </summary>
         public Uri RedirectUri { get; set; }
 
+        /// <summary>
+        /// Gets the login uri for desktop applications.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the desktop login uri.
+        /// </returns>
         public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
         {
             if (string.IsNullOrEmpty(this.ClientID))
@@ -44,6 +65,15 @@ namespace Facebook
             return uriBuilder.Uri;
         }
 
+        /// <summary>
+        /// Gets the logout uri for desktop applications.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the desktop logout uri.
+        /// </returns>
         public Uri GetDesktopLogoutUri(IDictionary<string, object> parameters)
         {
             // more information on this at http://stackoverflow.com/questions/2764436/facebook-oauth-logout
@@ -60,6 +90,18 @@ namespace Facebook
             return uriBuilder.Uri;
         }
 
+        /// <summary>
+        /// Gets the access token by exchanging the code.
+        /// </summary>
+        /// <param name="code">
+        /// The code to exchange.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the access token or expires if exists.
+        /// </returns>
         public object ExchangeCodeForAccessToken(string code, IDictionary<string, object> parameters)
         {
             Contract.Requires(!string.IsNullOrEmpty(code));
