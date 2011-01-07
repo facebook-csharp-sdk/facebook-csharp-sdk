@@ -394,8 +394,9 @@ directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
 
 desc "Create distribution packages" # rebuild
-task :dist => [:rebuild,:docs,"#{build_config[:paths][:dist]}"] do
+task :dist => [] do
     rm_rf "#{build_config[:paths][:dist]}"
+    mkdir "#{build_config[:paths][:dist]}"
     
     rm_rf "#{build_config[:paths][:working]}Bin/"
     FileUtils.cp_r "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}Bin/"
@@ -414,5 +415,12 @@ task :dist => [:rebuild,:docs,"#{build_config[:paths][:dist]}"] do
     
    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.packages.zip\" \"#{build_config[:paths][:working]}NuGet/*.nupkg\""
    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.nuspec.zip\" \"#{build_config[:paths][:working]}NuGet/*\" -x!*.nupkg"
+   
+   src_archive_name = "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.src.zip"
+   if (build_config[:vcs][:name] = 'git') then
+    sh "git archive HEAD --format=zip > \"#{src_archive_name}\""
+   elsif (build_config[:vcs][:name] = 'hg') then
+    sh "hg archive -tzip \"#{src_archive_name}\""
+   end
     
 end
