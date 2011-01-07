@@ -14,9 +14,9 @@ namespace Facebook
         #region Implementation of IOAuthClientAuthorizer
 
         /// <summary>
-        /// Gets or sets the client Id.
+        /// Gets or sets the client id.
         /// </summary>
-        public string ClientID { get; set; }
+        public string ClientId { get; set; }
 
         /// <summary>
         /// Gets or sets the client secret.
@@ -39,7 +39,7 @@ namespace Facebook
         /// </returns>
         public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
         {
-            if (string.IsNullOrEmpty(this.ClientID))
+            if (string.IsNullOrEmpty(this.ClientId))
             {
                 throw new Exception("ClientID required.");
             }
@@ -47,7 +47,7 @@ namespace Facebook
             var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/authorize");
 
             var defaultParams = new Dictionary<string, object>();
-            defaultParams["client_id"] = this.ClientID;
+            defaultParams["client_id"] = this.ClientId;
             defaultParams["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
 
 #if WINDOWS_PHONE
@@ -107,7 +107,7 @@ namespace Facebook
             Contract.Requires(!string.IsNullOrEmpty(code));
 
             var pars = new Dictionary<string, object>();
-            pars["client_id"] = this.ClientID;
+            pars["client_id"] = this.ClientId;
             pars["client_secret"] = this.ClientSecret;
             pars["redirect_uri"] = this.RedirectUri;
             pars["code"] = code;

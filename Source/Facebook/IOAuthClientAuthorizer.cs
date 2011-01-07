@@ -9,9 +9,9 @@ namespace Facebook
     public interface IOAuthClientAuthorizer
     {
         /// <summary>
-        /// Gets the client Id.
+        /// Gets the client id.
         /// </summary>
-        string ClientID { get; }
+        string ClientId { get; }
 
         /// <summary>
         /// Gets the client secret.
