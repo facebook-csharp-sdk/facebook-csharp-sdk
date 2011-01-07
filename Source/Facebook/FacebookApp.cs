@@ -118,11 +118,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
 
-            this.Session = new FacebookSession
-            {
-                AccessToken = accessToken,
-                UserId = ParseUserIdFromAccessToken(accessToken)
-            };
+            this.Session = new FacebookSession(accessToken);
         }
 
         /// <summary>
