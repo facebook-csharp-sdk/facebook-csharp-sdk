@@ -69,12 +69,21 @@ task :configure do
     build_config[:sln][:shfb]        = "#{build_config[:paths][:doc]}doc.shfbproj"
     
     begin
-        # TODO: support mercurial and svn
-		build_config[:vcs][:rev_id]	= `git log -1 --pretty=format:%H`.chomp
-		build_config[:vcs][:name] = 'git'
-        build_config[:vcs][:short_rev_id] = build_config[:vcs][:rev_id][0..7]
-	rescue
+        build_config[:vcs][:rev_id] = `hg id -i`.chomp.chop # remove the +
+        build_config[:vcs][:name] = 'hg'
+        build_config[:vcs][:short_rev_id] = build_config[:vcs][:rev_id]
+	rescue    
 	end
+    
+    if(build_config[:vcs][:rev_id].length==0) then
+        # if mercurial fails try git
+        begin
+            build_config[:vcs][:rev_id]	= `git log -1 --pretty=format:%H`.chomp
+		    build_config[:vcs][:name] = 'git'
+            build_config[:vcs][:short_rev_id] = build_config[:vcs][:rev_id][0..7]
+        rescue
+        end
+    end
     
     build_config[:ci][:is_nightly]   = ENV['NIGHTLY'].nil? ? true : Boolean(ENV['NIGHTLY'].downcase)
     build_config[:ci][:build_number] = ENV[build_config[:ci][:build_number_param_name]] || 0
