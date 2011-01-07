@@ -99,7 +99,7 @@ task :configure do
 	puts "        Root Path: #{build_config[:paths][:root]}"
     puts
 	puts "              VCS: #{build_config[:vcs][:name]}"
-	print "     Revision ID: #{build_config[:vcs][:rev_id]}"
+	print "      Revision ID: #{build_config[:vcs][:rev_id]}"
 	print "  (#{build_config[:vcs][:short_rev_id]})" if build_config[:vcs][:name] == 'git'
 	puts	
 	puts
