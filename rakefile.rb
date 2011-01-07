@@ -394,7 +394,7 @@ directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
 
 desc "Create distribution packages" # rebuild
-task :dist => [] do
+task :dist => [:rebuild,:docs] do
     rm_rf "#{build_config[:paths][:dist]}"
     mkdir "#{build_config[:paths][:dist]}"
     
