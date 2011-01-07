@@ -200,12 +200,12 @@ end
 
 directory "#{build_config[:paths][:working]}"
 directory "#{build_config[:paths][:working]}NuGet/Facebook"
+directory "#{build_config[:paths][:working]}NuGet/FacebookWeb"
 
 desc "Create NuGet package for Facebook.dll"
 exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |cmd|
 working_dir = build_config[:paths][:working]
     nuget_working_dir = "#{working_dir}NuGet/Facebook/"
-    
     
     FileUtils.rm_rf "#{nuget_working_dir}lib/"
     mkdir "#{nuget_working_dir}lib/"
@@ -222,8 +222,8 @@ working_dir = build_config[:paths][:working]
         mkdir "#{nuget_working_dir + d}CodeContracts/"
     end
     
-    output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] = :Release
-    output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] = :Release
+    output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
+    output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
     
     [ "Facebook.dll", "Facebook.pdb", "Facebook.XML" ].each do |f|
         # copy these 3 files of each different framework
@@ -261,6 +261,47 @@ working_dir = build_config[:paths][:working]
     cmd.parameters = "pack \"#{build_config[:paths][:working]}NuGet/Facebook/Facebook.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
 end
 
+desc "Create NuGet package for Facebook.Web.dll" #:net35full,:net40full,
+exec :nuget_facebookweb => ["#{build_config[:paths][:working]}NuGet/FacebookWeb"] do |cmd|
+    working_dir = build_config[:paths][:working]
+    nuget_working_dir = "#{working_dir}NuGet/FacebookWeb/"
+    
+    FileUtils.rm_rf "#{nuget_working_dir}lib/"
+    mkdir "#{nuget_working_dir}lib/"
+    
+    nuget_dirs = [ "lib/Net35/",
+                   "lib/Net40/" ]
+                   
+    nuget_dirs.each do |d|
+        mkdir "#{nuget_working_dir + d}"
+        mkdir "#{nuget_working_dir + d}CodeContracts/"
+    end
+    
+     output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
+     #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
+                   
+    [ "Facebook.Web.dll", "Facebook.Web.pdb", "Facebook.Web.XML" ].each do |f|
+        # copy these 3 files of each different framework
+        cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
+        cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
+    end
+    
+    [ "Facebook.Web.Contracts.dll", "Facebook.Web.Contracts.pdb" ].each do |f|
+        # copy code contracts of each different framework
+        # TODO .net 3.5 code contracts
+        cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
+    end
+    
+    version = build_config[:version][:full] #[:full]
+    File.open("#{nuget_working_dir}FacebookWeb.nuspec",'w+') do |f|
+        f.puts File.read("#{build_config[:paths][:build]}FacebookWeb.nuspec").gsub(/{version}/,version)
+    end
+    
+    cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
+    cmd.parameters = "pack \"#{build_config[:paths][:working]}NuGet/FacebookWeb/FacebookWeb.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
+    
+end
+
 desc "Build help documentation"
 msbuild :docs => [:net40full] do |msb|
     msb.properties :configuration => build_config[:configuration]
@@ -281,7 +322,7 @@ msbuild :clean_docs do |msb|
 end
 
 desc "Build All"
-task :all => [:net35full, :net35client, :net40full, :net40client,:sl4,:wp7]
+task :all => [:net35full, :net35client, :net40full, :net40client,:sl4,:wp7,:nuget_facebook,:nuget_facebookweb]
 
 desc "Clean and Rebuild All (default)"
 task :rebuild => [:clean,:all]
