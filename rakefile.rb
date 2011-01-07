@@ -87,7 +87,6 @@ task :configure do
         build_config[:version][:long] = "#{build_config[:version][:full]}-#{build_config[:version][:short_rev_id]}"        
     end
     
-    puts
 	puts build_config if build_config[:log]
 	puts
     puts "     Project Name: #{PROJECT_NAME}"
@@ -202,8 +201,9 @@ end
 directory "#{build_config[:paths][:working]}"
 directory "#{build_config[:paths][:working]}NuGet/Facebook"
 
-task :nuget_facebook_prepare => ["#{build_config[:paths][:working]}NuGet/Facebook"] do
-    working_dir = build_config[:paths][:working]
+desc "Create NuGet package for Facebook.dll"
+exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |cmd|
+working_dir = build_config[:paths][:working]
     nuget_working_dir = "#{working_dir}NuGet/Facebook/"
     
     
@@ -226,7 +226,7 @@ task :nuget_facebook_prepare => ["#{build_config[:paths][:working]}NuGet/Faceboo
     output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] = :Release
     
     [ "Facebook.dll", "Facebook.pdb", "Facebook.XML" ].each do |f|
-        # copy these 3 files of each differnet framework
+        # copy these 3 files of each different framework
         cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
         cp "#{output_path}Net35Client/#{f}", "#{nuget_working_dir}lib/Net35Client/"
         cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
@@ -243,17 +243,21 @@ task :nuget_facebook_prepare => ["#{build_config[:paths][:working]}NuGet/Faceboo
     cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.pdb", "#{nuget_working_dir}lib/WP7/"
     cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.xml", "#{nuget_working_dir}lib/WP7/"
     
-    # TODO copy code contracts
+    [ "Facebook.Contracts.dll", "Facebook.Contracts.pdb" ].each do |f|
+        # copy code contracts of each different framework
+        # TODO .net 3.5 code contracts
+        cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
+        cp "#{output_path}Net40Client/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40Client/CodeContracts/"
+        cp "#{output_path}SL4/CodeContracts/#{f}", "#{nuget_working_dir}lib/SL4/CodeContracts/"
+        cp "#{output_path}WP7/CodeContracts/#{f}", "#{nuget_working_dir}lib/WP7/CodeContracts/"
+    end
     
     version = build_config[:version][:full] #[:full]
     File.open("#{nuget_working_dir}Facebook.nuspec",'w+') do |f|
         f.puts File.read("#{build_config[:paths][:build]}Facebook.nuspec").gsub(/{version}/,version)
     end
     
-end
-
-exec :nuget_facebook => [:nuget_facebook_prepare] do |cmd|
-    cmd.command = "NuGet.exe"
+    cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
     cmd.parameters = "pack \"#{build_config[:paths][:working]}NuGet/Facebook/Facebook.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
 end
 
