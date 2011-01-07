@@ -7,7 +7,7 @@ task :default => [:rebuild]
 PROJECT_NAME      = "Facebook C# SDK"
 PROJECT_NAME_SAFE = "FacebookSDK"
 LOG               = false                # TODO: enable albacore logging from ENV
-# ENV['NIGHTLY']    = 'false'
+#ENV['NIGHTLY']    = 'false'
 
 build_config = nil
 
@@ -216,10 +216,11 @@ directory "#{build_config[:paths][:working]}NuGet/FacebookWeb"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"
 
 exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |cmd|
-working_dir = build_config[:paths][:working]
-    nuget_working_dir = "#{working_dir}NuGet/Facebook/"
+    working_dir = build_config[:paths][:working]
+    nuget_working_dir = "#{working_dir}NuGet/Facebook/#{build_config[:version][:full]}/"
     
-    FileUtils.rm_rf "#{nuget_working_dir}lib/"
+    FileUtils.rm_rf "#{nuget_working_dir}"
+    mkdir "#{nuget_working_dir}"
     mkdir "#{nuget_working_dir}lib/"
     
     nuget_dirs = [ "lib/Net35/",
@@ -270,14 +271,15 @@ working_dir = build_config[:paths][:working]
     end
     
     cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
-    cmd.parameters = "pack \"#{build_config[:paths][:working]}NuGet/Facebook/Facebook.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
+    cmd.parameters = "pack \"#{nuget_working_dir}Facebook.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
 end
 
 exec :nuget_facebookweb => [:net35full,:net40full,"#{build_config[:paths][:working]}NuGet/FacebookWeb"] do |cmd|
     working_dir = build_config[:paths][:working]
-    nuget_working_dir = "#{working_dir}NuGet/FacebookWeb/"
+    nuget_working_dir = "#{working_dir}NuGet/FacebookWeb/#{build_config[:version][:full]}/"
     
-    FileUtils.rm_rf "#{nuget_working_dir}lib/"
+    FileUtils.rm_rf "#{nuget_working_dir}"
+    mkdir "#{nuget_working_dir}"
     mkdir "#{nuget_working_dir}lib/"
     
     nuget_dirs = [ "lib/Net35/",
@@ -309,15 +311,16 @@ exec :nuget_facebookweb => [:net35full,:net40full,"#{build_config[:paths][:worki
     end
     
     cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
-    cmd.parameters = "pack \"#{build_config[:paths][:working]}NuGet/FacebookWeb/FacebookWeb.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
+    cmd.parameters = "pack \"#{nuget_working_dir}FacebookWeb.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
     
 end
 
 exec :nuget_facebookwebmvc => [:net35full,:net40full,"#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |cmd|
     working_dir = build_config[:paths][:working]
-    nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc/"
+    nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc/#{build_config[:version][:full]}/"
     
-    FileUtils.rm_rf "#{nuget_working_dir}lib/"
+    FileUtils.rm_rf "#{nuget_working_dir}"
+    mkdir "#{nuget_working_dir}"
     mkdir "#{nuget_working_dir}lib/"
     
     nuget_dirs = [ "lib/Net35/",
@@ -349,7 +352,7 @@ exec :nuget_facebookwebmvc => [:net35full,:net40full,"#{build_config[:paths][:wo
     end
     
     cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
-    cmd.parameters = "pack \"#{build_config[:paths][:working]}NuGet/FacebookWebMvc/FacebookWebMvc.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
+    cmd.parameters = "pack \"#{nuget_working_dir}FacebookWebMvc.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
     
 end
 
@@ -357,7 +360,7 @@ desc "Build help documentation"
 msbuild :docs => [:net40full] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Release/Net40/" if build_config[:configuration] = :Release
-    msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Debug/Net40/" if build_config[:configuration] = :Debug                   
+    #msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Debug/Net40/" if build_config[:configuration] = :Debug
     msb.solution = build_config[:sln][:shfb]
     msb.targets [:Clean,:Rebuild]
     msb.properties
@@ -366,7 +369,7 @@ end
 msbuild :clean_docs do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Release/Net40/" if build_config[:configuration] = :Release
-    msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Debug/Net40/" if build_config[:configuration] = :Debug                   
+    #msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Debug/Net40/" if build_config[:configuration] = :Debug                   
     msb.solution = build_config[:sln][:shfb]
     msb.targets [:Clean]
     msb.properties
@@ -391,7 +394,8 @@ directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
 
 desc "Create distribution packages" # rebuild
-task :dist => ["#{build_config[:paths][:dist]}"] do
+task :dist => [:rebuild,:docs,"#{build_config[:paths][:dist]}"] do
+    rm_rf "#{build_config[:paths][:dist]}"
     
     rm_rf "#{build_config[:paths][:working]}Bin/"
     FileUtils.cp_r "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}Bin/"
@@ -403,7 +407,12 @@ task :dist => ["#{build_config[:paths][:dist]}"] do
         end
     end
     
-    zip_bin_cmd = "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.zip\" \"#{build_config[:paths][:working]}Bin/*\""
-    sh zip_bin_cmd
+   sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.bin.zip\" \"#{build_config[:paths][:working]}Bin/*\""
+   
+   sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.docs.zip\" \"#{build_config[:paths][:working]}Documentation/*\""
+   cp "#{build_config[:paths][:working]}Documentation/Documentation.chm",  "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.chm"
+    
+   sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.packages.zip\" \"#{build_config[:paths][:working]}NuGet/*.nupkg\""
+   sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.nuspec.zip\" \"#{build_config[:paths][:working]}NuGet/*\" -x!*.nupkg"
     
 end
