@@ -23,6 +23,10 @@ namespace Facebook
         /// </summary>
         Uri RedirectUri { get; }
 
+        // TODO: comment this for now. will need to support for GetLoginUri for web apps too
+        // need to find a better name.
+
+        /*
         /// <summary>
         /// Gets the login uri for desktop applications.
         /// </summary>
@@ -44,6 +48,7 @@ namespace Facebook
         /// Returns the desktop logout uri.
         /// </returns>
         Uri GetDesktopLogoutUri(IDictionary<string, object> parameters);
+        */
 
 #if !SILVERLIGHT // silverlight should have only async calls
 

@@ -28,6 +28,10 @@ namespace Facebook
         /// </summary>
         public Uri RedirectUri { get; set; }
 
+        // TODO: comment this for now. will need to support for GetLoginUri for web apps too
+        // need to find a better name.
+
+        /*
         /// <summary>
         /// Gets the login uri for desktop applications.
         /// </summary>
@@ -89,6 +93,7 @@ namespace Facebook
 
             return uriBuilder.Uri;
         }
+        */
 
         /// <summary>
         /// Gets the access token by exchanging the code.
