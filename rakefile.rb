@@ -1,10 +1,13 @@
 require File.join(File.dirname(__FILE__), 'Build/albacore/albacore.rb')
+require 'find'
+require 'fileutils'
 
 task :default => [:rebuild]
 
 PROJECT_NAME      = "Facebook C# SDK"
-PROJECT_NAME_SAFE = PROJECT_NAME
+PROJECT_NAME_SAFE = "FacebookSDK"
 LOG               = false                # TODO: enable albacore logging from ENV
+# ENV['NIGHTLY']    = 'false'
 
 build_config = nil
 
@@ -85,7 +88,7 @@ task :configure do
         end
     end
     
-    build_config[:ci][:is_nightly]   = ENV['NIGHTLY'].nil? ? true : Boolean(ENV['NIGHTLY'].downcase)
+    build_config[:ci][:is_nightly]   = ENV['NIGHTLY'].nil? ? true : ENV['NIGHTLY'].match(/(true|1)$/i) != nil
     build_config[:ci][:build_number] = ENV[build_config[:ci][:build_number_param_name]] || 0
     
     build_config[:version][:full] = "#{build_config[:version][:base]}.#{build_config[:ci][:build_number]}"
@@ -93,7 +96,7 @@ task :configure do
     if(build_config[:ci][:is_nightly])
         build_config[:version][:long] = "#{build_config[:version][:full]}-nightly-#{build_config[:vcs][:short_rev_id]}"
     else
-        build_config[:version][:long] = "#{build_config[:version][:full]}-#{build_config[:version][:short_rev_id]}"        
+        build_config[:version][:long] = "#{build_config[:version][:full]}-#{build_config[:vcs][:short_rev_id]}"        
     end
     
 	puts build_config if build_config[:log]
@@ -383,3 +386,24 @@ end
 
 desc "Create NuGet Packages"
 task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc]
+
+directory "#{build_config[:paths][:dist]}"
+directory "#{build_config[:paths][:dist]}NuGet"
+
+desc "Create distribution packages" # rebuild
+task :dist => ["#{build_config[:paths][:dist]}"] do
+    
+    rm_rf "#{build_config[:paths][:working]}Bin/"
+    FileUtils.cp_r "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}Bin/"
+    
+    Find.find("#{build_config[:paths][:working]}Bin/.") do |f|
+        ext = File.extname(f)
+        if ext == '.sdf' or ext == '.old' then
+            rm f
+        end
+    end
+    
+    zip_bin_cmd = "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.zip\" \"#{build_config[:paths][:working]}Bin/*\""
+    sh zip_bin_cmd
+    
+end
