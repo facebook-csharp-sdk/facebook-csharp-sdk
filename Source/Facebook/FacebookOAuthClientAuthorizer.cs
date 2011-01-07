@@ -43,7 +43,10 @@ namespace Facebook
 
         public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
         {
-            Contract.Requires(this.ClientID != null);
+            if (string.IsNullOrEmpty(this.ClientID))
+            {
+                throw new Exception("ClientID required.");
+            }
 
             var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/authorize");
 
