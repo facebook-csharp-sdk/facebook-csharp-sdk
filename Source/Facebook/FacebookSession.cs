@@ -25,6 +25,24 @@ namespace Facebook
         private Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
+        /// </summary>
+        public FacebookSession()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
+        /// </summary>
+        /// <param name="accessToken">
+        /// The access token.
+        /// </param>
+        public FacebookSession(string accessToken)
+        {
+            this.AccessToken = accessToken;
+        }
+
+        /// <summary>
         /// Gets the internal dictionary store.
         /// </summary>
         /// <value>The dictionary.</value>
@@ -70,7 +88,7 @@ namespace Facebook
                 {
                     return this.dictionary["secret"];
                 }
- 
+
                 return null;
             }
 
