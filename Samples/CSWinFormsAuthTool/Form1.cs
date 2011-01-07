@@ -1,10 +1,9 @@
 ﻿namespace Facebook.Samples.AuthenticationTool
 {
     using System;
-    using System.Collections.Generic;
+    using System.Dynamic;
     using System.Text;
     using System.Windows.Forms;
-    using Facebook.OAuth;
 
     public partial class Form1 : Form
     {
@@ -24,35 +23,41 @@
                 isReady = false;
                 appId.Text = "REQUIRED!";
             }
-
+            if (String.IsNullOrEmpty(appSecret.Text.Trim()))
+            {
+                isReady = false;
+                appSecret.Text = "REQUIRED!";
+            }
             if (!isReady)
             {
                 return;
             }
 
-            var loginParameters = new Dictionary<string, object>
-                                      {
-                                          { "type", "user_agent" }
-                                      };
+            var facebookSettings = new FacebookSettings
+            {
+                AppId = appId.Text.Trim(),
+                AppSecret = appSecret.Text.Trim(),
+            };
 
-            var perms = new StringBuilder();
+            FacebookApp app = new FacebookApp(facebookSettings);
 
+            dynamic parameters = new ExpandoObject();
+            parameters.type = "user_agent";
+            //parameters.redirect_uri = "http://www.facebook.com/connect/login_success.html";
+
+            StringBuilder perms = new StringBuilder();
             foreach (var permission in permissions.CheckedItems)
             {
                 perms.Append(permission);
                 perms.Append(",");
             }
+            parameters.scope = perms.ToString();
 
-            if (permissions.CheckedItems.Count > 0)
-            {
-                --perms.Length; // remove the last comma
-                loginParameters["scope"] = perms.ToString();
-            }
+            Uri loginUrl = app.GetLoginUrl(parameters);
 
-            var authorizer = new FacebookOAuthClientAuthorizer(appId.Text.Trim(), null, null);
-            var loginUri = authorizer.GetDesktopLoginUri(loginParameters);
+            webBrowser1.Navigate(loginUrl);
+            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
 
-            webBrowser1.Navigate(loginUri);
         }
 
         void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)
