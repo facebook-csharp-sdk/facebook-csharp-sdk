@@ -1,7 +1,6 @@
 namespace Facebook.Tests
 {
     using System.Collections.Generic;
-    using Facebook.OAuth;
     using Xunit;
 
     public class FacebookOAuthClientAuthorizerTests

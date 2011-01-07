@@ -1,4 +1,4 @@
-namespace Facebook.OAuth
+namespace Facebook
 {
     using System;
     using System.Collections.Generic;
