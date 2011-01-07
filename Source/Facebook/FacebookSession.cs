@@ -217,7 +217,7 @@ namespace Facebook
         internal static long ParseUserIdFromAccessToken(string accessToken)
         {
             Contract.Requires(!string.IsNullOrEmpty(accessToken));
-            Contract.Ensures(Contract.Result<long>() >= 0);
+            // Contract.Ensures(Contract.Result<long>() >= 0);
 
             /*
              * access_token:
