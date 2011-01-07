@@ -8,38 +8,13 @@ namespace Facebook
 
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
     {
-        private readonly string clientId;
-        private readonly string clientSecret;
-        private readonly Uri redirectUri;
-
-        public FacebookOAuthClientAuthorizer()
-            : this(null, null, null)
-        {
-        }
-
-        public FacebookOAuthClientAuthorizer(string clientId, string clientSecret, Uri redirectUri)
-        {
-            this.clientId = clientId;
-            this.clientSecret = clientSecret;
-            this.redirectUri = redirectUri;
-        }
-
         #region Implementation of IOAuthClientAuthorizer
 
-        public string ClientID
-        {
-            get { return this.clientId; }
-        }
+        public string ClientID { get; set; }
 
-        public string ClientSecret
-        {
-            get { return this.clientSecret; }
-        }
+        public string ClientSecret { get; set; }
 
-        public Uri RedirectUri
-        {
-            get { return this.redirectUri; }
-        }
+        public Uri RedirectUri { get; set; }
 
         public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
         {

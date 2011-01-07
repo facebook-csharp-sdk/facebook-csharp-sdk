@@ -12,7 +12,6 @@
             InitializeComponent();
             permissions.Items.AddRange(ExtendedPermissions.Permissions);
             webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
-
         }
 
         private void login_Click(object sender, EventArgs e)
@@ -56,7 +55,6 @@
             Uri loginUrl = app.GetLoginUrl(parameters);
 
             webBrowser1.Navigate(loginUrl);
-            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
 
         }
 
