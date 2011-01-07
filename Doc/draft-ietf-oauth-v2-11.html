@@ -1,0 +1,3267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>The OAuth 2.0 Protocol Framework</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="The OAuth 2.0 Protocol Framework">
+<meta name="generator" content="xml2rfc v1.35 (http://xml.resource.org/)">
+<meta name="viewport" content="width=600;" />
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: 85%;
+		max-width: 80ex; 
+		color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: 85%;
+		max-width: 80ex; 
+		font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: 85%;
+		max-width: 80ex; 
+		font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: 85%;
+		max-width: 80ex; 
+		text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">E. Hammer-Lahav, Ed.</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">Yahoo!</td></tr>
+<tr><td class="header">Obsoletes: <a href='http://tools.ietf.org/html/rfc5849'>5849</a> (if&nbsp;approved)</td><td class="header">D. Recordon</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">Facebook</td></tr>
+<tr><td class="header">Expires: June 4, 2011</td><td class="header">D. Hardt</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">Microsoft</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">December 1, 2010</td></tr>
+</table></td></tr></table>
+<h1><br />The OAuth 2.0 Protocol Framework<br />draft-ietf-oauth-v2-11</h1>
+
+<h3>Abstract</h3>
+
+<p>
+        This specification describes the OAuth 2.0 protocol framework.
+      
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on June 4, 2011.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2010 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">1.1.</a>&nbsp;
+Notational Conventions<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">1.2.</a>&nbsp;
+Terminology<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">1.3.</a>&nbsp;
+Overview<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">1.4.</a>&nbsp;
+Access Grants<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">1.4.1.</a>&nbsp;
+Authorization Code<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">1.4.2.</a>&nbsp;
+Resource Owner Password Credentials<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">1.4.3.</a>&nbsp;
+Client Credentials<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">1.4.4.</a>&nbsp;
+Refresh Token<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">1.4.5.</a>&nbsp;
+Assertion<br />
+<a href="#anchor11">2.</a>&nbsp;
+Client Profiles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">2.1.</a>&nbsp;
+Web Server<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#user-agent">2.2.</a>&nbsp;
+User-Agent<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor13">2.3.</a>&nbsp;
+Native Application<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">2.4.</a>&nbsp;
+Autonomous<br />
+<a href="#client-authentication">3.</a>&nbsp;
+Client Credentials<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">3.1.</a>&nbsp;
+Client Password Credentials<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">3.2.</a>&nbsp;
+Client Assertion Credentials<br />
+<a href="#user-authorization">4.</a>&nbsp;
+Obtaining End-User Authorization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">4.1.</a>&nbsp;
+Authorization Request<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">4.2.</a>&nbsp;
+Authorization Response<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#auth-error">4.3.</a>&nbsp;
+Error Response<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#auth-error-codes">4.3.1.</a>&nbsp;
+Error Codes<br />
+<a href="#obtaining-token">5.</a>&nbsp;
+Obtaining an Access Token<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#access-grant-types">5.1.</a>&nbsp;
+Access Grant Types<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#code-grant-type">5.1.1.</a>&nbsp;
+Authorization Code<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.1.2.</a>&nbsp;
+Resource Owner Password Credentials<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.1.3.</a>&nbsp;
+Client Credentials<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#token-refresh">5.1.4.</a>&nbsp;
+Refresh Token<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.1.5.</a>&nbsp;
+Assertion<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#access-token-response">5.2.</a>&nbsp;
+Access Token Response<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#token-error">5.3.</a>&nbsp;
+Error Response<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#token-error-codes">5.3.1.</a>&nbsp;
+Error Codes<br />
+<a href="#access-resource">6.</a>&nbsp;
+Accessing a Protected Resource<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#token-types">6.1.</a>&nbsp;
+Access Token Types<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authn-header">6.2.</a>&nbsp;
+The WWW-Authenticate Response Header Field<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#resource-error-codes">6.2.1.</a>&nbsp;
+Error Codes<br />
+<a href="#anchor22">7.</a>&nbsp;
+Extensibility<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">7.1.</a>&nbsp;
+Defining New Client Credentials Types<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">7.2.</a>&nbsp;
+Defining New Endpoint Parameters<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">7.3.</a>&nbsp;
+Defining New Header Field Parameters<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">7.4.</a>&nbsp;
+Defining New Access Grant Types<br />
+<a href="#anchor27">8.</a>&nbsp;
+Security Considerations<br />
+<a href="#anchor28">9.</a>&nbsp;
+IANA Considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameters-registry">9.1.</a>&nbsp;
+The OAuth Parameters Registry<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">9.1.1.</a>&nbsp;
+Registration Template<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">9.1.2.</a>&nbsp;
+Example<br />
+<a href="#anchor31">Appendix&nbsp;A.</a>&nbsp;
+Examples<br />
+<a href="#anchor32">Appendix&nbsp;B.</a>&nbsp;
+Contributors<br />
+<a href="#anchor33">Appendix&nbsp;C.</a>&nbsp;
+Acknowledgements<br />
+<a href="#anchor34">Appendix&nbsp;D.</a>&nbsp;
+Document History<br />
+<a href="#rfc.references1">10.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">10.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">10.2.</a>&nbsp;
+Informative References<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Authors' Addresses<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>
+        With the increasing use of distributed web services and cloud computing, third-party
+        applications require access to server-hosted resources. These resources are usually
+        protected and require authentication using the resource owner's credentials (typically a
+        username and password).
+      
+</p>
+<p>
+        In the traditional client-server authentication model, the client accesses a protected
+        resource on the server by authenticating with the server using the resource owner's
+        credentials. In order to provide third-party applications access to protected resources,
+        the resource owner shares its credentials with the third-party. This creates several
+        problems and limitations:
+
+        </p>
+<ul class="text">
+<li>
+            Third-party applications are required to store the resource-owner's credentials
+            for future use, typically a password in clear-text.
+          
+</li>
+<li>
+            Servers are required to support password authentication, despite the security
+            weaknesses created by passwords.
+          
+</li>
+<li>
+            Third-party applications gain overly broad access to the resource-owner's protected
+            resources, leaving resource owners without any ability to restrict access to a limited
+            subset of resources, to limit access duration, or to limit access to the methods
+            supported by these resources.
+          
+</li>
+<li>
+            Resource owners cannot revoke access to an individual third-party without revoking
+            access to all third-parties, and must do so by changing their password.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        OAuth addresses these issues by separating the role of the client from that of the
+        resource owner. In OAuth, the client (which is usually not the resource owner, but is
+        acting on the resource owner's behalf) requests access to resources controlled by the
+        resource owner and hosted by the resource server, and is issued a different set of
+        credentials than those of the resource owner.
+      
+</p>
+<p>
+        Instead of using the resource owner's credentials to access protected resources, the client
+        obtains an access token - a string which denotes a specific scope, duration, and other
+        attributes. Access tokens are issued to third-party clients by an authorization server with
+        the approval of the resource owner. The client uses the access token to access the
+        protected resources hosted by the resource server.
+      
+</p>
+<p>
+        For example, a web user (resource owner) can grant a printing service (client) access to
+        her protected photos stored at a photo sharing service (resource server), without sharing
+        her username and password with the printing service. Instead, she authenticates directly
+        with an authentication service trusted by the photo sharing service (authorization server)
+        which issues the printing service delegation-specific credentials (token).
+      
+</p>
+<p>
+        Access tokens can have different formats, structures, and methods of utilization (e.g.
+        cryptographic properties), based on the resource server security requirements. Access token
+        attributes and the methods used to access protected resources are beyond the scope of this
+        specification and are defined by companion specifications. The interaction between the
+        authorization server and resource server is beyond the scope of this specification.
+      
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+Notational Conventions</h3>
+
+<p>
+          The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT', 'SHOULD', 'SHOULD
+          NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this document are to be interpreted as
+          described in <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+        
+</p>
+<p>
+          This document uses the Augmented Backus-Naur Form (ABNF) notation of
+          <a class='info' href='#I-D.ietf-httpbis-p1-messaging'>[I&#8209;D.ietf&#8209;httpbis&#8209;p1&#8209;messaging]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Nielsen, H., Masinter, L., Leach, P., Berners-Lee, T., and J. Reschke, &ldquo;HTTP/1.1, part 1: URIs, Connections, and Message Parsing,&rdquo; March&nbsp;2010.</span><span>)</span></a>. Additionally, the following rules are
+          included from <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>: URI-reference; and from
+          <a class='info' href='#I-D.ietf-httpbis-p1-messaging'>[I&#8209;D.ietf&#8209;httpbis&#8209;p1&#8209;messaging]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Nielsen, H., Masinter, L., Leach, P., Berners-Lee, T., and J. Reschke, &ldquo;HTTP/1.1, part 1: URIs, Connections, and Message Parsing,&rdquo; March&nbsp;2010.</span><span>)</span></a>: OWS, RWS, and quoted-string.
+        
+</p>
+<p>
+          Unless otherwise noted, all the protocol parameter names and values are case sensitive.
+        
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+Terminology</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>protected resource</dt>
+<dd>
+              
+              An access-restricted resource which can be obtained using an OAuth-authenticated
+              request.
+            
+</dd>
+<dt>resource server</dt>
+<dd>
+              
+              A server capable of accepting and responding to protected resource requests.
+            
+</dd>
+<dt>client</dt>
+<dd>
+              
+              An application obtaining authorization and making protected resource requests.
+            
+</dd>
+<dt>resource owner</dt>
+<dd>
+              
+              An entity capable of granting access to a protected resource.
+            
+</dd>
+<dt>end-user</dt>
+<dd>
+              
+              A human resource owner.
+            
+</dd>
+<dt>token</dt>
+<dd>
+              
+              A string representing an access authorization issued to the client. The string is
+              usually opaque to the client. Tokens represent specific scopes and durations of
+              access, granted by the resource owner, and enforced by the resource server and
+              authorization servers. The token may denote an identifier used to retrieve the
+              authorization information, or self-contain the authorization information in a
+              verifiable manner (i.e. a token string consisting of some data and a signature).
+              Tokens may be pure capabilities. Specific additional authentication credentials may
+              be required in order for a client to use a token.
+            
+</dd>
+<dt>access token</dt>
+<dd>
+              
+              A token used by the client to make authenticated requests on behalf of the resource
+              owner.
+            
+</dd>
+<dt>refresh token</dt>
+<dd>
+              
+              A token used by the client to obtain a new access token without having to involve
+              the resource owner.
+            
+</dd>
+<dt>authorization code</dt>
+<dd>
+              A short-lived token representing the authorization provided by the end-user. The
+              authorization code is used to obtain an access token and a refresh token.
+            
+</dd>
+<dt>access grant</dt>
+<dd>
+              A general term used to describe the intermediate credentials (such as an end-user
+              password or authorization code) representing the resource owner authorization. Access
+              grants are used by the client to obtain an access token. By exchanging access
+              grants of different types for an access token, the resource server is only required
+              to support a single authentication scheme.
+            
+</dd>
+<dt>authorization server</dt>
+<dd>
+              
+              A server capable of issuing tokens after successfully authenticating the resource
+              owner and obtaining authorization. The authorization server may be the same server as
+              the resource server, or a separate entity. A single authorization server may issue
+              tokens for multiple resource servers.
+            
+</dd>
+<dt>end-user authorization endpoint</dt>
+<dd>
+              
+              The authorization server's HTTP endpoint capable of authenticating the end-user and
+              obtaining authorization. The end-user authorization endpoint is described in
+              <a class='info' href='#user-authorization'>Section&nbsp;4<span> (</span><span class='info'>Obtaining End-User Authorization</span><span>)</span></a>.
+            
+</dd>
+<dt>token endpoint</dt>
+<dd>
+              
+              The authorization server's HTTP endpoint capable of issuing tokens and refreshing
+              expired tokens. The token endpoint is described in <a class='info' href='#obtaining-token'>Section&nbsp;5<span> (</span><span class='info'>Obtaining an Access Token</span><span>)</span></a>.
+            
+</dd>
+<dt>client identifier</dt>
+<dd>
+              
+              A unique identifier issued to the client to identify itself to the authorization
+              server. Client identifiers may have a matching secret. The client identifier is
+              described in <a class='info' href='#client-authentication'>Section&nbsp;3<span> (</span><span class='info'>Client Credentials</span><span>)</span></a>.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
+Overview</h3>
+
+<p>
+          OAuth provides a method for clients to access a protected resource on behalf of a
+          resource owner. Before a client can access a protected resource, it must first obtain
+          authorization (access grant) from the resource owner, then exchange the access grant for
+          an access token (representing the grant's scope, duration, and other attributes). The
+          client accesses the protected resource by presenting the access token to the resource
+          server.
+        
+</p>
+<p>
+          The access token provides an abstraction layer, replacing different authorization
+          constructs (e.g. username and password, assertion) for a single token understood by the
+          resource server. This abstraction enables issuing access tokens valid for a short time
+          period, as well as removing the resource server's need to understand a wide range of
+          authentication schemes.
+        
+</p><br /><hr class="insert" />
+<a name="Figure 1"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  +--------+                               +---------------+
+  |        |--(A)- Authorization Request -&gt;|   Resource    |
+  |        |                               |     Owner     |
+  |        |&lt;-(B)----- Access Grant -------|               |
+  |        |                               +---------------+
+  |        |
+  |        |           Access Grant &amp;      +---------------+
+  |        |--(C)--- Client Credentials --&gt;| Authorization |
+  | Client |                               |     Server    |
+  |        |&lt;-(D)----- Access Token -------|               |
+  |        |                               +---------------+
+  |        |
+  |        |                               +---------------+
+  |        |--(E)----- Access Token ------&gt;|    Resource   |
+  |        |                               |     Server    |
+  |        |&lt;-(F)--- Protected Resource ---|               |
+  +--------+                               +---------------+
+
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;1: Abstract Protocol Flow&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>
+          The abstract flow illustrated in <a class='info' href='#Figure 1'>Figure&nbsp;1<span> (</span><span class='info'>Abstract Protocol Flow</span><span>)</span></a> describes the overall
+          protocol architecture and includes the following steps:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>(A)</dt>
+<dd>
+              The client requests authorization from the resource owner. The authorization request
+              can be made directly to the resource owner, or preferably indirectly via an
+              intermediary such as an authorization server.
+            
+</dd>
+<dt>(B)</dt>
+<dd>
+              The client receives an access grant which represents the authorization provided by
+              the resource owner.
+            
+</dd>
+<dt>(C)</dt>
+<dd>
+              The client requests an access token by authenticating with the authorization server
+              using its client credentials, and presenting the access grant.
+            
+</dd>
+<dt>(D)</dt>
+<dd>
+              The authorization server validates the client credentials and the access grant, and
+              if valid issues an access token.
+            
+</dd>
+<dt>(E)</dt>
+<dd>
+              The client makes a protected resource request to the resource server by presenting
+              the access token.
+            
+</dd>
+<dt>(F)</dt>
+<dd>
+              The resource server validates the access token, and if valid, serves the request.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
+Access Grants</h3>
+
+<p>
+          The access grant represents the authorization provided by the resource owner. The access
+          grant type depends on the method used by the client and supported by the authorization
+          server to obtain it.
+        
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4.1"></a><h3>1.4.1.&nbsp;
+Authorization Code</h3>
+
+<p>
+            The authorization code is an access grant obtained by directing the end-user to an
+            authorization server. The authorization server authenticates the end-user, obtains
+            authorization, and issues the an authorization code to the client. Because the end-user
+            only authenticates with the authorization server, the end-user's password is never
+            shared with the client.
+          
+</p>
+<p>
+            The authorization code access grant is suitable when the client is interacting with an
+            end-user via a user-agent.
+          
+</p><br /><hr class="insert" />
+<a name="Figure 2"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  +----------+
+  |          |
+  | End-User |
+  |          |
+  +----------+
+       ^
+       |
+      (B)
+  +----|-----+        Client Identifier     +---------------+
+  |         -+--(A)--- &amp; Redirect URI -----&gt;|               |
+  |  User-   |                              | Authorization |
+  |  Agent  -|--(B)-- User authenticates --&gt;|     Server    |
+  |          |                              |               |
+  |         -+--(C)-- Authorization Code --&lt;|               |
+  +-|----|---+                              +---------------+
+   (A)  (C)
+    |    |
+    ^    v
+  +---------+
+  |         |
+  |  Client |
+  |         |
+  +---------+
+
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;2: Obtaining an Authorization Code&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>
+            The authorization code flow illustrated in <a class='info' href='#Figure 2'>Figure&nbsp;2<span> (</span><span class='info'>Obtaining an Authorization Code</span><span>)</span></a> includes the
+            following steps:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>(A)</dt>
+<dd>
+                The client initiates the flow by directing the end-user's user-agent to the
+                authorization server's end-user authorization endpoint. The client includes its
+                client identifier, requested scope, local state, and a redirection URI (to which
+                the authorization server will send the user-agent back once access is granted or
+                denied).
+              
+</dd>
+<dt>(B)</dt>
+<dd>
+                The authorization server authenticates the end-user (via the user-agent) and
+                establishes whether the end-user grants or denies the client's access request.
+              
+</dd>
+<dt>(C)</dt>
+<dd>
+                If access is granted, the authorization server directs the user-agent back to the
+                client using the redirection URI provided. The authorization server includes an
+                authorization code for the client to use to obtain an access token.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+            Once the client obtains an authorization code, it requests an access token by
+            authenticating with the authorization server (using its client credentials) and
+            presenting the authorization code (access grant).
+          
+</p>
+<p>
+            In cases where the client is incapable of maintaining its client credentials secret
+            (such as native applications or an application implemented as a user-agent script), the
+            authorization server issues an access token directly to the client in step (C), instead
+            of issuing an authorization code.
+          
+</p>
+<p>
+            Obtaining an authorization code is described in <a class='info' href='#user-authorization'>Section&nbsp;4<span> (</span><span class='info'>Obtaining End-User Authorization</span><span>)</span></a>.
+          
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4.2"></a><h3>1.4.2.&nbsp;
+Resource Owner Password Credentials</h3>
+
+<p>
+            The resource owner password credentials (e.g. a username and password) can be used
+            directly as an access grant to obtain an access token. The credentials should only be
+            used when there is a high degree of trust between the resource owner and the client
+            (e.g. its computer operating system or a highly privileged application), and when
+            other access grant types are not available (such as an authorization code).
+          
+</p>
+<p>
+            Even though this grant type requires direct client access to the resource owner's
+            credentials, the resource owner's credentials are used for a single request and are
+            exchanged for an access token. Unlike the HTTP Basic authentication scheme defined in
+            <a class='info' href='#RFC2617'>[RFC2617]<span> (</span><span class='info'>Franks, J., Hallam-Baker, P., Hostetler, J., Lawrence, S., Leach, P., Luotonen, A., and L. Stewart, &ldquo;HTTP Authentication: Basic and Digest Access Authentication,&rdquo; June&nbsp;1999.</span><span>)</span></a>, this grant type eliminates the need for the client to store
+            the resource-owner's credentials for future use.
+          
+</p>
+<p>
+            In <a class='info' href='#Figure 3'>Figure&nbsp;3<span> (</span><span class='info'>Obtaining Resource Owner Password Credentials</span><span>)</span></a>, the client requests authorization from the resource
+            owner directly. When the resource owner is an end-user, the client typically prompts
+            the end-user for the username and password.
+          
+</p><br /><hr class="insert" />
+<a name="Figure 3"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  +--------+                               +----------+
+  |        |--(A)- Authorization Request -&gt;| Resource |
+  | Client |                               |   Owner  |
+  |        |&lt;-(B)-- Username &amp; Password ---|          |
+  +--------+                               +----------+
+
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;3: Obtaining Resource Owner Password Credentials&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4.3"></a><h3>1.4.3.&nbsp;
+Client Credentials</h3>
+
+<p>
+            The client credentials can be used as an access grant when the authorization scope is
+            limited to the protected resources under the control of the client, or other protected
+            resources previously arranged with the authorization server. Client credentials are
+            used as an access grant typically when the client is acting on its own behalf (the
+            client is also the resource owner).
+          
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4.4"></a><h3>1.4.4.&nbsp;
+Refresh Token</h3>
+
+<p>
+            Access tokens usually have a shorter lifetime than authorized by the resource owner.
+            When issuing an access token, the authorization server can include a refresh token
+            which is used by the client to obtain a new access token when the current access token
+            expires. When requesting a new access token, the refresh token acts as an access grant.
+            Using a refresh token removes the need to interact with the resource owner again, or to
+            store the original access grant used to obtain the access token and refresh token.
+          
+</p><br /><hr class="insert" />
+<a name="Figure 4"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  +--------+          Access Grant &amp;      +---------------+
+  |        |--(A)-- Client Credentials --&gt;| Authorization |
+  |        |                              |     Server    |
+  |        |&lt;-(B)---- Access Token -------|               |
+  |        |         &amp; Refresh Token      +---------------+
+  |        |
+  |        |                              +---------------+
+  |        |--(C)----- Access Token -----&gt;|               |
+  |        |                              |               |
+  |        |&lt;-(D)-- Protected Resource ---|    Resource   |
+  | Client |                              |     Server    |
+  |        |--(E)----- Access Token -----&gt;|               |
+  |        |                              |               |
+  |        |&lt;-(F)-- Invalid Token Error --|               |
+  |        |                              +---------------+
+  |        |
+  |        |          Refresh Token &amp;     +---------------+
+  |        |--(G)-- Client Credentials --&gt;| Authorization |
+  |        |                              |     Server    |
+  |        |&lt;-(H)----- Access Token ------|               |
+  +--------+     &amp; Optional Refresh Token +---------------+
+
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;4: Refreshing an Access Token&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>
+            The refresh token flow illustrated in <a class='info' href='#Figure 4'>Figure&nbsp;4<span> (</span><span class='info'>Refreshing an Access Token</span><span>)</span></a> includes the following
+            steps:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>(A)</dt>
+<dd>
+                The client requests an access token by authenticating with the authorization server
+                using its client credentials, and presenting an access grant.
+              
+</dd>
+<dt>(B)</dt>
+<dd>
+                The authorization server validates the client credentials and the access grant, and
+                if valid issues an access token and a refresh token.
+              
+</dd>
+<dt>(C)</dt>
+<dd>
+                The client makes a protected resource requests to the resource server by presenting
+                the access token.
+              
+</dd>
+<dt>(D)</dt>
+<dd>
+                The resource server validates the access token, and if valid, serves the request.
+              
+</dd>
+<dt>(E)</dt>
+<dd>
+                Steps (C) and (D) repeat until the access token expires. If the client does not
+                know the access token expired, it makes another protected resource request.
+                Otherwise, it skips to step (G).
+              
+</dd>
+<dt>(F)</dt>
+<dd>
+                Since the access token is invalid (expired), the resource server returns an invalid
+                token error.
+              
+</dd>
+<dt>(G)</dt>
+<dd>
+                The client requests a new access token by authenticating with the authorization
+                server using its client credentials, and presenting the refresh token (as the
+                access grant).
+              
+</dd>
+<dt>(H)</dt>
+<dd>
+                The authorization server validates the client credentials and the refresh token,
+                and if valid issues a new access token (and optionally, a new refresh token).
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4.5"></a><h3>1.4.5.&nbsp;
+Assertion</h3>
+
+<p>
+            Assertions provide a bridge between OAuth and other trust frameworks. They enable the
+            client to utilize existing trust relationships in order to obtain an access token. The
+            access grant represented by an assertion depends on the assertion type, its content,
+            and how it was issued, which are beyond the scope of this specification.
+          
+</p>
+<p>
+            Assertions are used as part of the protocol extensibility model, providing a way for
+            authorization servers to support additional access grant types.
+          
+</p>
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Client Profiles</h3>
+
+<p>
+        [[ add intro and find new names for the profiles. this section will have normative language
+        in future drafts, similar to -05 and earlier. ]]
+      
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
+Web Server</h3>
+
+<p>
+          The web server profile is suitable for clients capable of interacting with the end-user's
+          user-agent (typically a web browser) and capable of receiving incoming requests (via
+          redirection) from the authorization server (capable of acting as an HTTP server).
+        
+</p><br /><hr class="insert" />
+<a name="Figure 6"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  +----------+          Client Identifier      +---------------+
+  |         -+----(A)--- &amp; Redirect URI ------&gt;|               |
+  | End-user |                                 | Authorization |
+  |    at    |&lt;---(B)-- User authenticates ---&gt;|     Server    |
+  | Browser  |                                 |               |
+  |         -+----(C)-- Authorization Code ---&lt;|               |
+  +-|----|---+                                 +---------------+
+    |    |                                         ^      v
+   (A)  (C)                                        |      |
+    |    |                                         |      |
+    ^    v                                         |      |
+  +---------+                                      |      |
+  |         |&gt;---(D)-- Client Credentials, --------'      |
+  |  Server |          Authorization Code,                |
+  |  -Based |            &amp; Redirect URI                   |
+  |  Client |                                             |
+  |         |&lt;---(E)----- Access Token -------------------'
+  +---------+       (w/ Optional Refresh Token)
+
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;5: Web Server Flow&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>
+          The web server flow illustrated in <a class='info' href='#Figure 6'>Figure&nbsp;5<span> (</span><span class='info'>Web Server Flow</span><span>)</span></a> includes the following
+          steps:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>(A)</dt>
+<dd>
+              The web client initiates the flow by redirecting the end-user's user-agent to the
+              end-user authorization endpoint as described in <a class='info' href='#user-authorization'>Section&nbsp;4<span> (</span><span class='info'>Obtaining End-User Authorization</span><span>)</span></a>.
+              The client includes its client identifier, requested scope, local state, and a
+              redirect URI to which the authorization server will send the end-user back once
+              access is granted (or denied).
+            
+</dd>
+<dt>(B)</dt>
+<dd>
+              The authorization server authenticates the end-user (via the user-agent) and
+              establishes whether the end-user grants or denies the client's access request.
+            
+</dd>
+<dt>(C)</dt>
+<dd>
+              Assuming the end-user granted access, the authorization server redirects the
+              user-agent back to the client to the redirection URI provided earlier. The
+              authorization includes an authorization code for the client to use to obtain an
+              access token.
+            
+</dd>
+<dt>(D)</dt>
+<dd>
+              The client requests an access token from the authorization server by authenticating
+              and including the authorization code received in the previous step as described in
+              <a class='info' href='#obtaining-token'>Section&nbsp;5<span> (</span><span class='info'>Obtaining an Access Token</span><span>)</span></a>.
+            
+</dd>
+<dt>(E)</dt>
+<dd>
+              The authorization server validates the client credentials and the authorization
+              code and responds back with the access token.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="user-agent"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
+User-Agent</h3>
+
+<p>
+          The user-agent profile is suitable for client applications residing in a user-agent,
+          typically implemented in a browser using a scripting language such as JavaScript. These
+          clients cannot keep client secrets confidential and the authentication of the client is
+          based on the user-agent's same-origin policy.
+        
+</p>
+<p>
+          Unlike other profiles in which the client makes separate requests for end-user
+          authorization and access token, the client receives the access token as a result of the
+          end-user authorization request in the form of an HTTP redirection. The client requests
+          the authorization server to redirect the user-agent to another web server or local
+          resource accessible to the user-agent which is capable of extracting the access token
+          from the response and passing it to the client.
+        
+</p>
+<p>
+          This user-agent profile does not utilize the client secret since the client executables
+          reside on the end-user's computer or device which makes the client secret accessible
+          and exploitable. Because the access token is encoded into the redirection URI, it may
+          be exposed to the end-user and other applications residing on the computer or device.
+        
+</p><br /><hr class="insert" />
+<a name="Figure 7"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+         +----------+          Client Identifier     +----------------+
+         |          |&gt;---(A)-- &amp; Redirection URI ---&gt;|                |
+         |          |                                |                |
+  End &lt;--+  -  -  - +----(B)-- User authenticates --&gt;|  Authorization |
+  User   |          |                                |     Server     |
+         |          |&lt;---(C)--- Redirect URI -------&lt;|                |
+         |  Client  |         with Access Token      |                |
+         |    in    |            in Fragment         +----------------+
+         |  Browser |
+         |          |                                +----------------+
+         |          |&gt;---(D)--- Redirect URI -------&gt;|                |
+         |          |         without Fragment       |   Web Server   |
+         |          |                                |   with Client  |
+         |    (F)   |&lt;---(E)--- Web Page with ------&lt;|    Resource    |
+         |  Access  |              Script            |                |
+         |   Token  |                                +----------------+
+         +----------+
+
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;6: User-Agent Flow&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>
+          The user-agent flow illustrated in <a class='info' href='#Figure 7'>Figure&nbsp;6<span> (</span><span class='info'>User-Agent Flow</span><span>)</span></a> includes the following
+          steps:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>(A)</dt>
+<dd>
+              The client sends the user-agent to the end-user authorization endpoint as described
+              in <a class='info' href='#user-authorization'>Section&nbsp;4<span> (</span><span class='info'>Obtaining End-User Authorization</span><span>)</span></a>. The client includes its client identifier,
+              requested scope, local state, and a redirect URI to which the authorization server
+              will send the end-user back once authorization is granted (or denied).
+            
+</dd>
+<dt>(B)</dt>
+<dd>
+              The authorization server authenticates the end-user (via the user-agent) and
+              establishes whether the end-user grants or denies the client's access request.
+            
+</dd>
+<dt>(C)</dt>
+<dd>
+              If the end-user granted access, the authorization server redirects the
+              user-agent to the redirection URI provided earlier. The redirection URI includes
+              the access token in the URI fragment.
+            
+</dd>
+<dt>(D)</dt>
+<dd>
+              The user-agent follows the redirection instructions by making a request to the web
+              server which does not include the fragment. The user-agent retains the fragment
+              information locally.
+            
+</dd>
+<dt>(E)</dt>
+<dd>
+              The web server returns a web page  (typically an HTML page with an embedded script)
+              capable of accessing the full redirection URI including the fragment retained by the
+              user-agent, and extracting the access token (and other parameters) contained in the
+              fragment.
+            
+</dd>
+<dt>(F)</dt>
+<dd>
+              The user-agent executes the script provided by the web server locally, which
+              extracts the access token and passes it to the client.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="anchor13"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.3"></a><h3>2.3.&nbsp;
+Native Application</h3>
+
+<p>
+          Native applications are clients running as native code on the end-user's computer or
+          device (i.e. executing outside a user-agent or as a desktop program). These clients are
+          often capable of interacting with (or embedding) the end-user's user-agent but are
+          limited in how such interaction affects their end-user experience. In many cases,
+          native applications are incapable of receiving direct callback requests from the
+          server (e.g. firewall, operating system restrictions).
+        
+</p>
+<p>
+          Native application clients can be implemented in different ways based on their
+          requirements and desired end-user experience. Native application clients can:
+
+          </p>
+<ul class="text">
+<li>
+              Utilize the end-user authorization endpoint as described in
+              <a class='info' href='#user-authorization'>Section&nbsp;4<span> (</span><span class='info'>Obtaining End-User Authorization</span><span>)</span></a> by launching an external user-agent. The
+              client can capture the response by providing a redirection URI with a custom URI
+              scheme (registered with the operating system to invoke the client application), or
+              by providing a redirection URI pointing to a server-hosted resource under the
+              client's control which makes the response available to the client (e.g. using the
+              window title or other locations accessible from outside the user-agent).
+            
+</li>
+<li>
+              Utilize the end-user authorization endpoint as described in
+              <a class='info' href='#user-authorization'>Section&nbsp;4<span> (</span><span class='info'>Obtaining End-User Authorization</span><span>)</span></a> by using an embedded user-agent. The client
+              obtains the response by directly communicating with the embedded user-agent.
+            
+</li>
+<li>
+              Prompt end-users for their password and use them directly to obtain an access
+              token. This is generally discouraged, as it hands the end-user's password directly
+              to the third-party client which in turn has to store it in clear-text. It also
+              requires the server to support password-based authentication.
+            
+</li>
+</ul><p>
+        
+</p>
+<p>
+          When choosing between launching an external browser and an embedded user-agent,
+          developers should consider the following:
+
+          </p>
+<ul class="text">
+<li>
+              External user-agents may improve completion rate as the end-user may already be
+              logged-in and not have to re-authenticate.
+            
+</li>
+<li>
+              Embedded user-agents often offer a better end-user flow, as they remove the need to
+              switch context and open new windows.
+            
+</li>
+<li>
+              Embedded user-agents pose a security challenge because users are authenticating in
+              an unidentified window without access to the visual protections offered by many
+              user-agents.
+            
+</li>
+</ul><p>
+        
+</p>
+<a name="anchor14"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.4"></a><h3>2.4.&nbsp;
+Autonomous</h3>
+
+<p>
+          Autonomous clients utilize an existing trust relationship or framework to establish
+          authorization. Autonomous clients can be implemented in different ways based on their
+          requirements and the existing trust framework they rely upon. Autonomous clients can:
+
+          </p>
+<ul class="text">
+<li>
+              Obtain an access token by authenticating with the authorization server using their
+              client credentials. The scope of the access token is limited to the protected
+              resources under the control of the client, or that of another resource owner
+              previously arranged with the authorization server.
+            
+</li>
+<li>
+              Use an existing access grant expressed as an assertion using an assertion format
+              supported by the authorization server. Using assertions requires the client to
+              obtain an assertion (such as a <a class='info' href='#OASIS.saml-core-2.0-os'>SAML<span> (</span><span class='info'>Cantor, S., Kemp, J., Philpott, R., and E. Maler, &ldquo;Assertions and Protocol for the OASIS Security Assertion Markup Language             (SAML) V2.0,&rdquo; March&nbsp;2005.</span><span>)</span></a> [OASIS.saml&#8209;core&#8209;2.0&#8209;os]
+              assertion) from an assertion issuer or to self-issue an assertion. The assertion
+              format, the process by which the assertion is obtained, and the method of
+              validating the assertion are defined by the assertion issuer and the authorization
+              server, and are beyond the scope of this specification.
+            
+</li>
+</ul><p>
+        
+</p>
+<a name="client-authentication"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Client Credentials</h3>
+
+<p>
+        When interacting with the authorization server, the client identifies itself using a set of
+        client credentials which include a client identifier and other properties for client
+        authentication. The means through which the client obtains its credentials are beyond the
+        scope of this specification, but typically involve registration with the authorization
+        server.
+      
+</p>
+<p>
+        Due to the nature of some clients, authorization servers SHOULD NOT make assumptions
+        about the confidentiality of client secrets without establishing trust with the client.
+        Authorization servers SHOULD NOT issue client secrets to clients incapable of keeping their
+        secrets confidential.
+      
+</p>
+<p>
+        The authorization server MAY authenticate the client using any appropriate set of
+        credentials and authentication schemes. The client MUST NOT include more than one set of
+        credentials or authentication mechanism with each request.
+      
+</p>
+<a name="anchor15"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
+Client Password Credentials</h3>
+
+<p>
+          The client password credentials use a shared symmetric secret to authenticate the client.
+          The client identifier and password are included in the request using the
+          HTTP Basic authentication scheme as defined in <a class='info' href='#RFC2617'>[RFC2617]<span> (</span><span class='info'>Franks, J., Hallam-Baker, P., Hostetler, J., Lawrence, S., Leach, P., Luotonen, A., and L. Stewart, &ldquo;HTTP Authentication: Basic and Digest Access Authentication,&rdquo; June&nbsp;1999.</span><span>)</span></a> by including the
+          client identifier as the username and client password as the password.
+        
+</p>
+<p>
+            For example (line breaks are for display purposes only):
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  POST /token HTTP/1.1
+  Host: server.example.com
+  Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+  Content-Type: application/x-www-form-urlencoded
+
+  grant_type=authorization_code&amp;code=i1WsRn1uB1&amp;
+  redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
+
+</pre></div>
+<p>
+          Alternatively, the client MAY include the password in the request body using the
+          following parameters:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>client_id</dt>
+<dd>
+              
+              REQUIRED. The client identifier.
+            
+</dd>
+<dt>client_secret</dt>
+<dd>
+              REQUIRED. The client password.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<p>
+            For example (line breaks are for display purposes only):
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  POST /token HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+
+  grant_type=authorization_code&amp;client_id=s6BhdRkqt3&amp;
+  client_secret=gX1fBat3bV&amp;code=i1WsRn1uB1&amp;
+  redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
+
+</pre></div>
+<p>
+          The authorization server MUST accept the client credentials using both the request
+          parameter, and the HTTP Basic authentication scheme. The authorization server MAY
+          support additional authentication schemes suitable for the transmission of password
+          credentials.
+        
+</p>
+<a name="anchor16"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
+Client Assertion Credentials</h3>
+
+<p>
+          The client assertion credentials are used in cases where a password (clear-text shared
+          symmetric secret) is unsuitable or does not provide sufficient security for client
+          authentication. In such cases it is common to use other mechanisms such as HMAC or
+          digital signatures that do not require sending clear-text secrets. The client assertion
+          credentials provide an extensible mechanism to use an assertion format supported by the
+          authorization server for authentication the client.
+        
+</p>
+<p>
+          Using assertions requires the client to obtain an assertion (such as a
+          <a class='info' href='#OASIS.saml-core-2.0-os'>SAML<span> (</span><span class='info'>Cantor, S., Kemp, J., Philpott, R., and E. Maler, &ldquo;Assertions and Protocol for the OASIS Security Assertion Markup Language             (SAML) V2.0,&rdquo; March&nbsp;2005.</span><span>)</span></a> [OASIS.saml&#8209;core&#8209;2.0&#8209;os] assertion) from an assertion issuer or
+          to self-issue an assertion. The assertion format, the process by which the assertion is
+          obtained, and the method of validating the assertion are defined by the assertion issuer
+          and the authorization server, and are beyond the scope of this specification.
+        
+</p>
+<p>
+          When using a client assertion, the client includes the following parameters:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>client_assertion_type</dt>
+<dd>
+              REQUIRED. The format of the assertion as defined by the authorization server. The value
+              MUST be an absolute URI.
+            
+</dd>
+<dt>client_assertion</dt>
+<dd>
+              REQUIRED. The client assertion.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<p>
+            For example, the client sends the following access token request using a SAML 2.0
+            assertion to authenticate itself (line breaks are for display purposes only):
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  POST /token HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+
+  grant_type=authorization_code&amp;code=i1WsRn1uB1&amp;
+  client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT4%3D&amp;
+  client_assertion_type=
+  urn%3Aoasis%3Anames%sAtc%3ASAML%3A2.0%3Aassertion&amp;
+  redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
+
+</pre></div>
+<p>
+          When obtaining an access token using a client assertion together with an authorization code
+          (as described in <a class='info' href='#code-grant-type'>Section&nbsp;5.1.1<span> (</span><span class='info'>Authorization Code</span><span>)</span></a>), a mechanism is needed to map between the
+          value of <tt>client_id</tt> parameter used to obtain the authorization code,
+          and the client assertion. Such mechanism is beyond the out of scope for this specification,
+          but MUST be specified for any client assertion type used in combination with an authorization
+          code.
+        
+</p>
+<p>
+          The authorization server MUST reject access token requests using client assertion credentials
+          that do not contain HMAC or signed values that:
+
+          </p>
+<ul class="text">
+<li>
+              State the assertion was specifically issued to be consumed by the receiving endpoint
+              (typically via an audience or recipient value containing the receiving endpoint’s
+              identifier).
+            
+</li>
+<li>
+              Identify the entity that issued the assertion (typically via an issuer value).
+            
+</li>
+<li>
+              Identify when the assertion expires as an absolute time (typically via an expiration
+              value containing a UTC date/time value). The authorization server MUST reject expired
+              assertions.
+            
+</li>
+</ul><p>
+        
+</p>
+<a name="user-authorization"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Obtaining End-User Authorization</h3>
+
+<p>
+        Before the client can access a protect resource, it MUST first obtain authorization from
+        the end-user. To obtain an end-user authorization, the client sends the end-user to the
+        end-user authorization endpoint. Once obtained, the end-user access grant is expressed as
+        an authorization code which the client uses to obtain an access token.
+      
+</p>
+<p>
+        At the end-user authorization endpoint, the end-user first authenticates with the
+        authorization server, and then grants or denies the access request. The way in which the
+        authorization server authenticates the end-user (e.g. username and password login, OpenID,
+        session cookies) and in which the authorization server obtains the end-user's
+        authorization, including whether it uses a secure channel such as TLS, is beyond the scope
+        of this specification. However, the authorization server MUST first verify the identity of
+        the end-user.
+      
+</p>
+<p>
+        The location of the end-user authorization endpoint can be found in the service
+        documentation. The end-user authorization endpoint URI MAY include a query component as
+        defined by <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> section 3, which must be retained when adding
+        additional query parameters.
+      
+</p>
+<p>
+        Since requests to the end-user authorization endpoint result in user authentication and
+        the transmission of sensitive information, the authorization server SHOULD require the
+        use of a transport-layer security mechanism such as TLS when sending requests to the
+        end-user authorization endpoint.
+      
+</p>
+<a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+Authorization Request</h3>
+
+<p>
+          In order to direct the end-user's user-agent to the authorization server, the client
+          constructs the request URI by adding the following parameters to the end-user
+          authorization endpoint URI query component using the
+          <tt>application/x-www-form-urlencoded</tt> format as defined by
+          <a class='info' href='#W3C.REC-html401-19991224'>[W3C.REC&#8209;html401&#8209;19991224]<span> (</span><span class='info'>Raggett, D., Hors, A., and I. Jacobs, &ldquo;HTML 4.01 Specification,&rdquo; December&nbsp;1999.</span><span>)</span></a>:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>response_type</dt>
+<dd>
+              
+              REQUIRED. The requested response: an access token, an authorization code, or both. The
+              parameter value MUST be set to <tt>token</tt> for requesting an
+              access token, <tt>code</tt> for requesting an authorization code, or
+              <tt>code_and_token</tt> to request both. The authorization server
+              MAY decline to provide one or more of these response types.
+            
+</dd>
+<dt>client_id</dt>
+<dd>
+              
+              REQUIRED. The client identifier as described in
+              <a class='info' href='#client-authentication'>Section&nbsp;3<span> (</span><span class='info'>Client Credentials</span><span>)</span></a>.
+            
+</dd>
+<dt>redirect_uri</dt>
+<dd>
+              
+              REQUIRED, unless a redirection URI has been established between the client and
+              authorization server via other means. An absolute URI to which the authorization
+              server will redirect the user-agent to when the end-user authorization step is
+              completed. The authorization server SHOULD require the client to pre-register
+              their redirection URI.
+            
+</dd>
+<dt>scope</dt>
+<dd>
+              
+              OPTIONAL. The scope of the access request expressed as a list of space-delimited
+              strings. The value of the <tt>scope</tt> parameter is defined
+              by the authorization server. If the value contains multiple space-delimited
+              strings, their order does not matter, and each string adds an additional access
+              range to the requested scope.
+            
+</dd>
+<dt>state</dt>
+<dd>
+              
+              OPTIONAL. An opaque value used by the client to maintain state between the request
+              and callback. The authorization server includes this value when redirecting the
+              user-agent back to the client.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<p>
+          The client directs the end-user to the constructed URI using an HTTP redirection
+          response, or by other means available to it via the end-user's user-agent. The
+          authorization server MUST support the use of the HTTP <tt>GET</tt>
+          method for the end-user authorization endpoint, and MAY support the use of the
+          <tt>POST</tt> method as well.
+        
+</p>
+<p>
+            For example, the client directs the end-user's user-agent to make the following HTTP
+            request using transport-layer security (line breaks are for display purposes only):
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  GET /authorize?response_type=code&amp;client_id=s6BhdRkqt3&amp;
+      redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb HTTP/1.1
+  Host: server.example.com
+
+</pre></div>
+<p>
+          If the client has previously registered a redirection URI with the authorization server,
+          the authorization server MUST verify that the redirection URI received matches the
+          registered URI associated with the client identifier. The authorization server SHOULD
+          NOT redirect the user-agent to unregistered or untrusted URIs to prevent the endpoint
+          from being used as an open redirector. If no valid redirection URI is available, the
+          authorization server SHOULD inform the end-user of the error occured.
+          [[ provide guidance on how to perform matching ]]
+        
+</p>
+<p>
+          Parameters sent without a value MUST be treated as if they were omitted from the request.
+          The authorization server SHOULD ignore unrecognized request parameters.
+        
+</p>
+<p>
+          The authorization server validates the request to ensure all required parameters are
+          present and valid. If the request is invalid, the authorization server redirects the
+          user-agent back to the client using the redirection URI provided with the appropriate
+          error code as described in <a class='info' href='#auth-error'>Section&nbsp;4.3<span> (</span><span class='info'>Error Response</span><span>)</span></a>.
+        
+</p>
+<p>
+          The authorization server authenticates the end-user and obtains an authorization
+          decision (by asking the end-user or by establishing approval via other means). When a
+          decision has been established, the authorization server directs the end-user's
+          user-agent to the provided client redirection URI using an HTTP redirection response,
+          or by other means available to it via the end-user's user-agent.
+        
+</p>
+<a name="anchor18"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+Authorization Response</h3>
+
+<p>
+          If the end-user grants the access request, the authorization server issues an access
+          token, an authorization code, or both, and delivers them to the client by adding the
+          following parameters to the redirection URI (as described below):
+
+          </p>
+<blockquote class="text"><dl>
+<dt>code</dt>
+<dd>
+              
+              REQUIRED if the response type is <tt>code</tt> or
+              <tt>code_and_token</tt>, otherwise MUST NOT be included. The
+              authorization code generated by the authorization server. The authorization code
+              SHOULD expire shortly after it is issued to minimize the risk of leaks. The client
+              MUST NOT reuse the authorization code. If an authorization code is used more than
+              once, the authorization server MAY revoke all tokens previously issued based on that
+              authorization code. The authorization code is bound to the client identifier and
+              redirection URI.
+            
+</dd>
+<dt>access_token</dt>
+<dd>
+              
+              REQUIRED if the response type is <tt>token</tt> or
+              <tt>code_and_token</tt>, otherwise MUST NOT be included. The
+              access token issued by the authorization server.
+            
+</dd>
+<dt>token_type</dt>
+<dd>
+              
+              REQUIRED if the response includes an access token. The type of the token issued.
+              The token type informs the client how the access token is to be used when accessing a
+              protected resource as described in <a class='info' href='#token-types'>Section&nbsp;6.1<span> (</span><span class='info'>Access Token Types</span><span>)</span></a>.
+            
+</dd>
+<dt>expires_in</dt>
+<dd>
+              
+              OPTIONAL. The duration in seconds of the access token lifetime if an access token
+              is included. For example, the value <tt>3600</tt> denotes that the
+              access token will expire in one hour from the time the response was generated by the
+              authorization server.
+            
+</dd>
+<dt>scope</dt>
+<dd>
+              
+              OPTIONAL. The scope of the access token as a list of space-delimited strings if an
+              access token is included. The value of the <tt>scope</tt>
+              parameter is defined by the authorization server. If the value contains multiple
+              space-delimited strings, their order does not matter, and each string adds an
+              additional access range to the requested scope. The authorization server SHOULD
+              include the parameter if the requested scope is different from the one requested by
+              the client.
+            
+</dd>
+<dt>state</dt>
+<dd>
+              
+              REQUIRED if the <tt>state</tt> parameter was present in the
+              client authorization request. Set to the exact value received from the client.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<p>
+          The method in which the authorization server adds the parameter to the redirection
+          URI is determined by the response type requested by the client in the authorization
+          request using the <tt>response_type</tt> parameter.
+        
+</p>
+<p>
+          If the response type is <tt>code</tt>, the authorization
+          server adds the parameters to the redirection URI query component using the
+          <tt>application/x-www-form-urlencoded</tt> format as defined by
+          <a class='info' href='#W3C.REC-html401-19991224'>[W3C.REC&#8209;html401&#8209;19991224]<span> (</span><span class='info'>Raggett, D., Hors, A., and I. Jacobs, &ldquo;HTML 4.01 Specification,&rdquo; December&nbsp;1999.</span><span>)</span></a>.
+        
+</p>
+<p>
+            For example, the authorization server redirects the end-user's user-agent by
+            sending the following HTTP response:
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 302 Found
+  Location: https://client.example.com/cb?code=i1WsRn1uB1
+
+</pre></div>
+<p>
+          If the response type is <tt>token</tt> or
+          <tt>code_and_token</tt>, the authorization server adds the parameters
+          to the redirection URI fragment component using the
+          <tt>application/x-www-form-urlencoded</tt> format as defined by
+          <a class='info' href='#W3C.REC-html401-19991224'>[W3C.REC&#8209;html401&#8209;19991224]<span> (</span><span class='info'>Raggett, D., Hors, A., and I. Jacobs, &ldquo;HTML 4.01 Specification,&rdquo; December&nbsp;1999.</span><span>)</span></a>.
+        
+</p>
+<p>
+            For example, the authorization server redirects the end-user's user-agent by
+            sending the following HTTP response (URI line breaks are for display purposes only):
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 302 Found
+  Location: http://example.com/rd#access_token=FJQbwq9&amp;
+            token_type=example&amp;expires_in=3600
+
+</pre></div>
+<p>
+          Clients SHOULD ignore unrecognized response parameters. The sizes of tokens and other
+          values received from the authorization server, are left undefined by this specification.
+          Clients should avoid making assumptions about value sizes. Servers should document the
+          expected size of any value they issue.
+        
+</p>
+<a name="auth-error"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
+Error Response</h3>
+
+<p>
+          If the end-user denies the access request or if the request fails for reasons other than
+          a missing or invalid redirection URI, the authorization server informs the client by
+          adding the following parameters to the redirection URI query component using the
+          <tt>application/x-www-form-urlencoded</tt> format as defined by
+          <a class='info' href='#W3C.REC-html401-19991224'>[W3C.REC&#8209;html401&#8209;19991224]<span> (</span><span class='info'>Raggett, D., Hors, A., and I. Jacobs, &ldquo;HTML 4.01 Specification,&rdquo; December&nbsp;1999.</span><span>)</span></a>:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>error</dt>
+<dd>
+              
+              REQUIRED. A single error code as described in <a class='info' href='#auth-error-codes'>Section&nbsp;4.3.1<span> (</span><span class='info'>Error Codes</span><span>)</span></a>.
+            
+</dd>
+<dt>error_description</dt>
+<dd>
+              OPTIONAL. A human-readable text providing additional information, used to assist in
+              the understanding and resolution of the error occurred.
+            
+</dd>
+<dt>error_uri</dt>
+<dd>
+              OPTIONAL. A URI identifying a human-readable web page with information about the
+              error, used to provide the end-user with additional information about the error.
+            
+</dd>
+<dt>state</dt>
+<dd>
+              
+              REQUIRED if the <tt>state</tt> parameter was present in the
+              client authorization request. Set to the exact value received from the client.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<p>
+            For example, the authorization server redirects the end-user's user-agent by
+            sending the following HTTP response:
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 302 Found
+  Location: https://client.example.com/cb?error=access_denied
+
+</pre></div>
+<p>
+          If the request fails due to a missing or invalid redirection URI, the authorization
+          server SHOULD inform the end-user of the error, and MUST NOT redirect the end-user's
+          user-agent to the invalid redirection URI.
+        
+</p>
+<a name="auth-error-codes"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3.1"></a><h3>4.3.1.&nbsp;
+Error Codes</h3>
+
+<p>
+            The authorization server includes one of the following error codes with the error
+            response:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>invalid_request</dt>
+<dd>
+                
+                The request is missing a required parameter, includes an unsupported parameter or
+                parameter value, or is otherwise malformed.
+              
+</dd>
+<dt>invalid_client</dt>
+<dd>
+                
+                The client identifier provided is invalid.
+              
+</dd>
+<dt>unauthorized_client</dt>
+<dd>
+                
+                The client is not authorized to use the requested response type.
+              
+</dd>
+<dt>redirect_uri_mismatch</dt>
+<dd>
+                
+                The redirection URI provided does not match a pre-registered value.
+              
+</dd>
+<dt>access_denied</dt>
+<dd>
+                
+                The end-user or authorization server denied the request.
+              
+</dd>
+<dt>unsupported_response_type</dt>
+<dd>
+                
+                The requested response type is not supported by the authorization server.
+              
+</dd>
+<dt>invalid_scope</dt>
+<dd>
+                
+                The requested scope is invalid, unknown, or malformed.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+            [[ Add mechanism for extending error codes ]]
+          
+</p>
+<a name="obtaining-token"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+Obtaining an Access Token</h3>
+
+<p>
+        The client obtains an access token by authenticating with the authorization server and
+        presenting its access grant (in the form of an authorization code, resource owner
+        credentials, an assertion, or a refresh token).
+      
+</p>
+<p>
+        Since requests to the token endpoint result in the transmission of clear-text
+        credentials in the HTTP request and response, the authorization server MUST require the
+        use of a transport-layer security mechanism when sending requests to the token endpoints.
+        Servers MUST support TLS 1.2 as defined in <a class='info' href='#RFC5246'>[RFC5246]<span> (</span><span class='info'>Dierks, T. and E. Rescorla, &ldquo;The Transport Layer Security (TLS) Protocol Version 1.2,&rdquo; August&nbsp;2008.</span><span>)</span></a>, and MAY support
+        additional transport-layer security mechanisms.
+      
+</p>
+<p>
+        The client requests an access token by making an HTTP <tt>POST</tt>
+        request to the token endpoint. The location of the token endpoint can be found in the
+        service documentation. The token endpoint URI MAY include a query component.
+      
+</p>
+<p>
+        The client authenticates with the authorization server by adding its client credentials to
+        the request as described in <a class='info' href='#client-authentication'>Section&nbsp;3<span> (</span><span class='info'>Client Credentials</span><span>)</span></a>. The authorization
+        server MAY allow unauthenticated access token requests when the client identity does not
+        matter (e.g. anonymous client) or when the client identity is established via other means
+        (e.g. using an assertion access grant).
+      
+</p>
+<p>
+        The client constructs the request by including the following parameters using the
+        <tt>application/x-www-form-urlencoded</tt> format in the HTTP request
+        entity-body:
+
+        </p>
+<blockquote class="text"><dl>
+<dt>grant_type</dt>
+<dd>
+            
+            REQUIRED. The access grant type included in the request. Value MUST be one of
+            <tt>authorization_code</tt>,
+            <tt>password</tt>,
+            <tt>refresh_token</tt>,
+            <tt>client_credentials</tt>, or an absolute URI identifying an
+            assertion format supported by the authorization server.
+          
+</dd>
+<dt>scope</dt>
+<dd>
+            
+            OPTIONAL. The scope of the access request expressed as a list of space-delimited
+            strings. The value of the <tt>scope</tt> parameter is defined
+            by the authorization server. If the value contains multiple space-delimited
+            strings, their order does not matter, and each string adds an additional access
+            range to the requested scope. If the access grant being used already represents an
+            approved scope (e.g. authorization code, assertion), the requested scope MUST be equal
+            or lesser than the scope previously granted, and if omitted is treated as equal to the
+            previously approved scope.
+          
+</dd>
+</dl></blockquote><p>
+      
+</p>
+<p>
+        In addition, the client MUST include the appropriate parameters listed for the selected
+        access grant type as described in <a class='info' href='#access-grant-types'>Section&nbsp;5.1<span> (</span><span class='info'>Access Grant Types</span><span>)</span></a>.
+      
+</p>
+<p>
+        Parameters sent without a value MUST be treated as if they were omitted from the request.
+        The authorization server SHOULD ignore unrecognized request parameters.
+      
+</p>
+<a name="access-grant-types"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+Access Grant Types</h3>
+
+<p>
+          The client requests an access token using an authorization code, resource owner password
+          credentials, client credentials, refresh token, or assertion.
+        
+</p>
+<a name="code-grant-type"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1"></a><h3>5.1.1.&nbsp;
+Authorization Code</h3>
+
+<p>
+            The client includes the authorization code using the
+            <tt>authorization_code</tt> access grant type and the following
+            parameters:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>code</dt>
+<dd>
+                
+                REQUIRED. The authorization code received from the authorization server.
+              
+</dd>
+<dt>redirect_uri</dt>
+<dd>
+                
+                REQUIRED. The redirection URI used in the initial request.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+              For example, the client makes the following HTTP request by including its client
+              credentials via the <tt>client_secret</tt> parameter described in
+              <a class='info' href='#client-authentication'>Section&nbsp;3<span> (</span><span class='info'>Client Credentials</span><span>)</span></a> and using transport-layer security (line
+              breaks are for display purposes only):
+            
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  POST /token HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+
+  grant_type=authorization_code&amp;client_id=s6BhdRkqt3&amp;
+  client_secret=gX1fBat3bV&amp;code=i1WsRn1uB1&amp;
+  redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
+
+</pre></div>
+<p>
+            The authorization server MUST:
+
+            </p>
+<ul class="text">
+<li>
+                Validate the client credentials (if present) and ensure they match the
+                authorization code.
+              
+</li>
+<li>
+                Verify that the authorization code and redirection URI are all valid and match its
+                stored association.
+              
+</li>
+</ul><p>
+          
+</p>
+<p>
+            If the request is valid, the authorization server issues a successful response as
+            described in <a class='info' href='#access-token-response'>Section&nbsp;5.2<span> (</span><span class='info'>Access Token Response</span><span>)</span></a>.
+          
+</p>
+<a name="anchor19"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.2"></a><h3>5.1.2.&nbsp;
+Resource Owner Password Credentials</h3>
+
+<p>
+            The client includes the resource owner credentials using the
+            <tt>password</tt> access grant type and the following
+            parameters: [[ add internationalization consideration for username and password ]]
+
+            </p>
+<blockquote class="text"><dl>
+<dt>username</dt>
+<dd>
+                
+                REQUIRED. The resource owner's username.
+              
+</dd>
+<dt>password</dt>
+<dd>
+                
+                REQUIRED. The resource owner's password.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+              For example, the client makes the following HTTP request by including its client
+              credentials via the <tt>client_secret</tt> parameter described in
+              <a class='info' href='#client-authentication'>Section&nbsp;3<span> (</span><span class='info'>Client Credentials</span><span>)</span></a> and using transport-layer security (line
+              breaks are for display purposes only):
+            
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  POST /token HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+
+  grant_type=password&amp;client_id=s6BhdRkqt3&amp;
+  client_secret=47HDu8s&amp;username=johndoe&amp;password=A3ddj3w
+
+</pre></div>
+<p>
+            The authorization server MUST validate the client credentials (if present) and end-user
+            credentials and if valid issue an access token response as described in
+            <a class='info' href='#access-token-response'>Section&nbsp;5.2<span> (</span><span class='info'>Access Token Response</span><span>)</span></a>.
+          
+</p>
+<a name="anchor20"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.3"></a><h3>5.1.3.&nbsp;
+Client Credentials</h3>
+
+<p>
+            The client can request an access token using only its client credentials using the
+            <tt>client_credentials</tt> access grant type. When omitting an
+            explicit access grant, the client is requesting access to the protected resources under
+            its control, or those of another resource owner which has been previously arranged with
+            the authorization server (the method of which is beyond the scope of this
+            specification).
+          
+</p>
+<a name="token-refresh"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.4"></a><h3>5.1.4.&nbsp;
+Refresh Token</h3>
+
+<p>
+            The client includes the refresh token using the
+            <tt>refresh_token</tt> access grant type and the following
+            parameter:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>refresh_token</dt>
+<dd>
+                
+                REQUIRED. The refresh token associated with the access token to be refreshed.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+              For example, the client makes the following HTTP request by including its client
+              credentials via the <tt>client_secret</tt> parameter described in
+              <a class='info' href='#client-authentication'>Section&nbsp;3<span> (</span><span class='info'>Client Credentials</span><span>)</span></a> and using transport-layer security (line
+              breaks are for display purposes only):
+            
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  POST /token HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+
+  grant_type=refresh_token&amp;client_id=s6BhdRkqt3&amp;
+  client_secret=8eSEIpnqmM&amp;refresh_token=n4E9O119d
+
+</pre></div>
+<p>
+            The authorization server MUST verify the client credentials (if present), the validity
+            of the refresh token, and that the resource owner's authorization is still valid. If
+            the request is valid, the authorization server issues an access token response as
+            described in <a class='info' href='#access-token-response'>Section&nbsp;5.2<span> (</span><span class='info'>Access Token Response</span><span>)</span></a>. The authorization server MAY
+            issue a new refresh token, in which case, the client MUST discard the old refresh
+            token and replace it with the new refresh token.
+          
+</p>
+<a name="anchor21"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.5"></a><h3>5.1.5.&nbsp;
+Assertion</h3>
+
+<p>
+            The client includes an assertion by specifying the assertion format using an absolute
+            URI (as defined by the authorization server) as the value of the
+            <tt>grant_type</tt> parameter and by adding the following parameter:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>assertion</dt>
+<dd>
+                
+                REQUIRED. The assertion.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+              For example, the client makes the following HTTP request using transport-layer
+              security, and client authentication is achieved via the assertion (line breaks are
+              for display purposes only):
+            
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  POST /token HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+
+  grant_type=urn%3Aoasis%3Anames%3Atc%3ASAML%3A2.0%3Aassertion&amp;
+  assertion=PHNhbWxwOl[...omitted for brevity...]ZT4%3D
+
+</pre></div>
+<p>
+            The authorization server MUST validate the client credentials (if present) and the
+            assertion and if valid issues an access token response as described in
+            <a class='info' href='#access-token-response'>Section&nbsp;5.2<span> (</span><span class='info'>Access Token Response</span><span>)</span></a>. The authorization server SHOULD NOT issue a
+            refresh token (instead, it should require the client to use the same or new assertion).
+          
+</p>
+<p>
+            Authorization servers SHOULD issue access tokens with a limited lifetime and require
+            clients to refresh them by requesting a new access token using the same assertion if it
+            is still valid. Otherwise the client MUST obtain a new valid assertion.
+          
+</p>
+<a name="access-token-response"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Access Token Response</h3>
+
+<p>
+          After receiving and verifying a valid and authorized access token request from the
+          client, the authorization server issues the access token and optional refresh token,
+          and constructs the response by adding the following parameters to the entity body of
+          the HTTP response with a 200 (OK) status code:
+        
+</p>
+<p>
+          The token response contains the following parameters:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>access_token</dt>
+<dd>
+              
+              REQUIRED. The access token issued by the authorization server.
+            
+</dd>
+<dt>token_type</dt>
+<dd>
+              
+              REQUIRED. The type of the token issued. The token type informs the client how the
+              access token is to be used when accessing a protected resource as described in
+              <a class='info' href='#token-types'>Section&nbsp;6.1<span> (</span><span class='info'>Access Token Types</span><span>)</span></a>.
+            
+</dd>
+<dt>expires_in</dt>
+<dd>
+              
+              OPTIONAL. The duration in seconds of the access token lifetime. For example, the
+              value <tt>3600</tt> denotes that the access token will expire in
+              one hour from the time the response was generated by the authorization server.
+            
+</dd>
+<dt>refresh_token</dt>
+<dd>
+              
+              OPTIONAL. The refresh token used to obtain new access tokens using the same
+              end-user access grant as described in <a class='info' href='#token-refresh'>Section&nbsp;5.1.4<span> (</span><span class='info'>Refresh Token</span><span>)</span></a>. The
+              authorization server SHOULD NOT issue a refresh token when the access grant type is
+              an assertion or a set of client credentials.
+            
+</dd>
+<dt>scope</dt>
+<dd>
+              
+              OPTIONAL. The scope of the access token as a list of space-delimited strings. The
+              value of the <tt>scope</tt> parameter is defined by the
+              authorization server. If the value contains multiple space-delimited strings,
+              their order does not matter, and each string adds an additional access range to
+              the requested scope. The authorization server SHOULD include the parameter if the
+              requested scope is different from the one requested by the client.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<p>
+          The parameters are including in the entity body of the HTTP response using the
+          <tt>application/json</tt> media type as defined by
+          <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a>. The parameters are serialized into a JSON structure by
+          adding each parameter at the highest structure level. Parameter names and string values
+          are included as JSON strings. Numerical values are included as JSON numbers.
+        
+</p>
+<p>
+          The authorization server MUST include the HTTP <tt>Cache-Control</tt>
+          response header field with a value of <tt>no-store</tt> in any
+          response containing tokens, secrets, or other sensitive information.
+        
+</p>
+<p>
+            For example:
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+  Cache-Control: no-store
+
+  {
+    "access_token":"SlAV32hkKG",
+    "token_type":"example",
+    "expires_in":3600,
+    "refresh_token":"8xLOxBtZp8"
+  }
+
+</pre></div>
+<p>
+          Clients SHOULD ignore unrecognized response parameters. The sizes of tokens and other
+          values received from the authorization server, are left undefined by this specification.
+          Clients should avoid making assumptions about value sizes. Servers should document the
+          expected size of any value they issue.
+        
+</p>
+<a name="token-error"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+Error Response</h3>
+
+<p>
+          If the token request is invalid or unauthorized, the authorization server constructs
+          the response by adding the following parameter to the entity body of the HTTP
+          response using the <tt>application/json</tt> media type:
+
+          </p>
+<blockquote class="text"><dl>
+<dt>error</dt>
+<dd>
+              
+              REQUIRED. A single error code as described in <a class='info' href='#token-error-codes'>Section&nbsp;5.3.1<span> (</span><span class='info'>Error Codes</span><span>)</span></a>.
+            
+</dd>
+<dt>error_description</dt>
+<dd>
+              OPTIONAL. A human-readable text providing additional information, used to assist in
+              the understanding and resolution of the error occurred.
+            
+</dd>
+<dt>error_uri</dt>
+<dd>
+              OPTIONAL. A URI identifying a human-readable web page with information about the
+              error, used to provide the end-user with additional information about the error.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<p>
+            For example:
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 400 Bad Request
+  Content-Type: application/json
+  Cache-Control: no-store
+
+  {
+    "error":"invalid_request"
+  }
+
+</pre></div>
+<p>
+          If the client provided invalid credentials using an HTTP authentication scheme via the
+          <tt>Authorization</tt> request header field, the authorization server
+          MUST respond with the HTTP 401 (Unauthorized) status code. Otherwise, the authorization
+          server SHALL respond with the HTTP 400 (Bad Request) status code.
+        
+</p>
+<a name="token-error-codes"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3.1"></a><h3>5.3.1.&nbsp;
+Error Codes</h3>
+
+<p>
+            The authorization server includes one of the following error codes with the error
+            response:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>invalid_request</dt>
+<dd>
+                
+                The request is missing a required parameter, includes an unsupported parameter or
+                parameter value, repeats a parameter, includes multiple credentials, utilizes
+                more than one mechanism for authenticating the client, or is otherwise malformed.
+              
+</dd>
+<dt>invalid_client</dt>
+<dd>
+                
+                The client identifier provided is invalid, the client failed to authenticate, the
+                client did not include its credentials, provided multiple client credentials, or
+                used unsupported credentials type.
+              
+</dd>
+<dt>unauthorized_client</dt>
+<dd>
+                
+                The authenticated client is not authorized to use the access grant type provided.
+              
+</dd>
+<dt>invalid_grant</dt>
+<dd>
+                
+                The provided access grant is invalid, expired, or revoked (e.g. invalid assertion,
+                expired authorization token, bad end-user password credentials, or mismatching
+                authorization code and redirection URI).
+              
+</dd>
+<dt>unsupported_grant_type</dt>
+<dd>
+                
+                The access grant included - its type or another attribute - is not supported by the
+                authorization server.
+              
+</dd>
+<dt>invalid_scope</dt>
+<dd>
+                
+                The requested scope is invalid, unknown, malformed, or exceeds the previously
+                granted scope.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+            [[ Add mechanism for extending error codes ]]
+          
+</p>
+<a name="access-resource"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+Accessing a Protected Resource</h3>
+
+<p>
+        Clients access protected resources by presenting an access token to the resource server.
+        The resource server MUST validate the access token and ensure it has not expired and
+        that its scope covers the requested resource. The methods used by the resource server
+        to validate the access token are beyond the scope of this specification, but generally
+        involve an interaction or coordination between the resource server and authorization
+        server.
+      
+</p>
+<p>
+        The method in which the client utilized the access token to authenticate with the resource
+        server depends on the type of access token issued by the authorization server.
+      
+</p>
+<a name="token-types"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+Access Token Types</h3>
+
+<p>
+          [[ add token type explanation, maybe with links to other token specs ]]
+        
+</p>
+<a name="authn-header"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
+The WWW-Authenticate Response Header Field</h3>
+
+<p>
+          If the protected resource request does not include authentication credentials, contains
+          an invalid access token, or is malformed, the resource server MUST include the HTTP
+          <tt>WWW-Authenticate</tt> response header field. The
+          <tt>WWW-Authenticate</tt> header field uses the framework defined by
+          <a class='info' href='#RFC2617'>[RFC2617]<span> (</span><span class='info'>Franks, J., Hallam-Baker, P., Hostetler, J., Lawrence, S., Leach, P., Luotonen, A., and L. Stewart, &ldquo;HTTP Authentication: Basic and Digest Access Authentication,&rdquo; June&nbsp;1999.</span><span>)</span></a> as follows:
+        
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  challenge       = "OAuth2" [ RWS 1#param ]
+
+  param           = scope /
+                    error / error-desc / error-uri /
+                    ( token "=" ( token / quoted-string ) )
+
+  scope           = "scope" "=" &lt;"&gt; scope-v *( SP scope-v ) &lt;"&gt;
+  scope-v         = 1*quoted-char
+
+  quoted-char     = ALPHA / DIGIT /
+                    "!" / "#" / "$" / "%" / "&amp;" / "'" / "(" / ")" /
+                    "*" / "+" / "-" / "." / "/" / ":" / "&lt;" / "=" /
+                    "&gt;" / "?" / "@" / "[" / "]" / "^" / "_" / "`" /
+                    "{" / "|" / "}" / "~" / "\" / "," / ";"
+
+  error           = "error" "=" quoted-string
+  error-desc      = "error_description" "=" quoted-string
+  error-uri       = "error_uri" = &lt;"&gt; URI-reference &lt;"&gt;
+
+</pre></div>
+<p>
+          The <tt>scope</tt> attribute is a space-delimited list of scope values
+          indicating the required scope of the access token for accessing the requested resource.
+          The <tt>scope</tt> attribute MUST NOT appear more than once.
+        
+</p>
+<p>
+          If the protected resource request included an access token and failed authentication, the
+          resource server SHOULD include the <tt>error</tt> attribute to provide
+          the client with the reason why the access request was declined. The parameter value is
+          described in <a class='info' href='#resource-error-codes'>Section&nbsp;6.2.1<span> (</span><span class='info'>Error Codes</span><span>)</span></a>. In addition, the resource server MAY
+          include the <tt>error_description</tt> attribute to provide a
+          human-readable explanation, and the <tt>error-uri</tt> attribute with
+          an absolute URI identifying a human-readable web page explaining the error.
+          The <tt>error</tt>, <tt>error_description</tt>, and
+          <tt>error_uri</tt> attribute MUST NOT appear more than once.
+        
+</p>
+<p>
+            For example, in response to a protected resource request without authentication:
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 401 Unauthorized
+  WWW-Authenticate: OAuth2
+
+</pre></div>
+<p>
+            And in response to a protected resource request with an authentication attempt using an
+            expired access token:
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 401 Unauthorized
+  WWW-Authenticate: OAuth2
+                    error="invalid_token",
+                    error_description="The access token expired"
+
+</pre></div>
+<a name="resource-error-codes"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.2.1"></a><h3>6.2.1.&nbsp;
+Error Codes</h3>
+
+<p>
+            When a request fails, the resource server responds using the appropriate HTTP status
+            code (typically, 400, 401, or 403), and includes one of the following error codes in
+            the response:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>invalid_request</dt>
+<dd>
+                
+                The request is missing a required parameter, includes an unsupported parameter or
+                parameter value, repeats the same parameter, uses more than one method for
+                including an access token, or is otherwise malformed. The resource server SHOULD
+                respond with the HTTP 400 (Bad Request) status code.
+              
+</dd>
+<dt>invalid_token</dt>
+<dd>
+                
+                The access token provided is expired, revoked, malformed, or invalid for other
+                reasons. The resource SHOULD respond with the HTTP 401 (Unauthorized) status
+                code. The client MAY request a new access token and retry the protected resource
+                request.
+              
+</dd>
+<dt>insufficient_scope</dt>
+<dd>
+                
+                The request requires higher privileges than provided by the access token. The
+                resource server SHOULD respond with the HTTP 403 (Forbidden) status code and MAY
+                include the <tt>scope</tt> attribute with the scope necessary to
+                access the protected resource.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<p>
+            [[ Add mechanism for extending error codes ]]
+          
+</p>
+<p>
+            If the request lacks any authentication information (i.e. the client was unaware
+            authentication is necessary or attempted using an unsupported authentication method),
+            the resource server SHOULD not include an error code or other error information.
+          
+</p>
+<p>
+              For example:
+            
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  HTTP/1.1 401 Unauthorized
+  WWW-Authenticate: OAuth2
+
+</pre></div>
+<a name="anchor22"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+Extensibility</h3>
+
+<a name="anchor23"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+Defining New Client Credentials Types</h3>
+
+<p>
+          [[ TBD ]]
+        
+</p>
+<a name="anchor24"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.2"></a><h3>7.2.&nbsp;
+Defining New Endpoint Parameters</h3>
+
+<p>
+          Applications that wish to define new request or response parameters for use with the
+          end-user authorization endpoint or the token endpoint SHALL do so in one of two ways:
+          register them in the parameters registry (following the procedures in
+          <a class='info' href='#parameters-registry'>Section&nbsp;9.1<span> (</span><span class='info'>The OAuth Parameters Registry</span><span>)</span></a>), or use the <tt>x_</tt>
+          parameter name prefix.
+        
+</p>
+<p>
+          Parameters utilizing the <tt>x_</tt> parameter name prefix MUST be
+          limited to vendor-specific extensions that are not commonly applicable, and are specific
+          to the implementation details of the authorization server where they are used. All other
+          new parameters MUST be registered, and MUST NOT use the <tt>x_</tt>
+          parameter name prefix.
+        
+</p>
+<p>
+          Parameter names MUST conform to the param-name ABNF, and parameter values syntax MUST be
+          well-defined (e.g., using ABNF, or a reference to the syntax of an existing parameter).
+        
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  param-name  = 1*name-char
+  name-char   = "-" / "." / "_" / DIGIT / ALPHA
+
+</pre></div>
+<a name="anchor25"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.3"></a><h3>7.3.&nbsp;
+Defining New Header Field Parameters</h3>
+
+<p>
+          Applications that wish to define new parameters for use in the OAuth
+          <tt>WWW-Authenticate</tt> header field MUST register them in the
+          parameters registry, following the procedures in <a class='info' href='#parameters-registry'>Section&nbsp;9.1<span> (</span><span class='info'>The OAuth Parameters Registry</span><span>)</span></a>.
+        
+</p>
+<p>
+          Parameter names MUST conform to the param-name ABNF and MUST NOT begin with
+          <tt>x_</tt>. Parameter values MUST conform to the param-value ABNF and
+          their syntax MUST be well-defined (e.g., using ABNF, or a reference to the syntax of an
+          existing parameter).
+        
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+  param-value  = quoted-value | quoted-string
+
+</pre></div>
+<a name="anchor26"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.4"></a><h3>7.4.&nbsp;
+Defining New Access Grant Types</h3>
+
+<p>
+          The assertion access grant type allows the authorization server to accept additional
+          access grants not specified. Applications that wish to define additional access grant
+          types can do so by utilizing a new or existing assertion type and format.
+        
+</p>
+<a name="anchor27"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Security Considerations</h3>
+
+<p>
+        [[ TBD ]]
+      
+</p>
+<a name="anchor28"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9"></a><h3>9.&nbsp;
+IANA Considerations</h3>
+
+<a name="parameters-registry"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.1"></a><h3>9.1.&nbsp;
+The OAuth Parameters Registry</h3>
+
+<p>
+          This document establishes the OAuth parameters registry.
+        
+</p>
+<p>
+          Additional parameters to be use in the end-user authorization endpoint request, the
+          end-user authorization endpoint response, the token endpoint request, the token endpoint
+          response, or the <tt>WWW-Authenticate</tt> header field, are
+          registered on the advice of one or more Designated Experts (appointed by the IESG or
+          their delegate), with a Specification Required (using terminology from 
+          <a class='info' href='#RFC5226'>[RFC5226]<span> (</span><span class='info'>Narten, T. and H. Alvestrand, &ldquo;Guidelines for Writing an IANA Considerations Section in RFCs,&rdquo; May&nbsp;2008.</span><span>)</span></a>). However, to allow for the allocation of values prior to
+          publication, the Designated Expert(s) may approve registration once they are satisfied
+          that such a specification will be published.
+        
+</p>
+<p>
+          Registration requests should be sent to the [TBD]@ietf.org mailing list for review and
+          comment, with an appropriate subject (e.g., "Request for parameter: example").
+          [[ Note to RFC-EDITOR: The name of the mailing list should be determined in consultation
+          with the IESG and IANA. Suggested name: oauth-ext-review. ]]
+        
+</p>
+<p>
+          Before a period of 14 days has passed, the Designated Expert(s) will either approve or
+          deny the registration request, communicating this decision both to the review list and to
+          IANA. Denials should include an explanation and, if applicable, suggestions as to how to
+          make the request successful. Registration requests that are undetermined for a period
+          longer than 21 days can be brought to the IESG's attention (using the iesg@iesg.org
+          mailing list) for resolution.
+        
+</p>
+<a name="anchor29"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.1.1"></a><h3>9.1.1.&nbsp;
+Registration Template</h3>
+
+<p>
+            </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+                The name requested (e.g., "example").
+              
+</dd>
+<dt>Parameter usage location:</dt>
+<dd>
+                The location(s) where parameter can be used. The possible locations are: the
+                end-user authorization endpoint request, the end-user authorization endpoint
+                response, the token endpoint request, the token endpoint response, the or the
+                <tt>WWW-Authenticate</tt> header field.
+              
+</dd>
+<dt>Change controller:</dt>
+<dd>
+                For standards-track RFCs, state "IETF". For others, give the name of the
+                responsible party. Other details (e.g., postal address, e-mail address, home page
+                URI) may also be included.
+              
+</dd>
+<dt>Specification document(s):</dt>
+<dd>
+                Reference to document that specifies the parameter, preferably including a URI that
+                can be used to retrieve a copy of the document. An indication of the relevant
+                sections may also be included, but is not required.
+              
+</dd>
+<dt>Related information:</dt>
+<dd>
+                Optionally, citations to additional documents containing further relevant
+                information.
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<a name="anchor30"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.1.2"></a><h3>9.1.2.&nbsp;
+Example</h3>
+
+<p>
+            The following is the parameter registration request for the
+            <tt>scope</tt> parameter as defined in this specification:
+
+            </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+                scope
+              
+</dd>
+<dt>Parameter usage location:</dt>
+<dd>
+                The end-user authorization endpoint request, the end-user authorization endpoint
+                response, the token endpoint request, the token endpoint response, and the
+                <tt>WWW-Authenticate</tt> header field.
+              
+</dd>
+<dt>Change controller:</dt>
+<dd>
+                IETF
+              
+</dd>
+<dt>Specification document(s):</dt>
+<dd>
+                [[ this document ]]
+              
+</dd>
+<dt>Related information:</dt>
+<dd>
+                None
+              
+</dd>
+</dl></blockquote><p>
+          
+</p>
+<a name="anchor31"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Examples</h3>
+
+<p>
+        [[ TBD ]]
+      
+</p>
+<a name="anchor32"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+Contributors</h3>
+
+<p>
+        The following people contributed to preliminary versions of this document:
+        Blaine Cook (BT), Brian Eaton (Google), Yaron Goland (Microsoft), Brent Goldman (Facebook),
+        Raffi Krikorian (Twitter), Luke Shepard (Facebook), and Allen Tom (Yahoo!). The content and
+        concepts within are a product of the OAuth community, WRAP community, and the OAuth Working
+        Group.
+      
+</p>
+<p>
+        The OAuth Working Group has dozens of very active contributors who proposed ideas and
+        wording for this document, including: [[ If your name is missing or you think someone
+        should be added here, please send Eran a note - don't be shy ]]
+      
+</p>
+<p>
+        Michael Adams, Andrew Arnott, Dirk Balfanz, Brian Campbell, Leah Culver, Bill de hÓra,
+        Brian Ellin, Igor Faynberg, George Fletcher, Tim Freeman, Evan Gilbert,
+        Kristoffer Gronowski, Justin Hart, Mike Jones, John Kemp, Chasen Le Hara,
+        Torsten Lodderstedt, Alastair Mair, Eve Maler, James Manger, Laurence Miao,
+        Chuck Mortimore, Justin Richer, Peter Saint-Andre, Nat Sakimura, Rob Sayre,
+        Marius Scurtescu, Naitik Shah, Justin Smith, Jeremy Suriel, Christian Stübner, Paul Tarjan,
+        Franklin Tse, and Nick Walker.
+      
+</p>
+<a name="anchor33"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.C"></a><h3>Appendix C.&nbsp;
+Acknowledgements</h3>
+
+<p>
+        [[ Add OAuth 1.0a authors + WG contributors ]]
+      
+</p>
+<a name="anchor34"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.D"></a><h3>Appendix D.&nbsp;
+Document History</h3>
+
+<p>
+        [[ to be removed by RFC editor before publication as an RFC ]]
+      
+</p>
+<p>
+        -11
+
+        </p>
+<ul class="text">
+<li>
+            Many editorial changes. Fixed user authorization section structure.
+            Removed unused normative references. Adjusted language regarding single use of
+            authorization codes.
+          
+</li>
+<li>
+            Fixed header ABNF.
+          
+</li>
+<li>
+            Change access token description from shared symmetric secret to password.
+          
+</li>
+<li>
+            Moved access grant 'none' to a separate section, renamed to 'client_credentials'.
+          
+</li>
+<li>
+            Demoted the HTTP status code requirement from MUST to SHOULD in protected resource
+            response error.
+          
+</li>
+<li>
+            Removed 'expired_token' error code.
+          
+</li>
+<li>
+            Moved all the 'code_and_token' parameter to the fragment (from code being in the
+            query).
+          
+</li>
+<li>
+            Removed 'assertion_type' parameter (moved to 'grant_type').
+          
+</li>
+<li>
+            Added note about redirecting to invalid redirection URIs (open redirectors).
+          
+</li>
+<li>
+            Removed bearer token section, added new required 'token_type' parameter with
+            extensibility.
+          
+</li>
+<li>
+            'error-uri' parameter value changed to absolute URI.
+          
+</li>
+<li>
+            OAuth 2.0 HTTP authentication scheme name changed to 'OAuth2'.
+          
+</li>
+<li>
+            Dropped the 'WWW-Authenticate' header field 'realm' parameter.
+          
+</li>
+<li>
+            Removed definition of access token characters.
+          
+</li>
+<li>
+            Added instructions for dealing with error and an invalid redirection URI.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -10
+
+        </p>
+<ul class="text">
+<li>
+            Fixed typos. Many editorial changes. Rewrote introduction. removed terminology
+            grouping.
+          
+</li>
+<li>
+            Allowed POST for end-user authorization endpoint.
+          
+</li>
+<li>
+            Fixed token endpoint to not require client authentication.
+          
+</li>
+<li>
+            Made URI query and POST body 'oauth_token' parameter optional.
+          
+</li>
+<li>
+            Moved all parameter names and values to use underscores.
+          
+</li>
+<li>
+            Changed 'basic_credentials' to 'password', 'invalid_client_credentials' and
+            'invalid_client_id' to 'invalid_client'.
+          
+</li>
+<li>
+            Added note that access token requests without an access grant should not include
+            a refresh token.
+          
+</li>
+<li>
+            Changed scheme name from 'Token' to 'OAuth', simplified request format to simple
+            string for token instead of key=value pair (still supported for extensions).
+          
+</li>
+<li>
+            Defined permitted access token string characters (suitable for inclusion in an HTTP
+            header).
+          
+</li>
+<li>
+            Added a note about conflicts with previous versions.
+          
+</li>
+<li>
+            Moved 'client_id' definition from client authentication to access token endpoint.
+          
+</li>
+<li>
+            Added definition for 'access grant'.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -09
+
+        </p>
+<ul class="text">
+<li>
+            Fixed typos, editorial changes.
+          
+</li>
+<li>
+            Added token expiration example.
+          
+</li>
+<li>
+            Added scope parameter to end-user authorization endpoint response.
+          
+</li>
+<li>
+            Added note about parameters with empty values (same as omitted).
+          
+</li>
+<li>
+            Changed parameter values to use '-' instead of '_'. Parameter names still use '_'.
+          
+</li>
+<li>
+            Changed authorization endpoint client type to response type with values: code, token,
+            and both.
+          
+</li>
+<li>
+            Complete cleanup of error codes. Added support for error description and URI.
+          
+</li>
+<li>
+            Add initial extensibility support.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -08
+
+        </p>
+<ul class="text">
+<li>
+            Renamed verification code to authorization code.
+          
+</li>
+<li>
+            Revised terminology, structured section, added new terms.
+          
+</li>
+<li>
+            Changed flows to profiles and moved to introduction.
+          
+</li>
+<li>
+            Added support for access token rescoping.
+          
+</li>
+<li>
+            Cleaned up client credentials section.
+          
+</li>
+<li>
+            New introduction overview.
+          
+</li>
+<li>
+            Added error code for invalid username and password, and renamed error code to be more
+            consistent.
+          
+</li>
+<li>
+            Added access grant type parameter to token endpoint.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -07
+
+        </p>
+<ul class="text">
+<li>
+            Major rewrite of entire document structure.
+          
+</li>
+<li>
+            Removed device profile.
+          
+</li>
+<li>
+            Added verification code support to user-agent flow.
+          
+</li>
+<li>
+            Removed multiple formats support, leaving JSON as the only format.
+          
+</li>
+<li>
+            Changed assertion <tt>assertion_format</tt> parameter to
+            <tt>assertion_type</tt>.
+          
+</li>
+<li>
+            Removed <tt>type</tt> parameter from token endpoint.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -06
+
+        </p>
+<ul class="text">
+<li>
+            Editorial changes, corrections, clarifications, etc.
+          
+</li>
+<li>
+            Removed conformance section.
+          
+</li>
+<li>
+            Moved authors section to contributors appendix.
+          
+</li>
+<li>
+            Added section on native applications.
+          
+</li>
+<li>
+            Changed error response to use the requested format. Added support for HTTP
+            <tt>Accept</tt> header.
+          
+</li>
+<li>
+            Flipped the order of the web server and user-agent flows.
+          
+</li>
+<li>
+            Renamed assertion flow <tt>format</tt> parameter name to
+            <tt>assertion_format</tt> to resolve conflict.
+          
+</li>
+<li>
+            Removed the term identifier from token definitions. Added a cryptographic token
+            definition.
+          
+</li>
+<li>
+            Added figure titles.
+          
+</li>
+<li>
+            Added server response 401 when client tried to authenticate using multiple credentials.
+          
+</li>
+<li>
+            Clarified support for TLS alternatives, and added requirement for TLS 1.2 support for
+            token endpoint.
+          
+</li>
+<li>
+            Removed all signature and cryptography.
+          
+</li>
+<li>
+            Removed all discovery.
+          
+</li>
+<li>
+            Updated HTML4 reference.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -05
+
+        </p>
+<ul class="text">
+<li>
+            Corrected device example.
+          
+</li>
+<li>
+            Added client credentials parameters to the assertion flow as OPTIONAL.
+          
+</li>
+<li>
+            Added the ability to send client credentials using an HTTP authentication scheme.
+          
+</li>
+<li>
+            Initial text for the <tt>WWW-Authenticate</tt> header (also added
+            scope support).
+          
+</li>
+<li>
+            Change authorization endpoint to end-user endpoint.
+          
+</li>
+<li>
+            In the device flow, change the <tt>user_uri</tt> parameter to
+            <tt>verification_uri</tt> to avoid confusion with the end-user
+            endpoint.
+          
+</li>
+<li>
+            Add <tt>format</tt> request parameter and support for XML and
+            form-encoded responses.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -04
+
+        </p>
+<ul class="text">
+<li>
+            Changed all token endpoints to use <tt>POST</tt>
+          
+</li>
+<li>
+            Clarified the authorization server's ability to issue a new refresh token when
+            refreshing a token.
+          
+</li>
+<li>
+            Changed the flow categories to clarify the autonomous group.
+          
+</li>
+<li>
+            Changed client credentials language not to always be server-issued.
+          
+</li>
+<li>
+            Added a <tt>scope</tt> response parameter.
+          
+</li>
+<li>
+            Fixed typos.
+          
+</li>
+<li>
+            Fixed broken document structure.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -03
+
+        </p>
+<ul class="text">
+<li>
+            Fixed typo in JSON error examples.
+          
+</li>
+<li>
+            Fixed general typos.
+          
+</li>
+<li>
+            Moved all flows sections up one level.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -02
+
+        </p>
+<ul class="text">
+<li>
+            Removed restriction on <tt>redirect_uri</tt> including a query.
+          
+</li>
+<li>
+            Added <tt>scope</tt> parameter.
+          
+</li>
+<li>
+            Initial proposal for a JSON-based token response format.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -01
+
+        </p>
+<ul class="text">
+<li>
+            Editorial changes based on feedback from Brian Eaton, Bill Keenan, and Chuck Mortimore.
+          
+</li>
+<li>
+            Changed device flow <tt>type</tt> parameter values and switch to use
+            only the token endpoint.
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        -00
+
+        </p>
+<ul class="text">
+<li>
+            Initial draft based on a combination of WRAP and OAuth 1.0a.
+          
+</li>
+</ul><p>
+      
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.10"></a><h3>10.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>10.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="I-D.ietf-httpbis-p1-messaging">[I-D.ietf-httpbis-p1-messaging]</a></td>
+<td class="author-text">Fielding, R., Gettys, J., Mogul, J., Nielsen, H., Masinter, L., Leach, P., Berners-Lee, T., and J. Reschke, &ldquo;<a href="http://www.ietf.org/internet-drafts/draft-ietf-httpbis-p1-messaging-09.txt">HTTP/1.1, part 1: URIs, Connections, and Message Parsing</a>,&rdquo; draft-ietf-httpbis-p1-messaging-09 (work in progress), March&nbsp;2010 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-httpbis-p1-messaging-09.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2045">[RFC2045]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996 (<a href="http://www.rfc-editor.org/rfc/rfc2045.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
+<td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2617">[RFC2617]</a></td>
+<td class="author-text"><a href="mailto:john@math.nwu.edu">Franks, J.</a>, <a href="mailto:pbaker@verisign.com">Hallam-Baker, P.</a>, <a href="mailto:jeff@AbiSource.com">Hostetler, J.</a>, <a href="mailto:lawrence@agranat.com">Lawrence, S.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, Luotonen, A., and <a href="mailto:stewart@OpenMarket.com">L. Stewart</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2617">HTTP Authentication: Basic and Digest Access Authentication</a>,&rdquo; RFC&nbsp;2617, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2617.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2617.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2617.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2818">[RFC2818]</a></td>
+<td class="author-text">Rescorla, E., &ldquo;<a href="http://tools.ietf.org/html/rfc2818">HTTP Over TLS</a>,&rdquo; RFC&nbsp;2818, May&nbsp;2000 (<a href="http://www.rfc-editor.org/rfc/rfc2818.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2828">[RFC2828]</a></td>
+<td class="author-text">Shirey, R., &ldquo;<a href="http://tools.ietf.org/html/rfc2828">Internet Security Glossary</a>,&rdquo; RFC&nbsp;2828, May&nbsp;2000 (<a href="http://www.rfc-editor.org/rfc/rfc2828.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3023">[RFC3023]</a></td>
+<td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3447">[RFC3447]</a></td>
+<td class="author-text">Jonsson, J. and B. Kaliski, &ldquo;<a href="http://tools.ietf.org/html/rfc3447">Public-Key Cryptography Standards (PKCS) #1: RSA Cryptography Specifications Version 2.1</a>,&rdquo; RFC&nbsp;3447, February&nbsp;2003 (<a href="http://www.rfc-editor.org/rfc/rfc3447.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3629">[RFC3629]</a></td>
+<td class="author-text">Yergeau, F., &ldquo;<a href="http://tools.ietf.org/html/rfc3629">UTF-8, a transformation format of ISO 10646</a>,&rdquo; STD&nbsp;63, RFC&nbsp;3629, November&nbsp;2003 (<a href="http://www.rfc-editor.org/rfc/rfc3629.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[RFC3986]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4627">[RFC4627]</a></td>
+<td class="author-text">Crockford, D., &ldquo;<a href="http://tools.ietf.org/html/rfc4627">The application/json Media Type for JavaScript Object Notation (JSON)</a>,&rdquo; RFC&nbsp;4627, July&nbsp;2006 (<a href="http://www.rfc-editor.org/rfc/rfc4627.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5226">[RFC5226]</a></td>
+<td class="author-text">Narten, T. and H. Alvestrand, &ldquo;<a href="http://tools.ietf.org/html/rfc5226">Guidelines for Writing an IANA Considerations Section in RFCs</a>,&rdquo; BCP&nbsp;26, RFC&nbsp;5226, May&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5226.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5246">[RFC5246]</a></td>
+<td class="author-text">Dierks, T. and E. Rescorla, &ldquo;<a href="http://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>,&rdquo; RFC&nbsp;5246, August&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5246.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5849">[RFC5849]</a></td>
+<td class="author-text">Hammer-Lahav, E., &ldquo;<a href="http://tools.ietf.org/html/rfc5849">The OAuth 1.0 Protocol</a>,&rdquo; RFC&nbsp;5849, April&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5849.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="W3C.REC-html401-19991224">[W3C.REC-html401-19991224]</a></td>
+<td class="author-text">Raggett, D., Hors, A., and I. Jacobs, &ldquo;<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML 4.01 Specification</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-html401-19991224, December&nbsp;1999 (<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML</a>).</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>10.2.&nbsp;Informative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="OASIS.saml-core-2.0-os">[OASIS.saml-core-2.0-os]</a></td>
+<td class="author-text"><a href="mailto:cantor.2@osu.edu">Cantor, S.</a>, <a href="mailto:John.Kemp@nokia.com">Kemp, J.</a>, <a href="mailto:rphilpott@rsasecurity.com">Philpott, R.</a>, and <a href="mailto:eve.maler@sun.com">E. Maler</a>, &ldquo;<a href="http://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf">Assertions and Protocol for the OASIS Security Assertion Markup Language
+            (SAML) V2.0</a>,&rdquo; OASIS Standard&nbsp;saml-core-2.0-os, March&nbsp;2005.</td></tr>
+</table>
+
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Authors' Addresses</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Eran Hammer-Lahav (editor)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Yahoo!</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:eran@hueniverse.com">eran@hueniverse.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://hueniverse.com">http://hueniverse.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">David Recordon</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Facebook</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:davidrecordon@facebook.com">davidrecordon@facebook.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://www.davidrecordon.com/">http://www.davidrecordon.com/</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Dick Hardt</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Microsoft</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:dick.hardt@gmail.com">dick.hardt@gmail.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://dickhardt.org/">http://dickhardt.org/</a></td></tr>
+</table>
+</body></html>

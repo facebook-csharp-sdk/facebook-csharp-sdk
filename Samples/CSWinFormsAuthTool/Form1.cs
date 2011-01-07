@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
-namespace Facebook.Samples.AuthenticationTool
+﻿namespace Facebook.Samples.AuthenticationTool
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Windows.Forms;
+    using Facebook.OAuth;
+
     public partial class Form1 : Form
     {
         public Form1()
         {
             InitializeComponent();
             permissions.Items.AddRange(ExtendedPermissions.Permissions);
+            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
+
         }
 
         private void login_Click(object sender, EventArgs e)
@@ -27,39 +24,35 @@ namespace Facebook.Samples.AuthenticationTool
                 isReady = false;
                 appId.Text = "REQUIRED!";
             }
-            if (String.IsNullOrEmpty(appSecret.Text.Trim())) {
-                isReady = false;
-                appSecret.Text = "REQUIRED!";
-            }
+
             if (!isReady)
             {
                 return;
             }
 
-            var facebookSettings = new FacebookSettings
-            {
-                AppId = appId.Text.Trim(),
-                AppSecret = appSecret.Text.Trim(),
-            };
+            var loginParameters = new Dictionary<string, object>
+                                      {
+                                          { "type", "user_agent" }
+                                      };
 
-            FacebookApp app = new FacebookApp(facebookSettings);
+            var perms = new StringBuilder();
 
-            dynamic parameters = new ExpandoObject();
-            parameters.type = "user_agent";
-            //parameters.redirect_uri = "http://www.facebook.com/connect/login_success.html";
-
-            StringBuilder perms = new StringBuilder();
             foreach (var permission in permissions.CheckedItems)
             {
                 perms.Append(permission);
                 perms.Append(",");
             }
-            parameters.scope = perms.ToString();
 
-            Uri loginUrl = app.GetLoginUrl(parameters);
+            if (permissions.CheckedItems.Count > 0)
+            {
+                --perms.Length; // remove the last comma
+                loginParameters["scope"] = perms.ToString();
+            }
 
-            webBrowser1.Navigate(loginUrl);
-            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
+            var authorizer = new FacebookOAuthClientAuthorizer(appId.Text.Trim(), null, null);
+            var loginUri = authorizer.GetDesktopLoginUri(loginParameters);
+
+            webBrowser1.Navigate(loginUri);
         }
 
         void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)

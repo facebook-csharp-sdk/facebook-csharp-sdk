@@ -73,6 +73,7 @@
     <Compile Include="DictionaryUtilitiesTest.cs" />
     <Compile Include="FacebookAppTest.cs" />
     <Compile Include="FacebookAuthenticationResultTests.cs" />
+    <Compile Include="FacebookOAuthClientAuthorizerTests.cs" />
     <Compile Include="GetApiUrlTests.cs" />
     <Compile Include="ParseUserIdFromAcessTokenTests.cs" />
     <Compile Include="SerializationTest.cs" />
