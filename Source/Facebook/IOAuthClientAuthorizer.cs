@@ -70,5 +70,36 @@ namespace Facebook
 
 #endif
 
+        /// <summary>
+        /// Gets the access token by exchanging the code.
+        /// </summary>
+        /// <param name="code">
+        /// The code to exchange.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state);
+
+        /// <summary>
+        /// Gets the access token by exchanging the code.
+        /// </summary>
+        /// <param name="code">
+        /// The code to exchange.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters, FacebookAsyncCallback callback);
+
     }
 }
