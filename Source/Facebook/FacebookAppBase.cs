@@ -218,6 +218,14 @@ namespace Facebook
             }
         }
 
+        public bool IsAuthenticated
+        {
+            get
+            {
+                return this.Session != null;
+            }
+        }
+
         /// <summary>
         /// Gets the name of the session cookie.
         /// </summary>
