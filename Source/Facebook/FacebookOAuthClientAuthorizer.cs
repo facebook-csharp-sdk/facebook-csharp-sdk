@@ -95,6 +95,8 @@ namespace Facebook
         }
         */
 
+#if !SILVERLIGHT // silverlight should have only async calls
+
         /// <summary>
         /// Gets the access token by exchanging the code.
         /// </summary>
@@ -188,7 +190,8 @@ namespace Facebook
 
             return result;
         }
+#endif
 
-        #endregion
+#endregion
     }
 }
