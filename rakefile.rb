@@ -34,7 +34,9 @@ task :configure do
             :dist    => "#{root_path}Dist/",
             :tools   => "#{root_path}Tools/",
             :working => "#{root_path}Working/",
-            :doc     => "#{root_path}Doc/"
+            :doc     => "#{root_path}Doc/",
+            :packages=> '',
+            :nuget   => ''
         },
         :version => {
 			:base => "#{base_version}",
@@ -63,6 +65,9 @@ task :configure do
         }
     }
     
+    build_config[:paths][:packages]  = "#{build_config[:paths][:src]}packages/"
+    build_config[:paths][:nuget]  = "#{build_config[:paths][:packages]}NuGet.CommandLine.1.0.11220.26/Tools/NuGet.exe"
+        
     build_config[:sln][:wp7]         = "#{build_config[:paths][:src]}Facebook-WP7.sln"
     build_config[:sln][:sl4]         = "#{build_config[:paths][:src]}Facebook-SL4.sln"
     build_config[:sln][:net40client] = "#{build_config[:paths][:src]}Facebook-Net40Client.sln"
@@ -273,7 +278,7 @@ exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4
         f.puts File.read("#{build_config[:paths][:build]}Facebook.nuspec").gsub(/{version}/,version)
     end
     
-    cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
+    cmd.command = "#{build_config[:paths][:nuget]}"
     cmd.parameters = "pack \"#{nuget_working_dir}Facebook.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
 end
 
@@ -313,7 +318,7 @@ exec :nuget_facebookweb => [:net35full,:net40full,"#{build_config[:paths][:worki
         f.puts File.read("#{build_config[:paths][:build]}FacebookWeb.nuspec").gsub(/{version}/,version)
     end
     
-    cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
+    cmd.command = "#{build_config[:paths][:nuget]}"
     cmd.parameters = "pack \"#{nuget_working_dir}FacebookWeb.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
     
 end
@@ -354,7 +359,7 @@ exec :nuget_facebookwebmvc => [:net35full,:net40full,"#{build_config[:paths][:wo
         f.puts File.read("#{build_config[:paths][:build]}FacebookWebMvc.nuspec").gsub(/{version}/,version)
     end
     
-    cmd.command = "#{build_config[:paths][:tools]}/NuGet/NuGet.exe"
+    cmd.command = "#{build_config[:paths][:nuget]}"
     cmd.parameters = "pack \"#{nuget_working_dir}FacebookWebMvc.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
     
 end
