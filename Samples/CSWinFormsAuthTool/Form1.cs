@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
-namespace Facebook.Samples.AuthenticationTool
+﻿namespace Facebook.Samples.AuthenticationTool
 {
+    using System;
+    using System.Dynamic;
+    using System.Text;
+    using System.Windows.Forms;
+
     public partial class Form1 : Form
     {
         public Form1()
         {
             InitializeComponent();
             permissions.Items.AddRange(ExtendedPermissions.Permissions);
+            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
         }
 
         private void login_Click(object sender, EventArgs e)
@@ -27,7 +22,8 @@ namespace Facebook.Samples.AuthenticationTool
                 isReady = false;
                 appId.Text = "REQUIRED!";
             }
-            if (String.IsNullOrEmpty(appSecret.Text.Trim())) {
+            if (String.IsNullOrEmpty(appSecret.Text.Trim()))
+            {
                 isReady = false;
                 appSecret.Text = "REQUIRED!";
             }
@@ -59,7 +55,7 @@ namespace Facebook.Samples.AuthenticationTool
             Uri loginUrl = app.GetLoginUrl(parameters);
 
             webBrowser1.Navigate(loginUrl);
-            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webBrowser1_Navigated);
+
         }
 
         void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)

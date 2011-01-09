@@ -54,7 +54,7 @@
             var fb = new FacebookApp(settings);
 
             var signedRequest = fb.ParseSignedRequest(signed_request);
-            
+
             Assert.Equal("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", signedRequest.AccessToken);
         }
 
@@ -228,6 +228,49 @@
             var path = FacebookAppBase.ParseQueryParametersToDictionary(originalPathWithQueryString, parameters);
 
             Assert.Equal(pathWithoutForwardSlashAndQueryString, path);
+        }
+
+        [Fact(DisplayName = "FacebookApp: Given a valid access token The session user id should not be 0")]
+        public void FacebookApp_GivenAValidAccessToken_TheSessionUserIdShouldNotBe0()
+        {
+            var fb = new FacebookApp("1249203702|2.h1MTNeLqcLqw__.86400.129394400-605430316|-WE1iH_CV-afTgyhDPc");
+
+            var userId = fb.Session.UserId;
+
+            Assert.NotEqual(0, userId);
+        }
+
+        [Fact(DisplayName = "FacebookApp: Given a valid access token The session user id should be correctly extracted from the access token")]
+        public void FacebookApp_GivenAValidAccessToken_TheSessionUserIdShouldBeCorrectlyExtractedFromTheAccessToken()
+        {
+            var fb = new FacebookApp("1249203702|2.h1MTNeLqcLqw__.86400.129394400-605430316|-WE1iH_CV-afTgyhDPc");
+
+            var userId = fb.Session.UserId;
+
+            Assert.Equal(605430316, userId);
+        }
+
+        [Fact(DisplayName = "FacebookApp: Given an application access token The session user id should be 0")]
+        public void FacebookApp_GivenAnApplicationAccessToken_TheSessionUserIdShouldBe0()
+        {
+            string appId = "123";
+            string appSecret = " A12aB";
+
+            var fb = new FacebookApp(string.Format("{0}|{1}", appId, appSecret));
+
+            var userId = fb.Session.UserId;
+
+            Assert.Equal(0, userId);
+        }
+
+        [Fact(DisplayName = "FacebookApp: Given an invalid access token containing non numeric user id The session user id should be 0")]
+        public void FacebookApp_GivenAnInvalidAccessTokenContainingNonNumericUserId_TheSessionUserIdShouldBe0()
+        {
+            var fb = new FacebookApp("1249203702|2.h1MTNeLqcLqw__.86400.129394400-6sd05430316|-WE1iH_CV-afTgyhDPc");
+
+            var userId = fb.Session.UserId;
+
+            Assert.Equal(0, userId);
         }
     }
 }

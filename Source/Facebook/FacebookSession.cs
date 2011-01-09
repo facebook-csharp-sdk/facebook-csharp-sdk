@@ -25,6 +25,28 @@ namespace Facebook
         private Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
+        /// </summary>
+        public FacebookSession()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
+        /// </summary>
+        /// <param name="accessToken">
+        /// The access token.
+        /// </param>
+        public FacebookSession(string accessToken)
+        {
+            this.AccessToken = accessToken;
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                this.UserId = ParseUserIdFromAccessToken(accessToken);
+            }
+        }
+
+        /// <summary>
         /// Gets the internal dictionary store.
         /// </summary>
         /// <value>The dictionary.</value>
@@ -70,7 +92,7 @@ namespace Facebook
                 {
                     return this.dictionary["secret"];
                 }
- 
+
                 return null;
             }
 
@@ -190,6 +212,42 @@ namespace Facebook
             {
                 this.dictionary["base_domain"] = value;
             }
+        }
+
+        internal static long ParseUserIdFromAccessToken(string accessToken)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(accessToken));
+            // Contract.Ensures(Contract.Result<long>() >= 0);
+
+            /*
+             * access_token:
+             *   1249203702|2.h1MTNeLqcLqw__.86400.129394400-605430316|-WE1iH_CV-afTgyhDPc
+             *                                               |_______|
+             *                                                   |
+             *                                                user id
+             */
+
+            long userId = 0;
+
+            var accessTokenParts = accessToken.Split('|');
+
+            if (accessTokenParts.Length == 3)
+            {
+                var idPart = accessTokenParts[1];
+                if (!String.IsNullOrEmpty(idPart))
+                {
+                    var idParts = idPart.Split('-');
+                    if (idParts.Length == 2 && !string.IsNullOrEmpty(idParts[1]))
+                    {
+                        if (long.TryParse(idParts[1], out userId))
+                        {
+                            return userId;
+                        }
+                    }
+                }
+            }
+
+            return userId;
         }
 
         /// <summary>
