@@ -388,6 +388,7 @@ desc "Clean All"
 task :clean => [:clean_net35full, :clean_net35client, :clean_net40full, :clean_net40client, :clean_sl4, :clean_wp7] do
     FileUtils.rm_rf build_config[:paths][:output]
     FileUtils.rm_rf build_config[:paths][:working]
+    FileUtils.rm_rf build_config[:paths][:dist]    
 end
 
 desc "Create NuGet Packages"
@@ -396,7 +397,7 @@ task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc]
 directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
 
-desc "Create distribution packages" # rebuild
+desc "Create distribution packages"
 task :dist => [:rebuild,:docs] do
     rm_rf "#{build_config[:paths][:dist]}"
     mkdir "#{build_config[:paths][:dist]}"
@@ -414,7 +415,7 @@ task :dist => [:rebuild,:docs] do
    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.bin.zip\" \"#{build_config[:paths][:working]}Bin/*\""
    
    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.docs.zip\" \"#{build_config[:paths][:working]}Documentation/*\""
-   cp "#{build_config[:paths][:working]}Documentation/Documentation.chm",  "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.chm"
+   cp "#{build_config[:paths][:working]}Documentation/Documentation.chm", "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.chm"
     
    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.packages.zip\" \"#{build_config[:paths][:working]}NuGet/*.nupkg\""
    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.nuspec.zip\" \"#{build_config[:paths][:working]}NuGet/*\" -x!*.nupkg"
