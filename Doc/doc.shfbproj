@@ -23,13 +23,7 @@
     </FeedbackEMailAddress>
     <HelpTitle>Facebook C# SDK</HelpTitle>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Bin\Release\Net40\CodeContracts\Facebook.Contracts.dll" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.dll" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\CodeContracts\Facebook.Web.Contracts.dll" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.dll" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\CodeContracts\Facebook.Web.Mvc.Contracts.dll" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.Mvc.dll" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.Mvc.xml" />
+      <DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.Mvc.xml" />
 <DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.xml" />
 <DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.xml" /></DocumentationSources>
     <NamingMethod>MemberName</NamingMethod>
@@ -53,14 +47,6 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Contracts">
-      <HintPath>C:\Program Files (x86)\Microsoft\Contracts\Contracts\v3.5\Microsoft.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Source\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
 </Project>

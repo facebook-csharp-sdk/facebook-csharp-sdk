@@ -1,8 +1,8 @@
 ﻿properties { 
-  $version = '4.1.1'
+  $version = '4.2.0'
   $zipFileName = "FacebookSDK_V$version.zip"
   $buildPackage = $true
-  $buildDocs = $true
+  $buildDocs = $false
   
   $baseDir  = resolve-path ..
   $buildDir = "$baseDir\Build"
@@ -75,7 +75,7 @@ task Package -depends Merge {
         }
          
         if ($buildDocs) {
-            exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release "/p:DocumentationSourcePath=$workingDir\Package\Bin\DotNet40" $docDir\doc.shfbproj } "Error building documentation. Check that you have Sandcastle, Sandcastle Help File Builder and HTML Help Workshop installed."
+            exec { msbuild "/t:Clean;Rebuild" /p:Configuration=Release "/p:DocumentationSourcePath=$workingDir\Package\Bin\Net40" $docDir\doc.shfbproj } "Error building documentation. Check that you have Sandcastle, Sandcastle Help File Builder and HTML Help Workshop installed."
 
             move -Path $workingDir\Documentation\Documentation.chm -Destination $workingDir\Package\Documentation.chm
             move -Path $workingDir\Documentation\LastBuild.log -Destination $workingDir\Documentation.log
@@ -128,21 +128,7 @@ task NuGetPackage -depends Package {
             Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
             Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.XML" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
             Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.dll" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir\CodeContracts
-            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir\CodeContracts
-
-            # Temporary Copy Json.Net 4.0 for SL and WP7
-            if ($finalDir -eq "SL4") {
-                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.Silverlight.dll" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
-                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.Silverlight.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
-                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.Silverlight.xml" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
-            }
-            if ($finalDir -eq "WP7") {
-                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.WindowsPhone.dll" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
-                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.WindowsPhone.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
-                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Newtonsoft.Json.WindowsPhone.xml" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir
-            }
-
-            
+            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.pdb" -Destination $workingDir\NuPack\Facebook\$version\lib\$finalDir\CodeContracts           
             if ($finalDir -eq "Net40" -or $finalDir -eq "Net35") {
                 New-Item -Path $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir -ItemType Directory
                 New-Item -Path $workingDir\NuPack\FacebookWeb\$version\lib\$finalDir\CodeContracts -ItemType Directory

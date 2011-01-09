@@ -19,6 +19,7 @@ namespace Facebook
     using System.Linq;
     using System.Net;
     using System.Text;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Provides access to the Facebook Platform.
@@ -214,7 +215,6 @@ namespace Facebook
                     }
                     finally
                     {
-                        this.SessionLoaded = true;
                         this.SetCookieFromSession(this.session);
                     }
                 }
@@ -224,18 +224,7 @@ namespace Facebook
 
             set
             {
-                this.SessionLoaded = true;
                 this.session = value;
-
-                // facebook.php validates the session when you set it.
-                // We dont think this is the best approach and so
-                // we have commented this out. If you want to validate
-                // the session object before it is set, uncomment the
-                // next four lines.
-                // if (!ValidateSessionObject(this._session))
-                // {
-                //     throw new FacebookApiException("The session is not valid.");
-                // }
                 this.SetCookieFromSession(value);
             }
         }
@@ -810,13 +799,13 @@ namespace Facebook
             }
 
             var payloadJson = Encoding.UTF8.GetString(Convert.FromBase64String(Base64UrlDecode(payload)));
-            var data = (IDictionary<string, object>)JsonSerializer.DeserializeObject(payloadJson);
-            var signedRequest = new FacebookSignedRequest();
-            foreach (var keyValue in data)
+            var data = JsonSerializer.DeserializeObject(payloadJson) as JObject;
+            if (data == null)
             {
-                signedRequest.Dictionary.Add(keyValue.Key, keyValue.Value.ToString());
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
             }
 
+            var signedRequest = new FacebookSignedRequest(data);
             return signedRequest;
         }
 

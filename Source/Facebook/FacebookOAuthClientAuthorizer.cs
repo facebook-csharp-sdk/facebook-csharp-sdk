@@ -5,6 +5,7 @@ namespace Facebook
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Net;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Represents the Facebook OAuth Helpers
@@ -163,10 +164,8 @@ namespace Facebook
 
                 // access_token=string&expires=long or access_token=string
                 // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
-                var jsonObject = new JsonObject
-                                     {
-                                         { "access_token", returnParameter["access_token"] }
-                                     };
+                var jsonObject = new JObject();
+                jsonObject["access_token"] = (string)returnParameter["access_token"];
 
                 // check if expires exist coz for offline_access it is not present.
                 if (returnParameter.ContainsKey("expires"))
@@ -267,10 +266,8 @@ namespace Facebook
 
                 // access_token=string&expires=long or access_token=string
                 // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
-                var jsonObject = new JsonObject
-                                     {
-                                         { "access_token", returnParameter["access_token"] }
-                                     };
+                var jsonObject = new JObject();
+                jsonObject["access_token"] = (string)returnParameter["access_token"];
 
                 // check if expires exist coz for offline_access it is not present.
                 if (returnParameter.ContainsKey("expires"))

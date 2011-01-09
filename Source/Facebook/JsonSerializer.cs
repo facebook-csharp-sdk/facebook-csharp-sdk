@@ -24,13 +24,6 @@ namespace Facebook
 {
     internal static class JsonSerializer
     {
-        private static readonly Regex _stripXmlnsRegex = new Regex(@"(xmlns:?[^=]*=[""][^""]*[""])",
-#if SILVERLIGHT
- RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
-#else
- RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-#endif
-
         private static JsonSerializerSettings SerializerSettings
         {
             get
@@ -48,7 +41,6 @@ namespace Facebook
                 return settings;
             }
         }
-
 
         public static string SerializeObject(object value)
         {
@@ -79,109 +71,10 @@ namespace Facebook
             {
                 return null;
             }
-            else if (json.Trim().StartsWith("<?xml", StringComparison.Ordinal))
-            {
-                return ConvertXml(json);
-            }
             else
             {
-                object obj;
-
-                try
-                {
-                    obj = JsonConvert.DeserializeObject(json, type, SerializerSettings);
-                }
-                catch (JsonSerializationException ex)
-                {
-                    throw new System.Runtime.Serialization.SerializationException(ex.Message, ex);
-                }
-
-                // If the object is a JToken we want to
-                // convert it to dynamic, it if is any
-                // other type we just return it.
-                var jToken = obj as JToken;
-                if (jToken != null)
-                {
-                    return ConvertJTokenToDictionary(jToken);
-                }
-                else
-                {
-                    return obj;
-                }
+                return JsonConvert.DeserializeObject(json, type, SerializerSettings);
             }
         }
-
-        private static object ConvertJTokenToDictionary(JToken token)
-        {
-            if (token == null)
-            {
-                return null;
-            }
-
-            var jValue = token as JValue;
-            if (jValue != null)
-            {
-                return jValue.Value;
-            }
-
-            var jContainer = token as JArray;
-            if (jContainer != null)
-            {
-                var jsonList = new JsonArray();
-                foreach (JToken arrayItem in jContainer)
-                {
-                    jsonList.Add(ConvertJTokenToDictionary(arrayItem));
-                }
-                return jsonList;
-            }
-
-            var jsonObject = new JsonObject();
-            var jsonDict = (IDictionary<string, object>)jsonObject;
-            (from childToken in token where childToken is JProperty select childToken as JProperty).ToList().ForEach(property =>
-            {
-                jsonDict.Add(property.Name, ConvertJTokenToDictionary(property.Value));
-            });
-            return jsonObject;
-        }
-
-        private static object ConvertXml(string xml)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(xml));
-
-            xml = _stripXmlnsRegex.Replace(xml, string.Empty);
-
-            XDocument doc = XDocument.Parse(xml);
-            if (doc != null && doc.Root != null)
-            {
-                return ConvertXElementToDictionary(doc.Root);
-            }
-            return null;
-        }
-
-        private static object ConvertXElementToDictionary(XElement element)
-        {
-            if (element == null)
-            {
-                return null;
-            }
-            else if (element.HasElements)
-            {
-                JsonObject jsonObject = new JsonObject();
-                var jsonDict = (IDictionary<string, object>)jsonObject;
-                foreach (var child in element.Elements())
-                {
-                    if (child != null)
-                    {
-                        jsonDict.Add(child.Name.ToString(), ConvertXElementToDictionary(child));
-                    }
-                }
-                return jsonObject;
-            }
-            else
-            {
-                return element.Value;
-            }
-        }
-
     }
 }

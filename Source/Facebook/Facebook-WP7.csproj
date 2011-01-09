@@ -111,7 +111,7 @@
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json.WindowsPhone">
-      <HintPath>..\..\Tools\Json.Net\Bin\WindowsPhone\Newtonsoft.Json.WindowsPhone.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.0.1\lib\WP\Newtonsoft.Json.WindowsPhone.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -140,8 +140,6 @@
     <Compile Include="FacebookAppBaseContracts.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
-    <Compile Include="JsonArray.cs" />
-    <Compile Include="JsonObject.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

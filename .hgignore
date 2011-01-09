@@ -16,3 +16,4 @@ glob:*.gpstate
 glob:Bin/*
 glob:.git/*
 glob:Source/Facebook.gpState
+glob:*.gpState
