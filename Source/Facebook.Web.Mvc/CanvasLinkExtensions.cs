@@ -496,6 +496,13 @@ namespace Facebook.Web.Mvc
             htmlAttributes = htmlAttributes ?? new Dictionary<string, object>();
             htmlAttributes["target"] = "_top";
             string webUrl = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
+            var applicationPath = requestContext.HttpContext.Request.ApplicationPath;
+
+            if (!string.IsNullOrEmpty(applicationPath) && applicationPath != "/" && webUrl.StartsWith(applicationPath))
+            {
+                webUrl = webUrl.Substring(applicationPath.Length);
+            }
+
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
             TagBuilder tagBuilder = new TagBuilder("a")
