@@ -153,28 +153,30 @@ msbuild :net35full do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35full]
     msb.targets :Build
-    msb.use :net35
+    #msb.use :net35
 end
 
+# compile .net 3.5 libraries using msbuild 4.0 in order to generate the code contract libraries.
+# seems like if we use .net 3.5, it does not generate the code contracts.
 msbuild :clean_net35full do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35full]
     msb.targets :Clean
-    msb.use :net35
+    #msb.use :net35
 end
 
 msbuild :net35client do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35client]
     msb.targets :Build
-    msb.use :net35
+    #msb.use :net35
 end
 
 msbuild :clean_net35client do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35client]
     msb.targets :Clean
-    msb.use :net35
+    #msb.use :net35
 end
 
 desc "Build .NET 3.5 binaries (client and full profile)"
@@ -258,7 +260,8 @@ exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4
     
     [ "Facebook.Contracts.dll", "Facebook.Contracts.pdb" ].each do |f|
         # copy code contracts of each different framework
-        # TODO .net 3.5 code contracts
+        cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
+        cp "#{output_path}Net35Client/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35Client/CodeContracts/"        
         cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
         cp "#{output_path}Net40Client/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40Client/CodeContracts/"
         cp "#{output_path}SL4/CodeContracts/#{f}", "#{nuget_working_dir}lib/SL4/CodeContracts/"
@@ -301,7 +304,7 @@ exec :nuget_facebookweb => [:net35full,:net40full,"#{build_config[:paths][:worki
     
     [ "Facebook.Web.Contracts.dll", "Facebook.Web.Contracts.pdb" ].each do |f|
         # copy code contracts of each different framework
-        # TODO .net 3.5 code contracts
+        cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
         cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
     end
     
@@ -342,7 +345,7 @@ exec :nuget_facebookwebmvc => [:net35full,:net40full,"#{build_config[:paths][:wo
     
     [ "Facebook.Web.Mvc.Contracts.dll", "Facebook.Web.Mvc.Contracts.pdb" ].each do |f|
         # copy code contracts of each different framework
-        # TODO .net 3.5 code contracts
+        cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
         cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
     end
     
