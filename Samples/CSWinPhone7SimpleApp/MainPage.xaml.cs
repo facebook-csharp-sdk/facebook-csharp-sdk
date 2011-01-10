@@ -17,7 +17,7 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string apiKey = "120625701301347";
+        private const string apiKey = "{Your Key goes here}";
         private string requestedFbPermissions = "user_about_me,"; //email,user_likes,user_checkins"; //"email,user_likes,user_checkins,publish_checkins"; //etc
 
         private string accessToken;
@@ -40,7 +40,7 @@ namespace Facebook.Samples.AuthenticationTool
             fbApp.GetAsync("me", (val) =>
             {
                 // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
-                var result = (IDictionary<string, object>)val.Result;
+                var result = ((Newtonsoft.Json.Linq.JObject)val.Result);
                 Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
             });
         }
