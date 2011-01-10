@@ -17,14 +17,9 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string apiKey = "{Your Key goes here}";
-        private string requestedFbPermissions = "user_about_me,"; //email,user_likes,user_checkins"; //"email,user_likes,user_checkins,publish_checkins"; //etc
+        private const string appId = "{your app id}";
 
         private string accessToken;
-
-        private const string successUrl = "http://www.facebook.com/connect/login_success.html";
-
-        private const string failedUrl = "http://www.facebook.com/connect/login_failure.html";
 
         private bool loggedIn = false;
 
@@ -90,28 +85,50 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoPanel.Visibility = Visibility.Collapsed;
 
-            var parms = new Dictionary<String, object>();
-            parms["display"] = "touch";
-            parms["client_id"] = apiKey;
-            parms["redirect_uri"] = successUrl;
-            parms["cancel_url"] = failedUrl;
-            parms["scope"] = requestedFbPermissions;
-            parms["type"] = "user_agent";
+            var oauth = new FacebookOAuthClientAuthorizer
+            {
+                ClientId = appId,
+                // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
+            };
 
-            var loginUrl = fbApp.GetLoginUrl(parms);
-            FacebookLoginBrowser.Navigate(loginUrl);
+            var paramaters = new Dictionary<string, object>
+                                {
+                                    { "type", "user_agent" } // add type=user_agent so we don't need to exchange code for access_token
+                                };
+
+            var extendedPermissions = this.GetExtendedPermissions();
+
+            if (!string.IsNullOrEmpty(extendedPermissions))
+            {
+                // add scope only if there is at last one extended permission
+                paramaters["scope"] = extendedPermissions;
+            }
+
+            var loginUri = oauth.GetLoginUri(paramaters);
+            FacebookLoginBrowser.Navigate(loginUri);
         }
 
         private void FacebookLoginBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            Debug.WriteLine(e.Uri);
-
             FacebookAuthenticationResult authResult;
             if (FacebookAuthenticationResult.TryParse(e.Uri, out authResult))
             {
-                fbApp.Session = authResult.ToSession();
-                loginSucceeded();
+                if (authResult.IsSuccess)
+                {
+                    accessToken = authResult.AccessToken;
+                    fbApp.Session = authResult.ToSession();
+                    loginSucceeded();
+                }
+                else
+                {
+                    MessageBox.Show(authResult.ErrorDescription);
+                }
             }
+        }
+
+        private string GetExtendedPermissions()
+        {
+            return "user_about_me,publish_stream";
         }
     }
 }
