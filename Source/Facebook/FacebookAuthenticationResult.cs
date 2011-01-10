@@ -48,6 +48,7 @@ namespace Facebook
             if (parameters.ContainsKey("error_description"))
             {
                 this.errorDescription = Uri.UnescapeDataString((string)parameters["error_description"]);
+                this.errorDescription = this.errorDescription.Replace('+', ' ');
             }
         }
 
