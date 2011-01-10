@@ -23,9 +23,12 @@
     </FeedbackEMailAddress>
     <HelpTitle>Facebook C# SDK</HelpTitle>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.Mvc.xml" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.xml" />
-<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.dll" />
+<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.dll" />
+<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.Mvc.dll" />
+<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.Mvc.XML" />
+<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.Web.XML" />
+<DocumentationSource sourceFile="..\Bin\Release\Net40\Facebook.XML" /></DocumentationSources>
     <NamingMethod>MemberName</NamingMethod>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
