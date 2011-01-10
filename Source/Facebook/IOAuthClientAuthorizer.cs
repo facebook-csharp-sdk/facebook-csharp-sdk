@@ -23,6 +23,17 @@ namespace Facebook
         /// </summary>
         Uri RedirectUri { get; }
 
+        /// <summary>
+        /// Gets the login uri.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the facebook login uri.
+        /// </returns>
+        Uri GetLoginUri(IDictionary<string, object> parameters);
+
         // TODO: comment this for now. will need to support for GetLoginUri for web apps too
         // need to find a better name.
 

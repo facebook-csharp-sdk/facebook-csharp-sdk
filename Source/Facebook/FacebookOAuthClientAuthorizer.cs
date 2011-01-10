@@ -29,6 +29,47 @@ namespace Facebook
         /// </summary>
         public Uri RedirectUri { get; set; }
 
+        /// <summary>
+        /// Gets the login uri.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the facebook login uri.
+        /// </returns>
+        public Uri GetLoginUri(IDictionary<string, object> parameters)
+        {
+            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/authorize");
+
+            var defaultParameters = new Dictionary<string, object>();
+            defaultParameters["client_id"] = this.ClientId;
+            defaultParameters["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+
+#if WINDOWS_PHONE
+            defaultParameters["display"] = "touch";
+#else
+            defaultParameters["display"] = "popup";
+#endif
+
+            var mergedParameters = defaultParameters.Merge(parameters);
+
+            // check if client_id and redirect_uri is not null or empty.
+            if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
+            {
+                throw new ArgumentNullException("client_id required.");
+            }
+
+            if (mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
+            {
+                throw new ArgumentNullException("redirect_uri required.");
+            }
+
+            uriBuilder.Query = mergedParameters.ToJsonQueryString();
+
+            return uriBuilder.Uri;
+        }
+
         // TODO: comment this for now. will need to support for GetLoginUri for web apps too
         // need to find a better name.
 
