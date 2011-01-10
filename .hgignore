@@ -18,3 +18,4 @@ glob:Dist/*
 glob:.git/*
 glob:*.sln.cache
 glob:Source/Facebook.gpState
+glob:*.gpState

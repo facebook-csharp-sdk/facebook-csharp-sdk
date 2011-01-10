@@ -13,26 +13,17 @@ namespace Facebook
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Globalization;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Rerpesents a Facebook signed request.
     /// </summary>
-    public class FacebookSignedRequest
+    public class FacebookSignedRequest : JObject
     {
 
-        private Dictionary<string, string> dictionary = new Dictionary<string, string>();
-
-
-        /// <summary>
-        /// Gets the underlying dictionary store.
-        /// </summary>
-        /// <value>The dictionary.</value>
-        public IDictionary<string, string> Dictionary
+        public FacebookSignedRequest(JObject other)
+            : base(other)
         {
-            get
-            {
-                return this.dictionary;
-            }
         }
 
         /// <summary>
@@ -43,15 +34,13 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("user_id"))
+
+                if (this["user_id"] != null)
                 {
-                    return long.Parse(dictionary["user_id"], CultureInfo.InvariantCulture);
+                    var s = this.Value<string>("user_id");
+                    return long.Parse(s, CultureInfo.InvariantCulture);
                 }
                 return default(long);
-            }
-            set
-            {
-                dictionary["user_id"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -63,15 +52,7 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("oauth_token"))
-                {
-                    return dictionary["oauth_token"];
-                }
-                return null;
-            }
-            set
-            {
-                dictionary["oauth_token"] = value;
+                return this.Value<string>("oauth_token");
             }
         }
 
@@ -83,16 +64,35 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(dictionary["expires"]))
+                if (this["expires"] != null)
                 {
-                    return DateTimeConvertor.FromUnixTime(dictionary["expires"]);
+                    var s = this.Value<string>("expires");
+                    if (!String.IsNullOrEmpty(s))
+                    {
+                        return DateTimeConvertor.FromUnixTime(s);
+                    }
                 }
                 return default(DateTime);
             }
-            set
+        }
+
+        /// <summary>
+        /// Gets or sets the expires.
+        /// </summary>
+        /// <value>The expires.</value>
+        public DateTime IssuedAt
+        {
+            get
             {
-                Contract.Requires(value >= new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-                dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
+                if (this["issued_at"] != null)
+                {
+                    var s = this.Value<string>("issued_at");
+                    if (!String.IsNullOrEmpty(s))
+                    {
+                        return DateTimeConvertor.FromUnixTime(s);
+                    }
+                }
+                return default(DateTime);
             }
         }
 
@@ -105,15 +105,12 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("profile_id"))
+                if (this["profile_id"] != null)
                 {
-                    return long.Parse(dictionary["profile_id"], CultureInfo.InvariantCulture);
+                    var s = this.Value<string>("profile_id");
+                    return long.Parse(s, CultureInfo.InvariantCulture);
                 }
                 return default(long);
-            }
-            set
-            {
-                dictionary["profile_id"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -125,25 +122,46 @@ namespace Facebook
         {
             get
             {
-                if (dictionary.ContainsKey("algorithm"))
+                return this.Value<string>("algorithm");
+            }
+        }
+
+        public FacebookSignedRequestUser User
+        {
+            get
+            {
+                if (this["user"] != null)
                 {
-                    return dictionary["algorithm"];
+                    return new FacebookSignedRequestUser(this.Value<JObject>("user"));
                 }
                 return null;
             }
-            set
+        }
+
+    }
+
+    public class FacebookSignedRequestUser : JObject
+    {
+
+        public FacebookSignedRequestUser(JObject other)
+            : base(other)
+        {
+        }
+
+        public string Locale
+        {
+            get
             {
-                dictionary["algorithm"] = value;
+                return this.Value<string>("locale");
             }
         }
 
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        private void InvarientObject()
+        public string Country
         {
-            Contract.Invariant(dictionary != null);
+            get
+            {
+                return this.Value<string>("country");
+            }
         }
-
     }
 }

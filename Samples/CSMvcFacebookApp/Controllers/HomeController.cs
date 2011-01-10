@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Facebook;
 using Facebook.Web.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace FacebookDemo.Web.Controllers
 {
@@ -21,9 +22,8 @@ namespace FacebookDemo.Web.Controllers
             if (fbApp.Session != null)
             {
                 dynamic result = fbApp.Get("me");
-
-                ViewData["Firstname"] = result.first_name;
-                ViewData["Lastname"] = result.last_name;
+                ViewData["Firstname"] = (string)result.first_name;
+                ViewData["Lastname"] = (string)result.last_name;
             }
 
             return View();

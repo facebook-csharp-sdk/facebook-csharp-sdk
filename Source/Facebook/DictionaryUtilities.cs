@@ -91,7 +91,7 @@ namespace Facebook
 
                     if (!String.IsNullOrEmpty(jsonValue))
                     {
-                        var encodedValue = UriEncoder.EscapeDataString(jsonValue);
+                        var encodedValue = UrlEncoder.EscapeUriString(jsonValue);
                         sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
                     }
                 }

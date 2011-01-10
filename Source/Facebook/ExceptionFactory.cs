@@ -13,6 +13,7 @@ namespace Facebook
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Net;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// A utility for generating facebook exceptions.
@@ -78,18 +79,14 @@ namespace Facebook
             FacebookApiException resultException = null;
             if (result != null)
             {
-                var resultDict = result as IDictionary<string, object>;
+                var resultDict = result as JObject;
                 if (resultDict != null)
                 {
-                    if (resultDict.ContainsKey("error_code"))
-                    {
-                        string error_code = resultDict["error_code"] as string;
-                        string error_msg = null;
-                        if (resultDict.ContainsKey("error_msg"))
-                        {
-                            error_msg = resultDict["error_msg"] as string;
-                        }
+                    string error_code = resultDict.Value<string>("error_code");
+                    string error_msg = resultDict.Value<string>("error_msg");
 
+                    if (!String.IsNullOrEmpty(error_code))
+                    {
                         // Error Details: http://wiki.developers.facebook.com/index.php/Error_codes
                         if (error_code == "190")
                         {
@@ -126,46 +123,39 @@ namespace Facebook
             {
                 if (exception.Response != null)
                 {
-                    object response = null;
+                    JObject response = null;
                     using (var stream = exception.Response.GetResponseStream())
                     {
                         if (stream != null)
                         {
-                            response = JsonSerializer.DeserializeObject(stream);
+                            response = JsonSerializer.DeserializeObject(stream) as JObject;
                         }
                     }
 
                     if (response != null)
                     {
-                        var responseDict = response as IDictionary<string, object>;
-                        if (responseDict != null)
+                        JToken error;
+                        if (response.TryGetValue("error", out error))
                         {
-                            if (responseDict.ContainsKey("error"))
-                            {
-                                var error = responseDict["error"] as IDictionary<string, object>;
-                                if (error != null)
-                                {
-                                    var errorType = error["type"] as string;
-                                    var errorMessage = error["message"] as string;
+                            var errorType = error.Value<string>("type");
+                            var errorMessage = error.Value<string>("message");
 
-                                    // Check to make sure the correct data is in the response
-                                    if (!String.IsNullOrEmpty(errorType) && !String.IsNullOrEmpty(errorMessage))
-                                    {
-                                        // We dont include the inner exception because it is not needed and is always a WebException.
-                                        // It is easier to understand the error if we use Facebook's error message.
-                                        if (errorType == "OAuthException")
-                                        {
-                                            resultException = new FacebookOAuthException(errorMessage, errorType);
-                                        }
-                                        else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage != null && errorMessage.Contains("request limit reached")))
-                                        {
-                                            resultException = new FacebookApiLimitException(errorMessage, errorType);
-                                        }
-                                        else
-                                        {
-                                            resultException = new FacebookApiException(errorMessage, errorType);
-                                        }
-                                    }
+                            // Check to make sure the correct data is in the response
+                            if (!String.IsNullOrEmpty(errorType) && !String.IsNullOrEmpty(errorMessage))
+                            {
+                                // We dont include the inner exception because it is not needed and is always a WebException.
+                                // It is easier to understand the error if we use Facebook's error message.
+                                if (errorType == "OAuthException")
+                                {
+                                    resultException = new FacebookOAuthException(errorMessage, errorType);
+                                }
+                                else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage != null && errorMessage.Contains("request limit reached")))
+                                {
+                                    resultException = new FacebookApiLimitException(errorMessage, errorType);
+                                }
+                                else
+                                {
+                                    resultException = new FacebookApiException(errorMessage, errorType);
                                 }
                             }
                         }

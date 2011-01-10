@@ -156,13 +156,6 @@ namespace Facebook
         /// <value><c>true</c> if cookies are supported; otherwise, <c>false</c>.</value>
         public bool CookieSupport { get; set; }
 
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the session has attempted to be loaded.
-        /// </summary>
-        /// <value><c>true</c> if [session loaded]; otherwise, <c>false</c>.</value>
-        public bool SessionLoaded { get; set; }
-
         /// <summary>
         /// Gets or sets the base domain.
         /// </summary>
@@ -1238,7 +1231,7 @@ namespace Facebook
                 }
                 if (!String.IsNullOrEmpty(path))
                 {
-                    uri.Path = UriEncoder.EscapeDataString(path);
+                    uri.Path = UrlEncoder.EscapeUriString(path);
                 }
             }
             if (parameters != null)
