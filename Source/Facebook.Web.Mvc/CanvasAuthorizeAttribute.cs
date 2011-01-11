@@ -1,4 +1,4 @@
-﻿// --------------------------------
+// --------------------------------
 // <copyright file="CanvasAuthorizeAttribute.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
@@ -31,8 +31,6 @@ namespace Facebook.Web.Mvc
         /// <value>The return URL path.</value>
         public string ReturnUrlPath { get; set; }
 
-
-        /// <summary>
         /// Handles the unauthorized request.
         /// </summary>
         /// <param name="facebookApp">The current Facebook App instance.</param>

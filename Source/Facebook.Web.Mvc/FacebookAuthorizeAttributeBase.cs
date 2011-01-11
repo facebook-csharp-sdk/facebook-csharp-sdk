@@ -23,7 +23,6 @@ namespace Facebook.Web.Mvc
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public abstract class FacebookAuthorizeAttributeBase : ActionFilterAttribute, IAuthorizationFilter
     {
-
         /// <summary>
         /// Gets or sets the extended permissions.
         /// </summary>

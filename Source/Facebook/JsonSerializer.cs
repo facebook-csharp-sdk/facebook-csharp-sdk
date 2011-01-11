@@ -1,4 +1,4 @@
-﻿// --------------------------------
+﻿﻿// --------------------------------
 // <copyright file="JsonSerializer.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>

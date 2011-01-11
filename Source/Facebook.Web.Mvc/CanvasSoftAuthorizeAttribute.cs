@@ -54,11 +54,13 @@ namespace Facebook.Web.Mvc
         /// <summary>
         /// Handles the unauthorized request.
         /// </summary>
+        /// <param name="facebookApp">The current Facebook app instance.</param>
         /// <param name="filterContext">The filter context.</param>
         protected override void HandleUnauthorizedRequest(FacebookApp facebookApp, AuthorizationContext filterContext)
         {
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(filterContext.HttpContext.Request);
             var url = urlBuilder.GetLoginUrl(facebookApp, Perms, ReturnUrlPath, CancelUrlPath, true);
+
             var model = new FacebookAuthorizeInfo(
                 url,
                 this.Perms,
