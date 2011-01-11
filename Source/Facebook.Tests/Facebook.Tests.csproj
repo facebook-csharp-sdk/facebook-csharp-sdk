@@ -70,6 +70,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base64UrlTests.cs" />
     <Compile Include="DateTimeConvertorTest.cs" />
     <Compile Include="DictionaryUtilitiesTest.cs" />
     <Compile Include="FacebookAppTest.cs" />
