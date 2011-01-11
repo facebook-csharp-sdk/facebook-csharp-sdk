@@ -579,7 +579,7 @@ namespace Facebook
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("\"");
-                sb.Append(session.Dictionary.ToJsonQueryString());
+                sb.Append(FacebookUtils.ToJsonQueryString(session.Dictionary));
                 sb.Append("\"");
                 value = sb.ToString();
                 expires = session.Expires;

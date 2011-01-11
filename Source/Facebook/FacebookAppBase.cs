@@ -323,7 +323,7 @@ namespace Facebook
                         }
                     }
                 }
-                builder.Query = querystring.ToJsonQueryString();
+                builder.Query = FacebookUtils.ToJsonQueryString(querystring);
             }
             return builder.Uri;
         }

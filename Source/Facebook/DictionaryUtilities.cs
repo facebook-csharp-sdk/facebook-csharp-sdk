@@ -22,19 +22,6 @@ namespace Facebook
     /// </summary>
     internal static class DictionaryUtilities
     {
-        /// <summary>
-        /// Converts the dictionary to a json formatted query string.
-        /// </summary>
-        /// <param name="dictionary">The dictionary.</param>
-        /// <returns>A Json formatted querystring.</returns>
-        internal static string ToJsonQueryString(this IDictionary<string, string> dictionary)
-        {
-            Contract.Requires(dictionary != null);
-            Contract.Ensures(Contract.Result<string>() != null);
-            Contract.EndContractBlock();
-
-            return FacebookUtils.ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
-        }
 
 #if !SILVERLIGHT
 
@@ -57,7 +44,7 @@ namespace Facebook
                     dictionary.Add(key, collection[key]);
                 }
             });
-            return ToJsonQueryString(dictionary);
+            return FacebookUtils.ToJsonQueryString(dictionary);
         }
 #endif
     }

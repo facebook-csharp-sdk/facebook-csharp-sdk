@@ -21,3 +21,4 @@ v5.0
 		k. public static double ToUnixTime(DateTimeOffset dateTime);
 		l. internal static IDictionary<string, object> Merge(IDictionary<string, object> first, IDictionary<string, object> second);
 		m. internal static string ToJsonQueryString(IDictionary<string, object> dictionary);
+		n. internal static string ToJsonQueryString(IDictionary<string, string> dictionary);

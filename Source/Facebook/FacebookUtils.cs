@@ -159,6 +159,20 @@ namespace Facebook
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Converts the dictionary to a json formatted query string.
+        /// </summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <returns>A Json formatted querystring.</returns>
+        internal static string ToJsonQueryString(IDictionary<string, string> dictionary)
+        {
+            Contract.Requires(dictionary != null);
+            Contract.Ensures(Contract.Result<string>() != null);
+            Contract.EndContractBlock();
+
+            return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
+        }
+
         #endregion
 
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)

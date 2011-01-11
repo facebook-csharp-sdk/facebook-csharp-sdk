@@ -306,7 +306,7 @@
         {
             var dict = new Dictionary<string, string>();
 
-            var result = DictionaryUtilities.ToJsonQueryString(dict);
+            var result = FacebookUtils.ToJsonQueryString(dict);
 
             Assert.Equal(string.Empty, result);
         }
@@ -320,7 +320,7 @@
                                {"key2", "value2"}
                            };
 
-            var result = DictionaryUtilities.ToJsonQueryString(dict);
+            var result = FacebookUtils.ToJsonQueryString(dict);
 
             Assert.False(string.IsNullOrEmpty(result));
         }
@@ -335,7 +335,7 @@
                            };
             var exepected = "key1=value1&key2=value2";
 
-            var result = DictionaryUtilities.ToJsonQueryString(dict);
+            var result = FacebookUtils.ToJsonQueryString(dict);
 
             // TODO: check key and values that needs to be encoded too
             Assert.Equal(exepected, result);
