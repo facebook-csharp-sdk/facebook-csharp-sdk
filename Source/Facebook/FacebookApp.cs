@@ -199,7 +199,7 @@ namespace Facebook
                         }
 
                         // try loading session from cookie if necessary
-                        if (this.session == null && this.CookieSupport)
+                        if (this.session == null)
                         {
                             if (this.Request.Params.AllKeys.Contains(this.SessionCookieName))
                             {
@@ -213,10 +213,6 @@ namespace Facebook
                         this.session = null;
                         throw;
                     }
-                    finally
-                    {
-                        this.SetCookieFromSession(this.session);
-                    }
                 }
 
                 return this.session;
@@ -225,7 +221,6 @@ namespace Facebook
             set
             {
                 this.session = value;
-                this.SetCookieFromSession(value);
             }
         }
 #endif
@@ -553,69 +548,6 @@ namespace Facebook
             return WithMirrorRetry<object>(() => { return MakeRequest(httpMethod, requestUrl, postData, contentType, resultType, restApi); });
         }
 
-#endif
-
-#if !SILVERLIGHT && !CLIENTPROFILE
-        /// <summary>
-        /// Set a JS Cookie based on the _passed in_ session. It does not use the
-        /// currently stored session -- you need to explicitly pass it in.
-        /// </summary>
-        /// <param name="session">The session to use for setting the cookie. Can be null.</param>
-        protected void SetCookieFromSession(FacebookSession session)
-        {
-            // Check to make sure cookies are supported
-            // based on the Facebook Settings.
-            if (!this.CookieSupport ||
-                this.Request == null ||
-                this.Response == null ||
-                this.Request.Cookies == null)
-            {
-                return;
-            }
-
-            string value = "deleted";
-            DateTime expires = DateTime.Now.AddSeconds(-3600);
-            if (session != null)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("\"");
-                sb.Append(session.Dictionary.ToJsonQueryString());
-                sb.Append("\"");
-                value = sb.ToString();
-                expires = session.Expires;
-            }
-
-            // if an existing cookie is not set, we dont need to delete it
-            if (value == "deleted" && !this.Request.Cookies.AllKeys.Contains(this.SessionCookieName))
-            {
-                return;
-            }
-
-            // prepend dot if domain is found
-            string domain = this.BaseDomain;
-            if (!String.IsNullOrEmpty(domain))
-            {
-                domain = "." + domain;
-            }
-
-            // Set the cookie data
-            if (this.Request.Cookies.AllKeys.Contains(this.SessionCookieName))
-            {
-                var cookie = this.Request.Cookies[this.SessionCookieName];
-                cookie.Value = value;
-                cookie.Expires = expires;
-                cookie.Domain = domain;
-            }
-            else
-            {
-                this.Response.Cookies.Add(new System.Web.HttpCookie(this.SessionCookieName)
-                 {
-                     Expires = expires,
-                     Value = value,
-                     Domain = domain,
-                 });
-            }
-        }
 #endif
 
         /// <summary>
@@ -1146,8 +1078,6 @@ namespace Facebook
 
             this.AppId = settings.AppId;
             this.AppSecret = settings.AppSecret;
-            this.BaseDomain = settings.BaseDomain;
-            this.CookieSupport = settings.CookieSupport;
             this.retryDelay = settings.RetryDelay == -1 ? this.retryDelay : settings.RetryDelay;
             this.maxRetries = settings.MaxRetries == -1 ? this.maxRetries : settings.MaxRetries;
         }

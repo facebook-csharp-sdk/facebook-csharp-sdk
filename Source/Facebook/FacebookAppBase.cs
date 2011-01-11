@@ -151,18 +151,6 @@ namespace Facebook
         public virtual FacebookSession Session { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether cookies are supported.
-        /// </summary>
-        /// <value><c>true</c> if cookies are supported; otherwise, <c>false</c>.</value>
-        public bool CookieSupport { get; set; }
-
-        /// <summary>
-        /// Gets or sets the base domain.
-        /// </summary>
-        /// <value>The base domain.</value>
-        public string BaseDomain { get; set; }
-
-        /// <summary>
         /// Gets the current URL.
         /// </summary>
         /// <value>The current URL.</value>
