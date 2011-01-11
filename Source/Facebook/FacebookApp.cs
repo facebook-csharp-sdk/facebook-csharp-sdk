@@ -326,7 +326,7 @@ namespace Facebook
             return this.GetUrl(
                 "graph",
                 "oauth/authorize",
-                defaultParams.Merge(parameters));
+                FacebookUtils.Merge(defaultParams, parameters));
         }
 
 #else
@@ -360,7 +360,7 @@ namespace Facebook
             return this.GetUrl(
                 "www",
                 "login.php",
-                defaultParams.Merge(parameters));
+                FacebookUtils.Merge(defaultParams, parameters));
         }
 
 #endif
@@ -388,7 +388,7 @@ namespace Facebook
             return this.GetUrl(
                 "www",
                 "logout.php",
-                defaultParams.Merge(parameters));
+                FacebookUtils.Merge(defaultParams, parameters));
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace Facebook
             return this.GetUrl(
                 "www",
                 "extern/login_status.php",
-                defaultParams.Merge(parameters));
+                FacebookUtils.Merge(defaultParams, parameters));
         }
 
 #if !SILVERLIGHT

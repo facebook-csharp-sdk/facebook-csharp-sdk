@@ -52,7 +52,7 @@ namespace Facebook
             defaultParameters["display"] = "popup";
 #endif
 
-            var mergedParameters = defaultParameters.Merge(parameters);
+            var mergedParameters = FacebookUtils.Merge(defaultParameters, parameters);
 
             // check if client_id and redirect_uri is not null or empty.
             if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
@@ -161,7 +161,7 @@ namespace Facebook
             pars["redirect_uri"] = this.RedirectUri;
             pars["code"] = code;
 
-            var mergedParameters = pars.Merge(parameters);
+            var mergedParameters = FacebookUtils.Merge(pars, parameters);
 
             if (pars["client_id"] == null || string.IsNullOrEmpty(pars["client_id"].ToString()))
             {
@@ -258,7 +258,7 @@ namespace Facebook
             pars["redirect_uri"] = this.RedirectUri;
             pars["code"] = code;
 
-            var mergedParameters = pars.Merge(parameters);
+            var mergedParameters = FacebookUtils.Merge(pars, parameters);
 
             if (pars["client_id"] == null || string.IsNullOrEmpty(pars["client_id"].ToString()))
             {

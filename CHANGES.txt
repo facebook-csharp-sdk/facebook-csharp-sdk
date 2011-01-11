@@ -19,3 +19,4 @@ v5.0
 		i. public static DateTime FromUnixTime(string unixTime);
 		j. public static double ToUnixTime(DateTime dateTime);
 		k. public static double ToUnixTime(DateTimeOffset dateTime);
+		l. internal static IDictionary<string, object> Merge(IDictionary<string, object> first, IDictionary<string, object> second);

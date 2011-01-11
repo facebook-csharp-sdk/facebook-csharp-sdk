@@ -16,7 +16,7 @@
                                                     };
             IDictionary<string, object> second = null;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -31,7 +31,7 @@
                                                     };
             IDictionary<string, object> second = null;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(first.Count, result.Count);
         }
@@ -46,7 +46,7 @@
                                                     };
             IDictionary<string, object> second = null;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(first["prop1"], result["prop1"]);
             Assert.Equal(first["prop2"], result["prop2"]);
@@ -63,7 +63,7 @@
                                                     };
 
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -79,7 +79,7 @@
                                                     };
 
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(second.Count, result.Count);
         }
@@ -94,7 +94,7 @@
                                                         {"prop2", "value2"}
                                                     };
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(second["prop1"], result["prop1"]);
             Assert.Equal(second["prop2"], result["prop2"]);
@@ -114,7 +114,7 @@
                                  {"prop3", "value3"}
                              };
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -134,7 +134,7 @@
                              };
             var expected = 3;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(expected, result.Count);
         }
@@ -154,7 +154,7 @@
                                  {"prop3", "value3"}
                              };
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(second["prop1"], result["prop1"]);
         }
@@ -173,7 +173,7 @@
                                  {"prop3", "value3"}
                              };
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(first["prop2"], result["prop2"]);
             Assert.Equal(second["prop3"], result["prop3"]);
@@ -185,7 +185,7 @@
             IDictionary<string, object> first = null;
             IDictionary<string, object> second = null;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -196,7 +196,7 @@
             IDictionary<string, object> first = null;
             IDictionary<string, object> second = null;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(0, result.Count);
         }
@@ -207,7 +207,7 @@
             var first = new Dictionary<string, object>();
             var second = new Dictionary<string, object>();
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -218,7 +218,7 @@
             var first = new Dictionary<string, object>();
             var second = new Dictionary<string, object>();
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(0, result.Count);
         }
@@ -229,7 +229,7 @@
             IDictionary<string, object> first = null;
             IDictionary<string, object> second = new Dictionary<string, object>();
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -240,7 +240,7 @@
             IDictionary<string, object> first = null;
             IDictionary<string, object> second = new Dictionary<string, object>();
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(0, result.Count);
         }
@@ -251,7 +251,7 @@
             IDictionary<string, object> first = new Dictionary<string, object>();
             IDictionary<string, object> second = null;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -262,7 +262,7 @@
             IDictionary<string, object> first = new Dictionary<string, object>();
             IDictionary<string, object> second = null;
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(0, result.Count);
         }
@@ -273,7 +273,7 @@
             var first = new Dictionary<string, object> { { "prop1", "value1" } };
             var second = new Dictionary<string, object> { { "prop2", "value2" } };
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.NotNull(result);
         }
@@ -284,7 +284,7 @@
             var first = new Dictionary<string, object> { { "prop1", "value1" } };
             var second = new Dictionary<string, object> { { "prop2", "value2" } };
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(2, result.Count);
         }
@@ -295,7 +295,7 @@
             var first = new Dictionary<string, object> { { "prop1", "value1" } };
             var second = new Dictionary<string, object> { { "prop2", "value2" } };
 
-            var result = DictionaryUtilities.Merge(first, second);
+            var result = FacebookUtils.Merge(first, second);
 
             Assert.Equal(first["prop1"], result["prop1"]);
             Assert.Equal(second["prop2"], result["prop2"]);

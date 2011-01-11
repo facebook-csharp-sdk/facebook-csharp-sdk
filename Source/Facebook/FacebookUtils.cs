@@ -1,6 +1,7 @@
 namespace Facebook
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
@@ -69,6 +70,39 @@ namespace Facebook
         {
             Contract.Requires(dateTime >= Epoch);
             return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+        }
+
+        #endregion
+
+        #region Dictionary Utilities
+
+        /// <summary>
+        /// Merges two dictionaries.
+        /// </summary>
+        /// <param name="first">Default values, only used if second does not contain a value.</param>
+        /// <param name="second">Every value of the merged object is used.</param>
+        /// <returns>The merged dictionary</returns>
+        internal static IDictionary<string, object> Merge(IDictionary<string, object> first, IDictionary<string, object> second)
+        {
+            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
+
+            first = first ?? new Dictionary<string, object>();
+            second = second ?? new Dictionary<string, object>();
+            var merged = new Dictionary<string, object>();
+            foreach (var kvp in second)
+            {
+                merged.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (var kvp in first)
+            {
+                if (!merged.ContainsKey(kvp.Key))
+                {
+                    merged.Add(kvp.Key, kvp.Value);
+                }
+            }
+
+            return merged;
         }
 
         #endregion

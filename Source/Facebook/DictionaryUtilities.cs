@@ -23,35 +23,6 @@ namespace Facebook
     internal static class DictionaryUtilities
     {
         /// <summary>
-        /// Merges two dictionaries.
-        /// </summary>
-        /// <param name="first">Default values, only used if second does not contain a value.</param>
-        /// <param name="second">Every value of the merged object is used.</param>
-        /// <returns>The merged dictionary</returns>
-        internal static IDictionary<string, object> Merge(this IDictionary<string, object> first, IDictionary<string, object> second)
-        {
-            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
-
-            first = first ?? new Dictionary<string, object>();
-            second = second ?? new Dictionary<string, object>();
-            var merged = new Dictionary<string, object>();
-            foreach (var kvp in second)
-            {
-                merged.Add(kvp.Key, kvp.Value);
-            }
-
-            foreach (var kvp in first)
-            {
-                if (!merged.ContainsKey(kvp.Key))
-                {
-                    merged.Add(kvp.Key, kvp.Value);
-                }
-            }
-
-            return merged;
-        }
-
-        /// <summary>
         /// Converts the dictionary to a json formatted query string.
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
