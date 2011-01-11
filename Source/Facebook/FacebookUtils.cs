@@ -75,7 +75,7 @@ namespace Facebook
 
         #endregion
 
-        #region Dictionary Utilities
+        #region Dictionary Utils
 
         /// <summary>
         /// Merges two dictionaries.
@@ -197,6 +197,24 @@ namespace Facebook
             return ToJsonQueryString(dictionary);
         }
 #endif
+
+        #endregion
+
+        #region String Utils
+
+        internal static string ConvertToString(HttpMethod httpMethod)
+        {
+            switch (httpMethod)
+            {
+                case HttpMethod.Get:
+                    return "GET";
+                case HttpMethod.Post:
+                    return "POST";
+                case HttpMethod.Delete:
+                    return "DELETE";
+            }
+            throw new InvalidOperationException();
+        }
 
         #endregion
 

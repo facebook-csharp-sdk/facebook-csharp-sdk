@@ -23,3 +23,4 @@ v5.0
 		m. internal static string ToJsonQueryString(IDictionary<string, object> dictionary);
 		n. internal static string ToJsonQueryString(IDictionary<string, string> dictionary);
 		o. internal static string ToJsonQueryString(System.Collections.Specialized.NameValueCollection collection);
+		p. internal static string ConvertToString(HttpMethod httpMethod);
