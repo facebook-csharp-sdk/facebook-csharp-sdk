@@ -73,6 +73,7 @@
     <Compile Include="Base64UrlTests.cs" />
     <Compile Include="DateTimeConvertorTest.cs" />
     <Compile Include="DictionaryUtilitiesTest.cs" />
+    <Compile Include="EncryptionDecryptionTests.cs" />
     <Compile Include="FacebookAppTest.cs" />
     <Compile Include="FacebookAuthenticationResultTests.cs" />
     <Compile Include="FacebookOAuthClientAuthorizerTests.cs" />
