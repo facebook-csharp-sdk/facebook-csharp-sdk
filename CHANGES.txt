@@ -17,3 +17,4 @@ v5.0
 		g. public static DateTime Epoch { get; }
 		h. public static DateTime FromUnixTime(double unixTime);
 		i. public static DateTime FromUnixTime(string unixTime);
+		j. public static double ToUnixTime(DateTime dateTime);

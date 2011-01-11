@@ -49,6 +49,17 @@ namespace Facebook
             return FromUnixTime(d);
         }
 
+        /// <summary>
+        /// Converts a DateTime object to unix time.
+        /// </summary>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns>The unix date time.</returns>
+        public static double ToUnixTime(DateTime dateTime)
+        {
+            Contract.Requires(dateTime >= Epoch);
+            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+        }
+
         #endregion
 
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)
@@ -134,7 +145,7 @@ namespace Facebook
             Contract.Requires(maxAge >= 0);
             Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
 
-            return ParseSignedRequest(signedRequestValue, secret, maxAge, DateTime.UtcNow.ToUnixTime());
+            return ParseSignedRequest(signedRequestValue, secret, maxAge, ToUnixTime(DateTime.UtcNow));
         }
 
         /// <remarks>
