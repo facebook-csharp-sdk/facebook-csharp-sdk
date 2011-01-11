@@ -10,5 +10,10 @@ namespace Facebook
             base64UrlSafeString = base64UrlSafeString.Replace('-', '+').Replace('_', '/');
             return Convert.FromBase64String(base64UrlSafeString);
         }
+
+        internal static string Base64UrlEncode(byte[] input)
+        {
+            return Convert.ToBase64String(input).Replace("=", String.Empty).Replace('+', '-').Replace('/', '_');
+        }
     }
 }
