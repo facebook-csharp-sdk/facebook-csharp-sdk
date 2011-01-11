@@ -9,7 +9,7 @@
 	<licenseUrl>http://facebooksdk.codeplex.com/license</licenseUrl>
 	<projectUrl>http://facebooksdk.codeplex.com</projectUrl>
 	<dependencies>
-		<dependency id="Newtonsoft.Json" version="4.0.0 />
+		<dependency id="Newtonsoft.Json" version="4.0.0" />
 	</dependencies> 
 	<tags>facebook</tags>
   </metadata>
