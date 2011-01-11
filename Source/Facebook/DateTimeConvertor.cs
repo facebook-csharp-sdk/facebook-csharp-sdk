@@ -49,20 +49,10 @@ namespace Facebook
             double d;
             if (!double.TryParse(unixTime, out d))
             {
-                return FromUnixTime(0);
+                return FacebookUtils.FromUnixTime(0);
             }
 
-            return FromUnixTime(d);
-        }
-
-        /// <summary>
-        /// Converts a unix time string to a DateTime object.
-        /// </summary>
-        /// <param name="unixTime">The unix time.</param>
-        /// <returns>The DateTime object.</returns>
-        public static DateTime FromUnixTime(double unixTime)
-        {
-            return FacebookUtils.Epoch.AddSeconds(unixTime);
+            return FacebookUtils.FromUnixTime(d);
         }
     }
 }

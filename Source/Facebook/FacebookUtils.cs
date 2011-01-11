@@ -12,6 +12,8 @@ namespace Facebook
     /// </summary>
     public class FacebookUtils
     {
+        #region DateTime Utils
+
         /// <summary>
         /// Gets the epoch time.
         /// </summary>
@@ -20,6 +22,18 @@ namespace Facebook
         {
             get { return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc); }
         }
+
+        /// <summary>
+        /// Converts a unix time string to a DateTime object.
+        /// </summary>
+        /// <param name="unixTime">The unix time.</param>
+        /// <returns>The DateTime object.</returns>
+        public static DateTime FromUnixTime(double unixTime)
+        {
+            return Epoch.AddSeconds(unixTime);
+        }
+
+        #endregion
 
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)
         {

@@ -4,7 +4,6 @@
     using Facebook;
     using Xunit;
 
-
     /// <summary>
     ///This is a test class for DateTimeConvertorTest and is intended
     ///to contain all DateTimeConvertorTest Unit Tests
@@ -27,7 +26,7 @@
         {
             var unixTimeInDouble = 1213513200;
 
-            var fbUnix = DateTimeConvertor.FromUnixTime(unixTimeInDouble);
+            var fbUnix = FacebookUtils.FromUnixTime(unixTimeInDouble);
             var unixTime = DateTimeConvertor.ToUnixTime(fbUnix);
 
             Assert.Equal(unixTimeInDouble, unixTime);
@@ -39,7 +38,7 @@
             var unixTimeinDouble = 1284620400;
             var expected = new DateTimeOffset(2010, 9, 16, 0, 0, 0, TimeSpan.FromHours(-7));
 
-            var actual = DateTimeConvertor.FromUnixTime(unixTimeinDouble);
+            var actual = FacebookUtils.FromUnixTime(unixTimeinDouble);
 
             Assert.Equal(expected, actual);
         }

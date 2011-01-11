@@ -15,3 +15,4 @@ v5.0
 		f. internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge, double currentTime);
 		   (Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal)
 		g. public static DateTime Epoch { get; }
+		h. public static DateTime FromUnixTime(double unixTime);

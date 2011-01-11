@@ -38,7 +38,7 @@ namespace Facebook
             if (parameters.ContainsKey("expires_in"))
             {
                 var expiresIn = Convert.ToDouble(parameters["expires_in"]);
-                this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
+                this.expires = FacebookUtils.FromUnixTime(expiresIn);
             }
 
             if (parameters.ContainsKey("error_reason"))
