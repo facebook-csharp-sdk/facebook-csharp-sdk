@@ -131,6 +131,8 @@
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="ExceptionFactory.cs" />
+    <Compile Include="JsonArray.cs" />
+    <Compile Include="JsonObject.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
