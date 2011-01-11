@@ -69,7 +69,7 @@ namespace Facebook
                     var s = this.Value<string>("expires");
                     if (!String.IsNullOrEmpty(s))
                     {
-                        return DateTimeConvertor.FromUnixTime(s);
+                        return FacebookUtils.FromUnixTime(s);
                     }
                 }
                 return default(DateTime);
@@ -89,7 +89,7 @@ namespace Facebook
                     var s = this.Value<string>("issued_at");
                     if (!String.IsNullOrEmpty(s))
                     {
-                        return DateTimeConvertor.FromUnixTime(s);
+                        return FacebookUtils.FromUnixTime(s);
                     }
                 }
                 return default(DateTime);

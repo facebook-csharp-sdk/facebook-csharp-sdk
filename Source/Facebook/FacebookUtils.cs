@@ -33,6 +33,22 @@ namespace Facebook
             return Epoch.AddSeconds(unixTime);
         }
 
+        /// <summary>
+        /// Converts a unix time string to a DateTime object.
+        /// </summary>
+        /// <param name="unixTime">The string representation of the unix time.</param>
+        /// <returns>The DateTime object.</returns>
+        public static DateTime FromUnixTime(string unixTime)
+        {
+            double d;
+            if (!double.TryParse(unixTime, out d))
+            {
+                return FromUnixTime(0);
+            }
+
+            return FromUnixTime(d);
+        }
+
         #endregion
 
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)

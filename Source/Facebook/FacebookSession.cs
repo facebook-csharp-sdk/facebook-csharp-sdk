@@ -156,7 +156,7 @@ namespace Facebook
             {
                 if (this.dictionary.ContainsKey("expires") && !String.IsNullOrEmpty(this.dictionary["expires"]))
                 {
-                    return DateTimeConvertor.FromUnixTime(this.dictionary["expires"]);
+                    return FacebookUtils.FromUnixTime(this.dictionary["expires"]);
                 }
 
                 return default(DateTime);

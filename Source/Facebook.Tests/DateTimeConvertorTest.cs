@@ -15,7 +15,7 @@
         {
             var unixTimeInString = "1213513200";
 
-            var fbUnix = DateTimeConvertor.FromUnixTime(unixTimeInString);
+            var fbUnix = FacebookUtils.FromUnixTime(unixTimeInString);
             var unixTime = DateTimeConvertor.ToUnixTime(fbUnix);
 
             Assert.Equal(unixTimeInString, unixTime.ToString());
@@ -49,7 +49,7 @@
             var unixTimeInString = "1284620400";
             var expected = new DateTimeOffset(2010, 9, 16, 0, 0, 0, TimeSpan.FromHours(-7));
 
-            var actual = DateTimeConvertor.FromUnixTime(unixTimeInString);
+            var actual = FacebookUtils.FromUnixTime(unixTimeInString);
 
             Assert.Equal(expected, actual);
         }

@@ -38,21 +38,5 @@ namespace Facebook
             Contract.Requires(dateTime >= FacebookUtils.Epoch);
             return (double)(dateTime.ToUniversalTime() - FacebookUtils.Epoch).TotalSeconds;
         }
-
-        /// <summary>
-        /// Converts a unix time string to a DateTime object.
-        /// </summary>
-        /// <param name="unixTime">The string representation of the unix time.</param>
-        /// <returns>The DateTime object.</returns>
-        public static DateTime FromUnixTime(string unixTime)
-        {
-            double d;
-            if (!double.TryParse(unixTime, out d))
-            {
-                return FacebookUtils.FromUnixTime(0);
-            }
-
-            return FacebookUtils.FromUnixTime(d);
-        }
     }
 }
