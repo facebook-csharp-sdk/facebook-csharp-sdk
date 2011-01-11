@@ -386,7 +386,7 @@
         {
             var nvc = new NameValueCollection();
 
-            string result = DictionaryUtilities.ToJsonQueryString(nvc);
+            string result = FacebookUtils.ToJsonQueryString(nvc);
 
             Assert.Equal(string.Empty, result);
         }
@@ -398,7 +398,7 @@
             nvc.Add("key1", "value1");
             nvc.Add("key2", "value2");
 
-            var result = DictionaryUtilities.ToJsonQueryString(nvc);
+            var result = FacebookUtils.ToJsonQueryString(nvc);
 
             Assert.False(string.IsNullOrEmpty(result));
         }
@@ -411,7 +411,7 @@
             nvc.Add("key2", "value2");
             var expected = "key1=value1&key2=value2";
 
-            var result = DictionaryUtilities.ToJsonQueryString(nvc);
+            var result = FacebookUtils.ToJsonQueryString(nvc);
 
             // TODO: more tests for encoded values.
             Assert.Equal(expected, result);

@@ -23,29 +23,6 @@ namespace Facebook
     internal static class DictionaryUtilities
     {
 
-#if !SILVERLIGHT
 
-        /// <summary>
-        /// Converts the NameValueCollection to a json formatted query string.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <returns>A Json formatted querystring.</returns>
-        internal static string ToJsonQueryString(this NameValueCollection collection)
-        {
-            Contract.Requires(collection != null);
-            Contract.Ensures(Contract.Result<string>() != null);
-            Contract.EndContractBlock();
-
-            var dictionary = new Dictionary<string, string>();
-            collection.AllKeys.ToList().ForEach((key) =>
-            {
-                if (key != null)
-                {
-                    dictionary.Add(key, collection[key]);
-                }
-            });
-            return FacebookUtils.ToJsonQueryString(dictionary);
-        }
-#endif
     }
 }

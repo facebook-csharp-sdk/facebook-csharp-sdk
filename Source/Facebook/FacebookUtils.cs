@@ -173,6 +173,31 @@ namespace Facebook
             return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
         }
 
+#if !SILVERLIGHT
+
+        /// <summary>
+        /// Converts the NameValueCollection to a json formatted query string.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        /// <returns>A Json formatted querystring.</returns>
+        internal static string ToJsonQueryString(System.Collections.Specialized.NameValueCollection collection)
+        {
+            Contract.Requires(collection != null);
+            Contract.Ensures(Contract.Result<string>() != null);
+            Contract.EndContractBlock();
+
+            var dictionary = new Dictionary<string, string>();
+            collection.AllKeys.ToList().ForEach((key) =>
+            {
+                if (key != null)
+                {
+                    dictionary.Add(key, collection[key]);
+                }
+            });
+            return ToJsonQueryString(dictionary);
+        }
+#endif
+
         #endregion
 
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)
