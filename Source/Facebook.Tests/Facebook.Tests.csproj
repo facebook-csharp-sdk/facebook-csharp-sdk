@@ -70,12 +70,15 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base64UrlTests.cs" />
     <Compile Include="DateTimeConvertorTest.cs" />
     <Compile Include="DictionaryUtilitiesTest.cs" />
+    <Compile Include="EncryptionDecryptionTests.cs" />
     <Compile Include="FacebookAppTest.cs" />
     <Compile Include="FacebookAuthenticationResultTests.cs" />
     <Compile Include="FacebookOAuthClientAuthorizerTests.cs" />
     <Compile Include="GetApiUrlTests.cs" />
+    <Compile Include="ParseSignedRequestTests.cs" />
     <Compile Include="ParseUserIdFromAcessTokenTests.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
