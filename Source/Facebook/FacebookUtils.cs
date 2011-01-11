@@ -3,7 +3,9 @@ namespace Facebook
     using System;
     using System.Diagnostics.Contracts;
     using System.IO;
+    using System.Linq;
     using System.Security.Cryptography;
+    using System.Text;
 
     internal class FacebookUtils
     {
@@ -79,6 +81,96 @@ namespace Facebook
                 }
             }
 
+            return result;
+        }
+
+        internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
+            Contract.Requires(!String.IsNullOrEmpty(secret));
+            Contract.Requires(maxAge >= 0);
+            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
+
+            return ParseSignedRequest(signedRequestValue, secret, maxAge, DateTime.UtcNow.ToUnixTime());
+        }
+
+        /// <remarks>
+        /// Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal
+        /// </remarks>
+        internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge, double currentTime)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
+            Contract.Requires(!String.IsNullOrEmpty(secret));
+            Contract.Requires(maxAge >= 0);
+            Contract.Requires(currentTime >= 0);
+            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
+
+            // NOTE: currentTime added to parameters to make it unit testable.
+
+            string[] split = signedRequestValue.Split('.');
+            if (split.Length != 2)
+            {
+                // need to have exactly 2 parts
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+            }
+
+            string encodedSignature = split[0];
+            string encodedEnvelope = split[1];
+
+            if (string.IsNullOrEmpty(encodedSignature))
+            {
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+            }
+
+            if (string.IsNullOrEmpty(encodedEnvelope))
+            {
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+            }
+
+            var envelope = (Newtonsoft.Json.Linq.JObject)JsonSerializer.DeserializeObject(Encoding.UTF8.GetString(Base64UrlDecode(encodedEnvelope)));
+
+            string algorithm = (string)envelope["algorithm"];
+
+            if (!algorithm.Equals("AES-256-CBC HMAC-SHA256") && !algorithm.Equals("HMAC-SHA256"))
+            {
+                // TODO: test
+                throw new InvalidOperationException("Invalid signed request. (Unsupported algorithm)");
+            }
+
+            long issuedAt = (long)envelope["issued_at"];
+
+            if (issuedAt < currentTime)
+            {
+                throw new InvalidOperationException("Invalid signed request. (Too old.)");
+            }
+
+            byte[] key = Encoding.UTF8.GetBytes(secret);
+            byte[] digest = ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
+
+            if (!digest.SequenceEqual(Base64UrlDecode(encodedSignature)))
+            {
+                throw new InvalidOperationException("Invalid signed request. (Invalid signature.)");
+            }
+
+            // for requests that are signed, but not encrypted, we"re done
+            if (algorithm.Equals("HMAC-SHA256"))
+            {
+                return envelope;
+            }
+
+            // otherwise, decrypt the payload
+            byte[] iv = Base64UrlDecode((string)envelope["iv"]);
+            byte[] rawCipherText = Base64UrlDecode((string)envelope["payload"]);
+            var plainText = DecryptAes256CBCNoPadding(rawCipherText, key, iv);
+
+            var payload = (Newtonsoft.Json.Linq.JObject)JsonSerializer.DeserializeObject(plainText);
+
+            var result = new Newtonsoft.Json.Linq.JObject();
+            result["algorithm"] = algorithm;
+            result["issued_at"] = issuedAt;
+            result["payload"] = payload;
+
+            // return new FacebookSignedRequest(result);
             return result;
         }
     }
