@@ -136,7 +136,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="StringUtilities.cs" />
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
