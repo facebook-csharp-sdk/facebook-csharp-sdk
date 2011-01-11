@@ -18,26 +18,14 @@ namespace Facebook
     public static class DateTimeConvertor
     {
         /// <summary>
-        /// Gets the epoch time.
-        /// </summary>
-        /// <value>The epoch time.</value>
-        public static DateTime Epoch
-        {
-            get
-            {
-                return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            }
-        }
-
-        /// <summary>
         /// Converts a DateTimeOffset object to unix time.
         /// </summary>
         /// <param name="dateTime">The date time.</param>
         /// <returns>The unix date time.</returns>
         public static double ToUnixTime(this DateTimeOffset dateTime)
         {
-            Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            Contract.Requires(dateTime >= FacebookUtils.Epoch);
+            return (double)(dateTime.ToUniversalTime() - FacebookUtils.Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -47,8 +35,8 @@ namespace Facebook
         /// <returns>The unix date time.</returns>
         public static double ToUnixTime(this DateTime dateTime)
         {
-            Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            Contract.Requires(dateTime >= FacebookUtils.Epoch);
+            return (double)(dateTime.ToUniversalTime() - FacebookUtils.Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -74,7 +62,7 @@ namespace Facebook
         /// <returns>The DateTime object.</returns>
         public static DateTime FromUnixTime(double unixTime)
         {
-            return Epoch.AddSeconds(unixTime);
+            return FacebookUtils.Epoch.AddSeconds(unixTime);
         }
     }
 }

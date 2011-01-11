@@ -7,8 +7,20 @@ namespace Facebook
     using System.Security.Cryptography;
     using System.Text;
 
-    internal class FacebookUtils
+    /// <summary>
+    /// Helper methods for Facebook.
+    /// </summary>
+    public class FacebookUtils
     {
+        /// <summary>
+        /// Gets the epoch time.
+        /// </summary>
+        /// <value>The epoch time.</value>
+        public static DateTime Epoch
+        {
+            get { return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc); }
+        }
+
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)
         {
             Contract.Requires(!string.IsNullOrEmpty(base64UrlSafeString));
