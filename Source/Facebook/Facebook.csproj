@@ -131,6 +131,8 @@
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="FacebookOAuthClientAuthorizer.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
+    <Compile Include="JsonArray.cs" />
+    <Compile Include="JsonObject.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -147,7 +149,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="JsonSerializer.cs" />
-    <Compile Include="FacebookUriEncoder.cs" />
+    <Compile Include="UrlEncoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">

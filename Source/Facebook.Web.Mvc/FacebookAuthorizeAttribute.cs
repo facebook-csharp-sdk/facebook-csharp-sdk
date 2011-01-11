@@ -11,7 +11,12 @@ namespace Facebook.Web.Mvc
 
         public string LoginUrl { get; set; }
 
-        protected override void HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext filterContext)
+        /// <summary>
+        /// Handles the unauthorized request.
+        /// </summary>
+        /// <param name="facebookApp">The current Facebook app instance.</param>
+        /// <param name="filterContext">The filter context.</param>
+        protected override void HandleUnauthorizedRequest(FacebookApp facebookApp, System.Web.Mvc.AuthorizationContext filterContext)
         {
             filterContext.Result = new RedirectResult(LoginUrl ?? "/");
         }
