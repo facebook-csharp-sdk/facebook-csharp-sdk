@@ -70,26 +70,6 @@ namespace Facebook
             return default(Uri);
         }
 #if !SILVERLIGHT
-        /// <summary>
-        /// Validates a session_version=3 style session object.
-        /// </summary>
-        /// <param name="session">The session to validate.</param>
-        protected override void ValidateSessionObject(FacebookSession session)
-        {
-        }
-
-        /// <summary>
-        /// Generates a MD5 signature for the facebook session.
-        /// </summary>
-        /// <param name="session">The session to generate a signature.</param>
-        /// <returns>An MD5 signature.</returns>
-        protected override string GenerateSignature(FacebookSession session)
-        {
-            Contract.Requires(session != null);
-            Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
-
-            return default(string);
-        }
 
         /// <summary>
         /// Invoke the old restserver.php endpoint.

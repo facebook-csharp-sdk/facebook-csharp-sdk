@@ -34,10 +34,10 @@ namespace Facebook
         /// </summary>
         /// <param name="dateTime">The date time.</param>
         /// <returns>The unix date time.</returns>
-        public static double ToUnixTime(this DateTimeOffset dateTime)
+        public static long ToUnixTime(this DateTimeOffset dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (long)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace Facebook
         /// </summary>
         /// <param name="dateTime">The date time.</param>
         /// <returns>The unix date time.</returns>
-        public static double ToUnixTime(this DateTime dateTime)
+        public static long ToUnixTime(this DateTime dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (long)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace Facebook
         /// <returns>The DateTime object.</returns>
         public static DateTime FromUnixTime(string unixTime)
         {
-            double d;
-            if (!double.TryParse(unixTime, out d))
+            long d;
+            if (!long.TryParse(unixTime, out d))
             {
                 return FromUnixTime(0);
             }
@@ -72,7 +72,7 @@ namespace Facebook
         /// </summary>
         /// <param name="unixTime">The unix time.</param>
         /// <returns>The DateTime object.</returns>
-        public static DateTime FromUnixTime(double unixTime)
+        public static DateTime FromUnixTime(long unixTime)
         {
             return Epoch.AddSeconds(unixTime);
         }

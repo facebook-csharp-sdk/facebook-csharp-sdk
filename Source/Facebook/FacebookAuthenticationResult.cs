@@ -37,7 +37,7 @@ namespace Facebook
 
             if (parameters.ContainsKey("expires_in"))
             {
-                var expiresIn = Convert.ToDouble(parameters["expires_in"]);
+                var expiresIn = Convert.ToInt64(parameters["expires_in"]);
                 this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
             }
 
@@ -45,6 +45,7 @@ namespace Facebook
             {
                 this.errorReason = Uri.UnescapeDataString((string)parameters["error_reason"]);
             }
+
             if (parameters.ContainsKey("error_description"))
             {
                 this.errorDescription = Uri.UnescapeDataString((string)parameters["error_description"]);

@@ -117,16 +117,6 @@ namespace Facebook.Tests
                 throw new NotImplementedException();
             }
 
-            protected override void ValidateSessionObject(FacebookSession session)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override string GenerateSignature(FacebookSession session)
-            {
-                throw new NotImplementedException();
-            }
-
             protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
             {
                 throw new NotImplementedException();

@@ -174,7 +174,9 @@ namespace Facebook
                 {
                     return 0;
                 }
-                return this.Session.UserId;
+                long userId = 0;
+                long.TryParse(this.Session.UserId, out userId);
+                return userId;
             }
         }
 
@@ -1044,19 +1046,6 @@ namespace Facebook
         #endregion
 
 #if !SILVERLIGHT
-        /// <summary>
-        /// Validates a session_version=3 style session object.
-        /// </summary>
-        /// <param name="session">The session to validate.</param>
-        protected abstract void ValidateSessionObject(FacebookSession session);
-
-        /// <summary>
-        /// Generates a MD5 signature for the facebook session.
-        /// </summary>
-        /// <param name="session">The session to generate a signature.</param>
-        /// <returns>An MD5 signature.</returns>
-        protected abstract string GenerateSignature(FacebookSession session);
-
 
         /// <summary>
         /// Invoke the old restserver.php endpoint.

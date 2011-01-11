@@ -26,8 +26,8 @@ namespace CSMvc3FacebookApp.Controllers
             {
                 dynamic result = fbApp.Get("me");
 
-                ViewData["Firstname"] = (string)result.first_name;
-                ViewData["Lastname"] = (string)result.last_name;
+                ViewData["Firstname"] = result.first_name;
+                ViewData["Lastname"] = result.last_name;
             }
 
             return View();

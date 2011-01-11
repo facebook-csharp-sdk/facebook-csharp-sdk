@@ -14,154 +14,141 @@ namespace Facebook
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using Newtonsoft.Json.Linq;
+    using System.Text;
 
     /// <summary>
     /// Rerpesents a Facebook signed request.
     /// </summary>
-    public class FacebookSignedRequest : JObject
+    public sealed class FacebookSignedRequest
     {
 
-        public FacebookSignedRequest(JObject other)
-            : base(other)
+        public FacebookSignedRequest(IDictionary<string, object> value)
         {
+            this.UserId = value.ContainsKey("user_id") ? (string)value["user_id"] : null;
+            this.AccessToken = value.ContainsKey("oauth_token") ? (string)value["oauth_token"] : null;
+            this.Expires = value.ContainsKey("expires") ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(value["expires"])) : DateTime.MinValue;
+            this.IssuedAt = value.ContainsKey("issued_at") ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(value["issued_at"])) : DateTime.MinValue;
+            this.ProfileId = value.ContainsKey("profile_id") ? (string)value["profile_id"] : null;
+            this.Algorithm = value.ContainsKey("algorithm") ? (string)value["algorithm"] : null;
+
+            if (value.ContainsKey("user"))
+            {
+                var user = (IDictionary<string, object>)value["user"];
+                this.User = new FacebookSignedRequestUser
+                {
+                    Country = value.ContainsKey("country") ? (string)user["country"] : null,
+                    Locale = value.ContainsKey("locale") ? (string)user["locale"] : null,
+                };
+            }
+
         }
 
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
         /// <value>The user id.</value>
-        public long UserId
-        {
-            get
-            {
-
-                if (this["user_id"] != null)
-                {
-                    var s = this.Value<string>("user_id");
-                    return long.Parse(s, CultureInfo.InvariantCulture);
-                }
-                return default(long);
-            }
-        }
+        public string UserId { get; set; }
 
         /// <summary>
         /// Gets or sets the access token.
         /// </summary>
         /// <value>The access token.</value>
-        public string AccessToken
-        {
-            get
-            {
-                return this.Value<string>("oauth_token");
-            }
-        }
+        public string AccessToken { get; set; }
 
         /// <summary>
         /// Gets or sets the expires.
         /// </summary>
         /// <value>The expires.</value>
-        public DateTime Expires
-        {
-            get
-            {
-                if (this["expires"] != null)
-                {
-                    var s = this.Value<string>("expires");
-                    if (!String.IsNullOrEmpty(s))
-                    {
-                        return DateTimeConvertor.FromUnixTime(s);
-                    }
-                }
-                return default(DateTime);
-            }
-        }
+        public DateTime Expires { get; set; }
 
         /// <summary>
         /// Gets or sets the expires.
         /// </summary>
         /// <value>The expires.</value>
-        public DateTime IssuedAt
-        {
-            get
-            {
-                if (this["issued_at"] != null)
-                {
-                    var s = this.Value<string>("issued_at");
-                    if (!String.IsNullOrEmpty(s))
-                    {
-                        return DateTimeConvertor.FromUnixTime(s);
-                    }
-                }
-                return default(DateTime);
-            }
-        }
+        public DateTime IssuedAt { get; set; }
 
 
         /// <summary>
         /// Gets or sets the profile id.
         /// </summary>
         /// <value>The profile id.</value>
-        public long ProfileId
-        {
-            get
-            {
-                if (this["profile_id"] != null)
-                {
-                    var s = this.Value<string>("profile_id");
-                    return long.Parse(s, CultureInfo.InvariantCulture);
-                }
-                return default(long);
-            }
-        }
+        public string ProfileId { get; set; }
 
         /// <summary>
         /// Gets or sets the algorithm.
         /// </summary>
         /// <value>The algorithm.</value>
-        public string Algorithm
+        public string Algorithm { get; set; }
+
+        public FacebookSignedRequestUser User { get; set; }
+
+        /// <summary>
+        /// Parses the signed request string.
+        /// </summary>
+        /// <param name="value">The encoded signed request value.</param>
+        /// <returns>The valid signed request.</returns>
+        public static FacebookSignedRequest Parse(string appSecret, string value)
         {
-            get
+            Contract.Requires(!String.IsNullOrEmpty(value));
+            Contract.Requires(value.Contains("."), Properties.Resources.InvalidSignedRequest);
+
+            string[] parts = value.Split('.');
+            var encodedValue = parts[0];
+            if (String.IsNullOrEmpty(encodedValue))
             {
-                return this.Value<string>("algorithm");
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
             }
+
+            var sig = Base64UrlDecode(encodedValue);
+            var payload = parts[1];
+
+            using (var cryto = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(appSecret)))
+            {
+                var hash = Convert.ToBase64String(cryto.ComputeHash(Encoding.UTF8.GetBytes(payload)));
+                var hashDecoded = Base64UrlDecode(hash);
+                if (hashDecoded != sig)
+                {
+                    return null;
+                }
+            }
+
+            var payloadBase64 = Base64UrlDecode(payload);
+            var payloadBytes = Convert.FromBase64String(payloadBase64);
+            var payloadJson = Encoding.UTF8.GetString(payloadBytes);
+            var data = JsonSerializer.DeserializeObject(payloadJson) as IDictionary<string, object>;
+            if (data != null)
+            {
+                return new FacebookSignedRequest(data);
+            }
+            return null;
         }
 
-        public FacebookSignedRequestUser User
+        /// <summary>
+        /// Converts the base 64 url encoded string to standard base 64 encoding.
+        /// </summary>
+        /// <param name="encodedValue">The encoded value.</param>
+        /// <returns>The base 64 string.</returns>
+        private static string Base64UrlDecode(string encodedValue)
         {
-            get
+            Contract.Requires(!String.IsNullOrEmpty(encodedValue));
+
+            encodedValue = encodedValue.Replace('+', '-').Replace('/', '_').Trim();
+            int pad = encodedValue.Length % 4;
+            if (pad > 0)
             {
-                if (this["user"] != null)
-                {
-                    return new FacebookSignedRequestUser(this.Value<JObject>("user"));
-                }
-                return null;
+                pad = 4 - pad;
             }
+
+            encodedValue = encodedValue.PadRight(encodedValue.Length + pad, '=');
+            return encodedValue;
         }
 
     }
 
-    public class FacebookSignedRequestUser : JObject
+    public class FacebookSignedRequestUser
     {
+        public string Locale { get; set; }
 
-        public FacebookSignedRequestUser(JObject other)
-            : base(other)
-        {
-        }
-
-        public string Locale
-        {
-            get
-            {
-                return this.Value<string>("locale");
-            }
-        }
-
-        public string Country
-        {
-            get
-            {
-                return this.Value<string>("country");
-            }
-        }
+        public string Country { get; set; }
     }
 }

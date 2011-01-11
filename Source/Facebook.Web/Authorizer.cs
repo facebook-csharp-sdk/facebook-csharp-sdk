@@ -83,15 +83,15 @@ namespace Facebook.Web
                 parameters["query"] = query;
                 parameters["method"] = "fql.query";
                 parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.AppSecret);
-                var data = FacebookApp.Get(parameters) as JArray;
+                var data = FacebookApp.Get(parameters) as IList<object>;
                 if (data != null && data.Count > 0)
                 {
-                    var permData = data[0] as JObject;
+                    var permData = data[0] as IDictionary<string, object>;
                     if (permData != null)
                     {
-                        result = (from perm in permData.Properties()
-                                  where perm.Value.Value<string>() == "1"
-                                  select perm.Name).ToArray();
+                        result = (from perm in permData
+                                  where perm.Value.ToString() == "1"
+                                  select perm.Key).ToArray();
                     }
                 }
             }

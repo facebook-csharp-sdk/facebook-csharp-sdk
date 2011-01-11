@@ -138,7 +138,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />
-    <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="JsonArray.cs" />

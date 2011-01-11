@@ -172,7 +172,7 @@ namespace Facebook
                 {
                     if (this.Request.Params.AllKeys.Contains("signed_request"))
                     {
-                        this.signedRequest = this.ParseSignedRequest(this.Request.Params["signed_request"]);
+                        this.signedRequest = FacebookSignedRequest.Parse(this.AppSecret, this.Request.Params["signed_request"]);
                     }
                 }
 
@@ -195,7 +195,7 @@ namespace Facebook
                         // try loading session from signed_request
                         if (this.SignedRequest != null)
                         {
-                            this.session = this.CreateSessionFromSignedRequest(this.SignedRequest);
+                            this.session = FacebookSession.Create(this.AppSecret, this.SignedRequest);
                         }
 
                         // try loading session from cookie if necessary
@@ -203,15 +203,13 @@ namespace Facebook
                         {
                             if (this.Request.Params.AllKeys.Contains(this.SessionCookieName))
                             {
-                                this.session = ParseFromCookie(this.Request.Params[this.SessionCookieName]);
-                                this.ValidateSessionObject(this.session);
+                                this.session = FacebookSession.Parse(this.AppSecret, this.Request.Params[this.SessionCookieName]);
                             }
                         }
                     }
                     catch
                     {
                         this.session = null;
-                        throw;
                     }
                 }
 
@@ -413,96 +411,6 @@ namespace Facebook
 #if !SILVERLIGHT
 
         /// <summary>
-        /// Parses the session value from a cookie.
-        /// </summary>
-        /// <param name="sessionValue">The session value.</param>
-        /// <returns>The Facebook session object.</returns>
-        protected static FacebookSession ParseFromCookie(string sessionValue)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(sessionValue));
-            Contract.Requires(!sessionValue.Contains(","), "Session value must not contain a comma.");
-
-            var session = new FacebookSession();
-
-            // Parse the cookie
-            var parts = sessionValue.Replace("\"", string.Empty).Split('&');
-            foreach (var part in parts)
-            {
-                if (!string.IsNullOrEmpty(part) && part.Contains("="))
-                {
-                    var nameValue = part.Split('=');
-                    if (nameValue.Length == 2)
-                    {
-                        var s = Uri.UnescapeDataString(nameValue[1]);
-                        session.Dictionary.Add(nameValue[0], s);
-                    }
-                }
-            }
-
-            return session;
-        }
-
-        /// <summary>
-        /// Validates a session_version=3 style session object.
-        /// </summary>
-        /// <param name="session">The session to validate.</param>
-        protected override void ValidateSessionObject(FacebookSession session)
-        {
-            if (session == null)
-            {
-                return;
-            }
-
-            var signature = this.GenerateSignature(session);
-            if (session.Signature == signature.ToString())
-            {
-                return;
-            }
-
-            session = null;
-        }
-
-        /// <summary>
-        /// Generates a MD5 signature for the facebook session.
-        /// </summary>
-        /// <param name="session">The session to generate a signature.</param>
-        /// <returns>An MD5 signature.</returns>
-        /// <exception cref="System.ArgumentNullException">If the session is null.</exception>
-        /// <exception cref="System.InvalidOperationException">If there is a problem generating the hash.</exception>
-        protected override string GenerateSignature(FacebookSession session)
-        {
-            var args = session.Dictionary;
-            StringBuilder payload = new StringBuilder();
-            var parts = (from a in args
-                         orderby a.Key
-                         where a.Key != "sig"
-                         select string.Format(CultureInfo.InvariantCulture, "{0}={1}", a.Key, a.Value)).ToList();
-            parts.ForEach((s) => { payload.Append(s); });
-            payload.Append(this.AppSecret);
-            byte[] hash = null;
-            using (var md5 = System.Security.Cryptography.MD5CryptoServiceProvider.Create())
-            {
-                if (md5 != null)
-                {
-                    hash = md5.ComputeHash(Encoding.UTF8.GetBytes(payload.ToString()));
-                }
-            }
-
-            if (hash == null)
-            {
-                throw new InvalidOperationException("Hash is not valid.");
-            }
-
-            StringBuilder signature = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                signature.Append(hash[i].ToString("x2", CultureInfo.InvariantCulture));
-            }
-
-            return signature.ToString();
-        }
-
-        /// <summary>
         /// Invoke the old restserver.php endpoint.
         /// </summary>
         /// <param name="parameters">The parameters of the method call.</param>
@@ -698,70 +606,7 @@ namespace Facebook
             }
         }
 
-#if !SILVERLIGHT
 
-        /// <summary>
-        /// Parses the signed request string.
-        /// </summary>
-        /// <param name="signedRequestValue">The encoded signed request value.</param>
-        /// <returns>The valid signed request.</returns>
-        internal protected FacebookSignedRequest ParseSignedRequest(string signedRequestValue)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
-
-            string[] parts = signedRequestValue.Split('.');
-            var encodedValue = parts[0];
-            if (String.IsNullOrEmpty(encodedValue))
-            {
-                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
-            }
-
-            var sig = Base64UrlDecode(encodedValue);
-            var payload = parts[1];
-
-            using (var cryto = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(this.AppSecret)))
-            {
-                var hash = Convert.ToBase64String(cryto.ComputeHash(Encoding.UTF8.GetBytes(payload)));
-                var hashDecoded = Base64UrlDecode(hash);
-                if (hashDecoded != sig)
-                {
-                    return null;
-                }
-            }
-
-            var payloadJson = Encoding.UTF8.GetString(Convert.FromBase64String(Base64UrlDecode(payload)));
-            var data = JsonSerializer.DeserializeObject(payloadJson) as JObject;
-            if (data == null)
-            {
-                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
-            }
-
-            var signedRequest = new FacebookSignedRequest(data);
-            return signedRequest;
-        }
-
-        /// <summary>
-        /// Converts the base 64 url encoded string to standard base 64 encoding.
-        /// </summary>
-        /// <param name="encodedValue">The encoded value.</param>
-        /// <returns>The base 64 string.</returns>
-        private static string Base64UrlDecode(string encodedValue)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(encodedValue));
-
-            encodedValue = encodedValue.Replace('+', '-').Replace('/', '_').Trim();
-            int pad = encodedValue.Length % 4;
-            if (pad > 0)
-            {
-                pad = 4 - pad;
-            }
-
-            encodedValue = encodedValue.PadRight(encodedValue.Length + pad, '=');
-            return encodedValue;
-        }
-
-#endif
 
         /// <summary>
         /// Builds the request post data and request uri based on the given parameters.
@@ -1081,34 +926,6 @@ namespace Facebook
             this.retryDelay = settings.RetryDelay == -1 ? this.retryDelay : settings.RetryDelay;
             this.maxRetries = settings.MaxRetries == -1 ? this.maxRetries : settings.MaxRetries;
         }
-
-#if !SILVERLIGHT
-
-        /// <summary>
-        /// Creates a facebook session from a signed request.
-        /// </summary>
-        /// <param name="signedRequest">The signed request.</param>
-        /// <returns>The facebook session.</returns>
-        private FacebookSession CreateSessionFromSignedRequest(FacebookSignedRequest signedRequest)
-        {
-            if (signedRequest == null || String.IsNullOrEmpty(signedRequest.AccessToken))
-            {
-                return null;
-            }
-
-            FacebookSession tempSession = new FacebookSession
-            {
-                UserId = signedRequest.UserId,
-                AccessToken = signedRequest.AccessToken,
-                Expires = signedRequest.Expires,
-            };
-
-            tempSession.Signature = this.GenerateSignature(tempSession);
-
-            return tempSession;
-        }
-
-#endif
 
         /// <summary>
         /// Gets the graph request url in the proper format.

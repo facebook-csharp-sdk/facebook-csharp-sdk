@@ -132,10 +132,12 @@
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthClientAuthorizer.cs" />
     <Compile Include="FacebookOAuthException.cs" />
+    <Compile Include="FacebookSession.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />
-    <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="JsonArray.cs" />
@@ -146,7 +148,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StringUtilities.cs" />
-    <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="DictionaryUtilities.cs" />
