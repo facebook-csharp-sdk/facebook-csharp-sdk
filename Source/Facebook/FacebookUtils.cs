@@ -18,6 +18,14 @@ namespace Facebook
             return Convert.ToBase64String(input).Replace("=", String.Empty).Replace('+', '-').Replace('/', '_');
         }
 
+        internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
+        {
+            using (var crypto = new HMACSHA256(key))
+            {
+                return crypto.ComputeHash(data);
+            }
+        }
+
         internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv)
         {
             string result;
