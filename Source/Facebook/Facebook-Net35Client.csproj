@@ -139,7 +139,6 @@
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
-    <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DictionaryUtilities.cs" />
     <Compile Include="IFacebookSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

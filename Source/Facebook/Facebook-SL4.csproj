@@ -122,7 +122,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookAppExtensions.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
