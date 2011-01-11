@@ -39,6 +39,7 @@ namespace Facebook
             return Convert.ToBase64String(input).Replace("=", String.Empty).Replace('+', '-').Replace('/', '_');
         }
 
+#if !SILVERLIGHT
         internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
         {
             Contract.Requires(data != null);
@@ -185,5 +186,7 @@ namespace Facebook
             // return new FacebookSignedRequest(result);
             return result;
         }
+#endif
     }
+
 }
