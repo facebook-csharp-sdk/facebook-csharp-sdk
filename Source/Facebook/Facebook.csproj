@@ -125,6 +125,7 @@
     <Compile Include="FacebookConfigurationSection.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthException.cs" />
+    <Compile Include="FacebookUtils.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
