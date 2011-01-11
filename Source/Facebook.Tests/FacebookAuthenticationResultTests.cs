@@ -31,7 +31,7 @@ namespace Facebook.Tests
 
             var result = FacebookAuthenticationResult.Parse(url);
 
-            var expiresIn = DateTimeConvertor.ToUnixTime(result.Expires);
+            var expiresIn = FacebookUtils.ToUnixTime(result.Expires);
             Assert.Equal(0, expiresIn);
         }
 

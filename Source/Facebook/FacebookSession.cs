@@ -166,7 +166,7 @@ namespace Facebook
             {
                 Contract.Requires(value >= FacebookUtils.Epoch);
 
-                this.dictionary["expires"] = DateTimeConvertor.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
+                this.dictionary["expires"] = FacebookUtils.ToUnixTime(value).ToString(CultureInfo.InvariantCulture);
             }
         }
 

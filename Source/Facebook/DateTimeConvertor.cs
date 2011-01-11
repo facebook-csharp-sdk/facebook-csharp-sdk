@@ -17,15 +17,6 @@ namespace Facebook
     /// </summary>
     public static class DateTimeConvertor
     {
-        /// <summary>
-        /// Converts a DateTimeOffset object to unix time.
-        /// </summary>
-        /// <param name="dateTime">The date time.</param>
-        /// <returns>The unix date time.</returns>
-        public static double ToUnixTime(this DateTimeOffset dateTime)
-        {
-            Contract.Requires(dateTime >= FacebookUtils.Epoch);
-            return (double)(dateTime.ToUniversalTime() - FacebookUtils.Epoch).TotalSeconds;
-        }
+        
     }
 }

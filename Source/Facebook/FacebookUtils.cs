@@ -60,6 +60,17 @@ namespace Facebook
             return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
+        /// <summary>
+        /// Converts a DateTimeOffset object to unix time.
+        /// </summary>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns>The unix date time.</returns>
+        public static double ToUnixTime(DateTimeOffset dateTime)
+        {
+            Contract.Requires(dateTime >= Epoch);
+            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+        }
+
         #endregion
 
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)
