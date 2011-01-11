@@ -860,7 +860,7 @@ namespace Facebook
 
             if (httpMethod == HttpMethod.Get)
             {
-                queryString = parameters.ToJsonQueryString();
+                queryString = FacebookUtils.ToJsonQueryString(parameters);
             }
             else
             {
@@ -876,7 +876,7 @@ namespace Facebook
                 }
                 else
                 {
-                    postData = Encoding.UTF8.GetBytes(parameters.ToJsonQueryString());
+                    postData = Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters));
                 }
             }
 

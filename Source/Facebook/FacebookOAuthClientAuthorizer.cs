@@ -65,7 +65,7 @@ namespace Facebook
                 throw new ArgumentNullException("redirect_uri required.");
             }
 
-            uriBuilder.Query = mergedParameters.ToJsonQueryString();
+            uriBuilder.Query = FacebookUtils.ToJsonQueryString(mergedParameters);
 
             return uriBuilder.Uri;
         }
@@ -178,7 +178,7 @@ namespace Facebook
                 throw new Exception("RedirectUri requried");
             }
 
-            var queryString = mergedParameters.ToJsonQueryString();
+            var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
 
             var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token");
             uriBuilder.Query = queryString;
@@ -275,7 +275,7 @@ namespace Facebook
                 throw new Exception("RedirectUri requried");
             }
 
-            var queryString = mergedParameters.ToJsonQueryString();
+            var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
 
             var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token");
             uriBuilder.Query = queryString;

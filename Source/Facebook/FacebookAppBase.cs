@@ -1236,7 +1236,7 @@ namespace Facebook
             }
             if (parameters != null)
             {
-                uri.Query = parameters.ToJsonQueryString();
+                uri.Query = FacebookUtils.ToJsonQueryString(parameters);
             }
             return uri.Uri;
         }

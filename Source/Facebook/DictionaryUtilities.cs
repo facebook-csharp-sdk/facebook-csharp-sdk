@@ -27,66 +27,13 @@ namespace Facebook
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <returns>A Json formatted querystring.</returns>
-        internal static string ToJsonQueryString(this IDictionary<string, object> dictionary)
-        {
-            Contract.Requires(dictionary != null);
-            Contract.Ensures(Contract.Result<string>() != null);
-            Contract.EndContractBlock();
-
-            StringBuilder sb = new StringBuilder();
-            bool isFirst = true;
-            foreach (var key in dictionary.Keys)
-            {
-                if (isFirst)
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    sb.Append("&");
-                }
-
-                if (dictionary[key] != null)
-                {
-                    // Format Object As Json And Remove leading and trailing perenthesis
-                    string jsonValue = JsonSerializer.SerializeObject(dictionary[key]);
-                    if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
-                    {
-                        jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);
-                    }
-
-                    if (jsonValue.EndsWith("\"", StringComparison.Ordinal))
-                    {
-                        jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
-                    }
-
-                    if (!String.IsNullOrEmpty(jsonValue))
-                    {
-                        var encodedValue = UrlEncoder.EscapeUriString(jsonValue);
-                        sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
-                    }
-                }
-                else
-                {
-                    sb.Append(key);
-                }
-            }
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Converts the dictionary to a json formatted query string.
-        /// </summary>
-        /// <param name="dictionary">The dictionary.</param>
-        /// <returns>A Json formatted querystring.</returns>
         internal static string ToJsonQueryString(this IDictionary<string, string> dictionary)
         {
             Contract.Requires(dictionary != null);
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
-            return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
+            return FacebookUtils.ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
         }
 
 #if !SILVERLIGHT
