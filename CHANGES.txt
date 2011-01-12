@@ -5,7 +5,7 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-v5.0
+vNext
 =========================================================================
 1. added new 'FacebookUtils' class which contains all the helper methods.
 
@@ -16,7 +16,7 @@ v5.0
 		b. public static DateTime FromUnixTime(double unixTime);
 		c. public static DateTime FromUnixTime(string unixTime);
 		d. public static double ToUnixTime(DateTime dateTime);
-		e.  public static double ToUnixTime(DateTimeOffset dateTime);
+		e. public static double ToUnixTime(DateTimeOffset dateTime);
 
 	(internal/private methods visible to SDK developers)
 		
@@ -47,9 +47,19 @@ v5.0
 		   (for non-sliverlight builds only)
 		b. internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv);
 		   (for non-sliverlight builds only)
-		
-	  Signed Request Parser helper methods:
-		a. internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge, double currentTime);
-		   (for non-sliverlight builds only. Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal)
-		b. internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge);
-		   (for non-sliverlight builds only. Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal)
+
+2. FacebookSignedRequest.Parse
+	(for non-sliverlight builds only)
+	This method is now capable of parsing both old and new encrypted signed requests.
+	http://developers.facebook.com/docs/authentication/canvas
+	http://developers.facebook.com/docs/authentication/canvas/encryption_proposal
+
+	There are overload for the Parse method.
+	For the old one this overload would most likely be used.
+		public static FacebookSignedRequest Parse(string secret, string signedRequestValue);
+
+	For the new one this overload has to be used.
+		public static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge);
+
+	There is also a third overload which is marked as internal and used for unit testing only.
+		internal static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge, double currentTime);
