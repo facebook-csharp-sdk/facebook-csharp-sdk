@@ -218,6 +218,60 @@ namespace Facebook
 
         #endregion
 
+        #region Html Decoding and Encoding
+
+        internal static string HtmlDecode(string input)
+        {
+#if WINDOWS_PHONE
+            return System.Net.HttpUtility.HtmlDecode(input);
+#elif SILVERLIGHT
+            return System.Windows.Browser.HttpUtility.HtmlDecode(input);
+#else
+            return External.HttpUtility.HtmlDecode(input);
+#endif
+        }
+
+        internal static string HtmlEncode(string input)
+        {
+#if WINDOWS_PHONE
+            return System.Net.HttpUtility.HtmlEncode(input);
+#elif SILVERLIGHT
+            return System.Windows.Browser.HttpUtility.HtmlEncode(input);
+#else
+            return External.HttpUtility.HtmlEncode(input);
+#endif
+        }
+
+        #endregion
+
+        #region Url Decoding and Encoding
+
+        internal static string UrlDecode(string input)
+        {
+#if WINDOWS_PHONE
+            return System.Net.HttpUtility.UrlDecode(input);
+#elif SILVERLIGHT
+            return System.Windows.Browser.HttpUtility.UrlDecode(input);
+#else
+            return External.HttpUtility.UrlDecode(input);
+#endif
+        }
+
+        internal static string UrlEncode(string input)
+        {
+#if WINDOWS_PHONE
+            return System.Net.HttpUtility.UrlEncode(input);
+#elif SILVERLIGHT
+            return System.Windows.Browser.HttpUtility.UrlEncode(input);
+#else
+            return External.HttpUtility.UrlEncode(input);
+#endif
+        }
+
+        #endregion
+
+        #region Base64 Url Decoding and Encoding
+
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)
         {
             Contract.Requires(!string.IsNullOrEmpty(base64UrlSafeString));
@@ -236,7 +290,12 @@ namespace Facebook
             return Convert.ToBase64String(input).Replace("=", String.Empty).Replace('+', '-').Replace('/', '_');
         }
 
+        #endregion
+
 #if !SILVERLIGHT
+
+        #region Encryption Decryption Helper methods
+        
         internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
         {
             Contract.Requires(data != null);
@@ -293,6 +352,10 @@ namespace Facebook
 
             return result;
         }
+
+        #endregion
+
+        #region Signed Request Parser
 
         internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge)
         {
@@ -383,6 +446,9 @@ namespace Facebook
             // return new FacebookSignedRequest(result);
             return result;
         }
+
+        #endregion
+
 #endif
     }
 

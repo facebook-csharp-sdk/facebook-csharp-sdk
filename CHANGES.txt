@@ -1,26 +1,55 @@
 FACEBOOK C# SDK CHANGE LIST
 ---------------------------
 
+SDK consumers : developers using this SDK.
+SDK developers: developers writing this SDK.
+
 =========================================================================
 v5.0
 =========================================================================
 1. added new 'FacebookUtils' class which contains all the helper methods.
 
+	(public methods visible to SDK consumers)
+
+	  Date and Time helper methods:
+		a. public static DateTime Epoch { get; }
+		b. public static DateTime FromUnixTime(double unixTime);
+		c. public static DateTime FromUnixTime(string unixTime);
+		d. public static double ToUnixTime(DateTime dateTime);
+		e.  public static double ToUnixTime(DateTimeOffset dateTime);
+
+	(internal/private methods visible to SDK developers)
+		
+	  Dictionary helper methods:
+		a. internal static IDictionary<string, object> Merge(IDictionary<string, object> first, IDictionary<string, object> second);
+		b. internal static string ToJsonQueryString(IDictionary<string, object> dictionary);
+		c. internal static string ToJsonQueryString(IDictionary<string, string> dictionary);
+		d. internal static string ToJsonQueryString(System.Collections.Specialized.NameValueCollection collection); 
+		   (for non-sliverlight builds only)
+	  
+	  String helper methods:
+		a. internal static string ConvertToString(HttpMethod httpMethod);
+
+	  Html Encoding/Decoding helper methods:
+		a. internal static string HtmlDecode(string input);
+		b. internal static string HtmlEncode(string input);
+
+	  Url Encoding/Decoding helper methods:
+		a. internal static string UrlDecode(string input);
+		b. internal static string UrlEncode(string input);
+
+	  Base64 Url Encoding/Decoding helper methods:
 		a. internal static byte[] Base64UrlDecode(string base64UrlSafeString);
 		b. internal static string Base64UrlEncode(byte[] input);
-		c. internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key);
-		d. internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv);
-		e. internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge);
-		   (Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal)
-		f. internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge, double currentTime);
-		   (Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal)
-		g. public static DateTime Epoch { get; }
-		h. public static DateTime FromUnixTime(double unixTime);
-		i. public static DateTime FromUnixTime(string unixTime);
-		j. public static double ToUnixTime(DateTime dateTime);
-		k. public static double ToUnixTime(DateTimeOffset dateTime);
-		l. internal static IDictionary<string, object> Merge(IDictionary<string, object> first, IDictionary<string, object> second);
-		m. internal static string ToJsonQueryString(IDictionary<string, object> dictionary);
-		n. internal static string ToJsonQueryString(IDictionary<string, string> dictionary);
-		o. internal static string ToJsonQueryString(System.Collections.Specialized.NameValueCollection collection);
-		p. internal static string ConvertToString(HttpMethod httpMethod);
+
+	  Encryption/Decryption helper methods:
+		a. internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key);
+		   (for non-sliverlight builds only)
+		b. internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv);
+		   (for non-sliverlight builds only)
+		
+	  Signed Request Parser helper methods:
+		a. internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge, double currentTime);
+		   (for non-sliverlight builds only. Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal)
+		b. internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge);
+		   (for non-sliverlight builds only. Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal)
