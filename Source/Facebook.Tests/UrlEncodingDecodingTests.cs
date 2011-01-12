@@ -35,5 +35,25 @@ namespace Facebook.Tests
 
             Assert.Equal(expected, result);
         }
+
+        [InlineData("%7c", "|")]
+        [InlineData("3702%7c2", "3702|2")]
+        [Theory(DisplayName = "UrlEncode: Given a string with piple line symbol Then it should encode piple as %7C")]
+        public void UrlEncode_GivenAStringWithPipleLineSymbol_ThenItShouldEncodePipleAsPercent7C(string expectedUrl, string strToEncode)
+        {
+            var result = FacebookUtils.UrlEncode(strToEncode);
+
+            Assert.Equal(expectedUrl, result);
+        }
+
+        [InlineData("124983200973703%7C2.xZYnCri_odnkuj3xXUNDOA__.3600.1295836200-100001327642026%7CrPfJfZ38FcwV-8HzRGQdxio9D7B", "124983200973703|2.xZYnCri_odnkuj3xXUNDOA__.3600.1295836200-100001327642026|rPfJfZ38FcwV-8HzRGQdxio9D7B")]
+        [InlineData("135972300873702%7C3.cxZrSyyPVHjISXQCB8MQ_g__.3600.1294833600-100001327642025%7Cjbo3zk3aHYVJiLWnKArjERsAU0c", "135972300873702|3.cxZrSyyPVHjISXQCB8MQ_g__.3600.1294833600-100001327642025|jbo3zk3aHYVJiLWnKArjERsAU0c")]
+        [Theory(DisplayName = "UrlDecode: Given a url encoded facebook access token Then it should decode correctly")]
+        public void UrlDecode_GivenAUrlEncodedFacebookAccessToken_ThenItShouldDecodeCorrectly(string encodedAccessToken, string expectedAccessToken)
+        {
+            var result = FacebookUtils.UrlDecode(encodedAccessToken);
+
+            Assert.Equal(expectedAccessToken, result);
+        }
     }
 }
