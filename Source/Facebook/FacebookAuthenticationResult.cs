@@ -19,14 +19,6 @@ namespace Facebook
         private readonly string errorReason;
         private readonly string errorDescription;
 
-        private FacebookAuthenticationResult(string accessToken, DateTime expires, string errorReason, string errorDescription)
-        {
-            this.accessToken = accessToken;
-            this.expires = expires;
-            this.errorReason = errorReason;
-            this.errorDescription = errorDescription;
-        }
-
         private FacebookAuthenticationResult(IDictionary<string, object> parameters)
         {
             // decode access token first
@@ -112,6 +104,7 @@ namespace Facebook
             {
                 return TryParse(new Uri(uriString), settings, out result);
             }
+
             result = null;
             return false;
         }
@@ -130,6 +123,7 @@ namespace Facebook
         private static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings, bool throws)
         {
             var parameters = new Dictionary<string, object>();
+
             try
             {
                 if (uri.AbsoluteUri.StartsWith("http://www.facebook.com/connect/login_success.html"))
@@ -157,6 +151,7 @@ namespace Facebook
                 {
                     throw;
                 }
+
                 return null;
             }
 
@@ -164,6 +159,7 @@ namespace Facebook
             {
                 throw new InvalidOperationException("Could not parse authentication url.");
             }
+
             return null;
         }
 
