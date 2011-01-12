@@ -8,9 +8,10 @@
     <language>en-US</language>
 	<licenseUrl>http://facebooksdk.codeplex.com/license</licenseUrl>
 	<projectUrl>http://facebooksdk.codeplex.com</projectUrl>
+	<iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=facebooksdk&DownloadId=170794&Build=17450</iconUrl>
 	<tags>facebook</tags>
 	<dependencies>
-		<dependency id="Newtonsoft.Json" version="4.0.0" />
+		<dependency id="Newtonsoft.Json" version="4.0.1" />
 	</dependencies> 
   </metadata>
 </package>
