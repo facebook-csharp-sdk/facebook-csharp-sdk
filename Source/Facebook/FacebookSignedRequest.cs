@@ -24,23 +24,42 @@ namespace Facebook
 
         public FacebookSignedRequest(IDictionary<string, object> value)
         {
-            this.UserId = value.ContainsKey("user_id") ? (string)value["user_id"] : null;
-            this.AccessToken = value.ContainsKey("oauth_token") ? (string)value["oauth_token"] : null;
-            this.Expires = value.ContainsKey("expires") ? FacebookUtils.FromUnixTime(Convert.ToInt64(value["expires"])) : DateTime.MinValue;
-            this.IssuedAt = value.ContainsKey("issued_at") ? FacebookUtils.FromUnixTime(Convert.ToInt64(value["issued_at"])) : DateTime.MinValue;
-            this.ProfileId = value.ContainsKey("profile_id") ? (string)value["profile_id"] : null;
+            // common
             this.Algorithm = value.ContainsKey("algorithm") ? (string)value["algorithm"] : null;
+            this.IssuedAt = value.ContainsKey("issued_at") ? FacebookUtils.FromUnixTime(Convert.ToInt64(value["issued_at"])) : DateTime.MinValue;
 
-            if (value.ContainsKey("user"))
+            if (value.ContainsKey("payload"))
             {
-                var user = (IDictionary<string, object>)value["user"];
-                this.User = new FacebookSignedRequestUser
-                {
-                    Country = value.ContainsKey("country") ? (string)user["country"] : null,
-                    Locale = value.ContainsKey("locale") ? (string)user["locale"] : null,
-                };
-            }
+                // new signed_request: http://developers.facebook.com/docs/authentication/canvas/encryption_proposal
+                var payload = (IDictionary<string, object>)value["payload"];
 
+                this.AccessToken = payload.ContainsKey("access_token") ? (string)payload["access_token"] : null;
+                this.Expires = payload.ContainsKey("expires_in")
+                                   ? FacebookUtils.FromUnixTime(Convert.ToInt64(payload["expires_in"]))
+                                   : DateTime.MinValue;
+
+                this.UserId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
+            }
+            else
+            {
+                // old signed_request: http://developers.facebook.com/docs/authentication/canvas
+                this.UserId = value.ContainsKey("user_id") ? (string)value["user_id"] : null;
+                this.AccessToken = value.ContainsKey("oauth_token") ? (string)value["oauth_token"] : null;
+                this.Expires = value.ContainsKey("expires")
+                                   ? FacebookUtils.FromUnixTime(Convert.ToInt64(value["expires"]))
+                                   : DateTime.MinValue;
+                this.ProfileId = value.ContainsKey("profile_id") ? (string)value["profile_id"] : null;
+
+                if (value.ContainsKey("user"))
+                {
+                    var user = (IDictionary<string, object>)value["user"];
+                    this.User = new FacebookSignedRequestUser
+                                    {
+                                        Country = value.ContainsKey("country") ? (string)user["country"] : null,
+                                        Locale = value.ContainsKey("locale") ? (string)user["locale"] : null,
+                                    };
+                }
+            }
         }
 
         /// <summary>

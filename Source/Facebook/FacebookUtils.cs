@@ -295,7 +295,7 @@ namespace Facebook
 #if !SILVERLIGHT
 
         #region Encryption Decryption Helper methods
-        
+
         internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
         {
             Contract.Requires(data != null);
@@ -357,7 +357,7 @@ namespace Facebook
 
         #region Signed Request Parser
 
-        internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge)
+        internal static FacebookSignedRequest ParseSignedRequest(string signedRequestValue, string secret, int maxAge)
         {
             Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
             Contract.Requires(!String.IsNullOrEmpty(secret));
@@ -368,9 +368,10 @@ namespace Facebook
         }
 
         /// <remarks>
-        /// Based on http://developers.facebook.com/docs/authentication/canvas/encryption_proposal
+        /// Supports both http://developers.facebook.com/docs/authentication/canvas/encryption_proposal
+        /// and http://developers.facebook.com/docs/authentication/canvas
         /// </remarks>
-        internal static object ParseSignedRequest(string signedRequestValue, string secret, int maxAge, double currentTime)
+        internal static FacebookSignedRequest ParseSignedRequest(string signedRequestValue, string secret, int maxAge, double currentTime)
         {
             Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
             Contract.Requires(!String.IsNullOrEmpty(secret));
@@ -400,7 +401,7 @@ namespace Facebook
                 throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
             }
 
-            var envelope = (Newtonsoft.Json.Linq.JObject)JsonSerializer.DeserializeObject(Encoding.UTF8.GetString(Base64UrlDecode(encodedEnvelope)));
+            var envelope = (IDictionary<string, object>)JsonSerializer.DeserializeObject(Encoding.UTF8.GetString(Base64UrlDecode(encodedEnvelope)));
 
             string algorithm = (string)envelope["algorithm"];
 
@@ -408,13 +409,6 @@ namespace Facebook
             {
                 // TODO: test
                 throw new InvalidOperationException("Invalid signed request. (Unsupported algorithm)");
-            }
-
-            long issuedAt = (long)envelope["issued_at"];
-
-            if (issuedAt < currentTime)
-            {
-                throw new InvalidOperationException("Invalid signed request. (Too old.)");
             }
 
             byte[] key = Encoding.UTF8.GetBytes(secret);
@@ -425,26 +419,38 @@ namespace Facebook
                 throw new InvalidOperationException("Invalid signed request. (Invalid signature.)");
             }
 
-            // for requests that are signed, but not encrypted, we"re done
+            IDictionary<string, object> result;
+
             if (algorithm.Equals("HMAC-SHA256"))
             {
-                return envelope;
+                // for requests that are signed, but not encrypted, we're done
+                result = envelope;
+            }
+            else
+            {
+                result = new Dictionary<string, object>();
+
+                result["algorithm"] = algorithm;
+
+                long issuedAt = (long)envelope["issued_at"];
+
+                if (issuedAt < currentTime)
+                {
+                    throw new InvalidOperationException("Invalid signed request. (Too old.)");
+                }
+
+                result["issued_at"] = issuedAt;
+
+                // otherwise, decrypt the payload
+                byte[] iv = Base64UrlDecode((string)envelope["iv"]);
+                byte[] rawCipherText = Base64UrlDecode((string)envelope["payload"]);
+                var plainText = DecryptAes256CBCNoPadding(rawCipherText, key, iv);
+
+                var payload = (IDictionary<string, object>)JsonSerializer.DeserializeObject(plainText);
+                result["payload"] = payload;
             }
 
-            // otherwise, decrypt the payload
-            byte[] iv = Base64UrlDecode((string)envelope["iv"]);
-            byte[] rawCipherText = Base64UrlDecode((string)envelope["payload"]);
-            var plainText = DecryptAes256CBCNoPadding(rawCipherText, key, iv);
-
-            var payload = (Newtonsoft.Json.Linq.JObject)JsonSerializer.DeserializeObject(plainText);
-
-            var result = new Newtonsoft.Json.Linq.JObject();
-            result["algorithm"] = algorithm;
-            result["issued_at"] = issuedAt;
-            result["payload"] = payload;
-
-            // return new FacebookSignedRequest(result);
-            return result;
+            return new FacebookSignedRequest(result);
         }
 
         #endregion
