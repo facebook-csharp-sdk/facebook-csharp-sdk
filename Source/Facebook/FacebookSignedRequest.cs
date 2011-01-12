@@ -12,8 +12,7 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Globalization;
-    using Newtonsoft.Json.Linq;
+    using System.Linq;
     using System.Text;
 
     /// <summary>
@@ -101,65 +100,117 @@ namespace Facebook
         public FacebookSignedRequestUser User { get; set; }
 
         /// <summary>
-        /// Parses the signed request string.
+        /// Parse the signed request string.
         /// </summary>
-        /// <param name="value">The encoded signed request value.</param>
-        /// <returns>The valid signed request.</returns>
-        public static FacebookSignedRequest Parse(string appSecret, string value)
+        /// <param name="signedRequestValue">
+        /// The encoded signed request value.
+        /// </param>
+        /// <param name="secret">
+        /// The application secret.
+        /// </param>
+        /// <param name="maxAge">
+        /// The max age.
+        /// </param>
+        /// <param name="currentTime">
+        /// The current time (in unix time format).
+        /// </param>
+        /// <returns>
+        /// The valid signed request.
+        /// </returns>
+        /// <remarks>
+        /// Supports both http://developers.facebook.com/docs/authentication/canvas/encryption_proposal
+        /// and http://developers.facebook.com/docs/authentication/canvas
+        /// </remarks>
+        public static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge, double currentTime)
         {
-            Contract.Requires(!String.IsNullOrEmpty(value));
-            Contract.Requires(value.Contains("."), Properties.Resources.InvalidSignedRequest);
+            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
+            Contract.Requires(!String.IsNullOrEmpty(secret));
+            Contract.Requires(maxAge >= 0);
+            Contract.Requires(currentTime >= 0);
+            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
 
-            string[] parts = value.Split('.');
-            var encodedValue = parts[0];
-            if (String.IsNullOrEmpty(encodedValue))
+            // NOTE: currentTime added to parameters to make it unit testable.
+
+            string[] split = signedRequestValue.Split('.');
+            if (split.Length != 2)
+            {
+                // need to have exactly 2 parts
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+            }
+
+            string encodedSignature = split[0];
+            string encodedEnvelope = split[1];
+
+            if (string.IsNullOrEmpty(encodedSignature))
             {
                 throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
             }
 
-            var sig = Base64UrlDecode(encodedValue);
-            var payload = parts[1];
-
-            using (var cryto = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(appSecret)))
+            if (string.IsNullOrEmpty(encodedEnvelope))
             {
-                var hash = Convert.ToBase64String(cryto.ComputeHash(Encoding.UTF8.GetBytes(payload)));
-                var hashDecoded = Base64UrlDecode(hash);
-                if (hashDecoded != sig)
+                throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+            }
+
+            var envelope = (IDictionary<string, object>)JsonSerializer.DeserializeObject(Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(encodedEnvelope)));
+
+            string algorithm = (string)envelope["algorithm"];
+
+            if (!algorithm.Equals("AES-256-CBC HMAC-SHA256") && !algorithm.Equals("HMAC-SHA256"))
+            {
+                // TODO: test
+                throw new InvalidOperationException("Invalid signed request. (Unsupported algorithm)");
+            }
+
+            byte[] key = Encoding.UTF8.GetBytes(secret);
+            byte[] digest = FacebookUtils.ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
+
+            if (!digest.SequenceEqual(FacebookUtils.Base64UrlDecode(encodedSignature)))
+            {
+                throw new InvalidOperationException("Invalid signed request. (Invalid signature.)");
+            }
+
+            IDictionary<string, object> result;
+
+            if (algorithm.Equals("HMAC-SHA256"))
+            {
+                // for requests that are signed, but not encrypted, we're done
+                result = envelope;
+            }
+            else
+            {
+                result = new Dictionary<string, object>();
+
+                result["algorithm"] = algorithm;
+
+                long issuedAt = (long)envelope["issued_at"];
+
+                if (issuedAt < currentTime)
                 {
-                    return null;
+                    throw new InvalidOperationException("Invalid signed request. (Too old.)");
                 }
+
+                result["issued_at"] = issuedAt;
+
+                // otherwise, decrypt the payload
+                byte[] iv = FacebookUtils.Base64UrlDecode((string)envelope["iv"]);
+                byte[] rawCipherText = FacebookUtils.Base64UrlDecode((string)envelope["payload"]);
+                var plainText = FacebookUtils.DecryptAes256CBCNoPadding(rawCipherText, key, iv);
+
+                var payload = (IDictionary<string, object>)JsonSerializer.DeserializeObject(plainText);
+                result["payload"] = payload;
             }
 
-            var payloadBase64 = Base64UrlDecode(payload);
-            var payloadBytes = Convert.FromBase64String(payloadBase64);
-            var payloadJson = Encoding.UTF8.GetString(payloadBytes);
-            var data = JsonSerializer.DeserializeObject(payloadJson) as IDictionary<string, object>;
-            if (data != null)
-            {
-                return new FacebookSignedRequest(data);
-            }
-
-            return null;
+            return new FacebookSignedRequest(result);
         }
 
-        /// <summary>
-        /// Converts the base 64 url encoded string to standard base 64 encoding.
-        /// </summary>
-        /// <param name="encodedValue">The encoded value.</param>
-        /// <returns>The base 64 string.</returns>
-        private static string Base64UrlDecode(string encodedValue)
+        public static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge)
         {
-            Contract.Requires(!String.IsNullOrEmpty(encodedValue));
+            return Parse(secret, signedRequestValue, maxAge, FacebookUtils.ToUnixTime(DateTime.UtcNow));
+        }
 
-            encodedValue = encodedValue.Replace('+', '-').Replace('/', '_').Trim();
-            int pad = encodedValue.Length % 4;
-            if (pad > 0)
-            {
-                pad = 4 - pad;
-            }
-
-            encodedValue = encodedValue.PadRight(encodedValue.Length + pad, '=');
-            return encodedValue;
+        public static FacebookSignedRequest Parse(string secret, string signedRequestValue)
+        {
+            return Parse(secret, signedRequestValue, 0);
         }
 
     }

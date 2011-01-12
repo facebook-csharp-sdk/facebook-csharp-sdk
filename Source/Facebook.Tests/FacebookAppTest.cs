@@ -42,16 +42,6 @@
             Assert.Equal(127231, actual.Length);
         }
 
-        [Fact(DisplayName = "ParseSignedRequest test")]
-        public void ParseSignedRequest_Test()
-        {
-            var signed_request = "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0";
-            var appSecret = "543690fae0cd186965412ac4a49548b5";
-            var signedRequest = FacebookSignedRequest.Parse(appSecret, signed_request);
-
-            Assert.Equal("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", signedRequest.AccessToken);
-        }
-
         [Fact(DisplayName = "ParseUrlParameters: Given a url host is facebook graph without querystring and parameter is empty Then return path does not start with forward slash")]
         public void ParseUrlParameters_GivenAUrlHostIsFacebookGraphWithoutQuerystringAndParameterIsEmpty_ThenReturnPathDoesNotStartWithForwardSlash()
         {
