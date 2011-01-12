@@ -121,7 +121,7 @@ namespace Facebook
         /// Supports both http://developers.facebook.com/docs/authentication/canvas/encryption_proposal
         /// and http://developers.facebook.com/docs/authentication/canvas
         /// </remarks>
-        public static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge, double currentTime)
+        internal static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge, double currentTime)
         {
             Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
             Contract.Requires(!String.IsNullOrEmpty(secret));
