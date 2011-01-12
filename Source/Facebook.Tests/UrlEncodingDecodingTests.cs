@@ -2,6 +2,7 @@
 namespace Facebook.Tests
 {
     using Xunit;
+    using Xunit.Extensions;
 
     public class UrlEncodingDecodingTests
     {
@@ -23,6 +24,16 @@ namespace Facebook.Tests
             var result = FacebookUtils.UrlEncode(urlPart);
 
             Assert.Equal("hello+world", result);
+        }
+
+        [InlineData("%7C", "|")]
+        [InlineData("3702%7C2", "3702|2")]
+        [Theory(DisplayName = "UrlDecode: Given a url with pipe line encoded as %7C Then it should be converted to pipe line symbol |")]
+        public void UrlDecode_GivenAUrlWithPipeLineEncodedAsPercent7C_ThenItShouldBeConvertedToPipeLineSymbol(string encodedUrl, string expected)
+        {
+            var result = FacebookUtils.UrlDecode(encodedUrl);
+
+            Assert.Equal(expected, result);
         }
     }
 }

@@ -43,13 +43,12 @@ namespace Facebook
 
             if (parameters.ContainsKey("error_reason"))
             {
-                this.errorReason = Uri.UnescapeDataString((string)parameters["error_reason"]);
+                this.errorReason = FacebookUtils.UrlDecode((string)parameters["error_reason"]);
             }
 
             if (parameters.ContainsKey("error_description"))
             {
-                this.errorDescription = Uri.UnescapeDataString((string)parameters["error_description"]);
-                this.errorDescription = this.errorDescription.Replace('+', ' ');
+                this.errorDescription = FacebookUtils.UrlDecode((string)parameters["error_description"]);
             }
         }
 

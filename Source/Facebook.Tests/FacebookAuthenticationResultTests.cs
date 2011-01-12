@@ -64,5 +64,25 @@ namespace Facebook.Tests
 
             Assert.Equal("user_denied", result.ErrorReason);
         }
+
+        [Fact(DisplayName = "Parse: Given error_description as The+user+denied+your+request. Then the error description's + should be converted to white space.")]
+        public void Parse_GivenErrorDescriptionAsTheUserDeniedYourRequest_ThenTheErrorDescriptionShouldBeConvertedToWhiteSpace()
+        {
+            var url = "http://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.";
+
+            var result = FacebookAuthenticationResult.Parse(url);
+
+            Assert.Equal("The user denied your request.", result.ErrorDescription);
+        }
+
+        [Fact(DisplayName = "Parse: Given error_reason as user_denied Then the error reason should be the same")]
+        public void Parse_GivenErrorReasonAsUserDenied_ThenTheErrorReasonShouldBeTheSame()
+        {
+            var url = "http://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.";
+
+            var result = FacebookAuthenticationResult.Parse(url);
+
+            Assert.Equal("user_denied", result.ErrorReason);
+        }
     }
 }
