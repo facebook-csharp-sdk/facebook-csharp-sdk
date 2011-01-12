@@ -36,8 +36,8 @@ namespace Facebook
                 var user = (IDictionary<string, object>)value["user"];
                 this.User = new FacebookSignedRequestUser
                 {
-                    Country = value.ContainsKey("country") ? (string)user["country"] : null,
-                    Locale = value.ContainsKey("locale") ? (string)user["locale"] : null,
+                    Country = user.ContainsKey("country") ? (string)user["country"] : null,
+                    Locale = user.ContainsKey("locale") ? (string)user["locale"] : null,
                 };
             }
 
