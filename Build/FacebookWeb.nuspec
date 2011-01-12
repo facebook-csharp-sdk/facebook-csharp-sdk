@@ -7,10 +7,10 @@
     <description>The Facebook C# SDK web component.</description>
     <language>en-US</language>
 	<licenseUrl>http://facebooksdk.codeplex.com/license</licenseUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
 	<projectUrl>http://facebooksdk.codeplex.com</projectUrl>
+	<tags>facebook</tags>
 	<dependencies>
-		<dependency id="Newtonsoft.Json" version="3.5.8" />
+		<dependency id="Newtonsoft.Json" version="4.0.0" />
 		<dependency id="Facebook" version="{version}" />
 	</dependencies> 
   </metadata>

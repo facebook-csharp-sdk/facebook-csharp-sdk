@@ -132,18 +132,21 @@
     <Compile Include="FacebookOAuthClientAuthorizer.cs" />
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookUtils.cs" />
+    <Compile Include="FacebookSession.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />
-    <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="ExceptionFactory.cs" />
+    <Compile Include="JsonArray.cs" />
+    <Compile Include="JsonObject.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="IFacebookSettings.cs" />

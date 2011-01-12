@@ -40,28 +40,6 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [cookie support].
-        /// </summary>
-        /// <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
-        [ConfigurationProperty("cookieSupport", IsRequired = false, DefaultValue = false)]
-        public bool CookieSupport
-        {
-            get { return (bool)this["cookieSupport"]; }
-            set { this["cookieSupport"] = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the base domain.
-        /// </summary>
-        /// <value>The base domain.</value>
-        [ConfigurationProperty("baseDomain", IsRequired = false)]
-        public string BaseDomain
-        {
-            get { return (string)this["baseDomain"]; }
-            set { this["baseDomain"] = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the max retries.
         /// </summary>
         /// <value>The max retries.</value>

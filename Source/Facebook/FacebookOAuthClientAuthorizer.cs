@@ -200,12 +200,12 @@ namespace Facebook
 
                 response.Close();
 
-                var returnParameter = new Dictionary<string, object>();
+                var returnParameter = new JsonObject();
                 FacebookApp.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
 
                 // access_token=string&expires=long or access_token=string
                 // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
-                var jsonObject = new JObject();
+                var jsonObject = new Dictionary<string, object>();
                 jsonObject["access_token"] = (string)returnParameter["access_token"];
 
                 // check if expires exist coz for offline_access it is not present.
@@ -307,7 +307,7 @@ namespace Facebook
 
                 // access_token=string&expires=long or access_token=string
                 // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
-                var jsonObject = new JObject();
+                var jsonObject = new JsonObject();
                 jsonObject["access_token"] = (string)returnParameter["access_token"];
 
                 // check if expires exist coz for offline_access it is not present.

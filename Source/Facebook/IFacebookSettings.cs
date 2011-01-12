@@ -22,22 +22,11 @@ namespace Facebook
         /// <value>The App secret.</value>
         [Obsolete("User AppSecret. Facebook renamed this property.")]
         string AppSecret { get; set; }
-
         /// <summary>
         /// Gets or sets the app id.
         /// </summary>
         /// <value>The app id.</value>
         string AppId { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether cookies are supported.
-        /// </summary>
-        /// <value><c>true</c> if cookies are supported; otherwise, <c>false</c>.</value>
-        bool CookieSupport { get; set; }
-        /// <summary>
-        /// Gets or sets the base domain.
-        /// </summary>
-        /// <value>The base domain.</value>
-        string BaseDomain { get; set; }
         /// <summary>
         /// Gets or sets the max retries.
         /// </summary>

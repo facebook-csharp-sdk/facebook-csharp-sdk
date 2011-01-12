@@ -58,18 +58,6 @@ namespace Facebook
         public string AppId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [cookie support].
-        /// </summary>
-        /// <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
-        public bool CookieSupport { get; set; }
-
-        /// <summary>
-        /// Gets or sets the base domain.
-        /// </summary>
-        /// <value>The base domain.</value>
-        public string BaseDomain { get; set; }
-
-        /// <summary>
         /// Gets or sets the max retries.
         /// </summary>
         /// <value>The max retries.</value>
