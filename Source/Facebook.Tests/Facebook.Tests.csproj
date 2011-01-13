@@ -78,6 +78,7 @@
     <Compile Include="FacebookAuthenticationResultTests.cs" />
     <Compile Include="FacebookOAuthClientAuthorizerTests.cs" />
     <Compile Include="GetApiUrlTests.cs" />
+    <Compile Include="StringUtilsTest.cs" />
     <Compile Include="UrlEncodingDecodingTests.cs" />
     <Compile Include="ParseSignedRequestTests.cs" />
     <Compile Include="ParseUserIdFromAcessTokenTests.cs" />
