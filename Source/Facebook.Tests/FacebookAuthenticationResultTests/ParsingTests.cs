@@ -1,8 +1,9 @@
-namespace Facebook.Tests
+namespace Facebook.FacebookAuthenticationResult.Tests
 {
+    using Facebook;
     using Xunit;
 
-    public class FacebookAuthenticationResultTests
+    public class ParsingTests
     {
         [Fact(DisplayName = "Parse: Given a url containing access_token and expires_in fragment The result is successful")]
         public void Parse_GivenAUrlContainingAccessTokenAndExpiresInFragment_TheResultIsSuccessful()
@@ -84,5 +85,16 @@ namespace Facebook.Tests
 
             Assert.Equal("user_denied", result.ErrorReason);
         }
+
+        [Fact(DisplayName = "Parse: Given code Then the code should be the same")]
+        public void Parse_GivenCode_ThenTheCodeShouldBeTheSame()
+        {
+            var url = "http://www.facebook.com/connect/login_success.html?code=2.XeyH7lWz33itx1R86_uBeg__.3600.1294930800-100001327642026|t8SsfSR2XI6yhBAkhX95J7p9hJ0";
+
+            var result = FacebookAuthenticationResult.Parse(url);
+
+            Assert.Equal("2.XeyH7lWz33itx1R86_uBeg__.3600.1294930800-100001327642026|t8SsfSR2XI6yhBAkhX95J7p9hJ0", result.Code);
+        }
+
     }
 }

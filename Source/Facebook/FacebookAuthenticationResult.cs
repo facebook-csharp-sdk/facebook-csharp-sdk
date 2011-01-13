@@ -11,6 +11,7 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     public sealed class FacebookAuthenticationResult
     {
@@ -18,7 +19,7 @@ namespace Facebook
         private readonly DateTime expires;
         private readonly string errorReason;
         private readonly string errorDescription;
-
+        private readonly string code;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAuthenticationResult"/> class.
@@ -29,8 +30,28 @@ namespace Facebook
         /// <remarks>
         /// The values of parameters should not be url encoded.
         /// </remarks>
-        private FacebookAuthenticationResult(IDictionary<string, object> parameters)
+        internal FacebookAuthenticationResult(IDictionary<string, object> parameters)
         {
+            Contract.Requires(parameters != null);
+
+            if (parameters.ContainsKey("error_reason"))
+            {
+                this.errorReason = parameters["error_reason"].ToString();
+
+                if (parameters.ContainsKey("error_description"))
+                {
+                    this.errorDescription = parameters["error_description"].ToString();
+                }
+
+                return;
+            }
+
+            if (parameters.ContainsKey("code"))
+            {
+                this.code = parameters["code"].ToString();
+                return;
+            }
+
             if (parameters.ContainsKey("access_token"))
             {
                 this.accessToken = parameters["access_token"].ToString();
@@ -40,16 +61,6 @@ namespace Facebook
             {
                 var expiresIn = Convert.ToInt64(parameters["expires_in"]);
                 this.expires = FacebookUtils.FromUnixTime(expiresIn);
-            }
-
-            if (parameters.ContainsKey("error_reason"))
-            {
-                this.errorReason = parameters["error_reason"].ToString();
-            }
-
-            if (parameters.ContainsKey("error_description"))
-            {
-                this.errorDescription = parameters["error_description"].ToString();
             }
         }
 
@@ -75,7 +86,16 @@ namespace Facebook
 
         public bool IsSuccess
         {
-            get { return string.IsNullOrEmpty(this.ErrorReason) && !string.IsNullOrEmpty(this.AccessToken); }
+            get
+            {
+                return string.IsNullOrEmpty(this.ErrorReason) &&
+                       (!string.IsNullOrEmpty(this.AccessToken) || !string.IsNullOrEmpty(this.Code));
+            }
+        }
+
+        public string Code
+        {
+            get { return this.code; }
         }
 
         public FacebookSession ToSession()
