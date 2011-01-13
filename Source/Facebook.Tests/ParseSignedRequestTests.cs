@@ -1,4 +1,4 @@
-namespace Facebook.Tests
+namespace Facebook
 {
     using System;
     using Xunit;

@@ -1,10 +1,10 @@
-﻿namespace Facebook
+﻿namespace Facebook.Utils.Tests
 {
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using Xunit;
 
-    public class DictionaryExtensionsTest
+    public class DictionaryTests
     {
         [Fact(DisplayName = "Merge: When first input contains values and second is null The the result should not be null")]
         public void Merge_WhenFirstInputContainsValuesAndSecondIsNull_TheTheResultShouldNotBeNull()

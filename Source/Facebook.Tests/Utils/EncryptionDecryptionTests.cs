@@ -1,4 +1,4 @@
-namespace Facebook.Tests
+namespace Facebook.Utils.Tests
 {
     using System.Linq;
     using Xunit;

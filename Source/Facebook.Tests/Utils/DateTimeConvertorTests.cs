@@ -1,4 +1,4 @@
-﻿namespace Facebook.Tests
+﻿namespace Facebook.Utils.Tests
 {
     using System;
     using Facebook;
@@ -8,7 +8,7 @@
     ///This is a test class for DateTimeConvertorTest and is intended
     ///to contain all DateTimeConvertorTest Unit Tests
     ///</summary>
-    public class DateTimeConvertorTest
+    public class DateTimeConvertorTests
     {
         [Fact(DisplayName = "Convert to and from unix time (string)")]
         public void ConvertToAndFromUnixTime_String()

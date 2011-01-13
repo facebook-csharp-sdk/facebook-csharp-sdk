@@ -1,5 +1,5 @@
 
-namespace Facebook.Tests
+namespace Facebook.Utils.Tests
 {
     using Xunit;
     using Xunit.Extensions;
