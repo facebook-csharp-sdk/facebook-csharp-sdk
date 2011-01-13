@@ -2,6 +2,7 @@
 namespace Facebook.Tests.FacebookOAuthClientAuthorizerTests
 {
     using System;
+    using System.Collections.Generic;
     using Xunit;
 
     public class GetLoginUriTests
@@ -34,6 +35,37 @@ namespace Facebook.Tests.FacebookOAuthClientAuthorizerTests
             }
 
             Assert.Equal("client_id required.", exception.Message);
+        }
+
+        [Fact(DisplayName = "GetLoginUri: If redirect_uri is empty Then it should throw InvalidOperationException")]
+        public void GetLoginUri_IfRedirectUriIsEmpty_ThenItShouldThrowInvalidOperationException()
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters["client_id"] = "dummy client id";
+            parameters["redirect_uri"] = null;
+
+            Assert.Throws<InvalidOperationException>(() => this.oauth.GetLoginUri(parameters));
+        }
+
+        [Fact(DisplayName = "GetLoginUri: If redirect_uri is empty Then it exception message should be \"redirect_uri required.\"")]
+        public void GetLoginUri_IfRedirectUriIsEmpty_ThenItExceptionMessageShouldBeRedirectUriRequired()
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters["client_id"] = "dummy client id";
+            parameters["redirect_uri"] = null;
+
+            Exception exception = null;
+
+            try
+            {
+                this.oauth.GetLoginUri(parameters);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.Equal("redirect_uri required.", exception.Message);
         }
     }
 }

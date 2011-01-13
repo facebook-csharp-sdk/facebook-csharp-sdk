@@ -38,20 +38,24 @@ namespace Facebook
         /// <returns>
         /// Returns the facebook login uri.
         /// </returns>
+        /// <remarks>
+        /// http://developers.facebook.com/docs/reference/dialogs/oauth
+        /// Parameters that can be used:
+        ///     client_id     : Your application's identifier. This is called client_id instead of app_id for this particular method to be compliant with the OAuth 2.0 specification. Required, but automatically specified by most SDKs.
+        ///     redirect_uri  : The URL to redirect to after the user clicks a button on the dialog. Required, but automatically specified by most SDKs.
+        ///     scope         : Optional. A comma-delimited list of permissions.
+        ///     state         : Optional. An opaque string used to maintain application state between the request and callback. When Facebook redirects the user back to your redirect_uri, this value will be included unchanged in the response.
+        ///     response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code_and_token).
+        ///     display       : The display mode in which to render the dialog. The default is page on the www subdomain and wap on the m subdomain. This is automatically specified by most SDKs. (For WP7 builds it is set to touch.)
+        /// </remarks>
         public Uri GetLoginUri(IDictionary<string, object> parameters)
         {
-            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/authorize");
-
             var defaultParameters = new Dictionary<string, object>();
             defaultParameters["client_id"] = this.ClientId;
             defaultParameters["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
-
 #if WINDOWS_PHONE
             defaultParameters["display"] = "touch";
-#else
-            defaultParameters["display"] = "popup";
 #endif
-
             var mergedParameters = FacebookUtils.Merge(defaultParameters, parameters);
 
             // check if client_id and redirect_uri is not null or empty.
@@ -65,9 +69,9 @@ namespace Facebook
                 throw new InvalidOperationException("redirect_uri required.");
             }
 
-            uriBuilder.Query = FacebookUtils.ToJsonQueryString(mergedParameters);
+            var url = "http://www.facebook.com/dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
 
-            return uriBuilder.Uri;
+            return new Uri(url);
         }
 
         // TODO: comment this for now. will need to support for GetLoginUri for web apps too

@@ -35,7 +35,7 @@ namespace Facebook.Samples.AuthenticationTool
             fbApp.GetAsync("me", (val) =>
             {
                 // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
-                var result = ((Newtonsoft.Json.Linq.JObject)val.Result);
+                var result = ((JsonObject)val.Result);
                 Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
             });
         }
@@ -93,7 +93,7 @@ namespace Facebook.Samples.AuthenticationTool
 
             var paramaters = new Dictionary<string, object>
                                 {
-                                    { "type", "user_agent" } // add type=user_agent so we don't need to exchange code for access_token
+                                    { "response_type", "token" } // add type=user_agent so we don't need to exchange code for access_token
                                 };
 
             var extendedPermissions = this.GetExtendedPermissions();

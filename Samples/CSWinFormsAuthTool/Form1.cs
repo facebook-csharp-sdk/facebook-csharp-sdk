@@ -29,7 +29,8 @@
 
             var paramaters = new Dictionary<string, object>
                                 {
-                                    { "type", "user_agent" } // add type=user_agent so we don't need to exchange code for access_token
+                                    { "display", "popup" },
+                                    { "response_type", "token" }
                                 };
 
             var extendedPermissions = this.GetExtendedPermissions();

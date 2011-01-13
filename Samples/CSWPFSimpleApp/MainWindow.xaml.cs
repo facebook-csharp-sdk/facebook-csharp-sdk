@@ -21,13 +21,9 @@ namespace Facebook.Samples.AuthenticationTool
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string apiKey = "{Your Api Key goes here}";
+        private const string appId = "{Your Api Id goes here}";
 
         private string requestedFbPermissions = "user_about_me";
-
-        private const string successUrl = "http://www.facebook.com/connect/login_success.html";
-
-        private const string failedUrl = "http://www.facebook.com/connect/login_failure.html";
 
         private bool loggedIn = false;
 
@@ -72,18 +68,21 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoBox.Visibility = Visibility.Collapsed;
 
-            dynamic parms = new System.Dynamic.ExpandoObject();
-            //parms.display = "popup";
-            parms.client_id = apiKey;
-            parms.redirect_uri = successUrl;
-            parms.cancel_url = failedUrl;
-            parms.scope = requestedFbPermissions;
-            parms.type = "user_agent";
+            var oauth = new FacebookOAuthClientAuthorizer
+            {
+                ClientId = appId,
+                // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
+            };
 
-            // TODO: figure out why this temporary hack is necessary
-            loggingInUri = new Uri(fbApp.GetLoginUrl(parms).ToString());
+            var paramaters = new Dictionary<string, object>
+                                {
+                                    { "display", "popup" },
+                                    { "response_type", "token" },
+                                    { "scope", requestedFbPermissions }
+                                };
 
-            FacebookLoginBrowser.Source = (loggingInUri);
+            var loginUri = oauth.GetLoginUri(paramaters);
+            FacebookLoginBrowser.Navigate(loginUri);
         }
 
         void FacebookLoginBrowser_Navigated(object sender, NavigationEventArgs e)
