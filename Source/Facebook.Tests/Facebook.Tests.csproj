@@ -70,6 +70,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacebookOAuthClientAuthorizerTests\GetLoginUriTests.cs" />
     <Compile Include="Utils\Base64UrlTests.cs" />
     <Compile Include="Utils\DateTimeConvertorTests.cs" />
     <Compile Include="Utils\DictionaryTests.cs" />
@@ -89,12 +90,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook\Facebook.csproj">
-      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
-      <Name>Facebook</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
@@ -102,6 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="monkey.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Facebook\Facebook.csproj">
+      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
+      <Name>Facebook</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

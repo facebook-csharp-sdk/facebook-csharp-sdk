@@ -57,12 +57,12 @@ namespace Facebook
             // check if client_id and redirect_uri is not null or empty.
             if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
             {
-                throw new ArgumentNullException("client_id required.");
+                throw new InvalidOperationException("client_id required.");
             }
 
             if (mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
             {
-                throw new ArgumentNullException("redirect_uri required.");
+                throw new InvalidOperationException("redirect_uri required.");
             }
 
             uriBuilder.Query = FacebookUtils.ToJsonQueryString(mergedParameters);
