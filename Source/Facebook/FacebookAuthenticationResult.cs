@@ -19,12 +19,21 @@ namespace Facebook
         private readonly string errorReason;
         private readonly string errorDescription;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookAuthenticationResult"/> class.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <remarks>
+        /// The values of parameters should not be url encoded.
+        /// </remarks>
         private FacebookAuthenticationResult(IDictionary<string, object> parameters)
         {
-            // decode access token first
             if (parameters.ContainsKey("access_token"))
             {
-                this.accessToken = Uri.UnescapeDataString((string)parameters["access_token"]);
+                this.accessToken = parameters["access_token"].ToString();
             }
 
             if (parameters.ContainsKey("expires_in"))
@@ -35,12 +44,12 @@ namespace Facebook
 
             if (parameters.ContainsKey("error_reason"))
             {
-                this.errorReason = FacebookUtils.UrlDecode((string)parameters["error_reason"]);
+                this.errorReason = parameters["error_reason"].ToString();
             }
 
             if (parameters.ContainsKey("error_description"))
             {
-                this.errorDescription = FacebookUtils.UrlDecode((string)parameters["error_description"]);
+                this.errorDescription = parameters["error_description"].ToString();
             }
         }
 
@@ -122,7 +131,7 @@ namespace Facebook
 
         private static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings, bool throws)
         {
-            var parameters = new Dictionary<string, object>();
+            IDictionary<string, object> parameters;
 
             try
             {
@@ -131,15 +140,15 @@ namespace Facebook
                     // if it is a desktop login
                     if (!string.IsNullOrEmpty(uri.Fragment))
                     {
-                        // contains #access_token so replace # with ?
-                        var queryFragment = "?" + uri.Fragment.Substring(1);
-                        FacebookAppBase.ParseQueryParametersToDictionary(queryFragment, parameters);
+                        // contains #access_token so remove #
+                        var queryFragment = uri.Fragment.Substring(1);
+                        parameters = FacebookUtils.ParseUrlQueryString(queryFragment);
                     }
                     else
                     {
                         // else it is part of querystring
                         // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
-                        FacebookAppBase.ParseQueryParametersToDictionary(uri.Query, parameters);
+                        parameters = FacebookUtils.ParseUrlQueryString(uri.Query);
                     }
 
                     return new FacebookAuthenticationResult(parameters);
