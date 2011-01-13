@@ -44,11 +44,15 @@ vNext
 		a. internal static byte[] Base64UrlDecode(string base64UrlSafeString);
 		b. internal static string Base64UrlEncode(byte[] input);
 
+	  QueryString helper methods:
+		a. internal static IDictionary<string, object> ParseUrlQueryString(string query)
+
 	  Encryption/Decryption helper methods:
 		a. internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key);
 		   (for non-sliverlight builds only)
 		b. internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv);
 		   (for non-sliverlight builds only)
+
 
 2. FacebookSignedRequest.Parse
 	(for non-sliverlight builds only)
