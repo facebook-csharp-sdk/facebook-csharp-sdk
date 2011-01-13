@@ -13,12 +13,34 @@ namespace Facebook
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    /// <summary>
+    /// Represents the authentication result of Facebook.
+    /// </summary>
     public sealed class FacebookAuthenticationResult
     {
+        /// <summary>
+        /// The access token.
+        /// </summary>
         private readonly string accessToken;
+
+        /// <summary>
+        /// Date and Time when the access token expires.
+        /// </summary>
         private readonly DateTime expires;
+
+        /// <summary>
+        /// Short error reason for failed authentication if there was an error.
+        /// </summary>
         private readonly string errorReason;
+
+        /// <summary>
+        /// Long error description for failed authentication if there was an error.
+        /// </summary>
         private readonly string errorDescription;
+
+        /// <summary>
+        /// The code used to exchange access token.
+        /// </summary>
         private readonly string code;
 
         /// <summary>
@@ -64,26 +86,41 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Gets the short error reason for failed authentication if an error occurred.
+        /// </summary>
         public string ErrorReason
         {
             get { return this.errorReason; }
         }
 
+        /// <summary>
+        /// Gets the long error description for failed authentication if an error occurred.
+        /// </summary>
         public string ErrorDescription
         {
             get { return this.errorDescription; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="DateTime"/> when the access token will expire.
+        /// </summary>
         public DateTime Expires
         {
             get { return this.expires; }
         }
 
+        /// <summary>
+        /// Gets the access token.
+        /// </summary>
         public string AccessToken
         {
             get { return this.accessToken; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether access token or code was successfully retrieved.
+        /// </summary>
         public bool IsSuccess
         {
             get
@@ -93,40 +130,106 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Gets the code used to exchange with facebook to retrieve access token.
+        /// </summary>
         public string Code
         {
             get { return this.code; }
         }
 
+        /// <summary>
+        /// Converts <see cref="FacebookAuthenticationResult"/> to <see cref="FacebookSession"/>.
+        /// </summary>
+        /// <returns>
+        /// An instance of converted <see cref="FacebookSession"/>.
+        /// </returns>
         public FacebookSession ToSession()
         {
             return new FacebookSession
-            {
-                AccessToken = this.AccessToken,
-                Expires = this.Expires,
-            };
+                       {
+                           AccessToken = this.AccessToken,
+                           Expires = this.Expires,
+                       };
         }
 
+        /// <summary>
+        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The uri string.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </returns>
         public static FacebookAuthenticationResult Parse(string uriString)
         {
             return Parse(new Uri(uriString));
         }
 
+        /// <summary>
+        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The uri.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </returns>
         public static FacebookAuthenticationResult Parse(Uri uri)
         {
             return Parse(uri, null);
         }
 
+        /// <summary>
+        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The uri.
+        /// </param>
+        /// <param name="facebookSettings">
+        /// The facebook settings.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </returns>
         public static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings)
         {
             return Parse(uri, facebookSettings, true);
         }
 
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The uri string.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
         public static bool TryParse(string uriString, out FacebookAuthenticationResult result)
         {
             return TryParse(uriString, null, out result);
         }
 
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The uri string.
+        /// </param>
+        /// <param name="settings">
+        /// The settings.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
         public static bool TryParse(string uriString, IFacebookSettings settings, out FacebookAuthenticationResult result)
         {
             if (Uri.IsWellFormedUriString(uriString, UriKind.RelativeOrAbsolute))
@@ -138,11 +241,38 @@ namespace Facebook
             return false;
         }
 
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The uri.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
         public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
         {
             return TryParse(uri, null, out result);
         }
 
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The uri.
+        /// </param>
+        /// <param name="facebookSettings">
+        /// The facebook settings.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
         public static bool TryParse(Uri uri, IFacebookSettings facebookSettings, out FacebookAuthenticationResult result)
         {
             result = Parse(uri, facebookSettings, false);
