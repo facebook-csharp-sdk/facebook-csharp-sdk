@@ -428,7 +428,7 @@
                            };
 
             // key1=value1&key2=value2&key3=["list_item1","list_item2"]
-            var expected = "key1=value1&key2=value2&key3=%5B%22list_item1%22%2C%22list_item2%22%5D";
+            var expected = "key1=value1&key2=value2&key3=%5b%22list_item1%22%2c%22list_item2%22%5d";
 
             var result = FacebookUtils.ToJsonQueryString(dict);
 

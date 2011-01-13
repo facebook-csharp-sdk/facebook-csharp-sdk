@@ -1208,7 +1208,7 @@ namespace Facebook
                 }
                 if (!String.IsNullOrEmpty(path))
                 {
-                    uri.Path = UrlEncoder.EscapeUriString(path);
+                    uri.Path = FacebookUtils.UrlEncode(path);
                 }
             }
             if (parameters != null)

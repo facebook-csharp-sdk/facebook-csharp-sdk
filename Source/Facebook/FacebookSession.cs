@@ -173,7 +173,7 @@ namespace Facebook
                     var nameValue = part.Split('=');
                     if (nameValue.Length == 2)
                     {
-                        var s = Uri.UnescapeDataString(nameValue[1]);
+                        var s = FacebookUtils.UrlDecode(nameValue[1]);
                         dictionary.Add(nameValue[0], s);
                     }
                 }

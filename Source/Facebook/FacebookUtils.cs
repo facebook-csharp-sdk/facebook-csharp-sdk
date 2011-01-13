@@ -176,7 +176,7 @@ namespace Facebook
 
                     if (!String.IsNullOrEmpty(jsonValue))
                     {
-                        var encodedValue = UrlEncoder.EscapeUriString(jsonValue);
+                        var encodedValue = UrlEncode(jsonValue);
                         sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", key, encodedValue);
                     }
                 }
