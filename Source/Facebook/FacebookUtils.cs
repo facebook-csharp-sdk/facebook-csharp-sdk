@@ -73,6 +73,36 @@ namespace Facebook
             return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
+        /// <summary>
+        /// Converts to specified <see cref="DateTime"/> to ISO-8601 format (yyyy-MM-ddTHH:mm:ssZ).
+        /// </summary>
+        /// <param name="dateTime">
+        /// The date time.
+        /// </param>
+        /// <returns>
+        /// Returns the string representation of date time in ISO-8601 format (yyyy-MM-ddTHH:mm:ssZ).
+        /// </returns>
+        public static string ToIso8601FormattedDateTime(DateTime dateTime)
+        {
+            Contract.Requires(dateTime != null);
+            return dateTime.ToString("o");
+        }
+
+        /// <summary>
+        /// Converts ISO-8601 format (yyyy-MM-ddTHH:mm:ssZ) date time to <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="iso8601DateTime">
+        /// The iso 8601 formatted date time.
+        /// </param>
+        /// <returns>
+        /// Returns the <see cref="DateTime"/> equivalent to the ISO-8601 formatted date time. 
+        /// </returns>
+        public static DateTime FromIso8601FormattedDateTime(string iso8601DateTime)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(iso8601DateTime));
+            return DateTime.ParseExact(iso8601DateTime, "o", System.Globalization.CultureInfo.InvariantCulture);
+        }
+
         #endregion
 
         #region Dictionary Utils

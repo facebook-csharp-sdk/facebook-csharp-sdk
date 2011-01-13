@@ -17,6 +17,8 @@ vNext
 		c. public static DateTime FromUnixTime(string unixTime);
 		d. public static double ToUnixTime(DateTime dateTime);
 		e. public static double ToUnixTime(DateTimeOffset dateTime);
+		f. public static string ToIso8601FormattedDateTime(DateTime dateTime);
+		g. public static DateTime FromIso8601FormattedDateTime(string iso8601DateTime);
 
 	(internal/private methods visible to SDK developers)
 		
