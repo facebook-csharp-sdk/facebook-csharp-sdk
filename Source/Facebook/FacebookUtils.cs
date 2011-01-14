@@ -274,7 +274,7 @@ namespace Facebook
 
         #endregion
 
-        #region Url Decoding and Encoding
+        #region Url Decoding, Encoding and other helper methods
 
         internal static string UrlDecode(string input)
         {
@@ -296,6 +296,31 @@ namespace Facebook
 #else
             return External.HttpUtility.UrlEncode(input);
 #endif
+        }
+
+        internal static string RemoveTrailingSlash(string url)
+        {
+            Contract.Ensures(Contract.Result<string>() != null);
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return string.Empty;
+            }
+
+            if (url.EndsWith("/"))
+            {
+                url = url.Substring(0, url.Length - 1);
+            }
+
+            return url;
+        }
+
+        internal static Uri RemoveTrailingSlash(Uri url)
+        {
+            Contract.Requires(url != null);
+            Contract.Ensures(Contract.Result<Uri>() != null);
+            var urlString = RemoveTrailingSlash(url.ToString());
+            return new Uri(urlString);
         }
 
         #endregion

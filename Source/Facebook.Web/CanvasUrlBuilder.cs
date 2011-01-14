@@ -118,7 +118,7 @@ namespace Facebook.Web
                 {
                     url = string.Concat(request.Url.Scheme, "://", request.Url.Host, ":", request.Url.Port);
                 }
-                return new Uri(RemoveTrailingSlash(url));
+                return new Uri(FacebookUtils.RemoveTrailingSlash(url));
             }
         }
 
@@ -138,7 +138,7 @@ namespace Facebook.Web
                 {
                     uriBuilder.Query = parts[1];
                 }
-                return RemoveTrailingSlash(uriBuilder.Uri);
+                return FacebookUtils.RemoveTrailingSlash(uriBuilder.Uri);
             }
         }
 
@@ -171,7 +171,7 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
-                return RemoveTrailingSlash(this.canvasSettings.CanvasPageUrl);
+                return FacebookUtils.RemoveTrailingSlash(this.canvasSettings.CanvasPageUrl);
             }
         }
 
@@ -352,22 +352,7 @@ namespace Facebook.Web
             {
                 url = url.Substring(0, url.Length - 1);
             }
-            return new Uri(RemoveTrailingSlash(url));
-        }
-
-        public string RemoveTrailingSlash(string url)
-        {
-            if (url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
-            }
-            return url;
-        }
-
-        public Uri RemoveTrailingSlash(Uri url)
-        {
-            var urlString = RemoveTrailingSlash(url.ToString());
-            return new Uri(urlString);
+            return new Uri(FacebookUtils.RemoveTrailingSlash(url));
         }
 
         /// <summary>

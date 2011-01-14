@@ -36,9 +36,11 @@ vNext
 		a. internal static string HtmlDecode(string input);
 		b. internal static string HtmlEncode(string input);
 
-	  Url Encoding/Decoding helper methods:
+	  Url Encoding/Decoding and misc helper methods:
 		a. internal static string UrlDecode(string input);
 		b. internal static string UrlEncode(string input);
+		c. internal static string RemoveTrailingSlash(string url);
+		d. internal static Uri RemoveTrailingSlash(Uri url);
 
 	  Base64 Url Encoding/Decoding helper methods:
 		a. internal static byte[] Base64UrlDecode(string base64UrlSafeString);

@@ -81,6 +81,7 @@
     <Compile Include="FacebookOAuthClientAuthorizerTests.cs" />
     <Compile Include="GetApiUrlTests.cs" />
     <Compile Include="Utils\ParseUrlQueryString.cs" />
+    <Compile Include="Utils\RemoveTrailingSlashTests.cs" />
     <Compile Include="Utils\StringUtilsTest.cs" />
     <Compile Include="Utils\UrlEncodingDecodingTests.cs" />
     <Compile Include="ParseSignedRequestTests.cs" />
