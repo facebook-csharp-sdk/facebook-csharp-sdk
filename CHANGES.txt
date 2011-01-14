@@ -69,3 +69,5 @@ vNext
 
 	There is also a third overload which is marked as internal and used for unit testing only.
 		internal static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge, double currentTime);
+
+3. Facebook.dll InternalsVisibleTo Facebook.Web and Facebook.Web.Mvc
