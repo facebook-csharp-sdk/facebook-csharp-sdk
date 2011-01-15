@@ -136,6 +136,7 @@
     <Compile Include="ICanvasSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="New\Authorizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
