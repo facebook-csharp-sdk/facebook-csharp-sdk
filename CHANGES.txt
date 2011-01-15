@@ -80,6 +80,7 @@ vNext
 
 		a. internal static FacebookSignedRequest GetSignedRequest(string appSecret, HttpRequestBase httpRequest);
 		b. internal static string GetSessionCookieName(string appId);
+		c. internal static FacebookSession GetSession(string appId, string appSecret, HttpRequestBase httpRequest);
 
 	  Extendend Permission helper methods
 		a. internal static string[] HasPermissions(string appId, string appSecret, long userId, string[] permissions);

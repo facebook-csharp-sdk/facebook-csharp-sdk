@@ -49,6 +49,41 @@ namespace Facebook.Web
             return string.Concat("fbs_", appId);
         }
 
+        /// <summary>
+        ///  Gets the facebook session from the http request.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The app secret.
+        /// </param>
+        /// <param name="httpRequest">
+        /// The http request.
+        /// </param>
+        /// <returns>
+        /// Returns the facebook session if found, otherwise null.
+        /// </returns>
+        internal static FacebookSession GetSession(string appId, string appSecret, HttpRequestBase httpRequest)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+            Contract.Requires(httpRequest != null);
+            Contract.Requires(httpRequest.Params != null);
+
+            // try creating session from signed_request
+            var signedRequest = GetSignedRequest(appSecret, httpRequest);
+
+            if (signedRequest != null)
+            {
+                return FacebookSession.Create(appSecret, signedRequest);
+            }
+
+            // TODO: fallback to cookies
+
+            return null;
+        }
+
         #region Extendend Permission helper methods
 
         /// <summary>

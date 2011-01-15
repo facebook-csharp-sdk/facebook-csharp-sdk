@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Authorizer\SignedRequestTests.cs" />
     <Compile Include="FacebookWebUtils\GetSessionCookieNameTests.cs" />
+    <Compile Include="FacebookWebUtils\GetSessionTests.cs" />
     <Compile Include="FacebookWebUtils\GetSignedRequestTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
