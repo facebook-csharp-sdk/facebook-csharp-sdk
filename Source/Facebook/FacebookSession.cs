@@ -147,7 +147,7 @@ namespace Facebook
                 { "access_token", signedRequest.AccessToken },
                 { "expires", FacebookUtils.ToUnixTime(signedRequest.Expires) }
             };
-            dictionary["sig"] = GenerateSignature(appSecret, dictionary);
+            dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
 
             return new FacebookSession(dictionary);
         }
@@ -179,7 +179,7 @@ namespace Facebook
                 }
             }
 
-            var signature = GenerateSignature(appSecret, dictionary);
+            var signature = GenerateSessionSignature(appSecret, dictionary);
             if (dictionary.ContainsKey("sig") && dictionary["sig"].ToString() == signature)
             {
                 return new FacebookSession(dictionary);
@@ -191,37 +191,41 @@ namespace Facebook
         /// <summary>
         /// Generates a MD5 signature for the facebook session.
         /// </summary>
-        /// <param name="session">The session to generate a signature.</param>
-        /// <returns>An MD5 signature.</returns>
-        /// <exception cref="System.ArgumentNullException">If the session is null.</exception>
-        /// <exception cref="System.InvalidOperationException">If there is a problem generating the hash.</exception>
-        private static string GenerateSignature(string appSecret, IDictionary<string, object> dictionary)
+        /// <param name="secret">
+        /// The app secret.
+        /// </param>
+        /// <param name="dictionary">
+        /// The dictionary.
+        /// </param>
+        /// <returns>
+        /// Returns the generated signature.
+        /// </returns>
+        /// <remarks>
+        /// http://developers.facebook.com/docs/authentication/
+        /// </remarks>
+        internal static string GenerateSessionSignature(string secret, IDictionary<string, object> dictionary)
         {
-            StringBuilder payload = new StringBuilder();
+            Contract.Requires(!string.IsNullOrEmpty(secret));
+            Contract.Requires(dictionary != null);
+            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+            var payload = new StringBuilder();
+
+            // sort by the key and remove "sig" if present
             var parts = (from a in dictionary
                          orderby a.Key
                          where a.Key != "sig"
                          select string.Format(CultureInfo.InvariantCulture, "{0}={1}", a.Key, a.Value)).ToList();
-            parts.ForEach((s) => { payload.Append(s); });
-            payload.Append(appSecret);
-            byte[] hash = null;
-            using (var md5 = System.Security.Cryptography.MD5CryptoServiceProvider.Create())
-            {
-                if (md5 != null)
-                {
-                    hash = md5.ComputeHash(Encoding.UTF8.GetBytes(payload.ToString()));
-                }
-            }
 
-            if (hash == null)
-            {
-                throw new InvalidOperationException("Hash is not valid.");
-            }
+            parts.ForEach(s => payload.Append(s));
+            payload.Append(secret);
 
-            StringBuilder signature = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
+            var hash = FacebookUtils.ComputerMd5Hash(Encoding.UTF8.GetBytes(payload.ToString()));
+
+            var signature = new StringBuilder();
+            foreach (var h in hash)
             {
-                signature.Append(hash[i].ToString("x2", CultureInfo.InvariantCulture));
+                signature.Append(h.ToString("x2", CultureInfo.InvariantCulture));
             }
 
             return signature.ToString();

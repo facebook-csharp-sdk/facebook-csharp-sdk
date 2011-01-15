@@ -86,3 +86,10 @@ vNext
 	  Extendend Permission helper methods
 		a. internal static string[] HasPermissions(string appId, string appSecret, long userId, string[] permissions);
 		b. internal static bool HasPermission(string appId, string appSecret, long userId, string permission);
+
+5. FacebookSession
+	
+   (internal/private methods visible to SDK developers)
+
+		a. internal static string GenerateSessionSignature(string secret, IDictionary<string, object> dictionary);
+		   (for non-sliverlight builds only)
