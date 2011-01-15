@@ -32,6 +32,23 @@ namespace Facebook.Web
             return httpRequest.Params.AllKeys.Contains("signed_request") ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params["signed_request"]) : null;
         }
 
+        /// <summary>
+        /// Gets the facebook session cookie name for the specified facebook appliaction.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <returns>
+        /// Returns the name of the cookie name.
+        /// </returns>
+        internal static string GetSessionCookieName(string appId)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+            return string.Concat("fbs_", appId);
+        }
+
         #region Extendend Permission helper methods
 
         /// <summary>
