@@ -9,8 +9,6 @@
 
 namespace Facebook
 {
-    using System;
-
     /// <summary>
     /// Represents the settings of a Facebook application.
     /// </summary>
@@ -20,18 +18,20 @@ namespace Facebook
         /// Gets or sets the App secret.
         /// </summary>
         /// <value>The App secret.</value>
-        [Obsolete("User AppSecret. Facebook renamed this property.")]
         string AppSecret { get; set; }
+
         /// <summary>
         /// Gets or sets the app id.
         /// </summary>
         /// <value>The app id.</value>
         string AppId { get; set; }
+
         /// <summary>
         /// Gets or sets the max retries.
         /// </summary>
         /// <value>The max retries.</value>
         int MaxRetries { get; set; }
+
         /// <summary>
         /// Gets or sets the retry delay.
         /// </summary>

@@ -73,3 +73,6 @@ vNext
 		internal static FacebookSignedRequest Parse(string secret, string signedRequestValue, int maxAge, double currentTime);
 
 3. Facebook.dll InternalsVisibleTo Facebook.Web and Facebook.Web.Mvc
+
+4. FacebookWebUtils added to Facebook.Web.dll
+   a. public static FacebookSignedRequest GetSignedRequest(string appSecret, HttpRequestBase httpRequest);
