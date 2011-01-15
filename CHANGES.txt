@@ -75,4 +75,11 @@ vNext
 3. Facebook.dll InternalsVisibleTo Facebook.Web and Facebook.Web.Mvc
 
 4. FacebookWebUtils added to Facebook.Web.dll
-   a. public static FacebookSignedRequest GetSignedRequest(string appSecret, HttpRequestBase httpRequest);
+
+	(internal/private methods visible to SDK developers)
+
+		a. internal static FacebookSignedRequest GetSignedRequest(string appSecret, HttpRequestBase httpRequest);
+
+	  Extendend Permission helper methods
+		a. internal static string[] HasPermissions(string appId, string appSecret, long userId, string[] permissions);
+		b. internal static bool HasPermission(string appId, string appSecret, long userId, string permission);
