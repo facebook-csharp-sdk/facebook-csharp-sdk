@@ -54,7 +54,8 @@ vNext
 		   (for non-sliverlight builds only)
 		b. internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv);
 		   (for non-sliverlight builds only)
-
+		c. internal static byte[] ComputerMd5Hash(byte[] data);
+		   (for non-sliverlight builds only)
 
 2. FacebookSignedRequest.Parse
 	(for non-sliverlight builds only)

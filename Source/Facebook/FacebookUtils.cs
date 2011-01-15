@@ -443,6 +443,17 @@ namespace Facebook
 
         #region Encryption Decryption Helper methods
 
+        internal static byte[] ComputerMd5Hash(byte[] data)
+        {
+            Contract.Requires(data != null);
+            Contract.Ensures(Contract.Result<byte[]>() != null);
+
+            using (var md5 = new MD5CryptoServiceProvider())
+            {
+                return md5.ComputeHash(data);
+            }
+        }
+
         internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
         {
             Contract.Requires(data != null);
