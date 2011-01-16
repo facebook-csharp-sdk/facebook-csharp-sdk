@@ -19,11 +19,6 @@ namespace Facebook.Web.New
         private readonly HttpContextBase httpContext;
 
         /// <summary>
-        /// The signed request.
-        /// </summary>
-        private FacebookSignedRequest signedRequest;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Authorizer"/> class.
         /// </summary>
         /// <param name="facebookSettings">
@@ -55,24 +50,6 @@ namespace Facebook.Web.New
             {
                 Contract.Ensures(Contract.Result<IFacebookSettings>() != null);
                 return this.facebookSettings;
-            }
-        }
-
-        /// <summary>
-        /// Gets the signed request.
-        /// </summary>
-        public FacebookSignedRequest SignedRequest
-        {
-            get
-            {
-                Contract.Requires(!string.IsNullOrEmpty(this.FacebookSettings.AppSecret));
-
-                if (this.signedRequest == null && this.HttpRequest.Params != null)
-                {
-                    this.signedRequest = FacebookWebUtils.GetSignedRequest(this.FacebookSettings.AppSecret, this.HttpRequest);
-                }
-
-                return this.signedRequest;
             }
         }
 
