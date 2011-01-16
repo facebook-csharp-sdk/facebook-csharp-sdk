@@ -47,6 +47,11 @@ namespace Facebook.Web.New
         }
 
         /// <summary>
+        /// Gets or sets the extended permissions.
+        /// </summary>
+        public string Perms { get; set; }
+
+        /// <summary>
         /// Gets the facebook session.
         /// </summary>
         public FacebookSession Session
