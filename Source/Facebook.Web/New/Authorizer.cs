@@ -107,6 +107,43 @@ namespace Facebook.Web.New
         }
 
         /// <summary>
+        /// Check whether the user has the specified permissions.
+        /// </summary>
+        /// <param name="permissions">
+        /// The permissions.
+        /// </param>
+        /// <returns>
+        /// Returns the list of allowed permissions.
+        /// </returns>
+        public virtual string[] HasPermissions(string[] permissions)
+        {
+            Contract.Ensures(Contract.Result<string[]>() != null);
+
+            long userId;
+
+            if (this.Session == null || !long.TryParse(this.Session.UserId, out userId))
+            {
+                return new string[0];
+            }
+
+            return FacebookWebUtils.HasPermissions(this.FacebookSettings.AppId, this.FacebookSettings.AppSecret, userId, permissions);
+        }
+
+        /// <summary>
+        /// Check whether the user has the specified permissions.
+        /// </summary>
+        /// <param name="permission">
+        /// The permission.
+        /// </param>
+        /// <returns>
+        /// Returns true if the user has permission otherwise false.
+        /// </returns>
+        public virtual bool HasPermission(string permission)
+        {
+            return this.HasPermissions(new[] { permission }).Length == 1;
+        }
+
+        /// <summary>
         /// The code contracts invarient object method.
         /// </summary>
         [ContractInvariantMethod]
