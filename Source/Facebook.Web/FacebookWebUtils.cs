@@ -50,6 +50,29 @@ namespace Facebook.Web
         }
 
         /// <summary>
+        /// Gets the facebook session cookie value for the specified application.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="httpRequet">
+        /// The http requet.
+        /// </param>
+        /// <returns>
+        /// Returns the facebook session cookie value if present otherwise null.
+        /// </returns>
+        internal static string GetSessionCookieValue(string appId, HttpRequestBase httpRequet)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(httpRequet != null);
+            Contract.Requires(httpRequet.Params != null);
+
+            var cookieName = GetSessionCookieName(appId);
+
+            return httpRequet.Params.AllKeys.Contains(cookieName) ? httpRequet.Params[cookieName] : null;
+        }
+
+        /// <summary>
         ///  Gets the facebook session from the http request.
         /// </summary>
         /// <param name="appId">
