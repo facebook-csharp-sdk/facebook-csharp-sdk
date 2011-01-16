@@ -203,7 +203,7 @@ namespace Facebook
                         {
                             if (this.Request.Params.AllKeys.Contains(this.SessionCookieName))
                             {
-                                this.session = FacebookSession.Parse(this.AppSecret, this.Request.Params[this.SessionCookieName]);
+                                this.session = FacebookSession.ParseCookieValue(this.AppSecret, this.Request.Params[this.SessionCookieName]);
                             }
                         }
                     }

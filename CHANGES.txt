@@ -93,3 +93,5 @@ vNext
 
 		a. internal static string GenerateSessionSignature(string secret, IDictionary<string, object> dictionary);
 		   (for non-sliverlight builds only)
+		b. internal static FacebookSession ParseCookieValue(string appSecret, string cookieValue);
+		   (for non-sliverlight builds only)
