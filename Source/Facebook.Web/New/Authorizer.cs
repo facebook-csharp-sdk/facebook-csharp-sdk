@@ -1,6 +1,7 @@
 namespace Facebook.Web.New
 {
     using System.Diagnostics.Contracts;
+    using System.Linq;
     using System.Web;
 
     /// <summary>
@@ -146,6 +147,32 @@ namespace Facebook.Web.New
         public virtual bool HasPermission(string permission)
         {
             return this.HasPermissions(new[] { permission }).Length == 1;
+        }
+
+        /// <summary>
+        /// Checks if the user is authenticated and the application has all the specified permissions.
+        /// </summary>
+        /// <returns>
+        /// Return true if the user is authenticated and the application has all the specified permissions.
+        /// </returns>
+        public virtual bool IsAuthorized()
+        {
+            bool isAuthenticated = this.Session != null;
+
+            if (isAuthenticated && !string.IsNullOrEmpty(this.Perms))
+            {
+                var requiredPerms = this.Perms.Replace(" ", string.Empty).Split(',');
+                var currentPerms = this.HasPermissions(requiredPerms);
+                foreach (var perm in requiredPerms)
+                {
+                    if (!currentPerms.Contains(perm))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return isAuthenticated;
         }
 
         /// <summary>
