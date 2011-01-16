@@ -176,6 +176,33 @@ namespace Facebook.Web.New
         }
 
         /// <summary>
+        /// Authorizes the user if the user is not logged in or the application does not have all the sepcified permissions.
+        /// </summary>
+        /// <returns>
+        /// Return true if the user is authenticated and the application has all the specified permissions.
+        /// </returns>
+        public bool Authorize()
+        {
+            var isAuthorized = this.IsAuthorized();
+
+            if (!isAuthorized)
+            {
+                this.HandleUnauthorizedRequest();
+            }
+
+            return isAuthorized;
+        }
+
+        /// <summary>
+        /// Handle unauthorized requests.
+        /// </summary>
+        public virtual void HandleUnauthorizedRequest()
+        {
+            // redirect to facebook login
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
         /// The code contracts invarient object method.
         /// </summary>
         [ContractInvariantMethod]
