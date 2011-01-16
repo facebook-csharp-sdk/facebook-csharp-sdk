@@ -77,6 +77,41 @@ namespace Facebook.Web.Tests
             Assert.Throws<InvalidOperationException>(() => FacebookWebUtils.GetSession(appId, appSecret, request));
         }
 
+        [Fact(DisplayName = "GetSession: Given a request with valid session cookie, signed request, app id and secret Then it should not return null")]
+        public void GetSession_GivenARequestWithValidSessionCookieSignedRequestAppIdAndSecret_ThenItShouldNotReturnNull()
+        {
+            var appId = "dummy";
+            var secret = "543690fae0cd186965412ac4a49548b5";
+            var requestParams = new NameValueCollection
+                                    {
+                                        { "signed_request", "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0" },
+                                        { "fbs_" + appId, "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026" }
+                                    };
+            var httpRequest = GetHttpRequest(requestParams);
+
+            var session = FacebookWebUtils.GetSession(appId, secret, httpRequest);
+
+            Assert.NotNull(session);
+        }
+
+        [Fact(DisplayName = "GetSession: Given a request with valid session cookie, signed request, app id and secret Then the access token should be equal to that of signed request")]
+        public void GetSession_GivenARequestWithValidSessionCookieSignedRequestAppIdAndSecret_ThenTheAccessTokenShouldBeEqualToThatOfSignedRequest()
+        {
+            var appId = "dummy";
+            var secret = "543690fae0cd186965412ac4a49548b5";
+            var requestParams = new NameValueCollection
+                                    {
+                                        { "signed_request", "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0" },
+                                        { "fbs_" + appId, "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026" }
+                                    };
+            var httpRequest = GetHttpRequest(requestParams);
+
+            var session = FacebookWebUtils.GetSession(appId, secret, httpRequest);
+            var accessToken = session.AccessToken;
+
+            Assert.Equal("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", accessToken);
+        }
+
         [Fact(DisplayName = "GetSession: Given a http request with valid session cookie and no signed request and valid secret Then it should not return null")]
         public void GetSession_GivenAHttpRequestWithValidSessionCookieAndNoSignedRequestAndValidSecret_ThenItShouldNotReturnNull()
         {

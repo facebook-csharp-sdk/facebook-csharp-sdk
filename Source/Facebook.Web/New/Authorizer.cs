@@ -19,6 +19,11 @@ namespace Facebook.Web.New
         private readonly HttpContextBase httpContext;
 
         /// <summary>
+        /// The facebook session.
+        /// </summary>
+        private FacebookSession session;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Authorizer"/> class.
         /// </summary>
         /// <param name="facebookSettings">
@@ -39,6 +44,18 @@ namespace Facebook.Web.New
 
             this.facebookSettings = facebookSettings;
             this.httpContext = httpContext;
+        }
+
+        /// <summary>
+        /// Gets the facebook session.
+        /// </summary>
+        public FacebookSession Session
+        {
+            get
+            {
+                return this.session ??
+                       (this.session = FacebookWebUtils.GetSession(this.FacebookSettings.AppId, this.FacebookSettings.AppSecret, this.HttpRequest));
+            }
         }
 
         /// <summary>
@@ -96,9 +113,13 @@ namespace Facebook.Web.New
         private void InvarientObject()
         {
             Contract.Invariant(this.facebookSettings != null);
+            Contract.Invariant(!string.IsNullOrEmpty(this.FacebookSettings.AppId));
+            Contract.Invariant(!string.IsNullOrEmpty(this.FacebookSettings.AppSecret));
             Contract.Invariant(this.httpContext != null);
+            Contract.Invariant(this.httpContext.Request.Params != null);
             Contract.Invariant(this.HttpContext.Response != null);
             Contract.Invariant(this.HttpContext.Request != null);
+            Contract.Invariant(this.HttpContext.Request.Params != null);
         }
     }
 }
