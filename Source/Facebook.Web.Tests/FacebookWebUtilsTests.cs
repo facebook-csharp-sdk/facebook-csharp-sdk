@@ -39,8 +39,8 @@ namespace Facebook.Web.Tests
             Assert.NotNull(cookieValue);
         }
 
-        [Fact(DisplayName = "GetSession: Given a http request with no signed request or fb session cookies Then it should return null")]
-        public void GetSession_GivenAHttpRequestWithNoSignedRequestOrFbSessionCookies_ThenItShouldReturnNull()
+        [Fact(DisplayName = "GetSession: Given a http request with no signed request and fb session cookies Then it should return null")]
+        public void GetSession_GivenAHttpRequestWithNoSignedRequestAndFbSessionCookies_ThenItShouldReturnNull()
         {
             var requestParams = new NameValueCollection();
             var request = GetHttpRequest(requestParams);
@@ -53,8 +53,8 @@ namespace Facebook.Web.Tests
         }
 
         [InlineData("543690fae0cd186965412ac4a49548b5", "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0")]
-        [Theory(DisplayName = "GetSession: Given a http request with a valid signed request and valid app secret Then it should not return null")]
-        public void GetSession_GivenAHttpRequestWithAValidSignedRequestAndValidAppSecret_ThenItShouldNotReturnNull(string appSecret, string signedRequestValue)
+        [Theory(DisplayName = "GetSession: Given a http request with a valid signed request and no session cookie and valid app secret Then it should not return null")]
+        public void GetSession_GivenAHttpRequestWithAValidSignedRequestAndNoSessionCookieAndValidAppSecret_ThenItShouldNotReturnNull(string appSecret, string signedRequestValue)
         {
             var requestParams = new NameValueCollection { { "signed_request", signedRequestValue } };
             var request = GetHttpRequest(requestParams);
@@ -66,8 +66,8 @@ namespace Facebook.Web.Tests
         }
 
         [InlineData("Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0")]
-        [Theory(DisplayName = "GetSession: Given a http request with a valid signed request and invalid app secret Then it should throw InvalidOperationException")]
-        public void GetSession_GivenAHttpRequestWithAValidSignedRequestAndInvalidAppSecret_ThenItShouldThrowInvalidOperationException(string signedRequestValue)
+        [Theory(DisplayName = "GetSession: Given a http request with a valid signed request and no session cookie and invalid app secret Then it should throw InvalidOperationException")]
+        public void GetSession_GivenAHttpRequestWithAValidSignedRequestAndNoSessionCookieAndInvalidAppSecret_ThenItShouldThrowInvalidOperationException(string signedRequestValue)
         {
             var requestParams = new NameValueCollection { { "signed_request", signedRequestValue } };
             var request = GetHttpRequest(requestParams);
@@ -75,6 +75,19 @@ namespace Facebook.Web.Tests
             var appSecret = "invalid_secret";
 
             Assert.Throws<InvalidOperationException>(() => FacebookWebUtils.GetSession(appId, appSecret, request));
+        }
+
+        [Fact(DisplayName = "GetSession: Given a http request with valid session cookie and no signed request and valid secret Then it should not return null")]
+        public void GetSession_GivenAHttpRequestWithValidSessionCookieAndNoSignedRequestAndValidSecret_ThenItShouldNotReturnNull()
+        {
+            var appId = "124973200873702";
+            var requestParams = new NameValueCollection { { "fbs_" + appId, "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026" } };
+            var request = GetHttpRequest(requestParams);
+            var appSecert = "3b4a872617be2ae1932baa1d4d240272";
+
+            var session = FacebookWebUtils.GetSession(appId, appSecert, request);
+
+            Assert.NotNull(session);
         }
 
         [InlineData("dummyappid")]

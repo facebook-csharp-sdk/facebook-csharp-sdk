@@ -94,7 +94,7 @@ namespace Facebook.Web
             Contract.Requires(httpRequest != null);
             Contract.Requires(httpRequest.Params != null);
 
-            // try creating session from signed_request
+            // try creating session from signed_request if exists.
             var signedRequest = GetSignedRequest(appSecret, httpRequest);
 
             if (signedRequest != null)
@@ -102,8 +102,14 @@ namespace Facebook.Web
                 return FacebookSession.Create(appSecret, signedRequest);
             }
 
-            // TODO: fallback to cookies
+            // try creating session from cookie if exists.
+            var sessionCookieValue = GetSessionCookieValue(appId, httpRequest);
+            if (!string.IsNullOrEmpty(sessionCookieValue))
+            {
+                return FacebookSession.ParseCookieValue(appSecret, sessionCookieValue);
+            }
 
+            // no facebook session found.
             return null;
         }
 
