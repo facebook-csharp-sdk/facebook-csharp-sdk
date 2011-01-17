@@ -25,7 +25,7 @@ namespace Facebook.Web
         public void ProcessRequest(HttpContext context)
         {
             string queryString = string.Empty;
-            string pathInfo =context.Request.PathInfo;
+            string pathInfo = context.Request.PathInfo;
             if (pathInfo.StartsWith("/cancel", StringComparison.Ordinal))
             {
                 queryString = "cancel=1";

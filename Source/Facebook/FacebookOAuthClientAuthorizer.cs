@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Facebook
 {
     using System;
@@ -184,8 +186,7 @@ namespace Facebook
 
             var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
 
-            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token");
-            uriBuilder.Query = queryString;
+            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token") { Query = queryString.ToString() };
 
             var requestUri = uriBuilder.Uri;
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUri);

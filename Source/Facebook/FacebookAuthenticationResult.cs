@@ -44,6 +44,11 @@ namespace Facebook
         private readonly string code;
 
         /// <summary>
+        /// Gets or sets an opaque state used to maintain application state between the request and callback.
+        /// </summary>
+        private readonly string state;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAuthenticationResult"/> class.
         /// </summary>
         /// <param name="parameters">
@@ -71,7 +76,11 @@ namespace Facebook
             if (parameters.ContainsKey("code"))
             {
                 this.code = parameters["code"].ToString();
-                return;
+            }
+
+            if (parameters.ContainsKey("state"))
+            {
+                this.state = parameters["state"].ToString();
             }
 
             if (parameters.ContainsKey("access_token"))
@@ -136,6 +145,14 @@ namespace Facebook
         public string Code
         {
             get { return this.code; }
+        }
+
+        /// <summary>
+        /// Gets an opaque state used to maintain application state between the request and callback.
+        /// </summary>
+        public string State
+        {
+            get { return this.state; }
         }
 
         /// <summary>
@@ -281,28 +298,23 @@ namespace Facebook
 
         private static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings, bool throws)
         {
-            IDictionary<string, object> parameters;
+            IDictionary<string, object> parameters = null;
 
             try
             {
-                if (uri.AbsoluteUri.StartsWith("http://www.facebook.com/connect/login_success.html"))
+                if (!string.IsNullOrEmpty(uri.Fragment))
                 {
-                    // if it is a desktop login
-                    if (!string.IsNullOrEmpty(uri.Fragment))
-                    {
-                        // contains #access_token so remove #
-                        var queryFragment = uri.Fragment.Substring(1);
-                        parameters = FacebookUtils.ParseUrlQueryString(queryFragment);
-                    }
-                    else
-                    {
-                        // else it is part of querystring
-                        // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
-                        parameters = FacebookUtils.ParseUrlQueryString(uri.Query);
-                    }
-
-                    return new FacebookAuthenticationResult(parameters);
+                    // #access_token and expires_in are in fragement
+                    var fragment = uri.Fragment.Substring(1);
+                    parameters = FacebookUtils.ParseUrlQueryString(fragment);
                 }
+
+                // code, state, error_reason, error and error_description are in query
+                // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
+                var queryPart = FacebookUtils.ParseUrlQueryString(uri.Query);
+                parameters = FacebookUtils.Merge(parameters, queryPart);
+
+                return new FacebookAuthenticationResult(parameters);
             }
             catch
             {

@@ -1,5 +1,7 @@
 namespace Facebook.Web.New
 {
+    using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Web;
@@ -45,6 +47,7 @@ namespace Facebook.Web.New
 
             this.facebookSettings = facebookSettings;
             this.httpContext = httpContext;
+            this.LoginDisplayMode = "page";
         }
 
         /// <summary>
@@ -53,9 +56,24 @@ namespace Facebook.Web.New
         public string Perms { get; set; }
 
         /// <summary>
+        /// Gets or sets the redirect uri.
+        /// </summary>
+        public Uri RedirectUri { get; set; }
+
+        /// <summary>
+        /// Gets or sets the login display mode.
+        /// </summary>
+        public string LoginDisplayMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets an opaque state used to maintain application state between the request and callback.
+        /// </summary>
+        public string State { get; set; }
+
+        /// <summary>
         /// Gets the facebook session.
         /// </summary>
-        public FacebookSession Session
+        public virtual FacebookSession Session
         {
             get
             {
@@ -198,8 +216,35 @@ namespace Facebook.Web.New
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
+            if (this.RedirectUri == null)
+            {
+                // might be good to set the default http handler.
+                throw new Exception("RedirectUri is null.");
+            }
+
             // redirect to facebook login
-            throw new System.NotImplementedException();
+            var oauth = new FacebookOAuthClientAuthorizer
+                            {
+                                ClientId = this.FacebookSettings.AppId,
+                                ClientSecret = this.FacebookSettings.AppSecret,
+                                RedirectUri = this.RedirectUri
+                            };
+
+            var parameters = new Dictionary<string, object>();
+            parameters["display"] = this.LoginDisplayMode;
+
+            if (!string.IsNullOrEmpty(this.Perms))
+            {
+                parameters["scope"] = this.Perms;
+            }
+
+            if (!string.IsNullOrEmpty(this.State))
+            {
+                parameters["state"] = this.State;
+            }
+
+            var loginUrl = oauth.GetLoginUri(parameters);
+            this.HttpResponse.Redirect(loginUrl.ToString());
         }
 
         /// <summary>

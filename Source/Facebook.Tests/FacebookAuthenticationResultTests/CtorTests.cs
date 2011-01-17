@@ -66,20 +66,6 @@ namespace Facebook.FacebookAuthenticationResult.Tests
             Assert.Equal("code", result.Code);
         }
 
-        [Fact(DisplayName = "FacebookAuthenticationResult: Given a dictionary with code and access token Then access token should be null")]
-        public void FacebookAuthenticationResult_GivenADictionaryWithCodeAndAccessToken_ThenAccessTokenShouldBeNull()
-        {
-            var parameters = new Dictionary<string, object>
-                                {
-                                    { "code", "code" },
-                                    { "access_token", "accesstoken" }
-                                };
-
-            var result = new FacebookAuthenticationResult(parameters);
-
-            Assert.Null(result.AccessToken);
-        }
-
         [Fact(DisplayName = "FacebookAuthenticationResult: Given a dictionary with code Then IsSuccess should be true")]
         public void FacebookAuthenticationResult_GivenADictionaryWithCode_ThenIsSuccessShouldBeTrue()
         {
