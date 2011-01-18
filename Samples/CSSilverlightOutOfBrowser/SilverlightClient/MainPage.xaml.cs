@@ -15,7 +15,7 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : UserControl
     {
-        private const string appId = "{your_app_id_here}";
+        private const string appId = "{Put Your App Id Here}";
 
         private string requestedFbPermissions = "user_about_me";
 
@@ -77,10 +77,10 @@ namespace Facebook.Samples.AuthenticationTool
             parms.scope = requestedFbPermissions;
             parms.type = "user_agent";
 
-            // TODO: figure out why this temporary hack is necessary
             loggingInUri = fbApp.GetLoginUrl(parms);
 
-            FacebookLoginBrowser.Source = (loggingInUri);
+            // TODO: figure out why we need this weird hack (it works like this, but by using the loggingInUri by itself it errors out.. sounds like a SL Web Browser issue)
+            FacebookLoginBrowser.Source = new Uri( (loggingInUri).ToString());
         }
 
         private void FacebookLoginBrowser_ScriptNotify(object sender, NotifyEventArgs e)

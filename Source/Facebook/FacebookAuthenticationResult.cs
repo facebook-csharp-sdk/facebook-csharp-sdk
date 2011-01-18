@@ -38,7 +38,16 @@ namespace Facebook
             if (parameters.ContainsKey("expires_in"))
             {
                 var expiresIn = Convert.ToInt64(parameters["expires_in"]);
-                this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
+                if (expiresIn < 1262304000) // Seconds from 1/1/1970 to 1/1/2010, so it will be at least this number if it's a Unix Time
+                {
+                    // So this is NOT a unix time (it's elapsed seconds from now)
+                    this.expires = System.DateTime.Now.AddSeconds(expiresIn);
+                }
+                else
+                {
+                    this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
+                }
+                
             }
 
             if (parameters.ContainsKey("error_reason"))
@@ -125,7 +134,7 @@ namespace Facebook
         public static bool TryParse(Uri uri, IFacebookSettings facebookSettings, out FacebookAuthenticationResult result)
         {
             result = Parse(uri, facebookSettings, false);
-            return result != null;
+            return result.AccessToken != null;
         }
 
         private static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings, bool throws)
@@ -133,8 +142,6 @@ namespace Facebook
             var parameters = new Dictionary<string, object>();
             try
             {
-                if (uri.AbsoluteUri.StartsWith("http://www.facebook.com/connect/login_success.html"))
-                {
                     // if it is a desktop login
                     if (!string.IsNullOrEmpty(uri.Fragment))
                     {
@@ -142,7 +149,7 @@ namespace Facebook
                         var queryFragment = "?" + uri.Fragment.Substring(1);
                         FacebookAppBase.ParseQueryParametersToDictionary(queryFragment, parameters);
                     }
-                    else
+                    else 
                     {
                         // else it is part of querystring
                         // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
@@ -150,7 +157,6 @@ namespace Facebook
                     }
 
                     return new FacebookAuthenticationResult(parameters);
-                }
             }
             catch
             {

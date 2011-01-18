@@ -42,7 +42,7 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Key}"/>
                                 <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap"/>
                             </Grid>
                         </DataTemplate>
