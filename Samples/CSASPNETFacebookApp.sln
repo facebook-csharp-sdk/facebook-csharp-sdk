@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CSASPNETFacebookApp", "CSASPNETFacebookApp", "{889C6BE9-2797-4860-99A8-9A0A1243D98D}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CSASPNETFacebookApp", "CSASPNETFacebookApp\", "{889C6BE9-2797-4860-99A8-9A0A1243D98D}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/CSASPNETFacebookApp"
@@ -19,6 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CSASPNETFacebookApp", "CSAS
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "16151"
+		VWDDynamicPort = "false"
 	EndProjectSection
 EndProject
 Global

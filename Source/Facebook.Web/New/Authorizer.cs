@@ -1,6 +1,5 @@
 namespace Facebook.Web.New
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -48,6 +47,25 @@ namespace Facebook.Web.New
             this.facebookSettings = facebookSettings;
             this.httpContext = httpContext;
             this.LoginDisplayMode = "page";
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        /// <param name="facebookSettings">
+        /// The facebook settings.
+        /// </param>
+        public Authorizer(IFacebookSettings facebookSettings)
+            : this(facebookSettings, new HttpContextWrapper(System.Web.HttpContext.Current))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        public Authorizer()
+            : this(Facebook.FacebookSettings.Current)
+        {
         }
 
         /// <summary>

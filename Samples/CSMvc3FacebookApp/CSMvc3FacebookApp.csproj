@@ -34,14 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook">
-      <HintPath>..\..\Bin\Release\Net40\Facebook.dll</HintPath>
+    <Reference Include="Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\..\Bin\Debug\Net40\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Web">
-      <HintPath>..\..\Bin\Release\Net40\Facebook.Web.dll</HintPath>
+    <Reference Include="Facebook.Web, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\..\Bin\Debug\Net40\Facebook.Web.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Web.Mvc">
-      <HintPath>..\..\Bin\Release\Net40\Facebook.Web.Mvc.dll</HintPath>
+    <Reference Include="Facebook.Web.Mvc, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\..\Bin\Debug\Net40\Facebook.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">

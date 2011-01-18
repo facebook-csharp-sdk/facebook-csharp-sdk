@@ -66,7 +66,11 @@ namespace Facebook.Web.New
         public Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
             var defaultParameters = new Dictionary<string, object>();
-            defaultParameters["display"] = this.LoginDisplayMode;
+
+            if (!string.IsNullOrEmpty(this.LoginDisplayMode))
+            {
+                defaultParameters["display"] = this.LoginDisplayMode;
+            }
 
             if (!string.IsNullOrEmpty(this.Perms))
             {

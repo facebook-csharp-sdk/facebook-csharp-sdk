@@ -24,7 +24,6 @@ namespace Facebook.Samples.HelloWorld.Controllers
         [FacebookAuthorize()]
         public ActionResult About()
         {
-
             var app = new FacebookApp();
 
             dynamic me = app.Get("me");

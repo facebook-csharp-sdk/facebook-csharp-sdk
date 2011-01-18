@@ -4,8 +4,8 @@ namespace Facebook.Web.New
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Web;
     using System.Text;
+    using System.Web;
 
     /// <summary>
     /// Facebook Canvas Url builder.
@@ -205,7 +205,7 @@ namespace Facebook.Web.New
             var oauthJsonState = new JsonObject();
 
             // canvas path and query
-            oauthJsonState["CurrentCanvasPathAndQuery"] = this.CurrentCanvasPathAndQuery;
+            oauthJsonState["CurrentCanvasPathAndQuery"] = string.Concat(this.CanvasPageApplicationPath, this.CurrentCanvasPathAndQuery);
 
             // user state
             if (!string.IsNullOrEmpty(state))
