@@ -56,9 +56,9 @@ namespace Facebook.Web.New
         public string Perms { get; set; }
 
         /// <summary>
-        /// Gets or sets the redirect uri.
+        /// Gets or sets the return url path.
         /// </summary>
-        public Uri RedirectUri { get; set; }
+        public string ReturnUrlPath { get; set; }
 
         /// <summary>
         /// Gets or sets the login display mode.
@@ -216,18 +216,12 @@ namespace Facebook.Web.New
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
-            if (this.RedirectUri == null)
-            {
-                // might be good to set the default http handler.
-                throw new Exception("RedirectUri is null.");
-            }
-
             // redirect to facebook login
             var oauth = new FacebookOAuthClientAuthorizer
                             {
                                 ClientId = this.FacebookSettings.AppId,
                                 ClientSecret = this.FacebookSettings.AppSecret,
-                                RedirectUri = this.RedirectUri
+                                // set the redirect_uri
                             };
 
             var parameters = new Dictionary<string, object>();

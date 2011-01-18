@@ -1,8 +1,11 @@
-﻿using System;
-using System.Web;
-
-namespace Facebook.Web
+﻿namespace Facebook.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+
     /// <summary>
     /// Represents the redirector used after a Facebook canvas authorization.
     /// </summary>
@@ -26,17 +29,37 @@ namespace Facebook.Web
         {
             string queryString = string.Empty;
             string pathInfo = context.Request.PathInfo;
+
             if (pathInfo.StartsWith("/cancel", StringComparison.Ordinal))
             {
                 queryString = "cancel=1";
                 pathInfo = pathInfo.Replace("/cancel", string.Empty);
             }
+
             var uri = new Uri("http://apps.facebook.com" + pathInfo);
-            UriBuilder uriBuilder = new UriBuilder(uri);
-            uriBuilder.Query = queryString;
-            var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url=" 
-                + uriBuilder.Uri.ToString() + 
-                "\"></head></html>";
+            var uriBuilder = new UriBuilder(uri) { Query = queryString };
+
+
+            if (context.Request.QueryString.AllKeys.Contains("state"))
+            {
+                var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
+                var json = (IDictionary<string, object>)JsonSerializer.DeserializeObject(state);
+
+                var returnPathAndQuery = json["CurrentCanvasPathAndQuery"].ToString();
+                if (returnPathAndQuery.Contains("?"))
+                {
+                    var parts = returnPathAndQuery.Split('?');
+                    uriBuilder.Path = parts[0];
+                    uriBuilder.Query = parts[1];
+                }
+                else
+                {
+                    uriBuilder.Path = returnPathAndQuery;
+                }
+            }
+
+            var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url="
+                       + uriBuilder.Uri + "\"></head></html>";
             context.Response.Write(html);
         }
     }

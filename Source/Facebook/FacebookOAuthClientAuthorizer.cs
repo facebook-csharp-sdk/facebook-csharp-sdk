@@ -71,6 +71,13 @@ namespace Facebook
                 throw new InvalidOperationException("redirect_uri required.");
             }
 
+            // seems like if we don't do this and rather pass the original uri object,
+            // it seems to have http://localhost:80/csharpsamples instead of
+            // http://localhost/csharpsamples
+            // notice the port number, that shouldn't be there.
+            // this seems to happen for iis hosted apps.
+            mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
+
             var url = "http://www.facebook.com/dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
 
             return new Uri(url);
