@@ -125,7 +125,7 @@ namespace Facebook.Web.New
             {
                 Contract.Ensures(Contract.Result<string>() != null);
 
-                var pathAndQuery = this.httpRequest.Url.PathAndQuery;
+                var pathAndQuery = this.httpRequest.RawUrl;
                 var appPath = this.CanvasUrl.AbsolutePath.Replace(this.CanvasPageApplicationPath, String.Empty);
                 if (appPath != null && appPath != "/" && appPath.Length > 0)
                 {
@@ -164,10 +164,10 @@ namespace Facebook.Web.New
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
-            //if (this.CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(this.CanvasUrl.PathAndQuery))
-            //{
-            //    pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
-            //}
+            if (this.CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(this.CanvasUrl.PathAndQuery))
+            {
+                pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
+            }
 
             var url = string.Concat(CanvasPage, pathAndQuery);
             if (url.EndsWith("/"))
@@ -205,7 +205,8 @@ namespace Facebook.Web.New
             var oauthJsonState = new JsonObject();
 
             // canvas path and query
-            oauthJsonState["CurrentCanvasPathAndQuery"] = string.Concat(this.CanvasPageApplicationPath, this.CurrentCanvasPathAndQuery);
+            // remove the http://apps.facebook.com/ length 25
+            oauthJsonState["return_path"] = this.CurrentCanvasPage.ToString().Substring(25);
 
             // user state
             if (!string.IsNullOrEmpty(state))

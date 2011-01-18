@@ -36,7 +36,7 @@
                 pathInfo = pathInfo.Replace("/cancel", string.Empty);
             }
 
-            var uri = new Uri("http://apps.facebook.com" + pathInfo);
+            var uri = new Uri("http://apps.facebook.com/");
             var uriBuilder = new UriBuilder(uri) { Query = queryString };
 
 
@@ -45,7 +45,7 @@
                 var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
                 var json = (IDictionary<string, object>)JsonSerializer.DeserializeObject(state);
 
-                var returnPathAndQuery = json["CurrentCanvasPathAndQuery"].ToString();
+                var returnPathAndQuery = json["return_path"].ToString();
                 if (returnPathAndQuery.Contains("?"))
                 {
                     var parts = returnPathAndQuery.Split('?');
