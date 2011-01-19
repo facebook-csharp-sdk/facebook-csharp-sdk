@@ -302,19 +302,31 @@ namespace Facebook
 
             try
             {
+                bool found = false;
                 if (!string.IsNullOrEmpty(uri.Fragment))
                 {
                     // #access_token and expires_in are in fragement
                     var fragment = uri.Fragment.Substring(1);
                     parameters = FacebookUtils.ParseUrlQueryString(fragment);
+                    if (parameters.ContainsKey("access_token"))
+                    {
+                        found = true;
+                    }
                 }
 
                 // code, state, error_reason, error and error_description are in query
                 // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
                 var queryPart = FacebookUtils.ParseUrlQueryString(uri.Query);
-                parameters = FacebookUtils.Merge(parameters, queryPart);
+                if (queryPart.ContainsKey("code") || (queryPart.ContainsKey("error") && queryPart.ContainsKey("error_description")))
+                {
+                    found = true;
+                }
 
-                return new FacebookAuthenticationResult(parameters);
+                if (found)
+                {
+                    parameters = FacebookUtils.Merge(parameters, queryPart);
+                    return new FacebookAuthenticationResult(parameters);
+                }
             }
             catch
             {
