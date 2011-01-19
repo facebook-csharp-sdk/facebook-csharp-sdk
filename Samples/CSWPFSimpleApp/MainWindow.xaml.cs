@@ -21,7 +21,7 @@ namespace Facebook.Samples.AuthenticationTool
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string appId = "{Your Api Id goes here}";
+        private const string appId = "{your app id}";
 
         private string requestedFbPermissions = "user_about_me";
 

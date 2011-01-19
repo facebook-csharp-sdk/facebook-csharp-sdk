@@ -93,7 +93,7 @@ namespace Facebook.Samples.AuthenticationTool
 
             var paramaters = new Dictionary<string, object>
                                 {
-                                    { "response_type", "token" } // add type=user_agent so we don't need to exchange code for access_token
+                                    { "response_type", "token" }
                                 };
 
             var extendedPermissions = this.GetExtendedPermissions();

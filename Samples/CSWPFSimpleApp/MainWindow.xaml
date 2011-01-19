@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto" MinHeight="45" />
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="FACEBOOK C# SDK - Auth &amp; Allow Sample" VerticalAlignment="Top" FontSize="18.667" FontWeight="Bold" Name="TitleBox" />
-        <WebBrowser Grid.Row="1" Name="FacebookLoginBrowser" Loaded="FacebookLoginBrowser_Loaded" />
+        <WebBrowser Grid.Row="1" Name="FacebookLoginBrowser" />
         <ListBox x:Name="InfoBox" MinHeight="600" Grid.Row="2" Visibility="Collapsed">
             <ListBox.ItemTemplate>
                 <DataTemplate>
