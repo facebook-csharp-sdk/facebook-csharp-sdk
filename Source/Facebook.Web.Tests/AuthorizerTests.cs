@@ -4,7 +4,6 @@ namespace Facebook.Web.Tests
     using System.Collections.Specialized;
     using System.Diagnostics.Contracts;
     using System.Web;
-    using Facebook.Web.New;
     using Moq;
     using Xunit;
 

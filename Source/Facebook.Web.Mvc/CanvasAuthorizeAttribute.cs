@@ -1,46 +1,53 @@
-// --------------------------------
-// <copyright file="CanvasAuthorizeAttribute.cs" company="Facebook C# SDK">
-//     Microsoft Public License (Ms-PL)
-// </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
-// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
-// <website>http://facebooksdk.codeplex.com</website>
-// ---------------------------------
-
-using System;
-using System.Web.Mvc;
-
 namespace Facebook.Web.Mvc
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Web.Mvc;
+
     /// <summary>
     /// Provides funcationality for restricting access to controllers or actions based on Facebook permissions.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes")]
-    public class CanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
+    public class CanvasAuthorizeAttribute : FacebookAuthorizeAttribute
     {
+        private readonly ICanvasSettings canvasSettings;
 
         /// <summary>
-        /// Gets or sets the cancel URL path.
+        /// Initializes a new instance of the <see cref="CanvasAuthorizeAttribute"/> class.
         /// </summary>
-        /// <value>The cancel URL path.</value>
-        public string CancelUrlPath { get; set; }
-        /// <summary>
-        /// Gets or sets the return URL path.
-        /// </summary>
-        /// <value>The return URL path.</value>
-        public string ReturnUrlPath { get; set; }
-
-        /// Handles the unauthorized request.
-        /// </summary>
-        /// <param name="facebookApp">The current Facebook App instance.</param>
-        /// <param name="filterContext">The filter context.</param>
-        protected override void HandleUnauthorizedRequest(FacebookApp facebookApp, AuthorizationContext filterContext)
+        /// <param name="facebookSettings">
+        /// The facebook settings.
+        /// </param>
+        public CanvasAuthorizeAttribute(IFacebookSettings facebookSettings, ICanvasSettings canvasSettings)
+            : base(facebookSettings)
         {
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(filterContext.HttpContext.Request);
-            var url = urlBuilder.GetLoginUrl(facebookApp, Perms, ReturnUrlPath, CancelUrlPath, false);
-            filterContext.Result = new CanvasRedirectResult(url.ToString());
+            this.canvasSettings = canvasSettings;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasAuthorizeAttribute"/> class.
+        /// </summary>
+        public CanvasAuthorizeAttribute()
+            : this(Facebook.FacebookSettings.Current, CanvasSettings.Current)
+        {
+        }
+
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        {
+            filterContext.Result = new CanvasRedirectResult(this.GetLoginUrl(null, filterContext.HttpContext).ToString());
+        }
+
+        public Uri GetLoginUrl(IDictionary<string, object> parameters, HttpContextBase httpContext)
+        {
+            var canvasAuthorizer = new CanvasAuthorizer(this.FacebookSettings, this.canvasSettings, httpContext)
+                                       {
+                                           LoginDisplayMode = this.LoginDisplayMode,
+                                           State = this.State,
+                                           Perms = this.Perms
+                                       };
+
+            return canvasAuthorizer.GetLoginUrl(null);
+        }
     }
 }

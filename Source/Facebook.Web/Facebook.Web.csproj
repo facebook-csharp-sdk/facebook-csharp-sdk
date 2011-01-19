@@ -111,19 +111,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorizer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CanvasAuthorizer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CanvasConfigurationSettings.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CanvasSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CanvasUrlBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FacebookAppRedirectHttpHandler.cs">
@@ -136,9 +127,9 @@
     <Compile Include="ICanvasSettings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="New\Authorizer.cs" />
-    <Compile Include="New\CanvasAuthorizer.cs" />
-    <Compile Include="New\CanvasUrlBuilder.cs" />
+    <Compile Include="Authorizer.cs" />
+    <Compile Include="CanvasAuthorizer.cs" />
+    <Compile Include="CanvasUrlBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

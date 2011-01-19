@@ -123,6 +123,17 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApp"/> class.
+        /// </summary>
+        /// <param name="session">
+        /// The session.
+        /// </param>
+        public FacebookApp(FacebookSession session)
+        {
+            this.Session = session;
+        }
+
+        /// <summary>
         /// Gets or sets the maximum number of times to retry an api
         /// call after experiencing a recoverable exception.
         /// </summary>

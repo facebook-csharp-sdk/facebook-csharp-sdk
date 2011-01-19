@@ -1,50 +1,204 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Web;
-using Newtonsoft.Json.Linq;
-
 namespace Facebook.Web
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Web;
+
+    /// <summary>
+    /// Represents the Facebook authorizer class.
+    /// </summary>
     public class Authorizer
     {
-        public FacebookAppBase FacebookApp { get; private set; }
+        /// <summary>
+        /// The Facebook Settings (includes appid and appsecret).
+        /// </summary>
+        private readonly IFacebookSettings facebookSettings;
+
+        /// <summary>
+        /// The http context.
+        /// </summary>
+        private readonly HttpContextBase httpContext;
+
+        /// <summary>
+        /// The facebook session.
+        /// </summary>
+        private FacebookSession session;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        /// <param name="facebookSettings">
+        /// The facebook settings.
+        /// </param>
+        /// <param name="httpContext">
+        /// The http context.
+        /// </param>
+        public Authorizer(IFacebookSettings facebookSettings, HttpContextBase httpContext)
+        {
+            Contract.Requires(facebookSettings != null);
+            Contract.Requires(!string.IsNullOrEmpty(facebookSettings.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(facebookSettings.AppSecret));
+            Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Params != null);
+            Contract.Requires(httpContext.Response != null);
+
+            this.facebookSettings = facebookSettings;
+            this.httpContext = httpContext;
+            this.LoginDisplayMode = "page";
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        /// <param name="facebookSettings">
+        /// The facebook settings.
+        /// </param>
+        public Authorizer(IFacebookSettings facebookSettings)
+            : this(facebookSettings, new HttpContextWrapper(System.Web.HttpContext.Current))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        public Authorizer()
+            : this(Facebook.FacebookSettings.Current)
+        {
+        }
 
         /// <summary>
         /// Gets or sets the extended permissions.
         /// </summary>
-        /// <value>The permissions required.</value>
         public string Perms { get; set; }
 
         /// <summary>
-        /// Gets or sets the cancel URL path.
+        /// Gets or sets the return url path.
         /// </summary>
-        /// <value>The cancel URL path.</value>
-        public string CancelUrlPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the return URL path.
-        /// </summary>
-        /// <value>The return URL path.</value>
         public string ReturnUrlPath { get; set; }
 
-        public Authorizer(FacebookAppBase facebookApp)
-        {
-            Contract.Requires(facebookApp != null);
+        /// <summary>
+        /// Gets or sets the login display mode.
+        /// </summary>
+        public string LoginDisplayMode { get; set; }
 
-            this.FacebookApp = facebookApp;
+        /// <summary>
+        /// Gets or sets an opaque state used to maintain application state between the request and callback.
+        /// </summary>
+        public string State { get; set; }
+
+        /// <summary>
+        /// Gets the facebook session.
+        /// </summary>
+        public virtual FacebookSession Session
+        {
+            get
+            {
+                return this.session ??
+                       (this.session = FacebookWebUtils.GetSession(this.FacebookSettings.AppId, this.FacebookSettings.AppSecret, this.HttpRequest));
+            }
         }
 
+        /// <summary>
+        /// Gets the Facebook Settings (includes appid and appsecret).
+        /// </summary>
+        public IFacebookSettings FacebookSettings
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IFacebookSettings>() != null);
+                return this.facebookSettings;
+            }
+        }
+
+        /// <summary>
+        /// Gets the http context.
+        /// </summary>
+        public HttpContextBase HttpContext
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<HttpContextBase>() != null);
+                return this.httpContext;
+            }
+        }
+
+        /// <summary>
+        /// Gets the http request.
+        /// </summary>
+        protected HttpRequestBase HttpRequest
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<HttpRequestBase>() != null);
+                return this.HttpContext.Request;
+            }
+        }
+
+        /// <summary>
+        /// Gets the http response.
+        /// </summary>
+        protected HttpResponseBase HttpResponse
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<HttpResponseBase>() != null);
+                return this.HttpContext.Response;
+            }
+        }
+
+        /// <summary>
+        /// Check whether the user has the specified permissions.
+        /// </summary>
+        /// <param name="permissions">
+        /// The permissions.
+        /// </param>
+        /// <returns>
+        /// Returns the list of allowed permissions.
+        /// </returns>
+        public virtual string[] HasPermissions(string[] permissions)
+        {
+            Contract.Ensures(Contract.Result<string[]>() != null);
+
+            long userId;
+
+            if (this.Session == null || !long.TryParse(this.Session.UserId, out userId))
+            {
+                return new string[0];
+            }
+
+            return FacebookWebUtils.HasPermissions(this.FacebookSettings.AppId, this.FacebookSettings.AppSecret, userId, permissions);
+        }
+
+        /// <summary>
+        /// Check whether the user has the specified permissions.
+        /// </summary>
+        /// <param name="permission">
+        /// The permission.
+        /// </param>
+        /// <returns>
+        /// Returns true if the user has permission otherwise false.
+        /// </returns>
+        public virtual bool HasPermission(string permission)
+        {
+            return this.HasPermissions(new[] { permission }).Length == 1;
+        }
+
+        /// <summary>
+        /// Checks if the user is authenticated and the application has all the specified permissions.
+        /// </summary>
+        /// <returns>
+        /// Return true if the user is authenticated and the application has all the specified permissions.
+        /// </returns>
         public virtual bool IsAuthorized()
         {
-            bool authenticated = this.FacebookApp.Session != null;
-            if (authenticated && !string.IsNullOrEmpty(Perms))
+            bool isAuthenticated = this.Session != null;
+
+            if (isAuthenticated && !string.IsNullOrEmpty(this.Perms))
             {
-                var requiredPerms = Perms.Replace(" ", String.Empty).Split(',');
-                var currentPerms = HasPermissions(requiredPerms);
+                var requiredPerms = this.Perms.Replace(" ", string.Empty).Split(',');
+                var currentPerms = this.HasPermissions(requiredPerms);
                 foreach (var perm in requiredPerms)
                 {
                     if (!currentPerms.Contains(perm))
@@ -53,94 +207,72 @@ namespace Facebook.Web
                     }
                 }
             }
-            return authenticated;
+
+            return isAuthenticated;
         }
 
-        public virtual bool HasPermission(string permission)
-        {
-            return HasPermissions(new string[] { permission }).Length == 1;
-        }
-
-        public virtual string[] HasPermissions(string[] permissions)
-        {
-            Contract.Requires(permissions != null);
-            Contract.Ensures(Contract.Result<string[]>() != null);
-
-            var result = new string[0];
-            if (FacebookApp.UserId != 0)
-            {
-                var perms = new StringBuilder();
-                for (int i = 0; i < permissions.Length; i++)
-                {
-                    perms.Append(permissions[i]);
-                    if (i < permissions.Length - 1)
-                    {
-                        perms.Append(",");
-                    }
-                }
-                var query = string.Format(CultureInfo.InvariantCulture, "SELECT {0} FROM permissions WHERE uid == {1}", perms.ToString(), FacebookApp.UserId);
-                var parameters = new Dictionary<string, object>();
-                parameters["query"] = query;
-                parameters["method"] = "fql.query";
-                parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.AppSecret);
-                var data = FacebookApp.Get(parameters) as IList<object>;
-                if (data != null && data.Count > 0)
-                {
-                    var permData = data[0] as IDictionary<string, object>;
-                    if (permData != null)
-                    {
-                        result = (from perm in permData
-                                  where perm.Value.ToString() == "1"
-                                  select perm.Key).ToArray();
-                    }
-                }
-            }
-            return result;
-
-        }
-
+        /// <summary>
+        /// Authorizes the user if the user is not logged in or the application does not have all the sepcified permissions.
+        /// </summary>
+        /// <returns>
+        /// Return true if the user is authenticated and the application has all the specified permissions.
+        /// </returns>
         public bool Authorize()
         {
-            Contract.Requires(HttpContext.Current != null);
-
-            return Authorize(HttpContext.Current);
-        }
-
-        public bool Authorize(HttpContext httpContext)
-        {
-            Contract.Requires(httpContext != null);
-
-            var httpContextWrapper = new HttpContextWrapper(httpContext);
-            return Authorize(httpContextWrapper);
-        }
-
-        public bool Authorize(HttpContextBase httpContext)
-        {
-            Contract.Requires(httpContext != null);
-
             var isAuthorized = this.IsAuthorized();
+
             if (!isAuthorized)
             {
-                HandleUnauthorizedRequest(httpContext);
+                this.HandleUnauthorizedRequest();
             }
+
             return isAuthorized;
         }
 
-        public virtual void HandleUnauthorizedRequest(HttpContextBase httpContext)
+        /// <summary>
+        /// Handle unauthorized requests.
+        /// </summary>
+        public virtual void HandleUnauthorizedRequest()
         {
-            // Redirect to cancel URL to login.
-            httpContext.Response.Redirect(CancelUrlPath);
+            // redirect to facebook login
+            var oauth = new FacebookOAuthClientAuthorizer
+                            {
+                                ClientId = this.FacebookSettings.AppId,
+                                ClientSecret = this.FacebookSettings.AppSecret,
+                                // set the redirect_uri
+                            };
+
+            var parameters = new Dictionary<string, object>();
+            parameters["display"] = this.LoginDisplayMode;
+
+            if (!string.IsNullOrEmpty(this.Perms))
+            {
+                parameters["scope"] = this.Perms;
+            }
+
+            if (!string.IsNullOrEmpty(this.State))
+            {
+                parameters["state"] = this.State;
+            }
+
+            var loginUrl = oauth.GetLoginUri(parameters);
+            this.HttpResponse.Redirect(loginUrl.ToString());
         }
 
         /// <summary>
         /// The code contracts invarient object method.
         /// </summary>
         [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]
         private void InvarientObject()
         {
-            Contract.Invariant(this.FacebookApp != null);
+            Contract.Invariant(this.facebookSettings != null);
+            Contract.Invariant(!string.IsNullOrEmpty(this.FacebookSettings.AppId));
+            Contract.Invariant(!string.IsNullOrEmpty(this.FacebookSettings.AppSecret));
+            Contract.Invariant(this.httpContext != null);
+            Contract.Invariant(this.httpContext.Request.Params != null);
+            Contract.Invariant(this.HttpContext.Response != null);
+            Contract.Invariant(this.HttpContext.Request != null);
+            Contract.Invariant(this.HttpContext.Request.Params != null);
         }
-
     }
 }

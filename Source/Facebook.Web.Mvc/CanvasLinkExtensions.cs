@@ -7,16 +7,15 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics.Contracts;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-
 namespace Facebook.Web.Mvc
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
     /// <summary>
     /// Provides extensions for building canvas links.
     /// </summary>
@@ -503,7 +502,7 @@ namespace Facebook.Web.Mvc
                 webUrl = webUrl.Substring(applicationPath.Length);
             }
 
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(requestContext.HttpContext.Request);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
             TagBuilder tagBuilder = new TagBuilder("a")
             {
