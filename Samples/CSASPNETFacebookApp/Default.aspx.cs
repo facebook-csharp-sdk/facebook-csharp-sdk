@@ -15,7 +15,7 @@ public partial class _Default : Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        var auth = new CanvasAuthorizer();
+        var auth = new CanvasAuthorizer { Perms = "user_about_me" };
 
         if (auth.Authorize())
         {
