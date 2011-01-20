@@ -1,6 +1,5 @@
 namespace Facebook.Web
 {
-    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Web;
@@ -46,7 +45,6 @@ namespace Facebook.Web
 
             this.facebookSettings = facebookSettings;
             this.httpContext = httpContext;
-            this.LoginDisplayMode = "page";
         }
 
         /// <summary>
@@ -239,29 +237,7 @@ namespace Facebook.Web
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
-            // redirect to facebook login
-            var oauth = new FacebookOAuthClientAuthorizer
-                            {
-                                ClientId = this.FacebookSettings.AppId,
-                                ClientSecret = this.FacebookSettings.AppSecret,
-                                // set the redirect_uri
-                            };
-
-            var parameters = new Dictionary<string, object>();
-            parameters["display"] = this.LoginDisplayMode;
-
-            if (!string.IsNullOrEmpty(this.Perms))
-            {
-                parameters["scope"] = this.Perms;
-            }
-
-            if (!string.IsNullOrEmpty(this.State))
-            {
-                parameters["state"] = this.State;
-            }
-
-            var loginUrl = oauth.GetLoginUri(parameters);
-            this.HttpResponse.Redirect(loginUrl.ToString());
+            this.HttpResponse.Redirect(this.CancelUrlPath);
         }
 
         /// <summary>

@@ -204,7 +204,6 @@ namespace Facebook.Web
 
             var oauthJsonState = new JsonObject();
 
-            // TODO: override return_path if ReturnUrlPath is defined.
             // remove the http://apps.facebook.com/ length 25
             // make it one letter character so more info can fit in.
             // r -> return_url_path
