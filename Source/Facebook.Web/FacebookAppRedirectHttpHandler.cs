@@ -45,6 +45,7 @@
 
                 if (context.Request.QueryString.AllKeys.Contains("error_reason"))
                 {
+                    // TODO: might be good to append return_url_path
                     redirectUriBuilder.Path = json["c"].ToString();
                     redirectUriBuilder.Query = string.Format(
                         "error_reason={0}&error_denied={1}&error_description={2}",

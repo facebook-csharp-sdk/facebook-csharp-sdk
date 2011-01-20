@@ -44,7 +44,8 @@ namespace Facebook.Web.Mvc
                                        {
                                            LoginDisplayMode = this.LoginDisplayMode,
                                            State = this.State,
-                                           Perms = this.Perms
+                                           Perms = this.Perms,
+                                           CancelUrlPath = this.CancelUrlPath
                                        };
 
             return canvasAuthorizer.GetLoginUrl(null);

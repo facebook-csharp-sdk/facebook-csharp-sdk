@@ -56,6 +56,11 @@ namespace Facebook.Web.Mvc
         public string State { get; set; }
 
         /// <summary>
+        /// Gets or sets the cancel url path.
+        /// </summary>
+        public string CancelUrlPath { get; set; }
+
+        /// <summary>
         /// Gets the Facebook Settings (includes appid and appsecret).
         /// </summary>
         public IFacebookSettings FacebookSettings
