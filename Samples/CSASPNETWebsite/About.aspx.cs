@@ -14,12 +14,17 @@ namespace CSASPNETWebsite
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            FacebookApp app = new FacebookApp();
-            Authorizer authorizer = new Authorizer(app);
+            var authorizer = new Authorizer();
+
             if (!authorizer.IsAuthorized())
             {
                 Response.Redirect("~/Account/Login.aspx?returnUrl=" + HttpUtility.UrlEncode(Request.Url.PathAndQuery));
             }
+
+            var fb = new FacebookApp(authorizer.Session);
+
+            dynamic me = fb.Get("/me");
+            lblName.Text = me.name;
         }
     }
 }

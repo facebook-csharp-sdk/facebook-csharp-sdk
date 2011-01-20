@@ -14,8 +14,8 @@ namespace CSASPNETWebsite.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            FacebookApp app = new FacebookApp();
-            Authorizer authorizer = new Authorizer(app);
+            var authorizer = new Authorizer();
+
             if (authorizer.IsAuthorized())
             {
                 Response.Redirect(HttpUtility.UrlDecode(Request.QueryString["returnUrl"] ?? "/"));
