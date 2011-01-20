@@ -13,7 +13,7 @@
 
         if (appPath == requestPath)
         {
-            var query = context.Request.Url.Query ?? "";
+            var query = context.Request.Url.Query;
             if (query.StartsWith("?"))
             {
                 query = query.Substring(1);
@@ -27,7 +27,7 @@
     {
         // Incase you are running in cassini (visual studio webserver) make sure you call this method,
         // for apps running under iis this doesn't need to be called.
-        // FacebookAspNetWebFormsCanvasFormPostFix(HttpContext.Current);
+         FacebookAspNetWebFormsCanvasFormPostFix(HttpContext.Current);
     }
 
     void Application_Start(object sender, EventArgs e)
