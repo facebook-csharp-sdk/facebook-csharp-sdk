@@ -46,12 +46,21 @@
                 if (context.Request.QueryString.AllKeys.Contains("error_reason"))
                 {
                     // TODO: might be good to append return_url_path
-                    redirectUriBuilder.Path = json["c"].ToString();
-                    redirectUriBuilder.Query = string.Format(
-                        "error_reason={0}&error_denied={1}&error_description={2}",
-                        context.Request.QueryString["error_reason"],
-                        context.Request.QueryString["error"],
-                        FacebookUtils.UrlEncode(context.Request.QueryString["error_description"]));
+                    if (json.ContainsKey("c"))
+                    {
+                        // if there is cancel url path.
+                        redirectUriBuilder.Path = json["c"].ToString();
+                        redirectUriBuilder.Query = string.Format(
+                            "error_reason={0}&error_denied={1}&error_description={2}",
+                            context.Request.QueryString["error_reason"],
+                            context.Request.QueryString["error"],
+                            FacebookUtils.UrlEncode(context.Request.QueryString["error_description"]));
+                    }
+                    else
+                    {
+                        // if there is no cancel url path.
+                        redirectUriBuilder = new UriBuilder("http://www.facebook.com");
+                    }
                 }
                 else
                 {

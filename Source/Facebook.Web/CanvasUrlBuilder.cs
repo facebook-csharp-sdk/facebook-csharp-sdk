@@ -212,10 +212,18 @@ namespace Facebook.Web
             // s -> user_state
             oauthJsonState["r"] = this.CurrentCanvasPage.ToString().Substring(25);
 
-            // remote the first /
-            oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
+            if (string.IsNullOrEmpty(cancelUrlPath))
+            {
+                // if cancelUrlPath is null, use the cancelUrlPath from settings
+                cancelUrlPath = this.canvasSettings.CancelUrlPath;
+            }
+
             if (!string.IsNullOrEmpty(cancelUrlPath))
             {
+                // remove the first /
+                oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
+
+                // then if it is not empty add it to json
                 if (!cancelUrlPath.StartsWith("/"))
                 {
                     oauthJsonState["c"] += "/";

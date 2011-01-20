@@ -23,7 +23,7 @@ namespace Facebook.Web
         /// The url to return the user after they
         /// cancel authorization.
         /// </summary>
-        public Uri AuthorizeCancelUrl { get; set; }
+        public string CancelUrlPath { get; set; }
 
         private static ICanvasSettings current;
 

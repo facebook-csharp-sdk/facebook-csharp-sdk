@@ -95,3 +95,18 @@ vNext
 		   (for non-sliverlight builds only)
 		b. internal static FacebookSession ParseCookieValue(string appSecret, string cookieValue);
 		   (for non-sliverlight builds only)
+
+6. ICanvasSettings
+	 a. removed AuthorizeCancelUrl.
+	 b. added CancelUrlPath
+			this is the path to redirect when there is an error such as user denies access
+			to the application.
+
+			if the canvas url is http://apps.facebook.com/sampleapp/
+			and the CancelUrlPath is "/fbcancel"
+			the the user will be redirected to http://apps.facebook.com/sampleapp/fbcancel
+			
+			if CancelUrlPath is empty it looks at the web.config cancelUrlPath and if both
+			are empty it will redirect to http://www.facebook.com
+
+7. Migrated Facebook.dll to client only profile.

@@ -34,11 +34,11 @@ namespace Facebook.Web
         /// The url to return the user after they
         /// cancel authorization.
         /// </summary>
-        [ConfigurationProperty("authorizeCancelUrl", IsRequired = false, DefaultValue = null)]
-        public Uri AuthorizeCancelUrl
+        [ConfigurationProperty("cancelUrlPath", IsRequired = false, DefaultValue = null)]
+        public string CancelUrlPath
         {
-            get { return (Uri)this["authorizeCancelUrl"]; }
-            set { this["authorizeCancelUrl"] = value; }
+            get { return (string)this["cancelUrlPath"]; }
+            set { this["cancelUrlPath"] = value; }
         }
 
     }

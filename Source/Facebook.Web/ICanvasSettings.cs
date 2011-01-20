@@ -24,7 +24,7 @@ namespace Facebook.Web
         /// The url to return the user after they
         /// cancel authorization.
         /// </summary>
-        Uri AuthorizeCancelUrl { get; set; }
+        string CancelUrlPath { get; set; }
     }
 
 #pragma warning disable 1591
@@ -54,11 +54,11 @@ namespace Facebook.Web
             }
         }
 
-        public Uri AuthorizeCancelUrl
+        public string CancelUrlPath
         {
             get
             {
-                return default(Uri);
+                return default(string);
             }
             set
             {
