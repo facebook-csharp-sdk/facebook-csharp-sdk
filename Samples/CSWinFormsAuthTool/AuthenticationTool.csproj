@@ -216,10 +216,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\..\Bin\Release\Net40Client\Facebook.dll</HintPath>
+      <HintPath>..\..\Bin\Release\Net40\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Bin\Release\Net40Client\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\Bin\Release\Net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
