@@ -169,7 +169,7 @@ namespace Facebook.Web
                 pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
             }
 
-            var url = string.Concat(CanvasPage, pathAndQuery);
+            var url = string.Concat(this.CanvasPage, pathAndQuery);
             if (url.EndsWith("/"))
             {
                 url = url.Substring(0, url.Length - 1);
@@ -210,7 +210,24 @@ namespace Facebook.Web
             // r -> return_url_path
             // c -> cancel_url_path
             // s -> user_state
-            oauthJsonState["r"] = this.CurrentCanvasPage.ToString().Substring(25);
+
+            if (!string.IsNullOrEmpty(returnUrlPath))
+            {
+                // remove the starting /
+                oauthJsonState["r"] = this.CanvasPageApplicationPath.Substring(1);
+
+                // then return url path doesnt start with / add it
+                if (!returnUrlPath.StartsWith("/"))
+                {
+                    oauthJsonState["r"] += "/";
+                }
+
+                oauthJsonState["r"] += returnUrlPath;
+            }
+            else
+            {
+                oauthJsonState["r"] = this.CurrentCanvasPage.ToString().Substring(25);
+            }
 
             if (string.IsNullOrEmpty(cancelUrlPath))
             {
@@ -223,7 +240,6 @@ namespace Facebook.Web
                 // remove the first /
                 oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
 
-                // then if it is not empty add it to json
                 if (!cancelUrlPath.StartsWith("/"))
                 {
                     oauthJsonState["c"] += "/";
