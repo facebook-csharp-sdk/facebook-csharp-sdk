@@ -190,46 +190,15 @@ namespace Facebook
         /// <param name="uri">
         /// The uri.
         /// </param>
-        /// <returns>
-        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
-        /// </returns>
-        public static FacebookAuthenticationResult Parse(Uri uri)
-        {
-            return Parse(uri, null);
-        }
-
-        /// <summary>
-        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
-        /// </summary>
-        /// <param name="uri">
-        /// The uri.
-        /// </param>
         /// <param name="facebookSettings">
         /// The facebook settings.
         /// </param>
         /// <returns>
         /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
         /// </returns>
-        public static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings)
+        public static FacebookAuthenticationResult Parse(Uri uri)
         {
-            return Parse(uri, facebookSettings, true);
-        }
-
-        /// <summary>
-        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
-        /// </summary>
-        /// <param name="uriString">
-        /// The uri string.
-        /// </param>
-        /// <param name="result">
-        /// An instance of <see cref="FacebookAuthenticationResult"/>.
-        /// </param>
-        /// <returns>
-        /// Returns true if parsing was successful otherwise false.
-        /// </returns>
-        public static bool TryParse(string uriString, out FacebookAuthenticationResult result)
-        {
-            return TryParse(uriString, null, out result);
+            return Parse(uri, true);
         }
 
         /// <summary>
@@ -247,32 +216,15 @@ namespace Facebook
         /// <returns>
         /// Returns true if parsing was successful otherwise false.
         /// </returns>
-        public static bool TryParse(string uriString, IFacebookSettings settings, out FacebookAuthenticationResult result)
+        public static bool TryParse(string uriString, out FacebookAuthenticationResult result)
         {
             if (Uri.IsWellFormedUriString(uriString, UriKind.RelativeOrAbsolute))
             {
-                return TryParse(new Uri(uriString), settings, out result);
+                return TryParse(new Uri(uriString), out result);
             }
 
             result = null;
             return false;
-        }
-
-        /// <summary>
-        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
-        /// </summary>
-        /// <param name="uri">
-        /// The uri.
-        /// </param>
-        /// <param name="result">
-        /// An instance of <see cref="FacebookAuthenticationResult"/>.
-        /// </param>
-        /// <returns>
-        /// Returns true if parsing was successful otherwise false.
-        /// </returns>
-        public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
-        {
-            return TryParse(uri, null, out result);
         }
 
         /// <summary>
@@ -290,13 +242,13 @@ namespace Facebook
         /// <returns>
         /// Returns true if parsing was successful otherwise false.
         /// </returns>
-        public static bool TryParse(Uri uri, IFacebookSettings facebookSettings, out FacebookAuthenticationResult result)
+        public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
         {
-            result = Parse(uri, facebookSettings, false);
+            result = Parse(uri, false);
             return result != null;
         }
 
-        private static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings, bool throws)
+        private static FacebookAuthenticationResult Parse(Uri uri, bool throws)
         {
             IDictionary<string, object> parameters = null;
 

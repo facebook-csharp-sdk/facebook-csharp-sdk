@@ -14,13 +14,8 @@ namespace Facebook.Web.Tests
         {
             var requestParams = new NameValueCollection();
             var httpContext = GetHttpContext(requestParams);
-            var settings = new FacebookSettings
-                               {
-                                   AppId = "dummy",
-                                   AppSecret = "dummy"
-                               };
 
-            var authorizer = new Authorizer(settings, httpContext);
+            var authorizer = new Authorizer("dummy", "dummy", httpContext);
             var session = authorizer.Session;
 
             Assert.Null(session);
@@ -35,13 +30,8 @@ namespace Facebook.Web.Tests
                                     };
 
             var httpContext = GetHttpContext(requestParams);
-            var settings = new FacebookSettings
-            {
-                AppId = "dummy",
-                AppSecret = "543690fae0cd186965412ac4a49548b5"
-            };
 
-            var authorizer = new Authorizer(settings, httpContext);
+            var authorizer = new Authorizer("dummy", "543690fae0cd186965412ac4a49548b5", httpContext);
             var session = authorizer.Session;
 
             Assert.NotNull(session);
@@ -56,13 +46,7 @@ namespace Facebook.Web.Tests
                                     };
 
             var httpContext = GetHttpContext(requestParams);
-            var settings = new FacebookSettings
-            {
-                AppId = "dummy",
-                AppSecret = "invalid_secret"
-            };
-
-            var authorizer = new Authorizer(settings, httpContext);
+            var authorizer = new Authorizer("dummy", "invalid_secret", httpContext);
 
             Assert.Throws<InvalidOperationException>(() => authorizer.Session);
         }
@@ -71,16 +55,12 @@ namespace Facebook.Web.Tests
         public void Session_GivenARequestWithValidSessionCookieAndNoSignedRequestAndValidSecret_ThenItShouldNotReturnNull()
         {
             var appId = "124973200873702";
+            var appSecret = "3b4a872617be2ae1932baa1d4d240272";
             var requestParams = new NameValueCollection { { "fbs_" + appId, "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026" } };
 
             var httpContext = GetHttpContext(requestParams);
-            var settings = new FacebookSettings
-            {
-                AppId = appId,
-                AppSecret = "3b4a872617be2ae1932baa1d4d240272"
-            };
 
-            var authorizer = new Authorizer(settings, httpContext);
+            var authorizer = new Authorizer(appId, appSecret, httpContext);
             var session = authorizer.Session;
 
             Assert.NotNull(session);
@@ -97,13 +77,8 @@ namespace Facebook.Web.Tests
                                         { "fbs_" + appId, "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026" }
                                     };
             var httpContext = GetHttpContext(requestParams);
-            var settings = new FacebookSettings
-            {
-                AppId = appId,
-                AppSecret = secret
-            };
 
-            var authorizer = new Authorizer(settings, httpContext);
+            var authorizer = new Authorizer(appId, secret, httpContext);
             var session = authorizer.Session;
 
             Assert.NotNull(session);
@@ -120,13 +95,8 @@ namespace Facebook.Web.Tests
                                         { "fbs_" + appId, "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026" }
                                     };
             var httpContext = GetHttpContext(requestParams);
-            var settings = new FacebookSettings
-                              {
-                                  AppId = appId,
-                                  AppSecret = secret
-                              };
 
-            var authorizer = new Authorizer(settings, httpContext);
+            var authorizer = new Authorizer(appId, secret, httpContext);
             var session = authorizer.Session;
             var accessToken = session.AccessToken;
 

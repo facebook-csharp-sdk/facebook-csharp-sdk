@@ -47,7 +47,7 @@ namespace Facebook.External {
 	// CAS - no InheritanceDemand here as the class is sealed
 	[AspNetHostingPermission (SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 #endif
-	public sealed class HttpUtility
+	internal sealed class HttpUtility
 	{
 		sealed class HttpQSCollection : NameValueCollection
 		{

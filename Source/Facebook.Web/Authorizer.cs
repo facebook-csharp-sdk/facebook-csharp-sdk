@@ -10,11 +10,6 @@ namespace Facebook.Web
     public class Authorizer
     {
         /// <summary>
-        /// The Facebook Settings (includes appid and appsecret).
-        /// </summary>
-        private readonly IFacebookSettings facebookSettings;
-
-        /// <summary>
         /// The http context.
         /// </summary>
         private readonly HttpContextBase httpContext;
@@ -23,6 +18,9 @@ namespace Facebook.Web
         /// The facebook session.
         /// </summary>
         private FacebookSession session;
+
+        public string AppId { get; set; }
+        public string AppSecret { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Authorizer"/> class.
@@ -33,17 +31,17 @@ namespace Facebook.Web
         /// <param name="httpContext">
         /// The http context.
         /// </param>
-        public Authorizer(IFacebookSettings facebookSettings, HttpContextBase httpContext)
+        public Authorizer(string appId, string appSecret, HttpContextBase httpContext)
         {
-            Contract.Requires(facebookSettings != null);
-            Contract.Requires(!string.IsNullOrEmpty(facebookSettings.AppId));
-            Contract.Requires(!string.IsNullOrEmpty(facebookSettings.AppSecret));
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(!string.IsNullOrEmpty(appSecret));
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Request != null);
             Contract.Requires(httpContext.Request.Params != null);
             Contract.Requires(httpContext.Response != null);
 
-            this.facebookSettings = facebookSettings;
+            this.AppId = appId;
+            this.AppSecret = appSecret;
             this.httpContext = httpContext;
         }
 
@@ -53,16 +51,8 @@ namespace Facebook.Web
         /// <param name="facebookSettings">
         /// The facebook settings.
         /// </param>
-        public Authorizer(IFacebookSettings facebookSettings)
-            : this(facebookSettings, new HttpContextWrapper(System.Web.HttpContext.Current))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Authorizer"/> class.
-        /// </summary>
-        public Authorizer()
-            : this(Facebook.FacebookSettings.Current)
+        public Authorizer(string appId, string appSecret)
+            : this(appId, appSecret, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
@@ -99,19 +89,7 @@ namespace Facebook.Web
             get
             {
                 return this.session ??
-                       (this.session = FacebookWebUtils.GetSession(this.FacebookSettings.AppId, this.FacebookSettings.AppSecret, this.HttpRequest));
-            }
-        }
-
-        /// <summary>
-        /// Gets the Facebook Settings (includes appid and appsecret).
-        /// </summary>
-        public IFacebookSettings FacebookSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IFacebookSettings>() != null);
-                return this.facebookSettings;
+                       (this.session = FacebookWebUtils.GetSession(this.AppId, this.AppSecret, this.HttpRequest));
             }
         }
 
@@ -171,7 +149,7 @@ namespace Facebook.Web
                 return new string[0];
             }
 
-            return FacebookWebUtils.HasPermissions(this.FacebookSettings.AppId, this.FacebookSettings.AppSecret, userId, permissions);
+            return FacebookWebUtils.HasPermissions(this.AppId, this.AppSecret, userId, permissions);
         }
 
         /// <summary>
@@ -246,9 +224,8 @@ namespace Facebook.Web
         [ContractInvariantMethod]
         private void InvarientObject()
         {
-            Contract.Invariant(this.facebookSettings != null);
-            Contract.Invariant(!string.IsNullOrEmpty(this.FacebookSettings.AppId));
-            Contract.Invariant(!string.IsNullOrEmpty(this.FacebookSettings.AppSecret));
+            Contract.Invariant(!string.IsNullOrEmpty(this.AppId));
+            Contract.Invariant(!string.IsNullOrEmpty(this.AppSecret));
             Contract.Invariant(this.httpContext != null);
             Contract.Invariant(this.httpContext.Request.Params != null);
             Contract.Invariant(this.HttpContext.Response != null);

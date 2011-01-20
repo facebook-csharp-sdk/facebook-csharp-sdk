@@ -10,10 +10,7 @@
         public FqlReadTests()
         {
             app = new FacebookApp();
-            app.Session = new FacebookSession
-            {
-                AccessToken = ConfigurationManager.AppSettings["AccessToken"],
-            };
+            app.AccessToken = ConfigurationManager.AppSettings["AccessToken"];
         }
 
         [Fact]
@@ -37,11 +34,13 @@
         // [TestCategory("RequiresOAuth")]
         public void Read_Permissions()
         {
+            string appId = "";
+            string appSecret = "";
             var query = string.Format("SELECT {0} FROM permissions WHERE uid == '{1}'", "email", "120625701301347");
             var parameters = new Dictionary<string, object>();
             parameters["query"] = query;
             parameters["method"] = "fql.query";
-            parameters["access_token"] = string.Concat(app.AppId, "|", app.AppSecret);
+            parameters["access_token"] = string.Concat(appId, "|", appSecret);
             dynamic result = app.Get(parameters);
             Assert.NotNull(result);
         }

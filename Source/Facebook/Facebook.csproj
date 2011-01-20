@@ -121,7 +121,6 @@
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookAuthenticationResult.cs" />
-    <Compile Include="FacebookConfigurationSection.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookUtils.cs" />
@@ -139,9 +138,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="FacebookSession.cs" />
-    <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
-    <Compile Include="IFacebookSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

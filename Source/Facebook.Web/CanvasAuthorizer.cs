@@ -27,12 +27,11 @@ namespace Facebook.Web
         /// <param name="httpContext">
         /// The http context.
         /// </param>
-        public CanvasAuthorizer(IFacebookSettings facebookSettings, ICanvasSettings canvasSettings, HttpContextBase httpContext)
-            : base(facebookSettings, httpContext)
+        public CanvasAuthorizer(string appId, string appSecret, ICanvasSettings canvasSettings, HttpContextBase httpContext)
+            : base(appId, appSecret, httpContext)
         {
-            Contract.Requires(facebookSettings != null);
-            Contract.Requires(!string.IsNullOrEmpty(facebookSettings.AppId));
-            Contract.Requires(!string.IsNullOrEmpty(facebookSettings.AppSecret));
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(!string.IsNullOrEmpty(appSecret));
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Request != null);
             Contract.Requires(httpContext.Request.Params != null);
@@ -45,8 +44,8 @@ namespace Facebook.Web
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class.
         /// </summary>
-        public CanvasAuthorizer()
-            : this(Facebook.FacebookSettings.Current, Web.CanvasSettings.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
+        public CanvasAuthorizer(string appId, string appSecret)
+            : this(appId, appSecret, Web.CanvasSettings.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
@@ -86,7 +85,7 @@ namespace Facebook.Web
             }
 
             var urlBuilder = new CanvasUrlBuilder(this.canvasSettings, this.HttpRequest);
-            return urlBuilder.GetLoginUrl(this.FacebookSettings, this.ReturnUrlPath, this.CancelUrlPath, this.State, defaultParameters);
+            return urlBuilder.GetLoginUrl(this.AppId, this.AppSecret, this.ReturnUrlPath, this.CancelUrlPath, this.State, defaultParameters);
         }
 
         [ContractInvariantMethod]

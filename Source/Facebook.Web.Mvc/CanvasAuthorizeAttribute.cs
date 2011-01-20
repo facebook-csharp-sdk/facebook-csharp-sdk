@@ -19,8 +19,8 @@ namespace Facebook.Web.Mvc
         /// <param name="facebookSettings">
         /// The facebook settings.
         /// </param>
-        public CanvasAuthorizeAttribute(IFacebookSettings facebookSettings, ICanvasSettings canvasSettings)
-            : base(facebookSettings)
+        public CanvasAuthorizeAttribute(string appId, string appSecret, ICanvasSettings canvasSettings)
+            : base(appId, appSecret)
         {
             this.canvasSettings = canvasSettings;
         }
@@ -28,8 +28,8 @@ namespace Facebook.Web.Mvc
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasAuthorizeAttribute"/> class.
         /// </summary>
-        public CanvasAuthorizeAttribute()
-            : this(Facebook.FacebookSettings.Current, CanvasSettings.Current)
+        public CanvasAuthorizeAttribute(string appId, string appSecret)
+            : this(appId, appSecret, CanvasSettings.Current)
         {
         }
 
@@ -40,7 +40,7 @@ namespace Facebook.Web.Mvc
 
         public Uri GetLoginUrl(IDictionary<string, object> parameters, HttpContextBase httpContext)
         {
-            var canvasAuthorizer = new CanvasAuthorizer(this.FacebookSettings, this.canvasSettings, httpContext)
+            var canvasAuthorizer = new CanvasAuthorizer(this.AppId, this.AppSecret, this.canvasSettings, httpContext)
                                        {
                                            LoginDisplayMode = this.LoginDisplayMode,
                                            State = this.State,

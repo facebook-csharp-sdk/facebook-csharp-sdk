@@ -44,7 +44,6 @@ namespace Facebook
         {
             "OAuthException", // Graph OAuth Exception
             "190", // Rest OAuth Exception
-            "Unknown", // No error info returned by facebook.
         };
 
         /// <summary>
@@ -63,57 +62,35 @@ namespace Facebook
         private FacebookSession session;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>
-        /// class with values stored in the application configuration file
-        /// or with only the default values if the configuration
-        /// file does not have the values set.
+        /// Initializes a new instance of the <see cref="FacebookApp"/>.
         /// </summary>
         public FacebookApp()
         {
-#if !SILVERLIGHT // Silverlight does not support System.Configuration
-            var settings = FacebookSettings.Current;
-            if (settings != null)
-            {
-                this.ApplySettings(settings);
-            }
-#endif
+
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>
-        /// class with values provided. Does not require configuration
-        /// file to be set.
-        /// </summary>
-        /// <param name="settings">The facebook settings for the application.</param>
-        public FacebookApp(IFacebookSettings settings)
-        {
-            Contract.Requires(settings != null);
-
-            this.ApplySettings(settings);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>
-        /// class with only an access_token set. From this state
-        /// sessions will not be accessable.
+        /// Initializes a new instance of the <see cref="FacebookApp"/>.
         /// </summary>
         /// <param name="accessToken">The Facebook access token.</param>
         public FacebookApp(string accessToken)
         {
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
 
-            this.Session = new FacebookSession(accessToken);
+            this.AccessToken = accessToken;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/> class.
+        /// Initializes a new instance of the <see cref="FacebookApp"/>.
         /// </summary>
-        /// <param name="session">
-        /// The session.
-        /// </param>
-        public FacebookApp(FacebookSession session)
+        /// <param name="appId">The Facebook application id.</param>
+        /// <param name="appSecret">The Facebook application secret.</param>
+        public FacebookApp(string appId, string appSecret)
         {
-            this.Session = session;
+            Contract.Requires(!String.IsNullOrEmpty(appId));
+            Contract.Requires(!String.IsNullOrEmpty(appSecret));
+
+            this.AccessToken = String.Concat(appId, "|", appSecret);
         }
 
         /// <summary>
@@ -173,8 +150,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
-            this.AddRestParameters(parameters);
-
+            // Set the format to json
+            parameters["format"] = "json-strings";
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
             return this.OAuthRequest(uri, parameters, httpMethod, resultType, true);
         }
@@ -222,8 +199,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override void RestServerAsync(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
-            this.AddRestParameters(parameters);
-
+            // Set the format to json
+            parameters["format"] = "json-strings";
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
 
             this.OAuthRequestAsync(uri, parameters, httpMethod, resultType, true, callback, state);
@@ -654,31 +631,6 @@ namespace Facebook
                 callback(new FacebookAsyncResult(data, state, asyncResult.AsyncWaitHandle, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));
 #endif
             }
-        }
-
-        /// <summary>
-        /// Adds the standard REST requset parameters.
-        /// </summary>
-        /// <param name="parameters">The parameters object.</param>
-        private void AddRestParameters(IDictionary<string, object> parameters)
-        {
-            parameters["api_key"] = this.AppId;
-            parameters["format"] = "json-strings";
-        }
-
-        /// <summary>
-        /// Applies the Facebook settings to the
-        /// properties of this object.
-        /// </summary>
-        /// <param name="settings">The Facebook settings.</param>
-        private void ApplySettings(IFacebookSettings settings)
-        {
-            Contract.Requires(settings != null);
-
-            this.AppId = settings.AppId;
-            this.AppSecret = settings.AppSecret;
-            this.retryDelay = settings.RetryDelay == -1 ? this.retryDelay : settings.RetryDelay;
-            this.maxRetries = settings.MaxRetries == -1 ? this.maxRetries : settings.MaxRetries;
         }
 
         /// <summary>

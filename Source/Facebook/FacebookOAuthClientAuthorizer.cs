@@ -12,8 +12,6 @@ namespace Facebook
     /// </summary>
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
     {
-        #region Implementation of IOAuthClientAuthorizer
-
         /// <summary>
         /// Gets or sets the client id.
         /// </summary>
@@ -333,7 +331,5 @@ namespace Facebook
         {
             this.ExchangeCodeForAccessTokenAsync(code, parameters, callback, null);
         }
-
-        #endregion
     }
 }

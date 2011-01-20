@@ -39,10 +39,7 @@ namespace Facebook.Tests.Graph
         {
             app = new FacebookApp();
             app.MaxRetries = 0;
-            app.Session = new FacebookSession
-            {
-                AccessToken = ConfigurationManager.AppSettings["AccessToken"],
-            };
+            app.AccessToken = ConfigurationManager.AppSettings["AccessToken"];
         }
 
         [Fact]

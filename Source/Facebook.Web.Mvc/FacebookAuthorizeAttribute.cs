@@ -4,6 +4,7 @@ namespace Facebook.Web.Mvc
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the base class for restricting access to controllers or actions based on Facebook permissions.
@@ -11,15 +12,14 @@ namespace Facebook.Web.Mvc
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class FacebookAuthorizeAttribute : ActionFilterAttribute, IAuthorizationFilter
     {
-        /// <summary>
-        /// The Facebook Settings (includes appid and appsecret).
-        /// </summary>
-        private readonly IFacebookSettings facebookSettings;
 
         /// <summary>
         /// The facebook session.
         /// </summary>
         private FacebookSession session;
+
+        public string AppId { get; set; }
+        public string AppSecret { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAuthorizeAttribute"/> class.
@@ -27,17 +27,13 @@ namespace Facebook.Web.Mvc
         /// <param name="facebookSettings">
         /// The facebook settings.
         /// </param>
-        public FacebookAuthorizeAttribute(IFacebookSettings facebookSettings)
+        public FacebookAuthorizeAttribute(string appId, string appSecret)
         {
-            this.facebookSettings = facebookSettings;
-        }
+            Contract.Requires(!String.IsNullOrEmpty(appId));
+            Contract.Requires(!String.IsNullOrEmpty(appSecret));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookAuthorizeAttribute"/> class.
-        /// </summary>
-        public FacebookAuthorizeAttribute()
-            : this(Facebook.FacebookSettings.Current)
-        {
+            this.AppId = appId;
+            this.AppSecret = appSecret;
         }
 
         /// <summary>
@@ -61,23 +57,12 @@ namespace Facebook.Web.Mvc
         public string CancelUrlPath { get; set; }
 
         /// <summary>
-        /// Gets the Facebook Settings (includes appid and appsecret).
-        /// </summary>
-        public IFacebookSettings FacebookSettings
-        {
-            get
-            {
-                return this.facebookSettings;
-            }
-        }
-
-        /// <summary>
         /// Called when authorization is required.
         /// </summary>
         /// <param name="filterContext">The filter context.</param>
         public virtual void OnAuthorization(AuthorizationContext filterContext)
         {
-            var authorizer = new Authorizer(this.facebookSettings, filterContext.HttpContext);
+            var authorizer = new Authorizer(this.AppId, this.AppSecret, filterContext.HttpContext);
             if (!authorizer.IsAuthorized())
             {
                 this.HandleUnauthorizedRequest(filterContext);
@@ -89,8 +74,8 @@ namespace Facebook.Web.Mvc
             // redirect to facebook login
             var oauth = new FacebookOAuthClientAuthorizer
             {
-                ClientId = this.FacebookSettings.AppId,
-                ClientSecret = this.FacebookSettings.AppSecret,
+                ClientId = this.AppId,
+                ClientSecret = this.AppSecret,
                 // set the redirect_uri
             };
 

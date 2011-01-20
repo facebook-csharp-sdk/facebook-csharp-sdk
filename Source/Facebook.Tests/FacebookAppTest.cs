@@ -213,48 +213,5 @@
 
             Assert.Equal(pathWithoutForwardSlashAndQueryString, path);
         }
-
-        [Fact(DisplayName = "FacebookApp: Given a valid access token The session user id should not be null")]
-        public void FacebookApp_GivenAValidAccessToken_TheSessionUserIdShouldNotBeNull()
-        {
-            var fb = new FacebookApp("1249203702|2.h1MTNeLqcLqw__.86400.129394400-605430316|-WE1iH_CV-afTgyhDPc");
-
-            var userId = fb.Session.UserId;
-
-            Assert.NotNull(userId);
-        }
-
-        [Fact(DisplayName = "FacebookApp: Given a valid access token The session user id should be correctly extracted from the access token")]
-        public void FacebookApp_GivenAValidAccessToken_TheSessionUserIdShouldBeCorrectlyExtractedFromTheAccessToken()
-        {
-            var fb = new FacebookApp("1249203702|2.h1MTNeLqcLqw__.86400.129394400-605430316|-WE1iH_CV-afTgyhDPc");
-
-            var userId = fb.Session.UserId;
-
-            Assert.Equal("605430316", userId);
-        }
-
-        [Fact(DisplayName = "FacebookApp: Given an application access token The session user id should be null")]
-        public void FacebookApp_GivenAnApplicationAccessToken_TheSessionUserIdShouldBeNull()
-        {
-            string appId = "123";
-            string appSecret = " A12aB";
-
-            var fb = new FacebookApp(string.Format("{0}|{1}", appId, appSecret));
-
-            var userId = fb.Session.UserId;
-
-            Assert.Null(userId);
-        }
-
-        //[Fact(DisplayName = "FacebookApp: Given an invalid access token containing non numeric user id The session user id should be null")]
-        //public void FacebookApp_GivenAnInvalidAccessTokenContainingNonNumericUserId_TheSessionUserIdShouldBeNull()
-        //{
-        //    var fb = new FacebookApp("1249203702|2.h1MTNeLqcLqw__.86400.129394400-6sd05430316|-WE1iH_CV-afTgyhDPc");
-
-        //    var userId = fb.Session.UserId;
-
-        //    Assert.Null(userId);
-        //}
     }
 }

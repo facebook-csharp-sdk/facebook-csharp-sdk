@@ -12,7 +12,7 @@ namespace Facebook
     /// <summary>
     /// Helper methods for Facebook.
     /// </summary>
-    public class FacebookUtils
+    public static class FacebookUtils
     {
         #region DateTime Utils
 

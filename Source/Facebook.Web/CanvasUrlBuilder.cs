@@ -187,14 +187,11 @@ namespace Facebook.Web
         /// <returns>
         /// Returns the login url.
         /// </returns>
-        public Uri GetLoginUrl(IFacebookSettings facebookSettings, string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> parameters)
+        public Uri GetLoginUrl(string appId, string appSecret, string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> parameters)
         {
             var oauth = new FacebookOAuthClientAuthorizer();
-            if (facebookSettings != null)
-            {
-                oauth.ClientId = facebookSettings.AppId;
-                oauth.ClientSecret = facebookSettings.AppSecret;
-            }
+            oauth.ClientId = appId;
+            oauth.ClientSecret = appSecret;
 
             if (parameters != null && parameters.ContainsKey("state"))
             {
