@@ -9,7 +9,6 @@
 
 namespace Facebook
 {
-    using System;
     using System.Configuration;
 
     /// <summary>

@@ -117,15 +117,12 @@
     <Reference Include="System.Web.Routing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
     <Compile Include="CanvasUrlExtensions.cs" />
     <Compile Include="FacebookAuthorizeAttribute.cs" />
     <Compile Include="CanvasAuthorizeAttribute.cs" />
     <Compile Include="CanvasLinkExtensions.cs" />
     <Compile Include="CanvasRedirectResult.cs" />
     <Compile Include="CanvasRedirectToRouteResult.cs" />
-    <Compile Include="FacebookAuthorizeAttributeBase.cs" />
-    <Compile Include="FacebookAuthorizeInfo.cs" />
     <Compile Include="CanvasControllerExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

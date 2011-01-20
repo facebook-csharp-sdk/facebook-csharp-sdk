@@ -10,8 +10,8 @@
 namespace Facebook
 {
     using System;
-    using System.Runtime.Serialization;
     using System.Globalization;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Represents errors that occur as a result of problems with the OAuth access token.

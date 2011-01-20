@@ -57,10 +57,8 @@ task :configure do
         :sln => {
             :wp7         => '',
             :sl4         => '',
-            :net40client => '',
-            :net40full   => '',
-            :net35client => '',
-            :net35full   => '',
+            :net40		 => '',
+            :net35		 => '',
             :shfb        => '', # sandcastle help file builder doc project
         }
     }
@@ -70,10 +68,8 @@ task :configure do
         
     build_config[:sln][:wp7]         = "#{build_config[:paths][:src]}Facebook-WP7.sln"
     build_config[:sln][:sl4]         = "#{build_config[:paths][:src]}Facebook-SL4.sln"
-    build_config[:sln][:net40client] = "#{build_config[:paths][:src]}Facebook-Net40Client.sln"
-    build_config[:sln][:net40full]   = "#{build_config[:paths][:src]}Facebook-Net40.sln"
-    build_config[:sln][:net35client] = "#{build_config[:paths][:src]}Facebook-Net35Client.sln"
-    build_config[:sln][:net35full]   = "#{build_config[:paths][:src]}Facebook-Net35.sln"
+    build_config[:sln][:net40]		 = "#{build_config[:paths][:src]}Facebook-Net40.sln"
+    build_config[:sln][:net35]		 = "#{build_config[:paths][:src]}Facebook-Net35.sln"
     build_config[:sln][:shfb]        = "#{build_config[:paths][:doc]}doc.shfbproj"
     
     begin
@@ -125,69 +121,35 @@ end
 
 Rake::Task["configure"].invoke
 
-msbuild :net40full do |msb|
+desc "Build .NET 4 binaries"
+msbuild :net40 do |msb|
     msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net40full]
+    msb.solution = build_config[:sln][:net40]
     msb.targets :Build
 end
 
-msbuild :clean_net40full do |msb|
+msbuild :clean_net40 do |msb|
     msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net40full]
+    msb.solution = build_config[:sln][:net40]
     msb.targets :Clean
 end
 
-msbuild :net40client do |msb|
+desc "Build .NET 3.5 binaries"
+msbuild :net35 do |msb|
     msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net40client]
-    msb.targets :Build
-end
-
-msbuild :clean_net40client do |msb|
-    msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net40client]
-    msb.targets :Clean
-end
-
-desc "Build .NET 4 binaries (client and full profile)"
-task :net40 => [:net40full, :net40client]
-
-task :clean_net40 => [:clean_net40full, :clean_net40client]
-
-msbuild :net35full do |msb|
-    msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net35full]
+    msb.solution = build_config[:sln][:net35]
     msb.targets :Build
     #msb.use :net35
 end
 
 # compile .net 3.5 libraries using msbuild 4.0 in order to generate the code contract libraries.
 # seems like if we use .net 3.5, it does not generate the code contracts.
-msbuild :clean_net35full do |msb|
+msbuild :clean_net35 do |msb|
     msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net35full]
+    msb.solution = build_config[:sln][:net35]
     msb.targets :Clean
     #msb.use :net35
 end
-
-msbuild :net35client do |msb|
-    msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net35client]
-    msb.targets :Build
-    #msb.use :net35
-end
-
-msbuild :clean_net35client do |msb|
-    msb.properties :configuration => build_config[:configuration]
-    msb.solution = build_config[:sln][:net35client]
-    msb.targets :Clean
-    #msb.use :net35
-end
-
-desc "Build .NET 3.5 binaries (client and full profile)"
-task :net35 => [:net35full, :net35client]
-
-task :clean_net35 => [:clean_net35full, :clean_net35client]
 
 desc "Build Silverlight 4 binaries"
 msbuild :sl4 do |msb|
@@ -222,7 +184,7 @@ directory "#{build_config[:paths][:working]}NuGet/Facebook"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWeb"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"
 
-exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |cmd|
+exec :nuget_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |cmd|
     working_dir = build_config[:paths][:working]
     nuget_working_dir = "#{working_dir}NuGet/Facebook/#{build_config[:version][:full]}/"
     
@@ -231,9 +193,7 @@ exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4
     mkdir "#{nuget_working_dir}lib/"
     
     nuget_dirs = [ "lib/Net35/",
-                   "lib/Net35Client/",
                    "lib/Net40/",
-                   "lib/Net40Client/",
                    "lib/SL4/",
                    "lib/WP7/" ]
         
@@ -248,9 +208,7 @@ exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4
     [ "Facebook.dll", "Facebook.pdb", "Facebook.XML" ].each do |f|
         # copy these 3 files of each different framework
         cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
-        cp "#{output_path}Net35Client/#{f}", "#{nuget_working_dir}lib/Net35Client/"
         cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
-        cp "#{output_path}Net40Client/#{f}", "#{nuget_working_dir}lib/Net40Client/"
         cp "#{output_path}SL4/#{f}", "#{nuget_working_dir}lib/SL4/"
         cp "#{output_path}WP7/#{f}", "#{nuget_working_dir}lib/WP7/"
     end
@@ -266,9 +224,7 @@ exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4
     [ "Facebook.Contracts.dll", "Facebook.Contracts.pdb" ].each do |f|
         # copy code contracts of each different framework
         cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
-        cp "#{output_path}Net35Client/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35Client/CodeContracts/"        
         cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
-        cp "#{output_path}Net40Client/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40Client/CodeContracts/"
         cp "#{output_path}SL4/CodeContracts/#{f}", "#{nuget_working_dir}lib/SL4/CodeContracts/"
         cp "#{output_path}WP7/CodeContracts/#{f}", "#{nuget_working_dir}lib/WP7/CodeContracts/"
     end
@@ -282,7 +238,7 @@ exec :nuget_facebook => [:net35full, :net35client, :net40full, :net40client,:sl4
     cmd.parameters = "pack \"#{nuget_working_dir}Facebook.nuspec\" -o \"#{build_config[:paths][:working]}NuGet\""
 end
 
-exec :nuget_facebookweb => [:net35full,:net40full,"#{build_config[:paths][:working]}NuGet/FacebookWeb"] do |cmd|
+exec :nuget_facebookweb => [:net35, :net40,"#{build_config[:paths][:working]}NuGet/FacebookWeb"] do |cmd|
     working_dir = build_config[:paths][:working]
     nuget_working_dir = "#{working_dir}NuGet/FacebookWeb/#{build_config[:version][:full]}/"
     
@@ -323,7 +279,7 @@ exec :nuget_facebookweb => [:net35full,:net40full,"#{build_config[:paths][:worki
     
 end
 
-exec :nuget_facebookwebmvc => [:net35full,:net40full,"#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |cmd|
+exec :nuget_facebookwebmvc => [:net35, :net40,"#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |cmd|
     working_dir = build_config[:paths][:working]
     nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc/#{build_config[:version][:full]}/"
     
@@ -365,7 +321,7 @@ exec :nuget_facebookwebmvc => [:net35full,:net40full,"#{build_config[:paths][:wo
 end
 
 desc "Build help documentation"
-msbuild :docs => [:net40full] do |msb|
+msbuild :docs => [:net40] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Release/Net40/" if build_config[:configuration] = :Release
     #msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Debug/Net40/" if build_config[:configuration] = :Debug
@@ -384,13 +340,13 @@ msbuild :clean_docs do |msb|
 end
 
 desc "Build All"
-task :all => [:net35full, :net35client, :net40full, :net40client,:sl4,:wp7,:nuget]
+task :all => [:net35, :net40, :sl4,:wp7,:nuget]
 
 desc "Clean and Rebuild All (default)"
 task :rebuild => [:clean,:all]
 
 desc "Clean All"
-task :clean => [:clean_net35full, :clean_net35client, :clean_net40full, :clean_net40client, :clean_sl4, :clean_wp7] do
+task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do
     FileUtils.rm_rf build_config[:paths][:output]
     FileUtils.rm_rf build_config[:paths][:working]
     FileUtils.rm_rf build_config[:paths][:dist]    

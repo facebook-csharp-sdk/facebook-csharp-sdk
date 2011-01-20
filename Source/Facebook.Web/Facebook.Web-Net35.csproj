@@ -120,6 +120,7 @@
     <Compile Include="CanvasSettings.cs" />
     <Compile Include="CanvasUrlBuilder.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs" />
+    <Compile Include="FacebookWebUtils.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ICanvasSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

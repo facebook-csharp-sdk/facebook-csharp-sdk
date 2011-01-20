@@ -151,18 +151,6 @@ namespace Facebook
         public virtual FacebookSession Session { get; set; }
 
         /// <summary>
-        /// Gets the current URL.
-        /// </summary>
-        /// <value>The current URL.</value>
-        protected virtual Uri CurrentUrl
-        {
-            get
-            {
-                return new Uri("http://www.facebook.com/connect/login_success.html");
-            }
-        }
-
-        /// <summary>
         /// Gets the user id.
         /// </summary>
         /// <value>The user id.</value>
@@ -220,68 +208,6 @@ namespace Facebook
                 return string.Concat("fbs_", this.AppId);
             }
         }
-
-        /// <summary>
-        /// Get a Login URL for use with redirects. By default, 
-        /// full page redirect is assumed.
-        /// </summary>
-        /// <returns>The URL for the login flow.</returns>
-        public Uri GetLoginUrl()
-        {
-            return GetLoginUrl(null);
-        }
-
-        /// <summary>
-        /// Get a Login URL for use with redirects. By default, full page redirect is
-        /// assumed. If you are using the generated URL with a window.open() call in
-        /// JavaScript, you can pass in display=popup as part of the parameters.
-        /// The parameters:
-        ///     - next: the url to go to after a successful login
-        ///     - cancel_url: the url to go to after the user cancels
-        ///     - req_perms: comma separated list of requested extended perms
-        ///     - display: can be "page" (default, full page) or "popup"
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public abstract Uri GetLoginUrl(IDictionary<string, object> parameters);
-
-        /// <summary>
-        /// Get a Logout URL suitable for use with redirects.
-        /// </summary>
-        /// <returns>The URL for the logout flow.</returns>
-        public Uri GetLogoutUrl()
-        {
-            return GetLogoutUrl(null);
-        }
-
-        /// <summary>
-        /// Get a Logout URL suitable for use with redirects.
-        /// The parameters:
-        ///     - next: the url to go to after a successful logout
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public abstract Uri GetLogoutUrl(IDictionary<string, object> parameters);
-
-        /// <summary>
-        /// Get a login status URL to fetch the status from facebook.
-        /// </summary>
-        /// <returns>The URL for the logout flow</returns>
-        public Uri GetLoginStatusUrl()
-        {
-            return GetLoginStatusUrl(null);
-        }
-
-        /// <summary>
-        /// Get a login status URL to fetch the status from facebook.
-        /// The parameters:
-        ///     - ok_session: the URL to go to if a session is found
-        ///     - no_session: the URL to go to if the user is not connected
-        ///     - no_user: the URL to go to if the user is not signed into facebook
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the logout flow</returns>
-        public abstract Uri GetLoginStatusUrl(IDictionary<string, object> parameters);
 
         /// <summary>
         /// Cleans the URL or known Facebook querystring values.

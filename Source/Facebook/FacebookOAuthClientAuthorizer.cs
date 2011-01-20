@@ -1,4 +1,3 @@
-using System.Text;
 
 namespace Facebook
 {
@@ -7,7 +6,6 @@ namespace Facebook
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Net;
-    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Represents the Facebook OAuth Helpers
@@ -83,47 +81,9 @@ namespace Facebook
             return new Uri(url);
         }
 
-        // TODO: comment this for now. will need to support for GetLoginUri for web apps too
-        // need to find a better name.
+        // TODO: comment this for now.
 
         /*
-        /// <summary>
-        /// Gets the login uri for desktop applications.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <returns>
-        /// Returns the desktop login uri.
-        /// </returns>
-        public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(this.ClientId))
-            {
-                throw new Exception("ClientID required.");
-            }
-
-            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/authorize");
-
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["client_id"] = this.ClientId;
-            defaultParams["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
-
-#if WINDOWS_PHONE
-            defaultParams["display"] = "touch";
-#elif CLIENTPROFILE || SILVERLIGHT
-            defaultParams["display"] = "popup";
-#else
-            defaultParams["display"] = "page";
-#endif
-
-            var mergedParameters = defaultParams.Merge(parameters);
-
-            uriBuilder.Query = mergedParameters.ToJsonQueryString();
-
-            return uriBuilder.Uri;
-        }
-
         /// <summary>
         /// Gets the logout uri for desktop applications.
         /// </summary>
