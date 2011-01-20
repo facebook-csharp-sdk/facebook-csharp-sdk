@@ -51,9 +51,6 @@
     <Reference Include="Facebook">
       <HintPath>..\..\Bin\Release\WP7\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Contracts">
-      <HintPath>..\..\Bin\Release\WP7\Microsoft.Contracts.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Newtonsoft.Json.WindowsPhone">

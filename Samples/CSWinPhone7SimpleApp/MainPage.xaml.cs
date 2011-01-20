@@ -35,7 +35,7 @@ namespace Facebook.Samples.AuthenticationTool
             fbApp.GetAsync("me", (val) =>
             {
                 // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
-                var result = ((JsonObject)val.Result);
+                var result = (JsonObject)val.Result;
                 Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
             });
         }
