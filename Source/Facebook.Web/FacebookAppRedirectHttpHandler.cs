@@ -28,38 +28,52 @@
         public void ProcessRequest(HttpContext context)
         {
             string queryString = string.Empty;
-            string pathInfo = context.Request.PathInfo;
-
-            if (pathInfo.StartsWith("/cancel", StringComparison.Ordinal))
-            {
-                queryString = "cancel=1";
-                pathInfo = pathInfo.Replace("/cancel", string.Empty);
-            }
 
             var uri = new Uri("http://apps.facebook.com/");
-            var uriBuilder = new UriBuilder(uri) { Query = queryString };
-
+            var redirectUriBuilder = new UriBuilder(uri) { Query = queryString };
 
             if (context.Request.QueryString.AllKeys.Contains("state"))
             {
                 var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
                 var json = (IDictionary<string, object>)JsonSerializer.DeserializeObject(state);
 
-                var returnPathAndQuery = json["return_path"].ToString();
-                if (returnPathAndQuery.Contains("?"))
+                // make it one letter character so more info can fit in.
+                // r -> return_url_path
+                // c -> cancel_url_path
+                // s -> user_state
+                var returnUrlPath = json["r"].ToString();
+
+                if (context.Request.QueryString.AllKeys.Contains("error_reason"))
                 {
-                    var parts = returnPathAndQuery.Split('?');
-                    uriBuilder.Path = parts[0];
-                    uriBuilder.Query = parts[1];
+                    redirectUriBuilder.Path = json["c"].ToString();
+                    redirectUriBuilder.Query = string.Format(
+                        "error_reason={0}&error_denied={1}&error_description={2}",
+                        context.Request.QueryString["error_reason"],
+                        context.Request.QueryString["error"],
+                        FacebookUtils.UrlEncode(context.Request.QueryString["error_description"]));
                 }
                 else
                 {
-                    uriBuilder.Path = returnPathAndQuery;
+                    if (returnUrlPath.Contains("?"))
+                    {
+                        var parts = returnUrlPath.Split('?');
+                        redirectUriBuilder.Path = parts[0];
+                        redirectUriBuilder.Query = parts[1];
+                    }
+                    else
+                    {
+                        redirectUriBuilder.Path = returnUrlPath;
+                    }
                 }
+            }
+            else
+            {
+                // if not state was given.
+                redirectUriBuilder = new UriBuilder("http://www.facebook.com");
             }
 
             var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url="
-                       + uriBuilder.Uri + "\"></head></html>";
+                       + redirectUriBuilder.Uri + "\"></head></html>";
             context.Response.Write(html);
         }
     }

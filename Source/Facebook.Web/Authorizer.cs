@@ -79,6 +79,11 @@ namespace Facebook.Web
         public string ReturnUrlPath { get; set; }
 
         /// <summary>
+        /// Gets or sets the cancel url path.
+        /// </summary>
+        public string CancelUrlPath { get; set; }
+
+        /// <summary>
         /// Gets or sets the login display mode.
         /// </summary>
         public string LoginDisplayMode { get; set; }

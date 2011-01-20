@@ -187,7 +187,7 @@ namespace Facebook.Web
         /// <returns>
         /// Returns the login url.
         /// </returns>
-        public Uri GetLoginUrl(IFacebookSettings facebookSettings, string returnUrlPath, string state, IDictionary<string, object> parameters)
+        public Uri GetLoginUrl(IFacebookSettings facebookSettings, string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> parameters)
         {
             var oauth = new FacebookOAuthClientAuthorizer();
             if (facebookSettings != null)
@@ -204,14 +204,30 @@ namespace Facebook.Web
 
             var oauthJsonState = new JsonObject();
 
-            // canvas path and query
+            // TODO: override return_path if ReturnUrlPath is defined.
             // remove the http://apps.facebook.com/ length 25
-            oauthJsonState["return_path"] = this.CurrentCanvasPage.ToString().Substring(25);
+            // make it one letter character so more info can fit in.
+            // r -> return_url_path
+            // c -> cancel_url_path
+            // s -> user_state
+            oauthJsonState["r"] = this.CurrentCanvasPage.ToString().Substring(25);
+
+            // remote the first /
+            oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
+            if (!string.IsNullOrEmpty(cancelUrlPath))
+            {
+                if (!cancelUrlPath.StartsWith("/"))
+                {
+                    oauthJsonState["c"] += "/";
+                }
+
+                oauthJsonState["c"] += cancelUrlPath;
+            }
 
             // user state
             if (!string.IsNullOrEmpty(state))
             {
-                oauthJsonState["state"] = state;
+                oauthJsonState["s"] = state;
             }
 
             var oauthState = FacebookUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
@@ -224,8 +240,7 @@ namespace Facebook.Web
                 appPath = string.Concat(appPath, "/");
             }
 
-            bool cancel = false;
-            string redirectRoot = string.Concat(redirectPath, cancel ? "cancel" : string.Empty);
+            string redirectRoot = redirectPath;
 
             var uriBuilder = new UriBuilder(this.CurrentCanvasUrl);
             uriBuilder.Path = string.Concat(appPath, redirectRoot);

@@ -86,7 +86,7 @@ namespace Facebook.Web
             }
 
             var urlBuilder = new CanvasUrlBuilder(this.canvasSettings, this.HttpRequest);
-            return urlBuilder.GetLoginUrl(this.FacebookSettings, this.ReturnUrlPath, this.State, defaultParameters);
+            return urlBuilder.GetLoginUrl(this.FacebookSettings, this.ReturnUrlPath, this.CancelUrlPath, this.State, defaultParameters);
         }
 
         [ContractInvariantMethod]
