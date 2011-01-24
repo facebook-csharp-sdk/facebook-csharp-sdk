@@ -123,6 +123,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="CanvasAuthorizeAttribute.cs" />
     <Compile Include="FacebookAuthorizeAttribute.cs" />
+    <Compile Include="NFacebookAuthorizeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
