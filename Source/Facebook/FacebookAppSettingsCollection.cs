@@ -1,6 +1,7 @@
 namespace Facebook
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
@@ -8,7 +9,7 @@ namespace Facebook
     /// <summary>
     /// Represents a collection of Facebook application settings.
     /// </summary>
-    public class FacebookAppSettingsCollection
+    public class FacebookAppSettingsCollection : IEnumerable, IEnumerable<KeyValuePair<string, IFacebookAppSettings>>
     {
         /// <summary>
         /// List of facebook applications.
@@ -26,28 +27,28 @@ namespace Facebook
         /// <summary>
         /// Indexer for Facebook application settings collection.
         /// </summary>
-        /// <param name="appId">
+        /// <param name="appName">
         /// The app id.
         /// </param>
-        public IFacebookAppSettings this[string appId]
+        public IFacebookAppSettings this[string appName]
         {
             get
             {
-                return this.facebookAppSettings[appId];
+                return this.facebookAppSettings[appName];
             }
 
             set
             {
                 if (value == null)
                 {
-                    if (this.facebookAppSettings.ContainsKey(appId))
+                    if (this.facebookAppSettings.ContainsKey(appName))
                     {
-                        this.facebookAppSettings.Remove(appId);
+                        this.facebookAppSettings.Remove(appName);
                     }
                 }
                 else
                 {
-                    this.facebookAppSettings[appId] = value;
+                    this.facebookAppSettings[appName] = value;
                 }
             }
         }
@@ -55,37 +56,66 @@ namespace Facebook
         /// <summary>
         /// Adds the facebook application settings to the collection.
         /// </summary>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
         /// <param name="facebookAppSettings">
         /// The facebook app settings.
         /// </param>
-        public void Add(IFacebookAppSettings facebookAppSettings)
+        public void Register(string appName, IFacebookAppSettings facebookAppSettings)
         {
+            Contract.Requires(!string.IsNullOrEmpty(appName));
             Contract.Requires(facebookAppSettings != null);
-            Contract.Requires(!string.IsNullOrEmpty(facebookAppSettings.AppId));
 
-            if (this.facebookAppSettings.ContainsKey(facebookAppSettings.AppId))
+            if (this.facebookAppSettings.ContainsKey(appName))
             {
-                throw new ArgumentException("Facebook application with the same appid already exists");
+                throw new ArgumentException("Facebook application with same name already exists.", "appName");
             }
 
-            this.facebookAppSettings.Add(facebookAppSettings.AppId, facebookAppSettings);
+            this.facebookAppSettings.Add(appName, facebookAppSettings);
         }
 
         /// <summary>
         /// Remove the facebook application settings from the collection.
         /// </summary>
-        /// <param name="appId">
-        /// The app id.
+        /// <param name="appName">
+        /// The facebook application name.
         /// </param>
-        public void Remove(string appId)
+        public void Remove(string appName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            if (!this.facebookAppSettings.ContainsKey(appId))
+            Contract.Requires(!string.IsNullOrEmpty(appName));
+
+            if (!this.facebookAppSettings.ContainsKey(appName))
             {
-                throw new ArgumentException("Facebook application with the specified app id does not exist.", "appid");
+                throw new ArgumentException("Facebook application with the specified name does not exist.", "appName");
             }
-            
-            this.facebookAppSettings.Remove(appId);
+
+            this.facebookAppSettings.Remove(appName);
+        }
+
+        /// <summary>
+        /// Clears the facebook app settings collection.
+        /// </summary>
+        public void Clear()
+        {
+            this.facebookAppSettings.Clear();
+        }
+
+        IEnumerator<KeyValuePair<string, IFacebookAppSettings>> IEnumerable<KeyValuePair<string, IFacebookAppSettings>>.GetEnumerator()
+        {
+            return this.facebookAppSettings.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public IEnumerator GetEnumerator()
+        {
+            return this.facebookAppSettings.GetEnumerator();
         }
 
         [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
