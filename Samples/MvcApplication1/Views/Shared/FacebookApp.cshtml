@@ -1,0 +1,29 @@
+﻿@using Facebook;
+@model KeyValuePair<string, IFacebookAppSettings>
+@{
+    var appSettings = Model.Value; 
+}
+<b>@Model.Key</b>
+
+<table>
+    <tr>
+        <td>App Id:</td>
+        <td>@appSettings.AppId</td>
+    </tr>
+    <tr>
+        <td>App Secret:</td>
+        <td>@appSettings.AppSecret</td>
+    </tr>
+    <tr>
+        <td>Site Url:</td>
+        <td>@appSettings.SiteUrl</td>
+    </tr>
+    <tr>
+        <td>Canvas Page:</td>
+        <td>@appSettings.CanvasPage</td>
+    </tr>
+    <tr>
+        <td>Canvas Url:</td>
+        <td>@appSettings.CanvasUrl</td>
+    </tr>
+</table>
