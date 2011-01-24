@@ -7,9 +7,37 @@ namespace Facebook
     public class FacebookAppSettings : IFacebookAppSettings
     {
         /// <summary>
-        /// Gets or sets the application id.
+        /// Facebook application id.
         /// </summary>
-        public string AppId { get; set; }
+        private readonly string appId;
+
+        /// <summary>
+        /// Facebook application secret.
+        /// </summary>
+        private readonly string appSecret;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookAppSettings"/> class.
+        /// </summary>
+        /// <param name="appId">
+        /// The application id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The application secret.
+        /// </param>
+        public FacebookAppSettings(string appId, string appSecret)
+        {
+            this.appId = appId;
+            this.appSecret = appSecret;
+        }
+
+        /// <summary>
+        /// Gets the application id.
+        /// </summary>
+        public string AppId
+        {
+            get { return this.appId; }
+        }
 
         /// <summary>
         /// Gets or sets the application api key.
@@ -17,9 +45,12 @@ namespace Facebook
         public string ApiKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the application secret.
+        /// Gets the application secret.
         /// </summary>
-        public string AppSecret { get; set; }
+        public string AppSecret
+        {
+            get { return this.appSecret; }
+        }
 
         /// <summary>
         /// Gets or sets the site url.
