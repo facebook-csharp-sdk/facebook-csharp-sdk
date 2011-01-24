@@ -119,6 +119,7 @@
     <Compile Include="CanvasRedirectResult.cs" />
     <Compile Include="CanvasRedirectToRouteResult.cs" />
     <Compile Include="CanvasUrlExtensions.cs" />
+    <Compile Include="FacebookAppAttribute.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="CanvasAuthorizeAttribute.cs" />
     <Compile Include="FacebookAuthorizeAttribute.cs" />
