@@ -129,6 +129,7 @@
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="FacebookOAuthClientAuthorizer.cs" />
+    <Compile Include="IFacebookAppSettings.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />

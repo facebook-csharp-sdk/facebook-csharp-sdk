@@ -3,8 +3,8 @@ namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Mvc;
     using System.Diagnostics.Contracts;
+    using System.Web.Mvc;
 
     /// <summary>
     /// Represents the base class for restricting access to controllers or actions based on Facebook permissions.
