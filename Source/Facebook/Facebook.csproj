@@ -117,6 +117,7 @@
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />
     <Compile Include="FacebookAppExtensions.cs" />
+    <Compile Include="FacebookAppSettings.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApp.cs" />
