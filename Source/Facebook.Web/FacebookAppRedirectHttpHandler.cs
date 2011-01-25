@@ -27,6 +27,7 @@
         /// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
         public void ProcessRequest(HttpContext context)
         {
+            // TODO: refactor this method and need to to unit test.
             var uri = new Uri("http://apps.facebook.com/");
             var redirectUriBuilder = new UriBuilder(uri);
 
@@ -48,12 +49,30 @@
                     if (json.ContainsKey("c"))
                     {
                         // if there is cancel url path.
+                        var cancelUrlPath = json["c"].ToString();
+
+                        IDictionary<string, object> cancelUrlQueryStrings = new Dictionary<string, object>
+                                                       {
+                                                           { "error_reason", context.Request.QueryString["error_reason"] },
+                                                           { "error", context.Request.QueryString["error"] },
+                                                           { "error_description", context.Request.QueryString["error_description"] }
+                                                       };
+
                         redirectUriBuilder.Path = json["c"].ToString();
-                        redirectUriBuilder.Query = string.Format(
-                            "error_reason={0}&error_denied={1}&error_description={2}",
-                            context.Request.QueryString["error_reason"],
-                            context.Request.QueryString["error"],
-                            FacebookUtils.UrlEncode(context.Request.QueryString["error_description"]));
+
+                        if (cancelUrlPath.Contains("?"))
+                        {
+                            // incase cancel url path contains querystrings.
+                            var cancelUrlParts = cancelUrlPath.Split('?');
+                            if (cancelUrlParts.Length == 2 && !string.IsNullOrEmpty(cancelUrlParts[1]))
+                            {
+                                redirectUriBuilder.Path = cancelUrlParts[0];
+                                var queryStrings = FacebookUtils.ParseUrlQueryString(cancelUrlParts[1]);
+                                cancelUrlQueryStrings = FacebookUtils.Merge(cancelUrlQueryStrings, queryStrings);
+                            }
+                        }
+
+                        redirectUriBuilder.Query = FacebookUtils.ToJsonQueryString(cancelUrlQueryStrings);
                     }
                     else
                     {
@@ -67,7 +86,28 @@
                     {
                         var parts = returnUrlPath.Split('?');
                         redirectUriBuilder.Path = parts[0];
+
                         redirectUriBuilder.Query = parts[1];
+                        var rQueryString = FacebookUtils.ParseUrlQueryString(parts[1]);
+                        if (rQueryString.ContainsKey("error_reason"))
+                        {
+                            // remove oauth stuffs.
+                            if (rQueryString.ContainsKey("error_reason"))
+                            {
+                                rQueryString.Remove("error_reason");
+                            }
+
+                            if (rQueryString.ContainsKey("error"))
+                            {
+                                rQueryString.Remove("error");
+                            }
+
+                            if (rQueryString.ContainsKey("error_description"))
+                            {
+                                rQueryString.Remove("error_description");
+                            }
+                            redirectUriBuilder.Query = FacebookUtils.ToJsonQueryString(rQueryString);
+                        }
                     }
                     else
                     {
