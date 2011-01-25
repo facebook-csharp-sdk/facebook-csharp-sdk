@@ -66,6 +66,7 @@ namespace Facebook.Web.Mvc
                 this.Perms,
                 filterContext.HttpContext.Request.QueryString.AllKeys.Contains("cancel"),
                 filterContext.RouteData.Values);
+
             filterContext.Result = new ViewResult
             {
                 ViewName = View,

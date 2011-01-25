@@ -7,8 +7,8 @@ namespace Facebook.Web.Mvc
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public abstract class NFacebookAuthorizeAttribute : ActionFilterAttribute, IAuthorizationFilter
     {
-        internal const string ViewDataCurrentAppNameKey = "facebooksdk-currentappname";
-        internal const string ViewDataCurrentAppSettingsKey = "facebooksdk-currentappsettings";
+        internal const string HttpContextCurrentAppNameKey = "facebooksdk-currentappname";
+        internal const string HttpContextCurrentAppSettingsKey = "facebooksdk-currentappsettings";
 
         public NFacebookAuthorizeAttribute()
         {
@@ -23,11 +23,11 @@ namespace Facebook.Web.Mvc
         public void OnAuthorization(AuthorizationContext filterContext)
         {
             Contract.Requires(filterContext != null);
-            Contract.Requires(filterContext.Controller != null);
-            Contract.Requires(filterContext.Controller.ViewData != null);
+            Contract.Requires(filterContext.HttpContext != null);
+            Contract.Requires(filterContext.HttpContext.Items != null);
 
-            var settings = (IFacebookAppSettings)filterContext.Controller.ViewData[ViewDataCurrentAppSettingsKey];
-
+            var settings = (IFacebookAppSettings)filterContext.HttpContext.Items[HttpContextCurrentAppSettingsKey];
+            
             OnAuthorization(filterContext, settings);
         }
 

@@ -15,7 +15,8 @@
         }
 
         //[NCanvasAuthorize(Permissions = "user_about_me", CancelUrlPath = "/", ReturnUrlPath = "/")]
-        [NCanvasAuthorize(Permissions = "user_about_me")]
+        //[NCanvasAuthorize(Permissions = "user_about_me")]
+        [NCanvasSoftAuthorize(Permissions = "user_about_me")]
         public ActionResult RegisteredFacebookApps()
         {
             return View(FacebookSdk.Applications);

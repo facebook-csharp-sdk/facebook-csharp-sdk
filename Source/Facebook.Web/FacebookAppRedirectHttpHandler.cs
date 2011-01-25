@@ -39,6 +39,7 @@
                 // r -> return_url_path
                 // c -> cancel_url_path
                 // s -> user_state
+                // n -> navigate url path.
                 var returnUrlPath = json["r"].ToString();
 
                 if (context.Request.QueryString.AllKeys.Contains("error_reason"))

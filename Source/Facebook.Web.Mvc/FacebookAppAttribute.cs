@@ -59,19 +59,19 @@ namespace Facebook.Web.Mvc
         public void OnAuthorization(AuthorizationContext filterContext)
         {
             Contract.Requires(filterContext != null);
-            Contract.Requires(filterContext.Controller != null);
-            Contract.Requires(filterContext.Controller.ViewData != null);
+            Contract.Requires(filterContext.HttpContext != null);
+            Contract.Requires(filterContext.HttpContext.Items != null);
 
-            // save the settings in ViewData, so the next Facebook attributes like
+            // save the settings in HttpContext, so the next Facebook attributes like
             // [CanvasAuthorize] attributes can make use of it.
             // note: settings can be null if app is not found.
-            // if this view data is null then attributes like [CanvasAuthorize] should
+            // if it is is null then attributes like [CanvasAuthorize] should
             // throw error reporting Facebook Application not configured or some
             // other useful information.
             // this FacebookAppAttribute should not throw error coz, there might be
             // some action methods where there is no need to access Facebook stuffs.
-            filterContext.Controller.ViewData[NFacebookAuthorizeAttribute.ViewDataCurrentAppSettingsKey] = this.Settings;
-            filterContext.Controller.ViewData[NFacebookAuthorizeAttribute.ViewDataCurrentAppNameKey] = this.AppName;
+            filterContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppNameKey] = this.AppName;
+            filterContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppSettingsKey] = this.Settings;
         }
 
         [ContractInvariantMethod]

@@ -1,4 +1,4 @@
-namespace MvcApplication1.Controllers
+namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,6 @@ namespace MvcApplication1.Controllers
     using System.Web.Mvc;
     using Facebook;
     using Facebook.Web;
-    using Facebook.Web.Mvc;
 
     public class NCanvasAuthorizeAttribute : NFacebookAuthorizeAttribute
     {
@@ -24,7 +23,7 @@ namespace MvcApplication1.Controllers
                 return;
             }
 
-            var appName = filterContext.Controller.ViewData["facebooksdk-currentappname"];
+            var appName = filterContext.HttpContext.Items["facebooksdk-currentappname"];
 
             if (settings == null)
             {
@@ -52,12 +51,20 @@ namespace MvcApplication1.Controllers
 
             if (!authorizer.IsAuthorized())
             {
-                var loginUri = this.GetLoginUrl(settings, filterContext.HttpContext, null);
-                filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
+                this.HandleUnauthorizedRequest(filterContext, settings);
             }
         }
 
-        internal protected Uri GetLoginUrl(IFacebookAppSettings settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
+        protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookAppSettings settings)
+        {
+            Contract.Requires(filterContext != null);
+            Contract.Requires(settings != null);
+
+            var loginUri = this.GetLoginUrl(settings, filterContext.HttpContext, null);
+            filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
+        }
+
+        internal virtual protected Uri GetLoginUrl(IFacebookAppSettings settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
             Contract.Requires(settings != null);
             Contract.Requires(httpContext != null);

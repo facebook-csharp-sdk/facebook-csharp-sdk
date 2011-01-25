@@ -7,15 +7,16 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics.Contracts;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+
 namespace Facebook.Web.Mvc
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-
     /// <summary>
     /// Provides extensions for building canvas links.
     /// </summary>
@@ -159,8 +160,8 @@ namespace Facebook.Web.Mvc
             Contract.Requires(!String.IsNullOrEmpty(linkText));
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
-            
-            return MvcHtmlString.Create(GenerateLink(htmlHelper.ViewContext, htmlHelper.RouteCollection, linkText, null/* routeName */, actionName, controllerName, routeValues, htmlAttributes));
+
+            return MvcHtmlString.Create(GenerateLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, null/* routeName */, actionName, controllerName, routeValues, htmlAttributes));
         }
 
         /// <summary>
@@ -204,7 +205,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return MvcHtmlString.Create(GenerateLink(htmlHelper.ViewContext, htmlHelper.RouteCollection, linkText, null /* routeName */, actionName, controllerName, protocol, hostName, fragment, routeValues, htmlAttributes));
+            return MvcHtmlString.Create(GenerateLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, null /* routeName */, actionName, controllerName, protocol, hostName, fragment, routeValues, htmlAttributes));
         }
 
         /// <summary>
@@ -357,7 +358,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return MvcHtmlString.Create(GenerateRouteLink(htmlHelper.ViewContext, htmlHelper.RouteCollection, linkText, routeName, routeValues, htmlAttributes));
+            return MvcHtmlString.Create(GenerateRouteLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, routeName, routeValues, htmlAttributes));
         }
 
         /// <summary>
@@ -399,14 +400,14 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return MvcHtmlString.Create(GenerateRouteLink(htmlHelper.ViewContext, htmlHelper.RouteCollection, linkText, routeName, protocol, hostName, fragment, routeValues, htmlAttributes));
+            return MvcHtmlString.Create(GenerateRouteLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, routeName, protocol, hostName, fragment, routeValues, htmlAttributes));
         }
 
 
         /// <summary>
         /// Generates the link.
         /// </summary>
-        /// <param name="viewContext">The request context.</param>
+        /// <param name="requestContext">The request context.</param>
         /// <param name="routeCollection">The route collection.</param>
         /// <param name="linkText">The link text.</param>
         /// <param name="routeName">Name of the route.</param>
@@ -415,9 +416,9 @@ namespace Facebook.Web.Mvc
         /// <param name="routeValues">The route values.</param>
         /// <param name="htmlAttributes">The HTML attributes.</param>
         /// <returns></returns>
-        private static string GenerateLink(ViewContext viewContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
+        private static string GenerateLink(RequestContext requestContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            return GenerateLink(viewContext, routeCollection, linkText, routeName, actionName, controllerName, null/* protocol */, null/* hostName */, null/* fragment */, routeValues, htmlAttributes);
+            return GenerateLink(requestContext, routeCollection, linkText, routeName, actionName, controllerName, null/* protocol */, null/* hostName */, null/* fragment */, routeValues, htmlAttributes);
         }
 
 
@@ -436,30 +437,30 @@ namespace Facebook.Web.Mvc
         /// <param name="routeValues">The route values.</param>
         /// <param name="htmlAttributes">The HTML attributes.</param>
         /// <returns></returns>
-        private static string GenerateLink(ViewContext viewContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
+        private static string GenerateLink(RequestContext requestContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            return GenerateLinkInternal(viewContext, routeCollection, linkText, routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, htmlAttributes, true /* includeImplicitMvcValues */);
+            return GenerateLinkInternal(requestContext, routeCollection, linkText, routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, htmlAttributes, true /* includeImplicitMvcValues */);
         }
 
         /// <summary>
         /// Generates the route link.
         /// </summary>
-        /// <param name="viewContext">The request context.</param>
+        /// <param name="requestContext">The request context.</param>
         /// <param name="routeCollection">The route collection.</param>
         /// <param name="linkText">The link text.</param>
         /// <param name="routeName">Name of the route.</param>
         /// <param name="routeValues">The route values.</param>
         /// <param name="htmlAttributes">The HTML attributes.</param>
         /// <returns></returns>
-        private static string GenerateRouteLink(ViewContext viewContext, RouteCollection routeCollection, string linkText, string routeName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
+        private static string GenerateRouteLink(RequestContext requestContext, RouteCollection routeCollection, string linkText, string routeName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            return GenerateRouteLink(viewContext, routeCollection, linkText, routeName, null/* protocol */, null/* hostName */, null/* fragment */, routeValues, htmlAttributes);
+            return GenerateRouteLink(requestContext, routeCollection, linkText, routeName, null/* protocol */, null/* hostName */, null/* fragment */, routeValues, htmlAttributes);
         }
 
         /// <summary>
         /// Generates the route link.
         /// </summary>
-        /// <param name="viewContext">The request context.</param>
+        /// <param name="requestContext">The request context.</param>
         /// <param name="routeCollection">The route collection.</param>
         /// <param name="linkText">The link text.</param>
         /// <param name="routeName">Name of the route.</param>
@@ -469,9 +470,9 @@ namespace Facebook.Web.Mvc
         /// <param name="routeValues">The route values.</param>
         /// <param name="htmlAttributes">The HTML attributes.</param>
         /// <returns></returns>
-        private static string GenerateRouteLink(ViewContext viewContext, RouteCollection routeCollection, string linkText, string routeName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
+        private static string GenerateRouteLink(RequestContext requestContext, RouteCollection routeCollection, string linkText, string routeName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
-            return GenerateLinkInternal(viewContext, routeCollection, linkText, routeName, null /* actionName */, null /* controllerName */, protocol, hostName, fragment, routeValues, htmlAttributes, false /* includeImplicitMvcValues */);
+            return GenerateLinkInternal(requestContext, routeCollection, linkText, routeName, null /* actionName */, null /* controllerName */, protocol, hostName, fragment, routeValues, htmlAttributes, false /* includeImplicitMvcValues */);
         }
 
         /// <summary>
@@ -490,10 +491,9 @@ namespace Facebook.Web.Mvc
         /// <param name="htmlAttributes">The HTML attributes.</param>
         /// <param name="includeImplicitMvcValues">if set to <c>true</c> [include implicit MVC values].</param>
         /// <returns></returns>
-        private static string GenerateLinkInternal(ViewContext viewContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, bool includeImplicitMvcValues)
+        private static string GenerateLinkInternal(RequestContext requestContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, bool includeImplicitMvcValues)
         {
-            RequestContext requestContext = viewContext.RequestContext;
-            var appSettings = (IFacebookAppSettings) viewContext.ViewData[NFacebookAuthorizeAttribute.ViewDataCurrentAppSettingsKey];
+            var appSettings = (IFacebookAppSettings)requestContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppSettingsKey];
 
             htmlAttributes = htmlAttributes ?? new Dictionary<string, object>();
             htmlAttributes["target"] = "_top";
@@ -504,7 +504,7 @@ namespace Facebook.Web.Mvc
             {
                 webUrl = webUrl.Substring(applicationPath.Length);
             }
-            
+
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(appSettings, requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
             TagBuilder tagBuilder = new TagBuilder("a")

@@ -1,10 +1,10 @@
-﻿namespace Facebook.Web.Mvc
-{
-    using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
-    using System.Web.Mvc;
-    using System.Web.Routing;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
+using System.Web.Mvc;
+using System.Web.Routing;
 
+namespace Facebook.Web.Mvc
+{
     /// <summary>
     /// Provides extension methods for buiiding canvas urls.
     /// </summary>
@@ -174,11 +174,11 @@
         {
             Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
+            var appSettings = (IFacebookAppSettings)requestContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppSettingsKey];
 
-            throw new System.NotImplementedException();
-            //string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            //CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, urlHelper.RequestContext.HttpContext.Request);
-            //return urlBuilder.BuildCanvasPageUrl(url).ToString();
+            string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(appSettings, requestContext.HttpContext.Request);
+            return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 
         /// <summary>
@@ -199,10 +199,12 @@
         {
             Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-            throw new System.NotImplementedException();
-            //string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            //CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, urlHelper.RequestContext.HttpContext.Request);
-            //return urlBuilder.BuildCanvasPageUrl(url).ToString();
+
+            var appSettings = (IFacebookAppSettings)requestContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppSettingsKey];
+
+            string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(appSettings, urlHelper.RequestContext.HttpContext.Request);
+            return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 
         /// <summary>
