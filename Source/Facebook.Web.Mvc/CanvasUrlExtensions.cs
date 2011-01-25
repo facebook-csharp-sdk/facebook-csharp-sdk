@@ -175,9 +175,10 @@
             Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
 
-            string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, urlHelper.RequestContext.HttpContext.Request);
-            return urlBuilder.BuildCanvasPageUrl(url).ToString();
+            throw new System.NotImplementedException();
+            //string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
+            //CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, urlHelper.RequestContext.HttpContext.Request);
+            //return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 
         /// <summary>
@@ -198,10 +199,10 @@
         {
             Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
-            string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, urlHelper.RequestContext.HttpContext.Request);
-            return urlBuilder.BuildCanvasPageUrl(url).ToString();
+            throw new System.NotImplementedException();
+            //string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
+            //CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, urlHelper.RequestContext.HttpContext.Request);
+            //return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(!string.IsNullOrEmpty(appName));
 
             this.appName = appName;
-            
+
             // This order should always be higher than other Facebook attributes
             // like [CanvasAuthorizer] and so on.
             this.Order = -1;
@@ -70,7 +70,8 @@ namespace Facebook.Web.Mvc
             // other usefull informations.
             // this FacebookAppAttribute should not throw error coz, there might be
             // some action methods where there is no need to access Facebook stuffs.
-            filterContext.Controller.ViewData["facebooksdk-appsettings"] = this.Settings;
+            filterContext.Controller.ViewData["facebooksdk-currentappsettings"] = this.Settings;
+            filterContext.Controller.ViewData["facebooksdk-currentappname"] = this.AppName;
         }
 
         [ContractInvariantMethod]

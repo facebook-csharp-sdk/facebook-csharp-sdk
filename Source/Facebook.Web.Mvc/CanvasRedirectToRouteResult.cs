@@ -29,18 +29,19 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2234:PassSystemUriObjectsInsteadOfStrings")]
         public override void ExecuteResult(ControllerContext context)
         {
-            string destinationPathAndQuery = UrlHelper.GenerateUrl(RouteName, null /* actionName */, null /* controllerName */, RouteValues, RouteTable.Routes, context.RequestContext, false /* includeImplicitMvcValues */);
+            throw new System.NotImplementedException();
+            //string destinationPathAndQuery = UrlHelper.GenerateUrl(RouteName, null /* actionName */, null /* controllerName */, RouteValues, RouteTable.Routes, context.RequestContext, false /* includeImplicitMvcValues */);
 
-            var canvasUrlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, context.HttpContext.Request);
+            //var canvasUrlBuilder = new CanvasUrlBuilder(CanvasSettings.Current, context.HttpContext.Request);
 
-            var canvasUrl = canvasUrlBuilder.BuildCanvasPageUrl(destinationPathAndQuery);
+            //var canvasUrl = canvasUrlBuilder.BuildCanvasPageUrl(destinationPathAndQuery);
 
-            var content = CanvasUrlBuilder.GetCanvasRedirectHtml(canvasUrl);
+            //var content = CanvasUrlBuilder.GetCanvasRedirectHtml(canvasUrl);
 
-            context.Controller.TempData.Keep();
+            //context.Controller.TempData.Keep();
 
-            context.HttpContext.Response.ContentType = "text/html";
-            context.HttpContext.Response.Write(content);
+            //context.HttpContext.Response.ContentType = "text/html";
+            //context.HttpContext.Response.Write(content);
         }
 
     }

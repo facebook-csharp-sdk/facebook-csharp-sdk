@@ -11,54 +11,38 @@ namespace Facebook.Web
     public class CanvasAuthorizer : Authorizer
     {
         /// <summary>
-        /// Facebook canvas settings
+        /// The facebook settings.
         /// </summary>
-        private readonly ICanvasSettings canvasSettings;
+        private readonly IFacebookAppSettings settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class.
         /// </summary>
-        /// <param name="facebookSettings">
-        /// The facebook settings.
-        /// </param>
-        /// <param name="canvasSettings">
-        /// The canvas settings.
+        /// <param name="settings">
+        /// The settings.
         /// </param>
         /// <param name="httpContext">
         /// The http context.
         /// </param>
-        public CanvasAuthorizer(string appId, string appSecret, ICanvasSettings canvasSettings, HttpContextBase httpContext)
-            : base(appId, appSecret, httpContext)
+        public CanvasAuthorizer(IFacebookAppSettings settings, HttpContextBase httpContext)
+            : base(settings.AppId, settings.AppSecret, httpContext)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+            Contract.Requires(settings != null);
+            Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(settings.AppSecret));
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Request != null);
             Contract.Requires(httpContext.Request.Params != null);
-            Contract.Requires(httpContext.Response != null);
-            Contract.Requires(canvasSettings != null);
 
-            this.canvasSettings = canvasSettings;
+            this.settings = settings;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class.
+        /// Gets the Facebook application settings.
         /// </summary>
-        public CanvasAuthorizer(string appId, string appSecret)
-            : this(appId, appSecret, Web.CanvasSettings.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
+        public IFacebookAppSettings Settings
         {
-        }
-
-        /// <summary>
-        /// Gets the Facebook canvas settings.
-        /// </summary>
-        public ICanvasSettings CanvasSettings
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ICanvasSettings>() != null);
-                return this.canvasSettings;
-            }
+            get { return this.settings; }
         }
 
         /// <summary>
@@ -72,6 +56,8 @@ namespace Facebook.Web
 
         public Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
             var defaultParameters = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(this.LoginDisplayMode))
@@ -84,14 +70,14 @@ namespace Facebook.Web
                 defaultParameters["scope"] = this.Perms;
             }
 
-            var urlBuilder = new CanvasUrlBuilder(this.canvasSettings, this.HttpRequest);
-            return urlBuilder.GetLoginUrl(this.AppId, this.AppSecret, this.ReturnUrlPath, this.CancelUrlPath, this.State, defaultParameters);
+            var canvasUrlBuilder = new CanvasUrlBuilder(this.Settings, this.HttpRequest);
+            return canvasUrlBuilder.GetLoginUrl(this.ReturnUrlPath, this.CancelUrlPath, this.State, FacebookUtils.Merge(defaultParameters, parameters));
         }
 
         [ContractInvariantMethod]
         private void InvarientObject()
         {
-            Contract.Invariant(this.canvasSettings != null);
+            Contract.Invariant(this.settings != null);
         }
     }
 }

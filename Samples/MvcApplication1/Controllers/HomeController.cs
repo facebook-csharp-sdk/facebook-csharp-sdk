@@ -14,7 +14,7 @@
             return View();
         }
 
-        [FacebookApp("C# Sample 2")]
+        [NCanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult RegisteredFacebookApps()
         {
             return View(FacebookSdk.Applications);

@@ -40,15 +40,16 @@ namespace Facebook.Web.Mvc
 
         public Uri GetLoginUrl(IDictionary<string, object> parameters, HttpContextBase httpContext)
         {
-            var canvasAuthorizer = new CanvasAuthorizer(this.AppId, this.AppSecret, this.canvasSettings, httpContext)
-                                       {
-                                           LoginDisplayMode = this.LoginDisplayMode,
-                                           State = this.State,
-                                           Perms = this.Perms,
-                                           CancelUrlPath = this.CancelUrlPath
-                                       };
+            //var canvasAuthorizer = new CanvasAuthorizer(this.AppId, this.AppSecret, this.canvasSettings, httpContext)
+            //                           {
+            //                               LoginDisplayMode = this.LoginDisplayMode,
+            //                               State = this.State,
+            //                               Perms = this.Perms,
+            //                               CancelUrlPath = this.CancelUrlPath
+            //                           };
 
-            return canvasAuthorizer.GetLoginUrl(null);
+            //return canvasAuthorizer.GetLoginUrl(null);
+            throw new NotImplementedException();
         }
     }
 }
