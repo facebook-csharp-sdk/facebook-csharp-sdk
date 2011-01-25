@@ -37,6 +37,7 @@ namespace Facebook.Web
         {
             Contract.Requires(settings != null);
             Contract.Requires(httpRequest != null);
+            Contract.Requires(httpRequest.Url != null);
 
             this.settings = settings;
             this.httpRequest = httpRequest;
@@ -63,7 +64,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
 
-                return CanvasPage.AbsolutePath;
+                return this.CanvasPage.AbsolutePath;
             }
         }
 
@@ -214,7 +215,7 @@ namespace Facebook.Web
                 // remove the starting /
                 oauthJsonState["r"] = this.CanvasPageApplicationPath.Substring(1);
 
-                // then return url path doesnt start with / add it
+                // then return url path doesn't start with / add it
                 if (!returnUrlPath.StartsWith("/"))
                 {
                     oauthJsonState["r"] += "/";
@@ -264,9 +265,11 @@ namespace Facebook.Web
 
             string redirectRoot = redirectPath;
 
-            var uriBuilder = new UriBuilder(this.CurrentCanvasUrl);
-            uriBuilder.Path = string.Concat(appPath, redirectRoot);
-            uriBuilder.Query = null; // no querystrings allowed.
+            var uriBuilder = new UriBuilder(this.CurrentCanvasUrl)
+                                 {
+                                     Path = string.Concat(appPath, redirectRoot),
+                                     Query = string.Empty
+                                 };
 
             oauth.RedirectUri = uriBuilder.Uri;
 
@@ -291,8 +294,7 @@ namespace Facebook.Web
                 throw new ArgumentNullException("url");
             }
 
-            return "<html><head><script type=\"text/javascript\">\ntop.location = \"" + url + "\";\n" +
-                   "</script></head><body></body></html>";
+            return "<html><head><script type=\"text/javascript\">\ntop.location = \"" + url + "\";\n" + "</script></head><body></body></html>";
         }
 
         /// <summary>
@@ -300,7 +302,9 @@ namespace Facebook.Web
         /// </summary>
         /// <param name="pathAndQuery">The path and query.</param>
         /// <param name="cancel">if set to <c>true</c> [cancel].</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Returns the url.
+        /// </returns>
         private Uri BuildAuthReturnUrl(string pathAndQuery, bool cancel)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -312,25 +316,17 @@ namespace Facebook.Web
 
             if (pathAndQuery == null)
             {
-                pathAndQuery = CurrentCanvasPathAndQuery;
+                pathAndQuery = this.CurrentCanvasPathAndQuery;
             }
 
-            string path;
-            if (pathAndQuery.Contains('?'))
-            {
-                path = pathAndQuery.Split('?')[0];
-            }
-            else
-            {
-                path = pathAndQuery;
-            }
+            string path = pathAndQuery.Contains('?') ? pathAndQuery.Split('?')[0] : pathAndQuery;
 
             if (!path.StartsWith("/", StringComparison.Ordinal))
             {
                 path = "/" + path;
             }
 
-            var appPath = httpRequest.ApplicationPath;
+            var appPath = this.httpRequest.ApplicationPath;
             if (appPath != "/")
             {
                 appPath = string.Concat(appPath, "/");
@@ -338,11 +334,21 @@ namespace Facebook.Web
 
             string redirectRoot = string.Concat(redirectPath, cancel ? "cancel" : string.Empty);
 
-            var uriBuilder = new UriBuilder(this.CurrentCanvasUrl);
-            uriBuilder.Path = string.Concat(appPath, redirectRoot, this.CanvasPageApplicationPath, path);
-            uriBuilder.Query = null; // No Querystrings allowed in return urls
+            var uriBuilder = new UriBuilder(this.CurrentCanvasUrl)
+                                 {
+                                     Path = string.Concat(appPath, redirectRoot, this.CanvasPageApplicationPath, path),
+                                     Query = string.Empty
+                                 };
 
             return uriBuilder.Uri;
+        }
+
+        [ContractInvariantMethod]
+        private void InvariantObject()
+        {
+            Contract.Invariant(this.settings != null);
+            Contract.Invariant(this.httpRequest != null);
+            Contract.Invariant(this.httpRequest.Url != null);
         }
     }
 }

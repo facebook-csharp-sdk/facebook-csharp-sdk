@@ -33,6 +33,7 @@ namespace Facebook.Web
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Request != null);
             Contract.Requires(httpContext.Request.Params != null);
+            Contract.Requires(httpContext.Response != null);
 
             this.settings = settings;
         }

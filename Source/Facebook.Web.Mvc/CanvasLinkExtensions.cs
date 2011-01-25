@@ -493,7 +493,7 @@ namespace Facebook.Web.Mvc
         private static string GenerateLinkInternal(ViewContext viewContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, bool includeImplicitMvcValues)
         {
             RequestContext requestContext = viewContext.RequestContext;
-            var appSettings = (IFacebookAppSettings) viewContext.ViewData["facebooksdk-currentappsettings"];
+            var appSettings = (IFacebookAppSettings) viewContext.ViewData[NFacebookAuthorizeAttribute.ViewDataCurrentAppSettingsKey];
 
             htmlAttributes = htmlAttributes ?? new Dictionary<string, object>();
             htmlAttributes["target"] = "_top";

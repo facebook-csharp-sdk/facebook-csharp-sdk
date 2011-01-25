@@ -6,7 +6,7 @@ namespace Facebook.Web.Mvc
     using System.Web.Mvc;
 
     /// <summary>
-    /// Represents the class for specifiying the facebook application name.
+    /// Represents the class for specifying the facebook application name.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class FacebookAppAttribute : ActionFilterAttribute, IAuthorizationFilter
@@ -66,12 +66,12 @@ namespace Facebook.Web.Mvc
             // [CanvasAuthorize] attributes can make use of it.
             // note: settings can be null if app is not found.
             // if this view data is null then attributes like [CanvasAuthorize] should
-            // throw error reporing Facebook Application not configured or some
-            // other usefull informations.
+            // throw error reporting Facebook Application not configured or some
+            // other useful information.
             // this FacebookAppAttribute should not throw error coz, there might be
             // some action methods where there is no need to access Facebook stuffs.
-            filterContext.Controller.ViewData["facebooksdk-currentappsettings"] = this.Settings;
-            filterContext.Controller.ViewData["facebooksdk-currentappname"] = this.AppName;
+            filterContext.Controller.ViewData[NFacebookAuthorizeAttribute.ViewDataCurrentAppSettingsKey] = this.Settings;
+            filterContext.Controller.ViewData[NFacebookAuthorizeAttribute.ViewDataCurrentAppNameKey] = this.AppName;
         }
 
         [ContractInvariantMethod]

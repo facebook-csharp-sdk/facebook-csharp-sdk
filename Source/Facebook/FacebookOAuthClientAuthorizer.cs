@@ -48,6 +48,8 @@ namespace Facebook
         /// </remarks>
         public Uri GetLoginUri(IDictionary<string, object> parameters)
         {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
             var defaultParameters = new Dictionary<string, object>();
             defaultParameters["client_id"] = this.ClientId;
             defaultParameters["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
