@@ -34,7 +34,7 @@ namespace Facebook
         {
             get
             {
-                return this.facebookAppSettings[appName];
+                return this.facebookAppSettings.ContainsKey(appName) ? this.facebookAppSettings[appName] : null;
             }
 
             set
