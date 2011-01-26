@@ -117,6 +117,7 @@
     <Compile Include="CanvasSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Class1.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs">
       <SubType>Code</SubType>
     </Compile>
