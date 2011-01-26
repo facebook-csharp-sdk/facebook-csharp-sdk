@@ -13,6 +13,28 @@ namespace Facebook
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookOAuthClientAuthorizer"/> class.
+        /// </summary>
+        public FacebookOAuthClientAuthorizer()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookOAuthClientAuthorizer"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public FacebookOAuthClientAuthorizer(IFacebookApplication facebookApplication)
+        {
+            if (facebookApplication != null)
+            {
+                this.ClientId = facebookApplication.AppId;
+                this.ClientSecret = facebookApplication.AppSecret;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the client id.
         /// </summary>
         public string ClientId { get; set; }
@@ -148,7 +170,7 @@ namespace Facebook
 
             if (pars["redirect_uri"] == null || string.IsNullOrEmpty(pars["redirect_uri"].ToString()))
             {
-                throw new Exception("RedirectUri requried");
+                throw new Exception("RedirectUri required");
             }
 
             var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
@@ -244,7 +266,7 @@ namespace Facebook
 
             if (pars["redirect_uri"] == null || string.IsNullOrEmpty(pars["redirect_uri"].ToString()))
             {
-                throw new Exception("RedirectUri requried");
+                throw new Exception("RedirectUri required");
             }
 
             var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);

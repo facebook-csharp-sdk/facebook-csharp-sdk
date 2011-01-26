@@ -162,7 +162,7 @@ namespace Facebook
 
                 if (dictionary[key] != null)
                 {
-                    // Format Object As Json And Remove leading and trailing perenthesis
+                    // Format Object As Json And Remove leading and trailing parenthesis
                     string jsonValue = JsonSerializer.SerializeObject(dictionary[key]);
                     if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
                     {

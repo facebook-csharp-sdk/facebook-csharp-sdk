@@ -257,7 +257,7 @@ namespace Facebook
                 bool found = false;
                 if (!string.IsNullOrEmpty(uri.Fragment))
                 {
-                    // #access_token and expires_in are in fragement
+                    // #access_token and expires_in are in fragment
                     var fragment = uri.Fragment.Substring(1);
                     parameters = FacebookUtils.ParseUrlQueryString(fragment);
                     if (parameters.ContainsKey("access_token"))

@@ -16,7 +16,7 @@ namespace Facebook
     using System.Text;
 
     /// <summary>
-    /// Rerpesents a Facebook signed request.
+    /// Represents a Facebook signed request.
     /// </summary>
     public sealed class FacebookSignedRequest
     {

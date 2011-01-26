@@ -14,7 +14,7 @@ namespace Facebook
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// Extension methods that add non-standard funcationality to the FacebookAppBase object.
+    /// Extension methods that add non-standard functionality to the FacebookAppBase object.
     /// </summary>
     public static class FacebookAppExtensions
     {

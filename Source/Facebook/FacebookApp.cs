@@ -66,7 +66,6 @@ namespace Facebook
         /// </summary>
         public FacebookApp()
         {
-
         }
 
         /// <summary>
@@ -91,6 +90,23 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(appSecret));
 
             this.AccessToken = String.Concat(appId, "|", appSecret);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApp"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public FacebookApp(IFacebookApplication facebookApplication)
+        {
+            if (facebookApplication != null)
+            {
+                if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
+                {
+                    this.AccessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
+                }
+            }
         }
 
         /// <summary>
