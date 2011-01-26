@@ -241,54 +241,6 @@ namespace Facebook
         }
 
         /// <summary>
-        /// This method invokes the supplied delegate with retry logic wrapped around it.  No values are returned.  If the delegate raises
-        /// recoverable Facebook server or client errors, then the supplied delegate is reinvoked after a certain amount of delay
-        /// until the retry limit is exceeded, at which point the exception is rethrown. Other exceptions are not caught and will
-        /// be visible to callers.
-        /// </summary>
-        /// <param name="body">The delegate to invoke within the retry code.</param>
-        protected void WithMirrorRetry(Action body)
-        {
-            Contract.Requires(body != null);
-
-            int retryCount = 0;
-
-            while (true)
-            {
-                try
-                {
-                    body();
-                    return;
-                }
-                catch (FacebookApiException ex)
-                {
-                    if (!this.RetryErrorTypes.Contains(ex.ErrorType))
-                    {
-                        throw;
-                    }
-                    else
-                    {
-                        if (retryCount >= this.maxRetries)
-                        {
-                            throw;
-                        }
-                    }
-                }
-                catch (WebException)
-                {
-                    if (retryCount >= this.maxRetries)
-                    {
-                        throw;
-                    }
-                }
-
-                // Sleep for the retry delay before we retry again
-                System.Threading.Thread.Sleep(this.retryDelay);
-                retryCount += 1;
-            }
-        }
-
-        /// <summary>
         /// This method invokes the supplied delegate with retry logic wrapped around it and returns the value of the delegate.
         /// If the delegate raises recoverable Facebook server or client errors, then the supplied delegate is reinvoked after
         /// a certain amount of delay until the retry limit is exceeded, at which point the exception is rethrown. Other
