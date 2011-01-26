@@ -57,6 +57,11 @@ namespace Facebook.Web
             {
                 get { return Current.CanvasUrl; }
             }
+
+            public string CancelUrlPath
+            {
+                get { return Current.CancelUrlPath; }
+            }
         }
 
 

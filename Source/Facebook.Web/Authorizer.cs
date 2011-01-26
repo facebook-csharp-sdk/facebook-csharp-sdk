@@ -219,7 +219,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// The code contracts invarient object method.
+        /// The code contracts invariant object method.
         /// </summary>
         [ContractInvariantMethod]
         private void InvarientObject()

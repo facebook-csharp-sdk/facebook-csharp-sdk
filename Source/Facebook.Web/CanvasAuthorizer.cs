@@ -13,7 +13,7 @@ namespace Facebook.Web
         /// <summary>
         /// The facebook settings.
         /// </summary>
-        private readonly IFacebookAppSettings settings;
+        private readonly IFacebookApplication facebookApplication;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class.
@@ -24,7 +24,7 @@ namespace Facebook.Web
         /// <param name="httpContext">
         /// The http context.
         /// </param>
-        public CanvasAuthorizer(IFacebookAppSettings settings, HttpContextBase httpContext)
+        public CanvasAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
             : base(settings.AppId, settings.AppSecret, httpContext)
         {
             Contract.Requires(settings != null);
@@ -35,15 +35,19 @@ namespace Facebook.Web
             Contract.Requires(httpContext.Request.Params != null);
             Contract.Requires(httpContext.Response != null);
 
-            this.settings = settings;
+            this.facebookApplication = settings;
         }
 
         /// <summary>
         /// Gets the Facebook application settings.
         /// </summary>
-        public IFacebookAppSettings Settings
+        public IFacebookApplication Settings
         {
-            get { return this.settings; }
+            get
+            {
+                Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
+                return this.facebookApplication;
+            }
         }
 
         /// <summary>
@@ -58,7 +62,6 @@ namespace Facebook.Web
         public Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
-
             var defaultParameters = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(this.LoginDisplayMode))
@@ -78,7 +81,7 @@ namespace Facebook.Web
         [ContractInvariantMethod]
         private void InvarientObject()
         {
-            Contract.Invariant(this.settings != null);
+            Contract.Invariant(this.facebookApplication != null);
         }
     }
 }

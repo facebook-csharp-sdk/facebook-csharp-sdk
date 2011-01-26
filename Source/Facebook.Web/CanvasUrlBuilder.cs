@@ -13,11 +13,14 @@ namespace Facebook.Web
     public class CanvasUrlBuilder
     {
         /// <summary>
-        /// Facebook app settings.
+        /// Redirect path.
         /// </summary>
-        private readonly IFacebookAppSettings settings;
+        private const string RedirectPath = "facebookredirect.axd";
 
-        private const string redirectPath = "facebookredirect.axd";
+        /// <summary>
+        /// Facebook Application settings.
+        /// </summary>
+        private readonly IFacebookApplication settings;
 
         /// <summary>
         /// The http request.
@@ -33,7 +36,7 @@ namespace Facebook.Web
         /// <param name="httpRequest">
         /// The http request.
         /// </param>
-        public CanvasUrlBuilder(IFacebookAppSettings settings, HttpRequestBase httpRequest)
+        public CanvasUrlBuilder(IFacebookApplication settings, HttpRequestBase httpRequest)
         {
             Contract.Requires(settings != null);
             Contract.Requires(httpRequest != null);
@@ -56,7 +59,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// The Facebook Application Path.
+        /// Gets the Facebook Application Path.
         /// </summary>
         public string CanvasPageApplicationPath
         {
@@ -146,7 +149,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
 
-                return BuildCanvasPageUrl(CurrentCanvasPathAndQuery);
+                return this.BuildCanvasPageUrl(this.CurrentCanvasPathAndQuery);
             }
         }
 
@@ -154,7 +157,9 @@ namespace Facebook.Web
         /// Builds a Facebook canvas return URL.
         /// </summary>
         /// <param name="pathAndQuery">The path and query.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The canvas page url.
+        /// </returns>
         public Uri BuildCanvasPageUrl(string pathAndQuery)
         {
             Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
@@ -182,6 +187,15 @@ namespace Facebook.Web
         /// <summary>
         /// Gets the canvas login url
         /// </summary>
+        /// <param name="returnUrlPath">
+        /// The return Url Path.
+        /// </param>
+        /// <param name="cancelUrlPath">
+        /// The cancel Url Path.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
@@ -192,13 +206,15 @@ namespace Facebook.Web
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
 
-            var oauth = new FacebookOAuthClientAuthorizer();
-            oauth.ClientId = this.settings.AppId;
-            oauth.ClientSecret = this.settings.AppSecret;
+            var oauth = new FacebookOAuthClientAuthorizer
+                            {
+                                ClientId = this.settings.AppId,
+                                ClientSecret = this.settings.AppSecret
+                            };
 
             if (parameters != null && parameters.ContainsKey("state"))
             {
-                // parameters state overried the state
+                // parameters state override the state
                 state = parameters["state"] == null ? null : parameters["state"].ToString();
             }
 
@@ -263,7 +279,7 @@ namespace Facebook.Web
                 appPath = string.Concat(appPath, "/");
             }
 
-            string redirectRoot = redirectPath;
+            string redirectRoot = RedirectPath;
 
             var uriBuilder = new UriBuilder(this.CurrentCanvasUrl)
                                  {
@@ -332,7 +348,7 @@ namespace Facebook.Web
                 appPath = string.Concat(appPath, "/");
             }
 
-            string redirectRoot = string.Concat(redirectPath, cancel ? "cancel" : string.Empty);
+            string redirectRoot = string.Concat(RedirectPath, cancel ? "cancel" : string.Empty);
 
             var uriBuilder = new UriBuilder(this.CurrentCanvasUrl)
                                  {

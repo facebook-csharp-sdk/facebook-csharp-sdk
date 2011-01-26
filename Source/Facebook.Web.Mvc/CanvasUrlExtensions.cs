@@ -6,7 +6,7 @@ using System.Web.Routing;
 namespace Facebook.Web.Mvc
 {
     /// <summary>
-    /// Provides extension methods for buiiding canvas urls.
+    /// Provides extension methods for building canvas urls.
     /// </summary>
     public static class CanvasUrlExtensions
     {
@@ -174,10 +174,9 @@ namespace Facebook.Web.Mvc
         {
             Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-            var appSettings = (IFacebookAppSettings)requestContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppSettingsKey];
 
             string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(appSettings, requestContext.HttpContext.Request);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookContext.Current, requestContext.HttpContext.Request);
             return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 
@@ -200,10 +199,8 @@ namespace Facebook.Web.Mvc
             Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
 
-            var appSettings = (IFacebookAppSettings)requestContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppSettingsKey];
-
             string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(appSettings, urlHelper.RequestContext.HttpContext.Request);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookContext.Current, urlHelper.RequestContext.HttpContext.Request);
             return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 

@@ -1,4 +1,4 @@
-namespace Facebook.Web.Mvc
+/*namespace Facebook.Web.Mvc
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -33,4 +33,4 @@ namespace Facebook.Web.Mvc
 
         public abstract void OnAuthorization(AuthorizationContext filterContext, IFacebookAppSettings settings);
     }
-}
+}*/

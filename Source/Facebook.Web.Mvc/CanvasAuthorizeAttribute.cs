@@ -1,4 +1,4 @@
-namespace Facebook.Web.Mvc
+/*namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
@@ -52,4 +52,4 @@ namespace Facebook.Web.Mvc
             throw new NotImplementedException();
         }
     }
-}
+}*/

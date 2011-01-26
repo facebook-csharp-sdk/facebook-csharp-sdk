@@ -1,19 +1,14 @@
 namespace Facebook
 {
     /// <summary>
-    /// Represents the Facebook application settings.
+    /// Represents a Facebook Application.
     /// </summary>
-    public interface IFacebookAppSettings
+    public interface IFacebookApplication
     {
         /// <summary>
         /// Gets the application id.
         /// </summary>
         string AppId { get; }
-
-        /// <summary>
-        /// Gets the application api key.
-        /// </summary>
-        string ApiKey { get; }
 
         /// <summary>
         /// Gets the application secret.
@@ -34,5 +29,10 @@ namespace Facebook
         /// Gets the canvas url.
         /// </summary>
         string CanvasUrl { get; }
+
+        /// <summary>
+        /// Gets the url to return the user after they cancel authorization.
+        /// </summary>
+        string CancelUrlPath { get; }
     }
 }

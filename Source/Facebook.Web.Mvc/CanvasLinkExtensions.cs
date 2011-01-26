@@ -493,8 +493,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         private static string GenerateLinkInternal(RequestContext requestContext, RouteCollection routeCollection, string linkText, string routeName, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, bool includeImplicitMvcValues)
         {
-            var appSettings = (IFacebookAppSettings)requestContext.HttpContext.Items[NFacebookAuthorizeAttribute.HttpContextCurrentAppSettingsKey];
-
             htmlAttributes = htmlAttributes ?? new Dictionary<string, object>();
             htmlAttributes["target"] = "_top";
             string webUrl = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
@@ -505,7 +503,7 @@ namespace Facebook.Web.Mvc
                 webUrl = webUrl.Substring(applicationPath.Length);
             }
 
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(appSettings, requestContext.HttpContext.Request);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookContext.Current, requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
             TagBuilder tagBuilder = new TagBuilder("a")
             {

@@ -111,21 +111,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CanvasConfigurationSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CanvasSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Class1.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FacebookWebUtils.cs" />
     <Compile Include="GlobalSuppressions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ICanvasSettings.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Authorizer.cs" />
@@ -135,6 +125,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="SettingsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">

@@ -1,4 +1,4 @@
-
+/*
 namespace Facebook.Web.Mvc
 {
     using System.Collections.Generic;
@@ -125,4 +125,4 @@ namespace Facebook.Web.Mvc
             return authorizer.GetLoginUrl(null);
         }
     }
-}
+}*/

@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Configuration;
-
+﻿
 namespace Facebook
 {
+    using System.Configuration;
+
     /// <summary>
     /// Represents the Facebook section in a configuration file.
     /// </summary>
     public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookApplication
     {
+        /// <summary>
+        /// The current facebook settings stored in the configuration file.
+        /// </summary>
+        private static IFacebookApplication current;
 
         /// <summary>
         /// Gets or sets the app id.
@@ -34,6 +35,9 @@ namespace Facebook
             set { this["appSecret"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the site url.
+        /// </summary>
         [ConfigurationProperty("siteUrl", IsRequired = false)]
         public string SiteUrl
         {
@@ -41,6 +45,9 @@ namespace Facebook
             set { this["siteUrl"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the canvas page.
+        /// </summary>
         [ConfigurationProperty("canvasPage", IsRequired = false)]
         public string CanvasPage
         {
@@ -48,11 +55,44 @@ namespace Facebook
             set { this["canvasPage"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the canvas url.
+        /// </summary>
         [ConfigurationProperty("canvasUrl", IsRequired = false)]
         public string CanvasUrl
         {
             get { return (string)this["canvasUrl"]; }
             set { this["canvasUrl"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the url to return the user after they cancel authorization.
+        /// </summary>
+        [ConfigurationProperty("cancelUrlPath", IsRequired = false)]
+        public string CancelUrlPath
+        {
+            get { return (string)this["cancelUrlPath"]; }
+            set { this["cancelUrlPath"] = value; }
+        }
+
+        /// <summary>
+        /// Gets the Facebook settings stored in the configuration file.
+        /// </summary>
+        internal static IFacebookApplication Current
+        {
+            get
+            {
+                if (current == null)
+                {
+                    var settings = ConfigurationManager.GetSection("facebookSettings");
+                    if (settings != null)
+                    {
+                        current = settings as IFacebookApplication;
+                    }
+                }
+
+                return current;
+            }
         }
     }
 }
