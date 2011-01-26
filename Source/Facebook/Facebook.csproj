@@ -138,6 +138,7 @@
     <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
+    <Compile Include="NFacebookConfigurationSection.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

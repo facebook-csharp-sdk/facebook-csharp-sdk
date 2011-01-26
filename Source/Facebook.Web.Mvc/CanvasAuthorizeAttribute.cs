@@ -6,7 +6,7 @@ namespace Facebook.Web.Mvc
     using System.Web.Mvc;
 
     /// <summary>
-    /// Provides funcationality for restricting access to controllers or actions based on Facebook permissions.
+    /// Provides functionality for restricting access to controllers or actions based on Facebook permissions.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class CanvasAuthorizeAttribute : FacebookAuthorizeAttribute

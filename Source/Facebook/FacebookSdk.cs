@@ -19,6 +19,17 @@ namespace Facebook
         static FacebookSdk()
         {
             ApplicationSettingsCollection = new FacebookAppSettingsCollection();
+
+#if !SILVERLIGHT
+            var facebookConfigSection = (NFacebookConfigurationSection)System.Configuration.ConfigurationManager.GetSection("facebook");
+            if (facebookConfigSection != null && facebookConfigSection.Apps != null)
+            {
+                foreach (FacebookApplicationSettingsConfigElement app in facebookConfigSection.Apps)
+                {
+                    ApplicationSettingsCollection.Register(app.AppName, app);
+                }
+            }
+#endif
         }
 
         /// <summary>
