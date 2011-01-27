@@ -22,6 +22,44 @@ namespace Facebook.Web
         /// <summary>
         /// Initializes a new instance of the <see cref="Authorizer"/> class.
         /// </summary>
+        public Authorizer()
+            : this(FacebookContext.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
+        {
+            Contract.Requires(FacebookContext.Current != null);
+            Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppSecret));
+            Contract.Requires(System.Web.HttpContext.Current != null);
+            Contract.Requires(System.Web.HttpContext.Current.Request != null);
+            Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
+            Contract.Requires(System.Web.HttpContext.Current.Response != null);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        /// <param name="httpContext">
+        /// The http context.
+        /// </param>
+        public Authorizer(IFacebookApplication facebookApplication, HttpContextBase httpContext)
+            : this(facebookApplication.AppId, facebookApplication.AppSecret, httpContext)
+        {
+            Contract.Requires(facebookApplication != null);
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
+            Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Params != null);
+            Contract.Requires(httpContext.Response != null);
+
+            this.CancelUrlPath = facebookApplication.CancelUrlPath;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
         /// <param name="appId">
         /// The app Id.
         /// </param>
@@ -43,47 +81,6 @@ namespace Facebook.Web
             this.AppId = appId;
             this.AppSecret = appSecret;
             this.httpContext = httpContext;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Authorizer"/> class.
-        /// </summary>
-        /// <param name="facebookApplication">
-        /// The facebook application.
-        /// </param>
-        /// <param name="httpContext">
-        /// The http context.
-        /// </param>
-        public Authorizer(IFacebookApplication facebookApplication, HttpContextBase httpContext)
-        {
-            Contract.Requires(facebookApplication != null);
-            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppId));
-            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
-            Contract.Requires(httpContext != null);
-            Contract.Requires(httpContext.Request != null);
-            Contract.Requires(httpContext.Request.Params != null);
-            Contract.Requires(httpContext.Response != null);
-
-            this.AppId = facebookApplication.AppId;
-            this.AppSecret = facebookApplication.AppSecret;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Authorizer"/> class.
-        /// </summary>
-        /// <param name="facebookApplication">
-        /// The facebook application.
-        /// </param>
-        public Authorizer(IFacebookApplication facebookApplication)
-            : this(facebookApplication, new HttpContextWrapper(System.Web.HttpContext.Current))
-        {
-            Contract.Requires(facebookApplication != null);
-            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppId));
-            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
-            Contract.Requires(System.Web.HttpContext.Current != null);
-            Contract.Requires(System.Web.HttpContext.Current.Request != null);
-            Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
-            Contract.Requires(System.Web.HttpContext.Current.Response != null);
         }
 
         /// <summary>
@@ -268,6 +265,7 @@ namespace Facebook.Web
             Contract.Invariant(!string.IsNullOrEmpty(this.AppId));
             Contract.Invariant(!string.IsNullOrEmpty(this.AppSecret));
             Contract.Invariant(this.httpContext != null);
+            Contract.Invariant(this.httpContext.Request != null);
             Contract.Invariant(this.httpContext.Request.Params != null);
             Contract.Invariant(this.HttpContext.Response != null);
             Contract.Invariant(this.HttpContext.Request != null);

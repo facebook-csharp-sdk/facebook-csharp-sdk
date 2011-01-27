@@ -25,7 +25,7 @@ namespace Facebook.Web
         /// The http context.
         /// </param>
         public CanvasAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
-            : base(settings.AppId, settings.AppSecret, httpContext)
+            : base(settings, httpContext)
         {
             Contract.Requires(settings != null);
             Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
@@ -36,6 +36,14 @@ namespace Facebook.Web
             Contract.Requires(httpContext.Response != null);
 
             this.facebookApplication = settings;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class.
+        /// </summary>
+        public CanvasAuthorizer()
+            : this(FacebookContext.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
+        {
         }
 
         /// <summary>
