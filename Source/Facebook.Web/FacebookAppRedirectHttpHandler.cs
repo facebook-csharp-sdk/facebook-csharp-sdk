@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -27,9 +28,20 @@
         /// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
         public void ProcessRequest(HttpContext context)
         {
-            // TODO: refactor this method and need to to unit test.
-            // will need to have a new internal method called GetRedirectUrl
-            // so we can test the url generated.
+            Contract.Requires(context != null);
+
+            var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url="
+                       + this.GetUrl(new HttpContextWrapper(context)) + "\"></head></html>";
+
+            context.Response.Write(html);
+        }
+
+        protected Uri GetUrl(HttpContextBase context)
+        {
+            Contract.Requires(context != null);
+            Contract.Requires(context.Request != null);
+            
+            // TODO: need unit tests for this method, might as well need to refactor this method.
             var uri = new Uri("http://apps.facebook.com/");
             var redirectUriBuilder = new UriBuilder(uri);
 
@@ -123,9 +135,7 @@
                 redirectUriBuilder = new UriBuilder("http://www.facebook.com");
             }
 
-            var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url="
-                       + redirectUriBuilder.Uri + "\"></head></html>";
-            context.Response.Write(html);
+            return redirectUriBuilder.Uri;
         }
     }
 }
