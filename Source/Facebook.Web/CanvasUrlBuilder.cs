@@ -313,52 +313,6 @@ namespace Facebook.Web
             return "<html><head><script type=\"text/javascript\">\ntop.location = \"" + url + "\";\n" + "</script></head><body></body></html>";
         }
 
-        /// <summary>
-        /// Builds a Facebook canvas return URL.
-        /// </summary>
-        /// <param name="pathAndQuery">The path and query.</param>
-        /// <param name="cancel">if set to <c>true</c> [cancel].</param>
-        /// <returns>
-        /// Returns the url.
-        /// </returns>
-        private Uri BuildAuthReturnUrl(string pathAndQuery, bool cancel)
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            if (!string.IsNullOrEmpty(pathAndQuery) && pathAndQuery.StartsWith("/", StringComparison.Ordinal))
-            {
-                pathAndQuery = pathAndQuery.Substring(1);
-            }
-
-            if (pathAndQuery == null)
-            {
-                pathAndQuery = this.CurrentCanvasPathAndQuery;
-            }
-
-            string path = pathAndQuery.Contains('?') ? pathAndQuery.Split('?')[0] : pathAndQuery;
-
-            if (!path.StartsWith("/", StringComparison.Ordinal))
-            {
-                path = "/" + path;
-            }
-
-            var appPath = this.httpRequest.ApplicationPath;
-            if (appPath != "/")
-            {
-                appPath = string.Concat(appPath, "/");
-            }
-
-            string redirectRoot = string.Concat(RedirectPath, cancel ? "cancel" : string.Empty);
-
-            var uriBuilder = new UriBuilder(this.CurrentCanvasUrl)
-                                 {
-                                     Path = string.Concat(appPath, redirectRoot, this.CanvasPageApplicationPath, path),
-                                     Query = string.Empty
-                                 };
-
-            return uriBuilder.Uri;
-        }
-
         [ContractInvariantMethod]
         private void InvariantObject()
         {

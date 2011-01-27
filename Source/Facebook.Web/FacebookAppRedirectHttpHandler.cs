@@ -28,6 +28,8 @@
         public void ProcessRequest(HttpContext context)
         {
             // TODO: refactor this method and need to to unit test.
+            // will need to have a new internal method called GetRedirectUrl
+            // so we can test the url generated.
             var uri = new Uri("http://apps.facebook.com/");
             var redirectUriBuilder = new UriBuilder(uri);
 

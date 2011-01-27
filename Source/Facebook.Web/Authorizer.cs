@@ -19,14 +19,14 @@ namespace Facebook.Web
         /// </summary>
         private FacebookSession session;
 
-        public string AppId { get; set; }
-        public string AppSecret { get; set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Authorizer"/> class.
         /// </summary>
-        /// <param name="facebookSettings">
-        /// The facebook settings.
+        /// <param name="appId">
+        /// The app Id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The app Secret.
         /// </param>
         /// <param name="httpContext">
         /// The http context.
@@ -48,13 +48,53 @@ namespace Facebook.Web
         /// <summary>
         /// Initializes a new instance of the <see cref="Authorizer"/> class.
         /// </summary>
-        /// <param name="facebookSettings">
-        /// The facebook settings.
+        /// <param name="facebookApplication">
+        /// The facebook application.
         /// </param>
-        public Authorizer(string appId, string appSecret)
-            : this(appId, appSecret, new HttpContextWrapper(System.Web.HttpContext.Current))
+        /// <param name="httpContext">
+        /// The http context.
+        /// </param>
+        public Authorizer(IFacebookApplication facebookApplication, HttpContextBase httpContext)
         {
+            Contract.Requires(facebookApplication != null);
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
+            Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Params != null);
+            Contract.Requires(httpContext.Response != null);
+
+            this.AppId = facebookApplication.AppId;
+            this.AppSecret = facebookApplication.AppSecret;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public Authorizer(IFacebookApplication facebookApplication)
+            : this(facebookApplication, new HttpContextWrapper(System.Web.HttpContext.Current))
+        {
+            Contract.Requires(facebookApplication != null);
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
+            Contract.Requires(System.Web.HttpContext.Current != null);
+            Contract.Requires(System.Web.HttpContext.Current.Request != null);
+            Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
+            Contract.Requires(System.Web.HttpContext.Current.Response != null);
+        }
+
+        /// <summary>
+        /// Gets or sets the application id.
+        /// </summary>
+        public string AppId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the application secret.
+        /// </summary>
+        public string AppSecret { get; set; }
 
         /// <summary>
         /// Gets or sets the extended permissions.
@@ -140,6 +180,7 @@ namespace Facebook.Web
         /// </returns>
         public virtual string[] HasPermissions(string[] permissions)
         {
+            Contract.Requires(permissions != null);
             Contract.Ensures(Contract.Result<string[]>() != null);
 
             long userId;

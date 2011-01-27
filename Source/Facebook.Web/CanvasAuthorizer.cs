@@ -59,9 +59,19 @@ namespace Facebook.Web
             this.HttpResponse.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(this.GetLoginUrl(null)));
         }
 
+        /// <summary>
+        /// Gets the canvas login url.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the login url.
+        /// </returns>
         public Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
+
             var defaultParameters = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(this.LoginDisplayMode))

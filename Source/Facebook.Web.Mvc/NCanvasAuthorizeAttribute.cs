@@ -1,4 +1,4 @@
-/*namespace Facebook.Web.Mvc
+namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
@@ -16,46 +16,46 @@
 
         public string ReturnUrlPath { get; set; }
 
-        public override void OnAuthorization(AuthorizationContext filterContext, IFacebookAppSettings settings)
+        public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            if (string.IsNullOrEmpty(this.Permissions))
-            {
-                return;
-            }
+            //if (string.IsNullOrEmpty(this.Permissions))
+            //{
+            //    return;
+            //}
 
-            var appName = filterContext.HttpContext.Items["facebooksdk-currentappname"];
+            //var appName = filterContext.HttpContext.Items["facebooksdk-currentappname"];
 
-            if (settings == null)
-            {
-                if (appName == null)
-                {
-                    throw new ApplicationException("Facebook Application Settings not found. Did you miss [FacebookApp] attribute?");
-                }
-                else
-                {
-                    throw new ApplicationException(string.Format("Facebook Application Settings for '{0}' not found.", appName));
-                }
-            }
+            //if (settings == null)
+            //{
+            //    if (appName == null)
+            //    {
+            //        throw new ApplicationException("Facebook Application Settings not found. Did you miss [FacebookApp] attribute?");
+            //    }
+            //    else
+            //    {
+            //        throw new ApplicationException(string.Format("Facebook Application Settings for '{0}' not found.", appName));
+            //    }
+            //}
 
-            if (string.IsNullOrEmpty(settings.AppId))
-            {
-                throw new ApplicationException(string.Format("Facebook Application ID has not been specified for '{0}.", appName));
-            }
+            //if (string.IsNullOrEmpty(settings.AppId))
+            //{
+            //    throw new ApplicationException(string.Format("Facebook Application ID has not been specified for '{0}.", appName));
+            //}
 
-            if (string.IsNullOrEmpty(settings.AppSecret))
-            {
-                throw new ApplicationException(string.Format("Facebook Application Secret has not been specified for '{0}.", appName));
-            }
+            //if (string.IsNullOrEmpty(settings.AppSecret))
+            //{
+            //    throw new ApplicationException(string.Format("Facebook Application Secret has not been specified for '{0}.", appName));
+            //}
 
             var authorizer = new Authorizer(settings.AppId, settings.AppSecret, filterContext.HttpContext) { Perms = this.Permissions };
 
             if (!authorizer.IsAuthorized())
             {
-                this.HandleUnauthorizedRequest(filterContext, settings);
+                this.HandleUnauthorizedRequest(filterContext, FacebookContext.Current);
             }
         }
 
-        protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookAppSettings settings)
+        protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
         {
             Contract.Requires(filterContext != null);
             Contract.Requires(settings != null);
@@ -64,7 +64,7 @@
             filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
         }
 
-        internal virtual protected Uri GetLoginUrl(IFacebookAppSettings settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
+        internal virtual protected Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
             Contract.Requires(settings != null);
             Contract.Requires(httpContext != null);
@@ -80,4 +80,4 @@
             return authorizer.GetLoginUrl(null);
         }
     }
-}*/
+}

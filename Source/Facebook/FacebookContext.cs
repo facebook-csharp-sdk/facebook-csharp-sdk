@@ -30,7 +30,6 @@
         public static void SetApplication(IFacebookApplication facebookApplication)
         {
             Contract.Requires(facebookApplication != null);
-
             instance.InnerSetApplication(facebookApplication);
         }
 

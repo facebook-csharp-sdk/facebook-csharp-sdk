@@ -1,10 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
-using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace Facebook.Web.Mvc
+﻿namespace Facebook.Web.Mvc
 {
+    using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Contracts;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
     /// <summary>
     /// Provides extension methods for building canvas urls.
     /// </summary>

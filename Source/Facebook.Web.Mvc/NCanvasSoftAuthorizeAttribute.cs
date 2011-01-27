@@ -1,4 +1,3 @@
-/*
 namespace Facebook.Web.Mvc
 {
     using System.Collections.Generic;
@@ -51,11 +50,13 @@ namespace Facebook.Web.Mvc
             set { this.master = value; }
         }
 
-        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookAppSettings settings)
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
         {
             Contract.Requires(filterContext != null);
             Contract.Requires(filterContext.HttpContext != null);
             Contract.Requires(filterContext.HttpContext.Request != null);
+            Contract.Requires(filterContext.RouteData != null);
+            Contract.Requires(filterContext.Controller != null);
             Contract.Requires(settings != null);
 
             var model = new FacebookAuthorizeInfo(
@@ -75,7 +76,7 @@ namespace Facebook.Web.Mvc
             filterContext.Result = viewResult;
         }
 
-        protected internal override System.Uri GetLoginUrl(IFacebookAppSettings settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
+        protected internal override System.Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
             var authorizer = new CanvasAuthorizer(settings, httpContext)
             {
@@ -125,4 +126,4 @@ namespace Facebook.Web.Mvc
             return authorizer.GetLoginUrl(null);
         }
     }
-}*/
+}

@@ -233,9 +233,6 @@ namespace Facebook
         /// <param name="uri">
         /// The uri.
         /// </param>
-        /// <param name="facebookSettings">
-        /// The facebook settings.
-        /// </param>
         /// <param name="result">
         /// An instance of <see cref="FacebookAuthenticationResult"/>.
         /// </param>

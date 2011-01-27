@@ -126,7 +126,7 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\RegisteredFacebookApps.cshtml" />
+    <None Include="Views\Home\CurrentFacebookContext.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\FacebookApp.cshtml" />

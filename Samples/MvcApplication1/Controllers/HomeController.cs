@@ -4,22 +4,19 @@
     using Facebook;
     using Facebook.Web.Mvc;
 
-    [FacebookApp("CSharpSamples")]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            this.ViewData["fbApplications"] = FacebookSdk.Applications;
-
             return View();
         }
 
         //[NCanvasAuthorize(Permissions = "user_about_me", CancelUrlPath = "/", ReturnUrlPath = "/")]
         //[NCanvasAuthorize(Permissions = "user_about_me")]
         [NCanvasSoftAuthorize(Permissions = "user_about_me")]
-        public ActionResult RegisteredFacebookApps()
+        public ActionResult CurrentFacebookContext()
         {
-            return View(FacebookSdk.Applications);
+            return View(FacebookContext.Current);
         }
 
     }
