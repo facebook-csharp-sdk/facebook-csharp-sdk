@@ -21,7 +21,7 @@ namespace CSASPNETWebsite
                 Response.Redirect("~/Account/Login.aspx?returnUrl=" + HttpUtility.UrlEncode(Request.Url.PathAndQuery));
             }
 
-            var fb = new FacebookApp(authorizer.Session);
+            var fb = new FacebookApp(authorizer.Session.AccessToken);
 
             dynamic me = fb.Get("/me");
             lblName.Text = me.name;

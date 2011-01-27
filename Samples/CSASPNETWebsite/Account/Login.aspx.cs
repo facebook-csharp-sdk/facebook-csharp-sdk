@@ -18,6 +18,7 @@ namespace CSASPNETWebsite.Account
 
             if (authorizer.IsAuthorized())
             {
+                // check if return url is local.
                 Response.Redirect(HttpUtility.UrlDecode(Request.QueryString["returnUrl"] ?? "/"));
             }
         }
