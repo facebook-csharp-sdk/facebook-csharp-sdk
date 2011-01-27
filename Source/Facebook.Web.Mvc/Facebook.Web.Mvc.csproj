@@ -120,12 +120,11 @@
     <Compile Include="CanvasRedirectResult.cs" />
     <Compile Include="CanvasRedirectToRouteResult.cs" />
     <Compile Include="CanvasUrlExtensions.cs" />
+    <Compile Include="FacebookAuthorizeAttribute.cs" />
     <Compile Include="FacebookAuthorizeInfo.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="FacebookAuthorizeAttribute.cs" />
-    <Compile Include="NCanvasAuthorizeAttribute.cs" />
-    <Compile Include="NCanvasSoftAuthorizeAttribute.cs" />
-    <Compile Include="NFacebookAuthorizeAttribute.cs" />
+    <Compile Include="FacebookAuthorizeAttributeBase.cs" />
+    <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

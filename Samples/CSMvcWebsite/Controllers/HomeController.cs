@@ -5,15 +5,21 @@ using System.Web;
 using System.Web.Mvc;
 using Facebook.Web.Mvc;
 using System.Dynamic;
+using Facebook.Web;
 
 namespace Facebook.Samples.HelloWorld.Controllers
 {
     [HandleError]
     public class HomeController : Controller
     {
+        public FacebookSession CurrentSession
+        {
+            get { return (new Authorizer().Session); }
+        }
+
         public ActionResult Index()
         {
-            if (FacebookSettings.Current.AppId == "{put your appId here}")
+            if (FacebookContext.Current.AppId == "{put your appId here}")
             {
                 return View("GettingStarted");
             }
@@ -21,10 +27,10 @@ namespace Facebook.Samples.HelloWorld.Controllers
             return View();
         }
 
-        [FacebookAuthorize()]
+        [FacebookAuthorize]
         public ActionResult About()
         {
-            var app = new FacebookApp();
+            var app = new FacebookApp(this.CurrentSession.AccessToken);
 
             dynamic me = app.Get("me");
             dynamic friends = app.Get("/me/friends");
@@ -36,10 +42,10 @@ namespace Facebook.Samples.HelloWorld.Controllers
             return View(model);
         }
 
-        [FacebookAuthorize(LoginUrl = "/", Perms = "publish_stream")]
+        [FacebookAuthorize(LoginUrl = "/", Permissions = "publish_stream")]
         public ActionResult Publish()
         {
-            var app = new FacebookApp();
+            var app = new FacebookApp(this.CurrentSession.AccessToken);
 
             dynamic parameters = new ExpandoObject();
             parameters.message = "First wall post!";

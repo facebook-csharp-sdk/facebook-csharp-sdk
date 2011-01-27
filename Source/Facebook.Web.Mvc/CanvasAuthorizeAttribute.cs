@@ -1,55 +1,54 @@
-/*namespace Facebook.Web.Mvc
+namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Web;
     using System.Web.Mvc;
+    using Facebook;
+    using Facebook.Web;
 
-    /// <summary>
-    /// Provides functionality for restricting access to controllers or actions based on Facebook permissions.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    public class CanvasAuthorizeAttribute : FacebookAuthorizeAttribute
+    public class CanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
-        private readonly ICanvasSettings canvasSettings;
+        public string LoginDisplayMode { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CanvasAuthorizeAttribute"/> class.
-        /// </summary>
-        /// <param name="facebookSettings">
-        /// The facebook settings.
-        /// </param>
-        public CanvasAuthorizeAttribute(string appId, string appSecret, ICanvasSettings canvasSettings)
-            : base(appId, appSecret)
+        public string CancelUrlPath { get; set; }
+
+        public string ReturnUrlPath { get; set; }
+
+        public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            this.canvasSettings = canvasSettings;
+            var authorizer = new Authorizer(settings, filterContext.HttpContext) { Perms = this.Permissions };
+
+            if (!authorizer.IsAuthorized())
+            {
+                this.HandleUnauthorizedRequest(filterContext, FacebookContext.Current);
+            }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CanvasAuthorizeAttribute"/> class.
-        /// </summary>
-        public CanvasAuthorizeAttribute(string appId, string appSecret)
-            : this(appId, appSecret, CanvasSettings.Current)
+        protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
         {
+            Contract.Requires(filterContext != null);
+            Contract.Requires(settings != null);
+
+            var loginUri = this.GetLoginUrl(settings, filterContext.HttpContext, null);
+            filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
         }
 
-        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        internal virtual protected Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
-            filterContext.Result = new CanvasRedirectResult(this.GetLoginUrl(null, filterContext.HttpContext).ToString());
-        }
+            Contract.Requires(settings != null);
+            Contract.Requires(httpContext != null);
 
-        public Uri GetLoginUrl(IDictionary<string, object> parameters, HttpContextBase httpContext)
-        {
-            //var canvasAuthorizer = new CanvasAuthorizer(this.AppId, this.AppSecret, this.canvasSettings, httpContext)
-            //                           {
-            //                               LoginDisplayMode = this.LoginDisplayMode,
-            //                               State = this.State,
-            //                               Perms = this.Perms,
-            //                               CancelUrlPath = this.CancelUrlPath
-            //                           };
+            var authorizer = new CanvasAuthorizer(settings, httpContext)
+            {
+                Perms = this.Permissions,
+                ReturnUrlPath = this.ReturnUrlPath,
+                CancelUrlPath = this.CancelUrlPath,
+                LoginDisplayMode = this.LoginDisplayMode
+            };
 
-            //return canvasAuthorizer.GetLoginUrl(null);
-            throw new NotImplementedException();
+            return authorizer.GetLoginUrl(parameters);
         }
     }
-}*/
+}

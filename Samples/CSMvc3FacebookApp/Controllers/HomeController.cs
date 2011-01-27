@@ -2,28 +2,31 @@
 {
     using System.Web.Mvc;
     using Facebook;
+    using Facebook.Web;
     using Facebook.Web.Mvc;
 
     [HandleError]
     public class HomeController : Controller
     {
-
+        public FacebookSession FacebookSession
+        {
+            get { return (new CanvasAuthorizer().Session); }
+        }
         public ActionResult Index()
         {
             return View();
         }
 
-        [CanvasAuthorize(Perms = "user_about_me")]
+        [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            FacebookApp fbApp = new FacebookApp();
-            if (fbApp.Session != null)
-            {
-                dynamic result = fbApp.Get("me");
+            FacebookApp fbApp = new FacebookApp(this.FacebookSession.AccessToken);
 
-                ViewData["Firstname"] = result.first_name;
-                ViewData["Lastname"] = result.last_name;
-            }
+            dynamic result = fbApp.Get("me");
+
+            ViewData["Firstname"] = result.first_name;
+            ViewData["Lastname"] = result.last_name;
+
 
             return View();
         }
