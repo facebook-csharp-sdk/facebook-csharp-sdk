@@ -48,6 +48,8 @@
 
 #if !SILVERLIGHT
         private IFacebookApplication current = FacebookConfigurationSection.Current;
+#else
+        private IFacebookApplication current = new NullFacebookApplication();
 #endif
         public IFacebookApplication InnerCurrent
         {

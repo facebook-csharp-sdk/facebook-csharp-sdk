@@ -73,7 +73,7 @@ namespace Facebook
         {
             // The REST API does not return a status that causes a WebException
             // even when there is an error. For this reason we have to parse a
-            // successful response to see if it contains error infomration.
+            // successful response to see if it contains error information.
             // If it does have an error message we throw a FacebookApiException.
             FacebookApiException resultException = null;
             if (result != null)
@@ -151,7 +151,7 @@ namespace Facebook
                                     // Check to make sure the correct data is in the response
                                     if (!String.IsNullOrEmpty(errorType) && !String.IsNullOrEmpty(errorMessage))
                                     {
-                                        // We dont include the inner exception because it is not needed and is always a WebException.
+                                        // We don't include the inner exception because it is not needed and is always a WebException.
                                         // It is easier to understand the error if we use Facebook's error message.
                                         if (errorType == "OAuthException")
                                         {
