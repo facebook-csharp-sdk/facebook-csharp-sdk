@@ -13,7 +13,7 @@
 
         //[NCanvasAuthorize(Permissions = "user_about_me", CancelUrlPath = "/", ReturnUrlPath = "/")]
         //[NCanvasAuthorize(Permissions = "user_about_me")]
-        [NCanvasSoftAuthorize(Permissions = "user_about_me")]
+        [CanvasSoftAuthorize(Permissions = "user_about_me")]
         public ActionResult CurrentFacebookContext()
         {
             return View(FacebookContext.Current);
