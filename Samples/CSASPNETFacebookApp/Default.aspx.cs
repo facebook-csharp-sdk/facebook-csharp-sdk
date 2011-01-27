@@ -25,7 +25,7 @@ public partial class _Default : Page
 
     private void ShowFacebookContent()
     {
-        var fb = new FacebookApp(this.CurrentSession);
+        var fb = new FacebookApp(this.CurrentSession.AccessToken);
         dynamic myInfo = fb.Get("me");
         lblName.Text = myInfo.name;
         pnlHello.Visible = true;
