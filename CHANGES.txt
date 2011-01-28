@@ -83,7 +83,7 @@ vNext
 		b. internal static string GetSessionCookieName(string appId);
 		c. internal static FacebookSession GetSession(string appId, string appSecret, HttpRequestBase httpRequest);
 
-	  Extendend Permission helper methods
+	  Extended Permission helper methods
 		a. internal static string[] HasPermissions(string appId, string appSecret, long userId, string[] permissions);
 		b. internal static bool HasPermission(string appId, string appSecret, long userId, string permission);
 
@@ -96,17 +96,34 @@ vNext
 		b. internal static FacebookSession ParseCookieValue(string appSecret, string cookieValue);
 		   (for non-sliverlight builds only)
 
-6. ICanvasSettings
-	 a. removed AuthorizeCancelUrl.
-	 b. added CancelUrlPath
-			this is the path to redirect when there is an error such as user denies access
-			to the application.
+6. removed ICanvasSettings and IFacebookSettings.
+   added IFacebookApplication
 
-			if the canvas url is http://apps.facebook.com/sampleapp/
-			and the CancelUrlPath is "/fbcancel"
-			the the user will be redirected to http://apps.facebook.com/sampleapp/fbcancel
-			
-			if CancelUrlPath is empty it looks at the web.config cancelUrlPath and if both
-			are empty it will redirect to http://www.facebook.com
+   ICanvasSettings and IFacebookSettings have been merged to IFacebookApplication.
+   IFacebookApplication contains the most of the settings of the Facebook Application
+   such as AppId, AppSecret, CanvasPage and CanvasUrl.
 
-7. Migrated Facebook.dll to client only profile.
+7. removed CanvasConfigurationSettings
+   FacebookConfigurationSection derives from IFacebookApplication hence contains configurations
+   from both ICanvasSettings and IFacebookSettings which was in v4.
+
+8. Migrated Facebook.dll to client only profile.
+
+9. IOAuthClientAuthorizer and FacebookOAuthClientAuthorizer
+	a. added Uri GetLoginUrl(IDictionary<string, object> parameters);
+	b. added Uri GetLogoutUrl(IDictionary<string, object> parameters);
+
+	Note: by default the redirect uri is http://www.facebook.com/connect/login_success.html
+		  for windows phone 7 builds (only) the display mode is "touch" by default.
+
+	All library uses the new Facebook OAuth dialog (http://developers.facebook.com/docs/reference/dialogs/oauth)
+	for authorization.
+
+10. FacebookAuthenticationResult can now parse urls that does not start with 
+    http://www.facebook.com/connect/login_success.html
+
+11. added FacebookContext
+	This is used to get the current facebook application settings.
+	It can be set using the web.config or app.config files as well as programmatically by calling
+	FacebookContext.SetApplication method.
+	

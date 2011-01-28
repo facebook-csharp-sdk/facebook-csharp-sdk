@@ -21,7 +21,7 @@ namespace Facebook.Samples.AuthenticationTool
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string appId = "{your app id}";
+        private const string appId = "{appid}";
 
         private string requestedFbPermissions = "user_about_me";
 
@@ -81,18 +81,24 @@ namespace Facebook.Samples.AuthenticationTool
                                     { "scope", requestedFbPermissions }
                                 };
 
-            var loginUri = oauth.GetLoginUri(paramaters);
+            var loginUri = oauth.GetLoginUrl(paramaters);
             FacebookLoginBrowser.Navigate(loginUri);
         }
 
         void FacebookLoginBrowser_Navigated(object sender, NavigationEventArgs e)
         {
-            Debug.WriteLine(e.Uri);
             FacebookAuthenticationResult authResult;
             if (FacebookAuthenticationResult.TryParse(e.Uri, out authResult))
             {
-                fbApp.Session = authResult.ToSession();
-                loginSucceeded();
+                if (authResult.IsSuccess)
+                {
+                    fbApp = new FacebookApp(authResult.AccessToken);
+                    loginSucceeded();
+                }
+                else
+                {
+                    MessageBox.Show(authResult.ErrorDescription);
+                }
             }
         }
     }

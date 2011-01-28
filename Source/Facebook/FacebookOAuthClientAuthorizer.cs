@@ -68,7 +68,7 @@ namespace Facebook
         ///     response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code_and_token).
         ///     display       : The display mode in which to render the dialog. The default is page on the www subdomain and wap on the m subdomain. This is automatically specified by most SDKs. (For WP7 builds it is set to touch.)
         /// </remarks>
-        public Uri GetLoginUri(IDictionary<string, object> parameters)
+        public Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
 

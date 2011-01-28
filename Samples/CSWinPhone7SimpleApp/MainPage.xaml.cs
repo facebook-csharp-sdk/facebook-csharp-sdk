@@ -17,9 +17,7 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string appId = "{your app id}";
-
-        private string accessToken;
+        private const string appId = "{app id}";
 
         private bool loggedIn = false;
 
@@ -104,7 +102,7 @@ namespace Facebook.Samples.AuthenticationTool
                 paramaters["scope"] = extendedPermissions;
             }
 
-            var loginUri = oauth.GetLoginUri(paramaters);
+            var loginUri = oauth.GetLoginUrl(paramaters);
             FacebookLoginBrowser.Navigate(loginUri);
         }
 
@@ -115,8 +113,7 @@ namespace Facebook.Samples.AuthenticationTool
             {
                 if (authResult.IsSuccess)
                 {
-                    accessToken = authResult.AccessToken;
-                    fbApp.Session = authResult.ToSession();
+                    fbApp = new FacebookApp(authResult.AccessToken);
                     loginSucceeded();
                 }
                 else

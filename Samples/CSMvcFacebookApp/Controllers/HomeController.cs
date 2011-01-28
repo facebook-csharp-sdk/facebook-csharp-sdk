@@ -18,17 +18,14 @@
             return View();
         }
 
-        [CanvasAuthorize(Perms = "user_about_me")]
+        [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            var fbApp = new FacebookApp(this.CurrentSession);
+            var fbApp = new FacebookApp(this.CurrentSession.AccessToken);
 
-            if (fbApp.Session != null)
-            {
-                dynamic result = fbApp.Get("me");
-                ViewData["Firstname"] = (string)result.first_name;
-                ViewData["Lastname"] = (string)result.last_name;
-            }
+            dynamic result = fbApp.Get("me");
+            ViewData["Firstname"] = (string)result.first_name;
+            ViewData["Lastname"] = (string)result.last_name;
 
             return View();
         }

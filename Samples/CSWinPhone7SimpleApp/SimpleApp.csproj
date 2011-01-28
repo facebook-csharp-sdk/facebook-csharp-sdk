@@ -48,12 +48,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook">
+    <Reference Include="Facebook, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\Bin\Release\WP7\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Newtonsoft.Json.WindowsPhone">
+    <Reference Include="Newtonsoft.Json.WindowsPhone, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\Bin\Release\WP7\Newtonsoft.Json.WindowsPhone.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />

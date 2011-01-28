@@ -289,7 +289,7 @@ namespace Facebook.Web
 
             oauth.RedirectUri = uriBuilder.Uri;
 
-            var loginUrl = oauth.GetLoginUri(mergedParameters);
+            var loginUrl = oauth.GetLoginUrl(mergedParameters);
             return loginUrl;
         }
 

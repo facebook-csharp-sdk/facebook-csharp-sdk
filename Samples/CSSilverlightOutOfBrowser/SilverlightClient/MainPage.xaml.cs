@@ -60,7 +60,7 @@ namespace Facebook.Samples.AuthenticationTool
                                     { "scope", this.requestedFbPermissions }
                                 };
 
-            var loginUrl = oauth.GetLoginUri(paramaters);
+            var loginUrl = oauth.GetLoginUrl(paramaters);
             FacebookLoginBrowser.Navigate(loginUrl);
         }
 

@@ -24,15 +24,15 @@ namespace Facebook
         Uri RedirectUri { get; }
 
         /// <summary>
-        /// Gets the login uri.
+        /// Gets the login url.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// Returns the facebook login uri.
+        /// Returns the facebook login url.
         /// </returns>
-        Uri GetLoginUri(IDictionary<string, object> parameters);
+        Uri GetLoginUrl(IDictionary<string, object> parameters);
 
         /// <summary>
         /// Gets the logout url.

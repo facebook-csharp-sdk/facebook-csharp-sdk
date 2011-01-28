@@ -56,7 +56,7 @@ namespace Facebook.Web
         /// The app id.
         /// </param>
         /// <param name="httpRequet">
-        /// The http requet.
+        /// The http request.
         /// </param>
         /// <returns>
         /// Returns the facebook session cookie value if present otherwise null.

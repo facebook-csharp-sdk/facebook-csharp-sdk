@@ -17,7 +17,7 @@ namespace Facebook.Tests.FacebookOAuthClientAuthorizerTests
         [Fact(DisplayName = "GetLoginUri: If client id is empty Then it should throw InvalidOperationException")]
         public void GetLoginUri_IfClientIdIsEmpty_ThenItShouldThrowInvalidOperationException()
         {
-            Assert.Throws<InvalidOperationException>(() => this.oauth.GetLoginUri(null));
+            Assert.Throws<InvalidOperationException>(() => this.oauth.GetLoginUrl(null));
         }
 
         [Fact(DisplayName = "GetLoginUri: If client id is empty Then it exception message should be \"client_id required.\"")]
@@ -27,7 +27,7 @@ namespace Facebook.Tests.FacebookOAuthClientAuthorizerTests
 
             try
             {
-                this.oauth.GetLoginUri(null);
+                this.oauth.GetLoginUrl(null);
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace Facebook.Tests.FacebookOAuthClientAuthorizerTests
             parameters["client_id"] = "dummy client id";
             parameters["redirect_uri"] = null;
 
-            Assert.Throws<InvalidOperationException>(() => this.oauth.GetLoginUri(parameters));
+            Assert.Throws<InvalidOperationException>(() => this.oauth.GetLoginUrl(parameters));
         }
 
         [Fact(DisplayName = "GetLoginUri: If redirect_uri is empty Then it exception message should be \"redirect_uri required.\"")]
@@ -58,7 +58,7 @@ namespace Facebook.Tests.FacebookOAuthClientAuthorizerTests
 
             try
             {
-                this.oauth.GetLoginUri(parameters);
+                this.oauth.GetLoginUrl(parameters);
             }
             catch (Exception ex)
             {

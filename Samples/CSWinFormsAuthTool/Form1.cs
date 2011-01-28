@@ -41,7 +41,7 @@
                 paramaters["scope"] = extendedPermissions;
             }
 
-            var loginUri = oauth.GetLoginUri(paramaters);
+            var loginUri = oauth.GetLoginUrl(paramaters);
             webBrowser1.Navigate(loginUri);
         }
 
