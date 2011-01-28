@@ -103,19 +103,16 @@ namespace Facebook
             return new Uri(url);
         }
 
-        // TODO: comment this for now.
-
-        /*
         /// <summary>
-        /// Gets the logout uri for desktop applications.
+        /// Gets the logout url.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// Returns the desktop logout uri.
+        /// Returns the logout url.
         /// </returns>
-        public Uri GetDesktopLogoutUri(IDictionary<string, object> parameters)
+        public Uri GetLogoutUrl(IDictionary<string, object> parameters)
         {
             // more information on this at http://stackoverflow.com/questions/2764436/facebook-oauth-logout
             var uriBuilder = new UriBuilder("http://m.facebook.com/logout.php");
@@ -124,15 +121,14 @@ namespace Facebook
             defaultParams["confirm"] = 1;
             defaultParams["next"] = this.RedirectUri ?? new Uri("http://www.facebook.com");
 
-            var mergedParameters = defaultParams.Merge(parameters);
+            var mergedParameters = FacebookUtils.Merge(defaultParams, parameters);
 
-            uriBuilder.Query = mergedParameters.ToJsonQueryString();
+            uriBuilder.Query = FacebookUtils.ToJsonQueryString(mergedParameters);
 
             return uriBuilder.Uri;
         }
-        */
 
-#if !SILVERLIGHT // silverlight should have only async calls
+#if !SILVERLIGHT // Silverlight should have only async calls
 
         /// <summary>
         /// Gets the access token by exchanging the code.
