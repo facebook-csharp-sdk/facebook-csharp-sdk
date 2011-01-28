@@ -44,10 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientBin\SilverlightClient.xap" />
-    <Content Include="LoginUnsuccessful.htm" />
     <Content Include="Default.aspx" />
     <Content Include="Default.html" />
-    <Content Include="LoginSuccessful.htm" />
+    <Content Include="slfblogin.htm" />
     <Content Include="Silverlight.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -60,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
