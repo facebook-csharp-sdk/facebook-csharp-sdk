@@ -122,7 +122,7 @@ end
 Rake::Task["configure"].invoke
 
 desc "Build .NET 4 binaries"
-msbuild :net40 do |msb|
+msbuild :net40 => [:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebmvc] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net40]
     msb.targets :Build
@@ -135,7 +135,7 @@ msbuild :clean_net40 do |msb|
 end
 
 desc "Build .NET 3.5 binaries"
-msbuild :net35 do |msb|
+msbuild :net35 => [:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebmvc] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35]
     msb.targets :Build
@@ -152,7 +152,7 @@ msbuild :clean_net35 do |msb|
 end
 
 desc "Build Silverlight 4 binaries"
-msbuild :sl4 do |msb|
+msbuild :sl4 => [:assemblyinfo_facebook] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:sl4]
     msb.targets :Build
@@ -165,7 +165,7 @@ msbuild :clean_sl4 do |msb|
 end
 
 desc "Build Windows Phone 7 binaries"
-msbuild :wp7 do |msb|
+msbuild :wp7 => [:assemblyinfo_facebook] do |msb|
    msb.properties :configuration => build_config[:configuration]
    msb.solution = build_config[:sln][:wp7]
    msb.use :net40
@@ -388,4 +388,37 @@ task :dist => [:rebuild,:docs] do
     sh "hg archive -tzip \"#{src_archive_name}\""
    end
     
+end
+
+assemblyinfo :assemblyinfo_facebook do |asm|
+	asm.output_file = "#{build_config[:paths][:src]}Facebook/Properties/AssemblyInfo.cs"
+	asm.version = build_config[:version][:full]
+	asm.title = "Facebook"
+	asm.description = "Facebook C\# SDK"
+	asm.product_name = "Facebook C\# SDK"
+	asm.company_name = "Facebook C\# SDK"
+	asm.copyright = "Microsoft Public License (Ms-PL)"
+	asm.com_visible = false
+end
+
+assemblyinfo :assemblyinfo_facebookweb do |asm|
+	asm.output_file = "#{build_config[:paths][:src]}Facebook.Web/Properties/AssemblyInfo.cs"
+	asm.version = build_config[:version][:full]
+	asm.title = "Facebook.Web"
+	asm.description = "Facebook C\# SDK"
+	asm.product_name = "Facebook C\# SDK"
+	asm.company_name = "Facebook C\# SDK"
+	asm.copyright = "Microsoft Public License (Ms-PL)"
+	asm.com_visible = false
+end
+
+assemblyinfo :assemblyinfo_facebookwebmvc do |asm|
+	asm.output_file = "#{build_config[:paths][:src]}Facebook.Web.Mvc/Properties/AssemblyInfo.cs"
+	asm.version = build_config[:version][:full]
+	asm.title = "Facebook.Web.Mvc"
+	asm.description = "Facebook C\# SDK"
+	asm.product_name = "Facebook C\# SDK"
+	asm.company_name = "Facebook C\# SDK"
+	asm.copyright = "Microsoft Public License (Ms-PL)"
+	asm.com_visible = false
 end

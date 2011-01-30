@@ -1,19 +1,11 @@
-﻿// --------------------------------
-// <copyright file="AssemblyInfo.cs" company="Facebook C# SDK">
-//     Microsoft Public License (Ms-PL)
-// </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
-// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
-// <website>http://facebooksdk.codeplex.com</website>
-// ---------------------------------
-
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Facebook")]
-#if !WINDOWS_PHONE
-[assembly: InternalsVisibleTo("Facebook.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-#endif
+[assembly: AssemblyDescription("Facebook C# SDK")]
+[assembly: AssemblyCompany("Facebook C# SDK")]
+[assembly: AssemblyProduct("Facebook C# SDK")]
+[assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
+[assembly: ComVisible(false)]
+[assembly: AssemblyVersion("4.9.0.0")]
 
-[assembly: InternalsVisibleTo("Facebook.Web, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-[assembly: InternalsVisibleTo("Facebook.Web.Mvc, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
