@@ -47,15 +47,25 @@ namespace Facebook
 
         /// <summary>
         /// Gets or sets the canvas page.
+        /// </summary>
         [ConfigurationProperty("canvasPage", IsRequired = false)]
         public string CanvasPage
+        {
             get { return (string)this["canvasPage"]; }
             set { this["canvasPage"] = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the canvas url.
+        /// </summary>
         [ConfigurationProperty("canvasUrl", IsRequired = false)]
         public string CanvasUrl
+        {
             get { return (string)this["canvasUrl"]; }
             set { this["canvasUrl"] = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the url to return the user after they cancel authorization.
         /// </summary>
         [ConfigurationProperty("cancelUrlPath", IsRequired = false)]

@@ -135,8 +135,6 @@ namespace Facebook
         }
 
         public string AccessToken { get; set; }
-                long.TryParse(this.Session.UserId, out userId);
-                return userId;
 
         /// <summary>
         /// Cleans the URL or known Facebook querystring values.

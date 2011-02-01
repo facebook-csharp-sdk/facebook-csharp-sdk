@@ -49,7 +49,6 @@ namespace Facebook
                                    : DateTime.MinValue;
                 this.ProfileId = value.ContainsKey("profile_id") ? (string)value["profile_id"] : null;
 
-
                 if (value.ContainsKey("user"))
                 {
                     var user = (IDictionary<string, object>)value["user"];
@@ -160,7 +159,6 @@ namespace Facebook
             {
                 // TODO: test
                 throw new InvalidOperationException("Invalid signed request. (Unsupported algorithm)");
-            return null;
             }
 
             byte[] key = Encoding.UTF8.GetBytes(secret);

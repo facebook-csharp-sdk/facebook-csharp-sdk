@@ -71,18 +71,13 @@ namespace Facebook
                 }
 
                 return;
-            {
-                var expiresIn = Convert.ToInt64(parameters["expires_in"]);
-                if (expiresIn < 1262304000) // Seconds from 1/1/1970 to 1/1/2010, so it will be at least this number if it's a Unix Time
-                {
-                    // So this is NOT a unix time (it's elapsed seconds from now)
-                    this.expires = System.DateTime.Now.AddSeconds(expiresIn);
             }
 
             if (parameters.ContainsKey("code"))
+            {
                 this.code = parameters["code"].ToString();
-                }
-                
+            }
+
             if (parameters.ContainsKey("state"))
             {
                 this.state = parameters["state"].ToString();
@@ -247,7 +242,7 @@ namespace Facebook
         public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
         {
             result = Parse(uri, false);
-            return result.AccessToken != null;
+            return result != null;
         }
 
         private static FacebookAuthenticationResult Parse(Uri uri, bool throws)
@@ -280,6 +275,7 @@ namespace Facebook
                 {
                     parameters = FacebookUtils.Merge(parameters, queryPart);
                     return new FacebookAuthenticationResult(parameters);
+                }
             }
             catch
             {

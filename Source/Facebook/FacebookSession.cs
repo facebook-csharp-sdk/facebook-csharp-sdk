@@ -13,7 +13,6 @@ namespace Facebook
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Globalization;
-    using System.Text;
     using System.Linq;
     using System.Text;
 
@@ -227,21 +226,9 @@ namespace Facebook
                          orderby a.Key
                          where a.Key != "sig"
                          select string.Format(CultureInfo.InvariantCulture, "{0}={1}", a.Key, a.Value)).ToList();
-            parts.ForEach((s) => { payload.Append(s); });
-            payload.Append(appSecret);
-            byte[] hash = null;
-            using (var md5 = System.Security.Cryptography.MD5CryptoServiceProvider.Create())
-            {
-                if (md5 != null)
-                {
-                    hash = md5.ComputeHash(Encoding.UTF8.GetBytes(payload.ToString()));
-                }
-            }
 
             parts.ForEach(s => payload.Append(s));
             payload.Append(secret);
-                throw new InvalidOperationException("Hash is not valid.");
-            }
 
             var hash = FacebookUtils.ComputerMd5Hash(Encoding.UTF8.GetBytes(payload.ToString()));
 
@@ -249,7 +236,6 @@ namespace Facebook
             foreach (var h in hash)
             {
                 signature.Append(h.ToString("x2", CultureInfo.InvariantCulture));
-            }
             }
 
             return signature.ToString();
