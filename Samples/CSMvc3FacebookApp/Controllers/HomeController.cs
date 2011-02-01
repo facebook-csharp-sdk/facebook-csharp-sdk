@@ -1,4 +1,6 @@
-﻿namespace CSMvc3FacebookApp.Controllers
+﻿using System.Configuration;
+
+namespace CSMvc3FacebookApp.Controllers
 {
     using System.Web.Mvc;
     using Facebook;
@@ -29,6 +31,34 @@
 
 
             return View();
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            // YOU DONT NEED ANY OF THIS IN YOUR APPLICATION
+            // THIS METHOD JUST CHECKS TO SEE IF YOU HAVE SETUP
+            // THE SAMPLE. IF THE SAMPLE IS NOT SETUP YOU WILL
+            // BE SENT TO THE GETTING STARTED PAGE.
+
+            base.OnActionExecuting(filterContext);
+
+            bool isSetup = false;
+            var settings = ConfigurationManager.GetSection("facebookSettings");
+            if (settings != null)
+            {
+                var current = settings as IFacebookApplication;
+                if (current.AppId != "{app id}" &&
+                    current.AppSecret != "{app secret}" &&
+                    current.CanvasUrl != "http://apps.facebook.com/{fix this path}/")
+                {
+                    isSetup = true;
+                }
+            }
+
+            if (!isSetup)
+            {
+                filterContext.Result = View("GettingStarted");
+            }
         }
     }
 }
