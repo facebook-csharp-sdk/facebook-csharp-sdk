@@ -70,7 +70,7 @@ task Package -depends Merge {
             $name = $build.TestsName
             $finalDir = $build.FinalDir
 
-            robocopy $baseDir\Bin\Release\$finalDir $workingDir\Package\Bin\$finalDir /S /NP /XF *.sdf *.old
+            robocopy $baseDir\Bin\Release\$finalDir $workingDir\Package\Bin\Release\$finalDir /S /NP /XF *.sdf *.old
         }
          
         if ($buildDocs) {

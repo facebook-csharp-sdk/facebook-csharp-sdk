@@ -12,7 +12,9 @@
         and create a new applicatoin.</p>
     <p>
         You must set the 'Site URL' property of your Facebook Application to the url of
-        this site. If you are running this sample locally, set your url to http://localhost:5000/.</p>
+        this site. If you are running this sample locally, set your url to http://localhost:5000/.
+        (NOTE: If you are running this sample in Azure your url is going to be http://localhost:81/
+        or something similar.</p>
     <p>
         Read the <a href="http://facebooksdk.codeplex.com/wikipage?title=Getting%20Started&referringTitle=Documentation">
             Getting Started</a> guide on codeplex for more help with configuration.</p>
