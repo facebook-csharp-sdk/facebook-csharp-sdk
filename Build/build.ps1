@@ -86,7 +86,7 @@ task Package -depends Merge {
         robocopy $buildDir $workingDir\Package\Source\Build /MIR /NP /XD
         robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD
         robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD
-        robocopy $sampleDir $workingDir\Package\Samples /MIR /NP /XD bin obj TestResults /XF *.suo *.user
+        robocopy $sampleDir $workingDir\Package\Samples /MIR /NP /XD bin obj TestResults /XF *.suo *.user *.xap
 
           
         exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName.zip $workingDir\Package\* } "Error zipping"
