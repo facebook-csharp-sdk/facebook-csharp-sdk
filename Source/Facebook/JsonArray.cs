@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Facebook
 {
-    public class JsonArray : List<object>
+    public sealed class JsonArray : List<object>
     {
 
         public override string ToString()
