@@ -47,7 +47,7 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoBox.Visibility = Visibility.Collapsed;
 
-            var oauth = new FacebookOAuthClientAuthorizer
+            var oauth = new FacebookOAuthClient
                             {
                                 ClientId = appId,
                                 RedirectUri = new Uri(slfbloginUrl)
@@ -66,8 +66,8 @@ namespace Facebook.Samples.AuthenticationTool
 
         private void FacebookLoginBrowser_ScriptNotify(object sender, NotifyEventArgs e)
         {
-            FacebookAuthenticationResult authResult;
-            if (FacebookAuthenticationResult.TryParse(e.Value, out authResult))
+            FacebookOAuthResult authResult;
+            if (FacebookOAuthResult.TryParse(e.Value, out authResult))
             {
                 if (authResult.IsSuccess)
                 {
@@ -81,7 +81,7 @@ namespace Facebook.Samples.AuthenticationTool
             }
         }
 
-        private void loginSucceeded(FacebookAuthenticationResult authResult)
+        private void loginSucceeded(FacebookOAuthResult authResult)
         {
             TitleBox.Visibility = Visibility.Visible;
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;

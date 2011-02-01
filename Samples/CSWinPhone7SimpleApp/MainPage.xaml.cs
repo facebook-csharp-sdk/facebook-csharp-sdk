@@ -18,8 +18,6 @@ namespace Facebook.Samples.AuthenticationTool
     public partial class MainPage : PhoneApplicationPage
     {
         private const string appId = "{app id}";
-        private const string appSecret = "{Your App Secret Goes Here}";
-        private const string kRetrieveAuthFromCodeURI = "https://graph.facebook.com/oauth/access_token?client_id={0}&redirect_uri=http://www.facebook.com/connect/login_success.html&client_secret={1}&code={2}";
 
         private bool loggedIn = false;
 
@@ -39,9 +37,7 @@ namespace Facebook.Samples.AuthenticationTool
                 Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
             });
         }
-        private void loginFailed()
-        {
-        }
+
         // We can use this event to capture the HTML or to make a script call (we use it right now to push an HTML fix)
         private void FacebookLoginBrowser_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
@@ -87,38 +83,16 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoPanel.Visibility = Visibility.Collapsed;
 
-            var oauth = new FacebookOAuthClientAuthorizer
+            var oauth = new FacebookOAuthClient
             {
                 ClientId = appId,
                 // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
             };
 
             var paramaters = new Dictionary<string, object>
-        }
-
-        private void FacebookLoginBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
-        {
-            Debug.WriteLine(e.Uri);
-
-            if (e.Uri.Query != null && e.Uri.Query.Contains("code="))
-            {
-                WebClient wc = new WebClient();
-                wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
-                var qs = e.Uri.Query.ToString().Split(new[] { '?', '&' });
-                foreach (var qsItem in qs)
-                {
-                    var keyVal = qsItem.Split('=');
-                    var place = qsItem.IndexOf("=");
-                    if (keyVal[0].Equals("code", StringComparison.InvariantCultureIgnoreCase) && place != -1)
                                 {
                                     { "response_type", "token" }
                                 };
-                        code = qsItem.Substring(place + 1);
-                        // Redirect the browser 1 more time!
-                        var newUrl = string.Format(kRetrieveAuthFromCodeURI, appId, appSecret, code);
-                        wc.DownloadStringAsync(new Uri(newUrl));
-                    }
-                }
 
             var extendedPermissions = this.GetExtendedPermissions();
 
@@ -126,24 +100,16 @@ namespace Facebook.Samples.AuthenticationTool
             {
                 // add scope only if there is at last one extended permission
                 paramaters["scope"] = extendedPermissions;
-            //    {
-            //        fbApp.Session = authResult.ToSession();
-            //        loginSucceeded();
-            //    }
-            //}
             }
 
             var loginUri = oauth.GetLoginUrl(paramaters);
             FacebookLoginBrowser.Navigate(loginUri);
-            if (e.Cancelled || e.Error != null)
-            {
-                loginFailed();
-                return;
-            }
+        }
 
-            FacebookAuthenticationResult authResult;
-            // We're tricking out the parsing mechanism so that it thinks this is a URI
-            if (FacebookAuthenticationResult.TryParse(new Uri("http://localhost?" + e.Result.ToString()), out authResult))
+        private void FacebookLoginBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            FacebookOAuthResult authResult;
+            if (FacebookOAuthResult.TryParse(e.Uri, out authResult))
             {
                 if (authResult.IsSuccess)
                 {

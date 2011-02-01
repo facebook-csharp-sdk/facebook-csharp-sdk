@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Facebook">
       <HintPath>..\..\Bin\Release\WP7\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />

@@ -68,7 +68,7 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoBox.Visibility = Visibility.Collapsed;
 
-            var oauth = new FacebookOAuthClientAuthorizer
+            var oauth = new FacebookOAuthClient
             {
                 ClientId = appId,
                 // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
@@ -87,8 +87,8 @@ namespace Facebook.Samples.AuthenticationTool
 
         void FacebookLoginBrowser_Navigated(object sender, NavigationEventArgs e)
         {
-            FacebookAuthenticationResult authResult;
-            if (FacebookAuthenticationResult.TryParse(e.Uri, out authResult))
+            FacebookOAuthResult authResult;
+            if (FacebookOAuthResult.TryParse(e.Uri, out authResult))
             {
                 if (authResult.IsSuccess)
                 {

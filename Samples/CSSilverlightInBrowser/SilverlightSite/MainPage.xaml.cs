@@ -79,7 +79,7 @@ namespace SL4_InBrowser
 
         private void LoginToFbViaJs()
         {
-            var oauth = new FacebookOAuthClientAuthorizer
+            var oauth = new FacebookOAuthClient
             {
                 ClientId = appId,
                 RedirectUri = new Uri(slfbloginUrl)

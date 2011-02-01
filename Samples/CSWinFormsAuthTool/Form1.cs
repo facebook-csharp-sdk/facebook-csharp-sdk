@@ -21,7 +21,7 @@
                 return;
             }
 
-            var oauth = new FacebookOAuthClientAuthorizer
+            var oauth = new FacebookOAuthClient
                             {
                                 ClientId = appId.Text.Trim(),
                                 // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
@@ -47,8 +47,8 @@
 
         void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
-            FacebookAuthenticationResult authResult;
-            if (FacebookAuthenticationResult.TryParse(e.Url, out authResult))
+            FacebookOAuthResult authResult;
+            if (FacebookOAuthResult.TryParse(e.Url, out authResult))
             {
                 if (authResult.IsSuccess)
                 {

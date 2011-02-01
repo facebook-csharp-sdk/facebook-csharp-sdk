@@ -21,7 +21,7 @@ Partial Public Class CanvasPage
     Public Sub New()
         fbApp = New FacebookApp()
 
-        authorizer = New CanvasAuthorizer(fbApp)
+        authorizer = New CanvasAuthorizer()
         authorizer.Perms = requiredAppPermissions
     End Sub
 
@@ -38,7 +38,7 @@ Partial Public Class CanvasPage
 
         Contract.Requires(url Is Nothing)
 
-        Dim content As String = CanvasUrlBuilder.GetCanvasRedirectHtml(url)
+        Dim content As String = CanvasUrlBuilder.GetCanvasRedirectHtml(New Uri(url))
 
         Response.ContentType = "text/html"
         Response.Write(content)
