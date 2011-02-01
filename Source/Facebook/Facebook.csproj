@@ -120,7 +120,7 @@
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApp.cs" />
-    <Compile Include="FacebookAuthenticationResult.cs" />
+    <Compile Include="FacebookOAuthResult.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
     <Compile Include="FacebookContext.cs" />
     <Compile Include="FacebookMediaObject.cs" />
@@ -130,9 +130,8 @@
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="ExceptionFactory.cs" />
-    <Compile Include="FacebookOAuthClientAuthorizer.cs" />
+    <Compile Include="FacebookOAuthClient.cs" />
     <Compile Include="IFacebookApplication.cs" />
-    <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
