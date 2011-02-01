@@ -14,7 +14,7 @@ namespace Facebook
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// Represent erros that occur while calling a Facebook API.
+    /// Represent errors that occur while calling a Facebook API.
     /// </summary>
 #if (!SILVERLIGHT)
     [Serializable]

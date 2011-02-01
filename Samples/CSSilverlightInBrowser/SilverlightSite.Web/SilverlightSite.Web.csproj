@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>..\..\..\Bin\Release\Net40\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -46,9 +49,8 @@
     <Content Include="ClientBin\SilverlightSite.xap" />
     <Content Include="Default.aspx" />
     <Content Include="Default.html" />
-    <Content Include="LoginSuccessful.htm" />
-    <Content Include="LoginUnsuccessful.htm" />
     <Content Include="Silverlight.js" />
+    <Content Include="slfbinbrowserlogin.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

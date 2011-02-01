@@ -64,10 +64,10 @@
       <HintPath>..\..\..\Bin\Release\SL4\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json.Silverlight">
       <HintPath>..\..\..\Bin\Release\SL4\Newtonsoft.Json.Silverlight.dll</HintPath>
     </Reference>
-    <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />

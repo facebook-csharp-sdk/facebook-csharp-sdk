@@ -1,7 +1,7 @@
 ﻿namespace Facebook.Samples.AuthenticationTool
 {
     using System;
-    using System.Dynamic;
+    using System.Collections.Generic;
     using System.Text;
     using System.Windows.Forms;
 
@@ -16,46 +16,33 @@
 
         private void login_Click(object sender, EventArgs e)
         {
-            bool isReady = true;
-            if (String.IsNullOrEmpty(appId.Text.Trim()))
-            {
-                isReady = false;
-                appId.Text = "REQUIRED!";
-            }
-            if (String.IsNullOrEmpty(appSecret.Text.Trim()))
-            {
-                isReady = false;
-                appSecret.Text = "REQUIRED!";
-            }
-            if (!isReady)
+            if (!this.ValidateRequiredFields())
             {
                 return;
             }
 
-            var facebookSettings = new FacebookSettings
+            var oauth = new FacebookOAuthClientAuthorizer
+                            {
+                                ClientId = appId.Text.Trim(),
+                                // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
+                            };
+
+            var paramaters = new Dictionary<string, object>
+                                {
+                                    { "display", "popup" },
+                                    { "response_type", "token" }
+                                };
+
+            var extendedPermissions = this.GetExtendedPermissions();
+
+            if (!string.IsNullOrEmpty(extendedPermissions))
             {
-                AppId = appId.Text.Trim(),
-                AppSecret = appSecret.Text.Trim(),
-            };
-
-            FacebookApp app = new FacebookApp(facebookSettings);
-
-            dynamic parameters = new ExpandoObject();
-            parameters.type = "user_agent";
-            //parameters.redirect_uri = "http://www.facebook.com/connect/login_success.html";
-
-            StringBuilder perms = new StringBuilder();
-            foreach (var permission in permissions.CheckedItems)
-            {
-                perms.Append(permission);
-                perms.Append(",");
+                // add scope only if there is at last one extended permission
+                paramaters["scope"] = extendedPermissions;
             }
-            parameters.scope = perms.ToString();
 
-            Uri loginUrl = app.GetLoginUrl(parameters);
-
-            webBrowser1.Navigate(loginUrl);
-
+            var loginUri = oauth.GetLoginUrl(paramaters);
+            webBrowser1.Navigate(loginUri);
         }
 
         void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)
@@ -63,8 +50,45 @@
             FacebookAuthenticationResult authResult;
             if (FacebookAuthenticationResult.TryParse(e.Url, out authResult))
             {
-                accessToken.Text = authResult.AccessToken;
+                if (authResult.IsSuccess)
+                {
+                    accessToken.Text = authResult.AccessToken;
+                }
+                else
+                {
+                    MessageBox.Show(authResult.ErrorDescription);
+                }
             }
+        }
+
+        private string GetExtendedPermissions()
+        {
+            var extendedPermissions = new StringBuilder();
+            foreach (var permission in permissions.CheckedItems)
+            {
+                extendedPermissions.Append(permission);
+                extendedPermissions.Append(",");
+            }
+
+            if (extendedPermissions.Length > 0)
+            {
+                // remove the last comma
+                --extendedPermissions.Length;
+            }
+
+            return extendedPermissions.ToString();
+        }
+
+        private bool ValidateRequiredFields()
+        {
+            bool isReady = true;
+            if (String.IsNullOrEmpty(appId.Text.Trim()))
+            {
+                isReady = false;
+                appId.Text = "REQUIRED!";
+            }
+
+            return isReady;
         }
     }
 }

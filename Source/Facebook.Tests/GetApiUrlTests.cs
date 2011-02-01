@@ -102,21 +102,6 @@ namespace Facebook.Tests
         class FakeFacebookApp : FacebookAppBase
         {
             #region not implemented
-            public override Uri GetLoginUrl(IDictionary<string, object> parameters)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
-            {
-                throw new NotImplementedException();
-            }
-
             protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
             {
                 throw new NotImplementedException();

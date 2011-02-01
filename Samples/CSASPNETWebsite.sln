@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSASPNETWebsite", "CSASPNETWebsite\CSASPNETWebsite.csproj", "{098B5E50-4082-42B4-A598-FD3FF483E045}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSASPNETWebsite", "CSASPNETWebsite\CSASPNETWebsite.csproj", "{D85ED5F8-6FC9-4D36-B37D-8962F0A76B07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{098B5E50-4082-42B4-A598-FD3FF483E045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{098B5E50-4082-42B4-A598-FD3FF483E045}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{098B5E50-4082-42B4-A598-FD3FF483E045}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{098B5E50-4082-42B4-A598-FD3FF483E045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85ED5F8-6FC9-4D36-B37D-8962F0A76B07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85ED5F8-6FC9-4D36-B37D-8962F0A76B07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85ED5F8-6FC9-4D36-B37D-8962F0A76B07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85ED5F8-6FC9-4D36-B37D-8962F0A76B07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

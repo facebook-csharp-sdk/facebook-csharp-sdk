@@ -1,14 +1,15 @@
-﻿using System;
-using System.Web.Routing;
-
+﻿
 namespace Facebook.Web.Mvc
 {
+    using System;
+    using System.Web.Routing;
+
     /// <summary>
     /// Represents the authorization info needed to access the currently request resource.
     /// </summary>
     public sealed class FacebookAuthorizeInfo
     {
-        private RouteValueDictionary _routeValues;
+        private RouteValueDictionary routeValues;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAuthorizeInfo"/> class.
@@ -27,7 +28,7 @@ namespace Facebook.Web.Mvc
             this.AuthorizeUrl = authorizeUrl;
             this.Permissions = permissions;
             this.IsCancelReturn = isCancelUrl;
-            this._routeValues = routeValues;
+            this.routeValues = routeValues;
         }
 
         /// <summary>
@@ -35,11 +36,13 @@ namespace Facebook.Web.Mvc
         /// </summary>
         /// <value>The authorize URL.</value>
         public Uri AuthorizeUrl { get; set; }
+
         /// <summary>
         /// Gets or sets the permissions.
         /// </summary>
         /// <value>The permissions.</value>
         public string Permissions { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is a cancel return.
         /// </summary>
@@ -47,6 +50,7 @@ namespace Facebook.Web.Mvc
         /// 	<c>true</c> if this instance is a cancel return; otherwise, <c>false</c>.
         /// </value>
         public bool IsCancelReturn { get; set; }
+
         /// <summary>
         /// Gets the route values.
         /// </summary>
@@ -55,11 +59,11 @@ namespace Facebook.Web.Mvc
         {
             get
             {
-                if (_routeValues == null)
+                if (routeValues == null)
                 {
-                    _routeValues = new RouteValueDictionary();
+                    routeValues = new RouteValueDictionary();
                 }
-                return _routeValues;
+                return routeValues;
             }
         }
 

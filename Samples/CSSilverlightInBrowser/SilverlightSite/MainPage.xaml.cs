@@ -18,22 +18,17 @@ namespace SL4_InBrowser
     [ScriptableType]
     public partial class MainPage : UserControl
     {
-        private string appId = "{your_app_id_here}";
-        private string RequestedFbPermissions = "user_about_me";
+        // make sure to set the appropriate app id, app secret and redirect uri in the
+        // SilverlightSite.Web project in slfbinbrowserlogin.aspx file.
 
-        private const string successUrl = @"http://localhost:18201/LoginSuccessful.htm";
-        private const string failedUrl = @"http://localhost:18201/LoginUnsuccessful.htm";
+        private string appId = "{app id}";
+        private string requestedFbPermissions = "user_about_me";
+
+        // Host SilverlightSite.Web in IIS and not cassini (visual studio web server).
+        // and change this url accordingly.
+        private const string slfbloginUrl = @"http://localhost/fbslinbrowser/slfbinbrowserlogin.aspx";
 
         private FacebookApp fbApp;
-
-        private void failedLogin()
-        {
-            FbLoginButton.Visibility = Visibility.Visible;
-            InfoBox.Visibility = Visibility.Collapsed;
-            FbLoginButton.IsEnabled = true;
-            // TODO: Should do something to let the user know that they
-            // aren't logged in and that they can't proceed
-        }
 
         private void loginSucceeded()
         {
@@ -64,24 +59,18 @@ namespace SL4_InBrowser
         #region JS Callable (& related) Code
 
         [ScriptableMember]
-        public void LoggedIn(string uri) //string sessionKey, string sessionSecret, int expires, string userId, string allowedPermissions)
+        public void LoginComplete(string accesstoken, string errorDescription)
         {
-            FacebookAuthenticationResult authResult;
-            if (FacebookAuthenticationResult.TryParse(uri, out authResult))
+            if (string.IsNullOrEmpty(errorDescription) && !string.IsNullOrEmpty(accesstoken))
             {
-                fbApp.Session = authResult.ToSession();
+                // we have access token.
+                fbApp = new FacebookApp(accesstoken);
                 loginSucceeded();
             }
             else
             {
-                failedLogin();
+                HtmlPage.Window.Alert(errorDescription);
             }
-        }
-
-        [ScriptableMember]
-        public void LoggedInFailed()
-        {
-            failedLogin();
         }
 
         #endregion JS Callable (& related) Code
@@ -90,18 +79,29 @@ namespace SL4_InBrowser
 
         private void LoginToFbViaJs()
         {
-            //// Now we can call the JS Api to checkLogin
-            dynamic parms = new System.Dynamic.ExpandoObject();
-            parms.display = "popup";
-            parms.client_id = appId;
-            parms.redirect_uri = successUrl;
-            parms.cancel_url = failedUrl;
-            parms.scope = RequestedFbPermissions;
-            parms.type = "user_agent";
+            var oauth = new FacebookOAuthClientAuthorizer
+            {
+                ClientId = appId,
+                RedirectUri = new Uri(slfbloginUrl)
+            };
 
-            var uri = fbApp.GetLoginUrl(parms);
+            var paramaters = new Dictionary<string, object>
+                                {
+                                    { "display", "popup" },
+                                    { "response_type", "code" },  // make it code and not access token for security reasons.
+                                    { "scope", this.requestedFbPermissions }
+                                };
+            
+            // don't make the response_type = token
+            // coz it will be saved in the browser's history.
+            // so others might hack it.
+            // rather call ExchangeCodeForAccessToken to get access token in server side.
+            // we need to this in server side and not in this silverlight app
+            // so that the app secret doesn't get exposed to the client in case someone
+            // reverse engineers this silverlight app.
 
-            HtmlPage.Window.Eval(String.Format("fbLogin('{0}')", uri));
+            var loginUrl = oauth.GetLoginUrl(paramaters);
+            HtmlPage.Window.Eval(string.Format("fbLogin('{0}')", loginUrl));
         }
 
         #endregion Methods that call the Fb-Js API

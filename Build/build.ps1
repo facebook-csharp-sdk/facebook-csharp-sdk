@@ -1,6 +1,7 @@
 ﻿properties { 
-  $version = '4.2.1'
-  $zipFileName = "FacebookSDK_V$version.zip"
+  $version = '5.0.0'
+  $quality = 'BETA' # Empty for stable
+  $zipFileName = "FacebookSDK_V$version"
   $buildPackage = $true
   $buildDocs = $false
   
@@ -13,9 +14,7 @@
   $workingDir = "$baseDir\Working"
   $builds = @(
     @{Name = "Facebook-Net40"; TestsName = $null; Constants=""; FinalDir="Net40"; Framework="net-4.0"}
-    @{Name = "Facebook-Net40Client"; TestsName = $null; Constants="CLIENTPROFILE"; FinalDir="Net40Client"; Framework="net-4.0"}
     @{Name = "Facebook-Net35"; TestsName = $null; Constants="NET35"; FinalDir="Net35"; Framework="net-2.0"}
-    @{Name = "Facebook-Net35Client"; TestsName = $null; Constants="NET35;CLIENTPROFILE"; FinalDir="Net35Client"; Framework="net-2.0"}
     @{Name = "Facebook-SL4"; TestsName = $null; Constants="SILVERLIGHT"; FinalDir="SL4"; Framework="net-4.0"}
     @{Name = "Facebook-WP7"; TestsName = $null; Constants="SILVERLIGHT;WINDOWS_PHONE"; FinalDir="WP7"; Framework="net-4.0"}
   )
@@ -89,8 +88,9 @@ task Package -depends Merge {
         robocopy $docDir $workingDir\Package\Source\Doc /MIR /NP /XD
         robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NP /XD
         robocopy $sampleDir $workingDir\Package\Samples /MIR /NP /XD bin obj TestResults /XF *.suo *.user
+
           
-        exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName $workingDir\Package\* } "Error zipping"
+        exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName$quality.zip $workingDir\Package\* } "Error zipping"
   }
 }
 
@@ -103,19 +103,21 @@ task NuGetPackage -depends Package {
         Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuGet\Facebook\$version\Facebook.nuspec -recurse
         (Get-Content $workingDir\NuGet\Facebook\$version\Facebook.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
+        Foreach-Object {$_ -replace "{packageId}", "Facebook$quality" } | 
         Set-Content $workingDir\NuGet\Facebook\$version\Facebook.nuspec
 
         Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec -recurse
         (Get-Content $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
+        Foreach-Object {$_ -replace "{packageId}", "FacebookWeb$quality" } | 
         Set-Content $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec
 
 
         Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
         (Get-Content $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
+        Foreach-Object {$_ -replace "{packageId}", "FacebookWebMvc$quality" } | 
         Set-Content $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec
-
 
         foreach ($build in $builds)
         {

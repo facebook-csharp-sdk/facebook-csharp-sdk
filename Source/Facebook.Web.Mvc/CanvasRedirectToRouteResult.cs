@@ -1,14 +1,13 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace Facebook.Web.Mvc
+﻿namespace Facebook.Web.Mvc
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
     /// <summary>
     /// Represents a result that performs a canvas redirection by using the specified route values dictionary.
     /// </summary>
     public class CanvasRedirectToRouteResult : RedirectToRouteResult
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRedirectToRouteResult"/> class.
         /// </summary>
@@ -32,11 +31,11 @@ namespace Facebook.Web.Mvc
         {
             string destinationPathAndQuery = UrlHelper.GenerateUrl(RouteName, null /* actionName */, null /* controllerName */, RouteValues, RouteTable.Routes, context.RequestContext, false /* includeImplicitMvcValues */);
 
-            var canvasUrlBuilder = new CanvasUrlBuilder(context.HttpContext.Request);
+            var canvasUrlBuilder = new CanvasUrlBuilder(FacebookContext.Current, context.HttpContext.Request);
 
             var canvasUrl = canvasUrlBuilder.BuildCanvasPageUrl(destinationPathAndQuery);
 
-            var content = CanvasUrlBuilder.GetCanvasRedirectHtml(canvasUrl.ToString());
+            var content = CanvasUrlBuilder.GetCanvasRedirectHtml(canvasUrl);
 
             context.Controller.TempData.Keep();
 

@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Facebook.Web")]
-[assembly: InternalsVisibleTo("Facebook.Web.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+

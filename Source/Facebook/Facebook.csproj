@@ -21,8 +21,7 @@
     <SccProvider>
     </SccProvider>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -109,12 +108,12 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateTimeConvertor.cs" />
+    <Compile Include="External\HttpEncoder.cs" />
+    <Compile Include="External\HttpUtility.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookAppBaseContracts.cs" />
     <Compile Include="FacebookAppExtensions.cs" />
@@ -123,13 +122,16 @@
     <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookAuthenticationResult.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
+    <Compile Include="FacebookContext.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthException.cs" />
+    <Compile Include="FacebookUtils.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="FacebookOAuthClientAuthorizer.cs" />
+    <Compile Include="IFacebookApplication.cs" />
     <Compile Include="IOAuthClientAuthorizer.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
@@ -138,18 +140,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="StringUtilities.cs" />
     <Compile Include="FacebookSession.cs" />
-    <Compile Include="FacebookSettings.cs" />
     <Compile Include="HttpMethod.cs" />
-    <Compile Include="DictionaryUtilities.cs" />
-    <Compile Include="IFacebookSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="JsonSerializer.cs" />
-    <Compile Include="UrlEncoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">
@@ -166,8 +163,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,25 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Facebook;
 using Facebook.Web;
 
 public partial class _Default : Page
 {
-    protected string requiredAppPermissions = "user_about_me";
-    protected FacebookApp fbApp;
-    protected CanvasAuthorizer authorizer;
+    /// <summary>
+    /// Gets the current canvas facebook session.
+    /// </summary>
+    public FacebookSession CurrentSession
+    {
+        get { return (new CanvasAuthorizer()).Session; }
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        fbApp = new FacebookApp();
-        authorizer = new CanvasAuthorizer(fbApp);
-        authorizer.Perms = requiredAppPermissions;
-        if (authorizer.Authorize())
+        var auth = new CanvasAuthorizer { Perms = "user_about_me" };
+
+        if (auth.Authorize())
         {
             ShowFacebookContent();
         }
@@ -27,7 +25,8 @@ public partial class _Default : Page
 
     private void ShowFacebookContent()
     {
-        dynamic myInfo = fbApp.Get("me");
+        var fb = new FacebookApp(this.CurrentSession.AccessToken);
+        dynamic myInfo = fb.Get("me");
         lblName.Text = myInfo.name;
         pnlHello.Visible = true;
     }

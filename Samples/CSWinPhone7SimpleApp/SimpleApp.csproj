@@ -51,9 +51,6 @@
     <Reference Include="Facebook, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\Bin\Release\WP7\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
-      <HintPath>..\..\Bin\Release\WP7\Microsoft.Contracts.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Newtonsoft.Json.WindowsPhone, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

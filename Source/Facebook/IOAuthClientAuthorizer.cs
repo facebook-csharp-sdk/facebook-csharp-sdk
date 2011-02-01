@@ -23,36 +23,29 @@ namespace Facebook
         /// </summary>
         Uri RedirectUri { get; }
 
-        // TODO: comment this for now. will need to support for GetLoginUri for web apps too
-        // need to find a better name.
-
-        /*
         /// <summary>
-        /// Gets the login uri for desktop applications.
+        /// Gets the login url.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// Returns the desktop login uri.
+        /// Returns the facebook login url.
         /// </returns>
-        Uri GetDesktopLoginUri(IDictionary<string, object> parameters);
+        Uri GetLoginUrl(IDictionary<string, object> parameters);
 
         /// <summary>
-        /// Gets the logout uri for desktop applications.
+        /// Gets the logout url.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// Returns the desktop logout uri.
+        /// Returns the logout url.
         /// </returns>
-        Uri GetDesktopLogoutUri(IDictionary<string, object> parameters);
-        */
+        Uri GetLogoutUrl(IDictionary<string, object> parameters);
 
-#if !SILVERLIGHT // silverlight should have only async calls
-
-        // TODO: implement async version of ExchangeAccessTokenForCode
+#if !SILVERLIGHT // Silverlight should have only async calls
 
         /// <summary>
         /// Gets the access token by exchanging the code.

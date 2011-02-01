@@ -4,11 +4,13 @@
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
+<asp:Label runat="server" ID="a" />
     <asp:Panel ID="pnlHello" runat="server" Visible="false">
         <h2>
             Hello
             <asp:Label ID="lblName" runat="server" />!
         </h2>
+        
     </asp:Panel>
     <asp:Panel ID="pnlError" runat="server" Visible="false">
         <a href="Default.aspx">

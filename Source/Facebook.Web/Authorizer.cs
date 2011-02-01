@@ -1,50 +1,223 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Web;
-using Newtonsoft.Json.Linq;
-
 namespace Facebook.Web
 {
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Web;
+
+    /// <summary>
+    /// Represents the Facebook authorizer class.
+    /// </summary>
     public class Authorizer
     {
-        public FacebookAppBase FacebookApp { get; private set; }
+        /// <summary>
+        /// The http context.
+        /// </summary>
+        private readonly HttpContextBase httpContext;
+
+        /// <summary>
+        /// The facebook session.
+        /// </summary>
+        private FacebookSession session;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        public Authorizer()
+            : this(FacebookContext.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
+        {
+            Contract.Requires(FacebookContext.Current != null);
+            Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppSecret));
+            Contract.Requires(System.Web.HttpContext.Current != null);
+            Contract.Requires(System.Web.HttpContext.Current.Request != null);
+            Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
+            Contract.Requires(System.Web.HttpContext.Current.Response != null);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        /// <param name="httpContext">
+        /// The http context.
+        /// </param>
+        public Authorizer(IFacebookApplication facebookApplication, HttpContextBase httpContext)
+            : this(facebookApplication.AppId, facebookApplication.AppSecret, httpContext)
+        {
+            Contract.Requires(facebookApplication != null);
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
+            Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Params != null);
+            Contract.Requires(httpContext.Response != null);
+
+            this.CancelUrlPath = facebookApplication.CancelUrlPath;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authorizer"/> class.
+        /// </summary>
+        /// <param name="appId">
+        /// The app Id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The app Secret.
+        /// </param>
+        /// <param name="httpContext">
+        /// The http context.
+        /// </param>
+        public Authorizer(string appId, string appSecret, HttpContextBase httpContext)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+            Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Params != null);
+            Contract.Requires(httpContext.Response != null);
+
+            this.AppId = appId;
+            this.AppSecret = appSecret;
+            this.httpContext = httpContext;
+        }
+
+        /// <summary>
+        /// Gets or sets the application id.
+        /// </summary>
+        public string AppId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the application secret.
+        /// </summary>
+        public string AppSecret { get; set; }
 
         /// <summary>
         /// Gets or sets the extended permissions.
         /// </summary>
-        /// <value>The permissions required.</value>
         public string Perms { get; set; }
 
         /// <summary>
-        /// Gets or sets the cancel URL path.
+        /// Gets or sets the return url path.
         /// </summary>
-        /// <value>The cancel URL path.</value>
+        public string ReturnUrlPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cancel url path.
+        /// </summary>
         public string CancelUrlPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the return URL path.
+        /// Gets or sets the login display mode.
         /// </summary>
-        /// <value>The return URL path.</value>
-        public string ReturnUrlPath { get; set; }
+        public string LoginDisplayMode { get; set; }
 
-        public Authorizer(FacebookAppBase facebookApp)
+        /// <summary>
+        /// Gets or sets an opaque state used to maintain application state between the request and callback.
+        /// </summary>
+        public string State { get; set; }
+
+        /// <summary>
+        /// Gets the facebook session.
+        /// </summary>
+        public virtual FacebookSession Session
         {
-            Contract.Requires(facebookApp != null);
-
-            this.FacebookApp = facebookApp;
+            get
+            {
+                return this.session ??
+                       (this.session = FacebookWebUtils.GetSession(this.AppId, this.AppSecret, this.HttpRequest));
+            }
         }
 
+        /// <summary>
+        /// Gets the http context.
+        /// </summary>
+        public HttpContextBase HttpContext
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<HttpContextBase>() != null);
+                return this.httpContext;
+            }
+        }
+
+        /// <summary>
+        /// Gets the http request.
+        /// </summary>
+        protected HttpRequestBase HttpRequest
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<HttpRequestBase>() != null);
+                return this.HttpContext.Request;
+            }
+        }
+
+        /// <summary>
+        /// Gets the http response.
+        /// </summary>
+        protected HttpResponseBase HttpResponse
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<HttpResponseBase>() != null);
+                return this.HttpContext.Response;
+            }
+        }
+
+        /// <summary>
+        /// Check whether the user has the specified permissions.
+        /// </summary>
+        /// <param name="permissions">
+        /// The permissions.
+        /// </param>
+        /// <returns>
+        /// Returns the list of allowed permissions.
+        /// </returns>
+        public virtual string[] HasPermissions(string[] permissions)
+        {
+            Contract.Requires(permissions != null);
+            Contract.Ensures(Contract.Result<string[]>() != null);
+
+            long userId;
+
+            if (this.Session == null || !long.TryParse(this.Session.UserId, out userId))
+            {
+                return new string[0];
+            }
+
+            return FacebookWebUtils.HasPermissions(this.AppId, this.AppSecret, userId, permissions);
+        }
+
+        /// <summary>
+        /// Check whether the user has the specified permissions.
+        /// </summary>
+        /// <param name="permission">
+        /// The permission.
+        /// </param>
+        /// <returns>
+        /// Returns true if the user has permission otherwise false.
+        /// </returns>
+        public virtual bool HasPermission(string permission)
+        {
+            return this.HasPermissions(new[] { permission }).Length == 1;
+        }
+
+        /// <summary>
+        /// Checks if the user is authenticated and the application has all the specified permissions.
+        /// </summary>
+        /// <returns>
+        /// Return true if the user is authenticated and the application has all the specified permissions.
+        /// </returns>
         public virtual bool IsAuthorized()
         {
-            bool authenticated = this.FacebookApp.Session != null;
-            if (authenticated && !string.IsNullOrEmpty(Perms))
+            bool isAuthenticated = this.Session != null;
+
+            if (isAuthenticated && !string.IsNullOrEmpty(this.Perms))
             {
-                var requiredPerms = Perms.Replace(" ", String.Empty).Split(',');
-                var currentPerms = HasPermissions(requiredPerms);
+                var requiredPerms = this.Perms.Replace(" ", string.Empty).Split(',');
+                var currentPerms = this.HasPermissions(requiredPerms);
                 foreach (var perm in requiredPerms)
                 {
                     if (!currentPerms.Contains(perm))
@@ -53,94 +226,50 @@ namespace Facebook.Web
                     }
                 }
             }
-            return authenticated;
-        }
 
-        public virtual bool HasPermission(string permission)
-        {
-            return HasPermissions(new string[] { permission }).Length == 1;
-        }
-
-        public virtual string[] HasPermissions(string[] permissions)
-        {
-            Contract.Requires(permissions != null);
-            Contract.Ensures(Contract.Result<string[]>() != null);
-
-            var result = new string[0];
-            if (FacebookApp.UserId != 0)
-            {
-                var perms = new StringBuilder();
-                for (int i = 0; i < permissions.Length; i++)
-                {
-                    perms.Append(permissions[i]);
-                    if (i < permissions.Length - 1)
-                    {
-                        perms.Append(",");
-                    }
-                }
-                var query = string.Format(CultureInfo.InvariantCulture, "SELECT {0} FROM permissions WHERE uid == {1}", perms.ToString(), FacebookApp.UserId);
-                var parameters = new Dictionary<string, object>();
-                parameters["query"] = query;
-                parameters["method"] = "fql.query";
-                parameters["access_token"] = string.Concat(FacebookApp.AppId, "|", FacebookApp.AppSecret);
-                var data = FacebookApp.Get(parameters) as IList<object>;
-                if (data != null && data.Count > 0)
-                {
-                    var permData = data[0] as IDictionary<string, object>;
-                    if (permData != null)
-                    {
-                        result = (from perm in permData
-                                  where perm.Value.ToString() == "1"
-                                  select perm.Key).ToArray();
-                    }
-                }
-            }
-            return result;
-
-        }
-
-        public bool Authorize()
-        {
-            Contract.Requires(HttpContext.Current != null);
-
-            return Authorize(HttpContext.Current);
-        }
-
-        public bool Authorize(HttpContext httpContext)
-        {
-            Contract.Requires(httpContext != null);
-
-            var httpContextWrapper = new HttpContextWrapper(httpContext);
-            return Authorize(httpContextWrapper);
-        }
-
-        public bool Authorize(HttpContextBase httpContext)
-        {
-            Contract.Requires(httpContext != null);
-
-            var isAuthorized = this.IsAuthorized();
-            if (!isAuthorized)
-            {
-                HandleUnauthorizedRequest(httpContext);
-            }
-            return isAuthorized;
-        }
-
-        public virtual void HandleUnauthorizedRequest(HttpContextBase httpContext)
-        {
-            // Redirect to cancel URL to login.
-            httpContext.Response.Redirect(CancelUrlPath);
+            return isAuthenticated;
         }
 
         /// <summary>
-        /// The code contracts invarient object method.
+        /// Authorizes the user if the user is not logged in or the application does not have all the sepcified permissions.
         /// </summary>
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]
-        private void InvarientObject()
+        /// <returns>
+        /// Return true if the user is authenticated and the application has all the specified permissions.
+        /// </returns>
+        public bool Authorize()
         {
-            Contract.Invariant(this.FacebookApp != null);
+            var isAuthorized = this.IsAuthorized();
+
+            if (!isAuthorized)
+            {
+                this.HandleUnauthorizedRequest();
+            }
+
+            return isAuthorized;
         }
 
+        /// <summary>
+        /// Handle unauthorized requests.
+        /// </summary>
+        public virtual void HandleUnauthorizedRequest()
+        {
+            this.HttpResponse.Redirect(this.CancelUrlPath);
+        }
+
+        /// <summary>
+        /// The code contracts invariant object method.
+        /// </summary>
+        [ContractInvariantMethod]
+        private void InvarientObject()
+        {
+            Contract.Invariant(!string.IsNullOrEmpty(this.AppId));
+            Contract.Invariant(!string.IsNullOrEmpty(this.AppSecret));
+            Contract.Invariant(this.httpContext != null);
+            Contract.Invariant(this.httpContext.Request != null);
+            Contract.Invariant(this.httpContext.Request.Params != null);
+            Contract.Invariant(this.HttpContext.Response != null);
+            Contract.Invariant(this.HttpContext.Request != null);
+            Contract.Invariant(this.HttpContext.Request.Params != null);
+        }
     }
 }

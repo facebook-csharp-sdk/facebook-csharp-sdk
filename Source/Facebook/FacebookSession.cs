@@ -15,7 +15,7 @@ namespace Facebook
     using System.Globalization;
     using System.Text;
     using System.Linq;
-    using Newtonsoft.Json;
+    using System.Text;
 
     /// <summary>
     /// Represents a Facebook session.
@@ -48,8 +48,9 @@ namespace Facebook
         {
             this.UserId = dictionary.ContainsKey("uid") ? (string)dictionary["uid"] : null;
             this.Secret = dictionary.ContainsKey("secret") ? (string)dictionary["secret"] : null;
+            this.SessionKey = dictionary.ContainsKey("session_key") ? (string)dictionary["session_key"] : null;
             this.AccessToken = dictionary.ContainsKey("access_token") ? (string)dictionary["access_token"] : null;
-            this.Expires = dictionary.ContainsKey("expires") ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(dictionary["expires"])) : DateTime.MinValue;
+            this.Expires = dictionary.ContainsKey("expires") ? FacebookUtils.FromUnixTime(Convert.ToInt64(dictionary["expires"])) : DateTime.MinValue;
             this.Signature = dictionary.ContainsKey("sig") ? (string)dictionary["sig"] : null;
             this.BaseDomain = dictionary.ContainsKey("base_domain") ? (string)dictionary["base_domain"] : null;
         }
@@ -145,9 +146,9 @@ namespace Facebook
             {
                 { "uid", signedRequest.UserId },
                 { "access_token", signedRequest.AccessToken },
-                { "expires", signedRequest.Expires.ToUnixTime() }
+                { "expires", FacebookUtils.ToUnixTime(signedRequest.Expires) }
             };
-            dictionary["sig"] = GenerateSignature(appSecret, dictionary);
+            dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
 
             return new FacebookSession(dictionary);
         }
@@ -155,17 +156,27 @@ namespace Facebook
         /// <summary>
         /// Parses the session value from a cookie.
         /// </summary>
-        /// <param name="value">The session value.</param>
-        /// <returns>The Facebook session object.</returns>
-        internal static FacebookSession Parse(string appSecret, string value)
+        /// <param name="appSecret">
+        /// The app Secret.
+        /// </param>
+        /// <param name="cookieValue">
+        /// The session value.
+        /// </param>
+        /// <returns>
+        /// The Facebook session object.
+        /// </returns>
+        internal static FacebookSession ParseCookieValue(string appSecret, string cookieValue)
         {
             Contract.Requires(!String.IsNullOrEmpty(appSecret));
-            Contract.Requires(!String.IsNullOrEmpty(value));
-            Contract.Requires(!value.Contains(","), "Session value must not contain a comma.");
+            Contract.Requires(!String.IsNullOrEmpty(cookieValue));
+            Contract.Requires(!cookieValue.Contains(","), "Session value must not contain a comma.");
+
+            // var cookieValue = "\"access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026\"";
+            // var result = FacebookSession.Parse("3b4a872617be2ae1932baa1d4d240272", cookieValue);
 
             // Parse the cookie
             var dictionary = new Dictionary<string, object>();
-            var parts = value.Replace("\"", string.Empty).Split('&');
+            var parts = cookieValue.Replace("\"", string.Empty).Split('&');
             foreach (var part in parts)
             {
                 if (!string.IsNullOrEmpty(part) && part.Contains("="))
@@ -173,13 +184,13 @@ namespace Facebook
                     var nameValue = part.Split('=');
                     if (nameValue.Length == 2)
                     {
-                        var s = Uri.UnescapeDataString(nameValue[1]);
+                        var s = FacebookUtils.UrlDecode(nameValue[1]);
                         dictionary.Add(nameValue[0], s);
                     }
                 }
             }
 
-            var signature = GenerateSignature(appSecret, dictionary);
+            var signature = GenerateSessionSignature(appSecret, dictionary);
             if (dictionary.ContainsKey("sig") && dictionary["sig"].ToString() == signature)
             {
                 return new FacebookSession(dictionary);
@@ -191,13 +202,27 @@ namespace Facebook
         /// <summary>
         /// Generates a MD5 signature for the facebook session.
         /// </summary>
-        /// <param name="session">The session to generate a signature.</param>
-        /// <returns>An MD5 signature.</returns>
-        /// <exception cref="System.ArgumentNullException">If the session is null.</exception>
-        /// <exception cref="System.InvalidOperationException">If there is a problem generating the hash.</exception>
-        private static string GenerateSignature(string appSecret, IDictionary<string, object> dictionary)
+        /// <param name="secret">
+        /// The app secret.
+        /// </param>
+        /// <param name="dictionary">
+        /// The dictionary.
+        /// </param>
+        /// <returns>
+        /// Returns the generated signature.
+        /// </returns>
+        /// <remarks>
+        /// http://developers.facebook.com/docs/authentication/
+        /// </remarks>
+        internal static string GenerateSessionSignature(string secret, IDictionary<string, object> dictionary)
         {
-            StringBuilder payload = new StringBuilder();
+            Contract.Requires(!string.IsNullOrEmpty(secret));
+            Contract.Requires(dictionary != null);
+            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+            var payload = new StringBuilder();
+
+            // sort by the key and remove "sig" if present
             var parts = (from a in dictionary
                          orderby a.Key
                          where a.Key != "sig"
@@ -213,15 +238,18 @@ namespace Facebook
                 }
             }
 
-            if (hash == null)
-            {
+            parts.ForEach(s => payload.Append(s));
+            payload.Append(secret);
                 throw new InvalidOperationException("Hash is not valid.");
             }
 
-            StringBuilder signature = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
+            var hash = FacebookUtils.ComputerMd5Hash(Encoding.UTF8.GetBytes(payload.ToString()));
+
+            var signature = new StringBuilder();
+            foreach (var h in hash)
             {
-                signature.Append(hash[i].ToString("x2", CultureInfo.InvariantCulture));
+                signature.Append(h.ToString("x2", CultureInfo.InvariantCulture));
+            }
             }
 
             return signature.ToString();

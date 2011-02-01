@@ -1,124 +1,100 @@
-﻿// --------------------------------
-// <copyright file="CanvasUrlHelper.cs" company="Facebook C# SDK">
-//     Microsoft Public License (Ms-PL)
-// </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
-// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
-// <website>http://facebooksdk.codeplex.com</website>
-// ---------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Web;
-
 namespace Facebook.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+
     /// <summary>
-    /// Provides a tool for building and retreiving Facebook canvas uniform resource identifiers (URIs).
+    /// Facebook Canvas Url builder.
     /// </summary>
     public class CanvasUrlBuilder
     {
-        private const string redirectPath = "facebookredirect.axd";
-        private HttpRequestBase request;
-        private ICanvasSettings canvasSettings;
+        /// <summary>
+        /// Redirect path.
+        /// </summary>
+        private const string RedirectPath = "facebookredirect.axd";
 
+        /// <summary>
+        /// Facebook Application settings.
+        /// </summary>
+        private readonly IFacebookApplication settings;
+
+        /// <summary>
+        /// The http request.
+        /// </summary>
+        private readonly HttpRequestBase httpRequest;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
         /// </summary>
-        /// <param name="request">The request.</param>
-        public CanvasUrlBuilder(HttpRequestBase request)
-            : this(request, CanvasSettings.Current)
+        /// <param name="settings">
+        /// The settings.
+        /// </param>
+        /// <param name="httpRequest">
+        /// The http request.
+        /// </param>
+        public CanvasUrlBuilder(IFacebookApplication settings, HttpRequestBase httpRequest)
         {
+            Contract.Requires(settings != null);
+            Contract.Requires(httpRequest != null);
+            Contract.Requires(httpRequest.Url != null);
+
+            this.settings = settings;
+            this.httpRequest = httpRequest;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
+        /// Gets the base url of your application on Facebook.
         /// </summary>
-        /// <param name="request">The request.</param>
-        /// <param name="canvasSettings">The canvas settings.</param>
-        public CanvasUrlBuilder(HttpRequestBase request, ICanvasSettings canvasSettings)
+        public Uri CanvasPage
         {
-            Contract.Requires(request != null);
-            Contract.Requires(request.Url != null);
-            Contract.Requires(request.Headers != null);
-            Contract.Requires(canvasSettings != null);
-
-            this.request = request;
-            this.canvasSettings = canvasSettings;
-        }
-
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        private void InvarientObject()
-        {
-            Contract.Invariant(request != null);
-            Contract.Invariant(request.Headers != null);
-            Contract.Invariant(request.Url != null);
-            Contract.Invariant(canvasSettings != null);
-        }
-
-        /// <summary>
-        /// Gets the canvas redirect HTML.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns></returns>
-        public static string GetCanvasRedirectHtml(Uri url)
-        {
-            if (url == null)
+            get
             {
-                throw new ArgumentNullException("url");
+                Contract.Ensures(Contract.Result<Uri>() != null);
+                return FacebookUtils.RemoveTrailingSlash(new Uri(this.settings.CanvasPage));
             }
-            return GetCanvasRedirectHtml(url.ToString());
         }
 
         /// <summary>
-        /// Gets the canvas redirect HTML.
+        /// Gets the Facebook Application Path.
         /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1057:StringUriOverloadsCallSystemUriOverloads")]
-        public static string GetCanvasRedirectHtml(string url)
+        public string CanvasPageApplicationPath
         {
-            if (string.IsNullOrEmpty(url))
+            get
             {
-                throw new ArgumentNullException("url");
-            }
+                Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
 
-            return "<html><head>" +
-                   "<script type=\"text/javascript\">\n" +
-                    "top.location = \"" + url + "\";\n" +
-                    "</script>" +
-                   "</head><body></body></html>";
+                return this.CanvasPage.AbsolutePath;
+            }
         }
 
         /// <summary>
-        /// Gets the URL where Facebook pulls the content 
-        /// for your application's canvas pages.
+        /// Gets the URL where Facebook pull the content for your application's canvas pages.
         /// </summary>
-        /// <value>The canvas URL.</value>
         public Uri CanvasUrl
         {
             get
             {
                 string url;
-                if (this.canvasSettings.CanvasUrl != null)
+                if (this.settings.CanvasUrl != null)
                 {
-                    url = this.canvasSettings.CanvasUrl.ToString();
+                    url = this.settings.CanvasUrl;
                 }
-                else if (request.Headers.AllKeys.Contains("Host"))
+                else if (this.httpRequest.Headers.AllKeys.Contains("Host"))
                 {
                     // This will attempt to get the url based on the host
                     // in case we are behind a load balancer (such as with azure)
-                    url = string.Concat(request.Url.Scheme, "://", request.Headers["Host"]);
+                    url = string.Concat(this.httpRequest.Url.Scheme, "://", this.httpRequest.Headers["Host"]);
                 }
                 else
                 {
-                    url = string.Concat(request.Url.Scheme, "://", request.Url.Host, ":", request.Url.Port);
+                    url = string.Concat(this.httpRequest.Url.Scheme, "://", this.httpRequest.Url.Host, ":", this.httpRequest.Url.Port);
                 }
-                return new Uri(RemoveTrailingSlash(url));
+
+                return new Uri(FacebookUtils.RemoveTrailingSlash(url));
             }
         }
 
@@ -132,13 +108,14 @@ namespace Facebook.Web
             get
             {
                 var uriBuilder = new UriBuilder(this.CanvasUrl);
-                var parts = request.Url.PathAndQuery.Split('?');
+                var parts = this.httpRequest.RawUrl.Split('?');
                 uriBuilder.Path = parts[0];
                 if (parts.Length > 1)
                 {
                     uriBuilder.Query = parts[1];
                 }
-                return RemoveTrailingSlash(uriBuilder.Uri);
+
+                return FacebookUtils.RemoveTrailingSlash(uriBuilder.Uri);
             }
         }
 
@@ -152,7 +129,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<string>() != null);
 
-                var pathAndQuery = request.Url.PathAndQuery;
+                var pathAndQuery = this.httpRequest.RawUrl;
                 var appPath = this.CanvasUrl.AbsolutePath.Replace(this.CanvasPageApplicationPath, String.Empty);
                 if (appPath != null && appPath != "/" && appPath.Length > 0)
                 {
@@ -160,18 +137,6 @@ namespace Facebook.Web
                 }
 
                 return pathAndQuery ?? string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// Gets the base url of your application on Facebook.
-        /// </summary>
-        public Uri CanvasPage
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<Uri>() != null);
-                return RemoveTrailingSlash(this.canvasSettings.CanvasPageUrl);
             }
         }
 
@@ -184,154 +149,17 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
 
-                return BuildCanvasPageUrl(CurrentCanvasPathAndQuery);
+                return this.BuildCanvasPageUrl(this.CurrentCanvasPathAndQuery);
             }
-        }
-
-        /// <summary>
-        /// The Facebook Application Path.
-        /// </summary>
-        public string CanvasPageApplicationPath
-        {
-            get
-            {
-                Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
-
-                return CanvasPage.AbsolutePath;
-            }
-        }
-
-        /// <summary>
-        /// Gets the Facebook login URL.
-        /// </summary>
-        /// <param name="facebookApp">The facebook app.</param>
-        /// <param name="permissions">The permissions.</param>
-        /// <param name="returnUrlPath">The return URL path.</param>
-        /// <param name="cancelUrlPath">The cancel URL path.</param>
-        /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#"),
-        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
-        public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath)
-        {
-            Contract.Requires(facebookApp != null);
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return GetLoginUrl(facebookApp, permissions, returnUrlPath, cancelUrlPath, false);
-        }
-
-        /// <summary>
-        /// Gets the login url for the current request.
-        /// </summary>
-        /// <param name="facebookApp">An instance of FacebookAppBase.</param>
-        /// <param name="permissions">The comma seperated list of requested permissions.</param>
-        /// <param name="returnUrlPath">The path to return the user after autheticating.</param>
-        /// <param name="cancelUrlPath">The path to return the user if they do not authenticate.</param>
-        /// <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
-        /// <returns>The cancel url.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "3#")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "2#")]
-        public Uri GetLoginUrl(FacebookAppBase facebookApp, string permissions, string returnUrlPath, string cancelUrlPath, bool cancelToSelf)
-        {
-            Contract.Requires(facebookApp != null);
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            var parameters = new Dictionary<string, object>();
-            parameters["req_perms"] = permissions;
-            parameters["canvas"] = 1;
-
-            // set the return url
-            Uri returnUrl;
-            if (!string.IsNullOrEmpty(returnUrlPath))
-            {
-                returnUrl = BuildAuthReturnUrl(returnUrlPath);
-            }
-            else
-            {
-                returnUrl = BuildAuthReturnUrl();
-            }
-            parameters["next"] = returnUrl.ToString();
-
-
-            // set the cancel url
-            Uri cancelUrl;
-            if (!string.IsNullOrEmpty(cancelUrlPath))
-            {
-                cancelUrl = BuildAuthReturnUrl(cancelUrlPath);
-            }
-            else if (this.canvasSettings.AuthorizeCancelUrl != null)
-            {
-                cancelUrl = this.canvasSettings.AuthorizeCancelUrl;
-            }
-            else
-            {
-                if (cancelToSelf)
-                {
-                    cancelUrl = BuildAuthCancelUrl();
-                }
-                else
-                {
-                    // Cancel url is facebook.com
-                    cancelUrl = new Uri("http://www.facebook.com");
-                }
-
-            }
-            parameters["cancel_url"] = cancelUrl.ToString();
-
-
-            return facebookApp.GetLoginUrl(parameters);
-        }
-
-        /// <summary>
-        /// Builds a Facebook authorization cancel URL.
-        /// </summary>
-        /// <returns></returns>
-        public Uri BuildAuthCancelUrl()
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return BuildAuthCancelUrl(null);
-        }
-
-        /// <summary>
-        /// Builds a Facebook authorization cancel URL.
-        /// </summary>
-        /// <param name="pathAndQuery">The path and query.</param>
-        /// <returns></returns>
-        public Uri BuildAuthCancelUrl(string pathAndQuery)
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return BuildAuthReturnUrl(pathAndQuery, true);
-        }
-
-        /// <summary>
-        /// Builds a Facebook authorization return URL.
-        /// </summary>
-        /// <returns></returns>
-        public Uri BuildAuthReturnUrl()
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return BuildAuthReturnUrl(null);
-        }
-
-        /// <summary>
-        /// Builds a Facebook authorization return URL.
-        /// </summary>
-        /// <param name="pathAndQuery">The path and query.</param>
-        /// <returns></returns>
-        public Uri BuildAuthReturnUrl(string pathAndQuery)
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            return BuildAuthReturnUrl(pathAndQuery, false);
         }
 
         /// <summary>
         /// Builds a Facebook canvas return URL.
         /// </summary>
         /// <param name="pathAndQuery">The path and query.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The canvas page url.
+        /// </returns>
         public Uri BuildCanvasPageUrl(string pathAndQuery)
         {
             Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
@@ -342,83 +170,155 @@ namespace Facebook.Web
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
-            //if (this.CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(this.CanvasUrl.PathAndQuery))
-            //{
-            //    pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
-            //}
+            if (this.CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(this.CanvasUrl.PathAndQuery))
+            {
+                pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
+            }
 
-            var url = string.Concat(CanvasPage, pathAndQuery);
+            var url = string.Concat(this.CanvasPage, pathAndQuery);
             if (url.EndsWith("/"))
             {
                 url = url.Substring(0, url.Length - 1);
             }
-            return new Uri(RemoveTrailingSlash(url));
-        }
 
-        public string RemoveTrailingSlash(string url)
-        {
-            if (url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
-            }
-            return url;
-        }
-
-        public Uri RemoveTrailingSlash(Uri url)
-        {
-            var urlString = RemoveTrailingSlash(url.ToString());
-            return new Uri(urlString);
+            return new Uri(FacebookUtils.RemoveTrailingSlash(url));
         }
 
         /// <summary>
-        /// Builds a Facebook canvas return URL.
+        /// Gets the canvas login url
         /// </summary>
-        /// <param name="pathAndQuery">The path and query.</param>
-        /// <param name="cancel">if set to <c>true</c> [cancel].</param>
-        /// <returns></returns>
-        private Uri BuildAuthReturnUrl(string pathAndQuery, bool cancel)
+        /// <param name="returnUrlPath">
+        /// The return Url Path.
+        /// </param>
+        /// <param name="cancelUrlPath">
+        /// The cancel Url Path.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the login url.
+        /// </returns>
+        public Uri GetLoginUrl(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> parameters)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
 
+            var oauth = new FacebookOAuthClientAuthorizer
+                            {
+                                ClientId = this.settings.AppId,
+                                ClientSecret = this.settings.AppSecret
+                            };
 
-            if (!string.IsNullOrEmpty(pathAndQuery) && pathAndQuery.StartsWith("/", StringComparison.Ordinal))
+            if (parameters != null && parameters.ContainsKey("state"))
             {
-                pathAndQuery = pathAndQuery.Substring(1);
+                // parameters state override the state
+                state = parameters["state"] == null ? null : parameters["state"].ToString();
             }
 
-            if (pathAndQuery == null)
-            {
-                pathAndQuery = CurrentCanvasPathAndQuery;
-            }
+            var oauthJsonState = new JsonObject();
 
-            string path;
-            if (pathAndQuery.Contains('?'))
+            // remove the http://apps.facebook.com/ length 25
+            // make it one letter character so more info can fit in.
+            // r -> return_url_path
+            // c -> cancel_url_path
+            // s -> user_state
+
+            if (!string.IsNullOrEmpty(returnUrlPath))
             {
-                path = pathAndQuery.Split('?')[0];
+                // remove the starting /
+                oauthJsonState["r"] = this.CanvasPageApplicationPath.Substring(1);
+
+                // then return url path doesn't start with / add it
+                if (!returnUrlPath.StartsWith("/"))
+                {
+                    oauthJsonState["r"] += "/";
+                }
+
+                oauthJsonState["r"] += returnUrlPath;
             }
             else
             {
-                path = pathAndQuery;
+                oauthJsonState["r"] = this.CurrentCanvasPage.ToString().Substring(25);
             }
 
-            if (!path.StartsWith("/", StringComparison.Ordinal))
+            //if (string.IsNullOrEmpty(cancelUrlPath))
+            //{
+            //    // if cancelUrlPath is null, use the cancelUrlPath from settings
+            //    cancelUrlPath = this.canvasSettings.CancelUrlPath;
+            //}
+
+            if (!string.IsNullOrEmpty(cancelUrlPath))
             {
-                path = "/" + path;
+                // remove the first /
+                oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
+
+                if (!cancelUrlPath.StartsWith("/"))
+                {
+                    oauthJsonState["c"] += "/";
+                }
+
+                oauthJsonState["c"] += cancelUrlPath;
             }
 
-            var appPath = request.ApplicationPath;
+            // user state
+            if (!string.IsNullOrEmpty(state))
+            {
+                oauthJsonState["s"] = state;
+            }
+
+            var oauthState = FacebookUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
+            var mergedParameters = FacebookUtils.Merge(parameters, null);
+            mergedParameters["state"] = oauthState;
+
+            var appPath = httpRequest.ApplicationPath;
             if (appPath != "/")
             {
                 appPath = string.Concat(appPath, "/");
             }
 
-            string redirectRoot = string.Concat(redirectPath, "/", cancel ? "cancel" : string.Empty);
+            string redirectRoot = RedirectPath;
 
-            UriBuilder uriBuilder = new UriBuilder(CurrentCanvasUrl);
-            uriBuilder.Path = string.Concat(appPath, redirectRoot, CanvasPageApplicationPath, path);
-            uriBuilder.Query = null; // No Querystrings allowed in return urls
-            return uriBuilder.Uri;
+            var uriBuilder = new UriBuilder(this.CurrentCanvasUrl)
+                                 {
+                                     Path = string.Concat(appPath, redirectRoot),
+                                     Query = string.Empty
+                                 };
+
+            oauth.RedirectUri = uriBuilder.Uri;
+
+            var loginUrl = oauth.GetLoginUrl(mergedParameters);
+            return loginUrl;
         }
 
+        /// <summary>
+        /// Gets the canvas redirect HTML.
+        /// </summary>
+        /// <param name="url">The redirect url.</param>
+        /// <returns>
+        /// Returns redirect html.
+        /// </returns>
+        public static string GetCanvasRedirectHtml(Uri url)
+        {
+            Contract.Requires(url != null);
+            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+            if (url == null)
+            {
+                throw new ArgumentNullException("url");
+            }
+
+            return "<html><head><script type=\"text/javascript\">\ntop.location = \"" + url + "\";\n" + "</script></head><body></body></html>";
+        }
+
+        [ContractInvariantMethod]
+        private void InvariantObject()
+        {
+            Contract.Invariant(this.settings != null);
+            Contract.Invariant(this.httpRequest != null);
+            Contract.Invariant(this.httpRequest.Url != null);
+        }
     }
 }

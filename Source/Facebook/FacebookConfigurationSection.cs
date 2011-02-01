@@ -1,32 +1,17 @@
-﻿// --------------------------------
-// <copyright file="FacebookConfigurationSection.cs" company="Facebook C# SDK">
-//     Microsoft Public License (Ms-PL)
-// </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
-// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
-// <website>http://facebooksdk.codeplex.com</website>
-// ---------------------------------
-
+﻿
 namespace Facebook
 {
-    using System;
     using System.Configuration;
 
     /// <summary>
     /// Represents the Facebook section in a configuration file.
     /// </summary>
-    public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookSettings
+    public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookApplication
     {
         /// <summary>
-        /// Gets or sets the API secret.
+        /// The current facebook settings stored in the configuration file.
         /// </summary>
-        /// <value>The API secret.</value>
-        [ConfigurationProperty("appSecret", IsRequired = true)]
-        public string AppSecret
-        {
-            get { return (string)this["appSecret"]; }
-            set { this["appSecret"] = value; }
-        }
+        private static IFacebookApplication current;
 
         /// <summary>
         /// Gets or sets the app id.
@@ -40,26 +25,64 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets or sets the max retries.
+        /// Gets or sets the API secret.
         /// </summary>
-        /// <value>The max retries.</value>
-        [ConfigurationProperty("maxRetries", IsRequired = false, DefaultValue = -1)]
-        public int MaxRetries
+        /// <value>The API secret.</value>
+        [ConfigurationProperty("appSecret", IsRequired = true)]
+        public string AppSecret
         {
-            get { return (int)this["maxRetries"]; }
-            set { this["maxRetries"] = value; }
+            get { return (string)this["appSecret"]; }
+            set { this["appSecret"] = value; }
         }
 
         /// <summary>
-        /// Gets or sets the retry delay.
+        /// Gets or sets the site url.
         /// </summary>
-        /// <value>The retry delay.</value>
-        [ConfigurationProperty("retryDelay", IsRequired = false, DefaultValue = -1)]
-        public int RetryDelay
+        [ConfigurationProperty("siteUrl", IsRequired = false)]
+        public string SiteUrl
         {
-            get { return (int)this["retryDelay"]; }
-            set { this["retryDelay"] = value; }
+            get { return (string)this["siteUrl"]; }
+            set { this["siteUrl"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the canvas page.
+        [ConfigurationProperty("canvasPage", IsRequired = false)]
+        public string CanvasPage
+            get { return (string)this["canvasPage"]; }
+            set { this["canvasPage"] = value; }
+        /// Gets or sets the canvas url.
+        [ConfigurationProperty("canvasUrl", IsRequired = false)]
+        public string CanvasUrl
+            get { return (string)this["canvasUrl"]; }
+            set { this["canvasUrl"] = value; }
+        /// Gets or sets the url to return the user after they cancel authorization.
+        /// </summary>
+        [ConfigurationProperty("cancelUrlPath", IsRequired = false)]
+        public string CancelUrlPath
+        {
+            get { return (string)this["cancelUrlPath"]; }
+            set { this["cancelUrlPath"] = value; }
+        }
+
+        /// <summary>
+        /// Gets the Facebook settings stored in the configuration file.
+        /// </summary>
+        internal static IFacebookApplication Current
+        {
+            get
+            {
+                if (current == null)
+                {
+                    var settings = ConfigurationManager.GetSection("facebookSettings");
+                    if (settings != null)
+                    {
+                        current = settings as IFacebookApplication;
+                    }
+                }
+
+                return current;
+            }
+        }
     }
 }

@@ -11,151 +11,274 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
+    /// <summary>
+    /// Represents the authentication result of Facebook.
+    /// </summary>
     public sealed class FacebookAuthenticationResult
     {
+        /// <summary>
+        /// The access token.
+        /// </summary>
         private readonly string accessToken;
+
+        /// <summary>
+        /// Date and Time when the access token expires.
+        /// </summary>
         private readonly DateTime expires;
+
+        /// <summary>
+        /// Short error reason for failed authentication if there was an error.
+        /// </summary>
         private readonly string errorReason;
+
+        /// <summary>
+        /// Long error description for failed authentication if there was an error.
+        /// </summary>
         private readonly string errorDescription;
 
-        private FacebookAuthenticationResult(string accessToken, DateTime expires, string errorReason, string errorDescription)
-        {
-            this.accessToken = accessToken;
-            this.expires = expires;
-            this.errorReason = errorReason;
-            this.errorDescription = errorDescription;
-        }
+        /// <summary>
+        /// The code used to exchange access token.
+        /// </summary>
+        private readonly string code;
 
-        private FacebookAuthenticationResult(IDictionary<string, object> parameters)
+        /// <summary>
+        /// Gets or sets an opaque state used to maintain application state between the request and callback.
+        /// </summary>
+        private readonly string state;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookAuthenticationResult"/> class.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <remarks>
+        /// The values of parameters should not be url encoded.
+        /// </remarks>
+        internal FacebookAuthenticationResult(IDictionary<string, object> parameters)
         {
-            // decode access token first
-            if (parameters.ContainsKey("access_token"))
+            Contract.Requires(parameters != null);
+
+            if (parameters.ContainsKey("error_reason"))
             {
-                this.accessToken = Uri.UnescapeDataString((string)parameters["access_token"]);
-            }
+                this.errorReason = parameters["error_reason"].ToString();
 
-            if (parameters.ContainsKey("expires_in"))
+                if (parameters.ContainsKey("error_description"))
+                {
+                    this.errorDescription = parameters["error_description"].ToString();
+                }
+
+                return;
             {
                 var expiresIn = Convert.ToInt64(parameters["expires_in"]);
                 if (expiresIn < 1262304000) // Seconds from 1/1/1970 to 1/1/2010, so it will be at least this number if it's a Unix Time
                 {
                     // So this is NOT a unix time (it's elapsed seconds from now)
                     this.expires = System.DateTime.Now.AddSeconds(expiresIn);
-                }
-                else
-                {
-                    this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
+            }
+
+            if (parameters.ContainsKey("code"))
+                this.code = parameters["code"].ToString();
                 }
                 
+            if (parameters.ContainsKey("state"))
+            {
+                this.state = parameters["state"].ToString();
             }
 
-            if (parameters.ContainsKey("error_reason"))
+            if (parameters.ContainsKey("access_token"))
             {
-                this.errorReason = Uri.UnescapeDataString((string)parameters["error_reason"]);
+                this.accessToken = parameters["access_token"].ToString();
             }
 
-            if (parameters.ContainsKey("error_description"))
+            if (parameters.ContainsKey("expires_in"))
             {
-                this.errorDescription = Uri.UnescapeDataString((string)parameters["error_description"]);
-                this.errorDescription = this.errorDescription.Replace('+', ' ');
+                var expiresIn = Convert.ToInt64(parameters["expires_in"]);
+                this.expires = FacebookUtils.FromUnixTime(expiresIn);
             }
         }
 
+        /// <summary>
+        /// Gets the short error reason for failed authentication if an error occurred.
+        /// </summary>
         public string ErrorReason
         {
             get { return this.errorReason; }
         }
 
+        /// <summary>
+        /// Gets the long error description for failed authentication if an error occurred.
+        /// </summary>
         public string ErrorDescription
         {
             get { return this.errorDescription; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="DateTime"/> when the access token will expire.
+        /// </summary>
         public DateTime Expires
         {
             get { return this.expires; }
         }
 
+        /// <summary>
+        /// Gets the access token.
+        /// </summary>
         public string AccessToken
         {
             get { return this.accessToken; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether access token or code was successfully retrieved.
+        /// </summary>
         public bool IsSuccess
         {
-            get { return string.IsNullOrEmpty(this.ErrorReason) && !string.IsNullOrEmpty(this.AccessToken); }
+            get
+            {
+                return string.IsNullOrEmpty(this.ErrorReason) &&
+                       (!string.IsNullOrEmpty(this.AccessToken) || !string.IsNullOrEmpty(this.Code));
+            }
         }
 
+        /// <summary>
+        /// Gets the code used to exchange with facebook to retrieve access token.
+        /// </summary>
+        public string Code
+        {
+            get { return this.code; }
+        }
+
+        /// <summary>
+        /// Gets an opaque state used to maintain application state between the request and callback.
+        /// </summary>
+        public string State
+        {
+            get { return this.state; }
+        }
+
+        /// <summary>
+        /// Converts <see cref="FacebookAuthenticationResult"/> to <see cref="FacebookSession"/>.
+        /// </summary>
+        /// <returns>
+        /// An instance of converted <see cref="FacebookSession"/>.
+        /// </returns>
         public FacebookSession ToSession()
         {
             return new FacebookSession
-            {
-                AccessToken = this.AccessToken,
-                Expires = this.Expires,
-            };
+                       {
+                           AccessToken = this.AccessToken,
+                           Expires = this.Expires,
+                       };
         }
 
+        /// <summary>
+        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The uri string.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </returns>
         public static FacebookAuthenticationResult Parse(string uriString)
         {
             return Parse(new Uri(uriString));
         }
 
+        /// <summary>
+        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The uri.
+        /// </param>
+        /// <param name="facebookSettings">
+        /// The facebook settings.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </returns>
         public static FacebookAuthenticationResult Parse(Uri uri)
         {
-            return Parse(uri, null);
+            return Parse(uri, true);
         }
 
-        public static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings)
-        {
-            return Parse(uri, facebookSettings, true);
-        }
-
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The uri string.
+        /// </param>
+        /// <param name="settings">
+        /// The settings.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
         public static bool TryParse(string uriString, out FacebookAuthenticationResult result)
-        {
-            return TryParse(uriString, null, out result);
-        }
-
-        public static bool TryParse(string uriString, IFacebookSettings settings, out FacebookAuthenticationResult result)
         {
             if (Uri.IsWellFormedUriString(uriString, UriKind.RelativeOrAbsolute))
             {
-                return TryParse(new Uri(uriString), settings, out result);
+                return TryParse(new Uri(uriString), out result);
             }
+
             result = null;
             return false;
         }
 
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The uri.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
         public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
         {
-            return TryParse(uri, null, out result);
-        }
-
-        public static bool TryParse(Uri uri, IFacebookSettings facebookSettings, out FacebookAuthenticationResult result)
-        {
-            result = Parse(uri, facebookSettings, false);
+            result = Parse(uri, false);
             return result.AccessToken != null;
         }
 
-        private static FacebookAuthenticationResult Parse(Uri uri, IFacebookSettings facebookSettings, bool throws)
+        private static FacebookAuthenticationResult Parse(Uri uri, bool throws)
         {
-            var parameters = new Dictionary<string, object>();
+            IDictionary<string, object> parameters = null;
+
             try
             {
-                    // if it is a desktop login
-                    if (!string.IsNullOrEmpty(uri.Fragment))
+                bool found = false;
+                if (!string.IsNullOrEmpty(uri.Fragment))
+                {
+                    // #access_token and expires_in are in fragment
+                    var fragment = uri.Fragment.Substring(1);
+                    parameters = FacebookUtils.ParseUrlQueryString(fragment);
+                    if (parameters.ContainsKey("access_token"))
                     {
-                        // contains #access_token so replace # with ?
-                        var queryFragment = "?" + uri.Fragment.Substring(1);
-                        FacebookAppBase.ParseQueryParametersToDictionary(queryFragment, parameters);
+                        found = true;
                     }
-                    else 
-                    {
-                        // else it is part of querystring
-                        // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
-                        FacebookAppBase.ParseQueryParametersToDictionary(uri.Query, parameters);
-                    }
+                }
 
+                // code, state, error_reason, error and error_description are in query
+                // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
+                var queryPart = FacebookUtils.ParseUrlQueryString(uri.Query);
+                if (queryPart.ContainsKey("code") || (queryPart.ContainsKey("error") && queryPart.ContainsKey("error_description")))
+                {
+                    found = true;
+                }
+
+                if (found)
+                {
+                    parameters = FacebookUtils.Merge(parameters, queryPart);
                     return new FacebookAuthenticationResult(parameters);
             }
             catch
@@ -164,6 +287,7 @@ namespace Facebook
                 {
                     throw;
                 }
+
                 return null;
             }
 
@@ -171,6 +295,7 @@ namespace Facebook
             {
                 throw new InvalidOperationException("Could not parse authentication url.");
             }
+
             return null;
         }
 

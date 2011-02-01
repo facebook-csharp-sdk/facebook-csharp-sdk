@@ -44,7 +44,6 @@ namespace Facebook
         {
             "OAuthException", // Graph OAuth Exception
             "190", // Rest OAuth Exception
-            "Unknown", // No error info returned by facebook.
         };
 
         /// <summary>
@@ -57,69 +56,57 @@ namespace Facebook
         /// </summary>
         private int retryDelay = 500;
 
-#if !SILVERLIGHT && !CLIENTPROFILE
         /// <summary>
         /// The current Facebook session.
         /// </summary>
         private FacebookSession session;
 
         /// <summary>
-        /// The current Facebook signed request.
-        /// </summary>
-        private FacebookSignedRequest signedRequest;
-
-        /// <summary>
-        /// The current HTTP request.
-        /// </summary>
-        private System.Web.HttpRequestBase request;
-
-        /// <summary>
-        /// The current HTTP response.
-        /// </summary>
-        private System.Web.HttpResponseBase response;
-#endif
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>
-        /// class with values stored in the application configuration file
-        /// or with only the default values if the configuration
-        /// file does not have the values set.
+        /// Initializes a new instance of the <see cref="FacebookApp"/>.
         /// </summary>
         public FacebookApp()
         {
-#if !SILVERLIGHT // Silverlight does not support System.Configuration
-            var settings = FacebookSettings.Current;
-            if (settings != null)
-            {
-                this.ApplySettings(settings);
-            }
-#endif
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>
-        /// class with values provided. Does not require configuration
-        /// file to be set.
-        /// </summary>
-        /// <param name="settings">The facebook settings for the application.</param>
-        public FacebookApp(IFacebookSettings settings)
-        {
-            Contract.Requires(settings != null);
-
-            this.ApplySettings(settings);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>
-        /// class with only an access_token set. From this state
-        /// sessions will not be accessable.
+        /// Initializes a new instance of the <see cref="FacebookApp"/>.
         /// </summary>
         /// <param name="accessToken">The Facebook access token.</param>
         public FacebookApp(string accessToken)
         {
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
 
-            this.Session = new FacebookSession(accessToken);
+            this.AccessToken = accessToken;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApp"/>.
+        /// </summary>
+        /// <param name="appId">The Facebook application id.</param>
+        /// <param name="appSecret">The Facebook application secret.</param>
+        public FacebookApp(string appId, string appSecret)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(appId));
+            Contract.Requires(!String.IsNullOrEmpty(appSecret));
+
+            this.AccessToken = String.Concat(appId, "|", appSecret);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApp"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public FacebookApp(IFacebookApplication facebookApplication)
+        {
+            if (facebookApplication != null)
+            {
+                if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
+                {
+                    this.AccessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
+                }
+            }
         }
 
         /// <summary>
@@ -159,70 +146,6 @@ namespace Facebook
             }
         }
 
-#if !SILVERLIGHT && !CLIENTPROFILE
-        /// <summary>
-        /// Gets the signed request.
-        /// </summary>
-        /// <value>The signed request.</value>
-        public FacebookSignedRequest SignedRequest
-        {
-            get
-            {
-                if (this.signedRequest == null && this.Request != null)
-                {
-                    if (this.Request.Params.AllKeys.Contains("signed_request"))
-                    {
-                        this.signedRequest = FacebookSignedRequest.Parse(this.AppSecret, this.Request.Params["signed_request"]);
-                    }
-                }
-
-                return this.signedRequest;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the active user session.
-        /// </summary>
-        /// <value>The session.</value>
-        public override FacebookSession Session
-        {
-            get
-            {
-                if (this.session == null && this.Request != null)
-                {
-                    try
-                    {
-                        // try loading session from signed_request
-                        if (this.SignedRequest != null)
-                        {
-                            this.session = FacebookSession.Create(this.AppSecret, this.SignedRequest);
-                        }
-
-                        // try loading session from cookie if necessary
-                        if (this.session == null)
-                        {
-                            if (this.Request.Params.AllKeys.Contains(this.SessionCookieName))
-                            {
-                                this.session = FacebookSession.Parse(this.AppSecret, this.Request.Params[this.SessionCookieName]);
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        this.session = null;
-                    }
-                }
-
-                return this.session;
-            }
-
-            set
-            {
-                this.session = value;
-            }
-        }
-#endif
-
         /// <summary>
         /// Gets a collection of Facebook error types that
         /// should be retried in the event of a failure.
@@ -230,182 +153,6 @@ namespace Facebook
         protected virtual Collection<string> RetryErrorTypes
         {
             get { return retryErrorTypes; }
-        }
-
-#if !SILVERLIGHT && !CLIENTPROFILE
-
-        /// <summary>
-        /// Gets or sets the HTTP request.
-        /// </summary>
-        /// <value>The request.</value>
-        protected virtual System.Web.HttpRequestBase Request
-        {
-            get
-            {
-                if (this.request == null && System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Request != null)
-                {
-                    this.request = new System.Web.HttpRequestWrapper(System.Web.HttpContext.Current.Request);
-                }
-                return this.request;
-            }
-            set
-            {
-                Contract.Requires(value != null);
-
-                this.request = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the current HTTP response.
-        /// </summary>
-        /// <value>The response.</value>
-        protected virtual System.Web.HttpResponseBase Response
-        {
-            get
-            {
-                if (this.response == null && System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Response != null)
-                {
-                    this.response = new System.Web.HttpResponseWrapper(System.Web.HttpContext.Current.Response);
-                }
-                return this.response;
-            }
-
-            set
-            {
-                Contract.Requires(value != null);
-
-                this.response = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the Current URL, stripping it of known FB parameters that should not persist.
-        /// </summary>
-        protected override Uri CurrentUrl
-        {
-            get
-            {
-                if (this.Request == null)
-                {
-                    return new Uri("http://www.facebook.com/connect/login_success.html");
-                }
-
-                return CleanUrl(this.Request.Url);
-            }
-        }
-#endif
-
-#if CLIENTPROFILE || SILVERLIGHT
-
-        /// <summary>
-        /// <para>Get a Login URL for use with redirects. By default,  a popup redirect is
-        /// assumed.</para>
-        /// <para>The parameters:</para>
-        /// <para>   - display: can be "page" (default, full page) or "popup"</para>
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLoginUrl(IDictionary<string, object> parameters)
-        {
-            var currentUrl = this.CurrentUrl.ToString();
-
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["client_id"] = this.AppId;
-            defaultParams["display"] = "popup";
-            //defaultParams["type"] = "user_agent";
-            defaultParams["redirect_uri"] = currentUrl;
-
-            return this.GetUrl(
-                "graph",
-                "oauth/authorize",
-                defaultParams.Merge(parameters));
-        }
-
-#else
-
-        /// <summary>
-        /// <para>Get a Login URL for use with redirects. By default, full page redirect is
-        /// assumed. If you are using the generated URL with a window.open() call in
-        /// JavaScript, you can pass in display=popup as part of the parameters.</para>
-        /// <para>The parameters:</para>
-        /// <para>   - next: the url to go to after a successful login</para>
-        /// <para>   - cancel_url: the url to go to after the user cancels</para>
-        /// <para>   - req_perms: comma separated list of requested extended perms</para>
-        /// <para>   - display: can be "page" (default, full page) or "popup"</para>
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLoginUrl(IDictionary<string, object> parameters)
-        {
-            var currentUrl = this.CurrentUrl.ToString();
-
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["api_key"] = this.AppId;
-            defaultParams["cancel_url"] = currentUrl;
-            defaultParams["display"] = "page";
-            defaultParams["fbconnect"] = 1;
-            defaultParams["next"] = currentUrl;
-            defaultParams["return_session"] = 1;
-            defaultParams["session_version"] = 3;
-            defaultParams["v"] = "1.0";
-
-            return this.GetUrl(
-                "www",
-                "login.php",
-                defaultParams.Merge(parameters));
-        }
-
-#endif
-
-        /// <summary>
-        /// <para>Get a Logout URL suitable for use with redirects.</para>
-        /// <para>The parameters:</para>
-        /// <para>   - next: the url to go to after a successful logout</para>
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLogoutUrl(IDictionary<string, object> parameters)
-        {
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["api_key"] = this.AppId;
-            defaultParams["no_session"] = this.CurrentUrl.ToString();
-            if (this.Session != null)
-            {
-                // If might be better to throw an exception if the
-                // session is null because you dont need to logout,
-                // but this way makes it easier to build logout links.
-                defaultParams["session_key"] = this.Session.SessionKey;
-            }
-
-            return this.GetUrl(
-                "www",
-                "logout.php",
-                defaultParams.Merge(parameters));
-        }
-
-        /// <summary>
-        /// <para>Get a Logout URL suitable for use with redirects.</para>
-        /// <para>The parameters:</para>
-        /// <para>    - next: the url to go to after a successful logout</para>
-        /// </summary>
-        /// <param name="parameters">Custom url parameters.</param>
-        /// <returns>The URL for the login flow.</returns>
-        public override Uri GetLoginStatusUrl(IDictionary<string, object> parameters)
-        {
-            string currentUrl = this.CurrentUrl.ToString();
-
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["api_key"] = this.AppId;
-            defaultParams["no_session"] = currentUrl;
-            defaultParams["no_user"] = currentUrl;
-            defaultParams["ok_session"] = currentUrl;
-            defaultParams["session_version"] = 3;
-
-            return this.GetUrl(
-                "www",
-                "extern/login_status.php",
-                defaultParams.Merge(parameters));
         }
 
 #if !SILVERLIGHT
@@ -419,8 +166,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
-            this.AddRestParameters(parameters);
-
+            // Set the format to json
+            parameters["format"] = "json-strings";
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
             return this.OAuthRequest(uri, parameters, httpMethod, resultType, true);
         }
@@ -468,8 +215,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         protected override void RestServerAsync(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
-            this.AddRestParameters(parameters);
-
+            // Set the format to json
+            parameters["format"] = "json-strings";
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
 
             this.OAuthRequestAsync(uri, parameters, httpMethod, resultType, true, callback, state);
@@ -507,54 +254,6 @@ namespace Facebook
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, this.AccessToken, out requestUrl, out contentType);
 
             MakeRequestAsync(httpMethod, requestUrl, postData, contentType, resultType, restApi, callback, state);
-        }
-
-        /// <summary>
-        /// This method invokes the supplied delegate with retry logic wrapped around it.  No values are returned.  If the delegate raises
-        /// recoverable Facebook server or client errors, then the supplied delegate is reinvoked after a certain amount of delay
-        /// until the retry limit is exceeded, at which point the exception is rethrown. Other exceptions are not caught and will
-        /// be visible to callers.
-        /// </summary>
-        /// <param name="body">The delegate to invoke within the retry code.</param>
-        protected void WithMirrorRetry(Action body)
-        {
-            Contract.Requires(body != null);
-
-            int retryCount = 0;
-
-            while (true)
-            {
-                try
-                {
-                    body();
-                    return;
-                }
-                catch (FacebookApiException ex)
-                {
-                    if (!this.RetryErrorTypes.Contains(ex.ErrorType))
-                    {
-                        throw;
-                    }
-                    else
-                    {
-                        if (retryCount >= this.maxRetries)
-                        {
-                            throw;
-                        }
-                    }
-                }
-                catch (WebException)
-                {
-                    if (retryCount >= this.maxRetries)
-                    {
-                        throw;
-                    }
-                }
-
-                // Sleep for the retry delay before we retry again
-                System.Threading.Thread.Sleep(this.retryDelay);
-                retryCount += 1;
-            }
         }
 
         /// <summary>
@@ -637,7 +336,7 @@ namespace Facebook
 
             if (httpMethod == HttpMethod.Get)
             {
-                queryString = parameters.ToJsonQueryString();
+                queryString = FacebookUtils.ToJsonQueryString(parameters);
             }
             else
             {
@@ -653,7 +352,7 @@ namespace Facebook
                 }
                 else
                 {
-                    postData = Encoding.UTF8.GetBytes(parameters.ToJsonQueryString());
+                    postData = Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters));
                 }
             }
 
@@ -737,7 +436,7 @@ namespace Facebook
         private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType, Type resultType, bool restApi)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = StringUtilities.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = FacebookUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
 
             if (postData != null)
             {
@@ -818,7 +517,7 @@ namespace Facebook
         private static void MakeRequestAsync(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType, Type resultType, bool restApi, FacebookAsyncCallback callback, object state)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-            request.Method = StringUtilities.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+            request.Method = FacebookUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
             if (httpMethod == HttpMethod.Post)
             {
                 request.ContentType = contentType;
@@ -900,31 +599,6 @@ namespace Facebook
                 callback(new FacebookAsyncResult(data, state, asyncResult.AsyncWaitHandle, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));
 #endif
             }
-        }
-
-        /// <summary>
-        /// Adds the standard REST requset parameters.
-        /// </summary>
-        /// <param name="parameters">The parameters object.</param>
-        private void AddRestParameters(IDictionary<string, object> parameters)
-        {
-            parameters["api_key"] = this.AppId;
-            parameters["format"] = "json-strings";
-        }
-
-        /// <summary>
-        /// Applies the Facebook settings to the
-        /// properties of this object.
-        /// </summary>
-        /// <param name="settings">The Facebook settings.</param>
-        private void ApplySettings(IFacebookSettings settings)
-        {
-            Contract.Requires(settings != null);
-
-            this.AppId = settings.AppId;
-            this.AppSecret = settings.AppSecret;
-            this.retryDelay = settings.RetryDelay == -1 ? this.retryDelay : settings.RetryDelay;
-            this.maxRetries = settings.MaxRetries == -1 ? this.maxRetries : settings.MaxRetries;
         }
 
         /// <summary>

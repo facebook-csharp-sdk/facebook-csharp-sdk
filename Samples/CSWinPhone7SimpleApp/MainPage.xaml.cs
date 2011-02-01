@@ -17,16 +17,9 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string appId = "{Your App Id Goes Here}";
+        private const string appId = "{app id}";
         private const string appSecret = "{Your App Secret Goes Here}";
         private const string kRetrieveAuthFromCodeURI = "https://graph.facebook.com/oauth/access_token?client_id={0}&redirect_uri=http://www.facebook.com/connect/login_success.html&client_secret={1}&code={2}";
-        private string requestedFbPermissions = "user_about_me,"; //email,user_likes,user_checkins"; //"email,user_likes,user_checkins,publish_checkins"; //etc
-
-        private string accessToken;
-
-        private const string successUrl = "http://www.facebook.com/connect/login_success.html";
-
-        private const string failedUrl = "http://www.facebook.com/connect/login_failure.html";
 
         private bool loggedIn = false;
 
@@ -42,7 +35,7 @@ namespace Facebook.Samples.AuthenticationTool
             fbApp.GetAsync("me", (val) =>
             {
                 // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
-                var result = ((JsonObject)val.Result);
+                var result = (JsonObject)val.Result;
                 Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
             });
         }
@@ -94,16 +87,13 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoPanel.Visibility = Visibility.Collapsed;
 
-            var parms = new Dictionary<String, object>();
-            parms["display"] = "wap";
-            parms["client_id"] = appId;
-            parms["redirect_uri"] = successUrl;
-            parms["cancel_url"] = failedUrl;
-            parms["scope"] = requestedFbPermissions;
-            //parms["type"] = "user_agent";
+            var oauth = new FacebookOAuthClientAuthorizer
+            {
+                ClientId = appId,
+                // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
+            };
 
-            var loginUrl = fbApp.GetLoginUrl(parms);
-            FacebookLoginBrowser.Navigate(loginUrl);
+            var paramaters = new Dictionary<string, object>
         }
 
         private void FacebookLoginBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -120,9 +110,9 @@ namespace Facebook.Samples.AuthenticationTool
                     var keyVal = qsItem.Split('=');
                     var place = qsItem.IndexOf("=");
                     if (keyVal[0].Equals("code", StringComparison.InvariantCultureIgnoreCase) && place != -1)
-                    {
-                        // We have a code!
-                        var code = qsItem.Substring(place);
+                                {
+                                    { "response_type", "token" }
+                                };
                         code = qsItem.Substring(place + 1);
                         // Redirect the browser 1 more time!
                         var newUrl = string.Format(kRetrieveAuthFromCodeURI, appId, appSecret, code);
@@ -130,21 +120,21 @@ namespace Facebook.Samples.AuthenticationTool
                     }
                 }
 
-            }
+            var extendedPermissions = this.GetExtendedPermissions();
 
-            //FacebookAuthenticationResult authResult;
-            //if (FacebookAuthenticationResult.TryParse(e.Uri, out authResult))
-            //{
-            //    if (authResult.AccessToken != null)
+            if (!string.IsNullOrEmpty(extendedPermissions))
+            {
+                // add scope only if there is at last one extended permission
+                paramaters["scope"] = extendedPermissions;
             //    {
             //        fbApp.Session = authResult.ToSession();
             //        loginSucceeded();
             //    }
             //}
-        }
+            }
 
-        void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
+            var loginUri = oauth.GetLoginUrl(paramaters);
+            FacebookLoginBrowser.Navigate(loginUri);
             if (e.Cancelled || e.Error != null)
             {
                 loginFailed();
@@ -155,9 +145,21 @@ namespace Facebook.Samples.AuthenticationTool
             // We're tricking out the parsing mechanism so that it thinks this is a URI
             if (FacebookAuthenticationResult.TryParse(new Uri("http://localhost?" + e.Result.ToString()), out authResult))
             {
-                    fbApp.Session = authResult.ToSession();
+                if (authResult.IsSuccess)
+                {
+                    fbApp = new FacebookApp(authResult.AccessToken);
                     loginSucceeded();
+                }
+                else
+                {
+                    MessageBox.Show(authResult.ErrorDescription);
+                }
             }
+        }
+
+        private string GetExtendedPermissions()
+        {
+            return "user_about_me,publish_stream";
         }
     }
 }

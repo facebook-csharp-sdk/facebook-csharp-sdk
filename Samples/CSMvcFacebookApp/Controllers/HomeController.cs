@@ -1,30 +1,31 @@
-﻿using System;
-using System.Web.Mvc;
-using Facebook;
-using Facebook.Web.Mvc;
-using Newtonsoft.Json.Linq;
-
-namespace FacebookDemo.Web.Controllers
+﻿namespace FacebookDemo.Web.Controllers
 {
+    using System.Web.Mvc;
+    using Facebook;
+    using Facebook.Web;
+    using Facebook.Web.Mvc;
+
     [HandleError]
     public class HomeController : Controller
     {
+        public FacebookSession CurrentSession
+        {
+            get { return (new CanvasAuthorizer()).Session; }
+        }
 
         public ActionResult Index()
         {
             return View();
         }
 
-        [CanvasAuthorize(Perms = "user_about_me")]
+        [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            FacebookApp fbApp = new FacebookApp();
-            if (fbApp.Session != null)
-            {
-                dynamic result = fbApp.Get("me");
-                ViewData["Firstname"] = (string)result.first_name;
-                ViewData["Lastname"] = (string)result.last_name;
-            }
+            var fbApp = new FacebookApp(this.CurrentSession.AccessToken);
+
+            dynamic result = fbApp.Get("me");
+            ViewData["Firstname"] = (string)result.first_name;
+            ViewData["Lastname"] = (string)result.last_name;
 
             return View();
         }

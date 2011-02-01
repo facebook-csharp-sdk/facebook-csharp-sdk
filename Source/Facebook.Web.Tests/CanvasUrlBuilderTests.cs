@@ -1,4 +1,5 @@
-﻿namespace Facebook.Web.Tests
+﻿/*
+namespace Facebook.Web.Tests
 {
     using System;
     using Facebook.TestUtils.Fakes;
@@ -45,3 +46,4 @@
         }
     }
 }
+*/

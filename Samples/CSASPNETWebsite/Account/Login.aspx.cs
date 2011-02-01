@@ -14,10 +14,11 @@ namespace CSASPNETWebsite.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            FacebookApp app = new FacebookApp();
-            Authorizer authorizer = new Authorizer(app);
+            var authorizer = new Authorizer();
+
             if (authorizer.IsAuthorized())
             {
+                // check if return url is local.
                 Response.Redirect(HttpUtility.UrlDecode(Request.QueryString["returnUrl"] ?? "/"));
             }
         }

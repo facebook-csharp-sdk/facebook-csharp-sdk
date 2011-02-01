@@ -8,24 +8,37 @@
 // ---------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
+using System.Security;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 
 [assembly: AssemblyDescription("Facebook C# SDK")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Facebook C# SDK")]
 [assembly: AssemblyProduct("Facebook C# SDK")]
 [assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: ComVisible(false)]
+[assembly: AssemblyVersion("5.0.0")]
 [assembly: CLSCompliant(true)]
+
 #if !(SILVERLIGHT || TESTS)
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
-// Version
-[assembly: AssemblyVersion("4.2.1")]
+#if !WINDOWS_PHONE
+[assembly: InternalsVisibleTo("Facebook.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+#endif
 
+#if !(SILVERLIGHT || WINDOWS_PHONE)
+    [assembly: InternalsVisibleTo("Facebook.Web, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+    [assembly: InternalsVisibleTo("Facebook.Web.Mvc, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+
+    #if !TESTS
+        [assembly: InternalsVisibleTo("Facebook.Web.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+        [assembly: InternalsVisibleTo("Facebook.Web.Mvc.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+    #endif
+
+#endif
 
 internal static class GlobalAssemblyInfo
 {

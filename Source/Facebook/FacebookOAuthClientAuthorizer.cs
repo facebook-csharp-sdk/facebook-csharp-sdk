@@ -1,3 +1,4 @@
+
 namespace Facebook
 {
     using System;
@@ -5,14 +6,33 @@ namespace Facebook
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Net;
-    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Represents the Facebook OAuth Helpers
     /// </summary>
     public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
     {
-        #region Implementation of IOAuthClientAuthorizer
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookOAuthClientAuthorizer"/> class.
+        /// </summary>
+        public FacebookOAuthClientAuthorizer()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookOAuthClientAuthorizer"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public FacebookOAuthClientAuthorizer(IFacebookApplication facebookApplication)
+        {
+            if (facebookApplication != null)
+            {
+                this.ClientId = facebookApplication.AppId;
+                this.ClientSecret = facebookApplication.AppSecret;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the client id.
@@ -29,57 +49,70 @@ namespace Facebook
         /// </summary>
         public Uri RedirectUri { get; set; }
 
-        // TODO: comment this for now. will need to support for GetLoginUri for web apps too
-        // need to find a better name.
-
-        /*
         /// <summary>
-        /// Gets the login uri for desktop applications.
+        /// Gets the login uri.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// Returns the desktop login uri.
+        /// Returns the facebook login uri.
         /// </returns>
-        public Uri GetDesktopLoginUri(IDictionary<string, object> parameters)
+        /// <remarks>
+        /// http://developers.facebook.com/docs/reference/dialogs/oauth
+        /// Parameters that can be used:
+        ///     client_id     : Your application's identifier. This is called client_id instead of app_id for this particular method to be compliant with the OAuth 2.0 specification. Required, but automatically specified by most SDKs.
+        ///     redirect_uri  : The URL to redirect to after the user clicks a button on the dialog. Required, but automatically specified by most SDKs.
+        ///     scope         : Optional. A comma-delimited list of permissions.
+        ///     state         : Optional. An opaque string used to maintain application state between the request and callback. When Facebook redirects the user back to your redirect_uri, this value will be included unchanged in the response.
+        ///     response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code_and_token).
+        ///     display       : The display mode in which to render the dialog. The default is page on the www subdomain and wap on the m subdomain. This is automatically specified by most SDKs. (For WP7 builds it is set to touch.)
+        /// </remarks>
+        public Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
-            if (string.IsNullOrEmpty(this.ClientId))
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            var defaultParameters = new Dictionary<string, object>();
+            defaultParameters["client_id"] = this.ClientId;
+            defaultParameters["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+#if WINDOWS_PHONE
+            defaultParameters["display"] = "touch";
+#endif
+            var mergedParameters = FacebookUtils.Merge(defaultParameters, parameters);
+
+            // check if client_id and redirect_uri is not null or empty.
+            if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
             {
-                throw new Exception("ClientID required.");
+                throw new InvalidOperationException("client_id required.");
             }
 
-            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/authorize");
+            if (mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
+            {
+                throw new InvalidOperationException("redirect_uri required.");
+            }
 
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["client_id"] = this.ClientId;
-            defaultParams["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+            // seems like if we don't do this and rather pass the original uri object,
+            // it seems to have http://localhost:80/csharpsamples instead of
+            // http://localhost/csharpsamples
+            // notice the port number, that shouldn't be there.
+            // this seems to happen for iis hosted apps.
+            mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
 
-#if WINDOWS_PHONE
-            defaultParams["display"] = "touch";
-#elif CLIENTPROFILE || SILVERLIGHT
-            defaultParams["display"] = "popup";
-#else
-            defaultParams["display"] = "page";
-#endif
+            var url = "http://www.facebook.com/dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
 
-            var mergedParameters = defaultParams.Merge(parameters);
-
-            uriBuilder.Query = mergedParameters.ToJsonQueryString();
-
-            return uriBuilder.Uri;
+            return new Uri(url);
         }
 
         /// <summary>
-        /// Gets the logout uri for desktop applications.
+        /// Gets the logout url.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// Returns the desktop logout uri.
+        /// Returns the logout url.
         /// </returns>
-        public Uri GetDesktopLogoutUri(IDictionary<string, object> parameters)
+        public Uri GetLogoutUrl(IDictionary<string, object> parameters)
         {
             // more information on this at http://stackoverflow.com/questions/2764436/facebook-oauth-logout
             var uriBuilder = new UriBuilder("http://m.facebook.com/logout.php");
@@ -88,15 +121,14 @@ namespace Facebook
             defaultParams["confirm"] = 1;
             defaultParams["next"] = this.RedirectUri ?? new Uri("http://www.facebook.com");
 
-            var mergedParameters = defaultParams.Merge(parameters);
+            var mergedParameters = FacebookUtils.Merge(defaultParams, parameters);
 
-            uriBuilder.Query = mergedParameters.ToJsonQueryString();
+            uriBuilder.Query = FacebookUtils.ToJsonQueryString(mergedParameters);
 
             return uriBuilder.Uri;
         }
-        */
 
-#if !SILVERLIGHT // silverlight should have only async calls
+#if !SILVERLIGHT // Silverlight should have only async calls
 
         /// <summary>
         /// Gets the access token by exchanging the code.
@@ -120,7 +152,7 @@ namespace Facebook
             pars["redirect_uri"] = this.RedirectUri;
             pars["code"] = code;
 
-            var mergedParameters = pars.Merge(parameters);
+            var mergedParameters = FacebookUtils.Merge(pars, parameters);
 
             if (pars["client_id"] == null || string.IsNullOrEmpty(pars["client_id"].ToString()))
             {
@@ -134,13 +166,12 @@ namespace Facebook
 
             if (pars["redirect_uri"] == null || string.IsNullOrEmpty(pars["redirect_uri"].ToString()))
             {
-                throw new Exception("RedirectUri requried");
+                throw new Exception("RedirectUri required");
             }
 
-            var queryString = mergedParameters.ToJsonQueryString();
+            var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
 
-            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token");
-            uriBuilder.Query = queryString;
+            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token") { Query = queryString.ToString() };
 
             var requestUri = uriBuilder.Uri;
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUri);
@@ -217,7 +248,7 @@ namespace Facebook
             pars["redirect_uri"] = this.RedirectUri;
             pars["code"] = code;
 
-            var mergedParameters = pars.Merge(parameters);
+            var mergedParameters = FacebookUtils.Merge(pars, parameters);
 
             if (pars["client_id"] == null || string.IsNullOrEmpty(pars["client_id"].ToString()))
             {
@@ -231,10 +262,10 @@ namespace Facebook
 
             if (pars["redirect_uri"] == null || string.IsNullOrEmpty(pars["redirect_uri"].ToString()))
             {
-                throw new Exception("RedirectUri requried");
+                throw new Exception("RedirectUri required");
             }
 
-            var queryString = mergedParameters.ToJsonQueryString();
+            var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
 
             var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token");
             uriBuilder.Query = queryString;
@@ -320,7 +351,5 @@ namespace Facebook
         {
             this.ExchangeCodeForAccessTokenAsync(code, parameters, callback, null);
         }
-
-        #endregion
     }
 }

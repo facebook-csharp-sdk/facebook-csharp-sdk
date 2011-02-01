@@ -35,19 +35,11 @@
         function fbLogin(uri) {
             window.loginDialog = window.open(uri, "loginDialog", "height=320,width=480,location=no,menubar=no,toolbar=no");
         }
-        window.loginComplete = function (uri) {
+        window.LoginComplete = function (accessToken,errorDescription) {
             if (window.loginDialog != null) {
                 window.loginDialog.close();
             }
-            window.loginDialog = null;
-            getSlPlugin().LoggedIn(uri);
-        }
-        window.loginFailed = function () {
-            if (window.loginDialog != null) {
-                window.loginDialog.close();
-            }
-            window.loginDialog = null;
-            getSlPlugin().LoggedInFailed();
+            getSlPlugin().LoginComplete(accessToken,errorDescription);
         }
     </script>
     <script type="text/javascript">

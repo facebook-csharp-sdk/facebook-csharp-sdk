@@ -10,49 +10,27 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Facebook;
 
 namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : UserControl
     {
-        private const string appId = "{Put Your App Id Here}";
+        private const string appId = "{your app id}";
 
         private string requestedFbPermissions = "user_about_me";
 
-        private const string successUrl = @"http://localhost:18201/LoginSuccessful.htm";
-
-        private const string failedUrl = @"http://localhost:18201/LoginUnsuccessful.htm";
+        // Host SilverlightClient.Web in IIS and not cassini (visual studio web server).
+        // and change this url accordingly.
+        // this silverlight app should be running out of browser in full trust mode.
+        private const string slfbloginUrl = @"http://localhost/fbsloob/slfblogin.htm";
 
         private bool loggedIn = false;
 
-        Uri loggingInUri;
-
-        private string accessToken;
-
-        private FacebookApp fbApp;
-
-        private void failedLogin()
-        {
-            // We're on the failed page (we could notify the user that there was an issue here..)
-        }
-
-        private void loginSucceeded(NotifyEventArgs e)
-        {
-            TitleBox.Visibility = Visibility.Visible;
-            FacebookLoginBrowser.Visibility = Visibility.Collapsed;
-            InfoBox.Visibility = Visibility.Visible;
-
-            fbApp.GetAsync("me", (val) =>
-            {
-                var result = (IDictionary<string, object>)val.Result;
-                Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
-            });
-        }
 
         public MainPage()
         {
             InitializeComponent();
-            fbApp = new FacebookApp();
         }
 
         void FacebookLoginBrowser_Loaded(object sender, RoutedEventArgs e)
@@ -69,38 +47,53 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoBox.Visibility = Visibility.Collapsed;
 
-            dynamic parms = new System.Dynamic.ExpandoObject();
-            parms.display = "popup";
-            parms.client_id = appId;
-            parms.redirect_uri = successUrl;
-            parms.cancel_url = failedUrl;
-            parms.scope = requestedFbPermissions;
-            parms.type = "user_agent";
+            var oauth = new FacebookOAuthClientAuthorizer
+                            {
+                                ClientId = appId,
+                                RedirectUri = new Uri(slfbloginUrl)
+                            };
 
-            loggingInUri = fbApp.GetLoginUrl(parms);
+            var paramaters = new Dictionary<string, object>
+                                {
+                                    { "display", "popup" },
+                                    { "response_type", "token" },
+                                    { "scope", this.requestedFbPermissions }
+                                };
 
-            // TODO: figure out why we need this weird hack (it works like this, but by using the loggingInUri by itself it errors out.. sounds like a SL Web Browser issue)
-            FacebookLoginBrowser.Source = new Uri( (loggingInUri).ToString());
+            var loginUrl = oauth.GetLoginUrl(paramaters);
+            FacebookLoginBrowser.Navigate(loginUrl);
         }
 
         private void FacebookLoginBrowser_ScriptNotify(object sender, NotifyEventArgs e)
         {
-            if (e.Value != "Failed")
+            FacebookAuthenticationResult authResult;
+            if (FacebookAuthenticationResult.TryParse(e.Value, out authResult))
             {
-                FacebookAuthenticationResult authResult;
-                if (FacebookAuthenticationResult.TryParse(e.Value, out authResult))
+                if (authResult.IsSuccess)
                 {
-                    fbApp.Session = authResult.ToSession();
                     loggedIn = true;
-                    loginSucceeded(e);
+                    loginSucceeded(authResult);
+                }
+                else
+                {
+                    MessageBox.Show(authResult.ErrorDescription);
                 }
             }
+        }
 
+        private void loginSucceeded(FacebookAuthenticationResult authResult)
+        {
+            TitleBox.Visibility = Visibility.Visible;
+            FacebookLoginBrowser.Visibility = Visibility.Collapsed;
+            InfoBox.Visibility = Visibility.Visible;
 
-            if (fbApp.Session == null)
+            var fb = new FacebookApp(authResult.AccessToken);
+
+            fb.GetAsync("me", val =>
             {
-                failedLogin();
-            }
+                var result = (IDictionary<string, object>)val.Result;
+                Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
+            });
         }
     }
 }

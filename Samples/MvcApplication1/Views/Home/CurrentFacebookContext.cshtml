@@ -1,0 +1,9 @@
+﻿@using Facebook
+@model IFacebookApplication
+@{
+    ViewBag.Title = "Registered Facebook Applications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>
+    Current Facebook Application</h2>
+@Html.Partial("FacebookApp", Model)
