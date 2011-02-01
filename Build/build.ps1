@@ -1,6 +1,5 @@
 ﻿properties { 
   $version = '5.0.0'
-  $quality = 'BETA' # Empty for stable
   $zipFileName = "FacebookSDK_V$version"
   $buildPackage = $true
   $buildDocs = $false
@@ -90,7 +89,7 @@ task Package -depends Merge {
         robocopy $sampleDir $workingDir\Package\Samples /MIR /NP /XD bin obj TestResults /XF *.suo *.user
 
           
-        exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName$quality.zip $workingDir\Package\* } "Error zipping"
+        exec { .\Tools\7-zip\7za.exe a -tzip $workingDir\$zipFileName.zip $workingDir\Package\* } "Error zipping"
   }
 }
 
@@ -103,20 +102,20 @@ task NuGetPackage -depends Package {
         Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuGet\Facebook\$version\Facebook.nuspec -recurse
         (Get-Content $workingDir\NuGet\Facebook\$version\Facebook.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
-        Foreach-Object {$_ -replace "{packageId}", "Facebook$quality" } | 
+        Foreach-Object {$_ -replace "{packageId}", "Facebook" } | 
         Set-Content $workingDir\NuGet\Facebook\$version\Facebook.nuspec
 
         Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec -recurse
         (Get-Content $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
-        Foreach-Object {$_ -replace "{packageId}", "FacebookWeb$quality" } | 
+        Foreach-Object {$_ -replace "{packageId}", "FacebookWeb" } | 
         Set-Content $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec
 
 
         Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
         (Get-Content $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
-        Foreach-Object {$_ -replace "{packageId}", "FacebookWebMvc$quality" } | 
+        Foreach-Object {$_ -replace "{packageId}", "FacebookWebMvc" } | 
         Set-Content $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec
 
         foreach ($build in $builds)
