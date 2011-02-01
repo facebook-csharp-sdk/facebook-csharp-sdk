@@ -127,3 +127,6 @@ vNext
 	It can be set using the web.config or app.config files as well as programmatically by calling
 	FacebookContext.SetApplication method.
 	
+12. Renamed FacebookOAuthClientAuthorizer to FacebookOAuthClient, Renamed FacebookAuthenticationResult to 
+	FacebookOAuthResult. Removed IFacebookOAuthClientAuthorizer interface.
+	
