@@ -33,13 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+    <Reference Include="Facebook">
       <HintPath>..\..\Bin\Release\Net40\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Web, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+    <Reference Include="Facebook.Web">
       <HintPath>..\..\Bin\Release\Net40\Facebook.Web.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Web.Mvc, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+    <Reference Include="Facebook.Web.Mvc">
       <HintPath>..\..\Bin\Release\Net40\Facebook.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -86,6 +86,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Views\Home\About.aspx" />
+    <Content Include="Views\Home\GettingStarted.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -134,7 +135,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>18201</DevelopmentServerPort>
+          <DevelopmentServerPort>5000</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
