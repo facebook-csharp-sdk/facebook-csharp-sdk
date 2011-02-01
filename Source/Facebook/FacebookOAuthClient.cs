@@ -10,22 +10,22 @@ namespace Facebook
     /// <summary>
     /// Represents the Facebook OAuth Helpers
     /// </summary>
-    public class FacebookOAuthClientAuthorizer : IOAuthClientAuthorizer
+    public class FacebookOAuthClient
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookOAuthClientAuthorizer"/> class.
+        /// Initializes a new instance of the <see cref="FacebookOAuthClient"/> class.
         /// </summary>
-        public FacebookOAuthClientAuthorizer()
+        public FacebookOAuthClient()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookOAuthClientAuthorizer"/> class.
+        /// Initializes a new instance of the <see cref="FacebookOAuthClient"/> class.
         /// </summary>
         /// <param name="facebookApplication">
         /// The facebook application.
         /// </param>
-        public FacebookOAuthClientAuthorizer(IFacebookApplication facebookApplication)
+        public FacebookOAuthClient(IFacebookApplication facebookApplication)
         {
             if (facebookApplication != null)
             {

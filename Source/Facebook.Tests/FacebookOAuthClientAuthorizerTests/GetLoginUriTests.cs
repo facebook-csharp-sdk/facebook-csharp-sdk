@@ -7,11 +7,11 @@ namespace Facebook.Tests.FacebookOAuthClientAuthorizerTests
 
     public class GetLoginUriTests
     {
-        private FacebookOAuthClientAuthorizer oauth;
+        private FacebookOAuthClient oauth;
 
         public GetLoginUriTests()
         {
-            oauth = new FacebookOAuthClientAuthorizer();
+            oauth = new FacebookOAuthClient();
         }
 
         [Fact(DisplayName = "GetLoginUri: If client id is empty Then it should throw InvalidOperationException")]

@@ -16,7 +16,7 @@ namespace Facebook
     /// <summary>
     /// Represents the authentication result of Facebook.
     /// </summary>
-    public sealed class FacebookAuthenticationResult
+    public sealed class FacebookOAuthResult
     {
         /// <summary>
         /// The access token.
@@ -49,7 +49,7 @@ namespace Facebook
         private readonly string state;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookAuthenticationResult"/> class.
+        /// Initializes a new instance of the <see cref="FacebookOAuthResult"/> class.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
@@ -57,7 +57,7 @@ namespace Facebook
         /// <remarks>
         /// The values of parameters should not be url encoded.
         /// </remarks>
-        internal FacebookAuthenticationResult(IDictionary<string, object> parameters)
+        internal FacebookOAuthResult(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -156,7 +156,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Converts <see cref="FacebookAuthenticationResult"/> to <see cref="FacebookSession"/>.
+        /// Converts <see cref="FacebookOAuthResult"/> to <see cref="FacebookSession"/>.
         /// </summary>
         /// <returns>
         /// An instance of converted <see cref="FacebookSession"/>.
@@ -171,21 +171,21 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// Parse the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
         /// The uri string.
         /// </param>
         /// <returns>
-        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
+        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
         /// </returns>
-        public static FacebookAuthenticationResult Parse(string uriString)
+        public static FacebookOAuthResult Parse(string uriString)
         {
             return Parse(new Uri(uriString));
         }
 
         /// <summary>
-        /// Parse the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// Parse the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
         /// The uri.
@@ -194,15 +194,15 @@ namespace Facebook
         /// The facebook settings.
         /// </param>
         /// <returns>
-        /// Returns an instance of <see cref="FacebookAuthenticationResult"/>.
+        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
         /// </returns>
-        public static FacebookAuthenticationResult Parse(Uri uri)
+        public static FacebookOAuthResult Parse(Uri uri)
         {
             return Parse(uri, true);
         }
 
         /// <summary>
-        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
         /// The uri string.
@@ -211,12 +211,12 @@ namespace Facebook
         /// The settings.
         /// </param>
         /// <param name="result">
-        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// An instance of <see cref="FacebookOAuthResult"/>.
         /// </param>
         /// <returns>
         /// Returns true if parsing was successful otherwise false.
         /// </returns>
-        public static bool TryParse(string uriString, out FacebookAuthenticationResult result)
+        public static bool TryParse(string uriString, out FacebookOAuthResult result)
         {
             if (Uri.IsWellFormedUriString(uriString, UriKind.RelativeOrAbsolute))
             {
@@ -228,24 +228,24 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Try parsing the uri to <see cref="FacebookAuthenticationResult"/>.
+        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
         /// The uri.
         /// </param>
         /// <param name="result">
-        /// An instance of <see cref="FacebookAuthenticationResult"/>.
+        /// An instance of <see cref="FacebookOAuthResult"/>.
         /// </param>
         /// <returns>
         /// Returns true if parsing was successful otherwise false.
         /// </returns>
-        public static bool TryParse(Uri uri, out FacebookAuthenticationResult result)
+        public static bool TryParse(Uri uri, out FacebookOAuthResult result)
         {
             result = Parse(uri, false);
             return result != null;
         }
 
-        private static FacebookAuthenticationResult Parse(Uri uri, bool throws)
+        private static FacebookOAuthResult Parse(Uri uri, bool throws)
         {
             IDictionary<string, object> parameters = null;
 
@@ -274,7 +274,7 @@ namespace Facebook
                 if (found)
                 {
                     parameters = FacebookUtils.Merge(parameters, queryPart);
-                    return new FacebookAuthenticationResult(parameters);
+                    return new FacebookOAuthResult(parameters);
                 }
             }
             catch

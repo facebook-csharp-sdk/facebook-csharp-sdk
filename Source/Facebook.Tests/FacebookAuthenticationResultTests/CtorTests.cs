@@ -9,7 +9,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         [Fact(DisplayName = "FacebookAuthenticationResult: Given an empty dictionary Then access token should be null")]
         public void FacebookAuthenticationResult_GivenAnEmptyDictionary_ThenAccessTokenShouldBeNull()
         {
-            var result = new FacebookAuthenticationResult(new Dictionary<string, object>());
+            var result = new FacebookOAuthResult(new Dictionary<string, object>());
 
             Assert.Null(result.AccessToken);
         }
@@ -17,7 +17,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         [Fact(DisplayName = "FacebookAuthenticationResult: Given an empty dictionary Then error reason should be null")]
         public void FacebookAuthenticationResult_GivenAnEmptyDictionary_ThenErrorReasonShouldBeNull()
         {
-            var result = new FacebookAuthenticationResult(new Dictionary<string, object>());
+            var result = new FacebookOAuthResult(new Dictionary<string, object>());
 
             Assert.Null(result.ErrorReason);
         }
@@ -25,7 +25,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         [Fact(DisplayName = "FacebookAuthenticationResult: Given an empty dictionary Then error description should be null")]
         public void FacebookAuthenticationResult_GivenAnEmptyDictionary_ThenErrorDescriptionShouldBeNull()
         {
-            var result = new FacebookAuthenticationResult(new Dictionary<string, object>());
+            var result = new FacebookOAuthResult(new Dictionary<string, object>());
 
             Assert.Null(result.ErrorDescription);
         }
@@ -33,7 +33,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         [Fact(DisplayName = "FacebookAuthenticationResult: Given an empty dictionary Then code should be null")]
         public void FacebookAuthenticationResult_GivenAnEmptyDictionary_ThenCodeShouldBeNull()
         {
-            var result = new FacebookAuthenticationResult(new Dictionary<string, object>());
+            var result = new FacebookOAuthResult(new Dictionary<string, object>());
 
             Assert.Null(result.Code);
         }
@@ -47,7 +47,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
                                      { "code", code }
                                  };
 
-            var result = new FacebookAuthenticationResult(parameters);
+            var result = new FacebookOAuthResult(parameters);
 
             Assert.Equal(code, result.Code);
         }
@@ -61,7 +61,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
                                     { "access_token", "accesstoken" }
                                 };
 
-            var result = new FacebookAuthenticationResult(parameters);
+            var result = new FacebookOAuthResult(parameters);
 
             Assert.Equal("code", result.Code);
         }
@@ -74,7 +74,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
                                      { "code", "dummycode" }
                                  };
 
-            var result = new FacebookAuthenticationResult(parameters);
+            var result = new FacebookOAuthResult(parameters);
 
             Assert.True(result.IsSuccess);
         }
@@ -87,7 +87,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
                                      { "access_token", "dummy_access_token" }
                                  };
 
-            var result = new FacebookAuthenticationResult(parameters);
+            var result = new FacebookOAuthResult(parameters);
 
             Assert.True(result.IsSuccess);
         }
@@ -100,7 +100,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
                                      { "error_reason", "dummy error reason" }
                                  };
 
-            var result = new FacebookAuthenticationResult(parameters);
+            var result = new FacebookOAuthResult(parameters);
 
             Assert.False(result.IsSuccess);
         }

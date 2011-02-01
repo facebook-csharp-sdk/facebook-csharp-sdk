@@ -206,7 +206,7 @@ namespace Facebook.Web
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
 
-            var oauth = new FacebookOAuthClientAuthorizer
+            var oauth = new FacebookOAuthClient
                             {
                                 ClientId = this.settings.AppId,
                                 ClientSecret = this.settings.AppSecret

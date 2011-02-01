@@ -10,7 +10,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html#access_token=123|654aaaee068db-100001327642026|sd&expires_in=0";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.True(result.IsSuccess);
         }
@@ -20,7 +20,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html#access_token=123|654aaaee068db-100001327642026|sd&expires_in=0";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.Equal("123|654aaaee068db-100001327642026|sd", result.AccessToken);
         }
@@ -30,7 +30,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html#access_token=123|654aaaee068db-100001327642026|sd&expires_in=0";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             var expiresIn = FacebookUtils.ToUnixTime(result.Expires);
             Assert.Equal(0, expiresIn);
@@ -41,7 +41,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html#access_token=123|654aaaee068db-100001327642026|sd&expires_in=0";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.Null(result.ErrorReason);
         }
@@ -51,7 +51,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.False(result.IsSuccess);
         }
@@ -61,7 +61,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.Equal("user_denied", result.ErrorReason);
         }
@@ -71,7 +71,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.Equal("The user denied your request.", result.ErrorDescription);
         }
@@ -81,7 +81,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.Equal("user_denied", result.ErrorReason);
         }
@@ -91,7 +91,7 @@ namespace Facebook.FacebookAuthenticationResult.Tests
         {
             var url = "http://www.facebook.com/connect/login_success.html?code=2.XeyH7lWz33itx1R86_uBeg__.3600.1294930800-100001327642026|t8SsfSR2XI6yhBAkhX95J7p9hJ0";
 
-            var result = FacebookAuthenticationResult.Parse(url);
+            var result = FacebookOAuthResult.Parse(url);
 
             Assert.Equal("2.XeyH7lWz33itx1R86_uBeg__.3600.1294930800-100001327642026|t8SsfSR2XI6yhBAkhX95J7p9hJ0", result.Code);
         }
