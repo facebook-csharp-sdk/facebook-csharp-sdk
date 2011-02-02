@@ -20,6 +20,12 @@ vNext
 
 5. moved Query extension methods to FacebookClient.
 
+6. async versions of Query methods.
+    a. public void QueryAsync(string fql, FacebookAsyncCallback callback, object state);
+	b. public void QueryAsync(string fql, FacebookAsyncCallback callback);
+	c. public void QueryAsync(string[] fql, FacebookAsyncCallback callback, object state);
+	d. public void QueryAsync(string[] fql, FacebookAsyncCallback callback);
+
 =========================================================================
 v5.0.0 (BETA)
 =========================================================================

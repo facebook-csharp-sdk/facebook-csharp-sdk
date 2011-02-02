@@ -200,6 +200,85 @@ namespace Facebook
         }
 #endif
 
+        /// <summary>
+        /// Executes a FQL query asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL query.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        public void QueryAsync(string fql, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(fql));
+
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = fql;
+            parameters["method"] = "fql.query";
+            this.GetAsync(parameters, callback, state);
+        }
+
+        /// <summary>
+        /// Executes a FQL query asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL query.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        public void QueryAsync(string fql, FacebookAsyncCallback callback)
+        {
+            this.QueryAsync(fql, callback, null);
+        }
+
+        /// <summary>
+        /// Executes a FQL multiquery asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL queries.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        public void QueryAsync(string[] fql, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(fql != null);
+            Contract.Requires(fql.Length > 0);
+
+            var queryDict = new Dictionary<string, object>();
+            for (int i = 0; i < fql.Length; i++)
+            {
+                queryDict.Add(string.Concat("query", i), fql[i]);
+            }
+
+            var parameters = new Dictionary<string, object>();
+            parameters["queries"] = queryDict;
+            parameters["method"] = "fql.multiquery";
+            this.GetAsync(parameters, callback, state);
+        }
+
+        /// <summary>
+        /// Executes a FQL multiquery asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL queries.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        public void QueryAsync(string[] fql, FacebookAsyncCallback callback)
+        {
+            this.QueryAsync(fql, callback, null);
+        }
+
 #if !SILVERLIGHT
 
         /// <summary>
