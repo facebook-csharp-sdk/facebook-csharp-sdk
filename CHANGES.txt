@@ -7,6 +7,18 @@ SDK developers: developers writing this SDK.
 =========================================================================
 vNext
 =========================================================================
+1. Renamed FacebookApp to FacebookClient
+
+2. Renamed FacebookAppBase to FacebookClientBase
+
+3. added helper methods to get the application access token in FacebookOAuthClient
+	a. public object GetApplicationAccessToken();
+	b. public void GetApplicationAccessTokenAsync(FacebookAsyncCallback callback, object state);
+	c. public void GetApplicationAccessTokenAsync(FacebookAsyncCallback callback);
+
+=========================================================================
+v5.0.0 (BETA)
+=========================================================================
 1. added new 'FacebookUtils' class which contains all the helper methods.
 
 	(public methods visible to SDK consumers)

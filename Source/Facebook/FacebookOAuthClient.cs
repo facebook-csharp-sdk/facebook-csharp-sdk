@@ -360,6 +360,8 @@ namespace Facebook
             this.ExchangeCodeForAccessTokenAsync(code, parameters, callback, null);
         }
 
+#if !SILVERLIGHT
+
         /// <summary>
         /// Gets the application access token.
         /// </summary>
@@ -423,6 +425,8 @@ namespace Facebook
 
             return result;
         }
+
+#endif
 
         /// <summary>
         /// Get the application access token asynchronously.
