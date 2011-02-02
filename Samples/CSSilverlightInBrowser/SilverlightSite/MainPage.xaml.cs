@@ -28,14 +28,14 @@ namespace SL4_InBrowser
         // and change this url accordingly.
         private const string slfbloginUrl = @"http://localhost/fbslinbrowser/slfbinbrowserlogin.aspx";
 
-        private FacebookApp fbApp;
+        private FacebookClient fb;
 
         private void loginSucceeded()
         {
             FbLoginButton.Visibility = Visibility.Collapsed;
             InfoBox.Visibility = Visibility.Visible;
 
-            fbApp.GetAsync("me", (val) =>
+            fb.GetAsync("me", (val) =>
             {
                 if (val.Error == null)
                 {
@@ -64,7 +64,7 @@ namespace SL4_InBrowser
             if (string.IsNullOrEmpty(errorDescription) && !string.IsNullOrEmpty(accesstoken))
             {
                 // we have access token.
-                fbApp = new FacebookApp(accesstoken);
+                fb = new FacebookClient(accesstoken);
                 loginSucceeded();
             }
             else
@@ -110,7 +110,7 @@ namespace SL4_InBrowser
         {
             InitializeComponent();
             HtmlPage.RegisterScriptableObject("slObject", this);
-            fbApp = new FacebookApp();
+            fb = new FacebookClient();
         }
     }
 }

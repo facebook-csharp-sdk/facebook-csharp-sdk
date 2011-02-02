@@ -130,3 +130,6 @@ vNext
 12. Renamed FacebookOAuthClientAuthorizer to FacebookOAuthClient, Renamed FacebookAuthenticationResult to 
 	FacebookOAuthResult. Removed IFacebookOAuthClientAuthorizer interface.
 	
+13. Renamed FacebookApp to FacebookClient
+
+14. Renamed FacebookAppBase to FacebookClientBase

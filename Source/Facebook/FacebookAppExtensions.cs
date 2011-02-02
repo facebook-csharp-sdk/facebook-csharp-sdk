@@ -25,7 +25,7 @@ namespace Facebook
         /// <param name="app">The Facebook app.</param>
         /// <param name="fql">The FQL query.</param>
         /// <returns>The FQL query result.</returns>
-        public static object Query(this FacebookAppBase app, string fql)
+        public static object Query(this FacebookClientBase app, string fql)
         {
             Contract.Requires(app != null);
             Contract.Requires(!String.IsNullOrEmpty(fql));
@@ -42,7 +42,7 @@ namespace Facebook
         /// <param name="app">The Facebook app.</param>
         /// <param name="fql">The FQL queries.</param>
         /// <returns>A collection of the FQL query results.</returns>
-        public static object Query(this FacebookAppBase app, params string[] fql)
+        public static object Query(this FacebookClientBase app, params string[] fql)
         {
             Contract.Requires(app != null);
             Contract.Requires(fql != null);
@@ -67,7 +67,7 @@ namespace Facebook
         /// <returns>The FQL query result.</returns>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [Obsolete("You should use Query rather than this method. This method will be removed in the next version.")]
-        public static object Fql(this FacebookAppBase app, string query)
+        public static object Fql(this FacebookClientBase app, string query)
         {
             Contract.Requires(app != null);
             Contract.Requires(!String.IsNullOrEmpty(query));
@@ -83,7 +83,7 @@ namespace Facebook
         /// <returns>A collection of the FQL query results.</returns>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [Obsolete("You should use Query rather than this method. This method will be removed in the next version.")]
-        public static object Fql(this FacebookAppBase app, params string[] queries)
+        public static object Fql(this FacebookClientBase app, params string[] queries)
         {
             Contract.Requires(app != null);
             Contract.Requires(queries != null);

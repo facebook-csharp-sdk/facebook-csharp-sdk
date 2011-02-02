@@ -99,7 +99,7 @@ namespace Facebook.Tests
             Assert.Equal("https://api.facebook.com/restserver.php", uri.AbsoluteUri);
         }
 
-        class FakeFacebookApp : FacebookAppBase
+        class FakeFacebookApp : FacebookClientBase
         {
             #region not implemented
             protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)

@@ -5,10 +5,10 @@
 
     public class TypedObjectTests
     {
-        private FacebookApp app;
+        private FacebookClient app;
         public TypedObjectTests()
         {
-            app = new FacebookApp();
+            app = new FacebookClient();
             app.MaxRetries = 0;
             //app.Session = new FacebookSession
             //{

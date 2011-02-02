@@ -51,7 +51,7 @@
         [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            var fbApp = new FacebookApp(this.CurrentSession.AccessToken);
+            var fbApp = new FacebookClient(this.CurrentSession.AccessToken);
 
             dynamic result = fbApp.Get("me");
             ViewData["Firstname"] = (string)result.first_name;

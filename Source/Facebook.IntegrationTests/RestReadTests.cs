@@ -15,10 +15,10 @@ namespace Facebook.Tests.Rest
 
     public class RestReadTests
     {
-        private FacebookApp app;
+        private FacebookClient app;
         public RestReadTests()
         {
-            app = new FacebookApp();
+            app = new FacebookClient();
             app.MaxRetries = 0;
             app.AccessToken = ConfigurationManager.AppSettings["AccessToken"];
         }

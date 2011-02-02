@@ -29,7 +29,7 @@ namespace Facebook.Samples.AuthenticationTool
 
         Uri loggingInUri;
 
-        private FacebookApp fbApp;
+        private FacebookClient fb;
 
         private void loginSucceeded()
         {
@@ -37,7 +37,7 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;
             InfoBox.Visibility = Visibility.Visible;
 
-            fbApp.GetAsync("me", (val) =>
+            fb.GetAsync("me", (val) =>
             {
                 var result = (IDictionary<string, object>)val.Result;
 
@@ -49,7 +49,7 @@ namespace Facebook.Samples.AuthenticationTool
         public MainWindow()
         {
             InitializeComponent();
-            fbApp = new FacebookApp();
+            fb = new FacebookClient();
             FacebookLoginBrowser.Loaded += new RoutedEventHandler(FacebookLoginBrowser_Loaded);
             FacebookLoginBrowser.Navigated += new NavigatedEventHandler(FacebookLoginBrowser_Navigated);
         }
@@ -92,7 +92,7 @@ namespace Facebook.Samples.AuthenticationTool
             {
                 if (authResult.IsSuccess)
                 {
-                    fbApp = new FacebookApp(authResult.AccessToken);
+                    fb = new FacebookClient(authResult.AccessToken);
                     loginSucceeded();
                 }
                 else

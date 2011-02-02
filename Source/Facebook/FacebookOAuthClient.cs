@@ -199,7 +199,7 @@ namespace Facebook
                 response.Close();
 
                 var returnParameter = new JsonObject();
-                FacebookApp.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
+                FacebookClient.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
 
                 // access_token=string&expires=long or access_token=string
                 // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
@@ -301,7 +301,7 @@ namespace Facebook
                 }
 
                 var returnParameter = new Dictionary<string, object>();
-                FacebookApp.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
+                FacebookClient.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
 
                 // access_token=string&expires=long or access_token=string
                 // Convert to JsonObject to support dynamic and be consistent with the rest of the library.

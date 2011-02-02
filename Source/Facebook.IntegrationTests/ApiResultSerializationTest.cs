@@ -5,10 +5,10 @@
 
     public class ApiResultSerializationTest
     {
-        private FacebookApp app;
+        private FacebookClient app;
         public ApiResultSerializationTest()
         {
-            app = new FacebookApp();
+            app = new FacebookClient();
             //app.Session = new FacebookSession
             //{
             //    AccessToken = ConfigurationManager.AppSettings["AccessToken"],

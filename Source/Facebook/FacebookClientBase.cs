@@ -19,8 +19,8 @@ namespace Facebook
     /// <summary>
     /// Represents the core Facebook functionality.
     /// </summary>
-    [ContractClass(typeof(FacebookAppBaseContracts))]
-    public abstract class FacebookAppBase
+    [ContractClass(typeof(FacebookClientBaseContracts))]
+    public abstract class FacebookClientBase
     {
         private static Collection<string> _dropQueryParameters = new Collection<string> {
             "session",

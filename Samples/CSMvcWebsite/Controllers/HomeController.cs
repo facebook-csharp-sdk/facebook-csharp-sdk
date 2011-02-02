@@ -31,7 +31,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
         [FacebookAuthorize]
         public ActionResult About()
         {
-            var app = new FacebookApp(this.CurrentSession.AccessToken);
+            var app = new FacebookClient(this.CurrentSession.AccessToken);
 
             dynamic me = app.Get("me");
             dynamic friends = app.Get("/me/friends");
@@ -46,7 +46,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
         [FacebookAuthorize(LoginUrl = "/", Permissions = "publish_stream")]
         public ActionResult Publish()
         {
-            var app = new FacebookApp(this.CurrentSession.AccessToken);
+            var app = new FacebookClient(this.CurrentSession.AccessToken);
 
             dynamic parameters = new ExpandoObject();
             parameters.message = "First wall post!";

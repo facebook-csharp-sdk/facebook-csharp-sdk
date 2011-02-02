@@ -15,7 +15,7 @@ namespace IFramedInBrowser
 {
     public partial class MainPage : UserControl
     {
-        FacebookApp fbApp = null;
+        FacebookClient fb = null;
 
         public MainPage()
         {
@@ -30,11 +30,11 @@ namespace IFramedInBrowser
                 token = App.Current.Resources["token"].ToString();
             if (!string.IsNullOrEmpty(token))
             {
-                fbApp = new FacebookApp(token);
+                fb = new FacebookClient(token);
                 InfoBox.Visibility = Visibility.Visible;
 
                 // Making Facebook call here!
-                fbApp.GetAsync("me", (val) =>
+                fb.GetAsync("me", (val) =>
                 {
                     if (val.Error == null)
                     {

@@ -31,7 +31,7 @@ namespace Facebook.Tests.Rest
 #endif
 
             byte[] photo = File.ReadAllBytes(photoPath);
-            FacebookApp app = new FacebookApp();
+            FacebookClient app = new FacebookClient();
             dynamic parameters = new ExpandoObject();
             parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
             parameters.caption = "This is a test photo of a monkey that has been uploaded " +
@@ -56,7 +56,7 @@ namespace Facebook.Tests.Rest
         [Fact]
         public void Publish_Global_News()
         {
-            FacebookApp app = new FacebookApp();
+            FacebookClient app = new FacebookClient();
             dynamic parameters = new ExpandoObject();
             parameters.method = "dashboard.addGlobalNews";
 

@@ -34,10 +34,10 @@ namespace Facebook.Tests.Graph
     public class GraphReadTests
     {
 
-        private FacebookApp app;
+        private FacebookClient app;
         public GraphReadTests()
         {
-            app = new FacebookApp();
+            app = new FacebookClient();
             app.MaxRetries = 0;
             app.AccessToken = ConfigurationManager.AppSettings["AccessToken"];
         }

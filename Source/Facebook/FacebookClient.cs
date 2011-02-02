@@ -24,9 +24,8 @@ namespace Facebook
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    public class FacebookApp : FacebookAppBase
+    public class FacebookClient : FacebookClientBase
     {
-        //
         /// <summary>
         /// The multi-part form prefix characters.
         /// </summary>
@@ -62,17 +61,17 @@ namespace Facebook
         private FacebookSession session;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>.
+        /// Initializes a new instance of the <see cref="FacebookClient"/>.
         /// </summary>
-        public FacebookApp()
+        public FacebookClient()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>.
+        /// Initializes a new instance of the <see cref="FacebookClient"/>.
         /// </summary>
         /// <param name="accessToken">The Facebook access token.</param>
-        public FacebookApp(string accessToken)
+        public FacebookClient(string accessToken)
         {
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
 
@@ -80,11 +79,11 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/>.
+        /// Initializes a new instance of the <see cref="FacebookClient"/>.
         /// </summary>
         /// <param name="appId">The Facebook application id.</param>
         /// <param name="appSecret">The Facebook application secret.</param>
-        public FacebookApp(string appId, string appSecret)
+        public FacebookClient(string appId, string appSecret)
         {
             Contract.Requires(!String.IsNullOrEmpty(appId));
             Contract.Requires(!String.IsNullOrEmpty(appSecret));
@@ -93,12 +92,12 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApp"/> class.
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
         /// </summary>
         /// <param name="facebookApplication">
         /// The facebook application.
         /// </param>
-        public FacebookApp(IFacebookApplication facebookApplication)
+        public FacebookClient(IFacebookApplication facebookApplication)
         {
             if (facebookApplication != null)
             {

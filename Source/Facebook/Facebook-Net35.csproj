@@ -116,11 +116,12 @@
     <Compile Include="External\HttpEncoder.cs" />
     <Compile Include="External\HttpUtility.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
-    <Compile Include="FacebookAppBaseContracts.cs" />
     <Compile Include="FacebookAppExtensions.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
-    <Compile Include="FacebookApp.cs" />
+    <Compile Include="FacebookClient.cs" />
+    <Compile Include="FacebookClientBase.cs" />
+    <Compile Include="FacebookClientBaseContracts.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
     <Compile Include="FacebookContext.cs" />
     <Compile Include="FacebookMediaObject.cs" />
@@ -129,7 +130,6 @@
     <Compile Include="FacebookOAuthResult.cs" />
     <Compile Include="FacebookUtils.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="FacebookAppBase.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />

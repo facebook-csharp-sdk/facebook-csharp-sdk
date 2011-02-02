@@ -22,7 +22,7 @@ namespace CSMvc3FacebookApp.Controllers
         [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            FacebookApp fbApp = new FacebookApp(this.FacebookSession.AccessToken);
+            var fbApp = new FacebookClient(this.FacebookSession.AccessToken);
 
             dynamic result = fbApp.Get("me");
 

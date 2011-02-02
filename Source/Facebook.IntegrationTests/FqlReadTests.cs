@@ -6,10 +6,10 @@
 
     public class FqlReadTests
     {
-        private FacebookApp app;
+        private FacebookClient app;
         public FqlReadTests()
         {
-            app = new FacebookApp();
+            app = new FacebookClient();
             app.AccessToken = ConfigurationManager.AppSettings["AccessToken"];
         }
 

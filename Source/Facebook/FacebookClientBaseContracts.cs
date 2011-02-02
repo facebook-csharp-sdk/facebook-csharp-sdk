@@ -16,10 +16,10 @@ namespace Facebook
 #pragma warning disable 1591
 
     /// <summary>
-    /// Represents the inheritable contracts for the <see cref="FacebookAppBase"/> class.
+    /// Represents the inheritable contracts for the <see cref="FacebookClientBase"/> class.
     /// </summary>
-    [ContractClassFor(typeof(FacebookAppBase))]
-    internal abstract class FacebookAppBaseContracts : FacebookAppBase
+    [ContractClassFor(typeof(FacebookClientBase))]
+    internal abstract class FacebookClientBaseContracts : FacebookClientBase
     {
 #if !SILVERLIGHT
 

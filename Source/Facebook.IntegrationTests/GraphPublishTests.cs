@@ -23,7 +23,7 @@ namespace Facebook.Tests.Graph
         // [TestCategory("RequiresOAuth")]
         public void Wall_Post_Publish()
         {
-            FacebookApp app = new FacebookApp();
+            FacebookClient app = new FacebookClient();
             dynamic parameters = new ExpandoObject();
             parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
             parameters.message = "This is a test message that has been published by the Facebook C# SDK on Codeplex. " + DateTime.UtcNow.Ticks.ToString();
@@ -38,7 +38,7 @@ namespace Facebook.Tests.Graph
         // [TestCategory("RequiresOAuth")]
         public void Wall_Post_Publish_And_Delete()
         {
-            FacebookApp app = new FacebookApp();
+            FacebookClient app = new FacebookClient();
             dynamic parameters = new ExpandoObject();
             parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
             parameters.message = "This is a test message that has been published by the Facebook C# SDK on Codeplex. " + DateTime.UtcNow.Ticks.ToString();
@@ -65,7 +65,7 @@ namespace Facebook.Tests.Graph
             string albumId = ConfigurationManager.AppSettings["AlbumId"];
             byte[] photo = File.ReadAllBytes(photoPath);
 
-            FacebookApp app = new FacebookApp();
+            FacebookClient app = new FacebookClient();
             dynamic parameters = new ExpandoObject();
             parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
             parameters.message = "This is a test photo of a monkey that has been uploaded " +
@@ -103,7 +103,7 @@ namespace Facebook.Tests.Graph
             parameters.method = "video.upload";
             parameters.access_token = ConfigurationManager.AppSettings["AccessToken"];
 
-            var fb = new FacebookApp();
+            var fb = new FacebookClient();
             dynamic result = fb.Post(parameters);
 
             Assert.NotNull(result);

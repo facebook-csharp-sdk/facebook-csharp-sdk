@@ -21,7 +21,7 @@ namespace Facebook.Samples.AuthenticationTool
 
         private bool loggedIn = false;
 
-        private FacebookApp fbApp;
+        private FacebookClient fbApp;
 
         // At this point we have an access token so we can get information from facebook
         private void loginSucceeded()
@@ -63,7 +63,7 @@ namespace Facebook.Samples.AuthenticationTool
         public MainPage()
         {
             InitializeComponent();
-            fbApp = new FacebookApp();
+            fbApp = new FacebookClient();
             FacebookLoginBrowser.Loaded += new RoutedEventHandler(FacebookLoginBrowser_Loaded);
         }
 
@@ -113,7 +113,7 @@ namespace Facebook.Samples.AuthenticationTool
             {
                 if (authResult.IsSuccess)
                 {
-                    fbApp = new FacebookApp(authResult.AccessToken);
+                    fbApp = new FacebookClient(authResult.AccessToken);
                     loginSucceeded();
                 }
                 else

@@ -19,13 +19,13 @@ Partial Public Class CanvasPage
     Protected requiredAppPermissions As String = "user_about_me"
 
     Public Sub New()
-        fbApp = New FacebookApp()
+        fbApp = New FacebookClient()
 
         authorizer = New CanvasAuthorizer()
         authorizer.Perms = requiredAppPermissions
     End Sub
 
-    Protected fbApp As FacebookApp
+    Protected fbApp As FacebookClient
     Protected authorizer As CanvasAuthorizer
 
     ''' <summary>

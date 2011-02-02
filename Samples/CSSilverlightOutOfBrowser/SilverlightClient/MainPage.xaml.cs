@@ -87,7 +87,7 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;
             InfoBox.Visibility = Visibility.Visible;
 
-            var fb = new FacebookApp(authResult.AccessToken);
+            var fb = new FacebookClient(authResult.AccessToken);
 
             fb.GetAsync("me", val =>
             {
