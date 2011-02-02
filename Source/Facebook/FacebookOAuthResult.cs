@@ -1,5 +1,5 @@
 ﻿// --------------------------------
-// <copyright file="FacebookAuthenticationResult.cs" company="Facebook C# SDK">
+// <copyright file="FacebookOAuthResult.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
