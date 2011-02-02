@@ -359,5 +359,175 @@ namespace Facebook
         {
             this.ExchangeCodeForAccessTokenAsync(code, parameters, callback, null);
         }
+
+        /// <summary>
+        /// Gets the application access token.
+        /// </summary>
+        /// <returns>
+        /// The application access token.
+        /// </returns>
+        public object GetApplicationAccessToken()
+        {
+            if (string.IsNullOrEmpty(this.ClientId))
+            {
+                throw new Exception("ClientID required.");
+            }
+
+            if (string.IsNullOrEmpty(this.ClientSecret))
+            {
+                throw new Exception("ClientSecret required");
+            }
+
+            var parameters = new Dictionary<string, object>();
+            parameters["client_id"] = this.ClientId;
+            parameters["client_secret"] = this.ClientSecret;
+            parameters["grant_type"] = "client_credentials";
+
+            var queryString = FacebookUtils.ToJsonQueryString(parameters);
+
+            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token") { Query = queryString };
+
+            var requestUri = uriBuilder.Uri;
+            var request = (HttpWebRequest)HttpWebRequest.Create(requestUri);
+            request.Method = "GET";
+
+            object result;
+            FacebookApiException exception = null;
+            try
+            {
+                var responseData = string.Empty;
+                var response = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    responseData = streamReader.ReadToEnd();
+                }
+
+                response.Close();
+
+                var returnParameter = new JsonObject();
+                FacebookClient.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
+
+                result = returnParameter;
+            }
+            catch (WebException ex)
+            {
+                // Graph API Errors or general web exceptions
+                exception = ExceptionFactory.GetGraphException(ex);
+                if (exception != null)
+                {
+                    throw exception;
+                }
+
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get the application access token asynchronously.
+        /// </summary>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        /// <example>
+        /// <code>
+        ///  var oauth = new FacebookOAuthClient { ClientId = "{appid}", ClientSecret = "{appsecret}" };
+        ///  oauth.GetApplicationAccessTokenAsync(
+        ///      ar =>
+        ///      {
+        ///          dynamic result = ar.Result;
+        ///          Console.WriteLine(result.access_token);
+        ///      }, null);
+        /// </code>
+        /// </example>
+        public void GetApplicationAccessTokenAsync(FacebookAsyncCallback callback, object state)
+        {
+            if (string.IsNullOrEmpty(this.ClientId))
+            {
+                throw new Exception("ClientID required.");
+            }
+
+            if (string.IsNullOrEmpty(this.ClientSecret))
+            {
+                throw new Exception("ClientSecret required");
+            }
+
+            var parameters = new Dictionary<string, object>();
+            parameters["client_id"] = this.ClientId;
+            parameters["client_secret"] = this.ClientSecret;
+            parameters["grant_type"] = "client_credentials";
+
+            var queryString = FacebookUtils.ToJsonQueryString(parameters);
+
+            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token") { Query = queryString };
+
+            var requestUri = uriBuilder.Uri;
+            var request = (HttpWebRequest)HttpWebRequest.Create(requestUri);
+            request.Method = "GET";
+
+            request.BeginGetResponse(ar => this.ApplicationTokenResponseCallback(ar, callback, state), request);
+        }
+
+        /// <summary>
+        /// Get the application access token asynchronously.
+        /// </summary>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        public void GetApplicationAccessTokenAsync(FacebookAsyncCallback callback)
+        {
+            this.GetApplicationAccessTokenAsync(callback, null);
+        }
+
+        private void ApplicationTokenResponseCallback(IAsyncResult asyncResult, FacebookAsyncCallback callback, object state)
+        {
+            object result = null;
+            FacebookApiException exception = null;
+            try
+            {
+                var responseData = string.Empty;
+                var request = (HttpWebRequest)asyncResult.AsyncState;
+                var response = (HttpWebResponse)request.EndGetResponse(asyncResult);
+
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    responseData = streamReader.ReadToEnd();
+                }
+
+                var returnParameter = new JsonObject();
+                FacebookClient.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
+
+                result = returnParameter;
+            }
+            catch (WebException ex)
+            {
+                // Graph API Errors or general web exceptions
+                exception = ExceptionFactory.GetGraphException(ex);
+                if (exception != null)
+                {
+                    throw exception;
+                }
+
+                throw;
+            }
+            finally
+            {
+                object data = null;
+                if (exception == null)
+                {
+                    data = result;
+                }
+
+#if SILVERLIGHT
+                callback(new FacebookAsyncResult(data, state, null, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));                
+#else
+                callback(new FacebookAsyncResult(data, state, asyncResult.AsyncWaitHandle, asyncResult.CompletedSynchronously, asyncResult.IsCompleted, exception));
+#endif
+            }
+        }
     }
 }
