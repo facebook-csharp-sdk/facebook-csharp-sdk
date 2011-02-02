@@ -5,6 +5,7 @@ obj/
 *.sln.cache
 *.suo
 *.user
+*.xap
 
 *.ncb
 
