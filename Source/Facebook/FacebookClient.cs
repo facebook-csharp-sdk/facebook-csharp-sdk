@@ -154,6 +154,52 @@ namespace Facebook
             get { return retryErrorTypes; }
         }
 
+#if (!SILVERLIGHT)
+        /// <summary>
+        /// Executes a FQL query.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL query.
+        /// </param>
+        /// <returns>
+        /// The FQL query result.
+        /// </returns>
+        public object Query(string fql)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(fql));
+
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = fql;
+            parameters["method"] = "fql.query";
+            return this.Get(parameters);
+        }
+
+        /// <summary>
+        /// Executes a FQL multiquery.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL queries.
+        /// </param>
+        /// <returns>
+        /// A collection of the FQL query results.
+        /// </returns>
+        public object Query(params string[] fql)
+        {
+            Contract.Requires(fql != null);
+
+            var queryDict = new Dictionary<string, object>();
+            for (int i = 0; i < fql.Length; i++)
+            {
+                queryDict.Add(string.Concat("query", i), fql[i]);
+            }
+
+            var parameters = new Dictionary<string, object>();
+            parameters["queries"] = queryDict;
+            parameters["method"] = "fql.multiquery";
+            return this.Get(parameters);
+        }
+#endif
+
 #if !SILVERLIGHT
 
         /// <summary>
@@ -313,7 +359,7 @@ namespace Facebook
         /// <param name="parameters">The request parameters.</param>
         /// <param name="httpMethod">The http method.</param>
         /// <param name="accessToken">The access token.</param>
-        /// <param name="requestUrl">The outputed request uri.</param>
+        /// <param name="requestUrl">The outputted request uri.</param>
         /// <param name="contentType">The request content type.</param>
         /// <returns>The request post data.</returns>
         private static byte[] BuildRequestData(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, string accessToken, out Uri requestUrl, out string contentType)
@@ -617,7 +663,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// The code contracts invarient object method.
+        /// The code contracts invariant object method.
         /// </summary>
         [ContractInvariantMethod]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]

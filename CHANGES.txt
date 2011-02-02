@@ -16,6 +16,10 @@ vNext
 	b. public void GetApplicationAccessTokenAsync(FacebookAsyncCallback callback, object state);
 	c. public void GetApplicationAccessTokenAsync(FacebookAsyncCallback callback);
 
+4. removed obsolete Fql extension methods.
+
+5. moved Query extension methods to FacebookClient.
+
 =========================================================================
 v5.0.0 (BETA)
 =========================================================================
