@@ -146,6 +146,23 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Convert the object to dictionary.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the dictionary equivalent of the specified object.
+        /// </returns>
+        internal static IDictionary<string, object> ToDictionary(object parameters)
+        {
+            Contract.Requires(parameters != null);
+
+            var json = JsonSerializer.SerializeObject(parameters);
+            return (IDictionary<string, object>)JsonSerializer.DeserializeObject(json);
+        }
+
+        /// <summary>
         /// Converts the dictionary to a json formatted query string.
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>

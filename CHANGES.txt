@@ -7,6 +7,12 @@ SDK developers: developers writing this SDK.
 =========================================================================
 vNext
 =========================================================================
+1. added method to convert object to IDictionary<string,object> in FacebookUtils
+	a. internal static IDictionary<string, object> ToDictionary(object parameters);
+
+=========================================================================
+v5.0.1 (BETA)
+=========================================================================
 1. Renamed FacebookApp to FacebookClient
 
 2. Renamed FacebookAppBase to FacebookClientBase

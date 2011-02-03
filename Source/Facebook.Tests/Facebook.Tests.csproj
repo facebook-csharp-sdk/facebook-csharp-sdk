@@ -84,6 +84,7 @@
     <Compile Include="Utils\ParseUrlQueryString.cs" />
     <Compile Include="Utils\RemoveTrailingSlashTests.cs" />
     <Compile Include="Utils\StringUtilsTest.cs" />
+    <Compile Include="Utils\ToDictionary\ToDictionary.cs" />
     <Compile Include="Utils\UrlEncodingDecodingTests.cs" />
     <Compile Include="ParseSignedRequestTests.cs" />
     <Compile Include="ParseUserIdFromAcessTokenTests.cs" />
