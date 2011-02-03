@@ -416,6 +416,41 @@ namespace Facebook
             return this.Api(null, parameters, null, HttpMethod.Post);
         }
 
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The result.
+        /// </returns>
+        public object Post(object parameters)
+        {
+            Contract.Requires(parameters != null);
+
+            return this.Post(FacebookUtils.ToDictionary(parameters));
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The result.
+        /// </returns>
+        public object Post(string path, object parameters)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            return this.Post(path, FacebookUtils.ToDictionary(parameters));
+        }
+
 #endif
 
         #endregion
@@ -887,13 +922,92 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <param name="state">The async state.</param>
         /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
         public void PostAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
             Contract.Requires(parameters != null);
 
             this.ApiAsync(null, parameters, HttpMethod.Post, callback, state);
+        }
+
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        public void PostAsync(string path, object parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            Contract.Requires(callback != null);
+
+            this.PostAsync(path, FacebookUtils.ToDictionary(parameters), callback, state);
+        }
+
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        public void PostAsync(object parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(parameters != null);
+            Contract.Requires(callback != null);
+
+            this.PostAsync(FacebookUtils.ToDictionary(parameters), callback, state);
+        }
+
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        public void PostAsync(object parameters, FacebookAsyncCallback callback)
+        {
+            Contract.Requires(parameters != null);
+            Contract.Requires(callback != null);
+
+            this.PostAsync(FacebookUtils.ToDictionary(parameters), callback, null);
+        }
+
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        public void PostAsync(string path, object parameters, FacebookAsyncCallback callback)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            Contract.Requires(callback != null);
+
+            this.PostAsync(path, FacebookUtils.ToDictionary(parameters), callback, null);
         }
 
         #endregion

@@ -10,6 +10,15 @@ vNext
 1. added method to convert object to IDictionary<string,object> in FacebookUtils
 	a. internal static IDictionary<string, object> ToDictionary(object parameters);
 
+2. added overload methods in FacebookClientBase to set object as parameter for Post
+	a. public object Post(object parameters);
+	b. public object Post(string path, object parameters);
+	c. public void PostAsync(object parameters, FacebookAsyncCallback callback, object state);
+	d. public void PostAsync(object parameters, FacebookAsyncCallback callback);
+	e. public void PostAsync(string path, object parameters, FacebookAsyncCallback callback, object state);
+	f. public void PostAsync(string path, object parameters, FacebookAsyncCallback callback);
+
+
 =========================================================================
 v5.0.1 (BETA)
 =========================================================================
