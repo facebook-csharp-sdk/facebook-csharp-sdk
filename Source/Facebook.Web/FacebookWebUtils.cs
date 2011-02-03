@@ -216,5 +216,17 @@ namespace Facebook.Web
         }
 
         #endregion
+
+        internal static byte[] ComputeHmacSha1Hash(byte[] data, byte[] key)
+        {
+            Contract.Requires(data != null);
+            Contract.Requires(key != null);
+            Contract.Ensures(Contract.Result<byte[]>() != null);
+
+            using (var crypto = new System.Security.Cryptography.HMACSHA1(key))
+            {
+                return crypto.ComputeHash(data);
+            }
+        }
     }
 }

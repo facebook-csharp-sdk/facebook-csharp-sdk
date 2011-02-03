@@ -18,6 +18,8 @@ vNext
 	e. public void PostAsync(string path, object parameters, FacebookAsyncCallback callback, object state);
 	f. public void PostAsync(string path, object parameters, FacebookAsyncCallback callback);
 
+3. added support for Facebook subscriptions - Facebook.Web.FacebookSubscriptionsHttpHandler
+	
 
 =========================================================================
 v5.0.1 (BETA)
