@@ -29,6 +29,9 @@ vNext
    This enables the sdk consumers to write application that use Registration form or any new
    value that will be added by Facebook in the signed request.
 	
+5. removed FacebookSignedRequestUser
+
+6. updated xunit to v1.7
 
 =========================================================================
 v5.0.1 (BETA)

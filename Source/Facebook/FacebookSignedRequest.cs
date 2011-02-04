@@ -61,16 +61,6 @@ namespace Facebook
                                    ? FacebookUtils.FromUnixTime(Convert.ToInt64(value["expires"]))
                                    : DateTime.MinValue;
                 this.ProfileId = value.ContainsKey("profile_id") ? (string)value["profile_id"] : null;
-
-                if (value.ContainsKey("user"))
-                {
-                    var user = (IDictionary<string, object>)value["user"];
-                    this.User = new FacebookSignedRequestUser
-                                    {
-                                        Country = user.ContainsKey("country") ? (string)user["country"] : null,
-                                        Locale = user.ContainsKey("locale") ? (string)user["locale"] : null,
-                                    };
-                }
             }
         }
 
@@ -109,8 +99,6 @@ namespace Facebook
         /// </summary>
         /// <value>The algorithm.</value>
         public string Algorithm { get; set; }
-
-        public FacebookSignedRequestUser User { get; set; }
 
         /// <summary>
         /// Gets actual value of signed request.
@@ -233,12 +221,5 @@ namespace Facebook
         {
             return Parse(secret, signedRequestValue, 0);
         }
-    }
-
-    public class FacebookSignedRequestUser
-    {
-        public string Locale { get; set; }
-
-        public string Country { get; set; }
     }
 }
