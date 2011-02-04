@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Facebook C# SDK")]
 [assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("5.0.1")]
+[assembly: AssemblyVersion("5.0.2")]
 [assembly: CLSCompliant(true)]
 
 #if !(SILVERLIGHT || TESTS)
