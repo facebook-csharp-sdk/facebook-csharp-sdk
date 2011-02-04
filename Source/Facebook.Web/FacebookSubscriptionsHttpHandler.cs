@@ -48,18 +48,6 @@ namespace Facebook.Web
     [ContractClass(typeof(FacebookSubscriptionsHttpHandlerCodeContacts))]
     public abstract class FacebookSubscriptionsHttpHandler : IHttpHandler
     {
-        /// <summary>
-        /// Gets the verification token.
-        /// </summary>
-        public abstract string VerificationToken { get; }
-
-        /// <summary>
-        /// Gets the application secret.
-        /// </summary>
-        public virtual string AppSecret
-        {
-            get { return FacebookContext.Current.AppSecret; }
-        }
 
         /// <summary>
         /// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
@@ -82,29 +70,37 @@ namespace Facebook.Web
             Contract.Requires(context.Request != null);
             Contract.Requires(context.Request.Params != null);
             Contract.Requires(context.Response != null);
-            this.ProcessRequest(new HttpContextWrapper(context));
+            var subContext = new SubscriptionContext()
+            {
+                HttpContext = new HttpContextWrapper(context),
+                FacebookApplication = FacebookContext.Current,
+            };
+            this.OnVerifying(subContext);
+            this.VerifyCore(subContext);
         }
+
+        public abstract void OnVerifying(SubscriptionContext context);
 
         /// <summary>
         /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
         /// </summary>
         /// <param name="context">An <see cref="T:System.Web.HttpContextWrapper"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
-        public void ProcessRequest(HttpContextWrapper context)
+        public virtual void VerifyCore(SubscriptionContext context)
         {
             Contract.Requires(context != null);
-            Contract.Requires(context.Request != null);
-            Contract.Requires(context.Request.Params != null);
-            Contract.Requires(context.Response != null);
+            Contract.Requires(context.HttpContext.Request != null);
+            Contract.Requires(context.HttpContext.Request.Params != null);
+            Contract.Requires(context.HttpContext.Response != null);
 
-            context.Response.ContentType = "text/plain";
-            var request = context.Request;
+            context.HttpContext.Response.ContentType = "text/plain";
+            var request = context.HttpContext.Request;
 
             if (request.HttpMethod == "GET" && request.Params["hub.mode"] == "subscribe" &&
-                request.Params["hub.verify_token"] == this.VerificationToken)
+                request.Params["hub.verify_token"] == context.VerificationToken)
             {
-                context.Response.Write(request.Params["hub.challenge"]);
+                context.HttpContext.Response.Write(request.Params["hub.challenge"]);
             }
-            else if (request.HttpMethod == "POST" && !string.IsNullOrEmpty(this.AppSecret))
+            else if (request.HttpMethod == "POST" && !string.IsNullOrEmpty(context.FacebookApplication.AppSecret))
             {
                 if (request.Params.AllKeys.Contains("HTTP_X_HUB_SIGNATURE"))
                 {
@@ -118,7 +114,7 @@ namespace Facebook.Web
                         var reader = new System.IO.StreamReader(request.InputStream);
                         var jsonString = reader.ReadToEnd();
 
-                        var sha1 = FacebookWebUtils.ComputeHmacSha1Hash(Encoding.UTF8.GetBytes(jsonString), Encoding.UTF8.GetBytes(this.AppSecret));
+                        var sha1 = FacebookWebUtils.ComputeHmacSha1Hash(Encoding.UTF8.GetBytes(jsonString), Encoding.UTF8.GetBytes(context.FacebookApplication.AppSecret));
 
                         var hashString = new StringBuilder();
                         foreach (var b in sha1)
@@ -145,7 +141,12 @@ namespace Facebook.Web
         /// <param name="result">
         /// The result.
         /// </param>
-        public abstract void ProcessSubscription(HttpContextWrapper context, object result);
+        public abstract void ProcessSubscription(SubscriptionContext context, object result);
+
+        public virtual void HandleUnauthorizedRequest(SubscriptionContext context)
+        {
+            context.HttpContext.Response.StatusCode = 401;
+        }
     }
 
     [ContractClassFor(typeof(FacebookSubscriptionsHttpHandler))]
@@ -171,5 +172,12 @@ namespace Facebook.Web
             Contract.Requires(context.Request.Params != null);
             Contract.Requires(context.Response != null);
         }
+    }
+
+    public class SubscriptionContext
+    {
+        public string VerificationToken { get; set; }
+        public IFacebookApplication FacebookApplication { get; set; }
+        public HttpContextBase HttpContext { get; set; }
     }
 }
