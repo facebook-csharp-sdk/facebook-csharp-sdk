@@ -19,6 +19,15 @@ vNext
 	f. public void PostAsync(string path, object parameters, FacebookAsyncCallback callback);
 
 3. added support for Facebook subscriptions - Facebook.Web.FacebookSubscriptionsHttpHandler
+
+4. exposed the original property of Facebook Signed Request as Data.
+   This allows the sdk consumers to access any value of the SignedRequest by accessing 
+   the Data property.
+
+   A new sample called CSASPNETWebsiteRegistrationForm contains an example on how to use it.
+
+   This enables the sdk consumers to write application that use Registration form or any new
+   value that will be added by Facebook in the signed request.
 	
 
 =========================================================================

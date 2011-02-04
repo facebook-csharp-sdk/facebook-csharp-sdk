@@ -20,9 +20,22 @@ namespace Facebook
     /// </summary>
     public sealed class FacebookSignedRequest
     {
+        /// <summary>
+        /// The actual value of the signed request.
+        /// </summary>
+        private object data;
 
         public FacebookSignedRequest(IDictionary<string, object> value)
         {
+            if (value is JsonObject)
+            {
+                this.data = value;
+            }
+            else
+            {
+                this.data = FacebookUtils.ToDictionary(value);
+            }
+
             // common
             this.Algorithm = value.ContainsKey("algorithm") ? (string)value["algorithm"] : null;
             this.IssuedAt = value.ContainsKey("issued_at") ? FacebookUtils.FromUnixTime(Convert.ToInt64(value["issued_at"])) : DateTime.MinValue;
@@ -98,6 +111,14 @@ namespace Facebook
         public string Algorithm { get; set; }
 
         public FacebookSignedRequestUser User { get; set; }
+
+        /// <summary>
+        /// Gets actual value of signed request.
+        /// </summary>
+        public object Data
+        {
+            get { return this.data; }
+        }
 
         /// <summary>
         /// Parse the signed request string.
@@ -212,7 +233,6 @@ namespace Facebook
         {
             return Parse(secret, signedRequestValue, 0);
         }
-
     }
 
     public class FacebookSignedRequestUser
