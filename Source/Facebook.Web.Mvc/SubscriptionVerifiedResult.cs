@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-
-namespace Facebook.Web.Mvc
+﻿namespace Facebook.Web.Mvc
 {
+    using System.Web.Mvc;
+
     public class SubscriptionVerifiedResult : ActionResult
     {
         public override void ExecuteResult(ControllerContext context)

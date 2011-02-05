@@ -45,7 +45,7 @@ namespace Facebook.Web
     ///     ProcessSubscription is called when the subscription is received.
     ///     result contains the JsonObject.
     /// </remarks>
-    [ContractClass(typeof(FacebookSubscriptionsHttpHandlerCodeContacts))]
+    //[ContractClass(typeof(FacebookSubscriptionsHttpHandlerCodeContacts))]
     public abstract class FacebookSubscriptionsHttpHandler : IHttpHandler
     {
 
@@ -148,7 +148,7 @@ namespace Facebook.Web
             context.HttpContext.Response.StatusCode = 401;
         }
     }
-
+    /*
     [ContractClassFor(typeof(FacebookSubscriptionsHttpHandler))]
     [SuppressMessage("Microsoft.StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass",
         Justification = "Reviewed. Suppression is OK here."),
@@ -173,6 +173,7 @@ namespace Facebook.Web
             Contract.Requires(context.Response != null);
         }
     }
+    */
 
     public class SubscriptionContext
     {
