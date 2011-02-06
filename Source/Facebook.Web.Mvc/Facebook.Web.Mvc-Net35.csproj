@@ -117,6 +117,8 @@
     <Reference Include="System.Web.Routing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanvasInputExtensions.cs" />
+    <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
     <Compile Include="CanvasUrlExtensions.cs" />
     <Compile Include="FacebookAuthorizeAttribute.cs" />
     <Compile Include="CanvasAuthorizeAttribute.cs" />
@@ -131,6 +133,8 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="SubscriptionVerifiedResult.cs" />
+    <Compile Include="SubscriptionVerifyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facebook.Web\Facebook.Web-Net35.csproj">

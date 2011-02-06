@@ -156,22 +156,21 @@ namespace Facebook.Web
          Justification = "Reviewed. Suppression is OK here.")]
     internal abstract class FacebookSubscriptionsHttpHandlerCodeContacts : FacebookSubscriptionsHttpHandler
     {
-        public override string VerificationToken
+
+        public override void OnVerifying(SubscriptionContext context)
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-                return default(string);
-            }
+            throw new System.NotImplementedException();
         }
 
-        public override void ProcessSubscription(HttpContextWrapper context, object result)
+        public override void ProcessSubscription(SubscriptionContext context, object result)
         {
             Contract.Requires(context != null);
-            Contract.Requires(context.Request != null);
-            Contract.Requires(context.Request.Params != null);
-            Contract.Requires(context.Response != null);
+            Contract.Requires(context.HttpContext.Request != null);
+            Contract.Requires(context.HttpContext.Request.Params != null);
+            Contract.Requires(context.HttpContext.Response != null);
         }
+
+
     }
     */
 

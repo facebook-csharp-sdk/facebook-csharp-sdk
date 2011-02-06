@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="CanvasAuthorizeAttribute.cs" />
     <Compile Include="CanvasControllerExtensions.cs" />
+    <Compile Include="CanvasInputExtensions.cs" />
     <Compile Include="CanvasLinkExtensions.cs" />
     <Compile Include="CanvasRedirectResult.cs" />
     <Compile Include="CanvasRedirectToRouteResult.cs" />
