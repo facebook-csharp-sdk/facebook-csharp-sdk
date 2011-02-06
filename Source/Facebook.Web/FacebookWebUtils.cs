@@ -44,7 +44,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// Gets the facebook session cookie name for the specified facebook appliaction.
+        /// Gets the facebook session cookie name for the specified facebook application.
         /// </summary>
         /// <param name="appId">
         /// The app id.
@@ -271,5 +271,133 @@ namespace Facebook.Web
 
             return false;
         }
+
+        /// <summary>
+        /// Verify HTTP_X_HUB_SIGNATURE for http GET method.
+        /// </summary>
+        /// <param name="request">
+        /// The http request.
+        /// </param>
+        /// <param name="verifyToken">
+        /// The verify token.
+        /// </param>
+        /// <param name="errorMessage">
+        /// The error message.
+        /// </param>
+        /// <returns>
+        /// Returns true if successful otherwise false.
+        /// </returns>
+        internal static bool VerifyGetSubscription(HttpRequestBase request, string verifyToken, out string errorMessage)
+        {
+            Contract.Requires(request != null);
+            Contract.Requires(request.HttpMethod == "GET");
+            Contract.Requires(request.Params != null);
+            Contract.Requires(!string.IsNullOrEmpty(verifyToken));
+
+            errorMessage = null;
+
+            if (request.Params["hub.mode"] == "subscribe")
+            {
+                if (request.Params["hub.verify_token"] == verifyToken)
+                {
+                    if (string.IsNullOrEmpty(request.Params["hub.challenge"]))
+                    {
+                        errorMessage = ERRORMSG_SUBSCRIPTION_HUBCHALLENGE;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    errorMessage = ERRORMSG_SUBSCRIPTION_VERIFYTOKEN;
+                }
+            }
+            else
+            {
+                errorMessage = ERRORMSG_SUBSCRIPTION_HUBMODE;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Verify HTTP_X_HUB_SIGNATURE for http POST method.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <param name="secret">
+        /// The secret.
+        /// </param>
+        /// <param name="jsonString">
+        /// The json string.
+        /// </param>
+        /// <param name="errorMessage">
+        /// The error message.
+        /// </param>
+        /// <returns>
+        /// Returns true if successful otherwise false.
+        /// </returns>
+        internal static bool VerifyPostSubscription(HttpRequestBase request, string secret, string jsonString, out string errorMessage)
+        {
+            Contract.Requires(request != null);
+            Contract.Requires(request.HttpMethod == "POST");
+            Contract.Requires(request.Params != null);
+            Contract.Requires(!string.IsNullOrEmpty(secret));
+
+            errorMessage = null;
+
+            // signatures looks somewhat like "sha1=4594ae916543cece9de48e3289a5ab568f514b6a"
+            var signature = request.Params["HTTP_X_HUB_SIGNATURE"];
+
+            if (!string.IsNullOrEmpty(signature) && signature.StartsWith("sha1="))
+            {
+                var expectedSha1 = signature.Substring(5);
+
+                if (string.IsNullOrEmpty(expectedSha1))
+                {
+                    errorMessage = ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(jsonString))
+                    {
+                        errorMessage = ERRORMSG_SUBSCRIPTION_JSONSTRING;
+                        return false;
+                    }
+
+                    var sha1 = ComputeHmacSha1Hash(Encoding.UTF8.GetBytes(jsonString), Encoding.UTF8.GetBytes(secret));
+
+                    var hashString = new StringBuilder();
+                    foreach (var b in sha1)
+                    {
+                        hashString.Append(b.ToString("x2"));
+                    }
+
+                    if (signature == hashString.ToString())
+                    {
+                        // todo: test
+                        return true;
+                    }
+
+                    // todo: test
+                    errorMessage = ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE;
+                }
+            }
+            else
+            {
+                errorMessage = ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE;
+            }
+
+            return false;
+        }
+
+        internal const string ERRORMSG_SUBSCRIPTION_HUBMODE = "Invalid hub mode.";
+        internal const string ERRORMSG_SUBSCRIPTION_VERIFYTOKEN = "Invalid verify token.";
+        internal const string ERRORMSG_SUBSCRIPTION_HUBCHALLENGE = "Invalid hub challenge.";
+        internal const string ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE = "Invalid HTTP_X_HUB_SIGNATURE.";
+        internal const string ERRORMSG_SUBSCRIPTION_JSONSTRING = "Invalid json string.";
     }
 }

@@ -7,6 +7,15 @@ SDK developers: developers writing this SDK.
 =========================================================================
 vNext
 =========================================================================
+1. added in FacebookWebUtils
+
+	(internal/private methods visible to SDK developers)
+		a. internal static bool VerifyPostSubscription(HttpRequestBase request, string secret, string jsonString, out string errorMessage);
+		b. internal static bool VerifyGetSubscription(HttpRequestBase request, string verifyToken, out string errorMessage);
+
+=========================================================================
+v5.0.2 (BETA)
+=========================================================================
 1. added method to convert object to IDictionary<string,object> in FacebookUtils
 	a. internal static IDictionary<string, object> ToDictionary(object parameters);
 
