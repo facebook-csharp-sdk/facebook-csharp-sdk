@@ -1,13 +1,13 @@
-namespace Facebook.Web.Tests
+namespace Facebook.Web.Tests.FacebookWebUtils
 {
     using System;
     using System.Collections.Specialized;
     using System.Diagnostics.Contracts;
     using System.Web;
-    using Facebook.Web;
     using Moq;
     using Xunit;
     using Xunit.Extensions;
+    using Facebook.Web;
 
     public class FacebookWebUtilsTests
     {

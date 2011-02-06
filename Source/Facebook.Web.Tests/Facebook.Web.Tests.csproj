@@ -67,6 +67,9 @@
   <ItemGroup>
     <Compile Include="AuthorizerTests.cs" />
     <Compile Include="FacebookWebUtilsTests.cs" />
+    <Compile Include="FacebookWebUtils\VerifyHttpXHubSignature\GivenHttpXHubSignatureAsNullOrEmptyThen.cs" />
+    <Compile Include="FacebookWebUtils\VerifyHttpXHubSignature\GivenAEmptyJsonString.cs" />
+    <Compile Include="FacebookWebUtils\VerifyHttpXHubSignature\GivenSignatureWithoutStartingSha1EqualsThen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

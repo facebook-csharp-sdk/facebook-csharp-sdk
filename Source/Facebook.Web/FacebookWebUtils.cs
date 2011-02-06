@@ -21,6 +21,8 @@ namespace Facebook.Web
     /// </summary>
     internal class FacebookWebUtils
     {
+        internal const string HTTP_X_HUB_SIGNATURE_KEY = "HTTP_X_HUB_SIGNATURE";
+
         /// <summary>
         /// Gets the facebook signed request from the http request.
         /// </summary>
@@ -227,6 +229,47 @@ namespace Facebook.Web
             {
                 return crypto.ComputeHash(data);
             }
+        }
+
+        /// <summary>
+        /// Verify HTTP_X_HUB_SIGNATURE.
+        /// </summary>
+        /// <param name="secret">
+        /// The secret.
+        /// </param>
+        /// <param name="httpXHubSignature">
+        /// The http x hub signature.
+        /// </param>
+        /// <param name="jsonString">
+        /// The json string.
+        /// </param>
+        /// <returns>
+        /// Returns true if validation is successful.
+        /// </returns>
+        internal static bool VerifyHttpXHubSignature(string secret, string httpXHubSignature, string jsonString)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(secret));
+
+            if (!string.IsNullOrEmpty(httpXHubSignature) && httpXHubSignature.StartsWith("sha1=") && httpXHubSignature.Length > 5 && !string.IsNullOrEmpty(jsonString))
+            {
+                // todo: test inner parts
+                var expectedSignature = httpXHubSignature.Substring(5);
+
+                var sha1 = ComputeHmacSha1Hash(Encoding.UTF8.GetBytes(jsonString), Encoding.UTF8.GetBytes(secret));
+
+                var hashString = new StringBuilder();
+                foreach (var b in sha1)
+                {
+                    hashString.Append(b.ToString("x2"));
+                }
+
+                if (expectedSignature == hashString.ToString())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

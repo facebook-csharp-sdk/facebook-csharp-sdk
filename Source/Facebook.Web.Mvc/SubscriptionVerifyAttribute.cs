@@ -22,7 +22,14 @@
             {
                 if (request.Params["hub.mode"] == "subscribe")
                 {
-                    if (request.Params["hub.verify_token"] != this.VerificationToken)
+                    if (request.Params["hub.verify_token"] == this.VerificationToken)
+                    {
+                        if (string.IsNullOrEmpty(request.Params["hub.challenge"]))
+                        {
+                            modelState.AddModelError("hub.challenge", "hub.challenge not found");
+                        }
+                    }
+                    else
                     {
                         modelState.AddModelError("hub.verify_token", "Invalid verification token.");
                     }
@@ -37,6 +44,7 @@
                 filterContext.Result = new HttpUnauthorizedResult();
             }
         }
+
 
         /*
        public override void OnActionExecuting(ActionExecutingContext filterContext)
