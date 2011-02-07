@@ -130,9 +130,9 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="SubscriptionReceivedAttribute.cs" />
-    <Compile Include="SubscriptionVerifiedResult.cs" />
-    <Compile Include="SubscriptionVerifyAttribute.cs" />
+    <Compile Include="FacebookSubscriptionReceivedAttribute.cs" />
+    <Compile Include="FacebookSubscriptionVerifiedResult.cs" />
+    <Compile Include="FacebookSubscriptionVerifyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facebook.Web\Facebook.Web.csproj">

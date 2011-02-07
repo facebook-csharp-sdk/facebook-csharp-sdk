@@ -2,7 +2,7 @@ namespace Facebook.Web.Mvc
 {
     using System.Web.Mvc;
 
-    public class SubscriptionReceivedAttribute : ActionFilterAttribute
+    public class FacebookSubscriptionReceivedAttribute : ActionFilterAttribute
     {
         public string ParameterName { get; set; }
 
@@ -47,7 +47,7 @@ namespace Facebook.Web.Mvc
                 errorMessage = "Invalid http method.";
             }
 
-            modelState.AddModelError("facebook-c#-sdk", errorMessage);
+            modelState.AddModelError("facebook-subscription", errorMessage);
 
             filterContext.HttpContext.Response.StatusCode = 401;
         }

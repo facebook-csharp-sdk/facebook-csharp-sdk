@@ -2,7 +2,7 @@
 {
     using System.Web.Mvc;
 
-    public class SubscriptionVerifiedResult : ActionResult
+    public class FacebookSubscriptionVerifiedResult : ActionResult
     {
         public override void ExecuteResult(ControllerContext context)
         {

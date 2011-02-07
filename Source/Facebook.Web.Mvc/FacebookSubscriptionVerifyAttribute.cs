@@ -2,11 +2,11 @@
 {
     using System.Web.Mvc;
 
-    public class SubscriptionVerifyAttribute : ActionFilterAttribute
+    public class FacebookSubscriptionVerifyAttribute : ActionFilterAttribute
     {
         public string VerificationToken { get; set; }
 
-        public SubscriptionVerifyAttribute(string verificationToken)
+        public FacebookSubscriptionVerifyAttribute(string verificationToken)
         {
             this.VerificationToken = verificationToken;
         }
@@ -38,7 +38,7 @@
                 errorMessage = "Invalid http method.";
             }
 
-            modelState.AddModelError("facebook-c#-sdk", errorMessage);
+            modelState.AddModelError("facebook-subscription", errorMessage);
 
             filterContext.HttpContext.Response.StatusCode = 401;
         }
