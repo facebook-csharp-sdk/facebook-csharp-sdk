@@ -7,7 +7,7 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-namespace Facebook
+namespace Facebook.Web
 {
     using System;
     using System.Collections.Generic;

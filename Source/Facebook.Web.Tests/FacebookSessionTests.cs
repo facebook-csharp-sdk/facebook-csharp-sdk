@@ -1,6 +1,7 @@
 namespace Facebook.Tests
 {
     using System.Collections.Generic;
+    using Facebook.Web;
     using Xunit;
 
     public class FacebookSessionTests

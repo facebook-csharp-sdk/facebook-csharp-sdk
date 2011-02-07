@@ -72,7 +72,6 @@
   <ItemGroup>
     <Compile Include="FacebookAuthenticationResultTests\CtorTests.cs" />
     <Compile Include="FacebookOAuthClientAuthorizerTests\GetLoginUriTests.cs" />
-    <Compile Include="FacebookSessionTests.cs" />
     <Compile Include="Utils\Base64UrlTests.cs" />
     <Compile Include="Utils\DateTimeConvertorTests.cs" />
     <Compile Include="Utils\DictionaryTests.cs" />
@@ -86,8 +85,6 @@
     <Compile Include="Utils\StringUtilsTest.cs" />
     <Compile Include="Utils\ToDictionary\ToDictionary.cs" />
     <Compile Include="Utils\UrlEncodingDecodingTests.cs" />
-    <Compile Include="ParseSignedRequestTests.cs" />
-    <Compile Include="ParseUserIdFromAcessTokenTests.cs" />
     <Compile Include="Utils\SerializationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">

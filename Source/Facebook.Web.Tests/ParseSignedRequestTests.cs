@@ -1,6 +1,7 @@
 namespace Facebook
 {
     using System;
+    using Facebook.Web;
     using Xunit;
 
     namespace ParseSignedRequestTests

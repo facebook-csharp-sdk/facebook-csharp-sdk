@@ -7,7 +7,7 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-namespace Facebook
+namespace Facebook.Web
 {
     using System;
     using System.Collections.Generic;
@@ -127,8 +127,6 @@ namespace Facebook
             return null;
         }
 
-#if !SILVERLIGHT
-
         /// <summary>
         /// Creates a facebook session from a signed request.
         /// </summary>
@@ -240,6 +238,5 @@ namespace Facebook
 
             return signature.ToString();
         }
-#endif
     }
 }

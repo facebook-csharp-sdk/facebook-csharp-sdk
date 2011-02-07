@@ -56,11 +56,6 @@ namespace Facebook
         private int retryDelay = 500;
 
         /// <summary>
-        /// The current Facebook session.
-        /// </summary>
-        private FacebookSession session;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/>.
         /// </summary>
         public FacebookClient()

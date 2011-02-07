@@ -156,21 +156,6 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Converts <see cref="FacebookOAuthResult"/> to <see cref="FacebookSession"/>.
-        /// </summary>
-        /// <returns>
-        /// An instance of converted <see cref="FacebookSession"/>.
-        /// </returns>
-        public FacebookSession ToSession()
-        {
-            return new FacebookSession
-                       {
-                           AccessToken = this.AccessToken,
-                           Expires = this.Expires,
-                       };
-        }
-
-        /// <summary>
         /// Parse the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">

@@ -2,6 +2,7 @@
 namespace Facebook.Tests
 {
     using Xunit;
+    using Web;
 
     public class ParseUserIdFromAcessTokenTests
     {

@@ -114,6 +114,8 @@
     <Compile Include="FacebookAppRedirectHttpHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FacebookSession.cs" />
+    <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="FacebookSubscriptionsHttpHandler.cs" />
     <Compile Include="FacebookWebUtils.cs" />
     <Compile Include="GlobalSuppressions.cs">

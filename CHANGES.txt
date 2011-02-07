@@ -13,6 +13,8 @@ vNext
 		a. internal static bool VerifyPostSubscription(HttpRequestBase request, string secret, string jsonString, out string errorMessage);
 		b. internal static bool VerifyGetSubscription(HttpRequestBase request, string verifyToken, out string errorMessage);
 
+2. moved FacebookSession and FacebookSignedRequest to Facebook.Web
+
 =========================================================================
 v5.0.2 (BETA)
 =========================================================================

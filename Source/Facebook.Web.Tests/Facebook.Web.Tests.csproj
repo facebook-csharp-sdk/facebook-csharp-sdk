@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizerTests.cs" />
+    <Compile Include="FacebookSessionTests.cs" />
     <Compile Include="FacebookWebUtilsTests.cs" />
     <Compile Include="FacebookWebUtils\VerifyGetSubscription\GivenARequestWithCorrectVerifyTokenAndHubModeButNoHubChallengeThen.cs" />
     <Compile Include="FacebookWebUtils\VerifyGetSubscription\GivenARequestWithCorrectVerifyTokenHubModeAndHubChallengeThen.cs" />
@@ -78,6 +79,8 @@
     <Compile Include="FacebookWebUtils\VerifyPostSubscription\GivenARequestWithHttpXHubSignatureAsSha1EqualsThen.cs" />
     <Compile Include="FacebookWebUtils\VerifyPostSubscription\GivenARequestWithValidHttpXHubSignatureAndNoJsonStringThen.cs" />
     <Compile Include="FacebookWebUtils\VerifyPostSubscription\GivenAValidPostSubscriptionRequestThen.cs" />
+    <Compile Include="ParseSignedRequestTests.cs" />
+    <Compile Include="ParseUserIdFromAcessTokenTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
