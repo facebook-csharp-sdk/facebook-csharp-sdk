@@ -376,7 +376,7 @@ namespace Facebook.Web
                         hashString.Append(b.ToString("x2"));
                     }
 
-                    if (signature == hashString.ToString())
+                    if (expectedSha1 == hashString.ToString())
                     {
                         // todo: test
                         return true;
