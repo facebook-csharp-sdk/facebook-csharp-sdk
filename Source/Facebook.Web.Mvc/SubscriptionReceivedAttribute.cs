@@ -4,6 +4,8 @@ namespace Facebook.Web.Mvc
 
     public class SubscriptionReceivedAttribute : ActionFilterAttribute
     {
+        public string ParameterName { get; set; }
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             filterContext.HttpContext.Response.ContentType = "text/plain";
@@ -11,7 +13,13 @@ namespace Facebook.Web.Mvc
             var modelState = filterContext.Controller.ViewData.ModelState;
             var appSecret = FacebookContext.Current.AppSecret;
 
-            filterContext.ActionParameters["subscription"] = null;
+            var parameterName = this.ParameterName;
+            if (string.IsNullOrEmpty(parameterName))
+            {
+                parameterName = "subscription";
+            }
+
+            filterContext.ActionParameters[parameterName] = null;
 
             string errorMessage;
             if (request.HttpMethod == "POST")
@@ -28,7 +36,7 @@ namespace Facebook.Web.Mvc
                     if (FacebookWebUtils.VerifyPostSubscription(request, appSecret, jsonString, out errorMessage))
                     {
                         var jsonObject = JsonSerializer.DeserializeObject(jsonString);
-                        filterContext.ActionParameters["subscription"] = jsonObject;
+                        filterContext.ActionParameters[parameterName] = jsonObject;
 
                         return;
                     }
