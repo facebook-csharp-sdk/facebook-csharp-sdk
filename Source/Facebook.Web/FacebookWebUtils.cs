@@ -394,6 +394,7 @@ namespace Facebook.Web
             return false;
         }
 
+        // todo: move to resource files
         internal const string ERRORMSG_SUBSCRIPTION_HUBMODE = "Invalid hub mode.";
         internal const string ERRORMSG_SUBSCRIPTION_VERIFYTOKEN = "Invalid verify token.";
         internal const string ERRORMSG_SUBSCRIPTION_HUBCHALLENGE = "Invalid hub challenge.";

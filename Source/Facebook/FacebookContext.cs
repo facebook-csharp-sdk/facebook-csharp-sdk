@@ -27,7 +27,11 @@ namespace Facebook
         /// </summary>
         public static IFacebookApplication Current
         {
-            get { return instance.InnerCurrent; }
+            get
+            {
+                Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
+                return instance.InnerCurrent;
+            }
         }
 
         /// <summary>
@@ -62,7 +66,11 @@ namespace Facebook
 #endif
         public IFacebookApplication InnerCurrent
         {
-            get { return this.current ?? new NullFacebookApplication(); }
+            get
+            {
+                Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
+                return this.current ?? new NullFacebookApplication();
+            }
         }
 
         public void InnerSetApplication(IFacebookApplication facebookApplication)
