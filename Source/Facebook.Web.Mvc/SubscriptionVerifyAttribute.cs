@@ -14,78 +14,33 @@
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             filterContext.HttpContext.Response.ContentType = "text/plain";
-
             var request = filterContext.HttpContext.Request;
             var modelState = filterContext.Controller.ViewData.ModelState;
 
+            string errorMessage;
+
             if (request.HttpMethod == "GET")
             {
-                if (request.Params["hub.mode"] == "subscribe")
+                if (string.IsNullOrEmpty(this.VerificationToken))
                 {
-                    if (request.Params["hub.verify_token"] == this.VerificationToken)
-                    {
-                        if (string.IsNullOrEmpty(request.Params["hub.challenge"]))
-                        {
-                            modelState.AddModelError("hub.challenge", "hub.challenge not found");
-                        }
-                    }
-                    else
-                    {
-                        modelState.AddModelError("hub.verify_token", "Invalid verification token.");
-                    }
+                    errorMessage = "Verification Token is empty.";
                 }
                 else
                 {
-                    modelState.AddModelError("HUB_MODE", "Invalid hub mode");
+                    if (FacebookWebUtils.VerifyGetSubscription(request, this.VerificationToken, out errorMessage))
+                    {
+                        return;
+                    }
                 }
             }
             else
             {
-                filterContext.Result = new HttpUnauthorizedResult();
+                errorMessage = "Invalid http method.";
             }
+
+            modelState.AddModelError("facebook-c#-sdk", errorMessage);
+
+            filterContext.HttpContext.Response.StatusCode = 401;
         }
-
-
-        /*
-       public override void OnActionExecuting(ActionExecutingContext filterContext)
-       {
-           var request = filterContext.HttpContext.Request;
-           if (request.HttpMethod == "GET" && request.Params["hub.mode"] == "subscribe" &&
-               request.Params["hub.verify_token"] == this.VerificationToken)
-           {
-               filterContext.Result = new SubscriptionVerifiedResult();
-           }
-           else if (request.HttpMethod == "POST" && !string.IsNullOrEmpty(FacebookContext.Current.AppSecret))
-           {
-               if (request.Params.AllKeys.Contains("HTTP_X_HUB_SIGNATURE"))
-               {
-                   // signatures looks somewhat like "sha1=4594ae916543cece9de48e3289a5ab568f514b6a"
-                   var signature = request.Params["HTTP_X_HUB_SIGNATURE"];
-
-                   if (!string.IsNullOrEmpty(signature) && signature.StartsWith("sha1=") && signature.Length > 5)
-                   {
-                       signature = signature.Substring(5);
-
-                       var reader = new System.IO.StreamReader(request.InputStream);
-                       var jsonString = reader.ReadToEnd();
-
-                       var sha1 = FacebookWebUtils.ComputeHmacSha1Hash(Encoding.UTF8.GetBytes(jsonString), Encoding.UTF8.GetBytes(FacebookContext.Current.AppSecret));
-
-                       var hashString = new StringBuilder();
-                       foreach (var b in sha1)
-                       {
-                           hashString.Append(b.ToString("x2"));
-                       }
-
-                       if (signature == hashString.ToString())
-                       {
-                           var jsonObject = JsonSerializer.DeserializeObject(jsonString);
-                           filterContext.ActionParameters.Add("subscription", jsonObject);
-                       }
-                   }
-               }
-           }
-       }
-   */
     }
 }
