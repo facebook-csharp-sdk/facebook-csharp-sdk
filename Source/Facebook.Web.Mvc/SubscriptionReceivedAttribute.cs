@@ -11,6 +11,8 @@ namespace Facebook.Web.Mvc
             var modelState = filterContext.Controller.ViewData.ModelState;
             var appSecret = FacebookContext.Current.AppSecret;
 
+            filterContext.ActionParameters["subscription"] = null;
+
             string errorMessage;
             if (request.HttpMethod == "POST")
             {
@@ -25,6 +27,9 @@ namespace Facebook.Web.Mvc
 
                     if (FacebookWebUtils.VerifyPostSubscription(request, appSecret, jsonString, out errorMessage))
                     {
+                        var jsonObject = JsonSerializer.DeserializeObject(jsonString);
+                        filterContext.ActionParameters["subscription"] = jsonObject;
+
                         return;
                     }
                 }
