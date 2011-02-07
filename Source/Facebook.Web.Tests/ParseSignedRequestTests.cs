@@ -15,7 +15,7 @@ namespace Facebook
                 string secret = "secret";
                 int maxAge = 3600;
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest, maxAge));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge));
             }
 
             [Fact(DisplayName = "Parse: Given a signed request value without signature Then it should throw InvalidOperationException")]
@@ -25,7 +25,7 @@ namespace Facebook
                 string secret = "secret";
                 int maxAge = 3600;
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest, maxAge));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge));
             }
 
             [Fact(DisplayName = "Parse: Given a signed request value without envelope Then it should throw InvalidOperationException")]
@@ -35,7 +35,7 @@ namespace Facebook
                 string secret = "secret";
                 int maxAge = 3600;
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest, maxAge));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge));
             }
 
             [Fact(DisplayName = "Parse: Given a signed request value older than 1 hour Then it should throw InvalidOperationException")]
@@ -47,7 +47,7 @@ namespace Facebook
                 int maxAge = 3600;
                 double currentTime = 1294741460;
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest, maxAge, currentTime));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge, currentTime));
             }
 
             [Fact(DisplayName = "Parse: Given a signed request that contains valid signature Then it doesnot throw InvalidOperationException")]
@@ -59,7 +59,7 @@ namespace Facebook
                 int maxAge = 3600;
                 double currentTime = 1287601970;
 
-                Assert.DoesNotThrow(() => FacebookSignedRequest.Parse(secret, signedRequest, maxAge, currentTime));
+                Assert.DoesNotThrow(() => FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge, currentTime));
             }
 
             [Fact(DisplayName = "Parse: Given a valid signed request and invalid secret key Then it should throw InvalidOperationException")]
@@ -71,7 +71,7 @@ namespace Facebook
                 int maxAge = 3600;
                 double currentTime = 1287601970;
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest, maxAge, currentTime));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge, currentTime));
             }
 
             [Fact(DisplayName = "Parse: Given a valid signed request Then it should extract the access token correctly")]
@@ -83,7 +83,7 @@ namespace Facebook
                 int maxAge = 3600;
                 double currentTime = 1287601970;
 
-                var result = FacebookSignedRequest.Parse(secret, signedRequest, maxAge, currentTime);
+                var result = FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge, currentTime);
 
                 Assert.Equal("101244219942650|2.wdrSr7KyE_VwQ0fjwOfW9A__.3600.1287608400-499091902|XzxMQd-_4tjlC2VEgide4rmg6LI", result.AccessToken);
             }
@@ -99,7 +99,7 @@ namespace Facebook
                 var expiresInUnixTime = 6412;
                 var expectedTime = FacebookUtils.FromUnixTime(expiresInUnixTime);
 
-                var result = FacebookSignedRequest.Parse(secret, signedRequest, maxAge, currentTime);
+                var result = FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge, currentTime);
 
                 Assert.Equal(expectedTime, result.Expires);
             }
@@ -113,7 +113,7 @@ namespace Facebook
                 int maxAge = 3600;
                 double currentTime = 1287601970;
 
-                var result = FacebookSignedRequest.Parse(secret, signedRequest, maxAge, currentTime);
+                var result = FacebookSignedRequestOld.Parse(secret, signedRequest, maxAge, currentTime);
 
                 Assert.Equal("499091902", result.UserId);
             }
@@ -127,7 +127,7 @@ namespace Facebook
                 var signedRequest = "invalid.signed.request.with.more.than.two.dots";
                 string secret = "secret";
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest));
             }
 
             [Fact(DisplayName = "Parse: Given a signed request value without signature Then it should throw InvalidOperationException")]
@@ -136,7 +136,7 @@ namespace Facebook
                 var signedRequest = ".envelope_only";
                 string secret = "secret";
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest));
             }
 
             [Fact(DisplayName = "Parse: Given a signed request value without envelope Then it should throw InvalidOperationException")]
@@ -145,7 +145,7 @@ namespace Facebook
                 var signedRequest = "signed_request_only.";
                 string secret = "secret";
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest));
             }
 
             [Fact(DisplayName = "Parse: Given a signed request that contains valid signature Then it doesnot throw InvalidOperationException")]
@@ -154,7 +154,7 @@ namespace Facebook
                 var signedRequest = "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0";
                 var secret = "543690fae0cd186965412ac4a49548b5";
 
-                Assert.DoesNotThrow(() => FacebookSignedRequest.Parse(secret, signedRequest));
+                Assert.DoesNotThrow(() => FacebookSignedRequestOld.Parse(secret, signedRequest));
             }
 
             [Fact(DisplayName = "Parse: Given a valid signed request and invalid secret key Then it should throw InvalidOperationException")]
@@ -163,7 +163,7 @@ namespace Facebook
                 var signedRequest = "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0";
                 var secret = "invalid_secret";
 
-                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequest.Parse(secret, signedRequest));
+                Assert.Throws<InvalidOperationException>(() => FacebookSignedRequestOld.Parse(secret, signedRequest));
             }
 
             [Fact(DisplayName = "Parse: Given a valid signed request Then it should extract the access token correctly")]
@@ -172,7 +172,7 @@ namespace Facebook
                 var signedRequest = "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0";
                 var secret = "543690fae0cd186965412ac4a49548b5";
 
-                var result = FacebookSignedRequest.Parse(secret, signedRequest);
+                var result = FacebookSignedRequestOld.Parse(secret, signedRequest);
 
                 Assert.Equal("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", result.AccessToken);
             }
@@ -183,7 +183,7 @@ namespace Facebook
                 var signedRequest = "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0";
                 var secret = "543690fae0cd186965412ac4a49548b5";
 
-                var result = FacebookSignedRequest.Parse(secret, signedRequest);
+                var result = FacebookSignedRequestOld.Parse(secret, signedRequest);
 
                 Assert.Equal("14812017", result.UserId);
             }
@@ -197,7 +197,7 @@ namespace Facebook
                 var expiresInUnixTime = 1282928400;
                 var expectedTime = FacebookUtils.FromUnixTime(expiresInUnixTime);
 
-                var result = FacebookSignedRequest.Parse(secret, signedRequest);
+                var result = FacebookSignedRequestOld.Parse(secret, signedRequest);
 
                 Assert.Equal(expectedTime, result.Expires);
             }

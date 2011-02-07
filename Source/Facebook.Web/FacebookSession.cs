@@ -22,6 +22,11 @@ namespace Facebook.Web
     public sealed class FacebookSession
     {
         /// <summary>
+        /// The actual value of the facebook session.
+        /// </summary>
+        private object data;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSession"/> class.
         /// </summary>
         public FacebookSession()
@@ -45,13 +50,20 @@ namespace Facebook.Web
 
         public FacebookSession(IDictionary<string, object> dictionary)
         {
-            this.UserId = dictionary.ContainsKey("uid") ? (string)dictionary["uid"] : null;
-            this.Secret = dictionary.ContainsKey("secret") ? (string)dictionary["secret"] : null;
-            this.SessionKey = dictionary.ContainsKey("session_key") ? (string)dictionary["session_key"] : null;
-            this.AccessToken = dictionary.ContainsKey("access_token") ? (string)dictionary["access_token"] : null;
-            this.Expires = dictionary.ContainsKey("expires") ? FacebookUtils.FromUnixTime(Convert.ToInt64(dictionary["expires"])) : DateTime.MinValue;
-            this.Signature = dictionary.ContainsKey("sig") ? (string)dictionary["sig"] : null;
-            this.BaseDomain = dictionary.ContainsKey("base_domain") ? (string)dictionary["base_domain"] : null;
+            this.Data = dictionary;
+
+            if (dictionary != null)
+            {
+                this.UserId = dictionary.ContainsKey("uid") ? (string)dictionary["uid"] : null;
+                this.Secret = dictionary.ContainsKey("secret") ? (string)dictionary["secret"] : null;
+                this.SessionKey = dictionary.ContainsKey("session_key") ? (string)dictionary["session_key"] : null;
+                this.AccessToken = dictionary.ContainsKey("access_token") ? (string)dictionary["access_token"] : null;
+                this.Expires = dictionary.ContainsKey("expires")
+                                   ? FacebookUtils.FromUnixTime(Convert.ToInt64(dictionary["expires"]))
+                                   : DateTime.MinValue;
+                this.Signature = dictionary.ContainsKey("sig") ? (string)dictionary["sig"] : null;
+                this.BaseDomain = dictionary.ContainsKey("base_domain") ? (string)dictionary["base_domain"] : null;
+            }
         }
 
         /// <summary>
@@ -96,6 +108,28 @@ namespace Facebook.Web
         /// <value>The base domain.</value>
         public string BaseDomain { get; set; }
 
+        /// <summary>
+        /// Gets actual value of signed request.
+        /// </summary>
+        public object Data
+        {
+            get
+            {
+                return this.data;
+            }
+
+            private set
+            {
+                if (value == null)
+                {
+                    this.data = null;
+                    return;
+                }
+
+                this.data = value is JsonObject ? value : FacebookUtils.ToDictionary(value);
+            }
+        }
+
         internal static string ParseUserIdFromAccessToken(string accessToken)
         {
             Contract.Requires(!string.IsNullOrEmpty(accessToken));
@@ -132,7 +166,7 @@ namespace Facebook.Web
         /// </summary>
         /// <param name="signedRequest">The signed request.</param>
         /// <returns>The facebook session.</returns>
-        internal static FacebookSession Create(string appSecret, FacebookSignedRequest signedRequest)
+        internal static FacebookSession Create(string appSecret, FacebookSignedRequestOld signedRequest)
         {
             if (signedRequest == null || String.IsNullOrEmpty(signedRequest.AccessToken))
             {
