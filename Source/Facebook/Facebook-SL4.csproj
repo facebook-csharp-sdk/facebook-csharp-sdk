@@ -71,7 +71,7 @@
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
     <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
@@ -134,9 +134,6 @@
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookOAuthResult.cs" />
     <Compile Include="FacebookUtils.cs" />
-    <Compile Include="FacebookSession.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />

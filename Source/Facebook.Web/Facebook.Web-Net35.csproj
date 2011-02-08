@@ -120,6 +120,7 @@
     <Compile Include="FacebookAppRedirectHttpHandler.cs" />
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
+    <Compile Include="FacebookSignedRequestOld.cs" />
     <Compile Include="FacebookSubscriptionsHttpHandler.cs">
       <SubType>Code</SubType>
     </Compile>

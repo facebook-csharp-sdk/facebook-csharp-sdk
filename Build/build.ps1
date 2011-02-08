@@ -99,20 +99,20 @@ task NuGetPackage -depends Package {
         New-Item -Path $workingDir\NuGet\FacebookWeb\$version\ -ItemType Directory
         New-Item -Path $workingDir\NuGet\FacebookWebMvc\$version\ -ItemType Directory
 
-        Copy-Item -Path "$buildDir\Facebook.nuspec" -Destination $workingDir\NuGet\Facebook\$version\Facebook.nuspec -recurse
+        Copy-Item -Path "$buildDir\NuGet\Facebook\Facebook.nuspec" -Destination $workingDir\NuGet\Facebook\$version\Facebook.nuspec -recurse
         (Get-Content $workingDir\NuGet\Facebook\$version\Facebook.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
         Foreach-Object {$_ -replace "{packageId}", "Facebook" } | 
         Set-Content $workingDir\NuGet\Facebook\$version\Facebook.nuspec
 
-        Copy-Item -Path "$buildDir\FacebookWeb.nuspec" -Destination $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec -recurse
+        Copy-Item -Path "$buildDir\NuGet\FacebookWeb\FacebookWeb.nuspec" -Destination $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec -recurse
         (Get-Content $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
         Foreach-Object {$_ -replace "{packageId}", "FacebookWeb" } | 
         Set-Content $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec
 
 
-        Copy-Item -Path "$buildDir\FacebookWebMvc.nuspec" -Destination $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
+        Copy-Item -Path "$buildDir\NuGet\FacebookWebMvc\FacebookWebMvc.nuspec" -Destination $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec -recurse
         (Get-Content $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec) | 
         Foreach-Object {$_ -replace "{version}", $version} | 
         Foreach-Object {$_ -replace "{packageId}", "FacebookWebMvc" } | 
