@@ -60,6 +60,10 @@ task :configure do
             :net40		 => '',
             :net35		 => '',
             :shfb        => '', # sandcastle help file builder doc project
+        },
+        :nuspec => {
+            :authors                 => "Jim Zimmerman, Nathan Totten",
+            :newtonsoft_json_version => "4.0.1"
         }
     }
     
@@ -233,14 +237,14 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
 	
 	nuspec.id = "Facebook"
 	nuspec.version = "#{build_config[:version][:full]}"
-	nuspec.authors = "Jim Zimmerman, Nathan Totten"
+	nuspec.authors = "#{build_config[:nuspec][:authors]}"
 	nuspec.description = "The Facebook C# SDK core."
 	nuspec.language = "en-US"
 	nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
 	nuspec.requireLicenseAcceptance = true
 	nuspec.projectUrl = "http://facebooksdk.codeplex.com"
 	nuspec.tags = "Facebook"
-	nuspec.dependency "Newtonsoft.Json", "4.0.1"
+	nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
 	nuspec.output_file = "#{nuget_working_dir}/Facebook.nuspec"
 end
 
@@ -283,14 +287,14 @@ nuspec :nuspec_facebookweb => [:net35, :net40, "#{build_config[:paths][:working]
 	
 	nuspec.id = "FacebookWeb"
 	nuspec.version = "#{build_config[:version][:full]}"
-	nuspec.authors = "Jim Zimmerman, Nathan Totten"
+	nuspec.authors = "#{build_config[:nuspec][:authors]}"
 	nuspec.description = "The Facebook C# SDK web component."
 	nuspec.language = "en-US"
 	nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
 	nuspec.requireLicenseAcceptance = true
 	nuspec.projectUrl = "http://facebooksdk.codeplex.com"
 	nuspec.tags = "Facebook"
-	nuspec.dependency "Newtonsoft.Json", "4.0.1"
+	nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
 	nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
 	nuspec.output_file = "#{nuget_working_dir}/FacebookWeb.nuspec"
 end
@@ -334,14 +338,14 @@ nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:worki
 	
 	nuspec.id = "FacebookWebMvc"
 	nuspec.version = "#{build_config[:version][:full]}"
-	nuspec.authors = "Jim Zimmerman, Nathan Totten"
+	nuspec.authors = "#{build_config[:nuspec][:authors]}"
 	nuspec.description = "The Facebook C# SDK MVC component."
 	nuspec.language = "en-US"
 	nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
 	nuspec.requireLicenseAcceptance = true
 	nuspec.projectUrl = "http://facebooksdk.codeplex.com"
 	nuspec.tags = "Facebook"
-	nuspec.dependency "Newtonsoft.Json", "4.0.1"
+	nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
 	nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
 	nuspec.dependency "FacebookWeb", "#{build_config[:version][:full]}"
 	nuspec.output_file = "#{nuget_working_dir}/FacebookWebMvc.nuspec"
