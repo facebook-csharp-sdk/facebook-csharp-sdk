@@ -47,22 +47,18 @@ class SQLCmd
     end
     integratedParam
   end
-  
+
   def check_command
     sql2008cmdPath = File.join(ENV['SystemDrive'],'program files','microsoft sql server','100','tools','binn', 'sqlcmd.exe')
-    @command = sql2008cmdPath if File.exists?(sql2008cmdPath)
-    return true
-    
     sql2005cmdPath = File.join(ENV['SystemDrive'],'program files','microsoft sql server','90','tools','binn', 'sqlcmd.exe')
-    @command = sql2005cmdPath if File.exists?(sql2005cmdPath)
-    return true
-    
-    return true if (!@command.nil?)
-    
+    sql2008cmdPathx86 = File.join(ENV['SystemDrive'],'program files (x86)','microsoft sql server','100','tools','binn', 'sqlcmd.exe')
+    sql2005cmdPathx86 = File.join(ENV['SystemDrive'],'program files (x86)','microsoft sql server','90','tools','binn', 'sqlcmd.exe')
+    @command = [sql2008cmdPath, sql2005cmdPath, sql2008cmdPathx86, sql2005cmdPathx86].select { |p| File.exist?(p) }.first
+    return true if @command != nil
     fail_with_message 'SQLCmd.command cannot be nil.'
     return false
   end
-  
+
   def build_script_list
     @scripts.map{|s| "-i \"#{s.strip}\""}.join(" ")
   end
