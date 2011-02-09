@@ -7,16 +7,21 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Facebook
 {
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Represents a json array.
+    /// </summary>
     public sealed class JsonArray : List<object>
     {
-
+        /// <summary>
+        /// Json string representation of <see cref="JsonArray"/>.
+        /// </summary>
+        /// <returns>
+        /// Returns the Json string representation of <see cref="JsonArray"/>.
+        /// </returns>
         public override string ToString()
         {
             return JsonSerializer.SerializeObject(this);

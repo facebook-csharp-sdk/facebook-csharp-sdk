@@ -60,7 +60,6 @@ namespace Facebook.Web.Mvc
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
-        /// <param name="facebookApp">The current Facebook app instance.</param>
         {
             Contract.Requires(filterContext != null);
             Contract.Requires(filterContext.HttpContext != null);

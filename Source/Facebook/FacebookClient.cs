@@ -279,10 +279,20 @@ namespace Facebook
         /// <summary>
         /// Invoke the old restserver.php endpoint.
         /// </summary>
-        /// <param name="parameters">The parameters of the method call.</param>
-        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-        /// <returns>The decoded response object.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="parameters">
+        /// The parameters of the method call.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request. Default is 'GET'.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <returns>
+        /// The decoded response object.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected override object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             // Set the format to json
@@ -294,11 +304,23 @@ namespace Facebook
         /// <summary>
         /// Make a graph api call.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">JsonObject of url parameters.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The path of the url to call such as 'me/friends'.
+        /// </param>
+        /// <param name="parameters">
+        /// JsonObject of url parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <returns>
+        /// A dynamic object with the resulting data.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected override object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             var uri = this.GetGraphRequestUri(path);
@@ -309,10 +331,24 @@ namespace Facebook
         /// <summary>
         /// Make a OAuth Request
         /// </summary>
-        /// <param name="uri">The url to make the request.</param>
-        /// <param name="parameters">The parameters of the request.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <returns>The decoded response object.</returns>
+        /// <param name="uri">
+        /// The url to make the request.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters of the request.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="restApi">
+        /// The rest Api.
+        /// </param>
+        /// <returns>
+        /// The decoded response object.
+        /// </returns>
         protected override object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi)
         {
             Uri requestUrl;
@@ -327,11 +363,23 @@ namespace Facebook
         /// <summary>
         /// Invoke the old restserver.php endpoint.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="parameters">The parameters of the method call.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="parameters">
+        /// The parameters of the method call.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The async state.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected override void RestServerAsync(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
             // Set the format to json
@@ -344,12 +392,26 @@ namespace Facebook
         /// <summary>
         /// Make a graph api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">JsonObject of url parameters.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The path of the url to call such as 'me/friends'.
+        /// </param>
+        /// <param name="parameters">
+        /// JsonObject of url parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The async state.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected override void GraphAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
             var uri = this.GetGraphRequestUri(path);
@@ -360,12 +422,29 @@ namespace Facebook
         /// <summary>
         /// Make a OAuth Request
         /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="uri">The url to make the request.</param>
-        /// <param name="parameters">The parameters of the request.</param>
-        /// <param name="httpMethod">The http method of the request.</param>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="uri">
+        /// The url to make the request.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters of the request.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method of the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="restApi">
+        /// The rest Api.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The async state.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected override void OAuthRequestAsync(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi, FacebookAsyncCallback callback, object state)
         {
             Uri requestUrl;
@@ -546,12 +625,29 @@ namespace Facebook
         /// <summary>
         /// Make the API Request
         /// </summary>
-        /// <param name="httpMethod">The http method to use. GET, POST, DELETE.</param>
-        /// <param name="requestUrl">The uri of the request.</param>
-        /// <param name="postData">The request data.</param>
-        /// <param name="contentType">The request content type.</param>
-        /// <returns>The decoded response object.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="httpMethod">
+        /// The http method to use. GET, POST, DELETE.
+        /// </param>
+        /// <param name="requestUrl">
+        /// The uri of the request.
+        /// </param>
+        /// <param name="postData">
+        /// The request data.
+        /// </param>
+        /// <param name="contentType">
+        /// The request content type.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="restApi">
+        /// The rest api.
+        /// </param>
+        /// <returns>
+        /// The decoded response object.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         private static object MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType, Type resultType, bool restApi)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
@@ -626,13 +722,32 @@ namespace Facebook
         /// <summary>
         /// Make the API Request
         /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="httpMethod">The http method to use. GET, POST, DELETE.</param>
-        /// <param name="requestUrl">The uri of the request.</param>
-        /// <param name="postData">The request data.</param>
-        /// <param name="contentType">The request content type.</param>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="httpMethod">
+        /// The http method to use. GET, POST, DELETE.
+        /// </param>
+        /// <param name="requestUrl">
+        /// The uri of the request.
+        /// </param>
+        /// <param name="postData">
+        /// The request data.
+        /// </param>
+        /// <param name="contentType">
+        /// The request content type.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="restApi">
+        /// The rest api.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The async state.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         private static void MakeRequestAsync(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType, Type resultType, bool restApi, FacebookAsyncCallback callback, object state)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);

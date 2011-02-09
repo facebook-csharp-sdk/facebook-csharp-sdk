@@ -175,9 +175,6 @@ namespace Facebook
         /// <param name="uri">
         /// The uri.
         /// </param>
-        /// <param name="facebookSettings">
-        /// The facebook settings.
-        /// </param>
         /// <returns>
         /// Returns an instance of <see cref="FacebookOAuthResult"/>.
         /// </returns>
@@ -191,9 +188,6 @@ namespace Facebook
         /// </summary>
         /// <param name="uriString">
         /// The uri string.
-        /// </param>
-        /// <param name="settings">
-        /// The settings.
         /// </param>
         /// <param name="result">
         /// An instance of <see cref="FacebookOAuthResult"/>.

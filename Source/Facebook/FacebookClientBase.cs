@@ -35,7 +35,7 @@ namespace Facebook
             { "www", new Uri("https://www.facebook.com/") }
         };
 
-        private static string[] _readOnlyCalls = new string[] {
+        private static string[] _readOnlyCalls = new[] {
             "admin.getallocation",
             "admin.getappproperties",
             "admin.getbannedusers",
@@ -99,18 +99,6 @@ namespace Facebook
         };
 
         /// <summary>
-        /// The code contracts invarient object method.
-        /// </summary>
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]
-        private void InvarientObject()
-        {
-            Contract.Invariant(_domainMaps != null);
-            Contract.Invariant(_dropQueryParameters != null);
-            Contract.Invariant(_readOnlyCalls != null);
-        }
-
-        /// <summary>
         /// Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
         /// </summary>
         protected virtual ICollection<string> DropQueryParameters
@@ -134,13 +122,18 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Gets or sets the access token.
+        /// </summary>
         public string AccessToken { get; set; }
 
         /// <summary>
         /// Cleans the URL or known Facebook querystring values.
         /// </summary>
         /// <param name="uri">The URI.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Returns the url.
+        /// </returns>
         protected virtual Uri CleanUrl(Uri uri)
         {
             Contract.Requires(uri != null);
@@ -292,6 +285,15 @@ namespace Facebook
 
 #if (!SILVERLIGHT) // Silverlight should only have async calls
 
+        /// <summary>
+        /// Makes a DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <returns>
+        /// Returns the json result.
+        /// </returns>
         public object Delete(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -300,6 +302,18 @@ namespace Facebook
 
         }
 
+        /// <summary>
+        /// Makes a DELETE Facebook api.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The result.
+        /// </returns>
         public object Delete(string path, IDictionary<string, object> parameters)
         {
             return this.Api(path, parameters, null, HttpMethod.Delete);
@@ -616,7 +630,6 @@ namespace Facebook
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
@@ -648,7 +661,6 @@ namespace Facebook
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -682,7 +694,6 @@ namespace Facebook
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
@@ -714,7 +725,6 @@ namespace Facebook
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -777,7 +787,6 @@ namespace Facebook
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
@@ -809,7 +818,6 @@ namespace Facebook
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -872,7 +880,6 @@ namespace Facebook
         /// Make an api call.
         /// </summary>
         /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -1017,29 +1024,65 @@ namespace Facebook
         /// <summary>
         /// Invoke the old restserver.php endpoint.
         /// </summary>
-        /// <param name="parameters">The parameters for the server call.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <returns>The decoded response object.</returns>
+        /// <param name="parameters">
+        /// The parameters for the server call.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <returns>
+        /// The decoded response object.
+        /// </returns>
         protected abstract object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType);
 
         /// <summary>
         /// Invoke the Graph API.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The path of the url to call such as 'me/friends'.
+        /// </param>
+        /// <param name="parameters">
+        /// object of url parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <returns>
+        /// A dynamic object with the resulting data.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected abstract object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType);
 
         /// <summary>
         /// Make a OAuth Request
         /// </summary>
-        /// <param name="uri">The url to make the request.</param>
-        /// <param name="parameters">The parameters of the request.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <returns>The decoded response object.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="uri">
+        /// The url to make the request.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters of the request.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="restApi">
+        /// The rest Api.
+        /// </param>
+        /// <returns>
+        /// The decoded response object.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected abstract object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi);
 
 #endif
@@ -1047,34 +1090,77 @@ namespace Facebook
         /// <summary>
         /// Invoke the old restserver.php endpoint.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="parameters">The parameters for the server call.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
+        /// <param name="parameters">
+        /// The parameters for the server call.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The async state.
+        /// </param>
         protected abstract void RestServerAsync(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state);
 
         /// <summary>
         /// Invoke the Graph API.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The path of the url to call such as 'me/friends'.
+        /// </param>
+        /// <param name="parameters">
+        /// object of url parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The async state.
+        /// </param>
+        /// <returns>
+        /// A dynamic object with the resulting data.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected abstract void GraphAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state);
 
         /// <summary>
         /// Make a OAuth Request
         /// </summary>
-        /// <param name="callback">The async callback.</param>
-        /// <param name="state">The async state.</param> 
-        /// <param name="uri">The url to make the request.</param>
-        /// <param name="parameters">The parameters of the request.</param>
-        /// <param name="httpMethod">The http method for the request.</param>
-        /// <returns>The decoded response object.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="uri">
+        /// The url to make the request.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters of the request.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method for the request.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="restApi">
+        /// The rest Api.
+        /// </param>
+        /// <param name="callback">
+        /// The async callback.
+        /// </param>
+        /// <param name="state">
+        /// The async state.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException">
+        /// </exception>
         protected abstract void OAuthRequestAsync(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi, FacebookAsyncCallback callback, object state);
 
         /// <summary>
@@ -1255,6 +1341,18 @@ namespace Facebook
             }
 
             return path;
+        }
+
+        /// <summary>
+        /// The code contracts invarient object method.
+        /// </summary>
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_domainMaps != null);
+            Contract.Invariant(_dropQueryParameters != null);
+            Contract.Invariant(_readOnlyCalls != null);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Facebook
         /// <summary>
         /// Current Facebook application.
         /// </summary>
-        private static FacebookContext instance = new FacebookContext();
+        private static readonly FacebookContext Instance = new FacebookContext();
 
         /// <summary>
         /// Gets the current Facebook application.
@@ -30,7 +30,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
-                return instance.InnerCurrent;
+                return Instance.InnerCurrent;
             }
         }
 
@@ -43,7 +43,7 @@ namespace Facebook
         public static void SetApplication(IFacebookApplication facebookApplication)
         {
             Contract.Requires(facebookApplication != null);
-            instance.InnerSetApplication(facebookApplication);
+            Instance.InnerSetApplication(facebookApplication);
         }
 
         /// <summary>
@@ -56,14 +56,24 @@ namespace Facebook
         {
             Contract.Requires(getFacebookApplication != null);
 
-            instance.InnerSetApplication(getFacebookApplication);
+            Instance.InnerSetApplication(getFacebookApplication);
         }
 
 #if !SILVERLIGHT
+        /// <summary>
+        /// The current facebook application.
+        /// </summary>
         private IFacebookApplication current = FacebookConfigurationSection.Current;
 #else
+        /// <summary>
+        /// The current facebook application.
+        /// </summary>
         private IFacebookApplication current = new NullFacebookApplication();
 #endif
+
+        /// <summary>
+        /// Gets InnerCurrent.
+        /// </summary>
         public IFacebookApplication InnerCurrent
         {
             get
@@ -73,6 +83,12 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Set the inner application.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
         public void InnerSetApplication(IFacebookApplication facebookApplication)
         {
             Contract.Requires(facebookApplication != null);
@@ -80,6 +96,12 @@ namespace Facebook
             this.current = facebookApplication;
         }
 
+        /// <summary>
+        /// Set the inner application.
+        /// </summary>
+        /// <param name="getFacebookApplication">
+        /// The get facebook application.
+        /// </param>
         public void InnerSetApplication(Func<IFacebookApplication> getFacebookApplication)
         {
             Contract.Requires(getFacebookApplication != null);
