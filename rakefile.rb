@@ -391,6 +391,24 @@ task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc]
 directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
 
+task :dist_prepare => [] do
+	rm_rf "#{build_config[:paths][:dist]}"
+    mkdir "#{build_config[:paths][:dist]}"
+
+	rm_rf "#{build_config[:paths][:working]}/"
+	mkdir "#{build_config[:paths][:working]}"
+end
+
+desc "Create zip archive of the source files"
+task :dist_source => [:dist_prepare] do
+   src_archive_name = "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.src.zip"
+   if (build_config[:vcs][:name] = 'git') then
+    sh "git archive HEAD --format=zip > \"#{src_archive_name}\""
+   elsif (build_config[:vcs][:name] = 'hg') then
+    sh "hg archive -tzip \"#{src_archive_name}\""
+   end
+end
+
 desc "Create distribution packages"
 task :dist => [:libs, :nuget, :docs] do
     rm_rf "#{build_config[:paths][:dist]}"
