@@ -41,7 +41,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyPostSubscription
 
             var result = FacebookWebUtils.VerifyPostSubscription(request, "dummy_secret", emptyJson, out errorMessage);
 
-            Assert.Equal(FacebookWebUtils.ERRORMSG_SUBSCRIPTION_JSONSTRING, errorMessage);
+            Assert.Equal(Properties.Resources.InvalidJsonString, errorMessage);
         }
 
         private static HttpRequestBase GetRequest()

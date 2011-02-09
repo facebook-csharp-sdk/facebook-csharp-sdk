@@ -41,7 +41,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyPostSubscription
 
             var result = FacebookWebUtils.VerifyPostSubscription(request, "dummy_secret", dummyJson, out errorMessage);
 
-            Assert.Equal(FacebookWebUtils.ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE, errorMessage);
+            Assert.Equal(Properties.Resources.InvalidHttpXHubSignature, errorMessage);
         }
 
         private static HttpRequestBase GetRequest()

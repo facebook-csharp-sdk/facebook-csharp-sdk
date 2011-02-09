@@ -302,7 +302,7 @@ namespace Facebook.Web
                 {
                     if (string.IsNullOrEmpty(request.Params["hub.challenge"]))
                     {
-                        errorMessage = ERRORMSG_SUBSCRIPTION_HUBCHALLENGE;
+                        errorMessage = Properties.Resources.InvalidHubChallenge;
                     }
                     else
                     {
@@ -311,12 +311,12 @@ namespace Facebook.Web
                 }
                 else
                 {
-                    errorMessage = ERRORMSG_SUBSCRIPTION_VERIFYTOKEN;
+                    errorMessage = Properties.Resources.InvalidVerifyToken;
                 }
             }
             else
             {
-                errorMessage = ERRORMSG_SUBSCRIPTION_HUBMODE;
+                errorMessage = Properties.Resources.InvalidHubMode;
             }
 
             return false;
@@ -358,13 +358,13 @@ namespace Facebook.Web
 
                 if (string.IsNullOrEmpty(expectedSha1))
                 {
-                    errorMessage = ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE;
+                    errorMessage = Properties.Resources.InvalidHttpXHubSignature;
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(jsonString))
                     {
-                        errorMessage = ERRORMSG_SUBSCRIPTION_JSONSTRING;
+                        errorMessage = Properties.Resources.InvalidJsonString;
                         return false;
                     }
 
@@ -383,22 +383,15 @@ namespace Facebook.Web
                     }
 
                     // todo: test
-                    errorMessage = ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE;
+                    errorMessage = Properties.Resources.InvalidHttpXHubSignature;
                 }
             }
             else
             {
-                errorMessage = ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE;
+                errorMessage = Properties.Resources.InvalidHttpXHubSignature;
             }
 
             return false;
         }
-
-        // todo: move to resource files
-        internal const string ERRORMSG_SUBSCRIPTION_HUBMODE = "Invalid hub mode.";
-        internal const string ERRORMSG_SUBSCRIPTION_VERIFYTOKEN = "Invalid verify token.";
-        internal const string ERRORMSG_SUBSCRIPTION_HUBCHALLENGE = "Invalid hub challenge.";
-        internal const string ERRORMSG_SUBSCRIPTION_HTTPXHUBSIGNATURE = "Invalid HTTP_X_HUB_SIGNATURE.";
-        internal const string ERRORMSG_SUBSCRIPTION_JSONSTRING = "Invalid json string.";
     }
 }

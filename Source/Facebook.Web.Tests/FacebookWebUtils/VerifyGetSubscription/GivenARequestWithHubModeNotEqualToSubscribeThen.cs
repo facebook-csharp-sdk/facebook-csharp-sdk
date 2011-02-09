@@ -38,7 +38,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyGetSubscription
 
             var result = FacebookWebUtils.VerifyGetSubscription(request, "dummy verify token", out errorMessage);
 
-            Assert.Equal(FacebookWebUtils.ERRORMSG_SUBSCRIPTION_HUBMODE, errorMessage);
+            Assert.Equal(Properties.Resources.InvalidHubMode, errorMessage);
         }
 
         private static HttpRequestBase GetRequest()
