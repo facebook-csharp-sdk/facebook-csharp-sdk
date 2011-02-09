@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'Build/albacore/albacore.rb')
 require 'find'
 require 'fileutils'
 
-task :default => [:rebuild]
+task :default => [:libs]
 
 PROJECT_NAME      = "Facebook C# SDK"
 PROJECT_NAME_SAFE = "FacebookSDK"
@@ -122,7 +122,7 @@ end
 Rake::Task["configure"].invoke
 
 desc "Build .NET 4 binaries"
-msbuild :net40 => [:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebmvc] do |msb|
+msbuild :net40 => [:clean_net40,:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebmvc] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net40]
     msb.targets :Build
@@ -135,7 +135,7 @@ msbuild :clean_net40 do |msb|
 end
 
 desc "Build .NET 3.5 binaries"
-msbuild :net35 => [:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebmvc] do |msb|
+msbuild :net35 => [:clean_net35,:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebmvc] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:net35]
     msb.targets :Build
@@ -152,7 +152,7 @@ msbuild :clean_net35 do |msb|
 end
 
 desc "Build Silverlight 4 binaries"
-msbuild :sl4 => [:assemblyinfo_facebook] do |msb|
+msbuild :sl4 => [:clean_sl4,:assemblyinfo_facebook] do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:sl4]
     msb.targets :Build
@@ -162,10 +162,12 @@ msbuild :clean_sl4 do |msb|
     msb.properties :configuration => build_config[:configuration]
     msb.solution = build_config[:sln][:sl4]
     msb.targets :Clean
+	# bug caused by code contracts
+	FileUtils.rm_rf "#{build_config[:paths][:src]}Facebook/obj/"
 end
 
 desc "Build Windows Phone 7 binaries"
-msbuild :wp7 => [:assemblyinfo_facebook] do |msb|
+msbuild :wp7 => [:clean_wp7,:assemblyinfo_facebook] do |msb|
    msb.properties :configuration => build_config[:configuration]
    msb.solution = build_config[:sln][:wp7]
    msb.use :net40
@@ -339,11 +341,8 @@ msbuild :clean_docs do |msb|
     msb.properties
 end
 
-desc "Build All"
-task :all => [:net35, :net40, :sl4,:wp7,:nuget]
-
-desc "Clean and Rebuild All (default)"
-task :rebuild => [:clean,:all]
+desc "Build All Librarires (default)"
+task :libs => [:net35, :net40, :sl4,:wp7]
 
 desc "Clean All"
 task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do
@@ -359,7 +358,7 @@ directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
 
 desc "Create distribution packages"
-task :dist => [:rebuild,:docs] do
+task :dist => [:libs, :nuget, :docs] do
     rm_rf "#{build_config[:paths][:dist]}"
     mkdir "#{build_config[:paths][:dist]}"
     
