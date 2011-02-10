@@ -11,6 +11,7 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.IO;
@@ -68,7 +69,7 @@ namespace Facebook
         public static double ToUnixTime(DateTime dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (double) (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Facebook
         public static double ToUnixTime(DateTimeOffset dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (double) (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -122,7 +123,8 @@ namespace Facebook
         /// <param name="first">Default values, only used if second does not contain a value.</param>
         /// <param name="second">Every value of the merged object is used.</param>
         /// <returns>The merged dictionary</returns>
-        internal static IDictionary<string, object> Merge(IDictionary<string, object> first, IDictionary<string, object> second)
+        internal static IDictionary<string, object> Merge(IDictionary<string, object> first,
+                                                          IDictionary<string, object> second)
         {
             Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 
@@ -159,7 +161,7 @@ namespace Facebook
             Contract.Requires(parameters != null);
 
             var json = JsonSerializer.SerializeObject(parameters);
-            return (IDictionary<string, object>)JsonSerializer.DeserializeObject(json);
+            return (IDictionary<string, object>) JsonSerializer.DeserializeObject(json);
         }
 
         /// <summary>
@@ -226,7 +228,7 @@ namespace Facebook
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
-            return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
+            return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object) kv.Value));
         }
 
 #if !SILVERLIGHT
@@ -242,14 +244,16 @@ namespace Facebook
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
+            // TODO (review): most likely we an remove this method.
+
             var dictionary = new Dictionary<string, string>();
             collection.AllKeys.ToList().ForEach((key) =>
-            {
-                if (key != null)
-                {
-                    dictionary.Add(key, collection[key]);
-                }
-            });
+                                                    {
+                                                        if (key != null)
+                                                        {
+                                                            dictionary.Add(key, collection[key]);
+                                                        }
+                                                    });
             return ToJsonQueryString(dictionary);
         }
 #endif
@@ -258,6 +262,18 @@ namespace Facebook
 
         #region String Utils
 
+        /// <summary>
+        /// Gets the string representation of the specified http method.
+        /// </summary>
+        /// <param name="httpMethod">
+        /// The http method.
+        /// </param>
+        /// <returns>
+        /// The string representation of the http method.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Throws error if the http method is not Get,Post or Delete.
+        /// </exception>
         internal static string ConvertToString(HttpMethod httpMethod)
         {
             switch (httpMethod)
@@ -269,6 +285,7 @@ namespace Facebook
                 case HttpMethod.Delete:
                     return "DELETE";
             }
+
             throw new InvalidOperationException();
         }
 
@@ -276,6 +293,15 @@ namespace Facebook
 
         #region Html Decoding and Encoding
 
+        /// <summary>
+        /// Html decode the input string.
+        /// </summary>
+        /// <param name="input">
+        /// The string to decode.
+        /// </param>
+        /// <returns>
+        /// The html decoded string.
+        /// </returns>
         internal static string HtmlDecode(string input)
         {
 #if WINDOWS_PHONE
@@ -287,6 +313,15 @@ namespace Facebook
 #endif
         }
 
+        /// <summary>
+        /// Html encode the input string.
+        /// </summary>
+        /// <param name="input">
+        /// The string to encode.
+        /// </param>
+        /// <returns>
+        /// The html encoded string.
+        /// </returns>
         internal static string HtmlEncode(string input)
         {
 #if WINDOWS_PHONE
@@ -302,6 +337,15 @@ namespace Facebook
 
         #region Url Decoding, Encoding and other helper methods
 
+        /// <summary>
+        /// Url decode the input string.
+        /// </summary>
+        /// <param name="input">
+        /// The string to url decode.
+        /// </param>
+        /// <returns>
+        /// The url decoded string.
+        /// </returns>
         internal static string UrlDecode(string input)
         {
 #if WINDOWS_PHONE
@@ -313,6 +357,15 @@ namespace Facebook
 #endif
         }
 
+        /// <summary>
+        /// Url encode the input string.
+        /// </summary>
+        /// <param name="input">
+        /// The string to url encode.
+        /// </param>
+        /// <returns>
+        /// The url encoded string.
+        /// </returns>
         internal static string UrlEncode(string input)
         {
 #if WINDOWS_PHONE
@@ -324,23 +377,41 @@ namespace Facebook
 #endif
         }
 
-        internal static string RemoveTrailingSlash(string url)
+        /// <summary>
+        /// Removes the trailing slash.
+        /// </summary>
+        /// <param name="input">
+        /// The input string to remove the trailing slash from.
+        /// </param>
+        /// <returns>
+        /// The string with trailing slash removed.
+        /// </returns>
+        internal static string RemoveTrailingSlash(string input)
         {
             Contract.Ensures(Contract.Result<string>() != null);
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(input))
             {
                 return string.Empty;
             }
 
-            if (url.EndsWith("/"))
+            if (input.EndsWith("/"))
             {
-                url = url.Substring(0, url.Length - 1);
+                input = input.Substring(0, input.Length - 1);
             }
 
-            return url;
+            return input;
         }
 
+        /// <summary>
+        /// Removes the trailing slash from the uri.
+        /// </summary>
+        /// <param name="url">
+        /// The url to remove the trailing slash from.
+        /// </param>
+        /// <returns>
+        /// The uri with trailing slash removed.
+        /// </returns>
         internal static Uri RemoveTrailingSlash(Uri url)
         {
             Contract.Requires(url != null);
@@ -353,16 +424,35 @@ namespace Facebook
 
         #region Base64 Url Decoding and Encoding
 
+        /// <summary>
+        /// Base64 Url decode.
+        /// </summary>
+        /// <param name="base64UrlSafeString">
+        /// The base 64 url safe string.
+        /// </param>
+        /// <returns>
+        /// The base 64 url decoded string.
+        /// </returns>
         internal static byte[] Base64UrlDecode(string base64UrlSafeString)
         {
             Contract.Requires(!string.IsNullOrEmpty(base64UrlSafeString));
             Contract.Ensures(Contract.Result<byte[]>() != null);
 
-            base64UrlSafeString = base64UrlSafeString.PadRight(base64UrlSafeString.Length + (4 - base64UrlSafeString.Length % 4) % 4, '=');
+            base64UrlSafeString =
+                base64UrlSafeString.PadRight(base64UrlSafeString.Length + (4 - base64UrlSafeString.Length%4)%4, '=');
             base64UrlSafeString = base64UrlSafeString.Replace('-', '+').Replace('_', '/');
             return Convert.FromBase64String(base64UrlSafeString);
         }
 
+        /// <summary>
+        /// Base64 url encode.
+        /// </summary>
+        /// <param name="input">
+        /// The input.
+        /// </param>
+        /// <returns>
+        /// Base64 url encoded string.
+        /// </returns>
         internal static string Base64UrlEncode(byte[] input)
         {
             Contract.Requires(input != null);
@@ -469,6 +559,15 @@ namespace Facebook
 
         #region Encryption Decryption Helper methods
 
+        /// <summary>
+        /// Computes the Md5 Hash.
+        /// </summary>
+        /// <param name="data">
+        /// The input data.
+        /// </param>
+        /// <returns>
+        /// The md5 hash.
+        /// </returns>
         internal static byte[] ComputerMd5Hash(byte[] data)
         {
             Contract.Requires(data != null);
@@ -480,6 +579,18 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Computes the Hmac Sha 256 Hash.
+        /// </summary>
+        /// <param name="data">
+        /// The data to hash.
+        /// </param>
+        /// <param name="key">
+        /// The hash key.
+        /// </param>
+        /// <returns>
+        /// The Hmac Sha 256 hash.
+        /// </returns>
         internal static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
         {
             Contract.Requires(data != null);
@@ -492,6 +603,24 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Decrypt encrypted data using the Aes256 CBC no padding algorithm.
+        /// </summary>
+        /// <param name="encryptedData">
+        /// The encrypted data.
+        /// </param>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="iv">
+        /// The iv.
+        /// </param>
+        /// <returns>
+        /// The decrypted string.
+        /// </returns>
+        [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules",
+            "SA1632:DocumentationTextMustMeetMinimumCharacterLength",
+            Justification = "Reviewed. Suppression is OK here.")]
         internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv)
         {
             Contract.Requires(encryptedData != null);
@@ -502,11 +631,11 @@ namespace Facebook
             string result;
 
             var rijn = new RijndaelManaged
-            {
-                Mode = CipherMode.CBC,
-                Padding = PaddingMode.None,
-                KeySize = 256
-            };
+                           {
+                               Mode = CipherMode.CBC,
+                               Padding = PaddingMode.None,
+                               KeySize = 256
+                           };
 
             using (var msDecrypt = new MemoryStream(encryptedData))
             {
@@ -541,5 +670,4 @@ namespace Facebook
 
 #endif
     }
-
 }
