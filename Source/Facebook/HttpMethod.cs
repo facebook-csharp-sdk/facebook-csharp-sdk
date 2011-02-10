@@ -19,10 +19,12 @@ namespace Facebook
         /// A GET Request
         /// </summary>
         Get,
+
         /// <summary>
         /// A POST Request
         /// </summary>
         Post,
+
         /// <summary>
         /// A DELETE Request
         /// </summary>
