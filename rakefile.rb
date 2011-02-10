@@ -459,10 +459,10 @@ end
 desc "Create zip archive of the source files"
 task :dist_source => [:dist_prepare] do
    src_archive_name = "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.src.zip"
-   if (build_config[:vcs][:name] = 'git') then
+   if (build_config[:vcs][:name] == 'git') then
     sh "git archive HEAD --format=zip > \"#{src_archive_name}\""
-   elsif (build_config[:vcs][:name] = 'hg') then
-    sh "hg archive -tzip \"#{src_archive_name}\""
+   elsif (build_config[:vcs][:name] == 'hg') then
+    sh "hg archive -tzip \"#{src_archive_name}\" -p \"#{PROJECT_NAME_SAFE}\""
    end
 end
 
