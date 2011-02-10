@@ -1,5 +1,5 @@
 ﻿properties { 
-  $version = '5.0.2'
+  $version = '5.0.3'
   $zipFileName = "FacebookSDK_V$version"
   $buildPackage = $true
   $buildDocs = $false
@@ -98,6 +98,7 @@ task NuGetPackage -depends Package {
         New-Item -Path $workingDir\NuGet\Facebook\$version\ -ItemType Directory
         New-Item -Path $workingDir\NuGet\FacebookWeb\$version\ -ItemType Directory
         New-Item -Path $workingDir\NuGet\FacebookWebMvc\$version\ -ItemType Directory
+        New-Item -Path $workingDir\NuGet\FacebookWebMvc2\$version\ -ItemType Directory
 
         Copy-Item -Path "$buildDir\NuGet\Facebook\Facebook.nuspec" -Destination $workingDir\NuGet\Facebook\$version\Facebook.nuspec -recurse
         (Get-Content $workingDir\NuGet\Facebook\$version\Facebook.nuspec) | 
@@ -117,6 +118,12 @@ task NuGetPackage -depends Package {
         Foreach-Object {$_ -replace "{version}", $version} | 
         Foreach-Object {$_ -replace "{packageId}", "FacebookWebMvc" } | 
         Set-Content $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec
+        
+        Copy-Item -Path "$buildDir\NuGet\FacebookWebMvc2\FacebookWebMvc2.nuspec" -Destination $workingDir\NuGet\FacebookWebMvc2\$version\FacebookWebMvc2.nuspec -recurse
+        (Get-Content $workingDir\NuGet\FacebookWebMvc2\$version\FacebookWebMvc2.nuspec) | 
+        Foreach-Object {$_ -replace "{version}", $version} | 
+        Foreach-Object {$_ -replace "{packageId}", "FacebookWebMvc" } | 
+        Set-Content $workingDir\NuGet\FacebookWebMvc2\$version\FacebookWebMvc2.nuspec
 
         foreach ($build in $builds)
         {
@@ -129,7 +136,8 @@ task NuGetPackage -depends Package {
             Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.pdb" -Destination $workingDir\NuGet\Facebook\$version\lib\$finalDir
             Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.XML" -Destination $workingDir\NuGet\Facebook\$version\lib\$finalDir
             Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.dll" -Destination $workingDir\NuGet\Facebook\$version\lib\$finalDir\CodeContracts
-            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.pdb" -Destination $workingDir\NuGet\Facebook\$version\lib\$finalDir\CodeContracts           
+            Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Contracts.pdb" -Destination $workingDir\NuGet\Facebook\$version\lib\$finalDir\CodeContracts
+                       
             if ($finalDir -eq "Net40" -or $finalDir -eq "Net35") {
                 New-Item -Path $workingDir\NuGet\FacebookWeb\$version\lib\$finalDir -ItemType Directory
                 New-Item -Path $workingDir\NuGet\FacebookWeb\$version\lib\$finalDir\CodeContracts -ItemType Directory
@@ -141,7 +149,7 @@ task NuGetPackage -depends Package {
             }
 
             if ($finalDir -eq "Net40" -or $finalDir -eq "Net35") {
-                New-Item -Path $workingDir\NuGet\FacebookWebMvc\$version\lib\$finalDir -ItemType Directory
+                New-Item -Path $workingDir\NuGet\FacebookWebMvc3\$version\lib\$finalDir -ItemType Directory
                 New-Item -Path $workingDir\NuGet\FacebookWebMvc\$version\lib\$finalDir\CodeContracts -ItemType Directory
                 Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc.dll" -Destination $workingDir\NuGet\FacebookWebMvc\$version\lib\$finalDir
                 Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc.pdb" -Destination $workingDir\NuGet\FacebookWebMvc\$version\lib\$finalDir
@@ -149,11 +157,23 @@ task NuGetPackage -depends Package {
                 Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Mvc.Contracts.dll" -Destination $workingDir\NuGet\FacebookWebMvc\$version\lib\$finalDir\CodeContracts
                 Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Mvc.Contracts.pdb" -Destination $workingDir\NuGet\FacebookWebMvc\$version\lib\$finalDir\CodeContracts
             }
+            
+            if ($finalDir -eq "Net40") {
+                New-Item -Path $workingDir\NuGet\FacebookWebMvc2\$version\lib\$finalDir -ItemType Directory
+                New-Item -Path $workingDir\NuGet\FacebookWebMvc2\$version\lib\$finalDir\CodeContracts -ItemType Directory
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc2.dll" -Destination $workingDir\NuGet\FacebookWebMvc2\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc2.pdb" -Destination $workingDir\NuGet\FacebookWebMvc2\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\Facebook.Web.Mvc2.XML" -Destination $workingDir\NuGet\FacebookWebMvc2\$version\lib\$finalDir
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Mvc2.Contracts.dll" -Destination $workingDir\NuGet\FacebookWebMvc2\$version\lib\$finalDir\CodeContracts
+                Copy-Item -Path "$baseDir\Bin\Release\$finalDir\CodeContracts\Facebook.Web.Mvc2.Contracts.pdb" -Destination $workingDir\NuGet\FacebookWebMvc2\$version\lib\$finalDir\CodeContracts
+            }
+            
         }
           
         exec { .\Tools\NuGet\NuGet.exe pack $workingDir\NuGet\Facebook\$version\Facebook.nuspec -o $workingDir\NuGet\ }
         exec { .\Tools\NuGet\NuGet.exe pack $workingDir\NuGet\FacebookWeb\$version\FacebookWeb.nuspec -o $workingDir\NuGet\ }
         exec { .\Tools\NuGet\NuGet.exe pack $workingDir\NuGet\FacebookWebMvc\$version\FacebookWebMvc.nuspec -o $workingDir\NuGet\ }
+        exec { .\Tools\NuGet\NuGet.exe pack $workingDir\NuGet\FacebookWebMvc2\$version\FacebookWebMvc2.nuspec -o $workingDir\NuGet\ }
     }
 }
 

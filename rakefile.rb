@@ -185,6 +185,7 @@ directory "#{build_config[:paths][:working]}"
 directory "#{build_config[:paths][:working]}NuGet/Facebook"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWeb"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"
+directory "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2"
 
 nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |nuspec|
 	working_dir = build_config[:paths][:working]
@@ -233,7 +234,7 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
 	
 	nuspec.id = "Facebook"
 	nuspec.version = "#{build_config[:version][:full]}"
-	nuspec.authors = "Jim Zimmerman, Nathan Totten"
+	nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
 	nuspec.description = "The Facebook C# SDK core."
 	nuspec.language = "en-US"
 	nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
@@ -283,7 +284,7 @@ nuspec :nuspec_facebookweb => [:net35, :net40, "#{build_config[:paths][:working]
 	
 	nuspec.id = "FacebookWeb"
 	nuspec.version = "#{build_config[:version][:full]}"
-	nuspec.authors = "Jim Zimmerman, Nathan Totten"
+	nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
 	nuspec.description = "The Facebook C# SDK web component."
 	nuspec.language = "en-US"
 	nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
@@ -301,9 +302,58 @@ nugetpack :nuget_facebookweb => [:nuspec_facebookweb] do |nuget|
 	nuget.output  = "#{build_config[:paths][:working]}NuGet/"
 end
 
-nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |nuspec|
+nuspec :nuspec_facebookwebmvc => [:net40, "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |nuspec|
 	working_dir = build_config[:paths][:working]
     nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc/"
+	
+	FileUtils.rm_rf "#{nuget_working_dir}"
+    mkdir "#{nuget_working_dir}"
+    mkdir "#{nuget_working_dir}lib/"
+	
+	nuget_dirs = [ "lib/Net40/"]
+        
+    nuget_dirs.each do |d|
+        mkdir "#{nuget_working_dir + d}"
+        mkdir "#{nuget_working_dir + d}CodeContracts/"
+    end
+	
+	output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
+    #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
+	
+	[ "Facebook.Web.Mvc.dll", "Facebook.Web.Mvc.pdb", "Facebook.Web.Mvc.XML" ].each do |f|
+        # copy these 3 files of each different framework
+        cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
+    end
+    
+    [ "Facebook.Web.Mvc.Contracts.dll", "Facebook.Web.Mvc.Contracts.pdb" ].each do |f|
+        # copy code contracts of each different framework
+        cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
+    end
+	
+	nuspec.id = "FacebookWebMvc"
+	nuspec.version = "#{build_config[:version][:full]}"
+	nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
+	nuspec.description = "The Facebook C# SDK MVC component."
+	nuspec.language = "en-US"
+	nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
+	nuspec.requireLicenseAcceptance = true
+	nuspec.projectUrl = "http://facebooksdk.codeplex.com"
+	nuspec.tags = "Facebook"
+	nuspec.dependency "Newtonsoft.Json", "4.0.1"
+	nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
+	nuspec.dependency "FacebookWeb", "#{build_config[:version][:full]}"
+	nuspec.output_file = "#{nuget_working_dir}/FacebookWebMvc.nuspec"
+end
+
+nugetpack :nuget_facebookwebmvc => [:nuspec_facebookwebmvc] do |nuget|
+	nuget.command = "#{build_config[:paths][:nuget]}"
+	nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/FacebookWebMvc.nuspec"
+	nuget.output  = "#{build_config[:paths][:working]}NuGet/"
+end
+
+nuspec :nuspec_facebookwebmvc2 => [:net35, :net40, "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2"] do |nuspec|
+	working_dir = build_config[:paths][:working]
+    nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc2/"
 	
 	FileUtils.rm_rf "#{nuget_working_dir}"
     mkdir "#{nuget_working_dir}"
@@ -320,21 +370,21 @@ nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:worki
 	output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
     #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
 	
-	[ "Facebook.Web.Mvc.dll", "Facebook.Web.Mvc.pdb", "Facebook.Web.Mvc.XML" ].each do |f|
+	[ "Facebook.Web.Mvc2.dll", "Facebook.Web.Mvc2.pdb", "Facebook.Web.Mvc2.XML" ].each do |f|
         # copy these 3 files of each different framework
         cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
         cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
     end
     
-    [ "Facebook.Web.Mvc.Contracts.dll", "Facebook.Web.Mvc.Contracts.pdb" ].each do |f|
+    [ "Facebook.Web.Mvc2.Contracts.dll", "Facebook.Web.Mvc2.Contracts.pdb" ].each do |f|
         # copy code contracts of each different framework
         cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
         cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
     end
 	
-	nuspec.id = "FacebookWebMvc"
+	nuspec.id = "FacebookWebMvc2"
 	nuspec.version = "#{build_config[:version][:full]}"
-	nuspec.authors = "Jim Zimmerman, Nathan Totten"
+	nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
 	nuspec.description = "The Facebook C# SDK MVC component."
 	nuspec.language = "en-US"
 	nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
@@ -347,9 +397,9 @@ nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:worki
 	nuspec.output_file = "#{nuget_working_dir}/FacebookWebMvc.nuspec"
 end
 
-nugetpack :nuget_facebookwebmvc => [:nuspec_facebookwebmvc] do |nuget|
+nugetpack :nuget_facebookwebmvc2 => [:nuspec_facebookwebmvc] do |nuget|
 	nuget.command = "#{build_config[:paths][:nuget]}"
-	nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/FacebookWebMvc.nuspec"
+	nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2/FacebookWebMvc2.nuspec"
 	nuget.output  = "#{build_config[:paths][:working]}NuGet/"
 end
 
