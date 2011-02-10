@@ -479,6 +479,8 @@ task :dist_libs => [:dist_prepare, :nuget] do
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebMvc"
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebMvc2"
     
+    cp "#{build_config[:paths][:root]}LICENSE.txt", "#{build_config[:paths][:working]}Bin/"
+    
     sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.bin.zip\" \"#{build_config[:paths][:working]}Bin/*\""
     
     sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.packages.zip\" \"#{build_config[:paths][:working]}NuGet/*.nupkg\""
