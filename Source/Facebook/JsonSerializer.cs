@@ -7,23 +7,26 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using System.Globalization;
-
 namespace Facebook
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    using Newtonsoft.Json.Linq;
+
+    /// <summary>
+    /// Represents helper classes for json serialization and deserialization.
+    /// </summary>
     internal static class JsonSerializer
     {
+        /// <summary>
+        /// Gets the serializer settings.
+        /// </summary>
         private static JsonSerializerSettings SerializerSettings
         {
             get
@@ -42,12 +45,29 @@ namespace Facebook
             }
         }
 
-
+        /// <summary>
+        /// Serializes the object to json string.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The json string.
+        /// </returns>
         public static string SerializeObject(object value)
         {
             return JsonConvert.SerializeObject(value, Formatting.None, SerializerSettings);
         }
 
+        /// <summary>
+        /// Deserializes the stream.
+        /// </summary>
+        /// <param name="stream">
+        /// The stream.
+        /// </param>
+        /// <returns>
+        /// The object.
+        /// </returns>
         public static object DeserializeObject(Stream stream)
         {
             Contract.Requires(stream != null);
@@ -61,11 +81,35 @@ namespace Facebook
             return result;
         }
 
+        /// <summary>
+        /// Deserialize the json string to object.
+        /// </summary>
+        /// <param name="json">
+        /// The json string.
+        /// </param>
+        /// <returns>
+        /// The object.
+        /// </returns>
         public static object DeserializeObject(string json)
         {
             return DeserializeObject(json, null);
         }
 
+        /// <summary>
+        /// Deserializes the json string.
+        /// </summary>
+        /// <param name="json">
+        /// The json string.
+        /// </param>
+        /// <param name="type">
+        /// The type of object.
+        /// </param>
+        /// <returns>
+        /// The object.
+        /// </returns>
+        /// <exception cref="SerializationException">
+        /// Occurs when deserialization fails.
+        /// </exception>
         public static object DeserializeObject(string json, Type type)
         {
             if (string.IsNullOrEmpty(json))
@@ -100,6 +144,15 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Converts the <see cref="JToken"/> to <see cref="object"/>
+        /// </summary>
+        /// <param name="token">
+        /// The token.
+        /// </param>
+        /// <returns>
+        /// Returns the object.
+        /// </returns>
         private static object ConvertJTokenToDictionary(JToken token)
         {
             if (token == null)
