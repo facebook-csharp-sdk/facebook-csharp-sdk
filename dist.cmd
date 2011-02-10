@@ -1,0 +1,2 @@
+rake dist
+pause
