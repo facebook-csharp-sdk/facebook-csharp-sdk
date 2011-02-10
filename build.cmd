@@ -1,2 +1,3 @@
+@echo off
 rake
 pause

@@ -49,7 +49,7 @@ task :configure do
            :short_rev_id => ''         # short revision id
         },        
        :ci => {
-            :build_number_param_name => 'BUILD_NUMBER',
+           :build_number_param_name => 'BUILD_NUMBER',
            :is_nightly              => true,
            :build_number            => 0
         },
@@ -60,6 +60,10 @@ task :configure do
            :net40         => '',
            :net35         => '',
            :shfb        => '', # sandcastle help file builder doc project
+       },
+	   :nuspec => {
+            :authors                 => "Jim Zimmerman, Nathan Totten, Prabir Shrestha",
+            :newtonsoft_json_version => "4.0.1"
        }
    }
    
@@ -234,14 +238,14 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
     
     nuspec.id = "Facebook"
     nuspec.version = "#{build_config[:version][:full]}"
-    nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
+    nuspec.authors = "#{build_config[:nuspec][:authors]}"
     nuspec.description = "The Facebook C# SDK core."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
     nuspec.requireLicenseAcceptance = true
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
-    nuspec.dependency "Newtonsoft.Json", "4.0.1"
+    nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
     nuspec.output_file = "#{nuget_working_dir}/Facebook.nuspec"
 end
 
@@ -284,14 +288,14 @@ nuspec :nuspec_facebookweb => [:net35, :net40, "#{build_config[:paths][:working]
     
     nuspec.id = "FacebookWeb"
     nuspec.version = "#{build_config[:version][:full]}"
-    nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
+    nuspec.authors = "#{build_config[:nuspec][:authors]}"
     nuspec.description = "The Facebook C# SDK web component."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
     nuspec.requireLicenseAcceptance = true
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
-    nuspec.dependency "Newtonsoft.Json", "4.0.1"
+    nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
     nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
     nuspec.output_file = "#{nuget_working_dir}/FacebookWeb.nuspec"
 end
@@ -332,14 +336,14 @@ nuspec :nuspec_facebookwebmvc => [:net40, "#{build_config[:paths][:working]}NuGe
     
     nuspec.id = "FacebookWebMvc"
     nuspec.version = "#{build_config[:version][:full]}"
-    nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
+    nuspec.authors = nuspec.authors = "#{build_config[:nuspec][:authors]}"
     nuspec.description = "The Facebook C# SDK MVC component."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
     nuspec.requireLicenseAcceptance = true
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
-    nuspec.dependency "Newtonsoft.Json", "4.0.1"
+    nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
     nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
     nuspec.dependency "FacebookWeb", "#{build_config[:version][:full]}"
     nuspec.output_file = "#{nuget_working_dir}/FacebookWebMvc.nuspec"
@@ -384,26 +388,25 @@ nuspec :nuspec_facebookwebmvc2 => [:net35, :net40, "#{build_config[:paths][:work
     
     nuspec.id = "FacebookWebMvc2"
     nuspec.version = "#{build_config[:version][:full]}"
-    nuspec.authors = "Jim Zimmerman, Nathan Totten, Prabir Shrestha"
+    nuspec.authors = "#{build_config[:nuspec][:authors]}"
     nuspec.description = "The Facebook C# SDK MVC component."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
     nuspec.requireLicenseAcceptance = true
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
-    nuspec.dependency "Newtonsoft.Json", "4.0.1"
+    nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
     nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
     nuspec.dependency "FacebookWeb", "#{build_config[:version][:full]}"
-    nuspec.output_file = "#{nuget_working_dir}/FacebookWebMvc.nuspec"
+    nuspec.output_file = "#{nuget_working_dir}/FacebookWebMvc2.nuspec"
 end
 
-nugetpack :nuget_facebookwebmvc2 => [:nuspec_facebookwebmvc] do |nuget|
+nugetpack :nuget_facebookwebmvc2 => [:nuspec_facebookwebmvc2] do |nuget|
     nuget.command = "#{build_config[:paths][:nuget]}"
     nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2/FacebookWebMvc2.nuspec"
     nuget.output  = "#{build_config[:paths][:working]}NuGet/"
 end
 
-desc "Build help documentation"
 msbuild :docs => [:net40] do |msb|
    msb.properties :configuration => build_config[:configuration]
    msb.properties :DocumentationSourcePath => "#{build_config[:paths][:output]}Release/Net40/" if build_config[:configuration] = :Release
@@ -422,7 +425,7 @@ msbuild :clean_docs do |msb|
    msb.properties
 end
 
-desc "Build All Librarires (default)"
+desc "Build All Libraries (default)"
 task :libs => [:net35, :net40, :sl4,:wp7]
 
 desc "Clean All"
@@ -432,41 +435,56 @@ task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do
    FileUtils.rm_rf build_config[:paths][:dist]    
 end
 
-task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc]
+task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc,:nuget_facebookwebmvc2]
 
 directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
 
-desc "Create distribution packages"
-task :dist => [:libs, :nuget, :docs] do
-   rm_rf "#{build_config[:paths][:dist]}"
-   mkdir "#{build_config[:paths][:dist]}"
-   
-   rm_rf "#{build_config[:paths][:working]}Bin/"
-   FileUtils.cp_r "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}Bin/"
-   
-   Find.find("#{build_config[:paths][:working]}Bin/.") do |f|
-       ext = File.extname(f)
-       if ext == '.sdf' or ext == '.old' then
-           rm f
-       end
+task :dist_prepare => [] do
+	rm_rf "#{build_config[:paths][:dist]}"
+    mkdir "#{build_config[:paths][:dist]}"
+
+	rm_rf "#{build_config[:paths][:working]}/"
+	mkdir "#{build_config[:paths][:working]}"
+end
+
+desc "Create zip archive of the source files"
+task :dist_source => [:dist_prepare] do
+   src_archive_name = "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.src.zip"
+   if (build_config[:vcs][:name] = 'git') then
+    sh "git archive HEAD --format=zip > \"#{src_archive_name}\""
+   elsif (build_config[:vcs][:name] = 'hg') then
+    sh "hg archive -tzip \"#{src_archive_name}\""
    end
-   
-  sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.bin.zip\" \"#{build_config[:paths][:working]}Bin/*\""
-  
-  sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.docs.zip\" \"#{build_config[:paths][:working]}Documentation/*\""
-  cp "#{build_config[:paths][:working]}Documentation/Documentation.chm", "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.chm"
-   
-  sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.packages.zip\" \"#{build_config[:paths][:working]}NuGet/*.nupkg\""
-  sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.nuspec.zip\" \"#{build_config[:paths][:working]}NuGet/*\" -x!*.nupkg"
-  
-  src_archive_name = "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.src.zip"
-  if (build_config[:vcs][:name] = 'git') then
-   sh "git archive HEAD --format=zip > \"#{src_archive_name}\""
-  elsif (build_config[:vcs][:name] = 'hg') then
-   sh "hg archive -tzip \"#{src_archive_name}\""
-  end
-   
+end
+
+desc "Create distribution packages for libraries."
+task :dist_libs => [:dist_prepare, :nuget] do
+    mkdir "#{build_config[:paths][:working]}Bin/"
+    mkdir "#{build_config[:paths][:working]}Bin/Facebook"
+    mkdir "#{build_config[:paths][:working]}Bin/FacebookWeb"
+    mkdir "#{build_config[:paths][:working]}Bin/FacebookWebMvc"    
+    mkdir "#{build_config[:paths][:working]}Bin/FacebookWebMvc2"
+    
+    FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/Facebook/lib/.", "#{build_config[:paths][:working]}Bin/Facebook"
+    FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWeb"
+    FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebMvc"
+    FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebMvc2"
+    
+    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.bin.zip\" \"#{build_config[:paths][:working]}Bin/*\""
+    
+    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.packages.zip\" \"#{build_config[:paths][:working]}NuGet/*.nupkg\""
+    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.nuspec.zip\" \"#{build_config[:paths][:working]}NuGet/*\" -x!*.nupkg"
+ end
+
+desc "Create distribution package for documentations."
+task :dist_docs => [:dist_prepare, :docs] do
+   sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.docs.zip\" \"#{build_config[:paths][:working]}Documentation/*\""
+   cp "#{build_config[:paths][:working]}Documentation/Documentation.chm", "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.chm"
+end
+
+desc "Create distribution packages"
+task :dist => [:dist_prepare, :dist_libs, :dist_docs] do
 end
 
 assemblyinfo :assemblyinfo_facebook do |asm|
