@@ -10,8 +10,8 @@
 namespace Facebook
 {
     using System;
+    using System.Globalization;
     using System.Runtime.Serialization;
-using System.Globalization;
 
     /// <summary>
     /// Represents errors that occur as a result of problems with the OAuth access token.
@@ -25,7 +25,6 @@ using System.Globalization;
         /// Initializes a new instance of the <see cref="FacebookOAuthException"/> class.
         /// </summary>
         public FacebookOAuthException()
-            : base()
         {
         }
 
