@@ -494,7 +494,7 @@ task :dist_docs => [:dist_prepare, :docs] do
 end
 
 desc "Create distribution packages"
-task :dist => [:dist_prepare, :dist_libs, dist_source, :dist_docs] do
+task :dist => [:dist_prepare, :dist_libs, :dist_source, :dist_docs] do
 end
 
 assemblyinfo :assemblyinfo_facebook do |asm|
