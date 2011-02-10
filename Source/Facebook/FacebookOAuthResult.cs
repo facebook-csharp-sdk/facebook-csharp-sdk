@@ -159,7 +159,7 @@ namespace Facebook
         /// Parse the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
-        /// The uri string.
+        /// The url to parse.
         /// </param>
         /// <returns>
         /// Returns an instance of <see cref="FacebookOAuthResult"/>.
@@ -173,7 +173,7 @@ namespace Facebook
         /// Parse the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
-        /// The uri.
+        /// The url to parse.
         /// </param>
         /// <returns>
         /// Returns an instance of <see cref="FacebookOAuthResult"/>.
@@ -187,7 +187,7 @@ namespace Facebook
         /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
-        /// The uri string.
+        /// The url to parse.
         /// </param>
         /// <param name="result">
         /// An instance of <see cref="FacebookOAuthResult"/>.
@@ -210,7 +210,7 @@ namespace Facebook
         /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
-        /// The uri.
+        /// The url to parse.
         /// </param>
         /// <param name="result">
         /// An instance of <see cref="FacebookOAuthResult"/>.
@@ -224,6 +224,21 @@ namespace Facebook
             return result != null;
         }
 
+        /// <summary>
+        /// Internal method for parsing the Facebook oauth ur..
+        /// </summary>
+        /// <param name="uri">
+        /// The url to parse.
+        /// </param>
+        /// <param name="throws">
+        /// Whether to throw the exception or not incase an error occurs.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FacebookOAuthResult"/>.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Throws if cannot parse the specified url.
+        /// </exception>
         private static FacebookOAuthResult Parse(Uri uri, bool throws)
         {
             IDictionary<string, object> parameters = null;
@@ -273,6 +288,5 @@ namespace Facebook
 
             return null;
         }
-
     }
 }
