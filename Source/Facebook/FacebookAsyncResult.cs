@@ -10,7 +10,7 @@
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents the method that handles the post-call result.
@@ -21,7 +21,12 @@ namespace Facebook
     /// <summary>
     /// Represents the method that handles the post-call result.
     /// </summary>
-    /// <param name="asyncResult">The Facebook asynchronous result.</param>
+    /// <typeparam name="T">
+    /// Type of the result.
+    /// </typeparam>
+    /// <param name="asyncResult">
+    /// The Facebook asynchronous result.
+    /// </param>
     public delegate void FacebookAsyncCallback<T>(FacebookAsyncResult<T> asyncResult);
 
     /// <summary>
@@ -143,17 +148,37 @@ namespace Facebook
         }
     }
 
+    /// <summary>
+    /// Represents a generate Facebook async result.
+    /// </summary>
+    /// <typeparam name="T">
+    /// Type of the result.
+    /// </typeparam>
+    [SuppressMessage("Microsoft.StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "Reviewed. Suppression is OK here.")]
     public class FacebookAsyncResult<T> : FacebookAsyncResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookAsyncResult"/> class.
+        /// Initializes a new instance of the <see cref="FacebookAsyncResult{T}"/> class.
         /// </summary>
-        /// <param name="result">The result.</param>
-        /// <param name="asyncState">State of the async.</param>
-        /// <param name="asyncWaitHandle">The async wait handle.</param>
-        /// <param name="completedSynchronously">if set to <c>true</c> [completed synchronously].</param>
-        /// <param name="isCompleted">if set to <c>true</c> [is completed].</param>
-        /// <param name="error">The error.</param>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <param name="asyncState">
+        /// State of the async.
+        /// </param>
+        /// <param name="asyncWaitHandle">
+        /// The async wait handle.
+        /// </param>
+        /// <param name="completedSynchronously">
+        /// if set to <c>true</c> [completed synchronously].
+        /// </param>
+        /// <param name="isCompleted">
+        /// if set to <c>true</c> [is completed].
+        /// </param>
+        /// <param name="error">
+        /// The error.
+        /// </param>
         public FacebookAsyncResult(
             object result,
             object asyncState,
@@ -179,10 +204,9 @@ namespace Facebook
                 }
                 else
                 {
-                    return (T)base.Result;
+                    return (T) base.Result;
                 }
             }
         }
-
     }
 }
