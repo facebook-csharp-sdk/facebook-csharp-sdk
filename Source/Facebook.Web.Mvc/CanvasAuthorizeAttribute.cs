@@ -34,6 +34,7 @@ namespace Facebook.Web.Mvc
                 this.HandleUnauthorizedRequest(filterContext, FacebookContext.Current);
             }
         }
+
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
         {
             Contract.Requires(filterContext != null);
