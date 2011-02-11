@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>WebMatrix.Data</name>
+  </assembly>
+  <members>
+    <member name="T:WebMatrix.Data.ConnectionEventArgs"></member>
+    <member name="M:WebMatrix.Data.ConnectionEventArgs.#ctor(System.Data.Common.DbConnection)"></member>
+    <member name="P:WebMatrix.Data.ConnectionEventArgs.Connection"></member>
+    <member name="T:WebMatrix.Data.Database">
+      <summary>Provides methods and properties that are used to access and manage data.</summary>
+    </member>
+    <member name="M:WebMatrix.Data.Database.Close">
+      <summary>Closes an open database.</summary>
+    </member>
+    <member name="P:WebMatrix.Data.Database.Connection">
+      <summary>Gets the current connection to a database.</summary>
+      <returns>The connection.</returns>
+    </member>
+    <member name="E:WebMatrix.Data.Database.ConnectionOpened">
+      <summary>Occurs when a new database connection is opened by a <see cref="T:WebMatrix.Data.Database" /> instance.</summary>
+    </member>
+    <member name="M:WebMatrix.Data.Database.Dispose">
+      <summary>Releases all resources used by a <see cref="T:WebMatrix.Data.Database" /> instance.</summary>
+    </member>
+    <member name="M:WebMatrix.Data.Database.Dispose(System.Boolean)">
+      <summary>Releases the unmanaged resources used by a <see cref="T:WebMatrix.Data.Database" /> instance and optionally releases the managed resources.</summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    </member>
+    <member name="M:WebMatrix.Data.Database.Execute(System.String,System.Object[])">
+      <summary>Executes a SQL statement using optional parameters.</summary>
+      <returns>The count of records affected by the SQL statement.</returns>
+      <param name="commandText">The SQL statement to execute.</param>
+      <param name="args">(Optional) Parameters to pass to the SQL statement.</param>
+    </member>
+    <member name="M:WebMatrix.Data.Database.GetLastInsertId">
+      <summary>Returns the identity column of the most recently inserted row.</summary>
+      <returns>The ID of the most recently inserted row.</returns>
+    </member>
+    <member name="M:WebMatrix.Data.Database.Open(System.String)">
+      <summary>Opens either the specified database file or the database that is specified using a named connection string from the Web.config file.</summary>
+      <returns>The database instance.</returns>
+      <param name="name">The name or connection string of the database.</param>
+    </member>
+    <member name="M:WebMatrix.Data.Database.OpenConnectionString(System.String)">
+      <summary>Opens a connection to a database using the specified connection string.</summary>
+      <returns>The database instance.</returns>
+      <param name="connectionString">The connection string that contains information that is used to connect to a database.</param>
+    </member>
+    <member name="M:WebMatrix.Data.Database.OpenConnectionString(System.String,System.String)">
+      <summary>Opens a database using a connection string and the specified provider.</summary>
+      <returns>The database instance.</returns>
+      <param name="connectionString">The connection string that contains information that is used to connect to a database.</param>
+      <param name="providerName">(Optional) The name of the .NET Framework data provider to use to connect to the data source.</param>
+    </member>
+    <member name="M:WebMatrix.Data.Database.Query(System.String,System.Object[])">
+      <summary>Queries the database using a SQL statement (optionally passing parameters) and returns the results. </summary>
+      <returns>The results of the query.</returns>
+      <param name="commandText">The SQL statement to execute.</param>
+      <param name="parameters">(Optional) Parameters to pass to the SQL statement.</param>
+    </member>
+    <member name="M:WebMatrix.Data.Database.QuerySingle(System.String,System.Object[])">
+      <summary>Executes a SQL statement (optionally passing parameters) and returns a single record.</summary>
+      <returns>The single database record returned by the SQL statement.</returns>
+      <param name="commandText">The SQL statement to execute.</param>
+      <param name="args">(Optional) Parameters to pass to the SQL statement.</param>
+    </member>
+    <member name="M:WebMatrix.Data.Database.QueryValue(System.String,System.Object[])">
+      <summary>Executes a SQL statement (optionally passing parameters) and returns a single (scalar) value.</summary>
+      <returns>The value returned by the SQL statement.</returns>
+      <param name="commandText">The  SQL statement to execute.</param>
+      <param name="args">(Optional) Parameters to pass to the SQL statement.</param>
+    </member>
+    <member name="T:WebMatrix.Data.DynamicRecord"></member>
+    <member name="P:WebMatrix.Data.DynamicRecord.Columns"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.GetDynamicMemberNames"></member>
+    <member name="P:WebMatrix.Data.DynamicRecord.Item(System.Int32)"></member>
+    <member name="P:WebMatrix.Data.DynamicRecord.Item(System.String)"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetAttributes"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetClassName"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetComponentName"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetConverter"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetDefaultEvent"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetDefaultProperty"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetEditor(System.Type)"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetEvents"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetEvents(System.Attribute[])"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetProperties"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetProperties(System.Attribute[])"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.System#ComponentModel#ICustomTypeDescriptor#GetPropertyOwner(System.ComponentModel.PropertyDescriptor)"></member>
+    <member name="M:WebMatrix.Data.DynamicRecord.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)"></member>
+  </members>
+</doc>
