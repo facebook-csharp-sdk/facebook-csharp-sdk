@@ -48,6 +48,12 @@ namespace Facebook.Web
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
+        /// </summary>
+        /// <param name="dictionary">
+        /// The dictionary.
+        /// </param>
         public FacebookSession(IDictionary<string, object> dictionary)
         {
             this.Data = dictionary;
@@ -130,10 +136,18 @@ namespace Facebook.Web
             }
         }
 
+        /// <summary>
+        /// Extracts the user id from access token.
+        /// </summary>
+        /// <param name="accessToken">
+        /// The access token.
+        /// </param>
+        /// <returns>
+        /// Returns the user id if successful otherwise null.
+        /// </returns>
         internal static string ParseUserIdFromAccessToken(string accessToken)
         {
             Contract.Requires(!string.IsNullOrEmpty(accessToken));
-            // Contract.Ensures(Contract.Result<long>() >= 0);
 
             /*
              * access_token:
@@ -148,7 +162,7 @@ namespace Facebook.Web
             if (accessTokenParts.Length == 3)
             {
                 var idPart = accessTokenParts[1];
-                if (!String.IsNullOrEmpty(idPart))
+                if (!string.IsNullOrEmpty(idPart))
                 {
                     var idParts = idPart.Split('-');
                     if (idParts.Length == 2 && !string.IsNullOrEmpty(idParts[1]))

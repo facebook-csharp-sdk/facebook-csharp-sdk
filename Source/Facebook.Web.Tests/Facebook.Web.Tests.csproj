@@ -67,6 +67,14 @@
   <ItemGroup>
     <Compile Include="AuthorizerTests.cs" />
     <Compile Include="FacebookSessionTests.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAnApplicationAccessTokenThen.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAStringWithTwoPipelinesAndSecondPartContainsTwoOrMoreDashesThen.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAStringWithTwoPipelinesAndSecondPartDoesNotContainDashThen.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAStringWithTwoPipelinesAndSecondPartIsEmptyThen.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAValidUserAccessTokenWhichDoesNotExpireThen.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAValidUserAccessTokenWhichExpiresThen.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenInvalidUserAccessTokenLessThan2PipelinesThen.cs" />
+    <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenInvalidUserAccessTokenWithMoreThan3Pipelinesthen.cs" />
     <Compile Include="FacebookWebUtilsTests.cs" />
     <Compile Include="FacebookWebUtils\VerifyGetSubscription\GivenARequestWithCorrectVerifyTokenAndHubModeButNoHubChallengeThen.cs" />
     <Compile Include="FacebookWebUtils\VerifyGetSubscription\GivenARequestWithCorrectVerifyTokenHubModeAndHubChallengeThen.cs" />
@@ -80,7 +88,6 @@
     <Compile Include="FacebookWebUtils\VerifyPostSubscription\GivenARequestWithValidHttpXHubSignatureAndNoJsonStringThen.cs" />
     <Compile Include="FacebookWebUtils\VerifyPostSubscription\GivenAValidPostSubscriptionRequestThen.cs" />
     <Compile Include="ParseSignedRequestTests.cs" />
-    <Compile Include="ParseUserIdFromAcessTokenTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
@@ -88,11 +95,6 @@
     <Compile Include="CanvasUrlBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook.TestUtils\Facebook.TestUtils.csproj">
-      <Project>{4120B1D9-A5E4-4B69-B69C-167268195A39}</Project>
-      <Name>Facebook.TestUtils</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Facebook.Web\Facebook.Web.csproj">
       <Project>{73333465-710D-4143-BA9B-201D90EE2BAF}</Project>
       <Name>Facebook.Web</Name>
