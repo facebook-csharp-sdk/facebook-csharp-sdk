@@ -24,14 +24,7 @@ namespace Facebook.Web
         /// <summary>
         /// The actual value of the facebook session.
         /// </summary>
-        private object data;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
-        /// </summary>
-        public FacebookSession()
-        {
-        }
+        private readonly object data;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSession"/> class.
@@ -40,12 +33,9 @@ namespace Facebook.Web
         /// The access token.
         /// </param>
         public FacebookSession(string accessToken)
+            : this(new JsonObject { { "access_token", accessToken } })
         {
-            this.AccessToken = accessToken;
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                this.UserId = ParseUserIdFromAccessToken(accessToken);
-            }
+            Contract.Requires(!string.IsNullOrEmpty(accessToken));
         }
 
         /// <summary>
@@ -56,63 +46,71 @@ namespace Facebook.Web
         /// </param>
         public FacebookSession(IDictionary<string, object> dictionary)
         {
-            this.Data = dictionary;
+            Contract.Requires(dictionary != null);
 
-            if (dictionary != null)
+            var data = dictionary is JsonObject ? dictionary : FacebookUtils.ToDictionary(dictionary);
+
+            this.AccessToken = data.ContainsKey("access_token") ? (string)data["access_token"] : null;
+
+            if (!data.ContainsKey("uid") && !string.IsNullOrEmpty(this.AccessToken))
             {
-                this.UserId = dictionary.ContainsKey("uid") ? (string)dictionary["uid"] : null;
-                this.Secret = dictionary.ContainsKey("secret") ? (string)dictionary["secret"] : null;
-                this.SessionKey = dictionary.ContainsKey("session_key") ? (string)dictionary["session_key"] : null;
-                this.AccessToken = dictionary.ContainsKey("access_token") ? (string)dictionary["access_token"] : null;
-                this.Expires = dictionary.ContainsKey("expires")
-                                   ? FacebookUtils.FromUnixTime(Convert.ToInt64(dictionary["expires"]))
-                                   : DateTime.MinValue;
-                this.Signature = dictionary.ContainsKey("sig") ? (string)dictionary["sig"] : null;
-                this.BaseDomain = dictionary.ContainsKey("base_domain") ? (string)dictionary["base_domain"] : null;
+                data.Add("uid", ParseUserIdFromAccessToken(this.AccessToken));
             }
+
+            this.UserId = data.ContainsKey("uid") ? (string)data["uid"] : null;
+            this.Secret = data.ContainsKey("secret") ? (string)data["secret"] : null;
+            this.SessionKey = data.ContainsKey("session_key") ? (string)data["session_key"] : null;
+
+            this.Expires = data.ContainsKey("expires")
+                               ? FacebookUtils.FromUnixTime(Convert.ToInt64(data["expires"]))
+                               : DateTime.MinValue;
+            this.Signature = data.ContainsKey("sig") ? (string)data["sig"] : null;
+            this.BaseDomain = data.ContainsKey("base_domain") ? (string)data["base_domain"] : null;
+
+            this.data = data;
         }
 
         /// <summary>
-        /// Gets or sets the user id.
+        /// Gets the user id.
         /// </summary>
         /// <value>The user id.</value>
-        public string UserId { get; set; }
+        public string UserId { get; private set; }
 
         /// <summary>
-        /// Gets or sets the secret.
+        /// Gets the secret.
         /// </summary>
         /// <value>The secret.</value>
-        public string Secret { get; set; }
+        public string Secret { get; private set; }
 
         /// <summary>
-        /// Gets or sets the access token.
+        /// Gets the access token.
         /// </summary>
         /// <value>The access token.</value>
-        public string AccessToken { get; set; }
+        public string AccessToken { get; private set; }
 
         /// <summary>
-        /// Gets or sets the session key.
+        /// Gets the session key.
         /// </summary>
         /// <value>The session key.</value>
-        public string SessionKey { get; set; }
+        public string SessionKey { get; private set; }
 
         /// <summary>
-        /// Gets or sets the expires.
+        /// Gets the expires.
         /// </summary>
         /// <value>The expires.</value>
-        public DateTime Expires { get; set; }
+        public DateTime Expires { get; private set; }
 
         /// <summary>
-        /// Gets or sets the signature.
+        /// Gets the signature.
         /// </summary>
         /// <value>The signature.</value>
-        public string Signature { get; set; }
+        public string Signature { get; private set; }
 
         /// <summary>
-        /// Gets or sets the base domain.
+        /// Gets the base domain.
         /// </summary>
         /// <value>The base domain.</value>
-        public string BaseDomain { get; set; }
+        public string BaseDomain { get; private set; }
 
         /// <summary>
         /// Gets actual value of signed request.
@@ -122,17 +120,6 @@ namespace Facebook.Web
             get
             {
                 return this.data;
-            }
-
-            private set
-            {
-                if (value == null)
-                {
-                    this.data = null;
-                    return;
-                }
-
-                this.data = value is JsonObject ? value : FacebookUtils.ToDictionary(value);
             }
         }
 

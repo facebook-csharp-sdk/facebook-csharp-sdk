@@ -69,7 +69,7 @@ namespace Facebook
         public static double ToUnixTime(DateTime dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double) (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Facebook
         public static double ToUnixTime(DateTimeOffset dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double) (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -159,9 +159,10 @@ namespace Facebook
         internal static IDictionary<string, object> ToDictionary(object parameters)
         {
             Contract.Requires(parameters != null);
+            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 
             var json = JsonSerializer.SerializeObject(parameters);
-            return (IDictionary<string, object>) JsonSerializer.DeserializeObject(json);
+            return (IDictionary<string, object>)JsonSerializer.DeserializeObject(json);
         }
 
         /// <summary>
@@ -228,7 +229,7 @@ namespace Facebook
             Contract.Ensures(Contract.Result<string>() != null);
             Contract.EndContractBlock();
 
-            return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object) kv.Value));
+            return ToJsonQueryString(dictionary.ToDictionary(kv => kv.Key, kv => (object)kv.Value));
         }
 
 #if !SILVERLIGHT
@@ -439,7 +440,7 @@ namespace Facebook
             Contract.Ensures(Contract.Result<byte[]>() != null);
 
             base64UrlSafeString =
-                base64UrlSafeString.PadRight(base64UrlSafeString.Length + (4 - base64UrlSafeString.Length%4)%4, '=');
+                base64UrlSafeString.PadRight(base64UrlSafeString.Length + (4 - base64UrlSafeString.Length % 4) % 4, '=');
             base64UrlSafeString = base64UrlSafeString.Replace('-', '+').Replace('_', '/');
             return Convert.FromBase64String(base64UrlSafeString);
         }
