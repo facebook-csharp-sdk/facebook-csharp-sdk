@@ -1,5 +1,6 @@
 namespace Facebook.Web.Tests.FacebookSession.ctor_accessToken
 {
+    using System;
     using Facebook.Web;
     using Xunit;
 
@@ -30,6 +31,36 @@ namespace Facebook.Web.Tests.FacebookSession.ctor_accessToken
         public void UserIdShouldBeSetCorrectly()
         {
             Assert.Equal("100001327642026", session.UserId);
+        }
+
+        [Fact]
+        public void SecretIsNull()
+        {
+            Assert.Null(session.Secret);
+        }
+
+        [Fact]
+        public void SecretKeyIsNull()
+        {
+            Assert.Null(session.SessionKey);
+        }
+
+        [Fact]
+        public void ExpiresIsMinvalue()
+        {
+            Assert.Equal(DateTime.MinValue, session.Expires);
+        }
+
+        [Fact]
+        public void SignatureIsNull()
+        {
+            Assert.Null(session.Signature);
+        }
+
+        [Fact]
+        public void BaseDomainIsNull()
+        {
+            Assert.Null(session.BaseDomain);
         }
     }
 }
