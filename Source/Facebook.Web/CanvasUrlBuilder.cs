@@ -138,14 +138,13 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<string>() != null);
 
-                var pathAndQuery = this.httpRequest.RawUrl;
-                var appPath = this.CanvasUrl.AbsolutePath.Replace(this.CanvasPageApplicationPath, String.Empty);
-                if (appPath != null && appPath != "/" && appPath.Length > 0)
+                var pathAndQuery = this.httpRequest.Url.PathAndQuery;
+                var i = pathAndQuery.IndexOf("/");
+                if (i > 0)
                 {
-                    pathAndQuery = pathAndQuery.Replace(appPath, string.Empty);
+                    pathAndQuery = pathAndQuery.Substring(i);
                 }
-
-                return pathAndQuery ?? string.Empty;
+                return pathAndQuery;
             }
         }
 
