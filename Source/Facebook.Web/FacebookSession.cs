@@ -167,7 +167,7 @@ namespace Facebook.Web
         /// </summary>
         /// <param name="signedRequest">The signed request.</param>
         /// <returns>The facebook session.</returns>
-        internal static FacebookSession Create(string appSecret, FacebookSignedRequestOld signedRequest)
+        internal static FacebookSession Create(string appSecret, FacebookSignedRequest signedRequest)
         {
             if (signedRequest == null || String.IsNullOrEmpty(signedRequest.AccessToken))
             {

@@ -358,7 +358,7 @@ namespace Facebook.Web
 
                 if (!digest.SequenceEqual(FacebookUtils.Base64UrlDecode(encodedSignature)))
                 {
-                    throw new InvalidOperationException("Invalid signed request. (Invalid signature.)");
+                    throw new InvalidOperationException(Properties.Resources.InvalidSignedRequestSignature);
                 }
 
                 IDictionary<string, object> result;
@@ -378,7 +378,7 @@ namespace Facebook.Web
 
                     if (issuedAt < currentTime)
                     {
-                        throw new InvalidOperationException("Invalid signed request. (Too old.)");
+                        throw new InvalidOperationException(Properties.Resources.OldSignedRequest);
                     }
 
                     result["issued_at"] = issuedAt;

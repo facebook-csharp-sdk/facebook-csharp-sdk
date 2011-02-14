@@ -132,7 +132,13 @@
   <data name="InvalidSignedRequest" xml:space="preserve">
     <value>Invalid signed request.</value>
   </data>
+  <data name="InvalidSignedRequestSignature" xml:space="preserve">
+    <value>Invalid signed request. (Invalid signature.)</value>
+  </data>
   <data name="InvalidVerifyToken" xml:space="preserve">
     <value>Invalid verify token.</value>
+  </data>
+  <data name="OldSignedRequest" xml:space="preserve">
+    <value>Invalid signed request. (Too old.)</value>
   </data>
 </root>

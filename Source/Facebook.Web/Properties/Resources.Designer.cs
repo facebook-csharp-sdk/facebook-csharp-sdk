@@ -106,11 +106,29 @@ namespace Facebook.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid signed request. (Invalid signature.).
+        /// </summary>
+        internal static string InvalidSignedRequestSignature {
+            get {
+                return ResourceManager.GetString("InvalidSignedRequestSignature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid verify token..
         /// </summary>
         internal static string InvalidVerifyToken {
             get {
                 return ResourceManager.GetString("InvalidVerifyToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid signed request. (Too old.).
+        /// </summary>
+        internal static string OldSignedRequest {
+            get {
+                return ResourceManager.GetString("OldSignedRequest", resourceCulture);
             }
         }
     }

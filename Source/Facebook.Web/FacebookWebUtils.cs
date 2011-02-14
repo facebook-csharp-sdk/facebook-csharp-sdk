@@ -35,12 +35,12 @@ namespace Facebook.Web
         /// <returns>
         /// Returns the signed request if found otherwise null.
         /// </returns>
-        internal static FacebookSignedRequestOld GetSignedRequest(string appSecret, HttpRequestBase httpRequest)
+        internal static FacebookSignedRequest GetSignedRequest(string appSecret, HttpRequestBase httpRequest)
         {
             Contract.Requires(httpRequest != null);
             Contract.Requires(httpRequest.Params != null);
 
-            return httpRequest.Params.AllKeys.Contains("signed_request") ? FacebookSignedRequestOld.Parse(appSecret, httpRequest.Params["signed_request"]) : null;
+            return httpRequest.Params.AllKeys.Contains("signed_request") ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params["signed_request"]) : null;
         }
 
         /// <summary>

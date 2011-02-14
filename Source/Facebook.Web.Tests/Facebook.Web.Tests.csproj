@@ -83,6 +83,13 @@
     <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAValidUserAccessTokenWhichExpiresThen.cs" />
     <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenInvalidUserAccessTokenLessThan2PipelinesThen.cs" />
     <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenInvalidUserAccessTokenWithMoreThan3Pipelinesthen.cs" />
+    <Compile Include="FacebookSignedRequest\TryParse\internal_method\GivenASignedRequestWhoseValidityIsForOneHourAndIsOlderThanOneHourThen.cs" />
+    <Compile Include="FacebookSignedRequest\TryParse\internal_method\GivenASignedRequestWithMoreThanOneDotThen.cs" />
+    <Compile Include="FacebookSignedRequest\TryParse\internal_method\GivenASignedRequestWithoutEnvelopeThen.cs" />
+    <Compile Include="FacebookSignedRequest\TryParse\internal_method\GivenASingedRequestvalueWithoutSignatureThen.cs" />
+    <Compile Include="FacebookSignedRequest\TryParse\internal_method\GivenAValidSignedRequestAndInvalidSecretThen.cs" />
+    <Compile Include="FacebookSignedRequest\TryParse\internal_method\GivenAValidEncryptedSignedRequestAndSecretThen.cs" />
+    <Compile Include="FacebookSignedRequest\TryParse\internal_method\GivenAValidSignedRequestAndValidSecretThen.cs" />
     <Compile Include="FacebookWebUtilsTests.cs" />
     <Compile Include="FacebookWebUtils\VerifyGetSubscription\GivenARequestWithCorrectVerifyTokenAndHubModeButNoHubChallengeThen.cs" />
     <Compile Include="FacebookWebUtils\VerifyGetSubscription\GivenARequestWithCorrectVerifyTokenHubModeAndHubChallengeThen.cs" />
