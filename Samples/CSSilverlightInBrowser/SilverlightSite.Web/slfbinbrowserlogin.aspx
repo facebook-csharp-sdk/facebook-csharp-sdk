@@ -9,13 +9,13 @@
     private void Page_Load(object sender, EventArgs e)
     {
         var url = HttpContext.Current.Request.Url;
-        FacebookAuthenticationResult authResult;
+        FacebookOAuthResult authResult;
 
-        if (FacebookAuthenticationResult.TryParse(url, out authResult))
+        if (FacebookOAuthResult.TryParse(url, out authResult))
         {
             if (authResult.IsSuccess)
             {
-                var oauth = new FacebookOAuthClientAuthorizer
+                var oauth = new FacebookOAuthClient
                                 {
                                     ClientId = "{appid}",
                                     ClientSecret = "{app secret}",
