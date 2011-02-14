@@ -230,6 +230,12 @@ namespace Facebook
             return this.members.GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns a json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override string ToString()
         {
             return JsonSerializer.SerializeObject(this);
