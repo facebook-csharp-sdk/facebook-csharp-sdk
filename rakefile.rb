@@ -157,6 +157,9 @@ end
 
 desc "Build Silverlight 4 binaries"
 msbuild :sl4 => [:clean_sl4,:assemblyinfo_facebook] do |msb|
+   # temporary hack for bug caused by code contracts
+   FileUtils.rm_rf "#{build_config[:paths][:src]}Facebook/obj/"
+   
    msb.properties :configuration => build_config[:configuration]
    msb.solution = build_config[:sln][:sl4]
    msb.targets :Build
@@ -165,9 +168,7 @@ end
 msbuild :clean_sl4 do |msb|
    msb.properties :configuration => build_config[:configuration]
    msb.solution = build_config[:sln][:sl4]
-   msb.targets :Clean
-    # bug caused by code contracts
-    FileUtils.rm_rf "#{build_config[:paths][:src]}Facebook/obj/"
+   msb.targets :Clean    
 end
 
 desc "Build Windows Phone 7 binaries"

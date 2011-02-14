@@ -1,3 +1,3 @@
 @echo off
-cmd /c "rake clean && rake dist"
+rake clean dist
 pause
