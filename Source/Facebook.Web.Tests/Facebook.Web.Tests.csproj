@@ -70,9 +70,11 @@
     <Compile Include="FacebookSession\ctor_accessToken\GivenAnApplicationAccessTokenThen.cs" />
     <Compile Include="FacebookSession\ctor_accessToken\GivenAValidUserAccessTokenWhichDoesNotExpireThen.cs" />
     <Compile Include="FacebookSession\ctor_accessToken\GivenAValidUserAccessTokenWhichExpiresThen.cs" />
+    <Compile Include="FacebookSession\ctor_dictionary\GivenAnAccessTokenAndUserIdThen.cs" />
     <Compile Include="FacebookSession\ctor_dictionary\GivenAnApplicationAccessTokenOnlyThen.cs" />
     <Compile Include="FacebookSession\ctor_dictionary\GivenEmptyDictionaryThen.cs" />
     <Compile Include="FacebookSession\ctor_dictionary\GivenEmptyJsonObjectThen.cs" />
+    <Compile Include="FacebookSession\ctor_dictionary\GivenOnlyAValidUserAccessTokenWhichDoesntNotExpireThen.cs" />
     <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAnApplicationAccessTokenThen.cs" />
     <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAStringWithTwoPipelinesAndSecondPartContainsTwoOrMoreDashesThen.cs" />
     <Compile Include="FacebookSession\ParseUserIdFromAccessToken\GivenAStringWithTwoPipelinesAndSecondPartDoesNotContainDashThen.cs" />
