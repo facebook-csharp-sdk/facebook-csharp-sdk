@@ -42,7 +42,7 @@
             }
 
             var loginUri = oauth.GetLoginUrl(paramaters);
-            webBrowser1.Navigate(loginUri);
+            webBrowser1.Navigate(loginUri.AbsoluteUri);
         }
 
         void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)

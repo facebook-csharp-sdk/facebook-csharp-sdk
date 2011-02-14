@@ -82,7 +82,7 @@ namespace Facebook.Samples.AuthenticationTool
                                 };
 
             var loginUri = oauth.GetLoginUrl(paramaters);
-            FacebookLoginBrowser.Navigate(loginUri);
+            FacebookLoginBrowser.Navigate(loginUri.AbsoluteUri);
         }
 
         void FacebookLoginBrowser_Navigated(object sender, NavigationEventArgs e)
