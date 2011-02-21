@@ -121,7 +121,7 @@
     <Compile Include="GlobalSuppressions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Authorizer.cs" />
+    <Compile Include="FacebookAuthorizer.cs" />
     <Compile Include="CanvasAuthorizer.cs" />
     <Compile Include="CanvasUrlBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

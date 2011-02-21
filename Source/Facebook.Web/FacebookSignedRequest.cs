@@ -35,7 +35,7 @@ namespace Facebook.Web
         /// <summary>
         /// The user id.
         /// </summary>
-        private string userId;
+        private long userId;
 
         /// <summary>
         /// The profile id.
@@ -51,7 +51,15 @@ namespace Facebook.Web
         /// The issued at.
         /// </summary>
         private DateTime issuedAt;
-        
+
+        public static FacebookSignedRequest Current
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSignedRequest"/> class.
         /// </summary>
@@ -95,14 +103,22 @@ namespace Facebook.Web
                         this.expires = payload.ContainsKey("expires_in")
                                            ? FacebookUtils.FromUnixTime(Convert.ToInt64(payload["expires_in"]))
                                            : DateTime.MinValue;
-                        this.userId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
+                        string sUserId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
+                        long userId;
+                        long.TryParse(sUserId, out userId);
+                        this.userId = userId;
+
                         this.profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
                     }
                 }
                 else
                 {
                     // old signed_request: http://developers.facebook.com/docs/authentication/canvas
-                    this.userId = data.ContainsKey("user_id") ? (string)data["user_id"] : null;
+                    string sUserId = data.ContainsKey("user_id") ? (string)data["user_id"] : null;
+                    long userId;
+                    long.TryParse(sUserId, out userId);
+                    this.userId = userId;
+
                     this.accessToken = data.ContainsKey("oauth_token") ? (string)data["oauth_token"] : null;
                     this.expires = data.ContainsKey("expires")
                                        ? FacebookUtils.FromUnixTime(Convert.ToInt64(data["expires"]))
@@ -125,7 +141,7 @@ namespace Facebook.Web
         /// <summary>
         /// Gets the user id.
         /// </summary>
-        public string UserId
+        public long UserId
         {
             get { return this.userId; }
         }

@@ -17,7 +17,7 @@ namespace Facebook.Web
     /// <summary>
     /// Facebook canvas authorizer.
     /// </summary>
-    public class CanvasAuthorizer : Authorizer
+    public class CanvasAuthorizer : FacebookAuthorizer
     {
         /// <summary>
         /// The facebook settings.

@@ -21,7 +21,7 @@ namespace Facebook.Web.Mvc
         /// <summary>
         /// Gets or sets the extended permissions.
         /// </summary>
-        public string Permissions { get; set; }
+        public string Perms { get; set; }
 
         /// <summary>
         /// Called when authorization is required.

@@ -70,7 +70,7 @@ namespace Facebook.Web.Mvc
 
             var model = new FacebookAuthorizeInfo(
                 this.GetLoginUrl(settings, filterContext.HttpContext, null),
-                this.Permissions,
+                this.Perms,
                 filterContext.HttpContext.Request.QueryString.AllKeys.Contains("error_reason"),
                 filterContext.RouteData.Values);
 
@@ -89,7 +89,7 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new CanvasAuthorizer(settings, httpContext)
             {
-                Perms = this.Permissions,
+                Perms = this.Perms,
                 ReturnUrlPath = this.ReturnUrlPath,
                 CancelUrlPath = this.CancelUrlPath,
                 LoginDisplayMode = this.LoginDisplayMode

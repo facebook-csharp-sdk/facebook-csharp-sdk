@@ -26,6 +26,14 @@ namespace Facebook.Web
         /// </summary>
         private readonly object data;
 
+        public static FacebookSession Current
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSession"/> class.
         /// </summary>
@@ -57,7 +65,11 @@ namespace Facebook.Web
                 data.Add("uid", ParseUserIdFromAccessToken(this.AccessToken));
             }
 
-            this.UserId = data.ContainsKey("uid") ? (string)data["uid"] : null;
+            string sUserId = data.ContainsKey("uid") ? (string)data["uid"] : null;
+            long userId = 0;
+            long.TryParse(sUserId, out userId);
+            this.UserId = userId;
+
             this.Secret = data.ContainsKey("secret") ? (string)data["secret"] : null;
             this.SessionKey = data.ContainsKey("session_key") ? (string)data["session_key"] : null;
 
@@ -74,7 +86,7 @@ namespace Facebook.Web
         /// Gets the user id.
         /// </summary>
         /// <value>The user id.</value>
-        public string UserId { get; private set; }
+        public long UserId { get; private set; }
 
         /// <summary>
         /// Gets the secret.
@@ -143,7 +155,6 @@ namespace Facebook.Web
              *                                                   |
              *                                                user id
              */
-
             var accessTokenParts = accessToken.Split('|');
 
             if (accessTokenParts.Length == 3)
@@ -155,6 +166,7 @@ namespace Facebook.Web
                     if (idParts.Length == 2 && !string.IsNullOrEmpty(idParts[1]))
                     {
                         return idParts[1];
+
                     }
                 }
             }
@@ -176,7 +188,7 @@ namespace Facebook.Web
 
             var dictionary = new Dictionary<string, object>
             {
-                { "uid", signedRequest.UserId },
+                { "uid", signedRequest.UserId.ToString() },
                 { "access_token", signedRequest.AccessToken },
                 { "expires", FacebookUtils.ToUnixTime(signedRequest.Expires) }
             };
