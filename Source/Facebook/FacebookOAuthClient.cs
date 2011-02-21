@@ -177,6 +177,13 @@ namespace Facebook
                 throw new Exception("RedirectUri required");
             }
 
+            // seems like if we don't do this and rather pass the original uri object,
+            // it seems to have http://localhost:80/csharpsamples instead of
+            // http://localhost/csharpsamples
+            // notice the port number, that shouldn't be there.
+            // this seems to happen for iis hosted apps.
+            mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
+
             var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
 
             var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token") { Query = queryString.ToString() };
@@ -272,6 +279,13 @@ namespace Facebook
             {
                 throw new Exception("RedirectUri required");
             }
+
+            // seems like if we don't do this and rather pass the original uri object,
+            // it seems to have http://localhost:80/csharpsamples instead of
+            // http://localhost/csharpsamples
+            // notice the port number, that shouldn't be there.
+            // this seems to happen for iis hosted apps.
+            mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
 
             var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
 
