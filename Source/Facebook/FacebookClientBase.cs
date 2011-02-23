@@ -20,6 +20,7 @@ namespace Facebook
     /// Represents the core Facebook functionality.
     /// </summary>
     [ContractClass(typeof(FacebookClientBaseContracts))]
+    [Obsolete("FacebookClientBase class will be removed in future. Use FacebookClient instead.")]
     public abstract class FacebookClientBase
     {
         private static Collection<string> _dropQueryParameters = new Collection<string> {
