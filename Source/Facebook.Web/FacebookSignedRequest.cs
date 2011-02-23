@@ -52,14 +52,6 @@ namespace Facebook.Web
         /// </summary>
         private DateTime issuedAt;
 
-        public static FacebookSignedRequest Current
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSignedRequest"/> class.
         /// </summary>
@@ -71,6 +63,23 @@ namespace Facebook.Web
             Contract.Requires(data != null);
 
             this.Data = data;
+        }
+
+        /// <summary>
+        /// Gets the current Facebook signed request.
+        /// </summary>
+        public static FacebookSignedRequest Current
+        {
+            get
+            {
+                Contract.Requires(System.Web.HttpContext.Current != null);
+                Contract.Requires(System.Web.HttpContext.Current.Request != null);
+                Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
+                Contract.Requires(FacebookContext.Current != null);
+                Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppSecret));
+
+                return HttpContext.Current.Request.GetFacebookSignedRequest();
+            }
         }
 
         /// <summary>

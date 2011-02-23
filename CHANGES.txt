@@ -26,6 +26,8 @@ vNext
     l. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest);
 4. added Facebook.Web.FacebookSession.Current
 	(use Request.GetFacebookSession() extension method, if you want to write unit testable codes)
+5. added Facebook.Web.FacebookSignedRequest.Current
+	(use Request.GetFacebookSignedRequest() extension method, if you want to write unit testable codes)
 
 =========================================================================
 v5.0.3 (BETA)
