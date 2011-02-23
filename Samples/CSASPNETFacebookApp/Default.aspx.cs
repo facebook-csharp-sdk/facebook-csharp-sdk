@@ -6,14 +6,6 @@ using Facebook.Web;
 
 public partial class _Default : Page
 {
-    /// <summary>
-    /// Gets the current canvas facebook session.
-    /// </summary>
-    public FacebookSession CurrentSession
-    {
-        get { return (new CanvasAuthorizer()).Session; }
-    }
-
     protected void Page_Load(object sender, EventArgs e)
     {
         CheckIfFacebookAppIsSetupCorrectly();
@@ -28,7 +20,9 @@ public partial class _Default : Page
 
     private void ShowFacebookContent()
     {
-        var fb = new FacebookClient(this.CurrentSession.AccessToken);
+        //  var fb = new FacebookClient(FacebookSession.Current.AccessToken);
+        //  or
+        var fb = new FacebookClient(Request.GetFacebookSession().AccessToken);
         dynamic myInfo = fb.Get("me");
         lblName.Text = myInfo.name;
         pnlHello.Visible = true;
@@ -48,7 +42,7 @@ public partial class _Default : Page
             var current = settings as IFacebookApplication;
             if (current.AppId != "{app id}" &&
                 current.AppSecret != "{app secret}" &&
-                current.CanvasUrl != "http://apps.facebook.com/{fix this path}/")
+                current.CanvasPage != "http://apps.facebook.com/{fix path}/")
             {
                 isSetup = true;
             }
