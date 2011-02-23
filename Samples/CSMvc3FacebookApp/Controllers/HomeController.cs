@@ -1,7 +1,6 @@
-﻿using System.Configuration;
-
-namespace CSMvc3FacebookApp.Controllers
+﻿namespace CSMvc3FacebookApp.Controllers
 {
+    using System.Configuration;
     using System.Web.Mvc;
     using Facebook;
     using Facebook.Web;
@@ -10,10 +9,6 @@ namespace CSMvc3FacebookApp.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        public FacebookSession FacebookSession
-        {
-            get { return (new CanvasAuthorizer().Session); }
-        }
         public ActionResult Index()
         {
             return View();
@@ -22,9 +17,9 @@ namespace CSMvc3FacebookApp.Controllers
         [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            var fbApp = new FacebookClient(this.FacebookSession.AccessToken);
+            var fb = new FacebookClient(this.Request.GetFacebookSession().AccessToken);
 
-            dynamic result = fbApp.Get("me");
+            dynamic result = fb.Get("me");
 
             ViewData["Firstname"] = result.first_name;
             ViewData["Lastname"] = result.last_name;
