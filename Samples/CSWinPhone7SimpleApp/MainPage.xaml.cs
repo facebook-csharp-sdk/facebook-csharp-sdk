@@ -33,7 +33,7 @@ namespace Facebook.Samples.AuthenticationTool
             fbApp.GetAsync("me", (val) =>
             {
                 // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
-                var result = (JsonObject)val.Result;
+                var result = (IDictionary<string, object>)val.Result;
                 Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
             });
         }
@@ -91,7 +91,8 @@ namespace Facebook.Samples.AuthenticationTool
 
             var paramaters = new Dictionary<string, object>
                                 {
-                                    { "response_type", "token" }
+                                    { "response_type", "token" },
+                                    // { "display", "touch" } // by default for wp7 builds only (in Facebook.dll), display is set to touch.
                                 };
 
             var extendedPermissions = this.GetExtendedPermissions();
