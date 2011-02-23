@@ -27,39 +27,39 @@ task :configure do
    build_config = {
        :log    => LOG,
        :paths  => {
-           :root    => root_path,
-           :src     => "#{root_path}Source/",
-           :output  => "#{root_path}Bin/",
-           :build   => "#{root_path}Build/",
-           :dist    => "#{root_path}Dist/",
-           :tools   => "#{root_path}Tools/",
-           :working => "#{root_path}Working/",
-           :doc     => "#{root_path}Doc/",
-           :packages=> '',
-           :nuget   => ''
+            :root    => root_path,
+            :src     => "#{root_path}Source/",
+            :output  => "#{root_path}Bin/",
+            :build   => "#{root_path}Build/",
+            :dist    => "#{root_path}Dist/",
+            :tools   => "#{root_path}Tools/",
+            :working => "#{root_path}Working/",
+            :doc     => "#{root_path}Doc/",
+            :packages=> '',
+            :nuget   => ''
        },
        :version => {
             :base => "#{base_version}",
-           :full => "#{base_version}",
-           :long => "#{base_version}"
+            :full => "#{base_version}",
+            :long => "#{base_version}"
         },
        :vcs => { # version control system
             :name         => '',        # version control name
             :rev_id       => '',        # revision number
-           :short_rev_id => ''         # short revision id
+            :short_rev_id => ''         # short revision id
         },        
        :ci => {
-           :build_number_param_name => 'BUILD_NUMBER',
-           :is_nightly              => true,
-           :build_number            => 0
+            :build_number_param_name => 'BUILD_NUMBER',
+            :is_nightly              => true,
+            :build_number            => 0
         },
        :configuration => :Release,
        :sln => {
-           :wp7         => '',
-           :sl4         => '',
-           :net40         => '',
-           :net35         => '',
-           :shfb        => '', # sandcastle help file builder doc project
+            :wp7         => '',
+            :sl4         => '',
+            :net40         => '',
+            :net35         => '',
+            :shfb        => '', # sandcastle help file builder doc project
        },
 	   :nuspec => {
             :authors                 => "Jim Zimmerman, Nathan Totten, Prabir Shrestha",
@@ -76,11 +76,11 @@ task :configure do
    build_config[:sln][:net35]         = "#{build_config[:paths][:src]}Facebook-Net35.sln"
    build_config[:sln][:shfb]        = "#{build_config[:paths][:doc]}doc.shfbproj"
    
-   begin
-       build_config[:vcs][:rev_id] = `hg id -i`.chomp.chop # remove the +
-       build_config[:vcs][:name] = 'hg'
-       build_config[:vcs][:short_rev_id] = build_config[:vcs][:rev_id]
-    rescue    
+    begin
+        build_config[:vcs][:rev_id] = `hg id -i`.chomp.chop # remove the +
+        build_config[:vcs][:name] = 'hg'
+        build_config[:vcs][:short_rev_id] = build_config[:vcs][:rev_id]
+    rescue
     end
    
    if(build_config[:vcs][:rev_id].length==0) then
@@ -98,29 +98,28 @@ task :configure do
    
    build_config[:version][:full] = "#{build_config[:version][:base]}.#{build_config[:ci][:build_number]}"
    
-   if(build_config[:ci][:is_nightly])
-       build_config[:version][:long] = "#{build_config[:version][:full]}-nightly-#{build_config[:vcs][:short_rev_id]}"
-   else
-       build_config[:version][:long] = "#{build_config[:version][:full]}-#{build_config[:vcs][:short_rev_id]}"        
-   end
+    if(build_config[:ci][:is_nightly])
+        build_config[:version][:long] = "#{build_config[:version][:full]}-nightly-#{build_config[:vcs][:short_rev_id]}"
+    else
+        build_config[:version][:long] = "#{build_config[:version][:full]}-#{build_config[:vcs][:short_rev_id]}"        
+    end
    
     puts build_config if build_config[:log]
     puts
-   puts "     Project Name: #{PROJECT_NAME}"
-    puts "Safe Project Name: #{PROJECT_NAME_SAFE}"
-   puts "          Version: #{build_config[:version][:full]} (#{build_config[:version][:long]})"
-   puts "     Base Version: #{build_config[:version][:base]}"
-   print "  CI Build Number: #{build_config[:ci][:build_number]}"
-   print " (not running under CI mode)" if build_config[:ci][:build_number] == 0
-   puts
-    puts "        Root Path: #{build_config[:paths][:root]}"
-   puts
-    puts "              VCS: #{build_config[:vcs][:name]}"
+    puts  "     Project Name: #{PROJECT_NAME}"
+    puts  "Safe Project Name: #{PROJECT_NAME_SAFE}"
+    puts  "          Version: #{build_config[:version][:full]} (#{build_config[:version][:long]})"
+    puts  "     Base Version: #{build_config[:version][:base]}"
+    print "  CI Build Number: #{build_config[:ci][:build_number]}"
+    print " (not running under CI mode)" if build_config[:ci][:build_number] == 0
+    puts
+    puts  "        Root Path: #{build_config[:paths][:root]}"
+    puts
+    puts  "              VCS: #{build_config[:vcs][:name]}"
     print "      Revision ID: #{build_config[:vcs][:rev_id]}"
     print "  (#{build_config[:vcs][:short_rev_id]})" if build_config[:vcs][:name] == 'git'
     puts    
-    puts
-   
+    puts   
 end
 
 Rake::Task["configure"].invoke
@@ -190,7 +189,6 @@ directory "#{build_config[:paths][:working]}"
 directory "#{build_config[:paths][:working]}NuGet/Facebook"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWeb"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"
-directory "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2"
 
 nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |nuspec|
     working_dir = build_config[:paths][:working]
@@ -201,9 +199,9 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
     mkdir "#{nuget_working_dir}lib/"
     
     nuget_dirs = [ "lib/Net35/",
-                  "lib/Net40/",
-                  "lib/SL4/",
-                  "lib/WP7/" ]
+                   "lib/Net40/",
+                   "lib/SL4/",
+                   "lib/WP7/" ]
        
     nuget_dirs.each do |d|
         mkdir "#{nuget_working_dir + d}"
@@ -311,31 +309,34 @@ nugetpack :nuget_facebookweb => [:nuspec_facebookweb] do |nuget|
     nuget.output  = "#{build_config[:paths][:working]}NuGet/"
 end
 
-nuspec :nuspec_facebookwebmvc => [:net40, "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |nuspec|
+nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |nuspec|
     working_dir = build_config[:paths][:working]
-   nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc/"
+    nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc/"
     
     FileUtils.rm_rf "#{nuget_working_dir}"
-   mkdir "#{nuget_working_dir}"
-   mkdir "#{nuget_working_dir}lib/"
+    mkdir "#{nuget_working_dir}"
+    mkdir "#{nuget_working_dir}lib/"
     
-    nuget_dirs = [ "lib/Net40/"]
+    nuget_dirs = [ "lib/Net35/",
+                   "lib/Net40/"]
        
-   nuget_dirs.each do |d|
-       mkdir "#{nuget_working_dir + d}"
-       mkdir "#{nuget_working_dir + d}CodeContracts/"
-   end
+    nuget_dirs.each do |d|
+        mkdir "#{nuget_working_dir + d}"
+        mkdir "#{nuget_working_dir + d}CodeContracts/"
+    end
     
     output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
-   #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
+    #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
     
     [ "Facebook.Web.Mvc.dll", "Facebook.Web.Mvc.pdb", "Facebook.Web.Mvc.XML" ].each do |f|
-       # copy these 3 files of each different framework
-       cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
-   end
+        # copy these 3 files of each different framework
+        cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
+        cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
+    end
    
    [ "Facebook.Web.Mvc.Contracts.dll", "Facebook.Web.Mvc.Contracts.pdb" ].each do |f|
        # copy code contracts of each different framework
+       cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
        cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
    end
    
@@ -343,7 +344,7 @@ nuspec :nuspec_facebookwebmvc => [:net40, "#{build_config[:paths][:working]}NuGe
     
     nuspec.id = "FacebookWebMvc"
     nuspec.version = "#{build_config[:version][:full]}"
-    nuspec.authors = nuspec.authors = "#{build_config[:nuspec][:authors]}"
+    nuspec.authors = "#{build_config[:nuspec][:authors]}"
     nuspec.description = "The Facebook C# SDK MVC component."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
@@ -359,60 +360,6 @@ end
 nugetpack :nuget_facebookwebmvc => [:nuspec_facebookwebmvc] do |nuget|
     nuget.command = "#{build_config[:paths][:nuget]}"
     nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/FacebookWebMvc.nuspec"
-    nuget.output  = "#{build_config[:paths][:working]}NuGet/"
-end
-
-nuspec :nuspec_facebookwebmvc2 => [:net35, :net40, "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2"] do |nuspec|
-    working_dir = build_config[:paths][:working]
-   nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc2/"
-    
-    FileUtils.rm_rf "#{nuget_working_dir}"
-   mkdir "#{nuget_working_dir}"
-   mkdir "#{nuget_working_dir}lib/"
-    
-    nuget_dirs = [ "lib/Net35/",
-                  "lib/Net40/"]
-       
-   nuget_dirs.each do |d|
-       mkdir "#{nuget_working_dir + d}"
-       mkdir "#{nuget_working_dir + d}CodeContracts/"
-   end
-    
-    output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
-   #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
-    
-    [ "Facebook.Web.Mvc2.dll", "Facebook.Web.Mvc2.pdb", "Facebook.Web.Mvc2.XML" ].each do |f|
-       # copy these 3 files of each different framework
-       cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
-       cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
-   end
-   
-   [ "Facebook.Web.Mvc2.Contracts.dll", "Facebook.Web.Mvc2.Contracts.pdb" ].each do |f|
-       # copy code contracts of each different framework
-       cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
-       cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
-   end
-   
-   FileUtils.cp_r "#{build_config[:paths][:build]}NuGet/FacebookWebMvc2/.", "#{nuget_working_dir}"
-    
-    nuspec.id = "FacebookWebMvc2"
-    nuspec.version = "#{build_config[:version][:full]}"
-    nuspec.authors = "#{build_config[:nuspec][:authors]}"
-    nuspec.description = "The Facebook C# SDK MVC component."
-    nuspec.language = "en-US"
-    nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
-    nuspec.requireLicenseAcceptance = true
-    nuspec.projectUrl = "http://facebooksdk.codeplex.com"
-    nuspec.tags = "Facebook"
-    nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
-    nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
-    nuspec.dependency "FacebookWeb", "#{build_config[:version][:full]}"
-    nuspec.output_file = "#{nuget_working_dir}/FacebookWebMvc2.nuspec"
-end
-
-nugetpack :nuget_facebookwebmvc2 => [:nuspec_facebookwebmvc2] do |nuget|
-    nuget.command = "#{build_config[:paths][:nuget]}"
-    nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2/FacebookWebMvc2.nuspec"
     nuget.output  = "#{build_config[:paths][:working]}NuGet/"
 end
 
@@ -444,7 +391,7 @@ task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do
    FileUtils.rm_rf build_config[:paths][:dist]    
 end
 
-task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc,:nuget_facebookwebmvc2]
+task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc]
 
 directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
@@ -472,13 +419,11 @@ task :dist_libs => [:dist_prepare, :nuget] do
     mkdir "#{build_config[:paths][:working]}Bin/"
     mkdir "#{build_config[:paths][:working]}Bin/Facebook"
     mkdir "#{build_config[:paths][:working]}Bin/FacebookWeb"
-    mkdir "#{build_config[:paths][:working]}Bin/FacebookWebMvc"    
-    mkdir "#{build_config[:paths][:working]}Bin/FacebookWebMvc2"
+    mkdir "#{build_config[:paths][:working]}Bin/FacebookWebMvc"
     
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/Facebook/lib/.", "#{build_config[:paths][:working]}Bin/Facebook"
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWeb"
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebMvc"
-    FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc2/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebMvc2"
     
     cp "#{build_config[:paths][:root]}LICENSE.txt", "#{build_config[:paths][:working]}Bin/"
     
