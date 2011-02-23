@@ -13,11 +13,6 @@ namespace Facebook.Samples.HelloWorld.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        public FacebookSession CurrentSession
-        {
-            get { return (new Authorizer().Session); }
-        }
-
         public ActionResult Index()
         {
             if (FacebookContext.Current.AppId == "{put your appId here}")
@@ -31,7 +26,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
         [FacebookAuthorize]
         public ActionResult About()
         {
-            var app = new FacebookClient(this.CurrentSession.AccessToken);
+            var app = new FacebookClient(this.Request.GetFacebookSession().AccessToken);
 
             dynamic me = app.Get("me");
             dynamic friends = app.Get("/me/friends");
@@ -46,7 +41,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
         [FacebookAuthorize(LoginUrl = "/", Permissions = "publish_stream")]
         public ActionResult Publish()
         {
-            var app = new FacebookClient(this.CurrentSession.AccessToken);
+            var app = new FacebookClient(this.Request.GetFacebookSession().AccessToken);
 
             dynamic parameters = new ExpandoObject();
             parameters.message = "First wall post!";
