@@ -9,6 +9,21 @@ vNext
 =========================================================================
 1. all properties in FacebookSession changed to private.
 2. removed FacebookClientBase (features moved to FacebookClient)
+3. added extension methods for HttpRequest and HttpRequestBase to include
+   helper methods to get facebook signed request and facebook session.
+
+    a. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequestBase httpRequest, string secret);
+    b. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequestBase httpRequest, IFacebookApplication facebookApplication);
+    c. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequestBase httpRequest);
+    d. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequest httpRequest, string secret);
+    e. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequest httpRequest, IFacebookApplication facebookApplication);
+    f. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequest httpRequest);
+    g. public static FacebookSession GetFacebookSession(this HttpRequestBase httpRequest, string appId, string appSecret);
+    h. public static FacebookSession GetFacebookSession(this HttpRequestBase httpRequest, IFacebookApplication facebookApplication);
+    i. public static FacebookSession GetFacebookSession(this HttpRequestBase httpRequest);
+    j. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest, string appId, string appSecret);
+    k. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest, IFacebookApplication facebookApplication);
+    l. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest);
 
 =========================================================================
 v5.0.3 (BETA)

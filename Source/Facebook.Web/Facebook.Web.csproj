@@ -117,6 +117,7 @@
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="FacebookSubscriptionsHttpHandler.cs" />
+    <Compile Include="FacebookWebExtensions.cs" />
     <Compile Include="FacebookWebUtils.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <SubType>Code</SubType>

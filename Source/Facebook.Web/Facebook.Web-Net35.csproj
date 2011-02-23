@@ -123,6 +123,7 @@
     <Compile Include="FacebookSubscriptionsHttpHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FacebookWebExtensions.cs" />
     <Compile Include="FacebookWebUtils.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
