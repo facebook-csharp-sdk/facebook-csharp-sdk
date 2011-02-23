@@ -1,19 +1,14 @@
 ﻿namespace FacebookDemo.Web.Controllers
 {
+    using System.Configuration;
     using System.Web.Mvc;
     using Facebook;
     using Facebook.Web;
     using Facebook.Web.Mvc;
-    using System.Configuration;
 
     [HandleError]
     public class HomeController : Controller
     {
-        public FacebookSession CurrentSession
-        {
-            get { return (new CanvasAuthorizer()).Session; }
-        }
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // YOU DONT NEED ANY OF THIS IN YOUR APPLICATION
@@ -28,7 +23,7 @@
             if (settings != null)
             {
                 var current = settings as IFacebookApplication;
-                if (current.AppId != "{app id}" && 
+                if (current.AppId != "{app id}" &&
                     current.AppSecret != "{app secret}" &&
                     current.CanvasUrl != "http://apps.facebook.com/{fix this path}/")
                 {
@@ -51,9 +46,9 @@
         [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            var fbApp = new FacebookClient(this.CurrentSession.AccessToken);
+            var fb = new FacebookClient(this.Request.GetFacebookSession().AccessToken);
 
-            dynamic result = fbApp.Get("me");
+            dynamic result = fb.Get("me");
             ViewData["Firstname"] = (string)result.first_name;
             ViewData["Lastname"] = (string)result.last_name;
 
