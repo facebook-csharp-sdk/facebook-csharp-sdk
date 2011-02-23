@@ -24,6 +24,8 @@ vNext
     j. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest, string appId, string appSecret);
     k. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest, IFacebookApplication facebookApplication);
     l. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest);
+4. added Facebook.Web.FacebookSession.Current
+	(use Request.GetFacebookSession() extension method, if you want to write unit testable codes)
 
 =========================================================================
 v5.0.3 (BETA)

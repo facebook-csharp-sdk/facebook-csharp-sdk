@@ -25,15 +25,7 @@ namespace Facebook.Web
         /// The actual value of the facebook session.
         /// </summary>
         private readonly object data;
-
-        public static FacebookSession Current
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSession"/> class.
         /// </summary>
@@ -80,6 +72,24 @@ namespace Facebook.Web
             this.BaseDomain = data.ContainsKey("base_domain") ? (string)data["base_domain"] : null;
 
             this.data = data;
+        }
+
+        /// <summary>
+        /// Gets the current facebook session.
+        /// </summary>
+        public static FacebookSession Current
+        {
+            get
+            {
+                Contract.Requires(System.Web.HttpContext.Current != null);
+                Contract.Requires(System.Web.HttpContext.Current.Request != null);
+                Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
+                Contract.Requires(FacebookContext.Current != null);
+                Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppId));
+                Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppSecret));
+
+                return System.Web.HttpContext.Current.Request.GetFacebookSession();
+            }
         }
 
         /// <summary>
@@ -135,6 +145,8 @@ namespace Facebook.Web
             }
         }
 
+        #region Internal helper methods related to facebook session.
+
         /// <summary>
         /// Extracts the user id from access token.
         /// </summary>
@@ -166,7 +178,6 @@ namespace Facebook.Web
                     if (idParts.Length == 2 && !string.IsNullOrEmpty(idParts[1]))
                     {
                         return idParts[1];
-
                     }
                 }
             }
@@ -177,8 +188,15 @@ namespace Facebook.Web
         /// <summary>
         /// Creates a facebook session from a signed request.
         /// </summary>
-        /// <param name="signedRequest">The signed request.</param>
-        /// <returns>The facebook session.</returns>
+        /// <param name="appSecret">
+        /// The app secret.
+        /// </param>
+        /// <param name="signedRequest">
+        /// The signed request.
+        /// </param>
+        /// <returns>
+        /// The facebook session.
+        /// </returns>
         internal static FacebookSession Create(string appSecret, FacebookSignedRequest signedRequest)
         {
             if (signedRequest == null || String.IsNullOrEmpty(signedRequest.AccessToken))
@@ -285,5 +303,7 @@ namespace Facebook.Web
 
             return signature.ToString();
         }
+
+        #endregion
     }
 }
