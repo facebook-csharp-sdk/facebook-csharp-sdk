@@ -29,6 +29,8 @@ vNext
 5. added Facebook.Web.FacebookSignedRequest.Current
 	(use Request.GetFacebookSignedRequest() extension method, if you want to write unit testable codes)
 6. Facebook.Web.Authorizer renamed to Facebook.Web.FacebookAuthorizer
+7. added Perms in FacebookAuthorizer and FacebookAuthorizeAttributeBase to make it easer for sdk consumers to migrate from v4.
+   (user Permissions instead)
 
 =========================================================================
 v5.0.3 (BETA)
