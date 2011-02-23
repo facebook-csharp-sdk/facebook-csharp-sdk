@@ -504,7 +504,7 @@ namespace Facebook.Web.Mvc
 
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookContext.Current, requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
-            TagBuilder tagBuilder = new TagBuilder("a")
+            var tagBuilder = new Facebook.Web.Mvc.External.TagBuilder("a")
             {
                 InnerHtml = (!String.IsNullOrEmpty(linkText)) ? HttpUtility.HtmlEncode(linkText) : String.Empty
             };
