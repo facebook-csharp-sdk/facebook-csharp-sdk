@@ -8,6 +8,7 @@ SDK developers: developers writing this SDK.
 vNext
 =========================================================================
 1. all properties in FacebookSession changed to private.
+2. removed FacebookClientBase (features moved to FacebookClient)
 
 =========================================================================
 v5.0.3 (BETA)
