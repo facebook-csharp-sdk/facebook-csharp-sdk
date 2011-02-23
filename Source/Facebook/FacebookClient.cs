@@ -134,16 +134,18 @@ namespace Facebook
         };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/>.
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
         /// </summary>
         public FacebookClient()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/>.
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
         /// </summary>
-        /// <param name="accessToken">The Facebook access token.</param>
+        /// <param name="accessToken">
+        /// The Facebook access token.
+        /// </param>
         public FacebookClient(string accessToken)
         {
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
@@ -152,10 +154,14 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/>.
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
         /// </summary>
-        /// <param name="appId">The Facebook application id.</param>
-        /// <param name="appSecret">The Facebook application secret.</param>
+        /// <param name="appId">
+        /// The Facebook application id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The Facebook application secret.
+        /// </param>
         public FacebookClient(string appId, string appSecret)
         {
             Contract.Requires(!String.IsNullOrEmpty(appId));
@@ -391,7 +397,6 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(path));
 
             return this.Api(path, null, null, HttpMethod.Delete);
-
         }
 
         /// <summary>
@@ -1257,6 +1262,10 @@ namespace Facebook
         /// </exception>
         protected object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
+            Contract.Requires(parameters != null);
+            Contract.Requires(parameters.ContainsKey("method") && !String.IsNullOrEmpty((string)parameters["method"]));
+            Contract.Ensures(Contract.Result<object>() != null);
+
             // Set the format to json
             parameters["format"] = "json-strings";
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
@@ -1285,6 +1294,8 @@ namespace Facebook
         /// </exception>
         protected object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
             var uri = this.GetGraphRequestUri(path);
 
             return this.OAuthRequest(uri, parameters, httpMethod, resultType, false);
@@ -1313,6 +1324,8 @@ namespace Facebook
         /// </returns>
         protected object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi)
         {
+            Contract.Requires(uri != null);
+
             Uri requestUrl;
             string contentType;
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, this.AccessToken, out requestUrl, out contentType);
@@ -1344,6 +1357,10 @@ namespace Facebook
         /// </exception>
         protected void RestServerAsync(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(parameters != null);
+            Contract.Requires(parameters.ContainsKey("method") && !String.IsNullOrEmpty((string)parameters["method"]));
+   
             // Set the format to json
             parameters["format"] = "json-strings";
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
@@ -1376,6 +1393,9 @@ namespace Facebook
         /// </exception>
         protected void GraphAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
             var uri = this.GetGraphRequestUri(path);
 
             this.OAuthRequestAsync(uri, parameters, httpMethod, resultType, false, callback, state);
@@ -1409,6 +1429,9 @@ namespace Facebook
         /// </exception>
         protected void OAuthRequestAsync(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi, FacebookAsyncCallback callback, object state)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(uri != null);
+
             Uri requestUrl;
             string contentType;
             byte[] postData = BuildRequestData(uri, parameters, httpMethod, this.AccessToken, out requestUrl, out contentType);

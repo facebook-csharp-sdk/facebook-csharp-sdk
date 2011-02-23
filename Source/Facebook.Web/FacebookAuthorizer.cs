@@ -27,7 +27,6 @@ namespace Facebook.Web
         /// The facebook session.
         /// </summary>
         private FacebookSession session;
-        private FacebookSignedRequest signedRequest;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAuthorizer"/> class.
