@@ -129,8 +129,6 @@
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookClient.cs" />
-    <Compile Include="FacebookClientBase.cs" />
-    <Compile Include="FacebookClientBaseContracts.cs" />
     <Compile Include="FacebookContext.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthClient.cs" />

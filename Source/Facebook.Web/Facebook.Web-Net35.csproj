@@ -114,10 +114,10 @@
     <Reference Include="System.Web.Routing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorizer.cs" />
     <Compile Include="CanvasAuthorizer.cs" />
     <Compile Include="CanvasUrlBuilder.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs" />
+    <Compile Include="FacebookAuthorizer.cs" />
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="FacebookSubscriptionsHttpHandler.cs">
