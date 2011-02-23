@@ -105,7 +105,17 @@ namespace Facebook.Web
         /// <summary>
         /// Gets or sets the extended permissions.
         /// </summary>
-        public string Perms { get; set; }
+        [System.Obsolete("Perms is marked for removal in future version. Use Permissions instead.")]
+        public string Perms
+        {
+            get { return this.Permissions; }
+            set { this.Permissions = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the extended permissions.
+        /// </summary>
+        public string Permissions { get; set; }
 
         /// <summary>
         /// Gets or sets the return url path.
