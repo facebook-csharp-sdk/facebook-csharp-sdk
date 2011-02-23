@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Facebook;
+using Facebook.Web;
 
 namespace CSASPNETWebsite
 {
@@ -14,9 +15,19 @@ namespace CSASPNETWebsite
         protected void Page_Load(object sender, EventArgs e)
         {
             CheckIfFacebookAppIsSetupCorrectly();
+
+            var authorizer = new FacebookAuthorizer();
+
+            if (authorizer.IsAuthorized())
+            {
+                var fb = new FacebookClient(authorizer.Session.AccessToken);
+                dynamic result = fb.Get("/me");
+
+                lblMessage.Text = "Hi " + result.name;
+            }
         }
 
-        private void CheckIfFacebookAppIsSetupCorrectly()
+        internal static void CheckIfFacebookAppIsSetupCorrectly()
         {
             // YOU DONT NEED ANY OF THIS IN YOUR APPLICATION
             // THIS METHOD JUST CHECKS TO SEE IF YOU HAVE SETUP
@@ -37,7 +48,7 @@ namespace CSASPNETWebsite
 
             if (!isSetup)
             {
-                Response.Redirect("~/GettingStarted.aspx");
+                HttpContext.Current.Response.Redirect("~/GettingStarted.aspx");
             }
         }
     }

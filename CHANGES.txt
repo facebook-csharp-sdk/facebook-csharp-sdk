@@ -28,6 +28,7 @@ vNext
 	(use Request.GetFacebookSession() extension method, if you want to write unit testable codes)
 5. added Facebook.Web.FacebookSignedRequest.Current
 	(use Request.GetFacebookSignedRequest() extension method, if you want to write unit testable codes)
+6. Facebook.Web.Authorizer renamed to Facebook.Web.FacebookAuthorizer
 
 =========================================================================
 v5.0.3 (BETA)

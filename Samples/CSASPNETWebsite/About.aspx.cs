@@ -14,7 +14,7 @@ namespace CSASPNETWebsite
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var authorizer = new Authorizer();
+            var authorizer = new FacebookAuthorizer();
 
             if (!authorizer.IsAuthorized())
             {
