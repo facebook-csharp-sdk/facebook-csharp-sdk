@@ -13,6 +13,7 @@ namespace Facebook
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Net;
+    using System.IO;
 
     /// <summary>
     /// A utility for generating facebook exceptions.
@@ -127,12 +128,21 @@ namespace Facebook
                 if (exception.Response != null)
                 {
                     object response = null;
+                    string json = null;
                     using (var stream = exception.Response.GetResponseStream())
                     {
                         if (stream != null)
                         {
-                            response = JsonSerializer.DeserializeObject(stream);
+                            using (var reader = new StreamReader(stream))
+                            {
+                                json = reader.ReadToEnd();
+                            }
                         }
+                    }
+
+                    if (json != null)
+                    {
+                        response = JsonSerializer.Current.DeserializeObject(json);
                     }
 
                     if (response != null)

@@ -68,7 +68,7 @@ namespace Facebook
         /// <summary>
         /// The current facebook application.
         /// </summary>
-        private IFacebookApplication current = new NullFacebookApplication();
+        private IFacebookApplication current = new DefaultFacebookApplication();
 #endif
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
-                return this.current ?? new NullFacebookApplication();
+                return this.current ?? new DefaultFacebookApplication();
             }
         }
 
@@ -107,60 +107,6 @@ namespace Facebook
             Contract.Requires(getFacebookApplication != null);
 
             this.current = getFacebookApplication();
-        }
-
-        /// <summary>
-        /// Represents a null Facebook application.
-        /// </summary>
-        private class NullFacebookApplication : IFacebookApplication
-        {
-            /// <summary>
-            /// Gets the application id.
-            /// </summary>
-            public string AppId
-            {
-                get { return null; }
-            }
-
-            /// <summary>
-            /// Gets the application secret.
-            /// </summary>
-            public string AppSecret
-            {
-                get { return null; }
-            }
-
-            /// <summary>
-            /// Gets the site url.
-            /// </summary>
-            public string SiteUrl
-            {
-                get { return null; }
-            }
-
-            /// <summary>
-            /// Gets the canvas page.
-            /// </summary>
-            public string CanvasPage
-            {
-                get { return null; }
-            }
-
-            /// <summary>
-            /// Gets the canvas url.
-            /// </summary>
-            public string CanvasUrl
-            {
-                get { return null; }
-            }
-
-            /// <summary>
-            /// Gets the url to return the user after they cancel authorization.
-            /// </summary>
-            public string CancelUrlPath
-            {
-                get { return null; }
-            }
         }
     }
 }

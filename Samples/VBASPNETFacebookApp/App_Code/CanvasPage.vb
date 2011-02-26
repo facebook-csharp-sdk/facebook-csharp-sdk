@@ -16,17 +16,17 @@ Imports Facebook.Web
 Partial Public Class CanvasPage
     Inherits System.Web.UI.Page
 
-    Protected requiredAppPermissions As String = "user_about_me"
+    Protected requiredAppPermissions() As String = { "user_about_me" }
 
     Public Sub New()
         fbApp = New FacebookClient()
 
-        authorizer = New CanvasAuthorizer()
-        authorizer.Perms = requiredAppPermissions
+        authorizer = New FacebookCanvasAuthorizer()
+        authorizer.Permissions = requiredAppPermissions
     End Sub
 
-    Protected fbApp As FacebookClient
-    Protected authorizer As CanvasAuthorizer
+    Protected fbApp As FacebookWebClient
+    Protected authorizer As FacebookCanvasAuthorizer
 
     ''' <summary>
     ''' Performs a canvas redirect.

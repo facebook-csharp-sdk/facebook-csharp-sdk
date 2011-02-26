@@ -24,7 +24,7 @@ namespace Facebook
         /// </returns>
         public override string ToString()
         {
-            var result = JsonSerializer.SerializeObject(this);
+            var result = JsonSerializer.Current.SerializeObject(this);
             return result ?? string.Empty;
         }
 

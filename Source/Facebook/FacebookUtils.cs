@@ -161,8 +161,8 @@ namespace Facebook
             Contract.Requires(parameters != null);
             Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 
-            var json = JsonSerializer.SerializeObject(parameters);
-            return (IDictionary<string, object>)JsonSerializer.DeserializeObject(json);
+            var json = JsonSerializer.Current.SerializeObject(parameters);
+            return (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(json);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace Facebook
                 if (dictionary[key] != null)
                 {
                     // Format Object As Json And Remove leading and trailing parenthesis
-                    string jsonValue = JsonSerializer.SerializeObject(dictionary[key]);
+                    string jsonValue = JsonSerializer.Current.SerializeObject(dictionary[key]);
                     if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
                     {
                         jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);

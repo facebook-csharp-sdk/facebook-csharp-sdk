@@ -68,7 +68,7 @@ namespace Facebook.Web
             Contract.Requires(context.Request.Params != null);
             Contract.Requires(context.Response != null);
 
-            var subContext = new SubscriptionContext
+            var subContext = new FacebookSubscriptionContext
                                  {
                                      HttpContext = new HttpContextWrapper(context),
                                      FacebookApplication = FacebookContext.Current,
@@ -84,13 +84,13 @@ namespace Facebook.Web
         /// <param name="context">
         /// The context.
         /// </param>
-        public abstract void OnVerifying(SubscriptionContext context);
+        public abstract void OnVerifying(FacebookSubscriptionContext context);
 
         /// <summary>
         /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
         /// </summary>
         /// <param name="context">An <see cref="T:System.Web.HttpContextWrapper"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
-        public virtual void VerifyCore(SubscriptionContext context)
+        public virtual void VerifyCore(FacebookSubscriptionContext context)
         {
             Contract.Requires(context != null);
             Contract.Requires(context.HttpContext != null);
@@ -108,7 +108,7 @@ namespace Facebook.Web
             {
                 case "GET":
                     if (!string.IsNullOrEmpty(context.VerificationToken) &&
-                        FacebookWebUtils.VerifyGetSubscription(request, context.VerificationToken, out errorMessage))
+                        FacebookSubscriptionVerifier.VerifyGetSubscription(request, context.VerificationToken, out errorMessage))
                     {
                         context.HttpContext.Response.Write(request.Params["hub.challenge"]);
                     }
@@ -125,10 +125,10 @@ namespace Facebook.Web
 
                         var secret = context.FacebookApplication.AppSecret;
                         if (!string.IsNullOrEmpty(secret) &&
-                            FacebookWebUtils.VerifyPostSubscription(request, secret, jsonString, out errorMessage))
+                            FacebookSubscriptionVerifier.VerifyPostSubscription(request, secret, jsonString, out errorMessage))
                         {
                             // might need to put try catch when desterilizing object
-                            var jsonObject = JsonSerializer.DeserializeObject(jsonString);
+                            var jsonObject = JsonSerializer.Current.DeserializeObject(jsonString);
                             this.ProcessSubscription(context, jsonObject);
                         }
                         else
@@ -150,7 +150,7 @@ namespace Facebook.Web
         /// <param name="result">
         /// The result.
         /// </param>
-        public abstract void ProcessSubscription(SubscriptionContext context, object result);
+        public abstract void ProcessSubscription(FacebookSubscriptionContext context, object result);
 
         /// <summary>
         /// Handles unauthorized requests.
@@ -158,7 +158,7 @@ namespace Facebook.Web
         /// <param name="context">
         /// The context.
         /// </param>
-        public virtual void HandleUnauthorizedRequest(SubscriptionContext context)
+        public virtual void HandleUnauthorizedRequest(FacebookSubscriptionContext context)
         {
             Contract.Requires(context != null);
             Contract.Requires(context.HttpContext != null);
@@ -172,7 +172,7 @@ namespace Facebook.Web
     /// </summary>
     [SuppressMessage("Microsoft.StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass",
         Justification = "Reviewed. Suppression is OK here.")]
-    public class SubscriptionContext
+    public class FacebookSubscriptionContext
     {
         /// <summary>
         /// Gets or sets the verify_token.
@@ -197,14 +197,14 @@ namespace Facebook.Web
          Justification = "Reviewed. Suppression is OK here.")]
     internal abstract class FacebookSubscriptionsHttpHandlerCodeContacts : FacebookSubscriptionsHttpHandler
     {
-        public override void OnVerifying(SubscriptionContext context)
+        public override void OnVerifying(FacebookSubscriptionContext context)
         {
             Contract.Requires(context != null);
             Contract.Requires(context.HttpContext != null);
             Contract.Requires(context.FacebookApplication != null);
         }
 
-        public override void ProcessSubscription(SubscriptionContext context, object result)
+        public override void ProcessSubscription(FacebookSubscriptionContext context, object result)
         {
             Contract.Requires(context != null);
             Contract.Requires(context.HttpContext.Request != null);

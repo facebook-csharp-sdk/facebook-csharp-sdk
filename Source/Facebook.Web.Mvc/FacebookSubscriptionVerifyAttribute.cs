@@ -27,7 +27,7 @@
                 }
                 else
                 {
-                    if (FacebookWebUtils.VerifyGetSubscription(request, this.VerificationToken, out errorMessage))
+                    if (FacebookSubscriptionVerifier.VerifyGetSubscription(request, this.VerificationToken, out errorMessage))
                     {
                         return;
                     }

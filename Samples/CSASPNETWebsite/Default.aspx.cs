@@ -16,11 +16,10 @@ namespace CSASPNETWebsite
         {
             CheckIfFacebookAppIsSetupCorrectly();
 
-            var authorizer = new FacebookAuthorizer();
-
-            if (authorizer.IsAuthorized())
+            var fbRequest = FacebookWebRequest.Current;
+            if (fbRequest.IsAuthorized())
             {
-                var fb = new FacebookClient(authorizer.Session.AccessToken);
+                var fb = new FacebookWebClient(fbRequest);
                 dynamic result = fb.Get("/me");
 
                 lblMessage.Text = "Hi " + result.name;

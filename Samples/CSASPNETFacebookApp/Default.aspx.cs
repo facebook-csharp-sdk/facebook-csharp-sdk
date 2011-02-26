@@ -10,7 +10,7 @@ public partial class _Default : Page
     {
         CheckIfFacebookAppIsSetupCorrectly();
 
-        var auth = new CanvasAuthorizer { Perms = "user_about_me" };
+        var auth = new FacebookCanvasAuthorizer { Permissions = new string[] { "user_about_me" } };
 
         if (auth.Authorize())
         {
@@ -20,9 +20,7 @@ public partial class _Default : Page
 
     private void ShowFacebookContent()
     {
-        //  var fb = new FacebookClient(FacebookSession.Current.AccessToken);
-        //  or
-        var fb = new FacebookClient(Request.GetFacebookSession().AccessToken);
+        var fb = new FacebookWebClient();
         dynamic myInfo = fb.Get("me");
         lblName.Text = myInfo.name;
         pnlHello.Visible = true;

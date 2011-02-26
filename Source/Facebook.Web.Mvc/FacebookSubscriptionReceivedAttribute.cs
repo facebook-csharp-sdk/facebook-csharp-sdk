@@ -33,9 +33,9 @@ namespace Facebook.Web.Mvc
                     var reader = new System.IO.StreamReader(request.InputStream);
                     var jsonString = reader.ReadToEnd();
 
-                    if (FacebookWebUtils.VerifyPostSubscription(request, appSecret, jsonString, out errorMessage))
+                    if (FacebookSubscriptionVerifier.VerifyPostSubscription(request, appSecret, jsonString, out errorMessage))
                     {
-                        var jsonObject = JsonSerializer.DeserializeObject(jsonString);
+                        var jsonObject = JsonSerializer.Current.DeserializeObject(jsonString);
                         filterContext.ActionParameters[parameterName] = jsonObject;
 
                         return;

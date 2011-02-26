@@ -16,9 +16,8 @@ namespace CSASPNETWebsite.Account
         {
             _Default.CheckIfFacebookAppIsSetupCorrectly();
 
-            var authorizer = new FacebookAuthorizer();
-
-            if (authorizer.IsAuthorized())
+            var fbRequest = FacebookWebRequest.Current;
+            if (fbRequest.IsAuthorized())
             {
                 // check if return url is local.
                 Response.Redirect(HttpUtility.UrlDecode(Request.QueryString["returnUrl"] ?? "/"));

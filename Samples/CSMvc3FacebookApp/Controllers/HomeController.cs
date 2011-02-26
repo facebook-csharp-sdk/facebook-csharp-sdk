@@ -17,7 +17,7 @@
         [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult About()
         {
-            var fb = new FacebookClient(this.Request.GetFacebookSession().AccessToken);
+            var fb = new FacebookWebClient();
 
             dynamic result = fb.Get("me");
 

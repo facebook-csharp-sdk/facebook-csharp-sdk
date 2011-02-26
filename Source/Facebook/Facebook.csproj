@@ -112,6 +112,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultFacebookApplication.cs" />
     <Compile Include="External\HttpEncoder.cs" />
     <Compile Include="External\HttpUtility.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
@@ -128,8 +129,11 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="IFacebookApplication.cs" />
+    <Compile Include="IJsonSerializer.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
+    <Compile Include="JsonSerializer.cs" />
+    <Compile Include="Obsolete\IFacebookSettings.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,13 +144,13 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="JsonSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="_Diagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

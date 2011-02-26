@@ -27,9 +27,9 @@ namespace Facebook.Web.Mvc
 
         public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            var authorizer = new FacebookAuthorizer(settings, filterContext.HttpContext) { Perms = this.Perms };
+            var authorizer = new FacebookWebRequest(settings, filterContext.HttpContext);
 
-            if (!authorizer.IsAuthorized())
+            if (!authorizer.IsAuthorized(this.Permissions))
             {
                 this.HandleUnauthorizedRequest(filterContext, FacebookContext.Current);
             }
@@ -49,13 +49,17 @@ namespace Facebook.Web.Mvc
             Contract.Requires(settings != null);
             Contract.Requires(httpContext != null);
 
-            var authorizer = new CanvasAuthorizer(settings, httpContext)
+            var authorizer = new FacebookCanvasAuthorizer(settings, httpContext)
             {
-                Perms = this.Perms,
                 ReturnUrlPath = this.ReturnUrlPath,
                 CancelUrlPath = this.CancelUrlPath,
                 LoginDisplayMode = this.LoginDisplayMode
             };
+
+            if (!String.IsNullOrEmpty(this.Permissions))
+            {
+                authorizer.Permissions = this.Permissions.Replace(" ", String.Empty).Split(',');
+            }
 
             return authorizer.GetLoginUrl(parameters);
         }

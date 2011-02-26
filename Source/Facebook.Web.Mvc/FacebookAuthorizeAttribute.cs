@@ -17,9 +17,9 @@ namespace Facebook.Web.Mvc
 
         public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication)
         {
-            var authorizer = new FacebookAuthorizer(facebookApplication, filterContext.HttpContext) { Perms = this.Perms };
+            var authorizer = new FacebookWebRequest(facebookApplication, filterContext.HttpContext);
 
-            if (!authorizer.IsAuthorized())
+            if (!authorizer.IsAuthorized(this.Permissions))
             {
                 filterContext.Result = new RedirectResult(this.LoginUrl ?? "/");
             }

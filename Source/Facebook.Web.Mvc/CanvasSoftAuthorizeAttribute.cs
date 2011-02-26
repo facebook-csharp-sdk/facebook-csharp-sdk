@@ -16,6 +16,7 @@ namespace Facebook.Web.Mvc
     using System.Web.Mvc;
     using Facebook;
     using Facebook.Web;
+    using System;
 
     /// <summary>
     /// This filter will send an unauthorized user to the 
@@ -87,13 +88,17 @@ namespace Facebook.Web.Mvc
 
         protected internal override System.Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
-            var authorizer = new CanvasAuthorizer(settings, httpContext)
+            var authorizer = new FacebookCanvasAuthorizer(settings, httpContext)
             {
-                Perms = this.Perms,
                 ReturnUrlPath = this.ReturnUrlPath,
                 CancelUrlPath = this.CancelUrlPath,
                 LoginDisplayMode = this.LoginDisplayMode
             };
+
+            if (!String.IsNullOrEmpty(this.Permissions))
+            {
+                authorizer.Permissions = this.Permissions.Replace(" ", String.Empty).Split(',');
+            }
 
             if (string.IsNullOrEmpty(this.CancelUrlPath))
             {

@@ -15,17 +15,21 @@ namespace Facebook.Web
     using System.Globalization;
     using System.Linq;
     using System.Text;
+    using System.Web;
 
     /// <summary>
     /// Represents a Facebook session.
     /// </summary>
     public sealed class FacebookSession
     {
+
+        private const string HttpContextKey = "facebook_session";
+
         /// <summary>
         /// The actual value of the facebook session.
         /// </summary>
         private readonly object data;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSession"/> class.
         /// </summary>
@@ -72,24 +76,6 @@ namespace Facebook.Web
             this.BaseDomain = data.ContainsKey("base_domain") ? (string)data["base_domain"] : null;
 
             this.data = data;
-        }
-
-        /// <summary>
-        /// Gets the current facebook session.
-        /// </summary>
-        public static FacebookSession Current
-        {
-            get
-            {
-                Contract.Requires(System.Web.HttpContext.Current != null);
-                Contract.Requires(System.Web.HttpContext.Current.Request != null);
-                Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
-                Contract.Requires(FacebookContext.Current != null);
-                Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppId));
-                Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppSecret));
-
-                return System.Web.HttpContext.Current.Request.GetFacebookSession();
-            }
         }
 
         /// <summary>
@@ -183,6 +169,105 @@ namespace Facebook.Web
             }
 
             return null;
+        }
+
+
+        /// <summary>
+        /// Gets the facebook session cookie name for the specified facebook application.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <returns>
+        /// Returns the name of the cookie name.
+        /// </returns>
+        internal static string GetCookieName(string appId)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+            return string.Concat("fbs_", appId);
+        }
+
+        /// <summary>
+        /// Gets the facebook session cookie value for the specified application.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="httpRequet">
+        /// The http request.
+        /// </param>
+        /// <returns>
+        /// Returns the facebook session cookie value if present otherwise null.
+        /// </returns>
+        internal static string GetSessionCookieValue(string appId, HttpRequestBase httpRequet)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(httpRequet != null);
+            Contract.Requires(httpRequet.Params != null);
+
+            var cookieName = GetCookieName(appId);
+
+            return httpRequet.Params.AllKeys.Contains(cookieName) ? httpRequet.Params[cookieName] : null;
+        }
+
+        /// <summary>
+        ///  Gets the facebook session from the http request.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The app secret.
+        /// </param>
+        /// <param name="httpRequest">
+        /// The http request.
+        /// </param>
+        /// <returns>
+        /// Returns the facebook session if found, otherwise null.
+        /// </returns>
+        internal static FacebookSession GetSession(string appId, string appSecret, HttpContextBase httpContext)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+            Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Params != null);
+
+
+            FacebookSession facebookSession = null;
+            var httpRequest = httpContext.Request;
+            var items = httpContext.Items;
+            if (items[HttpContextKey] == null)
+            {
+
+                // try creating session from signed_request if exists.
+                var signedRequest = FacebookSignedRequest.GetSignedRequest(appSecret, httpContext);
+
+                if (signedRequest != null)
+                {
+                    facebookSession = FacebookSession.Create(appSecret, signedRequest);
+                }
+
+                // try creating session from cookie if exists.
+                var sessionCookieValue = GetSessionCookieValue(appId, httpRequest);
+                if (!string.IsNullOrEmpty(sessionCookieValue))
+                {
+                    facebookSession = FacebookSession.ParseCookieValue(appSecret, sessionCookieValue);
+                }
+
+                if (facebookSession != null)
+                {
+                    items.Add(HttpContextKey, facebookSession);
+                }
+            }
+            else
+            {
+                facebookSession = items["facebook_session"] as FacebookSession;
+            }
+
+            return facebookSession;
         }
 
         /// <summary>

@@ -13,13 +13,7 @@ Partial Class _Default
     Inherits CanvasPage
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If (Not authorizer.IsAuthorized()) Then
-
-            Dim authurl = authorizer.GetLoginUrl(New HttpRequestWrapper(Request))
-            CanvasRedirect(authurl.ToString())
-
-        Else
-
+        If (authorizer.Authorize()) Then
             LoggedIn()
         End If
 

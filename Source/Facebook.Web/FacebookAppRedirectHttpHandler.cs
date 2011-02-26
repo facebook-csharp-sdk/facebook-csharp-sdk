@@ -49,7 +49,7 @@ namespace Facebook.Web
         {
             Contract.Requires(context != null);
             Contract.Requires(context.Request != null);
-            
+
             // TODO: need unit tests for this method, might as well need to refactor this method.
             var uri = new Uri("http://apps.facebook.com/");
             var redirectUriBuilder = new UriBuilder(uri);
@@ -57,7 +57,7 @@ namespace Facebook.Web
             if (context.Request.QueryString.AllKeys.Contains("state"))
             {
                 var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
-                var json = (IDictionary<string, object>)JsonSerializer.DeserializeObject(state);
+                var json = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(state);
 
                 // make it one letter character so more info can fit in.
                 // r -> return_url_path

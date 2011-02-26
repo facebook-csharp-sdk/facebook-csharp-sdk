@@ -154,40 +154,6 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
-        /// </summary>
-        /// <param name="appId">
-        /// The Facebook application id.
-        /// </param>
-        /// <param name="appSecret">
-        /// The Facebook application secret.
-        /// </param>
-        public FacebookClient(string appId, string appSecret)
-        {
-            Contract.Requires(!String.IsNullOrEmpty(appId));
-            Contract.Requires(!String.IsNullOrEmpty(appSecret));
-
-            this.AccessToken = String.Concat(appId, "|", appSecret);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
-        /// </summary>
-        /// <param name="facebookApplication">
-        /// The facebook application.
-        /// </param>
-        public FacebookClient(IFacebookApplication facebookApplication)
-        {
-            if (facebookApplication != null)
-            {
-                if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
-                {
-                    this.AccessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the maximum number of times to retry an api
         /// call after experiencing a recoverable exception.
         /// </summary>
@@ -1360,7 +1326,7 @@ namespace Facebook
             Contract.Requires(callback != null);
             Contract.Requires(parameters != null);
             Contract.Requires(parameters.ContainsKey("method") && !String.IsNullOrEmpty((string)parameters["method"]));
-   
+
             // Set the format to json
             parameters["format"] = "json-strings";
             Uri uri = this.GetApiUrl(parameters["method"].ToString());
@@ -1664,7 +1630,7 @@ namespace Facebook
                 // If we are using the REST API we need to check for an exception
                 if (resultType == null || restApi)
                 {
-                    result = JsonSerializer.DeserializeObject(responseData);
+                    result = JsonSerializer.Current.DeserializeObject(responseData);
                     if (restApi)
                     {
                         exception = ExceptionFactory.GetRestException(result);
@@ -1679,7 +1645,7 @@ namespace Facebook
                 // Deserialize the final result if the result type is set
                 if (resultType != null)
                 {
-                    result = JsonSerializer.DeserializeObject(responseData, resultType);
+                    result = JsonSerializer.Current.DeserializeObject(responseData, resultType);
                 }
             }
             catch (FacebookApiException)
@@ -1781,10 +1747,13 @@ namespace Facebook
                 var request = (HttpWebRequest)asyncResult.AsyncState;
                 var response = (HttpWebResponse)request.EndGetResponse(asyncResult);
 
+                string json;
                 using (Stream responseStream = response.GetResponseStream())
+                using (var reader = new StreamReader(responseStream))
                 {
-                    result = JsonSerializer.DeserializeObject(responseStream);
+                    json = reader.ReadToEnd();
                 }
+                result = JsonSerializer.Current.DeserializeObject(json);
             }
             catch (FacebookApiException)
             {
@@ -1821,7 +1790,7 @@ namespace Facebook
         }
 
         #region Url Helpers
-        
+
         /// <summary>
         /// Gets the graph request url in the proper format.
         /// </summary>
@@ -2054,7 +2023,7 @@ namespace Facebook
 
             return path;
         }
-    
+
 
 
         #endregion

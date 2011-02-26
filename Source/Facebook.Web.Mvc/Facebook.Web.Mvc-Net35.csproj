@@ -122,7 +122,6 @@
     <Compile Include="CanvasInputExtensions.cs" />
     <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
     <Compile Include="CanvasUrlExtensions.cs" />
-    <Compile Include="External\TagBuilder.cs" />
     <Compile Include="FacebookAuthorizeAttribute.cs" />
     <Compile Include="CanvasAuthorizeAttribute.cs" />
     <Compile Include="CanvasLinkExtensions.cs" />

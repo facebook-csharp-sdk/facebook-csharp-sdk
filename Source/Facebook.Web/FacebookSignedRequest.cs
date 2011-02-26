@@ -22,6 +22,10 @@ namespace Facebook.Web
     /// </summary>
     public sealed class FacebookSignedRequest
     {
+
+        private const string HttpContextKey = "facebook_signed_request";
+        private const string SignedRequestKey = "signed_request";
+
         /// <summary>
         /// The actual value of the signed request.
         /// </summary>
@@ -63,23 +67,6 @@ namespace Facebook.Web
             Contract.Requires(data != null);
 
             this.Data = data;
-        }
-
-        /// <summary>
-        /// Gets the current Facebook signed request.
-        /// </summary>
-        public static FacebookSignedRequest Current
-        {
-            get
-            {
-                Contract.Requires(System.Web.HttpContext.Current != null);
-                Contract.Requires(System.Web.HttpContext.Current.Request != null);
-                Contract.Requires(System.Web.HttpContext.Current.Request.Params != null);
-                Contract.Requires(FacebookContext.Current != null);
-                Contract.Requires(!string.IsNullOrEmpty(FacebookContext.Current.AppSecret));
-
-                return HttpContext.Current.Request.GetFacebookSignedRequest();
-            }
         }
 
         /// <summary>
@@ -288,8 +275,8 @@ namespace Facebook.Web
         /// </returns>
         public static FacebookSignedRequest Parse(IFacebookApplication facebookApplication, HttpRequestBase request)
         {
-            return request.Params.AllKeys.Contains("signed_request")
-                       ? Parse(facebookApplication, request.Params["signed_request"])
+            return request.Params.AllKeys.Contains(SignedRequestKey)
+                       ? Parse(facebookApplication, request.Params[SignedRequestKey])
                        : null;
         }
 
@@ -312,8 +299,41 @@ namespace Facebook.Web
         {
             signedRequest = null;
 
-            return request.Params.AllKeys.Contains("signed_request") &&
-                   TryParse(facebookApplication, request.Params["signed_request"], out signedRequest);
+            return request.Params.AllKeys.Contains(SignedRequestKey) &&
+                   TryParse(facebookApplication, request.Params[SignedRequestKey], out signedRequest);
+        }
+
+        /// <summary>
+        /// Gets the facebook signed request from the http request.
+        /// </summary>
+        /// <param name="appSecret">
+        /// The app Secret.
+        /// </param>
+        /// <param name="httpRequest">
+        /// The http request.
+        /// </param>
+        /// <returns>
+        /// Returns the signed request if found otherwise null.
+        /// </returns>
+        internal static FacebookSignedRequest GetSignedRequest(string appSecret, HttpContextBase httpContext)
+        {
+            Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Params != null);
+
+            var items = httpContext.Items;
+            var httpRequest = httpContext.Request;
+            FacebookSignedRequest signedRequest;
+            if (items[HttpContextKey] == null)
+            {
+                signedRequest = httpRequest.Params.AllKeys.Contains(SignedRequestKey) ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params[SignedRequestKey]) : null;
+                items.Add(HttpContextKey, signedRequest);
+            }
+            else
+            {
+                signedRequest = items[HttpContextKey] as FacebookSignedRequest;
+            }
+            return signedRequest;
         }
 
         /// <summary>
@@ -368,7 +388,7 @@ namespace Facebook.Web
                     throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
                 }
 
-                var envelope = (IDictionary<string, object>)JsonSerializer.DeserializeObject(Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(encodedEnvelope)));
+                var envelope = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(encodedEnvelope)));
 
                 string algorithm = (string)envelope["algorithm"];
 
@@ -413,7 +433,7 @@ namespace Facebook.Web
                     byte[] rawCipherText = FacebookUtils.Base64UrlDecode((string)envelope["payload"]);
                     var plainText = FacebookUtils.DecryptAes256CBCNoPadding(rawCipherText, key, iv);
 
-                    var payload = (IDictionary<string, object>)JsonSerializer.DeserializeObject(plainText);
+                    var payload = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(plainText);
                     result["payload"] = payload;
                 }
 
