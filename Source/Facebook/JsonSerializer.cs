@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Serialization;
     using System.Text;
     using System.Diagnostics.Contracts;
     using Newtonsoft.Json;
@@ -108,7 +107,7 @@
             /// <returns>
             /// The object.
             /// </returns>
-            /// <exception cref="SerializationException">
+            /// <exception cref="System.Runtime.Serialization.SerializationException">
             /// Occurs when deserialization fails.
             /// </exception>
             public object DeserializeObject(string json, Type type)
@@ -167,7 +166,34 @@
             /// </returns>
             public object DeserializeObject(string json)
             {
-                return JsonConvert.DeserializeObject(json, this.m_serializerSettings);
+                if (string.IsNullOrEmpty(json))
+                {
+                    return null;
+                }
+
+                object obj;
+
+                try
+                {
+                    obj = JsonConvert.DeserializeObject(json, this.m_serializerSettings);
+                }
+                catch (JsonSerializationException ex)
+                {
+                    throw new System.Runtime.Serialization.SerializationException(ex.Message, ex);
+                }
+
+                // If the object is a JToken we want to
+                // convert it to dynamic, it if is any
+                // other type we just return it.
+                var jToken = obj as JToken;
+                if (jToken != null)
+                {
+                    return ConvertJTokenToDictionary(jToken);
+                }
+                else
+                {
+                    return obj;
+                }
             }
 
             /// <summary>
