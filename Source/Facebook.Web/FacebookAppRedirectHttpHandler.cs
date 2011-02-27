@@ -74,14 +74,21 @@ namespace Facebook.Web
                         // if there is cancel url path.
                         var cancelUrlPath = json["c"].ToString();
 
+                        if (CanvasUrlBuilder.IsRelativeUri(cancelUrlPath))
+                        {
+                            redirectUriBuilder.Path = json["c"].ToString();
+                        }
+                        else
+                        {
+                            redirectUriBuilder = new UriBuilder(cancelUrlPath);
+                        }
+
                         IDictionary<string, object> cancelUrlQueryStrings = new Dictionary<string, object>
                                                        {
                                                            { "error_reason", context.Request.QueryString["error_reason"] },
                                                            { "error", context.Request.QueryString["error"] },
                                                            { "error_description", context.Request.QueryString["error_description"] }
                                                        };
-
-                        redirectUriBuilder.Path = json["c"].ToString();
 
                         if (cancelUrlPath.Contains("?"))
                         {

@@ -252,20 +252,27 @@ namespace Facebook.Web
                 oauthJsonState["r"] = this.CurrentCanvasPage.ToString().Substring(25);
             }
 
-            //if (string.IsNullOrEmpty(cancelUrlPath))
-            //{
-            //    // if cancelUrlPath is null, use the cancelUrlPath from settings
-            //    cancelUrlPath = this.canvasSettings.CancelUrlPath;
-            //}
+            if (string.IsNullOrEmpty(cancelUrlPath))
+            {
+                // if cancel url path is empty, get settings from default facebook application.
+                cancelUrlPath = FacebookContext.Current.CancelUrlPath;
+            }
 
             if (!string.IsNullOrEmpty(cancelUrlPath))
             {
-                // remove the first /
-                oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
-
-                if (!cancelUrlPath.StartsWith("/"))
+                if (IsRelativeUri(cancelUrlPath))
                 {
-                    oauthJsonState["c"] += "/";
+                    // remove the first /
+                    oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
+
+                    if (!cancelUrlPath.StartsWith("/"))
+                    {
+                        oauthJsonState["c"] += "/";
+                    }
+                }
+                else
+                {
+                    oauthJsonState["c"] = string.Empty;
                 }
 
                 oauthJsonState["c"] += cancelUrlPath;
@@ -281,7 +288,7 @@ namespace Facebook.Web
             var mergedParameters = FacebookUtils.Merge(parameters, null);
             mergedParameters["state"] = oauthState;
 
-            var appPath = httpRequest.ApplicationPath;
+            var appPath = this.httpRequest.ApplicationPath;
             if (appPath != "/")
             {
                 appPath = string.Concat(appPath, "/");
@@ -319,6 +326,26 @@ namespace Facebook.Web
             }
 
             return "<html><head><script type=\"text/javascript\">\ntop.location = \"" + url + "\";\n" + "</script></head><body></body></html>";
+        }
+
+        /// <summary>
+        /// Checks if the specified input string is a valid relative uri.
+        /// </summary>
+        /// <param name="str">
+        /// The str.
+        /// </param>
+        /// <returns>
+        /// Returns true if the input string is a valid uri.
+        /// </returns>
+        internal static bool IsRelativeUri(string str)
+        {
+            if (!string.IsNullOrEmpty(str) && Uri.IsWellFormedUriString(str, UriKind.Relative))
+            {
+                Uri tempValue;
+                return Uri.TryCreate(str, UriKind.Relative, out tempValue);
+            }
+
+            return false;
         }
 
         [ContractInvariantMethod]
