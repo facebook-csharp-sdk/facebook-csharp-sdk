@@ -20,11 +20,122 @@ namespace Facebook
     /// <summary>
     /// Represents the core Facebook functionality.
     /// </summary>
-    [Obsolete]
+    [Obsolete("Use FacebookWebClient instead.")]
     [ContractClass(typeof(FacebookAppBaseContracts))]
     [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public abstract class FacebookAppBase
     {
+        private static Collection<string> _dropQueryParameters = new Collection<string> {
+            "session",
+            "signed_request",
+        };
+
+        private static Dictionary<string, Uri> _domainMaps = new Dictionary<string, Uri> {
+            { "api", new Uri("https://api.facebook.com/") },
+            { "api_read", new Uri("https://api-read.facebook.com/") },
+            { "api_video", new Uri("https://api-video.facebook.com/") },
+            { "graph", new Uri("https://graph.facebook.com/") },
+            { "www", new Uri("https://www.facebook.com/") }
+        };
+
+        private static string[] _readOnlyCalls = new string[] {
+            "admin.getallocation",
+            "admin.getappproperties",
+            "admin.getbannedusers",
+            "admin.getlivestreamvialink",
+            "admin.getmetrics",
+            "admin.getrestrictioninfo",
+            "application.getpublicinfo",
+            "auth.getapppublickey",
+            "auth.getsession",
+            "auth.getsignedpublicsessiondata",
+            "comments.get",
+            "connect.getunconnectedfriendscount",
+            "dashboard.getactivity",
+            "dashboard.getcount",
+            "dashboard.getglobalnews",
+            "dashboard.getnews",
+            "dashboard.multigetcount",
+            "dashboard.multigetnews",
+            "data.getcookies",
+            "events.get",
+            "events.getmembers",
+            "fbml.getcustomtags",
+            "feed.getappfriendstories",
+            "feed.getregisteredtemplatebundlebyid",
+            "feed.getregisteredtemplatebundles",
+            "fql.multiquery",
+            "fql.query",
+            "friends.arefriends",
+            "friends.get",
+            "friends.getappusers",
+            "friends.getlists",
+            "friends.getmutualfriends",
+            "gifts.get",
+            "groups.get",
+            "groups.getmembers",
+            "intl.gettranslations",
+            "links.get",
+            "notes.get",
+            "notifications.get",
+            "pages.getinfo",
+            "pages.isadmin",
+            "pages.isappadded",
+            "pages.isfan",
+            "permissions.checkavailableapiaccess",
+            "permissions.checkgrantedapiaccess",
+            "photos.get",
+            "photos.getalbums",
+            "photos.gettags",
+            "profile.getinfo",
+            "profile.getinfooptions",
+            "stream.get",
+            "stream.getcomments",
+            "stream.getfilters",
+            "users.getinfo",
+            "users.getloggedinuser",
+            "users.getstandardinfo",
+            "users.hasapppermission",
+            "users.isappuser",
+            "users.isverified",
+            "video.getuploadlimits" 
+        };
+
+        /// <summary>
+        /// The code contracts invarient object method.
+        /// </summary>
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code contracts invarient method.")]
+        private void InvarientObject()
+        {
+            Contract.Invariant(_domainMaps != null);
+            Contract.Invariant(_dropQueryParameters != null);
+            Contract.Invariant(_readOnlyCalls != null);
+        }
+
+        /// <summary>
+        /// Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
+        /// </summary>
+        protected virtual ICollection<string> DropQueryParameters
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<ICollection<string>>() != null);
+                return _dropQueryParameters;
+            }
+        }
+
+        /// <summary>
+        /// Gets the aliases to Facebook domains.
+        /// </summary>
+        protected virtual Dictionary<string, Uri> DomainMaps
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
+                return _domainMaps;
+            }
+        }
 
         /// <summary>
         /// Gets the Application ID.
@@ -42,7 +153,17 @@ namespace Facebook
         /// <value>The session.</value>
         public virtual FacebookSession Session { get; set; }
 
-
+        /// <summary>
+        /// Gets the current URL.
+        /// </summary>
+        /// <value>The current URL.</value>
+        protected virtual Uri CurrentUrl
+        {
+            get
+            {
+                return new Uri("http://www.facebook.com/connect/login_success.html");
+            }
+        }
 
         /// <summary>
         /// Gets the user id.
@@ -52,7 +173,13 @@ namespace Facebook
         {
             get
             {
-                throw new NotImplementedException();
+                if (this.Session == null)
+                {
+                    return 0;
+                }
+
+                long userId = this.Session.UserId;
+                return userId;
             }
         }
 
@@ -64,7 +191,17 @@ namespace Facebook
         {
             get
             {
-                throw new NotImplementedException();
+                // either user session signed, or app signed
+                if (this.Session != null)
+                {
+                    return this.Session.AccessToken;
+                }
+                else if (!String.IsNullOrEmpty(this.AppId) && !String.IsNullOrEmpty(this.AppSecret))
+                {
+                    return string.Concat(this.AppId, "|", this.AppSecret);
+                }
+
+                return null;
             }
         }
 
@@ -73,6 +210,18 @@ namespace Facebook
             get
             {
                 return this.Session != null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the session cookie.
+        /// </summary>
+        /// <value>The name of the session cookie.</value>
+        protected string SessionCookieName
+        {
+            get
+            {
+                return string.Concat("fbs_", this.AppId);
             }
         }
 
@@ -137,6 +286,42 @@ namespace Facebook
         /// <param name="parameters">Custom url parameters.</param>
         /// <returns>The URL for the logout flow</returns>
         public abstract Uri GetLoginStatusUrl(IDictionary<string, object> parameters);
+
+        /// <summary>
+        /// Cleans the URL or known Facebook querystring values.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns></returns>
+        protected virtual Uri CleanUrl(Uri uri)
+        {
+            Contract.Requires(uri != null);
+
+            UriBuilder builder = new UriBuilder(uri);
+            if (!String.IsNullOrEmpty(uri.Query))
+            {
+                var querystring = new Dictionary<string, string>();
+                var parts = uri.Query.Split('&');
+                foreach (var part in parts)
+                {
+                    if (part != null)
+                    {
+                        var keyValuePair = part.Split('=');
+                        if (keyValuePair.Length > 0)
+                        {
+                            string key = keyValuePair[0];
+                            if (!this.DropQueryParameters.Contains(key))
+                            {
+                                string value = keyValuePair.Length > 1 ? keyValuePair[1] : null;
+                                querystring.Add(key, value);
+                            }
+                        }
+                    }
+                }
+
+                builder.Query = FacebookUtils.ToJsonQueryString(querystring);
+            }
+            return builder.Uri;
+        }
 
         #region Api Methods
 
@@ -234,7 +419,22 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            throw new NotImplementedException();
+            parameters = parameters ?? new Dictionary<string, object>();
+
+            path = FacebookClient.ParseQueryParametersToDictionary(path, parameters);
+
+            if (parameters.ContainsKey("method"))
+            {
+                if (String.IsNullOrEmpty((string)parameters["method"]))
+                {
+                    throw new ArgumentException("You must specify a value for the method parameter.");
+                }
+                return this.RestServer(parameters, httpMethod, resultType);
+            }
+            else
+            {
+                return this.Graph(path, parameters, httpMethod, resultType);
+            }
         }
 
 #endif
@@ -469,7 +669,22 @@ namespace Facebook
             Contract.Requires(callback != null);
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            throw new NotImplementedException();
+            parameters = parameters ?? new Dictionary<string, object>();
+
+            path = FacebookClient.ParseQueryParametersToDictionary(path, parameters);
+
+            if (parameters.ContainsKey("method"))
+            {
+                if (String.IsNullOrEmpty((string)parameters["method"]))
+                {
+                    throw new ArgumentException("You must specify a value for the method parameter.");
+                }
+                this.RestServerAsync(parameters, httpMethod, null, callback, state);
+            }
+            else
+            {
+                this.GraphAsync(path, parameters, httpMethod, null, callback, state);
+            }
         }
 
         /// <summary>
@@ -486,8 +701,27 @@ namespace Facebook
             Contract.Requires(callback != null);
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            throw new NotImplementedException();
+            parameters = parameters ?? new Dictionary<string, object>();
 
+            path = FacebookClient.ParseQueryParametersToDictionary(path, parameters);
+
+            var callback2 = new FacebookAsyncCallback((ar) =>
+            {
+                callback(new FacebookAsyncResult<T>(ar.Result, ar.AsyncState, ar.AsyncWaitHandle, ar.CompletedSynchronously, ar.IsCompleted, ar.Error));
+            });
+
+            if (parameters.ContainsKey("method"))
+            {
+                if (String.IsNullOrEmpty((string)parameters["method"]))
+                {
+                    throw new ArgumentException("You must specify a value for the method parameter.");
+                }
+                this.RestServerAsync(parameters, httpMethod, typeof(T), callback2, state);
+            }
+            else
+            {
+                this.GraphAsync(path, parameters, httpMethod, typeof(T), callback2, state);
+            }
         }
 
         #endregion
@@ -815,5 +1049,177 @@ namespace Facebook
 
         #endregion
 
+#if !SILVERLIGHT
+
+        /// <summary>
+        /// Invoke the old restserver.php endpoint.
+        /// </summary>
+        /// <param name="parameters">The parameters for the server call.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <returns>The decoded response object.</returns>
+        protected abstract object RestServer(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType);
+
+        /// <summary>
+        /// Invoke the Graph API.
+        /// </summary>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        protected abstract object Graph(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType);
+
+        /// <summary>
+        /// Make a OAuth Request
+        /// </summary>
+        /// <param name="uri">The url to make the request.</param>
+        /// <param name="parameters">The parameters of the request.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <returns>The decoded response object.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        protected abstract object OAuthRequest(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi);
+
+#endif
+
+        /// <summary>
+        /// Invoke the old restserver.php endpoint.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="parameters">The parameters for the server call.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        protected abstract void RestServerAsync(IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state);
+
+        /// <summary>
+        /// Invoke the Graph API.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        protected abstract void GraphAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, FacebookAsyncCallback callback, object state);
+
+        /// <summary>
+        /// Make a OAuth Request
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param> 
+        /// <param name="uri">The url to make the request.</param>
+        /// <param name="parameters">The parameters of the request.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <returns>The decoded response object.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        protected abstract void OAuthRequestAsync(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType, bool restApi, FacebookAsyncCallback callback, object state);
+
+        /// <summary>
+        /// Build the URL for api given parameters.
+        /// </summary>
+        /// <param name="method">The method name.</param>
+        /// <returns>The Url for the given parameters.</returns>
+        protected virtual Uri GetApiUrl(string method)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(method));
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
+            string name = "api";
+
+            if (method.Equals("video.upload"))
+            {
+                name = "api_video";
+            }
+            if (_readOnlyCalls.Contains(method))
+            {
+                name = "api_read";
+            }
+
+            return this.GetUrl(name, "restserver.php");
+        }
+
+        /// <summary>
+        /// Build the URL for given domain alias, path and parameters.
+        /// </summary>
+        /// <param name="name">The name of the domain (from the domain maps).</param>
+        /// <returns>The string of the url for the given parameters.</returns>
+        protected Uri GetUrl(string name)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
+            return this.GetUrl(name, string.Empty, null);
+        }
+
+        /// <summary>
+        /// Build the URL for given domain alias, path and parameters.
+        /// </summary>
+        /// <param name="name">The name of the domain (from the domain maps).</param>
+        /// <param name="path">Path (without a leading slash)</param>
+        /// <returns>The string of the url for the given parameters.</returns>
+        protected Uri GetUrl(string name, string path)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
+            return this.GetUrl(name, path, null);
+        }
+
+        /// <summary>
+        /// Build the URL for given domain alias, path and parameters.
+        /// </summary>
+        /// <param name="name">The name of the domain (from the domain maps).</param>
+        /// <param name="parameters">Optional query parameters</param>
+        /// <returns>The string of the url for the given parameters.</returns>
+        protected Uri GetUrl(string name, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
+            return this.GetUrl(name, string.Empty, parameters);
+        }
+
+        /// <summary>
+        /// Build the URL for given domain alias, path and parameters.
+        /// </summary>
+        /// <param name="name">The name of the domain (from the domain maps).</param>
+        /// <param name="path">Optional path (without a leading slash)</param>
+        /// <param name="parameters">Optional query parameters</param>
+        /// <returns>The string of the url for the given parameters.</returns>
+        protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
+            if (_domainMaps[name] == null)
+            {
+                throw new ArgumentException("Invalid url name.");
+            }
+
+            UriBuilder uri = new UriBuilder(_domainMaps[name]);
+            if (!String.IsNullOrEmpty(path))
+            {
+                if (path[0] == '/')
+                {
+                    if (path.Length > 1)
+                    {
+                        path = path.Substring(1);
+                    }
+                    else
+                    {
+                        path = string.Empty;
+                    }
+                }
+                if (!String.IsNullOrEmpty(path))
+                {
+                    uri.Path = UrlEncoder.EscapeUriString(path);
+                }
+            }
+            if (parameters != null)
+            {
+                uri.Query = FacebookUtils.ToJsonQueryString(parameters);
+            }
+            return uri.Uri;
+        }
     }
 }

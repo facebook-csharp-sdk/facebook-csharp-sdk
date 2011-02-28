@@ -13,11 +13,6 @@ using System.Security;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyDescription("Facebook C# SDK")]
-[assembly: AssemblyCompany("Facebook C# SDK")]
-[assembly: AssemblyProduct("Facebook C# SDK")]
-[assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
-[assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 
 #if !(SILVERLIGHT || TESTS)
@@ -31,6 +26,7 @@ using System.Runtime.InteropServices;
 #if !(SILVERLIGHT || WINDOWS_PHONE)
 [assembly: InternalsVisibleTo("Facebook.Web, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Web.Mvc, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+[assembly: InternalsVisibleTo("Facebook.Web.Compatibility, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 
 #if !TESTS
 [assembly: InternalsVisibleTo("Facebook.Web.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
