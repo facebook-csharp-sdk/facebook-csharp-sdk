@@ -738,6 +738,11 @@ namespace Facebook
 
         protected virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
         {
+            if (parameters == null)
+            {
+                parameters = new Dictionary<string, object>();
+            }
+
             if (!parameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
             {
                 parameters["access_token"] = this.AccessToken;
