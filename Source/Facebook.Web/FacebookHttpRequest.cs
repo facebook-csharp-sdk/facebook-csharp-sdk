@@ -21,7 +21,7 @@ namespace Facebook.Web
     /// <summary>
     /// Represents the Facebook authorizer class.
     /// </summary>
-    public class FacebookWebRequest
+    public class FacebookHttpRequest
     {
 
         /// <summary>
@@ -47,12 +47,12 @@ namespace Facebook.Web
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookCanvasRequest"/> class.
         /// </summary>
-        public FacebookWebRequest()
+        public FacebookHttpRequest()
             : this(FacebookContext.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
-        public FacebookWebRequest(IFacebookApplication settings)
+        public FacebookHttpRequest(IFacebookApplication settings)
             : this(settings, new HttpContextWrapper(System.Web.HttpContext.Current)) 
         {
         }
@@ -66,7 +66,7 @@ namespace Facebook.Web
         /// <param name="httpContext">
         /// The http context.
         /// </param>
-        public FacebookWebRequest(IFacebookApplication settings, HttpContextBase httpContext)
+        public FacebookHttpRequest(IFacebookApplication settings, HttpContextBase httpContext)
         {
             Contract.Requires(settings != null);
             Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
@@ -80,9 +80,9 @@ namespace Facebook.Web
             this.m_httpContext = httpContext;
         }
 
-        public static FacebookWebRequest Current
+        public static FacebookHttpRequest Current
         {
-            get { return new FacebookWebRequest(); }
+            get { return new FacebookHttpRequest(); }
         }
 
         /// <summary>

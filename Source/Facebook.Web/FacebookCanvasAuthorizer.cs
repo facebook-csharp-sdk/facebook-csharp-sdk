@@ -15,7 +15,7 @@ namespace Facebook.Web
         {
         }
 
-        public FacebookCanvasAuthorizer(FacebookWebRequest request)
+        public FacebookCanvasAuthorizer(FacebookHttpRequest request)
             : base(request)
         {
         }

@@ -124,14 +124,8 @@
     <Compile Include="GlobalSuppressions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FacebookWebRequest.cs" />
+    <Compile Include="FacebookHttpRequest.cs" />
     <Compile Include="CanvasUrlBuilder.cs" />
-    <Compile Include="Obsolete\Authorizer.cs" />
-    <Compile Include="Obsolete\CanvasAuthorizer.cs" />
-    <Compile Include="Obsolete\FacebookApp.cs" />
-    <Compile Include="Obsolete\FacebookAppBase.cs" />
-    <Compile Include="Obsolete\FacebookAppBaseContracts.cs" />
-    <Compile Include="Obsolete\FacebookAppExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

@@ -9,24 +9,24 @@ namespace Facebook.Web
     public class FacebookWebAuthorizer
     {
 
-        private FacebookWebRequest m_request;
+        private FacebookHttpRequest m_request;
 
         public FacebookWebAuthorizer() :
-            this(new FacebookWebRequest())
+            this(new FacebookHttpRequest())
         {
         }
 
-        public FacebookWebAuthorizer(FacebookWebRequest request)
+        public FacebookWebAuthorizer(FacebookHttpRequest request)
         {
             this.m_request = request;
         }
 
         public FacebookWebAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
         {
-            this.m_request = new FacebookWebRequest(settings, httpContext);
+            this.m_request = new FacebookHttpRequest(settings, httpContext);
         }
 
-        public FacebookWebRequest FacebookWebRequest
+        public FacebookHttpRequest FacebookWebRequest
         {
             get { return this.m_request; }
         }

@@ -116,7 +116,11 @@
     <Compile Include="DefaultFacebookApplication.cs" />
     <Compile Include="External\HttpEncoder.cs" />
     <Compile Include="External\HttpUtility.cs" />
+    <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
+    <Compile Include="FacebookApiRequest.cs" />
+    <Compile Include="FacebookApiRequestUtiltity.cs" />
+    <Compile Include="FacebookApiResponse.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookClient.cs" />
@@ -133,7 +137,6 @@
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
-    <Compile Include="Obsolete\IFacebookSettings.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
