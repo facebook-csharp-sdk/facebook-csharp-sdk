@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ApplicationMetrics NAsm="3" NbSourceFiles="56" NbLinesOfCode="1417" NbLinesOfComment="3011" PercentageComment="67" NType="72" NClass="65" NAbstractClass="2" NInterface="3" NValueType="0" NExceptionType="6" NAttributeType="3" NDelegateType="2" NEnumType="4" NGenericMethodsDefinition="11" NGenericTypesDefinition="4" NILInstruction="12745" NMethods="539" NFields="176" NNamespaces="10" NThirdPartyAssemblies="6" NThirdPartyNamespaces="35" NThirdPartyTypes="157" NThirdPartyMethods="215" NThirdPartyFields="12" PercentCodeCoverage="0" PercentPublicType="58.33" PercentPublicMethod="76.62" PercentClassWithAtLeastOnePublicField="0">
+  <PropertyOnInterface Occ="3" Avg="3.33" StdDev="0.47" MaxVal="4" MaxName="Facebook.IFacebookSettings" />
+  <MethodOnInterface Occ="3" Avg="6.67" StdDev="0.94" MaxVal="8" MaxName="Facebook.IFacebookSettings" />
+  <ArgOnMethodOnInterface Occ="20" Avg="0.8" StdDev="1.08" MaxVal="4" MaxName="Facebook.IOAuthClientAuthorizer.ExchangeCodeForAccessTokenAsync(String,IDictionary&lt;String,Object&gt;,FacebookAsyncCallback,Object)" />
+  <PublicPropertyOnClass Occ="65" Avg="1.34" StdDev="2.07" MaxVal="7" MaxName="Facebook.FacebookSignedRequest" />
+  <PublicMethodOnClass Occ="65" Avg="6.05" StdDev="8.85" MaxVal="59" MaxName="Facebook.FacebookAppBase" />
+  <ArgOnPublicMethodOnClass Occ="393" Avg="1.43" StdDev="1.68" MaxVal="11" MaxName="Facebook.Web.Mvc.CanvasUrlExtensions.GenerateCanvasUrl(UrlHelper,String,String,String,String,String,String,RouteValueDictionary,RouteCollection,RequestContext,Boolean)" />
+  <ILInstructionInNonAbstractMethods Occ="509" Avg="25.04" StdDev="30.22" MaxVal="286" MaxName="Facebook.FacebookAppBase..cctor()" />
+  <TypeWithTheMostILInstruction Occ="65" Avg="196.08" StdDev="449.75" MaxVal="2760" MaxName="Facebook.FacebookAppBase" />
+  <MethodCC Occ="509" Avg="2.45" StdDev="2.19" MaxVal="18" MaxName="Facebook.FacebookSignedRequest..ctor(IDictionary&lt;String,Object&gt;)" />
+</ApplicationMetrics>

@@ -7,7 +7,7 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-namespace Facebook.Web
+namespace Facebook
 {
     using System;
     using System.Collections.Generic;
@@ -16,10 +16,12 @@ namespace Facebook.Web
     using System.Linq;
     using System.Text;
     using System.Web;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Represents a Facebook signed request.
     /// </summary>
+    [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public sealed class FacebookSignedRequest
     {
 
@@ -86,7 +88,7 @@ namespace Facebook.Web
 
                 var data = (IDictionary<string, object>)(value is JsonObject ? value : FacebookUtils.ToDictionary(value));
 
-                this.issuedAt = data.ContainsKey("issued_at") ? FacebookUtils.FromUnixTime(Convert.ToInt64(data["issued_at"])) : DateTime.MinValue;
+                this.issuedAt = data.ContainsKey("issued_at") ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(data["issued_at"])) : DateTime.MinValue;
 
                 if (data.ContainsKey("payload"))
                 {
@@ -97,7 +99,7 @@ namespace Facebook.Web
                     {
                         this.accessToken = payload.ContainsKey("access_token") ? (string)payload["access_token"] : null;
                         this.expires = payload.ContainsKey("expires_in")
-                                           ? FacebookUtils.FromUnixTime(Convert.ToInt64(payload["expires_in"]))
+                                           ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(payload["expires_in"]))
                                            : DateTime.MinValue;
                         string sUserId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
                         long userId;
@@ -117,7 +119,7 @@ namespace Facebook.Web
 
                     this.accessToken = data.ContainsKey("oauth_token") ? (string)data["oauth_token"] : null;
                     this.expires = data.ContainsKey("expires")
-                                       ? FacebookUtils.FromUnixTime(Convert.ToInt64(data["expires"]))
+                                       ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(data["expires"]))
                                        : DateTime.MinValue;
                     this.profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
                 }
@@ -187,7 +189,7 @@ namespace Facebook.Web
             Contract.Requires(!String.IsNullOrEmpty(secret));
             Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
 
-            var result = TryParse(secret, signedRequestValue, 0, FacebookUtils.ToUnixTime(DateTime.UtcNow), false);
+            var result = TryParse(secret, signedRequestValue, 0, DateTimeConvertor.ToUnixTime(DateTime.UtcNow), false);
             signedRequest = result == null ? null : new FacebookSignedRequest(result);
             return result != null;
         }
@@ -235,7 +237,7 @@ namespace Facebook.Web
             Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
             Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
 
-            var result = TryParse(secret, signedRequestValue, 0, FacebookUtils.ToUnixTime(DateTime.UtcNow), true);
+            var result = TryParse(secret, signedRequestValue, 0, DateTimeConvertor.ToUnixTime(DateTime.UtcNow), true);
             return result == null ? null : new FacebookSignedRequest(result);
         }
 
@@ -403,7 +405,7 @@ namespace Facebook.Web
 
                 if (!digest.SequenceEqual(FacebookUtils.Base64UrlDecode(encodedSignature)))
                 {
-                    throw new InvalidOperationException(Properties.Resources.InvalidSignedRequestSignature);
+                    throw new InvalidOperationException(Facebook.Web.Properties.Resources.InvalidSignedRequestSignature);
                 }
 
                 IDictionary<string, object> result;
@@ -423,7 +425,7 @@ namespace Facebook.Web
 
                     if (issuedAt < currentTime)
                     {
-                        throw new InvalidOperationException(Properties.Resources.OldSignedRequest);
+                        throw new InvalidOperationException(Web.Properties.Resources.OldSignedRequest);
                     }
 
                     result["issued_at"] = issuedAt;

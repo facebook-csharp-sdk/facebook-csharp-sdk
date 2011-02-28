@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<NamespacesMetrics>
+  <Namespace Namespace="Facebook.dll::" NTypes="1" NILInstruction="0" NbLinesOfCode="0" NbLinesOfComment="-" PercentageComment="-" PercentageCoverage="-" AfferentCoupling="0" EfferentCoupling="1" />
+  <Namespace Namespace="Facebook" NTypes="39" NILInstruction="7953" NbLinesOfCode="1010" NbLinesOfComment="1337" PercentageComment="56" PercentageCoverage="-" AfferentCoupling="2" EfferentCoupling="28" />
+  <Namespace Namespace="Facebook.Properties" NTypes="1" NILInstruction="27" NbLinesOfCode="8" NbLinesOfComment="17" PercentageComment="68" PercentageCoverage="-" AfferentCoupling="1" EfferentCoupling="9" />
+  <Namespace Namespace="Facebook.dll::System.Diagnostics.Contracts" NTypes="4" NILInstruction="63" NbLinesOfCode="0" NbLinesOfComment="-" PercentageComment="-" PercentageCoverage="-" AfferentCoupling="1" EfferentCoupling="6" />
+  <Namespace Namespace="Facebook.Web.dll::" NTypes="1" NILInstruction="0" NbLinesOfCode="0" NbLinesOfComment="-" PercentageComment="-" PercentageCoverage="-" AfferentCoupling="0" EfferentCoupling="1" />
+  <Namespace Namespace="Facebook.Web" NTypes="7" NILInstruction="1660" NbLinesOfCode="186" NbLinesOfComment="604" PercentageComment="76" PercentageCoverage="-" AfferentCoupling="1" EfferentCoupling="14" />
+  <Namespace Namespace="Facebook.Web.dll::System.Diagnostics.Contracts" NTypes="4" NILInstruction="63" NbLinesOfCode="0" NbLinesOfComment="-" PercentageComment="-" PercentageCoverage="-" AfferentCoupling="1" EfferentCoupling="6" />
+  <Namespace Namespace="Facebook.Web.Mvc.dll::" NTypes="1" NILInstruction="0" NbLinesOfCode="0" NbLinesOfComment="-" PercentageComment="-" PercentageCoverage="-" AfferentCoupling="0" EfferentCoupling="1" />
+  <Namespace Namespace="Facebook.Web.Mvc" NTypes="10" NILInstruction="2924" NbLinesOfCode="213" NbLinesOfComment="613" PercentageComment="74" PercentageCoverage="-" AfferentCoupling="0" EfferentCoupling="13" />
+  <Namespace Namespace="Facebook.Web.Mvc.dll::System.Diagnostics.Contracts" NTypes="4" NILInstruction="55" NbLinesOfCode="0" NbLinesOfComment="-" PercentageComment="-" PercentageCoverage="-" AfferentCoupling="1" EfferentCoupling="6" />
+</NamespacesMetrics>

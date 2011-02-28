@@ -91,7 +91,7 @@ namespace Facebook
             if (parameters.ContainsKey("expires_in"))
             {
                 var expiresIn = Convert.ToInt64(parameters["expires_in"]);
-                this.expires = FacebookUtils.FromUnixTime(expiresIn);
+                this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
             }
         }
 

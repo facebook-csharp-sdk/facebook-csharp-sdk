@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<AssemblyDependencies>
+  <Dependencies_For Assembly="Facebook v4.2.1.0">
+    <DependsOn>
+      <DependsOn_Name>mscorlib v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System.Core v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System.Web v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System.Configuration v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>Newtonsoft.Json v4.0.0.0</DependsOn_Name>
+    </DependsOn>
+    <ReferencedBy>
+      <ReferencedBy_Name>Facebook.Web v4.2.1.0</ReferencedBy_Name>
+      <ReferencedBy_Name>Facebook.Web.Mvc v4.2.1.0</ReferencedBy_Name>
+    </ReferencedBy>
+  </Dependencies_For>
+  <Dependencies_For Assembly="Facebook.Web v4.2.1.0">
+    <DependsOn>
+      <DependsOn_Name>Facebook v4.2.1.0</DependsOn_Name>
+      <DependsOn_Name>mscorlib v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System.Core v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System.Web v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System.Configuration v4.0.0.0</DependsOn_Name>
+    </DependsOn>
+    <ReferencedBy>
+      <ReferencedBy_Name>Facebook.Web.Mvc v4.2.1.0</ReferencedBy_Name>
+    </ReferencedBy>
+  </Dependencies_For>
+  <Dependencies_For Assembly="Facebook.Web.Mvc v4.2.1.0">
+    <DependsOn>
+      <DependsOn_Name>System.Web v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>System v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>mscorlib v4.0.0.0</DependsOn_Name>
+      <DependsOn_Name>Facebook.Web v4.2.1.0</DependsOn_Name>
+      <DependsOn_Name>Facebook v4.2.1.0</DependsOn_Name>
+      <DependsOn_Name>System.Core v4.0.0.0</DependsOn_Name>
+    </DependsOn>
+  </Dependencies_For>
+</AssemblyDependencies>

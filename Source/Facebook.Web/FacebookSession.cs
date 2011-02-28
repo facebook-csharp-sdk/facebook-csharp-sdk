@@ -7,7 +7,7 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-namespace Facebook.Web
+namespace Facebook
 {
     using System;
     using System.Collections.Generic;
@@ -16,10 +16,12 @@ namespace Facebook.Web
     using System.Linq;
     using System.Text;
     using System.Web;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Represents a Facebook session.
     /// </summary>
+    [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public sealed class FacebookSession
     {
 
@@ -70,7 +72,7 @@ namespace Facebook.Web
             this.SessionKey = data.ContainsKey("session_key") ? (string)data["session_key"] : null;
 
             this.Expires = data.ContainsKey("expires")
-                               ? FacebookUtils.FromUnixTime(Convert.ToInt64(data["expires"]))
+                               ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(data["expires"]))
                                : DateTime.MinValue;
             this.Signature = data.ContainsKey("sig") ? (string)data["sig"] : null;
             this.BaseDomain = data.ContainsKey("base_domain") ? (string)data["base_domain"] : null;
@@ -293,7 +295,7 @@ namespace Facebook.Web
             {
                 { "uid", signedRequest.UserId.ToString() },
                 { "access_token", signedRequest.AccessToken },
-                { "expires", FacebookUtils.ToUnixTime(signedRequest.Expires) }
+                { "expires", DateTimeConvertor.ToUnixTime(signedRequest.Expires) }
             };
             dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
 

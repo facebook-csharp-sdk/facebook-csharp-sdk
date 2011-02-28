@@ -13,6 +13,11 @@ using System.Security;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+[assembly: AssemblyDescription("Facebook C# SDK")]
+[assembly: AssemblyCompany("Facebook C# SDK")]
+[assembly: AssemblyProduct("Facebook C# SDK")]
+[assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
+[assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 
 #if !(SILVERLIGHT || TESTS)

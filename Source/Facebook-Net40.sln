@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web", "Facebook.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc", "Facebook.Web.Mvc\Facebook.Web.Mvc.csproj", "{7DC5C10F-E871-4202-9014-0F958358389E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Compatibility", "Facebook.Web.Compatibility\Facebook.Web.Compatibility.csproj", "{818C8733-121F-4DF0-919A-F322CFBCAC71}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -50,6 +52,16 @@ Global
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|x86.ActiveCfg = Release|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{818C8733-121F-4DF0-919A-F322CFBCAC71}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
