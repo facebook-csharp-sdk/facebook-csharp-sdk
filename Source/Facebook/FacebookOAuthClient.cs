@@ -11,8 +11,8 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Diagnostics.Contracts;
-    using System.IO;
     using System.Net;
 
     /// <summary>
@@ -202,7 +202,7 @@ namespace Facebook
             var uri = BuildExchangeCodeForAccessTokenUrl(code, parameters);
             using (var webClient = new WebClient())
             {
-
+                throw new NotImplementedException();
             }
 
         }
@@ -273,7 +273,39 @@ namespace Facebook
         {
             var requestUri = BuildGetApplicationAccessTokenUrl();
 
-            throw new NotImplementedException();
+            using (var webClient = new WebClient())
+            {
+                webClient.DownloadStringCompleted +=
+                    (o, e) => this.OnGetApplicationAccessTokenCompleted(e);
+
+                webClient.DownloadStringAsync(requestUri, null);
+            }
+        }
+
+        private void OnGetApplicationAccessTokenCompleted(DownloadStringCompletedEventArgs e)
+        {
+            FacebookApiEventArgs args;
+            if (e.Error == null)
+            {
+                var json = new JsonObject();
+                FacebookClient.ParseQueryParametersToDictionary("?" + e.Result, json);
+                args = this.GetApiEventArgs(e, json.ToString());
+            }
+            else
+            {
+                args = this.GetApiEventArgs(e, null);
+            }
+            this.OnGetApplicationAccessTokenCompleted(args);
+        }
+
+        public event EventHandler<FacebookApiEventArgs> GetApplicationAccessTokenCompleted;
+
+        protected void OnGetApplicationAccessTokenCompleted(FacebookApiEventArgs args)
+        {
+            if (GetApplicationAccessTokenCompleted != null)
+            {
+                GetApplicationAccessTokenCompleted(this, args);
+            }
         }
 
         private Uri BuildGetApplicationAccessTokenUrl()
@@ -354,6 +386,23 @@ namespace Facebook
             }
 
             return jsonObject;
+        }
+
+        private FacebookApiEventArgs GetApiEventArgs(AsyncCompletedEventArgs e, string json)
+        {
+            var cancelled = e.Cancelled;
+            var userState = e.UserState;
+            var error = e.Error;
+
+            // Check for Graph Exception
+            var webException = error as WebException;
+
+            if (webException != null)
+            {
+                error = ExceptionFactory.GetGraphException(webException);
+            }
+
+            return new FacebookApiEventArgs(error, cancelled, userState, json);
         }
     }
 }
