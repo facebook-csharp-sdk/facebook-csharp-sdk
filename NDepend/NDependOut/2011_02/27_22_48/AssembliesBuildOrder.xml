@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<AssemblySortForCompilOrObfusk>
-  <Assembly Assembly="Facebook">7</Assembly>
-  <Assembly Assembly="Facebook.Web">8</Assembly>
-  <Assembly Assembly="Facebook.Web.Mvc">9</Assembly>
-</AssemblySortForCompilOrObfusk>

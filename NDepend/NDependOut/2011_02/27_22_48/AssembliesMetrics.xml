@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<AssembliesMetrics>
-  <Assembly Assembly="Facebook v4.2.1.0" NTypes="45" NAbstractTypes="3" NILInstructionInAsm="8043" NbLinesOfCodeInAsm="1018" NbLinesOfCommentInAsm="1593" PercentageCommentInAsm="61" PercentageCoverageInAsm="-" AfferentCoupling="7" EfferentCoupling="128" RelationalCohesion="2.33" Instability="0.95" Abstractness="0.07" DistFrMainSeq="0.01" NormDistFrMainSeq="0.01" />
-  <Assembly Assembly="Facebook.Web v4.2.1.0" NTypes="12" NAbstractTypes="1" NILInstructionInAsm="1723" NbLinesOfCodeInAsm="186" NbLinesOfCommentInAsm="716" PercentageCommentInAsm="79" PercentageCoverageInAsm="-" AfferentCoupling="7" EfferentCoupling="51" RelationalCohesion="1.17" Instability="0.88" Abstractness="0.08" DistFrMainSeq="0.03" NormDistFrMainSeq="0.04" />
-  <Assembly Assembly="Facebook.Web.Mvc v4.2.1.0" NTypes="15" NAbstractTypes="1" NILInstructionInAsm="2979" NbLinesOfCodeInAsm="213" NbLinesOfCommentInAsm="702" PercentageCommentInAsm="76" PercentageCoverageInAsm="-" AfferentCoupling="0" EfferentCoupling="40" RelationalCohesion="1" Instability="1" Abstractness="0.07" DistFrMainSeq="0.05" NormDistFrMainSeq="0.07" />
-</AssembliesMetrics>

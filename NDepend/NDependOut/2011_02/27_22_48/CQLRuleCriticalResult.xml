@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<CQLRuleCriticalResult>
-  <RuleCritical QueryId="Query1017023229" FullName="Code Quality \ Methods with too many parameters - critical (NbParameters)" />
-</CQLRuleCriticalResult>
