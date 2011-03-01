@@ -1,4 +1,3 @@
-/*
 namespace Facebook.Utils.Tests.ToDictionary
 {
     using System.Runtime.Serialization;
@@ -71,4 +70,4 @@ namespace Facebook.Utils.Tests.ToDictionary
             public string Privacy { get; set; }
         }
     }
-}*/
+}
