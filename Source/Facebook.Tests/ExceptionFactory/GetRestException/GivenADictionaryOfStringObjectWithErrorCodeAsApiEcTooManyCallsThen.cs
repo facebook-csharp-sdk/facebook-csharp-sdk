@@ -1,23 +1,21 @@
-
 namespace Facebook.Tests.ExceptionFactory.GetRestException
 {
     using System.Collections.Generic;
     using Facebook;
     using Xunit;
 
-    public class GivenADictionaryOfStringObjectThatContainsErrorCodeStringThen
+    public class GivenADictionaryOfStringObjectWithErrorCodeAsApiEcTooManyCallsThen
     {
         private IDictionary<string, object> dict;
-        private int errorCode;
+        private string errorCode;
 
-        public GivenADictionaryOfStringObjectThatContainsErrorCodeStringThen()
+        public GivenADictionaryOfStringObjectWithErrorCodeAsApiEcTooManyCallsThen()
         {
-            errorCode = 100;
+            errorCode = "API_EC_TOO_MANY_CALLS";
             dict = new Dictionary<string, object>
                        {
-                           {"error_code", errorCode},
-                           {"error_msg", "The parameter fields is required"}
-                           // ommited other fields for brevity
+                           { "error_code", errorCode }
+                           // others ommited for brevity
                        };
         }
 
@@ -30,19 +28,19 @@ namespace Facebook.Tests.ExceptionFactory.GetRestException
         }
 
         [Fact]
-        public void ResultIsOfTypeFacebookApiException()
+        public void ResultIsOfTypeFacebookApiLimitException()
         {
             var result = ExceptionFactory.GetRestException(dict);
 
-            Assert.IsType<FacebookApiException>(result);
+            Assert.IsType<FacebookApiLimitException>(result);
         }
 
         [Fact]
-        public void ErrorTypeIsEqualToErrorCode()
+        public void ErrorTypeIsApiEcTooManyCalls()
         {
             var result = ExceptionFactory.GetRestException(dict);
 
-            Assert.Equal(errorCode.ToString(), result.ErrorType);
+            Assert.Equal(errorCode, result.ErrorType);
         }
     }
 }
