@@ -69,6 +69,11 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionFactory\GetRestException\GivenADictionaryOfStringObjectThatContainsErrorCodeStringThen.cs" />
+    <Compile Include="ExceptionFactory\GetRestException\GivenAnEmptyDictionaryOfStringObjectThen.cs" />
+    <Compile Include="ExceptionFactory\GetRestException\GivenANonEmptyDictionaryOfStringObjectThatDoesNotContainErrorCodeKeyThen.cs" />
+    <Compile Include="ExceptionFactory\GetRestException\GivenInputAsNullThen.cs" />
+    <Compile Include="ExceptionFactory\GetRestException\GivenNonNullInputNotOfTypeIDictionaryStringObjectThen.cs" />
     <Compile Include="FacebookClientBase\GetApiUrl\Fakes\FakeFacebookClient.cs" />
     <Compile Include="FacebookClientBase\GetApiUrl\GivenMethodIsVideoUploadThen.cs" />
     <Compile Include="FacebookClientBase\GetApiUrl\GivenMethodsThanAreNotReadOnlyOrVideoUploadThen.cs" />

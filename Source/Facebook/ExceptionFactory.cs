@@ -12,8 +12,8 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Net;
     using System.IO;
+    using System.Net;
 
     /// <summary>
     /// A utility for generating facebook exceptions.
@@ -84,7 +84,7 @@ namespace Facebook
                 {
                     if (resultDict.ContainsKey("error_code"))
                     {
-                        string error_code = resultDict["error_code"] as string;
+                        string error_code = resultDict["error_code"].ToString();
                         string error_msg = null;
                         if (resultDict.ContainsKey("error_msg"))
                         {
