@@ -688,14 +688,16 @@ namespace Facebook
 
         protected virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
-            if (!parameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
+
+            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
             {
-                parameters["access_token"] = this.AccessToken;
+                mergedParameters["access_token"] = this.AccessToken;
             }
 
             Uri requestUrl;
             string contentType;
-            byte[] postData = BuildRequestData(path, parameters, httpMethod, out requestUrl, out contentType);
+            byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
 
             byte[] resultData;
             string method = FacebookUtils.ConvertToString(httpMethod);
