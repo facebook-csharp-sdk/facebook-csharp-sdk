@@ -28,10 +28,6 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl.Fakes
             throw new NotImplementedException();
         }
 
-        internal override Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 
