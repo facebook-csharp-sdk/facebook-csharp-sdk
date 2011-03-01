@@ -136,7 +136,69 @@ namespace Facebook
             return uriBuilder.Uri;
         }
 
-#if !SILVERLIGHT // Silverlight should have only async calls
+        /// <summary>
+        /// Gets the login url.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="redirectUri">
+        /// The redirect Uri.
+        /// </param>
+        /// <param name="extendedPermissions">
+        /// The extended permissions (scope).
+        /// </param>
+        /// <param name="logout">
+        /// Indicates whether to logout existing logged in user or not.
+        /// </param>
+        /// <param name="loginParameters">
+        /// The login parameters.
+        /// </param>
+        /// <returns>
+        /// The url to navigate.
+        /// </returns>
+        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, bool logout, IDictionary<string, object> loginParameters)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            var oauth = new FacebookOAuthClient { ClientId = appId, RedirectUri = redirectUri };
+
+            var defaultLoginParameters = new Dictionary<string, object>
+                                             {
+                                                 { "response_type", "code" }, // make it "code" by default for security reasons.
+                                                 { "display", "popup" }
+                                             };
+
+            if (extendedPermissions != null && extendedPermissions.Length > 0)
+            {
+                defaultLoginParameters["scope"] = string.Join(",", extendedPermissions);
+            }
+
+            var mergedLoginParameters = FacebookUtils.Merge(defaultLoginParameters, loginParameters);
+
+            var loginUrl = oauth.GetLoginUrl(mergedLoginParameters);
+
+            Uri navigateUrl;
+            if (logout)
+            {
+                var logoutParameters = new Dictionary<string, object>
+                                           {
+                                               { "next", loginUrl }
+                                           };
+
+                navigateUrl = oauth.GetLogoutUrl(logoutParameters);
+            }
+            else
+            {
+                navigateUrl = loginUrl;
+            }
+
+            return navigateUrl;
+        }
+
+#if !SILVERLIGHT
+        // Silverlight should have only async calls
 
         /// <summary>
         /// Gets the access token by exchanging the code.
@@ -189,22 +251,35 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
         public void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters)
         {
             Contract.Requires(!string.IsNullOrEmpty(code));
 
-            var uri = BuildExchangeCodeForAccessTokenUrl(code, parameters);
+            var requestUri = this.BuildExchangeCodeForAccessTokenUrl(code, parameters);
+
             using (var webClient = new WebClient())
             {
-                throw new NotImplementedException();
+                webClient.DownloadStringCompleted +=
+                    (o, e) => this.OnExchangeCodeForAccessTokenCompleted(e);
+                webClient.DownloadStringAsync(requestUri, null);
             }
+        }
 
+        private void OnExchangeCodeForAccessTokenCompleted(DownloadStringCompletedEventArgs e)
+        {
+            var args = this.GetApiEventArgs(e, e.Error == null ? this.BuildExchangeCodeResult(e.Result).ToString() : null);
+
+            this.OnExchangeCodeForAccessTokenCompleted(args);
+        }
+
+        public event EventHandler<FacebookApiEventArgs> ExchangeCodeForAccessTokenCompleted;
+
+        protected void OnExchangeCodeForAccessTokenCompleted(FacebookApiEventArgs e)
+        {
+            if (this.ExchangeCodeForAccessTokenCompleted != null)
+            {
+                this.ExchangeCodeForAccessTokenCompleted(this, e);
+            }
         }
 
 #if !SILVERLIGHT
@@ -219,14 +294,12 @@ namespace Facebook
         {
             var requestUri = BuildGetApplicationAccessTokenUrl();
 
-            object result;
             string responseData;
             using (var webClient = new WebClient())
             {
                 try
                 {
                     responseData = webClient.DownloadString(requestUri);
-
                 }
                 catch (WebException ex)
                 {
@@ -336,7 +409,7 @@ namespace Facebook
             var pars = new Dictionary<string, object>();
             pars["client_id"] = this.ClientId;
             pars["client_secret"] = this.ClientSecret;
-            pars["redirect_uri"] = this.RedirectUri;
+            pars["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
             pars["code"] = code;
 
             var mergedParameters = FacebookUtils.Merge(pars, parameters);
@@ -376,7 +449,7 @@ namespace Facebook
 
             // access_token=string&expires=long or access_token=string
             // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
-            var jsonObject = new Dictionary<string, object>();
+            var jsonObject = new JsonObject();
             jsonObject["access_token"] = (string)returnParameter["access_token"];
 
             // check if expires exist coz for offline_access it is not present.
