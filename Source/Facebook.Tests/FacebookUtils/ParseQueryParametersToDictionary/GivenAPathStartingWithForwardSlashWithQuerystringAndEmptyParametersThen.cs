@@ -1,4 +1,4 @@
-namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
+namespace Facebook.Tests.FacebookUtils.ParseQueryParametersToDictionary
 {
     using System.Collections.Generic;
     using Facebook;
@@ -13,7 +13,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string pathWithoutForwardSlashAndQueryString = "me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookClientBase.ParseQueryParametersToDictionary(originalPathWithQueryString, parameters);
+            var path = FacebookUtils.ParseQueryParametersToDictionary(originalPathWithQueryString, parameters);
 
             Assert.Equal(pathWithoutForwardSlashAndQueryString, path);
         }
@@ -24,7 +24,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string originalPathWithQueryString = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookClientBase.ParseQueryParametersToDictionary(originalPathWithQueryString, parameters);
+            var path = FacebookUtils.ParseQueryParametersToDictionary(originalPathWithQueryString, parameters);
 
             Assert.NotEqual('/', path[0]);
         }

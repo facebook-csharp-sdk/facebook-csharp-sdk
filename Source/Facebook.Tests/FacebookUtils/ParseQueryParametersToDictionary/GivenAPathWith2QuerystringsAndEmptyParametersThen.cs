@@ -1,4 +1,4 @@
-namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
+namespace Facebook.Tests.FacebookUtils.ParseQueryParametersToDictionary
 {
     using System.Collections.Generic;
     using Facebook;
@@ -12,7 +12,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string originalPath = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookClientBase.ParseQueryParametersToDictionary(originalPath, parameters);
+            var path = FacebookUtils.ParseQueryParametersToDictionary(originalPath, parameters);
 
             Assert.Equal(path, "me/likes");
         }
@@ -23,7 +23,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string path = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookClientBase.ParseQueryParametersToDictionary(path, parameters);
+            FacebookUtils.ParseQueryParametersToDictionary(path, parameters);
 
             Assert.Equal("3", parameters["limit"]);
             Assert.Equal("2", parameters["offset"]);
@@ -35,7 +35,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string path = "/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookClientBase.ParseQueryParametersToDictionary(path, parameters);
+            FacebookUtils.ParseQueryParametersToDictionary(path, parameters);
 
             Assert.Equal(2, parameters.Count);
         }

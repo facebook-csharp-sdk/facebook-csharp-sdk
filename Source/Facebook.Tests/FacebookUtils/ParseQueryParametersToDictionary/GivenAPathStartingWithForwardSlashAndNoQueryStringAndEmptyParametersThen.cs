@@ -1,4 +1,4 @@
-namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
+namespace Facebook.Tests.FacebookUtils.ParseQueryParametersToDictionary
 {
     using System.Collections.Generic;
     using Facebook;
@@ -13,7 +13,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string pathWithoutForwardSlash = "me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookClientBase.ParseQueryParametersToDictionary(originalPath, parameters);
+            var path = FacebookUtils.ParseQueryParametersToDictionary(originalPath, parameters);
 
             Assert.Equal(pathWithoutForwardSlash, path);
         }

@@ -315,7 +315,7 @@ namespace Facebook
             }
 
             var returnParameter = new JsonObject();
-            FacebookClient.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
+            FacebookUtils.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
 
             return returnParameter;
         }
@@ -361,7 +361,7 @@ namespace Facebook
             if (e.Error == null)
             {
                 var json = new JsonObject();
-                FacebookClient.ParseQueryParametersToDictionary("?" + e.Result, json);
+                FacebookUtils.ParseQueryParametersToDictionary("?" + e.Result, json);
                 args = this.GetApiEventArgs(e, json.ToString());
             }
             else
@@ -445,7 +445,7 @@ namespace Facebook
         private object BuildExchangeCodeResult(string json)
         {
             var returnParameter = new JsonObject();
-            FacebookClient.ParseQueryParametersToDictionary("?" + json, returnParameter);
+            FacebookUtils.ParseQueryParametersToDictionary("?" + json, returnParameter);
 
             // access_token=string&expires=long or access_token=string
             // Convert to JsonObject to support dynamic and be consistent with the rest of the library.

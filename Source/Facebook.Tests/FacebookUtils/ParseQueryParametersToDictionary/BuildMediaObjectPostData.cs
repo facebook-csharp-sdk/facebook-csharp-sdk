@@ -1,4 +1,4 @@
-namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
+namespace Facebook.Tests.FacebookUtils.ParseQueryParametersToDictionary
 {
     using System.Dynamic;
     using System.IO;

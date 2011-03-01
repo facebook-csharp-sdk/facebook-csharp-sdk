@@ -14,8 +14,8 @@
         {
             var unixTimeInString = "1213513200";
 
-            var fbUnix = FacebookUtils.FromUnixTime(unixTimeInString);
-            var unixTime = FacebookUtils.ToUnixTime(fbUnix);
+            var fbUnix = DateTimeConvertor.FromUnixTime(unixTimeInString);
+            var unixTime = DateTimeConvertor.ToUnixTime(fbUnix);
 
             Assert.Equal(unixTimeInString, unixTime.ToString());
         }
@@ -25,8 +25,8 @@
         {
             var unixTimeInDouble = 1213513200;
 
-            var fbUnix = FacebookUtils.FromUnixTime(unixTimeInDouble);
-            var unixTime = FacebookUtils.ToUnixTime(fbUnix);
+            var fbUnix = DateTimeConvertor.FromUnixTime(unixTimeInDouble);
+            var unixTime = DateTimeConvertor.ToUnixTime(fbUnix);
 
             Assert.Equal(unixTimeInDouble, unixTime);
         }

@@ -1,6 +1,6 @@
-namespace Facebook.Tests.FacebookClientBase.GetApiUrl
+namespace Facebook.Tests.FacebookClient.GetApiUrl
 {
-    using Tests.FacebookClientBase.GetApiUrl.Fakes;
+    using Tests.FacebookClient.GetApiUrl.Fakes;
     using Xunit;
     using Xunit.Extensions;
 

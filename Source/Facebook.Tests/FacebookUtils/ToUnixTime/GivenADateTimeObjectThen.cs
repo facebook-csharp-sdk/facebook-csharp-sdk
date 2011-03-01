@@ -12,7 +12,7 @@ namespace Facebook.Tests.FacebookUtils.ToUnixTime
             DateTimeOffset dateTime = new DateTimeOffset(2010, 9, 16, 0, 0, 0, TimeSpan.FromHours(-7));
             var expected = 1284620400;
 
-            var actual = FacebookUtils.ToUnixTime(dateTime);
+            var actual = DateTimeConvertor.ToUnixTime(dateTime);
 
             Assert.Equal(expected, actual);
         }

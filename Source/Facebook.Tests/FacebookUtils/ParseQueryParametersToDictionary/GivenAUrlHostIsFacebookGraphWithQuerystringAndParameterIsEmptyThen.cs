@@ -1,4 +1,4 @@
-namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
+namespace Facebook.Tests.FacebookUtils.ParseQueryParametersToDictionary
 {
     using System.Collections.Generic;
     using Facebook;
@@ -12,7 +12,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookClientBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
+            FacebookUtils.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.Equal("3", parameters["limit"]);
             Assert.Equal("2", parameters["offset"]);
@@ -24,7 +24,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string urlWithQueryString = "http://graph.facebook.com/me/likes?limit=3&offset=2";
             var parameters = new Dictionary<string, object>();
 
-            FacebookClientBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
+            FacebookUtils.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.Equal(2, parameters.Count);
         }
@@ -36,7 +36,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
             string originalPathWithoutForwardSlashAndWithoutQueryString = "me/likes";
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookClientBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
+            var path = FacebookUtils.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.Equal(originalPathWithoutForwardSlashAndWithoutQueryString, path);
         }
@@ -48,7 +48,7 @@ namespace Facebook.Tests.FacebookClientBase.ParseQueryParametersToDictionary
 
             var parameters = new Dictionary<string, object>();
 
-            var path = FacebookClientBase.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
+            var path = FacebookUtils.ParseQueryParametersToDictionary(urlWithQueryString, parameters);
 
             Assert.NotEqual('/', path[0]);
         }

@@ -421,7 +421,7 @@ namespace Facebook
 
             parameters = parameters ?? new Dictionary<string, object>();
 
-            path = FacebookClient.ParseQueryParametersToDictionary(path, parameters);
+            path = FacebookUtils.ParseQueryParametersToDictionary(path, parameters);
 
             if (parameters.ContainsKey("method"))
             {
@@ -671,7 +671,7 @@ namespace Facebook
 
             parameters = parameters ?? new Dictionary<string, object>();
 
-            path = FacebookClient.ParseQueryParametersToDictionary(path, parameters);
+            path = FacebookUtils.ParseQueryParametersToDictionary(path, parameters);
 
             if (parameters.ContainsKey("method"))
             {
@@ -703,7 +703,7 @@ namespace Facebook
 
             parameters = parameters ?? new Dictionary<string, object>();
 
-            path = FacebookClient.ParseQueryParametersToDictionary(path, parameters);
+            path = FacebookUtils.ParseQueryParametersToDictionary(path, parameters);
 
             var callback2 = new FacebookAsyncCallback((ar) =>
             {
