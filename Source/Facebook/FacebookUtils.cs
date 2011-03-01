@@ -32,14 +32,14 @@ namespace Facebook
         /// <param name="first">Default values, only used if second does not contain a value.</param>
         /// <param name="second">Every value of the merged object is used.</param>
         /// <returns>The merged dictionary</returns>
-        internal static IDictionary<string, object> Merge(IDictionary<string, object> first,
-                                                          IDictionary<string, object> second)
+        internal static IDictionary<TKey, TValue> Merge<TKey, TValue>(IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
         {
-            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
+            Contract.Ensures(Contract.Result<IDictionary<TKey, TValue>>() != null);
 
-            first = first ?? new Dictionary<string, object>();
-            second = second ?? new Dictionary<string, object>();
-            var merged = new Dictionary<string, object>();
+            first = first ?? new Dictionary<TKey, TValue>();
+            second = second ?? new Dictionary<TKey, TValue>();
+            var merged = new Dictionary<TKey, TValue>();
+
             foreach (var kvp in second)
             {
                 merged.Add(kvp.Key, kvp.Value);
