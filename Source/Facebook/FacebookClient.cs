@@ -1071,7 +1071,10 @@ namespace Facebook
                 error = ExceptionFactory.GetGraphException(webException);
             }
 
-            error = ExceptionFactory.CheckForRestException(this.DomainMaps, state.RequestUri, json) ?? error;
+            if (error == null)
+            {
+                error = ExceptionFactory.CheckForRestException(this.DomainMaps, state.RequestUri, json) ?? error;
+            }
 
             var args = new FacebookApiEventArgs(error, cancelled, userState, json);
             return args;

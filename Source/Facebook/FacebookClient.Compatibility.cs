@@ -232,8 +232,6 @@ namespace Facebook
             Contract.Requires(callback != null);
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            throw new NotImplementedException();
-
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
             if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
@@ -249,16 +247,29 @@ namespace Facebook
             {
                 UserState = state,
                 Method = httpMethod,
+                RequestUri = requestUrl
             };
-
-            string method = FacebookUtils.ConvertToString(httpMethod);
 
             var webClient = new WebClient();
             webClient.UploadDataCompleted += (o, e) => { };
-            webClient.DownloadDataCompleted += (o, e) =>
-                                                   {
-                                                       var json = Encoding.UTF8.GetString(e.Result);
-                                                   };
+            webClient.DownloadDataCompleted +=
+                (o, e) =>
+                {
+                    var st = (WebClientTempState)e.UserState;
+                    FacebookApiEventArgs args;
+                    HttpMethod method;
+
+                    if (e.Error == null)
+                    {
+                        args = this.GetApiEventArgs(e, Encoding.UTF8.GetString(e.Result), out method);
+                    }
+                    else
+                    {
+                        args = this.GetApiEventArgs(e, null, out method);
+                    }
+
+                    callback(new FacebookAsyncResult(args.GetResultData(), st.UserState, null, false, true, args.Error as FacebookApiException));
+                };
 
             if (httpMethod == HttpMethod.Get)
             {
