@@ -864,11 +864,6 @@ namespace Facebook
             Contract.Requires(uri != null);
             Contract.Requires(parameters != null);
 
-            //if (!parameters.ContainsKey("access_token") && !String.IsNullOrEmpty(accessToken))
-            //{
-            //    parameters["access_token"] = accessToken;
-            //}
-
             var requestUrlBuilder = new UriBuilder(uri);
 
             // Set the default content type
@@ -882,8 +877,16 @@ namespace Facebook
             }
             else
             {
-                queryString = string.Concat("access_token=", parameters["access_token"]);
-                parameters.Remove("access_token");
+                if (parameters.ContainsKey("access_token"))
+                {
+                    queryString = string.Concat("access_token=", parameters["access_token"]);
+                    parameters.Remove("access_token");
+                }
+                else if (parameters.ContainsKey("oauth_token"))
+                {
+                    queryString = string.Concat("oauth_token=", parameters["oauth_token"]);
+                    parameters.Remove("oauth_token");
+                }
 
                 var containsMediaObject = parameters.Where(p => p.Value is FacebookMediaObject).Count() > 0;
                 if (containsMediaObject)

@@ -241,7 +241,7 @@ namespace Facebook
 
             Uri requestUrl;
             string contentType;
-            byte[] postData = BuildRequestData(path, parameters, httpMethod, out requestUrl, out contentType);
+            byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
 
             var tempState = new WebClientTempState
             {
@@ -251,7 +251,25 @@ namespace Facebook
             };
 
             var webClient = new WebClient();
-            webClient.UploadDataCompleted += (o, e) => { };
+            webClient.UploadDataCompleted +=
+                (o, e) =>
+                {
+                    var st = (WebClientTempState)e.UserState;
+                    FacebookApiEventArgs args;
+                    HttpMethod method;
+
+                    if (e.Error == null)
+                    {
+                        args = this.GetApiEventArgs(e, Encoding.UTF8.GetString(e.Result), out method);
+                    }
+                    else
+                    {
+                        args = this.GetApiEventArgs(e, null, out method);
+                    }
+
+                    callback(new FacebookAsyncResult(args.GetResultData(), st.UserState, null, false, true, args.Error as FacebookApiException));
+                };
+
             webClient.DownloadDataCompleted +=
                 (o, e) =>
                 {
@@ -277,7 +295,8 @@ namespace Facebook
             }
             else
             {
-                throw new NotImplementedException();
+                webClient.Headers["content-type"] = contentType;
+                webClient.UploadDataAsync(requestUrl, FacebookUtils.ConvertToString(httpMethod), postData, tempState);
             }
         }
 
