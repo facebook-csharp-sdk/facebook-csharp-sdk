@@ -336,7 +336,72 @@ namespace Facebook
             Contract.Requires(callback != null);
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            throw new NotImplementedException();
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
+
+            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
+            {
+                mergedParameters["access_token"] = this.AccessToken;
+            }
+
+            Uri requestUrl;
+            string contentType;
+            byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
+
+            var tempState = new WebClientTempState
+            {
+                UserState = state,
+                Method = httpMethod,
+                RequestUri = requestUrl
+            };
+
+            var webClient = new WebClient();
+            webClient.UploadDataCompleted +=
+                (o, e) =>
+                {
+                    var st = (WebClientTempState)e.UserState;
+                    FacebookApiEventArgs args;
+                    HttpMethod method;
+
+                    if (e.Error == null)
+                    {
+                        args = this.GetApiEventArgs(e, Encoding.UTF8.GetString(e.Result), out method);
+                    }
+                    else
+                    {
+                        args = this.GetApiEventArgs(e, null, out method);
+                    }
+
+                    callback(new FacebookAsyncResult<T>(args.GetResultData<T>(), st.UserState, null, false, true, args.Error as FacebookApiException));
+                };
+
+            webClient.DownloadDataCompleted +=
+                (o, e) =>
+                {
+                    var st = (WebClientTempState)e.UserState;
+                    FacebookApiEventArgs args;
+                    HttpMethod method;
+
+                    if (e.Error == null)
+                    {
+                        args = this.GetApiEventArgs(e, Encoding.UTF8.GetString(e.Result), out method);
+                    }
+                    else
+                    {
+                        args = this.GetApiEventArgs(e, null, out method);
+                    }
+
+                    callback(new FacebookAsyncResult<T>(args.GetResultData<T>(), st.UserState, null, false, true, args.Error as FacebookApiException));
+                };
+
+            if (httpMethod == HttpMethod.Get)
+            {
+                webClient.DownloadDataAsync(requestUrl, tempState);
+            }
+            else
+            {
+                webClient.Headers["content-type"] = contentType;
+                webClient.UploadDataAsync(requestUrl, FacebookUtils.ConvertToString(httpMethod), postData, tempState);
+            }
         }
 
         #endregion
