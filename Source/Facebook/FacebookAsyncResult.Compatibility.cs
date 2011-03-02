@@ -16,6 +16,7 @@ namespace Facebook
     /// </summary>
     /// <param name="asyncResult">The Facebook asynchronous result.</param>
     [Obsolete("Marked for removal.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public delegate void FacebookAsyncCallback(FacebookAsyncResult asyncResult);
 
     /// <summary>
@@ -23,12 +24,14 @@ namespace Facebook
     /// </summary>
     /// <param name="asyncResult">The Facebook asynchronous result.</param>
     [Obsolete("Marked for removal.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public delegate void FacebookAsyncCallback<T>(FacebookAsyncResult<T> asyncResult);
 
     /// <summary>
     /// Represents the status of an asynchronous Facebook api call.
     /// </summary>
-    [Obsolete("Marked for removal.")]  
+    [Obsolete("Marked for removal.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class FacebookAsyncResult : IAsyncResult
     {
         /// <summary>
@@ -145,7 +148,8 @@ namespace Facebook
         }
     }
 
-    [Obsolete("Marked for removal.")]  
+    [Obsolete("Marked for removal.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class FacebookAsyncResult<T> : FacebookAsyncResult
     {
         /// <summary>

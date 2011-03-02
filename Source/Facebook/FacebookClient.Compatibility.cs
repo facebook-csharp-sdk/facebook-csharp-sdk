@@ -14,6 +14,7 @@ namespace Facebook
         /// <param name="appId">The Facebook application id.</param>
         /// <param name="appSecret">The Facebook application secret.</param>
         [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public FacebookClient(string appId, string appSecret)
         {
             Contract.Requires(!String.IsNullOrEmpty(appId));
@@ -29,6 +30,7 @@ namespace Facebook
         /// The facebook application.
         /// </param>
         [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public FacebookClient(IFacebookApplication facebookApplication)
         {
             if (facebookApplication != null)
@@ -49,6 +51,8 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
+        [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public object Api(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
@@ -62,6 +66,8 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public object Api(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -75,6 +81,8 @@ namespace Facebook
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
+        [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public object Api(string path, HttpMethod httpMethod)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -88,6 +96,8 @@ namespace Facebook
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
+        [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             Contract.Requires(parameters != null);
@@ -102,6 +112,8 @@ namespace Facebook
         /// <param name="parameters">Dynamic object of the request parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public object Api(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -118,6 +130,8 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual object Api(string path, IDictionary<string, object> parameters, Type resultType, HttpMethod httpMethod)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -138,7 +152,8 @@ namespace Facebook
         /// <param name="state">The async state.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
-        [Obsolete("Marked for removal.")]
+        [Obsolete("Method marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void ApiAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -156,6 +171,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void ApiAsync(string path, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -173,6 +189,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void ApiAsync(string path, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -191,6 +208,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void ApiAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -209,6 +227,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             Contract.Requires(callback != null);
@@ -227,6 +246,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -310,6 +330,7 @@ namespace Facebook
         /// <param name="httpMethod">The http method for the request.</param>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual void ApiAsync<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback<T> callback, object state)
         {
             Contract.Requires(callback != null);
@@ -330,6 +351,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void DeleteAsync(string path, FacebookAsyncCallback callback)
         {
             Contract.Requires(callback != null);
@@ -347,6 +369,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void DeleteAsync(string path, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -382,6 +405,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void DeleteAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -398,6 +422,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync(string path, FacebookAsyncCallback callback)
         {
             Contract.Requires(callback != null);
@@ -415,6 +440,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync(string path, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -432,6 +458,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback)
         {
             Contract.Requires(callback != null);
@@ -450,6 +477,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -465,6 +493,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback)
         {
             Contract.Requires(callback != null);
@@ -481,6 +510,7 @@ namespace Facebook
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -497,6 +527,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync<T>(string path, FacebookAsyncCallback<T> callback)
         {
             Contract.Requires(callback != null);
@@ -514,6 +545,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync<T>(string path, FacebookAsyncCallback<T> callback, object state)
         {
             Contract.Requires(callback != null);
@@ -531,6 +563,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync<T>(string path, IDictionary<string, object> parameters, FacebookAsyncCallback<T> callback)
         {
             Contract.Requires(callback != null);
@@ -549,6 +582,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync<T>(string path, IDictionary<string, object> parameters, FacebookAsyncCallback<T> callback, object state)
         {
             Contract.Requires(callback != null);
@@ -564,6 +598,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync<T>(IDictionary<string, object> parameters, FacebookAsyncCallback<T> callback)
         {
             Contract.Requires(callback != null);
@@ -580,6 +615,7 @@ namespace Facebook
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void GetAsync<T>(IDictionary<string, object> parameters, FacebookAsyncCallback<T> callback, object state)
         {
             Contract.Requires(callback != null);
@@ -597,6 +633,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback)
         {
             Contract.Requires(callback != null);
@@ -615,6 +652,7 @@ namespace Facebook
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -630,6 +668,7 @@ namespace Facebook
         /// <param name="callback">The async callback.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback)
         {
             Contract.Requires(callback != null);
@@ -645,6 +684,7 @@ namespace Facebook
         /// <param name="state">The async state.</param>
         /// <param name="parameters">object of url parameters.</param>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -669,6 +709,7 @@ namespace Facebook
         /// The state.
         /// </param>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(string path, object parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -690,6 +731,7 @@ namespace Facebook
         /// The state.
         /// </param>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(object parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(parameters != null);
@@ -708,6 +750,7 @@ namespace Facebook
         /// The async callback.
         /// </param>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(object parameters, FacebookAsyncCallback callback)
         {
             Contract.Requires(parameters != null);
@@ -729,6 +772,7 @@ namespace Facebook
         /// The async callback.
         /// </param>
         [Obsolete("Marked for removal.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void PostAsync(string path, object parameters, FacebookAsyncCallback callback)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
