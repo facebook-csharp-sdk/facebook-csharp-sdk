@@ -296,7 +296,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            this.DeleteAsync(path, null);
+            this.DeleteAsync(path, (IDictionary<string, object>)null);
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.DeleteAsync(path, parameters, null);
+            this.DeleteAsync(path, parameters, (object)null);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            this.GetAsync(path, null);
+            this.GetAsync(path, (IDictionary<string, object>)null);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.GetAsync(path, parameters, null);
+            this.GetAsync(path, parameters, (object)null);
         }
 
         /// <summary>
@@ -398,7 +398,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.PostAsync(path, parameters);
+            this.PostAsync(path, parameters, (object)null);
         }
 
         /// <summary>
