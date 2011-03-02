@@ -25,7 +25,7 @@ namespace Facebook
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    public class FacebookClient
+    public partial class FacebookClient
 #if !SILVERLIGHT
  : IDisposable
 #endif
@@ -737,6 +737,8 @@ namespace Facebook
             }
         }
 
+        #region Url helper methods
+
         /// <summary>
         /// Build the URL for api given parameters.
         /// </summary>
@@ -844,6 +846,8 @@ namespace Facebook
             }
             return uri.Uri;
         }
+
+        #endregion
 
         /// <summary>
         /// Builds the request post data and request uri based on the given parameters.
