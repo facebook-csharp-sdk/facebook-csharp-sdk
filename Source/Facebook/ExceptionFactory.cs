@@ -114,6 +114,54 @@ namespace Facebook
         /// <summary>
         /// Gets the graph exception if possible.
         /// </summary>
+        /// <param name="result">The web request result object to check for exception information.</param>
+        /// <returns>A Facebook API exception or null.</returns>
+        internal static FacebookApiException GetGraphException(object result)
+        {
+            // Note: broke down GetGraphException into different method for unit testing.
+            FacebookApiException resultException = null;
+            if (result != null)
+            {
+                var responseDict = result as IDictionary<string, object>;
+                if (responseDict != null)
+                {
+                    if (responseDict.ContainsKey("error"))
+                    {
+                        var error = responseDict["error"] as IDictionary<string, object>;
+                        if (error != null)
+                        {
+                            var errorType = error["type"] as string;
+                            var errorMessage = error["message"] as string;
+
+                            // Check to make sure the correct data is in the response
+                            if (!String.IsNullOrEmpty(errorType) && !String.IsNullOrEmpty(errorMessage))
+                            {
+                                // We don't include the inner exception because it is not needed and is always a WebException.
+                                // It is easier to understand the error if we use Facebook's error message.
+                                if (errorType == "OAuthException")
+                                {
+                                    resultException = new FacebookOAuthException(errorMessage, errorType);
+                                }
+                                else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage != null && errorMessage.Contains("request limit reached")))
+                                {
+                                    resultException = new FacebookApiLimitException(errorMessage, errorType);
+                                }
+                                else
+                                {
+                                    resultException = new FacebookApiException(errorMessage, errorType);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return resultException;
+        }
+
+        /// <summary>
+        /// Gets the graph exception if possible.
+        /// </summary>
         /// <param name="exception">The web exception.</param>
         /// <returns>A Facebook API exception or null.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
@@ -145,41 +193,7 @@ namespace Facebook
                         response = JsonSerializer.Current.DeserializeObject(json);
                     }
 
-                    if (response != null)
-                    {
-                        var responseDict = response as IDictionary<string, object>;
-                        if (responseDict != null)
-                        {
-                            if (responseDict.ContainsKey("error"))
-                            {
-                                var error = responseDict["error"] as IDictionary<string, object>;
-                                if (error != null)
-                                {
-                                    var errorType = error["type"] as string;
-                                    var errorMessage = error["message"] as string;
-
-                                    // Check to make sure the correct data is in the response
-                                    if (!String.IsNullOrEmpty(errorType) && !String.IsNullOrEmpty(errorMessage))
-                                    {
-                                        // We don't include the inner exception because it is not needed and is always a WebException.
-                                        // It is easier to understand the error if we use Facebook's error message.
-                                        if (errorType == "OAuthException")
-                                        {
-                                            resultException = new FacebookOAuthException(errorMessage, errorType);
-                                        }
-                                        else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage != null && errorMessage.Contains("request limit reached")))
-                                        {
-                                            resultException = new FacebookApiLimitException(errorMessage, errorType);
-                                        }
-                                        else
-                                        {
-                                            resultException = new FacebookApiException(errorMessage, errorType);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    resultException = GetGraphException(response);
                 }
             }
             catch

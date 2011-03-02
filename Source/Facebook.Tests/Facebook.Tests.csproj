@@ -69,6 +69,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionFactory\GetGraphException\Object\GivenAnEmptyDictionaryOfStringObjectThen.cs" />
+    <Compile Include="ExceptionFactory\GetGraphException\Object\GivenANonEmptyDictionaryOfStringObjectThatDoesNotContainErrorKeyThen.cs" />
+    <Compile Include="ExceptionFactory\GetGraphException\Object\GivenInputAsNullThen.cs" />
+    <Compile Include="ExceptionFactory\GetGraphException\Object\GivenNonNullInputNotOfTypeIDictionaryStringObjectThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenADictionaryOfStringObjectThatContainsErrorCodeAndErrorMessageStringThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenADictionaryOfStringObjectThatContainsErrorCodeOnlyThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenADictionaryOfStringObjectWithErrorCode190Then.cs" />
