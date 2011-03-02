@@ -11,6 +11,7 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Globalization;
@@ -24,6 +25,113 @@ namespace Facebook
     /// </summary>
     internal static class FacebookUtils
     {
+        #region Constants
+
+        /// <summary>
+        /// The multi-part form prefix characters.
+        /// </summary>
+        internal const string MultiPartFormPrefix = "--";
+
+        /// <summary>
+        /// The multi-part form new line characters.
+        /// </summary>
+        internal const string MultiPartNewLine = "\r\n";
+
+        internal const string DOMAIN_MAP_API = "api";
+        internal const string DOMAIN_MAP_API_READ = "api_read";
+        internal const string DOMAIN_MAP_API_VIDEO = "api_video";
+        internal const string DOMAIN_MAP_GRAPH = "graph";
+        internal const string DOMAIN_MAP_WWW= "www";
+
+        /// <summary>
+        /// Domain Maps
+        /// </summary>
+        internal static Dictionary<string, Uri> DomainMaps = new Dictionary<string, Uri> {
+            { DOMAIN_MAP_API, new Uri("https://api.facebook.com/") },
+            { DOMAIN_MAP_API_READ, new Uri("https://api-read.facebook.com/") },
+            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.facebook.com/") },
+            { DOMAIN_MAP_GRAPH, new Uri("https://graph.facebook.com/") },
+            { DOMAIN_MAP_WWW, new Uri("https://www.facebook.com/") }
+        };
+
+        internal static Dictionary<string, Uri> DomainMapsBeta = new Dictionary<string, Uri> {
+            { DOMAIN_MAP_API, new Uri("https://api.beta.facebook.com/") },
+            { DOMAIN_MAP_API_READ, new Uri("https://api-read.beta.facebook.com/") },
+            { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.beta.facebook.com/") },
+            { DOMAIN_MAP_GRAPH, new Uri("https://graph.beta.facebook.com/") },
+            { DOMAIN_MAP_WWW, new Uri("https://www.beta.facebook.com/") }
+        };
+
+        internal static string[] ReadOnlyCalls = new[] {
+            "admin.getallocation",
+            "admin.getappproperties",
+            "admin.getbannedusers",
+            "admin.getlivestreamvialink",
+            "admin.getmetrics",
+            "admin.getrestrictioninfo",
+            "application.getpublicinfo",
+            "auth.getapppublickey",
+            "auth.getsession",
+            "auth.getsignedpublicsessiondata",
+            "comments.get",
+            "connect.getunconnectedfriendscount",
+            "dashboard.getactivity",
+            "dashboard.getcount",
+            "dashboard.getglobalnews",
+            "dashboard.getnews",
+            "dashboard.multigetcount",
+            "dashboard.multigetnews",
+            "data.getcookies",
+            "events.get",
+            "events.getmembers",
+            "fbml.getcustomtags",
+            "feed.getappfriendstories",
+            "feed.getregisteredtemplatebundlebyid",
+            "feed.getregisteredtemplatebundles",
+            "fql.multiquery",
+            "fql.query",
+            "friends.arefriends",
+            "friends.get",
+            "friends.getappusers",
+            "friends.getlists",
+            "friends.getmutualfriends",
+            "gifts.get",
+            "groups.get",
+            "groups.getmembers",
+            "intl.gettranslations",
+            "links.get",
+            "notes.get",
+            "notifications.get",
+            "pages.getinfo",
+            "pages.isadmin",
+            "pages.isappadded",
+            "pages.isfan",
+            "permissions.checkavailableapiaccess",
+            "permissions.checkgrantedapiaccess",
+            "photos.get",
+            "photos.getalbums",
+            "photos.gettags",
+            "profile.getinfo",
+            "profile.getinfooptions",
+            "stream.get",
+            "stream.getcomments",
+            "stream.getfilters",
+            "users.getinfo",
+            "users.getloggedinuser",
+            "users.getstandardinfo",
+            "users.hasapppermission",
+            "users.isappuser",
+            "users.isverified",
+            "video.getuploadlimits" 
+        };
+
+        internal static Collection<string> DropQueryParameters = new Collection<string> {
+            "session",
+            "signed_request",
+        };
+
+        #endregion
+
         #region Dictionary Utils
 
         /// <summary>
@@ -239,7 +347,7 @@ namespace Facebook
 
             return path;
         }
-        
+
         #endregion
 
         #region String Utils

@@ -87,6 +87,12 @@
     <Compile Include="FacebookClientBase\GetApiUrl\GivenMethodIsVideoUploadThen.cs" />
     <Compile Include="FacebookClientBase\GetApiUrl\GivenMethodsThanAreNotReadOnlyOrVideoUploadThen.cs" />
     <Compile Include="FacebookClientBase\GetApiUrl\GivenMethodsThatAreOfReadOnlyThen.cs" />
+    <Compile Include="FacebookUtils\DomainMapConstansTests.cs" />
+    <Compile Include="FacebookUtils\DomainMapsBetaTests.cs" />
+    <Compile Include="FacebookUtils\DomainMapsTests.cs" />
+    <Compile Include="FacebookUtils\DropQueryParametersTests.cs" />
+    <Compile Include="FacebookUtils\MultiPartFormPrefixTests.cs" />
+    <Compile Include="FacebookUtils\MultipPartNewLineTests.cs" />
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\BuildMediaObjectPostData.cs" />
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAPathAsEmptyStringAndEmptyParametersThen.cs" />
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAPathStartingWithForwardSlashAndNoQueryStringAndEmptyParametersThen.cs" />
@@ -135,6 +141,7 @@
     <Compile Include="FacebookUtils\ParseUrlQueryString\GivenAQuerystringWithCodeThen.cs" />
     <Compile Include="FacebookUtils\ParseUrlQueryString\GivenAQueryStringWithErrorThenDescriptionContainingPlusSignThen.cs" />
     <Compile Include="FacebookUtils\ParseUrlQueryString\GivenAValidQuerystringThen.cs" />
+    <Compile Include="FacebookUtils\ReadOnlyCallsTests.cs" />
     <Compile Include="FacebookUtils\RemoveTrailingSlash\GivenAnEmptyStringThen.cs" />
     <Compile Include="FacebookUtils\RemoveTrailingSlash\GivenANullUrlThen.cs" />
     <Compile Include="FacebookUtils\RemoveTrailingSlash\GivenAStringAsSlashThen.cs" />

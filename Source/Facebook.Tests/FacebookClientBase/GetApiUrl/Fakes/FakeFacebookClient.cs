@@ -13,11 +13,6 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl.Fakes
             get { throw new NotImplementedException(); }
         }
 
-        protected override Dictionary<string, Uri> DomainMaps
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         protected override object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             throw new NotImplementedException();
@@ -30,6 +25,11 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl.Fakes
 
 
         #endregion
+
+        protected override Dictionary<string, Uri> DomainMaps
+        {
+            get { return base.DomainMaps; }
+        }
 
         public new System.Uri GetApiUrl(string method)
         {

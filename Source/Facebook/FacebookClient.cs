@@ -14,7 +14,6 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Diagnostics.Contracts;
@@ -31,103 +30,6 @@ namespace Facebook
  : IDisposable
 #endif
     {
-        /// <summary>
-        /// The multi-part form prefix characters.
-        /// </summary>
-        private const string Prefix = "--";
-
-        /// <summary>
-        /// The multi-part form new line characters.
-        /// </summary>
-        private const string NewLine = "\r\n";
-
-        private static Collection<string> m_dropQueryParameters = new Collection<string> {
-            "session",
-            "signed_request",
-        };
-
-        /// <summary>
-        /// Domain Maps
-        /// </summary>
-        private static Dictionary<string, Uri> m_domainMaps = new Dictionary<string, Uri> {
-            { "api", new Uri("https://api.facebook.com/") },
-            { "api_read", new Uri("https://api-read.facebook.com/") },
-            { "api_video", new Uri("https://api-video.facebook.com/") },
-            { "graph", new Uri("https://graph.facebook.com/") },
-            { "www", new Uri("https://www.facebook.com/") }
-        };
-
-        private static Dictionary<string, Uri> m_domainMapsBeta = new Dictionary<string, Uri> {
-            { "api", new Uri("https://api.beta.facebook.com/") },
-            { "api_read", new Uri("https://api-read.beta.facebook.com/") },
-            { "api_video", new Uri("https://api-video.beta.facebook.com/") },
-            { "graph", new Uri("https://graph.beta.facebook.com/") },
-            { "www", new Uri("https://www.beta.facebook.com/") }
-        };
-
-        private static string[] m_readOnlyCalls = new[] {
-            "admin.getallocation",
-            "admin.getappproperties",
-            "admin.getbannedusers",
-            "admin.getlivestreamvialink",
-            "admin.getmetrics",
-            "admin.getrestrictioninfo",
-            "application.getpublicinfo",
-            "auth.getapppublickey",
-            "auth.getsession",
-            "auth.getsignedpublicsessiondata",
-            "comments.get",
-            "connect.getunconnectedfriendscount",
-            "dashboard.getactivity",
-            "dashboard.getcount",
-            "dashboard.getglobalnews",
-            "dashboard.getnews",
-            "dashboard.multigetcount",
-            "dashboard.multigetnews",
-            "data.getcookies",
-            "events.get",
-            "events.getmembers",
-            "fbml.getcustomtags",
-            "feed.getappfriendstories",
-            "feed.getregisteredtemplatebundlebyid",
-            "feed.getregisteredtemplatebundles",
-            "fql.multiquery",
-            "fql.query",
-            "friends.arefriends",
-            "friends.get",
-            "friends.getappusers",
-            "friends.getlists",
-            "friends.getmutualfriends",
-            "gifts.get",
-            "groups.get",
-            "groups.getmembers",
-            "intl.gettranslations",
-            "links.get",
-            "notes.get",
-            "notifications.get",
-            "pages.getinfo",
-            "pages.isadmin",
-            "pages.isappadded",
-            "pages.isfan",
-            "permissions.checkavailableapiaccess",
-            "permissions.checkgrantedapiaccess",
-            "photos.get",
-            "photos.getalbums",
-            "photos.gettags",
-            "profile.getinfo",
-            "profile.getinfooptions",
-            "stream.get",
-            "stream.getcomments",
-            "stream.getfilters",
-            "users.getinfo",
-            "users.getloggedinuser",
-            "users.getstandardinfo",
-            "users.hasapppermission",
-            "users.isappuser",
-            "users.isverified",
-            "video.getuploadlimits" 
-        };
-
         private WebClient m_webClient = new WebClient();
 
         private bool m_isBeta = FacebookContext.Current.IsBeta;
@@ -178,7 +80,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<ICollection<string>>() != null);
-                return m_dropQueryParameters;
+                return FacebookUtils.DropQueryParameters;
             }
         }
 
@@ -190,7 +92,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
-                return this.IsBeta ? m_domainMapsBeta : m_domainMaps;
+                return this.IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
             }
         }
 
@@ -851,7 +753,7 @@ namespace Facebook
             {
                 name = "api_video";
             }
-            if (m_readOnlyCalls.Contains(method))
+            if (FacebookUtils.ReadOnlyCalls.Contains(method))
             {
                 name = "api_read";
             }
@@ -1025,12 +927,12 @@ namespace Facebook
                 }
                 else
                 {
-                    sb.Append(Prefix).Append(boundary).Append(NewLine);
+                    sb.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
                     sb.Append("Content-Disposition: form-data; name=\"").Append(kvp.Key).Append("\"");
-                    sb.Append(NewLine);
-                    sb.Append(NewLine);
+                    sb.Append(FacebookUtils.MultiPartNewLine);
+                    sb.Append(FacebookUtils.MultiPartNewLine);
                     sb.Append(kvp.Value);
-                    sb.Append(NewLine);
+                    sb.Append(FacebookUtils.MultiPartNewLine);
                 }
             }
 
@@ -1041,13 +943,13 @@ namespace Facebook
                 throw ExceptionFactory.MediaObjectMustHavePropertiesSet;
             }
 
-            sb.Append(Prefix).Append(boundary).Append(NewLine);
-            sb.Append("Content-Disposition: form-data; filename=\"").Append(mediaObject.FileName).Append("\"").Append(NewLine);
-            sb.Append("Content-Type: ").Append(mediaObject.ContentType).Append(NewLine).Append(NewLine);
+            sb.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
+            sb.Append("Content-Disposition: form-data; filename=\"").Append(mediaObject.FileName).Append("\"").Append(FacebookUtils.MultiPartNewLine);
+            sb.Append("Content-Type: ").Append(mediaObject.ContentType).Append(FacebookUtils.MultiPartNewLine).Append(FacebookUtils.MultiPartNewLine);
 
             byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sb.ToString());
             byte[] fileData = mediaObject.GetValue();
-            byte[] boundaryBytes = Encoding.UTF8.GetBytes(String.Concat(NewLine, Prefix, boundary, Prefix, NewLine));
+            byte[] boundaryBytes = Encoding.UTF8.GetBytes(String.Concat(FacebookUtils.MultiPartNewLine, FacebookUtils.MultiPartFormPrefix, boundary, FacebookUtils.MultiPartFormPrefix, FacebookUtils.MultiPartNewLine));
 
             // Combine all bytes to post
             var postData = new byte[postHeaderBytes.Length + fileData.Length + boundaryBytes.Length];
