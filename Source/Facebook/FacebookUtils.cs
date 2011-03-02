@@ -41,7 +41,7 @@ namespace Facebook
         internal const string DOMAIN_MAP_API_READ = "api_read";
         internal const string DOMAIN_MAP_API_VIDEO = "api_video";
         internal const string DOMAIN_MAP_GRAPH = "graph";
-        internal const string DOMAIN_MAP_WWW= "www";
+        internal const string DOMAIN_MAP_WWW = "www";
 
         /// <summary>
         /// Domain Maps
@@ -759,5 +759,32 @@ namespace Facebook
         #endregion
 
 #endif
+
+        #region Misc
+
+        /// <summary>
+        /// Check if the request uri is a using the old rest api.
+        /// </summary>
+        /// <param name="domainMaps">
+        /// The domain maps.
+        /// </param>
+        /// <param name="requestUri">
+        /// The request uri.
+        /// </param>
+        /// <returns>
+        /// Returns true if request uri is using the old rest api otherwise false.
+        /// </returns>
+        internal static bool IsUsingRestApi(Dictionary<string, Uri> domainMaps, Uri requestUri)
+        {
+            Contract.Requires(requestUri != null);
+
+            var map = domainMaps ?? DomainMaps;
+
+            return requestUri.Host == map[DOMAIN_MAP_API].Host ||
+                   requestUri.Host == map[DOMAIN_MAP_API_READ].Host ||
+                   requestUri.Host == map[DOMAIN_MAP_API_VIDEO].Host;
+        }
+
+        #endregion
     }
 }

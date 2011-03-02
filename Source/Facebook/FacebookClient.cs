@@ -34,10 +34,6 @@ namespace Facebook
 
         private bool m_isBeta = FacebookContext.Current.IsBeta;
 
-        public event EventHandler<FacebookApiEventArgs> DeleteCompleted;
-        public event EventHandler<FacebookApiEventArgs> PostCompleted;
-        public event EventHandler<FacebookApiEventArgs> GetCompleted;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
         /// </summary>
@@ -56,6 +52,10 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
             this.AccessToken = accessToken;
         }
+
+        public event EventHandler<FacebookApiEventArgs> DeleteCompleted;
+        public event EventHandler<FacebookApiEventArgs> PostCompleted;
+        public event EventHandler<FacebookApiEventArgs> GetCompleted;
 
         /// <summary>
         /// Gets or sets the access token.
@@ -1075,13 +1075,14 @@ namespace Facebook
 
         private Exception CheckForRestException(Uri requestUri, string json)
         {
-            // HACK: We have to do this because the REST Api doesn't return 
+            // HACK: We have to do this because the REST Api doesn't return
             // the correct status codes when an error has occurred.
-            var usingRestApi = requestUri.Host == DomainMaps["api"].Host ||
-                               requestUri.Host == DomainMaps["api_read"].Host ||
-                               requestUri.Host == DomainMaps["api_video"].Host;
+            var usingRestApi = requestUri.Host == DomainMaps[FacebookUtils.DOMAIN_MAP_API].Host ||
+                               requestUri.Host == DomainMaps[FacebookUtils.DOMAIN_MAP_API_READ].Host ||
+                               requestUri.Host == DomainMaps[FacebookUtils.DOMAIN_MAP_API_VIDEO].Host;
 
             Exception error = null;
+
             // If we are using the REST API we need to check for an exception
             if (usingRestApi)
             {
