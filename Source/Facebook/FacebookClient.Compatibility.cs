@@ -3,6 +3,8 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Net;
+    using System.Text;
 
     public partial class FacebookClient
     {
@@ -124,6 +126,167 @@ namespace Facebook
         }
 
 #endif
+
+        #endregion
+
+        #region Async Api Methods
+
+        /// <summary>
+        /// Make an API call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        [Obsolete("Marked for removal.")]
+        public void ApiAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(parameters != null);
+
+            this.ApiAsync(callback, state, null, parameters, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Marked for removal.")]
+        public void ApiAsync(string path, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            this.ApiAsync(callback, state, path, null, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        [Obsolete("Marked for removal.")]
+        public void ApiAsync(string path, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            this.ApiAsync(callback, state, path, null, httpMethod);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Marked for removal.")]
+        public void ApiAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            this.ApiAsync(callback, state, path, parameters, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Marked for removal.")]
+        public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            this.ApiAsync(path, parameters, httpMethod, callback, state);
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Marked for removal.")]
+        public virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            throw new NotImplementedException();
+
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
+
+            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
+            {
+                mergedParameters["access_token"] = this.AccessToken;
+            }
+
+            Uri requestUrl;
+            string contentType;
+            byte[] postData = BuildRequestData(path, parameters, httpMethod, out requestUrl, out contentType);
+
+            var tempState = new WebClientTempState
+            {
+                UserState = state,
+                Method = httpMethod,
+            };
+
+            string method = FacebookUtils.ConvertToString(httpMethod);
+
+            var webClient = new WebClient();
+            webClient.UploadDataCompleted += (o, e) => { };
+            webClient.DownloadDataCompleted += (o, e) =>
+                                                   {
+                                                       var json = Encoding.UTF8.GetString(e.Result);
+                                                   };
+
+            if (httpMethod == HttpMethod.Get)
+            {
+                webClient.DownloadDataAsync(requestUrl, tempState);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Make an api call.
+        /// </summary>
+        /// <param name="callback">The async callback.</param>
+        /// <param name="state">The async state.</param>
+        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
+        /// <param name="parameters">object of url parameters.</param>
+        /// <param name="httpMethod">The http method for the request.</param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        [Obsolete("Marked for removal.")]
+        public virtual void ApiAsync<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback<T> callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            throw new NotImplementedException();
+        }
 
         #endregion
     }
