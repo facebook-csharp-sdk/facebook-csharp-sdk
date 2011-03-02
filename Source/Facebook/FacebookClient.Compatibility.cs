@@ -18,5 +18,23 @@ namespace Facebook
 
             this.AccessToken = String.Concat(appId, "|", appSecret);
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        [Obsolete("Method marked for removal.")]
+        public FacebookClient(IFacebookApplication facebookApplication)
+        {
+            if (facebookApplication != null)
+            {
+                if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
+                {
+                    this.AccessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
+                }
+            }
+        }
     }
 }
