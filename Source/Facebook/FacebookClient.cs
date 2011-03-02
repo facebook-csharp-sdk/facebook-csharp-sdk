@@ -15,14 +15,13 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Globalization;
-    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Text;
-    using System.ComponentModel;
 
     /// <summary>
     /// Provides access to the Facebook Platform.
@@ -32,7 +31,6 @@ namespace Facebook
  : IDisposable
 #endif
     {
-
         /// <summary>
         /// The multi-part form prefix characters.
         /// </summary>
@@ -43,18 +41,28 @@ namespace Facebook
         /// </summary>
         private const string NewLine = "\r\n";
 
-
         private static Collection<string> m_dropQueryParameters = new Collection<string> {
             "session",
             "signed_request",
         };
 
+        /// <summary>
+        /// Domain Maps
+        /// </summary>
         private static Dictionary<string, Uri> m_domainMaps = new Dictionary<string, Uri> {
             { "api", new Uri("https://api.facebook.com/") },
             { "api_read", new Uri("https://api-read.facebook.com/") },
             { "api_video", new Uri("https://api-video.facebook.com/") },
             { "graph", new Uri("https://graph.facebook.com/") },
             { "www", new Uri("https://www.facebook.com/") }
+        };
+
+        private static Dictionary<string, Uri> m_domainMapsBeta = new Dictionary<string, Uri> {
+            { "api", new Uri("https://api.beta.facebook.com/") },
+            { "api_read", new Uri("https://api-read.beta.facebook.com/") },
+            { "api_video", new Uri("https://api-video.beta.facebook.com/") },
+            { "graph", new Uri("https://graph.beta.facebook.com/") },
+            { "www", new Uri("https://www.beta.facebook.com/") }
         };
 
         private static string[] m_readOnlyCalls = new[] {
@@ -122,6 +130,8 @@ namespace Facebook
 
         private WebClient m_webClient = new WebClient();
 
+        private bool m_isBeta = FacebookContext.Current.IsBeta;
+
         public event EventHandler<FacebookApiEventArgs> DeleteCompleted;
         public event EventHandler<FacebookApiEventArgs> PostCompleted;
         public event EventHandler<FacebookApiEventArgs> GetCompleted;
@@ -151,6 +161,16 @@ namespace Facebook
         public string AccessToken { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether IsBeta.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool IsBeta
+        {
+            get { return this.m_isBeta; }
+            set { this.m_isBeta = value; }
+        }
+
+        /// <summary>
         /// Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
         /// </summary>
         protected virtual ICollection<string> DropQueryParameters
@@ -170,7 +190,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
-                return m_domainMaps;
+                return this.IsBeta ? m_domainMapsBeta : m_domainMaps;
             }
         }
 
@@ -892,12 +912,12 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            if (m_domainMaps[name] == null)
+            if (this.DomainMaps[name] == null)
             {
                 throw new ArgumentException("Invalid url name.");
             }
 
-            UriBuilder uri = new UriBuilder(m_domainMaps[name]);
+            UriBuilder uri = new UriBuilder(this.DomainMaps[name]);
             if (!String.IsNullOrEmpty(path))
             {
                 if (path[0] == '/')
@@ -1037,7 +1057,7 @@ namespace Facebook
 
             return postData;
         }
-        
+
         private byte[] BuildRequestData(string path, IDictionary<string, object> parameters, HttpMethod method, out Uri requestUrl, out string contentType)
         {
             parameters = parameters ?? new Dictionary<string, object>();

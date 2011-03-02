@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Facebook
 {
     /// <summary>
@@ -36,5 +38,10 @@ namespace Facebook
         /// Gets or sets the url to return the user after they cancel authorization.
         /// </summary>
         public string CancelUrlPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value indicating whether it is beta.
+        /// </summary>
+        public bool IsBeta { get; set; }
     }
 }

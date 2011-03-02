@@ -84,6 +84,15 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or sets the value indicating whether it is beta.
+        /// </summary>
+        public bool IsBeta
+        {
+            get { return (bool)this["isBeta"]; }
+            set { this["isBeta"] = value; }
+        }
+
+        /// <summary>
         /// Gets the Facebook settings stored in the configuration file.
         /// </summary>
         internal static IFacebookApplication Current

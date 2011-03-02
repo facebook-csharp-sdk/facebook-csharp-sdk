@@ -58,7 +58,7 @@ namespace Facebook
             double d;
             if (!double.TryParse(unixTime, out d))
             {
-                return FromUnixTime(0);
+                return FromUnixTime(0D);
             }
 
             return FromUnixTime(d);
