@@ -112,6 +112,40 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Checks for rest exception.
+        /// </summary>
+        /// <param name="domainMaps">
+        /// The domain maps.
+        /// </param>
+        /// <param name="requestUri">
+        /// The request uri.
+        /// </param>
+        /// <param name="json">
+        /// The json string.
+        /// </param>
+        /// <returns>
+        /// Returns <see cref="FacebookApiException"/> if it is a rest exception otherwise null.
+        /// </returns>
+        internal static FacebookApiException CheckForRestException(IDictionary<string, Uri> domainMaps, Uri requestUri, string json)
+        {
+            Contract.Requires(requestUri != null);
+
+            FacebookApiException error = null;
+
+            // HACK: We have to do this because the REST Api doesn't return
+            // the correct status codes when an error has occurred.
+            if (FacebookUtils.IsUsingRestApi(domainMaps, requestUri))
+            {
+                // If we are using the REST API we need to check for an exception
+                var resultObject = JsonSerializer.Current.DeserializeObject(json);
+                error = GetRestException(resultObject);
+            }
+
+            return error;
+        }
+
+
+        /// <summary>
         /// Gets the graph exception if possible.
         /// </summary>
         /// <param name="result">The web request result object to check for exception information.</param>

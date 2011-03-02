@@ -774,7 +774,7 @@ namespace Facebook
         /// <returns>
         /// Returns true if request uri is using the old rest api otherwise false.
         /// </returns>
-        internal static bool IsUsingRestApi(Dictionary<string, Uri> domainMaps, Uri requestUri)
+        internal static bool IsUsingRestApi(IDictionary<string, Uri> domainMaps, Uri requestUri)
         {
             Contract.Requires(requestUri != null);
 

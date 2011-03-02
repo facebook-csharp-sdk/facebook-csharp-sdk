@@ -649,7 +649,7 @@ namespace Facebook
             }
             string json = Encoding.UTF8.GetString(resultData);
 
-            var restException = CheckForRestException(requestUrl, json);
+            var restException = ExceptionFactory.CheckForRestException(this.DomainMaps, requestUrl, json);
             if (restException != null)
             {
                 throw restException;
@@ -1067,30 +1067,10 @@ namespace Facebook
                 error = ExceptionFactory.GetGraphException(webException);
             }
 
-            error = CheckForRestException(state.RequestUri, json) ?? error;
+            error = ExceptionFactory.CheckForRestException(this.DomainMaps, state.RequestUri, json) ?? error;
 
             var args = new FacebookApiEventArgs(error, cancelled, userState, json);
             return args;
-        }
-
-        private Exception CheckForRestException(Uri requestUri, string json)
-        {
-            // HACK: We have to do this because the REST Api doesn't return
-            // the correct status codes when an error has occurred.
-            var usingRestApi = requestUri.Host == DomainMaps[FacebookUtils.DOMAIN_MAP_API].Host ||
-                               requestUri.Host == DomainMaps[FacebookUtils.DOMAIN_MAP_API_READ].Host ||
-                               requestUri.Host == DomainMaps[FacebookUtils.DOMAIN_MAP_API_VIDEO].Host;
-
-            Exception error = null;
-
-            // If we are using the REST API we need to check for an exception
-            if (usingRestApi)
-            {
-                var resultObject = JsonSerializer.Current.DeserializeObject(json);
-                error = ExceptionFactory.GetRestException(resultObject);
-            }
-
-            return error;
         }
     }
 }
