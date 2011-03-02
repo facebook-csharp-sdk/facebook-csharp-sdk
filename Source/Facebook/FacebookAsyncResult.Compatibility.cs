@@ -180,7 +180,7 @@ namespace Facebook
         {
             get
             {
-                if (this.Result == null)
+                if (base.Result == null)
                 {
                     return default(T);
                 }
