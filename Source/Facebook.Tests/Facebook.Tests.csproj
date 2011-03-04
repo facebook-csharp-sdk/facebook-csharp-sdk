@@ -86,6 +86,7 @@
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndNonNullParameters\AndAValidRestApiPath\ThrowsRestApiErrorThen.cs" />
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichReturnsJsonObjectThen.cs" />
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichThrowsGraphExceptionThen.cs" />
+    <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndInvalidGraphPath\WhichResturnsJsonObjectThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\Fakes\FakeFacebookClient.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodIsVideoUploadThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThanAreNotReadOnlyOrVideoUploadThen.cs" />
