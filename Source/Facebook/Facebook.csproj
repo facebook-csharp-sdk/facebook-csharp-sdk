@@ -133,6 +133,7 @@
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="IJsonSerializer.cs" />
+    <Compile Include="IWebClient.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
     <Compile Include="JsonSerializer.cs" />
