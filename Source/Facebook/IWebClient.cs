@@ -4,7 +4,7 @@ namespace Facebook
     using System.Collections.Specialized;
     using System.Net;
 
-    internal interface IWebClient
+    internal interface IWebClient : IDisposable
     {
         WebHeaderCollection Headers { get; set; }
 

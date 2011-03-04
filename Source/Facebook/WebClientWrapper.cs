@@ -71,5 +71,10 @@ namespace Facebook
 
         public event DownloadDataCompletedEventHandler DownloadDataCompleted;
         public event UploadDataCompletedEventHandler UploadDataCompleted;
+
+        public void Dispose()
+        {
+            webClient.Dispose();
+        }
     }
 }

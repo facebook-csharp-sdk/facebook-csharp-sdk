@@ -20,7 +20,7 @@ namespace Facebook.Web
             this.m_request = request;
         }
 
-        protected override object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
+        internal protected override object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             try
             {

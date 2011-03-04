@@ -30,7 +30,7 @@ namespace Facebook
  : IDisposable
 #endif
     {
-        private WebClient m_webClient = new WebClient();
+        internal IWebClient WebClient = new WebClientWrapper();
 
         private bool m_isBeta = FacebookContext.Current.IsBeta;
 
@@ -593,7 +593,7 @@ namespace Facebook
 
         public void CancelAsync()
         {
-            this.m_webClient.CancelAsync();
+            this.WebClient.CancelAsync();
         }
 
 #if (!SILVERLIGHT) // Silverlight should only have async calls
@@ -608,7 +608,7 @@ namespace Facebook
             return (T)Api(path, parameters, httpMethod, typeof(T));
         }
 
-        protected virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
+        internal protected virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
@@ -623,7 +623,7 @@ namespace Facebook
 
             byte[] resultData;
             string method = FacebookUtils.ConvertToString(httpMethod);
-            var webClient = this.m_webClient;
+            var webClient = this.WebClient;
             try
             {
                 if (httpMethod == HttpMethod.Get)
@@ -683,7 +683,7 @@ namespace Facebook
             };
 
             string method = FacebookUtils.ConvertToString(httpMethod);
-            var webClient = this.m_webClient;
+            var webClient = this.WebClient;
 
 #if SILVERLIGHT
             webClient.UploadStringCompleted += UploadStringCompleted;
@@ -1007,7 +1007,7 @@ namespace Facebook
 #if !SILVERLIGHT
         public void Dispose()
         {
-            if (this.m_webClient != null) this.m_webClient.Dispose();
+            if (this.WebClient != null) this.WebClient.Dispose();
         }
 
         private void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)

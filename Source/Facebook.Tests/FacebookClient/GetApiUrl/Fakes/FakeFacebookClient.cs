@@ -13,7 +13,7 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl.Fakes
             get { throw new NotImplementedException(); }
         }
 
-        protected override object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
+        internal protected override object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             throw new NotImplementedException();
         }
