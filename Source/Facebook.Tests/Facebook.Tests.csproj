@@ -83,6 +83,7 @@
     <Compile Include="ExceptionFactory\GetRestException\GivenANonEmptyDictionaryOfStringObjectThatDoesNotContainErrorCodeKeyThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenInputAsNullThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenNonNullInputNotOfTypeIDictionaryStringObjectThen.cs" />
+    <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndNonNullParameters\AndAValidRestApiPath\ThrowsRestApiErrorThen.cs" />
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichReturnsJsonObjectThen.cs" />
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichThrowsGraphExceptionThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\Fakes\FakeFacebookClient.cs" />

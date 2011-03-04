@@ -248,6 +248,7 @@ namespace Facebook
         /// <returns>A Facebook API exception or null.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
             Justification = "We don't want to have any exceptions that are part of building the FacebookApiException throw.")]
+        [Obsolete("User GetGraphException(WebExceptionWrapper) instead.")]
         internal static FacebookApiException GetGraphException(WebException exception)
         {
             Contract.Requires(exception != null);
