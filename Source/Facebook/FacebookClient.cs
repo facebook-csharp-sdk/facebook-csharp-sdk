@@ -636,7 +636,7 @@ namespace Facebook
                     resultData = webClient.UploadData(requestUrl, method, postData);
                 }
             }
-            catch (WebException ex)
+            catch (WebExceptionWrapper ex)
             {
                 // Graph API Errors or general web exceptions
                 var exception = ExceptionFactory.GetGraphException(ex);
@@ -647,6 +647,7 @@ namespace Facebook
 
                 throw;
             }
+
             string json = Encoding.UTF8.GetString(resultData);
 
             var restException = ExceptionFactory.CheckForRestException(this.DomainMaps, requestUrl, json);

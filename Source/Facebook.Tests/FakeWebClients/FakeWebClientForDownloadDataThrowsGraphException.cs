@@ -2,15 +2,26 @@ namespace Facebook.Tests.FakeWebClients
 {
     using System;
     using System.Collections.Specialized;
+    using System.IO;
     using System.Net;
 
-    public class FakeWebClientForDownloadData : IWebClient
+    internal class FakeWebClientForDownloadDataThrowsGraphException : IWebClient
     {
-        private readonly byte[] returnData;
+        private readonly WebExceptionWrapper exception;
 
-        public FakeWebClientForDownloadData(byte[] returnData)
+        public FakeWebClientForDownloadDataThrowsGraphException(WebExceptionWrapper exception)
         {
-            this.returnData = returnData;
+            this.exception = exception;
+        }
+
+        public FakeWebClientForDownloadDataThrowsGraphException(Stream stream)
+            : this(new FakeWebException(stream))
+        {
+        }
+
+        public FakeWebClientForDownloadDataThrowsGraphException(string json)
+            : this(new FakeWebException(json))
+        {
         }
 
         public void Dispose()
@@ -42,7 +53,7 @@ namespace Facebook.Tests.FakeWebClients
 
         public byte[] DownloadData(Uri address)
         {
-            return this.returnData;
+            throw this.exception;
         }
 
         public void CancelAsync()

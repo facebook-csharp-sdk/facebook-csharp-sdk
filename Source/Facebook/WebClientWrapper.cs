@@ -46,7 +46,14 @@ namespace Facebook
 
         public byte[] DownloadData(Uri address)
         {
-            return webClient.DownloadData(address);
+            try
+            {
+                return webClient.DownloadData(address);
+            }
+            catch (WebException webException)
+            {
+                throw new WebExceptionWrapper(webException);
+            }
         }
 
         public byte[] UploadData(Uri address, string method, byte[] data)

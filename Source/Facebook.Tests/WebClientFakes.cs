@@ -13,5 +13,10 @@ namespace Facebook.Tests
         {
             return DownloadData(requestUrl, System.Text.Encoding.UTF8.GetBytes(returnData));
         }
+
+        internal static IWebClient DownloadDataThrowsGraphException(string requestUrl, string jsonResult)
+        {
+            return new FakeWebClientForDownloadDataThrowsGraphException(jsonResult);
+        }
     }
 }

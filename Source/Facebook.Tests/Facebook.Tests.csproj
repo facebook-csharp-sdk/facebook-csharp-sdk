@@ -84,6 +84,7 @@
     <Compile Include="ExceptionFactory\GetRestException\GivenInputAsNullThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenNonNullInputNotOfTypeIDictionaryStringObjectThen.cs" />
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichReturnsJsonObjectThen.cs" />
+    <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichThrowsGraphExceptionThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\Fakes\FakeFacebookClient.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodIsVideoUploadThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThanAreNotReadOnlyOrVideoUploadThen.cs" />
@@ -171,6 +172,8 @@
     <Compile Include="FacebookUtils\UrlEncode\GivenAUrlEncodedCodeThen.cs" />
     <Compile Include="FacebookUtils\UrlEncode\GivenAUrlPartWithWhiteSpacesThen.cs" />
     <Compile Include="FakeWebClients\FakeWebClientForDownloadData.cs" />
+    <Compile Include="FakeWebClients\FakeWebClientForDownloadDataThrowsGraphException.cs" />
+    <Compile Include="FakeWebClients\FakeWebException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
@@ -192,9 +195,7 @@
       <Name>Facebook</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FacebookClient\Api\GivenHttpMethodAsGet\GivenAValidGraphPath\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
