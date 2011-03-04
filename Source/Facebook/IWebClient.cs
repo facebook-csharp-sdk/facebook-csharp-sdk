@@ -10,7 +10,7 @@ namespace Facebook
 
         NameValueCollection QueryString { get; set; }
 
-        WebHeaderCollection ResponseHeaders { get; set; }
+        WebHeaderCollection ResponseHeaders { get; }
 
         IWebProxy Proxy { get; set; }
 
