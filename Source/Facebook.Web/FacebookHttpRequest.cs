@@ -53,7 +53,7 @@ namespace Facebook.Web
         }
 
         public FacebookHttpRequest(IFacebookApplication settings)
-            : this(settings, new HttpContextWrapper(System.Web.HttpContext.Current)) 
+            : this(settings, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
