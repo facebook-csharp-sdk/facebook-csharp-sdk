@@ -2,26 +2,17 @@ namespace Facebook.Tests.FakeWebClients
 {
     using System;
     using System.Collections.Specialized;
-    using System.IO;
     using System.Net;
 
-    internal class FakeWebClientForDownloadDataThrowsGraphException : IWebClient
+    public class FakeWebClientForDownloadAndUploadData : IWebClient
     {
-        private readonly WebExceptionWrapper exception;
+        private readonly byte[] returnData;
+        private WebHeaderCollection headers;
 
-        public FakeWebClientForDownloadDataThrowsGraphException(WebExceptionWrapper exception)
+        public FakeWebClientForDownloadAndUploadData(byte[] returnData)
         {
-            this.exception = exception;
-        }
-
-        public FakeWebClientForDownloadDataThrowsGraphException(Stream stream)
-            : this(new FakeWebException(stream))
-        {
-        }
-
-        public FakeWebClientForDownloadDataThrowsGraphException(string json)
-            : this(new FakeWebException(json))
-        {
+            this.returnData = returnData;
+            this.headers = new WebHeaderCollection();
         }
 
         public void Dispose()
@@ -30,8 +21,8 @@ namespace Facebook.Tests.FakeWebClients
 
         public WebHeaderCollection Headers
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return this.headers; }
+            set { this.headers = value; }
         }
 
         public NameValueCollection QueryString
@@ -53,7 +44,7 @@ namespace Facebook.Tests.FakeWebClients
 
         public byte[] DownloadData(Uri address)
         {
-            throw this.exception;
+            return this.returnData;
         }
 
         public void CancelAsync()
@@ -76,7 +67,7 @@ namespace Facebook.Tests.FakeWebClients
 
         public byte[] UploadData(Uri address, string method, byte[] data)
         {
-            throw new NotImplementedException();
+            return this.returnData;
         }
     }
 }

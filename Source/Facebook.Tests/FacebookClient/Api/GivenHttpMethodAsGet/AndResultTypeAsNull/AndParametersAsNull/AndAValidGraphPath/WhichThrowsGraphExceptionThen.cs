@@ -2,6 +2,7 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Facebook;
     using Xunit;
 
@@ -21,7 +22,7 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
         {
             this.facebookClient = new FacebookClient
                                       {
-                                          WebClient = WebClientFakes.DownloadDataThrowsGraphException(requestUrl, jsonResult)
+                                          WebClient = WebClientFakes.DownloadAndUploadDataThrowsGraphException(requestUrl, jsonResult)
                                       };
         }
 
@@ -39,6 +40,22 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
             }
 
             Assert.True(threwFacebookApiException);
+        }
+
+        [Fact]
+        public void DoesNotContainContentTypeHeader()
+        {
+            bool hasContentTypeHeader = true;
+            try
+            {
+                ExecuteMethodToTest();
+            }
+            catch (FacebookApiException)
+            {
+                hasContentTypeHeader = this.facebookClient.WebClient.Headers.AllKeys.Contains("Content-Type", StringComparer.OrdinalIgnoreCase);
+            }
+
+            Assert.False(hasContentTypeHeader);
         }
 
         [Fact]

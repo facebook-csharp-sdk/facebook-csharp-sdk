@@ -4,19 +4,19 @@ namespace Facebook.Tests
 
     public static class WebClientFakes
     {
-        internal static IWebClient DownloadData(string requestUrl, byte[] returnData)
+        internal static IWebClient DownloadAndUploadData(string requestUrl, byte[] returnData)
         {
-            return new FakeWebClientForDownloadData(returnData);
+            return new FakeWebClientForDownloadAndUploadData(returnData);
         }
 
-        internal static IWebClient DownloadData(string requestUrl, string returnData)
+        internal static IWebClient DownloadAndUploadData(string requestUrl, string returnData)
         {
-            return DownloadData(requestUrl, System.Text.Encoding.UTF8.GetBytes(returnData));
+            return DownloadAndUploadData(requestUrl, System.Text.Encoding.UTF8.GetBytes(returnData));
         }
 
-        internal static IWebClient DownloadDataThrowsGraphException(string requestUrl, string jsonResult)
+        internal static IWebClient DownloadAndUploadDataThrowsGraphException(string requestUrl, string jsonResult)
         {
-            return new FakeWebClientForDownloadDataThrowsGraphException(jsonResult);
+            return new FakeWebClientForDownloadAndUploadDataThrowsGraphException(jsonResult);
         }
     }
 }

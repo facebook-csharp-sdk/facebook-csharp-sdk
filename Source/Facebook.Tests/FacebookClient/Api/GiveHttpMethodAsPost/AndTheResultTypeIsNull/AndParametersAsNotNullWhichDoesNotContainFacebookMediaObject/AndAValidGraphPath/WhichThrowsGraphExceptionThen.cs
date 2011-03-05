@@ -1,4 +1,5 @@
-namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAsNull.AndParametersAsNull.AndInvalidGraphPath
+
+namespace Facebook.Tests.FacebookClient.Api.GiveHttpMethodAsPost.AndTheResultTypeIsNull.AndParametersAsNotNullWhichDoesNotContainFacebookMediaObject.AndAValidGraphPath
 {
     using System;
     using System.Collections.Generic;
@@ -6,25 +7,24 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
     using Facebook;
     using Xunit;
 
-    public class WhichResturnsJsonObjectThen
+    public class WhichThrowsGraphExceptionThen
     {
         private FacebookClient facebookClient;
 
-        private string path = "/path_does_not_exists";
-        private IDictionary<string, object> parameters = null;
-        private HttpMethod httpMethod = HttpMethod.Get;
+        private string path = "/me";
+        private IDictionary<string, object> parameters = new Dictionary<string, object> { { "message", "dummy_message" } };
+        private HttpMethod httpMethod = HttpMethod.Post;
         private Type resultType = null;
 
-        // NOTE: seems like there is a bug in the facebook graph api. Facebook seems to be returning 200OK instead of a different exception for this particular case.
-        private string requestUrl = "https://graph.facebook.com/path_does_not_exists";
-        private string jsonResult = "{\"error\":{\"type\":\"OAuthException\",\"message\":\"(#803) Some of the aliases you requested do not exist: path_does_not_exists\"}}";
+        private string requestUrl = "https://graph.facebook.com/me";
+        private string jsonResult = "{\"error\":{\"type\":\"OAuthException\",\"message\":\"An active access token must be used to query information about the current user.\"}}";
 
-        public WhichResturnsJsonObjectThen()
+        public WhichThrowsGraphExceptionThen()
         {
             this.facebookClient = new FacebookClient
-            {
-                WebClient = WebClientFakes.DownloadAndUploadData(requestUrl, jsonResult)
-            };
+                                      {
+                                          WebClient = WebClientFakes.DownloadAndUploadDataThrowsGraphException(requestUrl, jsonResult)
+                                      };
         }
 
         [Fact]
@@ -44,9 +44,9 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
         }
 
         [Fact]
-        public void DoesNotContainContentTypeHeader()
+        public void ContentTypeHeaderIsSet()
         {
-            bool hasContentTypeHeader = true;
+            bool hasContentTypeHeader = false;
             try
             {
                 ExecuteMethodToTest();
@@ -56,7 +56,23 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
                 hasContentTypeHeader = this.facebookClient.WebClient.Headers.AllKeys.Contains("Content-Type", StringComparer.OrdinalIgnoreCase);
             }
 
-            Assert.False(hasContentTypeHeader);
+            Assert.True(hasContentTypeHeader);
+        }
+
+        [Fact]
+        public void ContentTypeIsSetToApplicationXWwwFormUrlEncoded()
+        {
+            string contentType = null;
+            try
+            {
+                ExecuteMethodToTest();
+            }
+            catch (FacebookApiException)
+            {
+                contentType = this.facebookClient.WebClient.Headers["Content-Type"];
+            }
+
+            Assert.Equal("application/x-www-form-urlencoded", contentType);
         }
 
         [Fact]
