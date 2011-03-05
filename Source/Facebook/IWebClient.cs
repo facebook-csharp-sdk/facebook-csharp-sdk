@@ -24,8 +24,6 @@ namespace Facebook
 
         void CancelAsync();
 
-        event DownloadDataCompletedEventHandler DownloadDataCompleted;
-
-        event UploadDataCompletedEventHandler UploadDataCompleted;
+        Action<object, DownloadDataCompletedEventArgsWrapper> DownloadDataCompleted { get; set; }
     }
 }

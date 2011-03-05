@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
+    <Compile Include="DownloadDataCompletedEventArgsWrapper.cs" />
     <Compile Include="External\HttpEncoder.cs" />
     <Compile Include="External\HttpUtility.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />

@@ -4,7 +4,7 @@ namespace Facebook.Tests.FakeWebClients
     using System.Collections.Specialized;
     using System.Net;
 
-    public class FakeWebClientForDownloadAndUploadData : IWebClient
+    internal class FakeWebClientForDownloadAndUploadData : IWebClient
     {
         private readonly byte[] returnData;
         private WebHeaderCollection headers;
@@ -52,8 +52,12 @@ namespace Facebook.Tests.FakeWebClients
             throw new NotImplementedException();
         }
 
-        public event DownloadDataCompletedEventHandler DownloadDataCompleted;
-        public event UploadDataCompletedEventHandler UploadDataCompleted;
+        public Action<object, DownloadDataCompletedEventArgsWrapper> DownloadDataCompleted { get; set; }
+
+        public void OnDownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e)
+        {
+            throw new NotImplementedException();
+        }
 
         public void UploadDataAsync(Uri address, string method, byte[] data, object userToken)
         {

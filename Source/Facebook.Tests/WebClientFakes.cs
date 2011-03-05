@@ -18,5 +18,10 @@ namespace Facebook.Tests
         {
             return new FakeWebClientForDownloadAndUploadDataThrowsGraphException(jsonResult);
         }
+
+        internal static WebExceptionWrapper GetFakeWebException(string json)
+        {
+            return new FakeWebException(json);
+        }
     }
 }

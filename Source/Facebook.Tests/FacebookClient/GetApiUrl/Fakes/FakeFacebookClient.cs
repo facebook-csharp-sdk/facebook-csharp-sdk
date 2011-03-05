@@ -18,11 +18,10 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl.Fakes
             throw new NotImplementedException();
         }
 
-        protected override void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
+        internal protected override void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
         {
             throw new NotImplementedException();
         }
-
 
         #endregion
 

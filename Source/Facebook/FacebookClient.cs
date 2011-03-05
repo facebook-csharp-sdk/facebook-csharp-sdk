@@ -661,26 +661,24 @@ namespace Facebook
 
 #endif
 
-        protected virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
+        internal protected virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
         {
-            if (parameters == null)
-            {
-                parameters = new Dictionary<string, object>();
-            }
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
 
-            if (!parameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
+            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
             {
-                parameters["access_token"] = this.AccessToken;
+                mergedParameters["access_token"] = this.AccessToken;
             }
 
             Uri requestUrl;
             string contentType;
-            byte[] postData = BuildRequestData(path, parameters, httpMethod, out requestUrl, out contentType);
+            byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
 
             var tempState = new WebClientTempState
             {
                 UserState = userToken,
                 Method = httpMethod,
+                RequestUri = requestUrl
             };
 
             string method = FacebookUtils.ConvertToString(httpMethod);
@@ -700,8 +698,10 @@ namespace Facebook
                 webClient.UploadStringAsync(requestUrl, method, data, tempState);
             }
 #else
-            webClient.UploadDataCompleted += UploadDataCompleted;
-            webClient.DownloadDataCompleted += DownloadDataCompleted;
+            //webClient.UploadDataCompleted +=  this.UploadDataCompleted;
+            //webClient.DownloadDataCompleted += this.DownloadDataCompleted;
+            webClient.DownloadDataCompleted = this.DownloadDataCompleted;
+
             if (httpMethod == HttpMethod.Get)
             {
                 webClient.DownloadDataAsync(requestUrl, tempState);
@@ -998,7 +998,7 @@ namespace Facebook
             return BuildRequestData(baseUrl, parameters, method, out requestUrl, out contentType);
         }
 
-        private class WebClientTempState
+        internal class WebClientTempState
         {
             public object UserState { get; set; }
             public HttpMethod Method { get; set; }
@@ -1008,13 +1008,24 @@ namespace Facebook
 #if !SILVERLIGHT
         public void Dispose()
         {
-            if (this.WebClient != null) this.WebClient.Dispose();
+            if (this.WebClient != null)
+            {
+                this.WebClient.Dispose();
+            }
         }
 
-        private void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        internal void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e)
         {
-            var json = Encoding.UTF8.GetString(e.Result);
-            OnDownloadDataCompleted(e, json);
+            string json = null;
+
+            if (e.Error == null)
+            {
+                json = Encoding.UTF8.GetString(e.Result);
+            }
+
+            HttpMethod method;
+            var args = this.GetApiEventArgs(e, json, out method);
+            this.OnGetCompleted(args);
         }
 
         private void UploadDataCompleted(object sender, UploadDataCompletedEventArgs e)
@@ -1069,7 +1080,7 @@ namespace Facebook
             var error = e.Error;
 
             // Check for Graph Exception
-            WebException webException = error as WebException;
+            var webException = error as WebExceptionWrapper;
             if (webException != null)
             {
                 error = ExceptionFactory.GetGraphException(webException);

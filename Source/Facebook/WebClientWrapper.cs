@@ -1,3 +1,4 @@
+
 namespace Facebook
 {
     using System;
@@ -16,39 +17,65 @@ namespace Facebook
         public WebClientWrapper(WebClient webClient)
         {
             this.webClient = webClient;
+            this.webClient.DownloadDataCompleted +=
+                (o, e) =>
+                {
+                    if (this.DownloadDataCompleted == null)
+                    {
+                        return;
+                    }
 
-            webClient.DownloadDataCompleted += DownloadDataCompleted;
-            webClient.UploadDataCompleted += UploadDataCompleted;
+                    if (e == null)
+                    {
+                        this.DownloadDataCompleted(o, null);
+                    }
+                    else
+                    {
+                        byte[] result = null;
+                        var error = e.Error;
+
+                        if (error == null)
+                        {
+                            result = e.Result;
+                        }
+                        else if (error is WebException)
+                        {
+                            error = new WebExceptionWrapper((WebException)error);
+                        }
+
+                        this.DownloadDataCompleted(o, new DownloadDataCompletedEventArgsWrapper(error, e.Cancelled, e.UserState, result));
+                    }
+                };
         }
 
         public WebHeaderCollection Headers
         {
-            get { return webClient.Headers; }
-            set { webClient.Headers = value; }
+            get { return this.webClient.Headers; }
+            set { this.webClient.Headers = value; }
         }
 
         public NameValueCollection QueryString
         {
-            get { return webClient.QueryString; }
-            set { webClient.QueryString = value; }
+            get { return this.webClient.QueryString; }
+            set { this.webClient.QueryString = value; }
         }
 
         public WebHeaderCollection ResponseHeaders
         {
-            get { return webClient.ResponseHeaders; }
+            get { return this.webClient.ResponseHeaders; }
         }
 
         public IWebProxy Proxy
         {
-            get { return webClient.Proxy; }
-            set { webClient.Proxy = value; }
+            get { return this.webClient.Proxy; }
+            set { this.webClient.Proxy = value; }
         }
 
         public byte[] DownloadData(Uri address)
         {
             try
             {
-                return webClient.DownloadData(address);
+                return this.webClient.DownloadData(address);
             }
             catch (WebException webException)
             {
@@ -60,7 +87,7 @@ namespace Facebook
         {
             try
             {
-                return webClient.UploadData(address, method, data);
+                return this.webClient.UploadData(address, method, data);
             }
             catch (WebException webException)
             {
@@ -70,12 +97,12 @@ namespace Facebook
 
         public void DownloadDataAsync(Uri address, object userToken)
         {
-            webClient.DownloadDataAsync(address, userToken);
+            this.webClient.DownloadDataAsync(address, userToken);
         }
 
         public void UploadDataAsync(Uri address, string method, byte[] data, object userToken)
         {
-            webClient.UploadDataAsync(address, method, data, userToken);
+            this.webClient.UploadDataAsync(address, method, data, userToken);
         }
 
         public void CancelAsync()
@@ -83,8 +110,36 @@ namespace Facebook
             webClient.CancelAsync();
         }
 
-        public event DownloadDataCompletedEventHandler DownloadDataCompleted;
-        public event UploadDataCompletedEventHandler UploadDataCompleted;
+        public Action<object, DownloadDataCompletedEventArgsWrapper> DownloadDataCompleted { get; set; }
+
+        //private List<DownloadDataCompletedEventHandler> downloadDataCompletedDelegates = new List<DownloadDataCompletedEventHandler>();
+
+        //public event DownloadDataCompletedEventHandler DownloadDataCompleted
+        //{
+        //    add
+        //    {
+        //        this.webClient.DownloadDataCompleted += value;
+        //        this.downloadDataCompletedDelegates.Add(value);
+        //    }
+
+        //    remove
+        //    {
+        //        this.webClient.DownloadDataCompleted -= value;
+        //        this.downloadDataCompletedDelegates.Remove(value);
+        //    }
+        //}
+
+        //private void RemoveAllDownloadDataCompletedEventHandlers()
+        //{
+        //    foreach (var @delegate in this.downloadDataCompletedDelegates)
+        //    {
+        //        this.webClient.DownloadDataCompleted -= @delegate;
+        //    }
+
+        //    this.downloadDataCompletedDelegates.Clear();
+        //}
+
+        //public event UploadDataCompletedEventHandler UploadDataCompleted;
 
         public void Dispose()
         {
