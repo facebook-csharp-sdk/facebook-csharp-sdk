@@ -698,7 +698,7 @@ namespace Facebook
                 webClient.UploadStringAsync(requestUrl, method, data, tempState);
             }
 #else
-            //webClient.UploadDataCompleted +=  this.UploadDataCompleted;
+            webClient.UploadDataCompleted += this.UploadDataCompleted;
             webClient.DownloadDataCompleted = this.DownloadDataCompleted;
 
             if (httpMethod == HttpMethod.Get)
@@ -1027,10 +1027,30 @@ namespace Facebook
             this.OnGetCompleted(args);
         }
 
-        private void UploadDataCompleted(object sender, UploadDataCompletedEventArgs e)
+        internal void UploadDataCompleted(object sender, UploadDataCompletedEventArgsWrapper e)
         {
-            var json = Encoding.UTF8.GetString(e.Result);
-            OnUploadDataCompleted(e, json);
+            string json = null;
+
+            if (e.Error == null)
+            {
+                json = Encoding.UTF8.GetString(e.Result);
+            }
+
+            HttpMethod method;
+            var args = this.GetApiEventArgs(e, json, out method);
+
+            if (method == HttpMethod.Post)
+            {
+                this.OnPostCompleted(args);
+            }
+            else if (method == HttpMethod.Delete)
+            {
+                this.OnDeleteCompleted(args);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
         }
 #endif
 

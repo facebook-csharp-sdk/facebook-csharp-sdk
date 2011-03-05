@@ -25,5 +25,7 @@ namespace Facebook
         void CancelAsync();
 
         Action<object, DownloadDataCompletedEventArgsWrapper> DownloadDataCompleted { get; set; }
+
+        Action<object, UploadDataCompletedEventArgsWrapper> UploadDataCompleted { get; set; }
     }
 }

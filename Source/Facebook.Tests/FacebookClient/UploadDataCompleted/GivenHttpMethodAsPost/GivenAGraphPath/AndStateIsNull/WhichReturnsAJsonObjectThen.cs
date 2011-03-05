@@ -1,4 +1,4 @@
-namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsGet.GivenGraphException.AndStateAsNull
+namespace Facebook.Tests.FacebookClient.UploadDataCompleted.GivenHttpMethodAsPost.GivenAGraphPath.AndStateIsNull
 {
     using System;
     using System.Collections.Generic;
@@ -6,18 +6,18 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
     using Facebook;
     using Xunit;
 
-    public class WhichReturnJsonObject
+    public class WhichReturnsAJsonObjectThen
     {
         private FacebookClient facebookClient;
 
-        private HttpMethod httpMethod = HttpMethod.Get;
+        private HttpMethod httpMethod = HttpMethod.Post;
 
-        private string requestUrl = "https://graph.facebook.com/4";
-        private string jsonResult = "{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}";
+        private string requestUrl = "https://graph.facebook.com/me/feed?access_token=dummyAccessToken";
+        private string jsonResult = "{\"id\":\"100001327642026_159109420809978\"}";
 
-        private DownloadDataCompletedEventArgsWrapper downloadDataCompletedEventArgs;
+        private UploadDataCompletedEventArgsWrapper uploadDataCompletedEventArgsWrapper;
 
-        public WhichReturnJsonObject()
+        public WhichReturnsAJsonObjectThen()
         {
             this.facebookClient = new FacebookClient();
 
@@ -27,19 +27,19 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
                                     RequestUri = new Uri(this.requestUrl),
                                 };
 
-            this.downloadDataCompletedEventArgs =
-                new DownloadDataCompletedEventArgsWrapper(null, false, tempState, Encoding.UTF8.GetBytes(jsonResult));
+            this.uploadDataCompletedEventArgsWrapper =
+                new UploadDataCompletedEventArgsWrapper(null, false, tempState, Encoding.UTF8.GetBytes(jsonResult));
         }
 
         [Fact]
-        public void GetCompletedEventShouldBeFired()
+        public void GetCompletedEventShouldNotBeFired()
         {
             var executed = false;
             this.facebookClient.GetCompleted += (o, e) => executed = true;
 
             ExecuteMethodToTest();
 
-            Assert.True(executed);
+            Assert.False(executed);
         }
 
         [Fact]
@@ -54,21 +54,21 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
         }
 
         [Fact]
-        public void PostCompletedEventShouldNotBeFired()
+        public void PostCompletedEventShouldBeFired()
         {
             var executed = false;
             this.facebookClient.PostCompleted += (o, e) => executed = true;
 
             ExecuteMethodToTest();
 
-            Assert.False(executed);
+            Assert.True(executed);
         }
 
         [Fact]
         public void FacebookApiEventArgsShouldNotBeNull()
         {
             bool? isNull = null;
-            this.facebookClient.GetCompleted += (o, e) => isNull = e == null;
+            this.facebookClient.PostCompleted += (o, e) => isNull = e == null;
 
             ExecuteMethodToTest();
 
@@ -79,7 +79,7 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
         public void ErrorShouldBeNull()
         {
             Exception exception = null;
-            this.facebookClient.GetCompleted += (o, e) => exception = e.Error;
+            this.facebookClient.PostCompleted += (o, e) => exception = e.Error;
 
             ExecuteMethodToTest();
 
@@ -90,7 +90,7 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
         public void ResultShouldNotBeNull()
         {
             object result = null;
-            this.facebookClient.GetCompleted += (o, e) => result = e.GetResultData();
+            this.facebookClient.PostCompleted += (o, e) => result = e.GetResultData();
 
             ExecuteMethodToTest();
 
@@ -101,7 +101,7 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
         public void ResultIsAssignableFromIDictionaryStringObject()
         {
             object result = null;
-            this.facebookClient.GetCompleted += (o, e) => result = e.GetResultData();
+            this.facebookClient.PostCompleted += (o, e) => result = e.GetResultData();
 
             ExecuteMethodToTest();
 
@@ -112,7 +112,7 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
         public void ResultIsOfTypeJsonObject()
         {
             object result = null;
-            this.facebookClient.GetCompleted += (o, e) => result = e.GetResultData();
+            this.facebookClient.PostCompleted += (o, e) => result = e.GetResultData();
 
             ExecuteMethodToTest();
 
@@ -123,7 +123,7 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
         public void UserStateIsNull()
         {
             object userState = null;
-            this.facebookClient.GetCompleted += (o, e) => userState = e.UserState;
+            this.facebookClient.PostCompleted += (o, e) => userState = e.UserState;
 
             ExecuteMethodToTest();
 
@@ -132,7 +132,7 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
 
         private void ExecuteMethodToTest()
         {
-            this.facebookClient.DownloadDataCompleted(this, this.downloadDataCompletedEventArgs);
+            this.facebookClient.UploadDataCompleted(this, this.uploadDataCompletedEventArgsWrapper);
         }
     }
 }

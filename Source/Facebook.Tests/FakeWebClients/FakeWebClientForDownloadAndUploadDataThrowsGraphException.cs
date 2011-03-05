@@ -65,10 +65,7 @@ namespace Facebook.Tests.FakeWebClients
 
         public Action<object, DownloadDataCompletedEventArgsWrapper> DownloadDataCompleted { get; set; }
 
-        public void OnDownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e)
-        {
-            throw new NotImplementedException();
-        }
+        public Action<object, UploadDataCompletedEventArgsWrapper> UploadDataCompleted { get; set; }
 
         public void UploadDataAsync(Uri address, string method, byte[] data, object userToken)
         {

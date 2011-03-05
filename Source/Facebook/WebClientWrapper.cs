@@ -17,6 +17,36 @@ namespace Facebook
         public WebClientWrapper(WebClient webClient)
         {
             this.webClient = webClient;
+            this.webClient.UploadDataCompleted +=
+                (o, e) =>
+                {
+                    if (this.UploadDataCompleted == null)
+                    {
+                        return;
+                    }
+
+                    if (e == null)
+                    {
+                        this.UploadDataCompleted(o, null);
+                    }
+                    else
+                    {
+                        byte[] result = null;
+                        var error = e.Error;
+
+                        if (error == null)
+                        {
+                            result = e.Result;
+                        }
+                        else if (error is WebException)
+                        {
+                            error = new WebExceptionWrapper((WebException)error);
+                        }
+
+                        this.UploadDataCompleted(o, new UploadDataCompletedEventArgsWrapper(error, e.Cancelled, e.UserState, result));
+                    }
+                };
+
             this.webClient.DownloadDataCompleted +=
                 (o, e) =>
                 {
@@ -112,34 +142,7 @@ namespace Facebook
 
         public Action<object, DownloadDataCompletedEventArgsWrapper> DownloadDataCompleted { get; set; }
 
-        //private List<DownloadDataCompletedEventHandler> downloadDataCompletedDelegates = new List<DownloadDataCompletedEventHandler>();
-
-        //public event DownloadDataCompletedEventHandler DownloadDataCompleted
-        //{
-        //    add
-        //    {
-        //        this.webClient.DownloadDataCompleted += value;
-        //        this.downloadDataCompletedDelegates.Add(value);
-        //    }
-
-        //    remove
-        //    {
-        //        this.webClient.DownloadDataCompleted -= value;
-        //        this.downloadDataCompletedDelegates.Remove(value);
-        //    }
-        //}
-
-        //private void RemoveAllDownloadDataCompletedEventHandlers()
-        //{
-        //    foreach (var @delegate in this.downloadDataCompletedDelegates)
-        //    {
-        //        this.webClient.DownloadDataCompleted -= @delegate;
-        //    }
-
-        //    this.downloadDataCompletedDelegates.Clear();
-        //}
-
-        //public event UploadDataCompletedEventHandler UploadDataCompleted;
+        public Action<object, UploadDataCompletedEventArgsWrapper> UploadDataCompleted { get; set; }
 
         public void Dispose()
         {

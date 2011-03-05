@@ -1,4 +1,4 @@
-namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsGet.GivenGraphException.AndStateAsNull
+namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsGet.GivenGraphPath.AndStateAsNull
 {
     using System;
     using Facebook;
@@ -108,7 +108,7 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
         }
 
         [Fact]
-        public void UserStateIsNull()
+        public void UserStateShouldBeNull()
         {
             object userState = null;
             this.facebookClient.GetCompleted += (o, e) => userState = e.UserState;
