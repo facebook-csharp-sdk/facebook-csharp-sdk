@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-
-namespace Facebook
+﻿namespace Facebook
 {
+    using System;
+    using System.ComponentModel;
+
     public class FacebookApiEventArgs : AsyncCompletedEventArgs
     {
-
         private string m_json;
 
         public FacebookApiEventArgs(Exception error, bool cancelled, object userState, string json)
             : base(error, cancelled, userState)
         {
-            this.m_json = json;
+            // check for error coz if its is rest api, json is not null
+            if (error == null)
+            {
+                this.m_json = json;
+            }
         }
 
         public object GetResultData()

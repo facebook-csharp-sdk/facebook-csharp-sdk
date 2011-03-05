@@ -699,7 +699,6 @@ namespace Facebook
             }
 #else
             //webClient.UploadDataCompleted +=  this.UploadDataCompleted;
-            //webClient.DownloadDataCompleted += this.DownloadDataCompleted;
             webClient.DownloadDataCompleted = this.DownloadDataCompleted;
 
             if (httpMethod == HttpMethod.Get)

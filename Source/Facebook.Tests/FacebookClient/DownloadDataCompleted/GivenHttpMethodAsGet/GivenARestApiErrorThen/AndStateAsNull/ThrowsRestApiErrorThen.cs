@@ -1,21 +1,28 @@
-namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsGet.GivenGraphException.AndStateAsNull
+namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsGet.GivenARestApiErrorThen.AndStateAsNull
 {
     using System;
+    using System.Collections.Generic;
     using Facebook;
     using Xunit;
 
-    public class WhichThrowsGraphExceptionThen
+    public class ThrowsRestApiErrorThen
     {
         private FacebookClient facebookClient;
 
+        private string path = null;
+        private IDictionary<string, object> parameters = new Dictionary<string, object>
+                                                             {
+                                                                 { "query", "invalid query" },
+                                                                 { "method", "fql.query" }                                                                 
+                                                             };
         private HttpMethod httpMethod = HttpMethod.Get;
 
-        private string requestUrl = "https://graph.facebook.com/me";
-        private string jsonResult = "{\"error\":{\"type\":\"OAuthException\",\"message\":\"An active access token must be used to query information about the current user.\"}}";
+        private string requestUrl = "https://api-read.facebook.com/restserver.php?query=invalid+query&method=fql.query&format=json-strings";
+        private string jsonResult = "{\"error_code\":\"601\",\"error_msg\":\"Parser error: unexpected 'invalid' at position 0.\",\"request_args\":[{\"key\":\"query\",\"value\":\"invalid query\"},{\"key\":\"method\",\"value\":\"fql.query\"},{\"key\":\"format\",\"value\":\"json-strings\"}]}";
 
         private DownloadDataCompletedEventArgsWrapper downloadDataCompletedEventArgs;
 
-        public WhichThrowsGraphExceptionThen()
+        public ThrowsRestApiErrorThen()
         {
             this.facebookClient = new FacebookClient();
 
@@ -27,8 +34,9 @@ namespace Facebook.Tests.FacebookClient.DownloadDataCompleted.GivenHttpMethodAsG
 
             this.downloadDataCompletedEventArgs =
                 new DownloadDataCompletedEventArgsWrapper(
-                    WebClientFakes.GetFakeWebException(jsonResult), false, tempState, null);
+                    null, false, tempState, System.Text.Encoding.UTF8.GetBytes(jsonResult));
         }
+
 
         [Fact]
         public void GetCompletedEventShouldBeFired()

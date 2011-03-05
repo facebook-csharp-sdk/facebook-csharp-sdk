@@ -13,13 +13,13 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
         private string path = null;
         private IDictionary<string, object> parameters = new Dictionary<string, object>
                                                              {
-                                                                 { "query", "sd" },
+                                                                 { "query", "invalid query" },
                                                                  { "method", "fql.query" }                                                                 
                                                              };
         private HttpMethod httpMethod = HttpMethod.Get;
         private Type resultType = null;
 
-        private string requestUrl = "https://api-read.facebook.com/restserver.php?query=sd&method=fql.query&format=json-strings";
+        private string requestUrl = "https://api-read.facebook.com/restserver.php?query=invalid+query&method=fql.query&format=json-strings";
         private string jsonResult = "{\"error_code\":\"601\",\"error_msg\":\"Parser error: unexpected 'sd' at position 0.\",\"request_args\":[{\"key\":\"query\",\"value\":\"sd\"},{\"key\":\"method\",\"value\":\"fql.query\"},{\"key\":\"format\",\"value\":\"json-strings\"}]}";
 
         public ThrowsRestApiErrorThen()

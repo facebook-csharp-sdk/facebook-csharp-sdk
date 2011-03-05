@@ -6,7 +6,7 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
     using Facebook;
     using Xunit;
 
-    public class WhichResturnsJsonObjectThen
+    public class WhichReturnsJsonObjectThen
     {
         private FacebookClient facebookClient;
 
@@ -19,7 +19,7 @@ namespace Facebook.Tests.FacebookClient.Api.GivenHttpMethodAsGet.AndResultTypeAs
         private string requestUrl = "https://graph.facebook.com/path_does_not_exists";
         private string jsonResult = "{\"error\":{\"type\":\"OAuthException\",\"message\":\"(#803) Some of the aliases you requested do not exist: path_does_not_exists\"}}";
 
-        public WhichResturnsJsonObjectThen()
+        public WhichReturnsJsonObjectThen()
         {
             this.facebookClient = new FacebookClient
             {

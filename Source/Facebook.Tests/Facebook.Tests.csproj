@@ -87,7 +87,8 @@
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndNonNullParameters\AndAValidRestApiPath\ThrowsRestApiErrorThen.cs" />
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichReturnsJsonObjectThen.cs" />
     <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\WhichThrowsGraphExceptionThen.cs" />
-    <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndInvalidGraphPath\WhichResturnsJsonObjectThen.cs" />
+    <Compile Include="FacebookClient\Api\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndInvalidGraphPath\WhichReturnsJsonObjectThen.cs" />
+    <Compile Include="FacebookClient\DownloadDataCompleted\GivenHttpMethodAsGet\GivenARestApiErrorThen\AndStateAsNull\ThrowsRestApiErrorThen.cs" />
     <Compile Include="FacebookClient\DownloadDataCompleted\GivenHttpMethodAsGet\GivenGraphException\AndStateAsNull\WhichReturnJsonObject.cs" />
     <Compile Include="FacebookClient\DownloadDataCompleted\GivenHttpMethodAsGet\GivenGraphException\AndStateAsNull\WhichThrowsGraphExceptionThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\Fakes\FakeFacebookClient.cs" />
@@ -201,9 +202,7 @@
       <Name>Facebook</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FacebookClient\ApiAsync\GivenHttpMethodAsGet\AndResultTypeAsNull\AndParametersAsNull\AndAValidGraphPath\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
