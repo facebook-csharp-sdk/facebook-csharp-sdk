@@ -145,6 +145,25 @@ namespace Facebook
         }
 
 
+        internal static FacebookApiException GetGraphException(string json)
+        {
+            FacebookApiException resultException;
+
+            try
+            {
+                resultException = GetGraphException(JsonSerializer.Current.DeserializeObject(json));
+            }
+            catch
+            {
+                resultException = null;
+
+                // We dont want to throw anything associated with 
+                // trying to build the FacebookApiException
+            }
+
+            return resultException;
+        }
+
         /// <summary>
         /// Gets the graph exception if possible.
         /// </summary>

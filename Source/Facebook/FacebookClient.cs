@@ -897,31 +897,7 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            if (DomainMaps[name] == null)
-            {
-                throw new ArgumentException("Invalid url name.");
-            }
-
-            var uri = new UriBuilder(DomainMaps[name]);
-            if (!String.IsNullOrEmpty(path))
-            {
-                if (path[0] == '/')
-                {
-                    path = path.Length > 1 ? path.Substring(1) : string.Empty;
-                }
-
-                if (!string.IsNullOrEmpty(path))
-                {
-                    uri.Path = FacebookUtils.UrlEncode(path);
-                }
-            }
-
-            if (parameters != null)
-            {
-                uri.Query = FacebookUtils.ToJsonQueryString(parameters);
-            }
-
-            return uri.Uri;
+            return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
         }
 
         #endregion

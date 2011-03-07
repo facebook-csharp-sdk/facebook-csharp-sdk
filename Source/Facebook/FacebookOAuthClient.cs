@@ -7,6 +7,8 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+
+
 namespace Facebook
 {
     using System;
@@ -14,12 +16,18 @@ namespace Facebook
     using System.ComponentModel;
     using System.Diagnostics.Contracts;
     using System.Net;
+    using System.Text;
 
     /// <summary>
     /// Represents the Facebook OAuth Helpers
     /// </summary>
     public class FacebookOAuthClient
     {
+        /// <summary>
+        /// The current web client.
+        /// </summary>
+        private IWebClient _webClient;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookOAuthClient"/> class.
         /// </summary>
@@ -56,6 +64,31 @@ namespace Facebook
         /// Gets or sets the redirect uri.
         /// </summary>
         public Uri RedirectUri { get; set; }
+
+        /// <summary>
+        /// Gets the aliases to Facebook domains.
+        /// </summary>
+        protected virtual Dictionary<string, Uri> DomainMaps
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
+
+                // return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
+                return FacebookUtils.DomainMaps;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the web client.
+        /// </summary>
+        internal IWebClient WebClient
+        {
+            get { return _webClient ?? (_webClient = new WebClientWrapper()); }
+            set { _webClient = value; }
+        }
+
+        #region Login/Logout url helpers
 
         /// <summary>
         /// Gets the login uri.
@@ -247,6 +280,9 @@ namespace Facebook
             return loginUrl;
         }
 
+        #endregion
+
+        /*
 #if !SILVERLIGHT
         // Silverlight should have only async calls
 
@@ -346,45 +382,6 @@ namespace Facebook
             }
         }
 
-#if !SILVERLIGHT
-
-        /// <summary>
-        /// Gets the application access token.
-        /// </summary>
-        /// <returns>
-        /// The application access token.
-        /// </returns>
-        public object GetApplicationAccessToken()
-        {
-            var requestUri = BuildGetApplicationAccessTokenUrl();
-
-            string responseData;
-            using (var webClient = new WebClient())
-            {
-                try
-                {
-                    responseData = webClient.DownloadString(requestUri);
-                }
-                catch (WebException ex)
-                {
-                    // Graph API Errors or general web exceptions
-                    var exception = ExceptionFactory.GetGraphException(ex);
-                    if (exception != null)
-                    {
-                        throw exception;
-                    }
-
-                    throw;
-                }
-            }
-
-            var returnParameter = new JsonObject();
-            FacebookUtils.ParseQueryParametersToDictionary("?" + responseData, returnParameter);
-
-            return returnParameter;
-        }
-
-#endif
 
         /// <summary>
         /// Get the application access token asynchronously.
@@ -437,6 +434,7 @@ namespace Facebook
                 GetApplicationAccessTokenCompleted(this, args);
             }
         }
+
 
         private Uri BuildGetApplicationAccessTokenUrl()
         {
@@ -534,5 +532,296 @@ namespace Facebook
 
             return new FacebookApiEventArgs(error, cancelled, userState, json);
         }
+        
+        */
+
+        #region Application Access Token
+
+        /// <summary>
+        /// Event handler for application access token completion.
+        /// </summary>
+        public event EventHandler<FacebookApiEventArgs> GetApplicationAccessTokenCompleted;
+
+#if !SILVERLIGHT
+
+        /// <summary>
+        /// Gets the application access token.
+        /// </summary>
+        /// <returns>
+        /// The application access token.
+        /// </returns>
+        public object GetApplicationAccessToken()
+        {
+            return GetApplicationAccessToken(null);
+        }
+
+        /// <summary>
+        /// Gets the application access token.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The application access token.
+        /// </returns>
+        public object GetApplicationAccessToken(IDictionary<string, object> parameters)
+        {
+            string name, path;
+
+            var pars = BuildApplicationAccessTokenParameters(parameters, out name, out path);
+
+            return BuildApplicationAccessTokenResult(OAuthRequest(name, path, pars));
+        }
+
+#endif
+
+        /// <summary>
+        /// Gets the application access token asynchronously.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
+        public void GetApplicationAccessTokenAsync(IDictionary<string, object> parameters, object userToken)
+        {
+            string name, path;
+
+            var pars = BuildApplicationAccessTokenParameters(parameters, out name, out path);
+
+            OAuthRequestAsync(
+                name, path, pars, userToken,
+                json => BuildApplicationAccessTokenResult(json).ToString(),
+                (o, e) =>
+                {
+                    if (GetApplicationAccessTokenCompleted != null)
+                    {
+                        GetApplicationAccessTokenCompleted(this, e);
+                    }
+                });
+        }
+
+        /// <summary>
+        /// Gets the application access token asynchronously.
+        /// </summary>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
+        public void GetApplicationAccessTokenAsync(object userToken)
+        {
+            GetApplicationAccessTokenAsync(null, userToken);
+        }
+
+        /// <summary>
+        /// Gets the application access token asynchronously.
+        /// </summary>
+        public void GetApplicationAccessTokenAsync()
+        {
+            GetApplicationAccessTokenAsync(null, null);
+        }
+
+        private IDictionary<string, object> BuildApplicationAccessTokenParameters(IDictionary<string, object> parameters, out string name, out string path)
+        {
+            name = FacebookUtils.DOMAIN_MAP_GRAPH;
+            path = "/oauth/access_token";
+
+            var defaultParameters = new Dictionary<string, object>
+                                        {
+                                            { "client_id", AppId },
+                                            { "client_secret", AppSecret },
+                                            { "grant_type", "client_credentials" }
+                                        };
+
+            var mergedParameters = FacebookUtils.Merge(defaultParameters, parameters);
+
+            if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
+            {
+                throw new ArgumentException("client_id required");
+            }
+
+            if (mergedParameters["client_secret"] == null || string.IsNullOrEmpty(mergedParameters["client_secret"].ToString()))
+            {
+                throw new ArgumentException("client_secret required");
+            }
+
+            if (mergedParameters["grant_type"] == null || string.IsNullOrEmpty(mergedParameters["grant_type"].ToString()))
+            {
+                throw new ArgumentException("grant_type required");
+            }
+
+            return mergedParameters;
+        }
+
+        private object BuildApplicationAccessTokenResult(string responseString)
+        {
+            var returnParameter = new JsonObject();
+            FacebookUtils.ParseQueryParametersToDictionary("?" + responseString, returnParameter);
+
+            return returnParameter;
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        internal protected virtual string OAuthRequest(string name, string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
+
+            path = FacebookUtils.ParseQueryParametersToDictionary(path, mergedParameters);
+
+            if (!string.IsNullOrEmpty(path) && path.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            {
+                path = path.Substring(1, path.Length - 1);
+            }
+
+            var requestUrl = GetUrl(name, path, parameters);
+
+            var webClient = WebClient;
+
+            string responseString = null;
+            try
+            {
+                var resultData = webClient.DownloadData(requestUrl);
+                if (resultData != null)
+                {
+                    responseString = Encoding.UTF8.GetString(resultData);
+                }
+            }
+            catch (WebExceptionWrapper ex)
+            {
+                responseString = FacebookUtils.GetResponseString(ex);
+            }
+
+            // todo: make sure the url is graph url then only check for graph exception
+            var graphException = ExceptionFactory.GetGraphException(responseString);
+
+            if (graphException != null)
+            {
+                throw graphException;
+            }
+
+            return responseString;
+        }
+
+        internal protected virtual void OAuthRequestAsync(string name, string path, IDictionary<string, object> parameters, object userToken, Func<string, string> processResponseString, Action<object, FacebookApiEventArgs> onDownloadComplete)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+            Contract.Requires(onDownloadComplete != null);
+
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
+
+            path = FacebookUtils.ParseQueryParametersToDictionary(path, mergedParameters);
+
+            if (!string.IsNullOrEmpty(path) && path.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            {
+                path = path.Substring(1, path.Length - 1);
+            }
+
+            var requestUrl = GetUrl(name, path, parameters);
+
+            var webClient = WebClient;
+
+            var tempState = new WebClientStateContainer
+            {
+                UserState = userToken,
+                Method = HttpMethod.Get,
+                RequestUri = requestUrl
+            };
+
+            webClient.DownloadDataCompleted = (o, e) => DownloadDataCompleted(o, e, processResponseString, onDownloadComplete);
+
+            webClient.DownloadDataAsync(requestUrl, tempState);
+        }
+
+        internal void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e, Func<string, string> processResponseString, Action<object, FacebookApiEventArgs> onDownloadComplete)
+        {
+            Contract.Requires(onDownloadComplete != null);
+
+            var userState = (WebClientStateContainer)e.UserState;
+
+            string json = null;
+
+            if (e.Error == null && e.Result != null)
+            {
+                json = Encoding.UTF8.GetString(e.Result, 0, e.Result.Length);
+
+                if (processResponseString != null)
+                {
+                    // make the result json
+                    json = processResponseString(json);
+                }
+            }
+
+            HttpMethod method;
+            var args = GetApiEventArgs(e, json, out method);
+
+            /*
+             * use onDownloadComplete instead, so don't need to do string compare
+            
+             
+            if (userState.RequestUri.AbsolutePath.StartsWith("/oauth/access_token") && GetApplicationAccessTokenCompleted != null)
+            {
+                GetApplicationAccessTokenCompleted(this, args);
+            }
+
+             */
+
+            onDownloadComplete(this, args);
+        }
+
+        /// <summary>
+        /// Build the URL for given domain alias, path and parameters.
+        /// </summary>
+        /// <param name="name">
+        /// The name of the domain (from the domain maps).
+        /// </param>
+        /// <param name="path">
+        /// Optional path (without a leading slash)
+        /// </param>
+        /// <param name="parameters">
+        ///  Optional query parameters
+        /// </param>
+        /// <returns>
+        /// The string of the url for the given parameters.
+        /// </returns>
+        internal protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
+            return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
+        }
+
+        private FacebookApiEventArgs GetApiEventArgs(AsyncCompletedEventArgs e, string json, out HttpMethod httpMethod)
+        {
+            var state = (WebClientStateContainer)e.UserState;
+            httpMethod = state.Method;
+
+            var cancelled = e.Cancelled;
+            var userState = state.UserState;
+            var error = e.Error;
+
+            // Check for Graph Exception
+            var webException = error as WebExceptionWrapper;
+            if (webException != null)
+            {
+                error = ExceptionFactory.GetGraphException(webException);
+            }
+
+            if (error == null)
+            {
+                error = ExceptionFactory.CheckForRestException(DomainMaps, state.RequestUri, json) ?? error;
+            }
+
+            var args = new FacebookApiEventArgs(error, cancelled, userState, json);
+            return args;
+        }
+
+        #endregion
+
     }
 }

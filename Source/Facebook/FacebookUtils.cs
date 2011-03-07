@@ -17,6 +17,7 @@ namespace Facebook
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -783,6 +784,84 @@ namespace Facebook
             return requestUri.Host == map[DOMAIN_MAP_API].Host ||
                    requestUri.Host == map[DOMAIN_MAP_API_READ].Host ||
                    requestUri.Host == map[DOMAIN_MAP_API_VIDEO].Host;
+        }
+
+        /// <summary>
+        /// Build the URL for given domain alias, paht and parameters.
+        /// </summary>
+        /// <param name="domainMaps">
+        /// The domain maps.
+        /// </param>
+        /// <param name="name">
+        /// The name of the domain (from the domain maps).
+        /// </param>
+        /// <param name="path">
+        /// Optional path (without a leading slash).
+        /// </param>
+        /// <param name="parameters">
+        /// Optional query parameters.
+        /// </param>
+        /// <returns>
+        /// The string of the url for the given parameters.
+        /// </returns>
+        internal static Uri GetUrl(IDictionary<string, Uri> domainMaps, string name, string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(name));
+            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+
+            if (!domainMaps.ContainsKey(name))
+            {
+                throw new ArgumentException("Invalid url name.");
+            }
+
+            var uri = new UriBuilder(domainMaps[name]);
+            if (!String.IsNullOrEmpty(path))
+            {
+                if (path[0] == '/')
+                {
+                    path = path.Length > 1 ? path.Substring(1) : string.Empty;
+                }
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    uri.Path = UrlEncode(path);
+                }
+            }
+
+            if (parameters != null)
+            {
+                uri.Query = ToJsonQueryString(parameters);
+            }
+
+            return uri.Uri;
+        }
+
+        /// <summary>
+        /// Gets the response string from web exception.
+        /// </summary>
+        /// <param name="webException">
+        /// The web exception.
+        /// </param>
+        /// <returns>
+        /// Response string.
+        /// </returns>
+        internal static string GetResponseString(WebExceptionWrapper webException)
+        {
+            if (webException.HasResponse)
+            {
+                using (var stream = webException.GetResponseStream())
+                {
+                    if (stream != null)
+                    {
+                        using (var reader = new StreamReader(stream))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         #endregion
