@@ -502,7 +502,7 @@ namespace Facebook.Web.Mvc
                 webUrl = webUrl.Substring(applicationPath.Length);
             }
 
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookContext.Current, requestContext.HttpContext.Request);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
             var tagBuilder = new TagBuilder("a")
             {

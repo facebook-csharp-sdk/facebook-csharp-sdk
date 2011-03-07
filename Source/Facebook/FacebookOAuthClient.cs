@@ -37,26 +37,36 @@ namespace Facebook
         {
             if (facebookApplication != null)
             {
-                this.ClientId = facebookApplication.AppId;
-                this.ClientSecret = facebookApplication.AppSecret;
+                this.AppId = facebookApplication.AppId;
+                this.AppSecret = facebookApplication.AppSecret;
             }
         }
 
         /// <summary>
-        /// Gets or sets the client id.
+        /// Gets or sets the app id.
         /// </summary>
-        public string ClientId { get; set; }
+        public string AppId { get; set; }
 
         /// <summary>
-        /// Gets or sets the client secret.
+        /// Gets or sets the app secret.
         /// </summary>
-        public string ClientSecret { get; set; }
+        public string AppSecret { get; set; }
 
         /// <summary>
         /// Gets or sets the redirect uri.
         /// </summary>
         public Uri RedirectUri { get; set; }
 
+        /// <summary>
+        /// Gets the login uri.
+        /// </summary>
+        /// <returns>
+        /// Returns the facebook login uri.
+        /// </returns>
+        public Uri GetLoginUrl()
+        {
+            return GetLoginUrl(null);
+        }
         /// <summary>
         /// Gets the login uri.
         /// </summary>
@@ -81,7 +91,7 @@ namespace Facebook
             Contract.Ensures(Contract.Result<Uri>() != null);
 
             var defaultParameters = new Dictionary<string, object>();
-            defaultParameters["client_id"] = this.ClientId;
+            defaultParameters["client_id"] = this.AppId;
             defaultParameters["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
 #if WINDOWS_PHONE
             defaultParameters["display"] = "touch";
@@ -91,12 +101,12 @@ namespace Facebook
             // check if client_id and redirect_uri is not null or empty.
             if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
             {
-                throw new InvalidOperationException("client_id required.");
+                throw new ArgumentException("client_id required.");
             }
 
             if (mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
             {
-                throw new InvalidOperationException("redirect_uri required.");
+                throw new ArgumentException("redirect_uri required.");
             }
 
             // seems like if we don't do this and rather pass the original uri object,
@@ -109,6 +119,17 @@ namespace Facebook
             var url = "http://www.facebook.com/dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
 
             return new Uri(url);
+        }
+
+        /// <summary>
+        /// Gets the logout url.
+        /// </summary>
+        /// <returns>
+        /// Returns the logout url.
+        /// </returns>
+        public Uri GetLogoutUrl()
+        {
+            return GetLoginUrl(null);
         }
 
         /// <summary>
@@ -145,11 +166,45 @@ namespace Facebook
         /// <param name="redirectUri">
         /// The redirect Uri.
         /// </param>
+        /// <returns>
+        /// The url to navigate.
+        /// </returns>
+        public static Uri GetLoginUrl(string appId, Uri redirectUri)
+        {
+            return GetLoginUrl(appId, redirectUri, null, null);
+        }
+
+        /// <summary>
+        /// Gets the login url.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="redirectUri">
+        /// The redirect Uri.
+        /// </param>
         /// <param name="extendedPermissions">
         /// The extended permissions (scope).
         /// </param>
-        /// <param name="logout">
-        /// Indicates whether to logout existing logged in user or not.
+        /// <returns>
+        /// The url to navigate.
+        /// </returns>
+        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions)
+        {
+            return GetLoginUrl(appId, redirectUri, extendedPermissions, null);
+        }
+
+        /// <summary>
+        /// Gets the login url.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="redirectUri">
+        /// The redirect Uri.
+        /// </param>
+        /// <param name="extendedPermissions">
+        /// The extended permissions (scope).
         /// </param>
         /// <param name="loginParameters">
         /// The login parameters.
@@ -157,12 +212,12 @@ namespace Facebook
         /// <returns>
         /// The url to navigate.
         /// </returns>
-        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, bool logout, IDictionary<string, object> loginParameters)
+        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, IDictionary<string, object> loginParameters)
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));
             Contract.Ensures(Contract.Result<Uri>() != null);
 
-            var oauth = new FacebookOAuthClient { ClientId = appId, RedirectUri = redirectUri };
+            var oauth = new FacebookOAuthClient { AppId = appId, RedirectUri = redirectUri };
 
             var defaultLoginParameters = new Dictionary<string, object>
                                              {
@@ -179,26 +234,28 @@ namespace Facebook
 
             var loginUrl = oauth.GetLoginUrl(mergedLoginParameters);
 
-            Uri navigateUrl;
-            if (logout)
-            {
-                var logoutParameters = new Dictionary<string, object>
-                                           {
-                                               { "next", loginUrl }
-                                           };
-
-                navigateUrl = oauth.GetLogoutUrl(logoutParameters);
-            }
-            else
-            {
-                navigateUrl = loginUrl;
-            }
-
-            return navigateUrl;
+            return loginUrl;
         }
 
 #if !SILVERLIGHT
         // Silverlight should have only async calls
+
+                /// <summary>
+        /// Gets the access token by exchanging the code.
+        /// </summary>
+        /// <param name="code">
+        /// The code to exchange.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the access token or expires if exists.
+        /// </returns>
+        public object ExchangeCodeForAccessToken(string code)
+        {
+            return ExchangeCodeForAccessToken(code, null);
+        }
 
         /// <summary>
         /// Gets the access token by exchanging the code.
@@ -383,19 +440,19 @@ namespace Facebook
 
         private Uri BuildGetApplicationAccessTokenUrl()
         {
-            if (string.IsNullOrEmpty(this.ClientId))
+            if (string.IsNullOrEmpty(this.AppId))
             {
                 throw new Exception("ClientID required.");
             }
 
-            if (string.IsNullOrEmpty(this.ClientSecret))
+            if (string.IsNullOrEmpty(this.AppSecret))
             {
                 throw new Exception("ClientSecret required");
             }
 
             var parameters = new Dictionary<string, object>();
-            parameters["client_id"] = this.ClientId;
-            parameters["client_secret"] = this.ClientSecret;
+            parameters["client_id"] = this.AppId;
+            parameters["client_secret"] = this.AppSecret;
             parameters["grant_type"] = "client_credentials";
 
             var queryString = FacebookUtils.ToJsonQueryString(parameters);
@@ -407,8 +464,8 @@ namespace Facebook
         private Uri BuildExchangeCodeForAccessTokenUrl(string code, IDictionary<string, object> parameters)
         {
             var pars = new Dictionary<string, object>();
-            pars["client_id"] = this.ClientId;
-            pars["client_secret"] = this.ClientSecret;
+            pars["client_id"] = this.AppId;
+            pars["client_secret"] = this.AppSecret;
             pars["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
             pars["code"] = code;
 

@@ -21,7 +21,7 @@ namespace Facebook.Web
     /// <summary>
     /// Represents the Facebook authorizer class.
     /// </summary>
-    public class FacebookHttpRequest
+    public class FacebookWebContext
     {
 
         /// <summary>
@@ -40,25 +40,20 @@ namespace Facebook.Web
         private FacebookSession m_session;
 
         /// <summary>
-        /// The facebook signed request.
+        /// Initializes a new instance of the <see cref="FacebookCanvasContext"/> class.
         /// </summary>
-        private FacebookSignedRequest m_signedRequest;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookCanvasRequest"/> class.
-        /// </summary>
-        public FacebookHttpRequest()
-            : this(FacebookContext.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
+        public FacebookWebContext()
+            : this(FacebookApplication.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
-        public FacebookHttpRequest(IFacebookApplication settings)
+        public FacebookWebContext(IFacebookApplication settings)
             : this(settings, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookCanvasRequest"/> class.
+        /// Initializes a new instance of the <see cref="FacebookCanvasContext"/> class.
         /// </summary>
         /// <param name="settings">
         /// The settings.
@@ -66,7 +61,7 @@ namespace Facebook.Web
         /// <param name="httpContext">
         /// The http context.
         /// </param>
-        public FacebookHttpRequest(IFacebookApplication settings, HttpContextBase httpContext)
+        public FacebookWebContext(IFacebookApplication settings, HttpContextBase httpContext)
         {
             Contract.Requires(settings != null);
             Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
@@ -80,9 +75,9 @@ namespace Facebook.Web
             this.m_httpContext = httpContext;
         }
 
-        public static FacebookHttpRequest Current
+        public static FacebookWebContext Current
         {
-            get { return new FacebookHttpRequest(); }
+            get { return new FacebookWebContext(); }
         }
 
         /// <summary>
@@ -130,15 +125,6 @@ namespace Facebook.Web
             {
                 return this.m_session ??
                        (this.m_session = FacebookSession.GetSession(this.Settings.AppId, this.Settings.AppSecret, this.HttpContext));
-            }
-        }
-
-        public FacebookSignedRequest SignedRequest
-        {
-            get
-            {
-                return this.m_signedRequest ??
-                    (this.m_signedRequest = FacebookSignedRequest.GetSignedRequest(this.Settings.AppSecret, this.HttpContext));
             }
         }
 
@@ -190,6 +176,11 @@ namespace Facebook.Web
             return this.HasPermissions(new[] { permission }).Length == 1;
         }
 
+        public bool IsAuthenticated()
+        {
+            return this.Session != null && this.Session.Expires > DateTime.UtcNow;
+        }
+
         public bool IsAuthorized()
         {
             return this.IsAuthorized(null);
@@ -203,9 +194,9 @@ namespace Facebook.Web
         /// </returns>
         public virtual bool IsAuthorized(params string[] permissions)
         {
-            bool isAuthenticated = this.Session != null;
+            bool isAuthorized = IsAuthenticated();
 
-            if (isAuthenticated && permissions != null)
+            if (isAuthorized && permissions != null)
             {
                 var currentPerms = this.HasPermissions(permissions);
                 foreach (var perm in permissions)
@@ -217,9 +208,12 @@ namespace Facebook.Web
                 }
             }
 
-            return isAuthenticated;
+            return isAuthorized;
         }
 
+        /// <summary>
+        /// Deletes all Facebook authentication cookies found in the current request.
+        /// </summary>
         public void DeleteAuthCookie()
         {
             string sessionCookieName = FacebookSession.GetCookieName(this.Settings.AppId);

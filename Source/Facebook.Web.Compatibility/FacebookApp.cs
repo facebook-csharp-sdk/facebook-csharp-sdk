@@ -25,7 +25,7 @@ namespace Facebook
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    [Obsolete("Use FacebookWebClient instead.")]
+    [Obsolete("Use Facebook.Web.FacebookWebClient instead.")]
     [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public class FacebookApp : FacebookAppBase
     {

@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FacebookCanvasAuthorizer.cs" />
+    <Compile Include="FacebookCanvasContext.cs" />
     <Compile Include="FacebookSubscriptionVerifier.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs">
       <SubType>Code</SubType>
@@ -124,7 +125,7 @@
     <Compile Include="GlobalSuppressions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FacebookHttpRequest.cs" />
+    <Compile Include="FacebookWebContext.cs" />
     <Compile Include="CanvasUrlBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">

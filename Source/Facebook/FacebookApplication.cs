@@ -15,12 +15,12 @@ namespace Facebook
     /// <summary>
     /// Represents the Facebook Context class.
     /// </summary>
-    public class FacebookContext
+    public class FacebookApplication
     {
         /// <summary>
         /// Current Facebook application.
         /// </summary>
-        private static readonly FacebookContext Instance = new FacebookContext();
+        private static readonly FacebookApplication Instance = new FacebookApplication();
 
         /// <summary>
         /// Gets the current Facebook application.

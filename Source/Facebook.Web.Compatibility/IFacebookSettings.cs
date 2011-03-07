@@ -15,7 +15,7 @@ namespace Facebook
     /// <summary>
     /// Represents the settings of a Facebook application.
     /// </summary>
-    [Obsolete]
+    [Obsolete("Use IFacebookApplication instead.")]
     [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public interface IFacebookSettings : IFacebookApplication
     {

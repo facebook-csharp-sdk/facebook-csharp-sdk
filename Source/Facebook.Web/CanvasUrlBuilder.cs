@@ -216,8 +216,8 @@ namespace Facebook.Web
 
             var oauth = new FacebookOAuthClient
                             {
-                                ClientId = this.settings.AppId,
-                                ClientSecret = this.settings.AppSecret
+                                AppId = this.settings.AppId,
+                                AppSecret = this.settings.AppSecret
                             };
 
             if (parameters != null && parameters.ContainsKey("state"))
@@ -255,7 +255,7 @@ namespace Facebook.Web
             if (string.IsNullOrEmpty(cancelUrlPath))
             {
                 // if cancel url path is empty, get settings from default facebook application.
-                cancelUrlPath = FacebookContext.Current.CancelUrlPath;
+                cancelUrlPath = FacebookApplication.Current.CancelUrlPath;
             }
 
             if (!string.IsNullOrEmpty(cancelUrlPath))

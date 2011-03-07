@@ -25,14 +25,11 @@ namespace Facebook
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    public partial class FacebookClient
-#if !SILVERLIGHT
- : IDisposable
-#endif
+    public partial class FacebookClient : IDisposable
     {
         internal IWebClient WebClient = new WebClientWrapper();
 
-        private bool m_isBeta = FacebookContext.Current.IsBeta;
+        private bool m_isBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
@@ -674,7 +671,7 @@ namespace Facebook
             string contentType;
             byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
 
-            var tempState = new WebClientTempState
+            var tempState = new WebClientStateContainer
             {
                 UserState = userToken,
                 Method = httpMethod,
@@ -997,22 +994,17 @@ namespace Facebook
             return BuildRequestData(baseUrl, parameters, method, out requestUrl, out contentType);
         }
 
-        internal class WebClientTempState
-        {
-            public object UserState { get; set; }
-            public HttpMethod Method { get; set; }
-            public Uri RequestUri { get; set; }
-        }
-
-#if !SILVERLIGHT
         public void Dispose()
         {
+#if !SILVERLIGHT
             if (this.WebClient != null)
             {
                 this.WebClient.Dispose();
             }
+#endif
         }
 
+#if !SILVERLIGHT
         internal void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e)
         {
             string json = null;
@@ -1091,7 +1083,7 @@ namespace Facebook
 
         private FacebookApiEventArgs GetApiEventArgs(AsyncCompletedEventArgs e, string json, out HttpMethod httpMethod)
         {
-            var state = e.UserState as WebClientTempState;
+            var state = e.UserState as WebClientStateContainer;
             httpMethod = state.Method;
 
             var cancelled = e.Cancelled;

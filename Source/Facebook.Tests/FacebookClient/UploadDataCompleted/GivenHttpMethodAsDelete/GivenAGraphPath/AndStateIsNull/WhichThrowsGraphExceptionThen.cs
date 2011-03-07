@@ -19,7 +19,7 @@ namespace Facebook.Tests.FacebookClient.UploadDataCompleted.GivenHttpMethodAsDel
         {
             this.facebookClient = new FacebookClient();
 
-            var tempState = new FacebookClient.WebClientTempState
+            var tempState = new WebClientStateContainer
             {
                 Method = this.httpMethod,
                 RequestUri = new Uri(this.requestUrl),

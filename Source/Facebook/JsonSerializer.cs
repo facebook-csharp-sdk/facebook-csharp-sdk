@@ -83,7 +83,7 @@
             /// <summary>
             /// Serializes the object to json string.
             /// </summary>
-            /// <param name="value">
+            /// <param name="obj">
             /// The value.
             /// </param>
             /// <returns>

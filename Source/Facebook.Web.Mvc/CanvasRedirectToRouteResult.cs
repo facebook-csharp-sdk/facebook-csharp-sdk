@@ -40,7 +40,7 @@ namespace Facebook.Web.Mvc
         {
             string destinationPathAndQuery = UrlHelper.GenerateUrl(RouteName, null /* actionName */, null /* controllerName */, RouteValues, RouteTable.Routes, context.RequestContext, false /* includeImplicitMvcValues */);
 
-            var canvasUrlBuilder = new CanvasUrlBuilder(FacebookContext.Current, context.HttpContext.Request);
+            var canvasUrlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, context.HttpContext.Request);
 
             var canvasUrl = canvasUrlBuilder.BuildCanvasPageUrl(destinationPathAndQuery);
 

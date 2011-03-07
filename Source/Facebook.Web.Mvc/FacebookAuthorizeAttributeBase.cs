@@ -39,7 +39,7 @@ namespace Facebook.Web.Mvc
         /// <param name="filterContext">The filter context.</param>
         public virtual void OnAuthorization(AuthorizationContext filterContext)
         {
-            this.OnAuthorization(filterContext, FacebookContext.Current);
+            this.OnAuthorization(filterContext, FacebookApplication.Current);
         }
 
         public abstract void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication);

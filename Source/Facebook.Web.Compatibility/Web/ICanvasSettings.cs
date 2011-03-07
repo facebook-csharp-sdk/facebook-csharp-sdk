@@ -7,7 +7,7 @@ namespace Facebook.Web
     /// <summary>
     /// Represents the Facebook application's canvas settings.
     /// </summary>
-    [Obsolete]
+    [Obsolete("Use IFacebookApplication")]
     [TypeForwardedFrom("Facebook.Web, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     [ContractClass(typeof(CanvasSettingsContracts))]
     public interface ICanvasSettings

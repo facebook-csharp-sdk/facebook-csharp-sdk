@@ -11,12 +11,12 @@ namespace Facebook.Web
     {
 
         public FacebookCanvasAuthorizer()
-            : base()
+            : base(FacebookCanvasContext.Current)
         {
         }
 
-        public FacebookCanvasAuthorizer(FacebookHttpRequest request)
-            : base(request)
+        public FacebookCanvasAuthorizer(FacebookCanvasContext context)
+            : base(context)
         {
         }
 

@@ -13,7 +13,10 @@ using System.Security;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+#if !TESTS
 [assembly: CLSCompliant(true)]
+#endif
+
 
 #if !(SILVERLIGHT || TESTS)
 [assembly: AllowPartiallyTrustedCallers]
@@ -34,6 +37,7 @@ using System.Runtime.InteropServices;
 #endif
 
 #endif
+
 
 internal static class GlobalAssemblyInfo
 {

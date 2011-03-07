@@ -1,0 +1,912 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Facebook.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Facebook.FacebookSignedRequest">
+            <summary>
+            Represents a Facebook signed request.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookSignedRequest.data">
+            <summary>
+            The actual value of the signed request.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookSignedRequest.accessToken">
+            <summary>
+            The access token.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookSignedRequest.userId">
+            <summary>
+            The user id.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookSignedRequest.profileId">
+            <summary>
+            The profile id.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookSignedRequest.expires">
+            <summary>
+            The expires.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookSignedRequest.issuedAt">
+            <summary>
+            The issued at.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookSignedRequest"/> class.
+            </summary>
+            <param name="data">
+            The signed request data.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.TryParse(System.String,System.String,Facebook.FacebookSignedRequest@)">
+            <summary>
+            Try parsing the signed request.
+            </summary>
+            <param name="secret">
+            The secret.
+            </param>
+            <param name="signedRequestValue">
+            The signed request value.
+            </param>
+            <param name="signedRequest">
+            The signed request.
+            </param>
+            <returns>
+            Returns true if parsing was successful otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.TryParse(Facebook.IFacebookApplication,System.String,Facebook.FacebookSignedRequest@)">
+            <summary>
+            Try parsing the signed request.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+            <param name="signedRequestValue">
+            The signed request value.
+            </param>
+            <param name="signedRequest">
+            The signed request.
+            </param>
+            <returns>
+            Returns true if parsing was successful otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.Parse(System.String,System.String)">
+            <summary>
+            Parse the signed request.
+            </summary>
+            <param name="secret">
+            The secret.
+            </param>
+            <param name="signedRequestValue">
+            The signed request value.
+            </param>
+            <returns>
+            Returns the signed request.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.Parse(Facebook.IFacebookApplication,System.String)">
+            <summary>
+            Parse the signed request.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+            <param name="signedRequestValue">
+            The signed request value.
+            </param>
+            <returns>
+            Returns the signed request.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.Parse(Facebook.IFacebookApplication,System.Web.HttpRequestBase)">
+            <summary>
+            Parse the signed request.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            Returns the signed request.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.TryParse(Facebook.IFacebookApplication,System.Web.HttpRequestBase,Facebook.FacebookSignedRequest@)">
+            <summary>
+            Try parsing the signed request.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <param name="signedRequest">
+            The signed request.
+            </param>
+            <returns>
+            Returns true if parsing is successful otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.GetSignedRequest(System.String,System.Web.HttpContextBase)">
+            <summary>
+            Gets the facebook signed request from the http request.
+            </summary>
+            <param name="appSecret">
+            The app Secret.
+            </param>
+            <param name="httpRequest">
+            The http request.
+            </param>
+            <returns>
+            Returns the signed request if found otherwise null.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSignedRequest.TryParse(System.String,System.String,System.Int32,System.Double,System.Boolean)">
+            <summary>
+            Parse the signed request string.
+            </summary>
+            <param name="secret">
+            The secret.
+            </param>
+            <param name="signedRequestValue">
+            The signed request value.
+            </param>
+            <param name="maxAge">
+            The max age.
+            </param>
+            <param name="currentTime">
+            The current time.
+            </param>
+            <param name="throws">
+            The throws.
+            </param>
+            <returns>
+            The FacebookSignedRequest.
+            </returns>
+        </member>
+        <member name="P:Facebook.FacebookSignedRequest.Data">
+            <summary>
+            Gets actual value of signed request.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookSignedRequest.AccessToken">
+            <summary>
+            Gets the access token.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookSignedRequest.UserId">
+            <summary>
+            Gets the user id.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookSignedRequest.ProfileId">
+            <summary>
+            Gets the profile id.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookSignedRequest.Expires">
+            <summary>
+            Gets the expires.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookSignedRequest.IssuedAt">
+            <summary>
+            Gets the issued at.
+            </summary>
+        </member>
+        <member name="T:Facebook.Web.FacebookHttpRequest">
+            <summary>
+            Represents the Facebook authorizer class.
+            </summary>
+        </member>
+        <member name="F:Facebook.Web.FacebookHttpRequest.m_facebookApplication">
+            <summary>
+            The facebook settings.
+            </summary>
+        </member>
+        <member name="F:Facebook.Web.FacebookHttpRequest.m_httpContext">
+            <summary>
+            The http context.
+            </summary>
+        </member>
+        <member name="F:Facebook.Web.FacebookHttpRequest.m_session">
+            <summary>
+            The facebook session.
+            </summary>
+        </member>
+        <member name="F:Facebook.Web.FacebookHttpRequest.m_signedRequest">
+            <summary>
+            The facebook signed request.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="!:FacebookCanvasRequest"/> class.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.#ctor(Facebook.IFacebookApplication,System.Web.HttpContextBase)">
+            <summary>
+            Initializes a new instance of the <see cref="!:FacebookCanvasRequest"/> class.
+            </summary>
+            <param name="settings">
+            The settings.
+            </param>
+            <param name="httpContext">
+            The http context.
+            </param>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.HasPermissions(System.String[])">
+            <summary>
+            Check whether the user has the specified permissions.
+            </summary>
+            <param name="permissions">
+            The permissions.
+            </param>
+            <returns>
+            Returns the list of allowed permissions.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.HasPermission(System.String)">
+            <summary>
+            Check whether the user has the specified permissions.
+            </summary>
+            <param name="permission">
+            The permission.
+            </param>
+            <returns>
+            Returns true if the user has permission otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.IsAuthorized(System.String[])">
+            <summary>
+            Checks if the user is authenticated and the application has all the specified permissions.
+            </summary>
+            <returns>
+            Return true if the user is authenticated and the application has all the specified permissions.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.HasPermissions(System.String,System.String,System.Int64,System.String[])">
+            <summary>
+            Check if the Facebook App has permissions from the specified user.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="appSecret">
+            The app secret.
+            </param>
+            <param name="userId">
+            The user id.
+            </param>
+            <param name="permissions">
+            The list of permissions.
+            </param>
+            <returns>
+            The list of permissions that are allowed from the specified permissions.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.HasPermission(System.String,System.String,System.Int64,System.String)">
+            <summary>
+             Check if the Facebook App has permission from the specified user.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="appSecret">
+            The app secret.
+            </param>
+            <param name="userId">
+            The user id.
+            </param>
+            <param name="permission">
+            The permission.
+            </param>
+            <returns>
+            Returns true if the facebook app has the specified permission.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookHttpRequest.InvarientObject">
+            <summary>
+            The code contracts invariant object method.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookHttpRequest.Settings">
+            <summary>
+            Gets the Facebook application settings.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookHttpRequest.Session">
+            <summary>
+            Gets the facebook session.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookHttpRequest.HttpContext">
+            <summary>
+            Gets the http context.
+            </summary>
+        </member>
+        <member name="T:Facebook.Web.CanvasUrlBuilder">
+            <summary>
+            Facebook Canvas Url builder.
+            </summary>
+        </member>
+        <member name="F:Facebook.Web.CanvasUrlBuilder.RedirectPath">
+            <summary>
+            Redirect path.
+            </summary>
+        </member>
+        <member name="F:Facebook.Web.CanvasUrlBuilder.settings">
+            <summary>
+            Facebook Application settings.
+            </summary>
+        </member>
+        <member name="F:Facebook.Web.CanvasUrlBuilder.httpRequest">
+            <summary>
+            The http request.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.CanvasUrlBuilder.#ctor(Facebook.IFacebookApplication,System.Web.HttpRequestBase)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.Web.CanvasUrlBuilder"/> class.
+            </summary>
+            <param name="settings">
+            The settings.
+            </param>
+            <param name="httpRequest">
+            The http request.
+            </param>
+        </member>
+        <member name="M:Facebook.Web.CanvasUrlBuilder.BuildCanvasPageUrl(System.String)">
+            <summary>
+            Builds a Facebook canvas return URL.
+            </summary>
+            <param name="pathAndQuery">The path and query.</param>
+            <returns>
+            The canvas page url.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.CanvasUrlBuilder.GetLoginUrl(System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Gets the canvas login url
+            </summary>
+            <param name="returnUrlPath">
+            The return Url Path.
+            </param>
+            <param name="cancelUrlPath">
+            The cancel Url Path.
+            </param>
+            <param name="state">
+            The state.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            Returns the login url.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.CanvasUrlBuilder.GetCanvasRedirectHtml(System.Uri)">
+            <summary>
+            Gets the canvas redirect HTML.
+            </summary>
+            <param name="url">The redirect url.</param>
+            <returns>
+            Returns redirect html.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.CanvasUrlBuilder.IsRelativeUri(System.String)">
+            <summary>
+            Checks if the specified input string is a valid relative uri.
+            </summary>
+            <param name="str">
+            The str.
+            </param>
+            <returns>
+            Returns true if the input string is a valid uri.
+            </returns>
+        </member>
+        <member name="P:Facebook.Web.CanvasUrlBuilder.CanvasPage">
+            <summary>
+            Gets the base url of your application on Facebook.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.CanvasUrlBuilder.CanvasPageApplicationPath">
+            <summary>
+            Gets the Facebook Application Path.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.CanvasUrlBuilder.CanvasUrl">
+            <summary>
+            Gets the URL where Facebook pull the content for your application's canvas pages.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.CanvasUrlBuilder.CurrentCanvasUrl">
+            <summary>
+            Gets the current URL of your application that Facebook
+            is pulling..
+            </summary>
+            <value>The current canvas URL.</value>
+        </member>
+        <member name="P:Facebook.Web.CanvasUrlBuilder.CurrentCanvasPathAndQuery">
+            <summary>
+            Gets the current Path and query of the application 
+            being pulled by Facebook.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.CanvasUrlBuilder.CurrentCanvasPage">
+            <summary>
+            Gets the current url of the application on facebook.
+            </summary>
+        </member>
+        <member name="T:Facebook.FacebookSession">
+            <summary>
+            Represents a Facebook session.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookSession.data">
+            <summary>
+            The actual value of the facebook session.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookSession.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookSession"/> class.
+            </summary>
+            <param name="accessToken">
+            The access token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookSession.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookSession"/> class.
+            </summary>
+            <param name="dictionary">
+            The dictionary.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookSession.ParseUserIdFromAccessToken(System.String)">
+            <summary>
+            Extracts the user id from access token.
+            </summary>
+            <param name="accessToken">
+            The access token.
+            </param>
+            <returns>
+            Returns the user id if successful otherwise null.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSession.GetCookieName(System.String)">
+            <summary>
+            Gets the facebook session cookie name for the specified facebook application.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <returns>
+            Returns the name of the cookie name.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSession.GetSessionCookieValue(System.String,System.Web.HttpRequestBase)">
+            <summary>
+            Gets the facebook session cookie value for the specified application.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="httpRequet">
+            The http request.
+            </param>
+            <returns>
+            Returns the facebook session cookie value if present otherwise null.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSession.GetSession(System.String,System.String,System.Web.HttpContextBase)">
+            <summary>
+             Gets the facebook session from the http request.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="appSecret">
+            The app secret.
+            </param>
+            <param name="httpRequest">
+            The http request.
+            </param>
+            <returns>
+            Returns the facebook session if found, otherwise null.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSession.Create(System.String,Facebook.FacebookSignedRequest)">
+            <summary>
+            Creates a facebook session from a signed request.
+            </summary>
+            <param name="appSecret">
+            The app secret.
+            </param>
+            <param name="signedRequest">
+            The signed request.
+            </param>
+            <returns>
+            The facebook session.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSession.ParseCookieValue(System.String,System.String)">
+            <summary>
+            Parses the session value from a cookie.
+            </summary>
+            <param name="appSecret">
+            The app Secret.
+            </param>
+            <param name="cookieValue">
+            The session value.
+            </param>
+            <returns>
+            The Facebook session object.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookSession.GenerateSessionSignature(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Generates a MD5 signature for the facebook session.
+            </summary>
+            <param name="secret">
+            The app secret.
+            </param>
+            <param name="dictionary">
+            The dictionary.
+            </param>
+            <returns>
+            Returns the generated signature.
+            </returns>
+            <remarks>
+            http://developers.facebook.com/docs/authentication/
+            </remarks>
+        </member>
+        <member name="P:Facebook.FacebookSession.UserId">
+            <summary>
+            Gets the user id.
+            </summary>
+            <value>The user id.</value>
+        </member>
+        <member name="P:Facebook.FacebookSession.Secret">
+            <summary>
+            Gets the secret.
+            </summary>
+            <value>The secret.</value>
+        </member>
+        <member name="P:Facebook.FacebookSession.AccessToken">
+            <summary>
+            Gets the access token.
+            </summary>
+            <value>The access token.</value>
+        </member>
+        <member name="P:Facebook.FacebookSession.SessionKey">
+            <summary>
+            Gets the session key.
+            </summary>
+            <value>The session key.</value>
+        </member>
+        <member name="P:Facebook.FacebookSession.Expires">
+            <summary>
+            Gets the expires.
+            </summary>
+            <value>The expires.</value>
+        </member>
+        <member name="P:Facebook.FacebookSession.Signature">
+            <summary>
+            Gets the signature.
+            </summary>
+            <value>The signature.</value>
+        </member>
+        <member name="P:Facebook.FacebookSession.BaseDomain">
+            <summary>
+            Gets the base domain.
+            </summary>
+            <value>The base domain.</value>
+        </member>
+        <member name="P:Facebook.FacebookSession.Data">
+            <summary>
+            Gets actual value of signed request.
+            </summary>
+        </member>
+        <member name="T:Facebook.Web.FacebookSubscriptionsHttpHandler">
+            <summary>
+            Represents the base class for handling incoming Facebook subscriptions.
+            </summary>
+            <remarks>
+            For more information visit http://developers.facebook.com/docs/api/realtime
+            1. Getting the Facebook app access token. 
+                var oauth = new FacebookOAuthClient { ClientId = "...", ClientSecret = "..." };
+                dynamic result = oauth.GetApplicationAccessToken();
+                var fb = new FacebookClient(result.access_token);
+            2. Subscribing to subscriptions:
+                dynamic result = fb.Post(
+                           string.Format("/{0}/subscriptions", appId), new Dictionary&lt;string, object>
+                                                                           {
+                                                                               { "object","user"},
+                                                                               { "fields","name,picture,feed" },
+                                                                               { "callback_url", "http://localhost/fbsubscriptions.ashx" },
+                                                                               { "verify_token", "abc" }
+                                                                           });
+               dynamic result2 = fb.Post(
+                     string.Format("/{0}/subscriptions", appId), new Dictionary&lt;string, object>
+                                                                       {
+                                                                           { "object","permissions"},
+                                                                           { "fields","email,read_stream,offline_access" },
+                                                                           { "callback_url", "http://localhost/fbsubscriptions.ashx" },
+                                                                           { "verify_token", "abc" }
+                                                                       });
+            3. receiving and processing subscriptions.
+                ProcessSubscription is called when the subscription is received.
+                result contains the JsonObject.
+            </remarks>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionsHttpHandler.ProcessRequest(System.Web.HttpContext)">
+            <summary>
+            Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
+            </summary>
+            <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionsHttpHandler.OnVerifying(Facebook.Web.FacebookSubscriptionContext)">
+            <summary>
+            Set your verification token here.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionsHttpHandler.VerifyCore(Facebook.Web.FacebookSubscriptionContext)">
+            <summary>
+            Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
+            </summary>
+            <param name="context">An <see cref="T:System.Web.HttpContextWrapper"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionsHttpHandler.ProcessSubscription(Facebook.Web.FacebookSubscriptionContext,System.Object)">
+            <summary>
+            Process the subscription.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+            <param name="result">
+            The result.
+            </param>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionsHttpHandler.HandleUnauthorizedRequest(Facebook.Web.FacebookSubscriptionContext)">
+            <summary>
+            Handles unauthorized requests.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="P:Facebook.Web.FacebookSubscriptionsHttpHandler.IsReusable">
+            <summary>
+            Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
+            </summary>
+            <returns>
+            true if the <see cref="T:System.Web.IHttpHandler"/> instance is reusable; otherwise, false.
+            </returns>
+        </member>
+        <member name="T:Facebook.Web.FacebookSubscriptionContext">
+            <summary>
+            Represents the subscription context.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookSubscriptionContext.VerificationToken">
+            <summary>
+            Gets or sets the verify_token.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookSubscriptionContext.FacebookApplication">
+            <summary>
+            Gets or sets the Facebook application.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookSubscriptionContext.HttpContext">
+            <summary>
+            Gets or sets the HttpContext.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.FacebookWebAuthorizer.Authorize(System.String[])">
+            <summary>
+            Authorizes the user if the user is not logged in or the application does not have all the sepcified permissions.
+            </summary>
+            <returns>
+            Return true if the user is authenticated and the application has all the specified permissions.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookWebAuthorizer.HandleUnauthorizedRequest">
+            <summary>
+            Handle unauthorized requests.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookWebAuthorizer.Permissions">
+            <summary>
+            Gets or sets the extended permissions.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookWebAuthorizer.ReturnUrlPath">
+            <summary>
+            Gets or sets the return url path.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookWebAuthorizer.CancelUrlPath">
+            <summary>
+            Gets or sets the cancel url path.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookWebAuthorizer.LoginDisplayMode">
+            <summary>
+            Gets or sets the login display mode.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.FacebookWebAuthorizer.State">
+            <summary>
+            Gets or sets an opaque state used to maintain application state between the request and callback.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.FacebookCanvasAuthorizer.HandleUnauthorizedRequest">
+            <summary>
+            Handle unauthorized requests.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.FacebookCanvasAuthorizer.GetLoginUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Gets the canvas login url.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            Returns the login url.
+            </returns>
+        </member>
+        <member name="T:Facebook.Web.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.InvalidHttpXHubSignature">
+            <summary>
+              Looks up a localized string similar to Invalid HTTP_X_HUB_SIGNATURE..
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.InvalidHubChallenge">
+            <summary>
+              Looks up a localized string similar to Invalid hub challenge..
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.InvalidHubMode">
+            <summary>
+              Looks up a localized string similar to Invalid hub mode..
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.InvalidJsonString">
+            <summary>
+              Looks up a localized string similar to Invalid json string..
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.InvalidSignedRequest">
+            <summary>
+              Looks up a localized string similar to Invalid signed request..
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.InvalidSignedRequestSignature">
+            <summary>
+              Looks up a localized string similar to Invalid signed request. (Invalid signature.).
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.InvalidVerifyToken">
+            <summary>
+              Looks up a localized string similar to Invalid verify token..
+            </summary>
+        </member>
+        <member name="P:Facebook.Web.Properties.Resources.OldSignedRequest">
+            <summary>
+              Looks up a localized string similar to Invalid signed request. (Too old.).
+            </summary>
+        </member>
+        <member name="T:Facebook.Web.FacebookSubscriptionVerifier">
+            <summary>
+            Facebook helper methods for web.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionVerifier.VerifyHttpXHubSignature(System.String,System.String,System.String)">
+            <summary>
+            Verify HTTP_X_HUB_SIGNATURE.
+            </summary>
+            <param name="secret">
+            The secret.
+            </param>
+            <param name="httpXHubSignature">
+            The http x hub signature.
+            </param>
+            <param name="jsonString">
+            The json string.
+            </param>
+            <returns>
+            Returns true if validation is successful.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionVerifier.VerifyGetSubscription(System.Web.HttpRequestBase,System.String,System.String@)">
+            <summary>
+            Verify HTTP_X_HUB_SIGNATURE for http GET method.
+            </summary>
+            <param name="request">
+            The http request.
+            </param>
+            <param name="verifyToken">
+            The verify token.
+            </param>
+            <param name="errorMessage">
+            The error message.
+            </param>
+            <returns>
+            Returns true if successful otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.Web.FacebookSubscriptionVerifier.VerifyPostSubscription(System.Web.HttpRequestBase,System.String,System.String,System.String@)">
+            <summary>
+            Verify HTTP_X_HUB_SIGNATURE for http POST method.
+            </summary>
+            <param name="request">
+            The request.
+            </param>
+            <param name="secret">
+            The secret.
+            </param>
+            <param name="jsonString">
+            The json string.
+            </param>
+            <param name="errorMessage">
+            The error message.
+            </param>
+            <returns>
+            Returns true if successful otherwise false.
+            </returns>
+        </member>
+        <member name="T:Facebook.Web.FacebookAppRedirectHttpHandler">
+            <summary>
+            Represents the redirector used after a Facebook canvas authorization.
+            </summary>
+        </member>
+        <member name="M:Facebook.Web.FacebookAppRedirectHttpHandler.ProcessRequest(System.Web.HttpContext)">
+            <summary>
+            Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
+            </summary>
+            <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
+        </member>
+        <member name="P:Facebook.Web.FacebookAppRedirectHttpHandler.IsReusable">
+            <summary>
+            Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Web.IHttpHandler"/> instance is reusable; otherwise, false.</returns>
+        </member>
+    </members>
+</doc>

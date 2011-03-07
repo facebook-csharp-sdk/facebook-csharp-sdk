@@ -185,7 +185,7 @@ namespace Facebook.Web.Mvc
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
 
             string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookContext.Current, requestContext.HttpContext.Request);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, requestContext.HttpContext.Request);
             return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 
@@ -209,7 +209,7 @@ namespace Facebook.Web.Mvc
                 urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
 
             string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookContext.Current, urlHelper.RequestContext.HttpContext.Request);
+            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, urlHelper.RequestContext.HttpContext.Request);
             return urlBuilder.BuildCanvasPageUrl(url).ToString();
         }
 

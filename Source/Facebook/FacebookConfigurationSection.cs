@@ -86,10 +86,11 @@ namespace Facebook
         /// <summary>
         /// Gets or sets the value indicating whether it is beta.
         /// </summary>
-        public bool IsBeta
+        [ConfigurationProperty("useFacebookBeta", IsRequired = false, DefaultValue = false)]
+        public bool UseFacebookBeta
         {
-            get { return (bool)this["isBeta"]; }
-            set { this["isBeta"] = value; }
+            get { return (bool)this["useFacebookBeta"]; }
+            set { this["useFacebookBeta"] = value; }
         }
 
         /// <summary>
@@ -111,5 +112,6 @@ namespace Facebook
                 return current;
             }
         }
+
     }
 }
