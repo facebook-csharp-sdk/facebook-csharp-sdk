@@ -45,9 +45,9 @@ namespace Facebook
         /// </summary>
         public string CancelUrlPath { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to use Facebook beta or not.
-        /// </summary>
-        public bool UseFacebookBeta { get; set; }
+        ///// <summary>
+        ///// Gets or sets a value indicating whether to use Facebook beta or not.
+        ///// </summary>
+        //public bool UseFacebookBeta { get; set; }
     }
 }

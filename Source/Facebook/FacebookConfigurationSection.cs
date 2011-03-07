@@ -83,15 +83,15 @@ namespace Facebook
             set { this["cancelUrlPath"] = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the value indicating whether it is beta.
-        /// </summary>
-        [ConfigurationProperty("useFacebookBeta", IsRequired = false, DefaultValue = false)]
-        public bool UseFacebookBeta
-        {
-            get { return (bool)this["useFacebookBeta"]; }
-            set { this["useFacebookBeta"] = value; }
-        }
+        ///// <summary>
+        ///// Gets or sets the value indicating whether it is beta.
+        ///// </summary>
+        //[ConfigurationProperty("useFacebookBeta", IsRequired = false, DefaultValue = false)]
+        //public bool UseFacebookBeta
+        //{
+        //    get { return (bool)this["useFacebookBeta"]; }
+        //    set { this["useFacebookBeta"] = value; }
+        //}
 
         /// <summary>
         /// Gets the Facebook settings stored in the configuration file.

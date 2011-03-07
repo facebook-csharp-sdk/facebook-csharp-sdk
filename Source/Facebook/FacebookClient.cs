@@ -28,7 +28,7 @@ namespace Facebook
     {
         internal IWebClient WebClient = new WebClientWrapper();
 
-        private bool _isBeta = FacebookApplication.Current.UseFacebookBeta;
+        //private bool _isBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
@@ -58,15 +58,15 @@ namespace Facebook
         /// </summary>
         public string AccessToken { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether IsBeta.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool IsBeta
-        {
-            get { return _isBeta; }
-            set { _isBeta = value; }
-        }
+        ///// <summary>
+        ///// Gets or sets a value indicating whether IsBeta.
+        ///// </summary>
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public bool IsBeta
+        //{
+        //    get { return _isBeta; }
+        //    set { _isBeta = value; }
+        //}
 
         /// <summary>
         /// Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
@@ -88,7 +88,8 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
-                return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
+                // return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
+                return FacebookUtils.DomainMaps;
             }
         }
 

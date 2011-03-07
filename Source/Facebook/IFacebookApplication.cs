@@ -44,10 +44,10 @@ namespace Facebook
         /// </summary>
         string CancelUrlPath { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether it is beta.
-        /// </summary>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        bool UseFacebookBeta { get; }
+        ///// <summary>
+        ///// Gets a value indicating whether it is beta.
+        ///// </summary>
+        //[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        //bool UseFacebookBeta { get; }
     }
 }
