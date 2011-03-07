@@ -314,12 +314,12 @@ namespace Facebook
 
             var requestUri = this.BuildExchangeCodeForAccessTokenUrl(code, parameters);
 
-            using (var webClient = new WebClient())
-            {
-                webClient.DownloadStringCompleted +=
-                    (o, e) => this.OnExchangeCodeForAccessTokenCompleted(e);
-                webClient.DownloadStringAsync(requestUri, null);
-            }
+            var webClient = new WebClient();
+
+            webClient.DownloadStringCompleted +=
+                (o, e) => this.OnExchangeCodeForAccessTokenCompleted(e);
+            webClient.DownloadStringAsync(requestUri, null);
+
         }
 
         private void OnExchangeCodeForAccessTokenCompleted(DownloadStringCompletedEventArgs e)
@@ -403,13 +403,11 @@ namespace Facebook
         {
             var requestUri = BuildGetApplicationAccessTokenUrl();
 
-            using (var webClient = new WebClient())
-            {
-                webClient.DownloadStringCompleted +=
-                    (o, e) => this.OnGetApplicationAccessTokenCompleted(e);
+            var webClient = new WebClient();
+            webClient.DownloadStringCompleted +=
+                (o, e) => this.OnGetApplicationAccessTokenCompleted(e);
 
-                webClient.DownloadStringAsync(requestUri, null);
-            }
+            webClient.DownloadStringAsync(requestUri, null);
         }
 
         private void OnGetApplicationAccessTokenCompleted(DownloadStringCompletedEventArgs e)
@@ -425,6 +423,7 @@ namespace Facebook
             {
                 args = this.GetApiEventArgs(e, null);
             }
+
             this.OnGetApplicationAccessTokenCompleted(args);
         }
 

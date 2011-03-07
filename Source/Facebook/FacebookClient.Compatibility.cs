@@ -271,6 +271,8 @@ namespace Facebook
             };
 
             var webClient = new WebClient();
+#if SILVERLIGHT
+#else
             webClient.UploadDataCompleted +=
                 (o, e) =>
                 {
@@ -308,15 +310,22 @@ namespace Facebook
 
                     callback(new FacebookAsyncResult(args.GetResultData(), st.UserState, null, false, true, args.Error as FacebookApiException));
                 };
-
+#endif
             if (httpMethod == HttpMethod.Get)
             {
+#if SILVERLIGHT
+#else
                 webClient.DownloadDataAsync(requestUrl, tempState);
+#endif
+
             }
             else
             {
                 webClient.Headers["content-type"] = contentType;
+#if SILVERLIGHT
+#else
                 webClient.UploadDataAsync(requestUrl, FacebookUtils.ConvertToString(httpMethod), postData, tempState);
+#endif
             }
         }
 

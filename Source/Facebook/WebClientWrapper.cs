@@ -2,7 +2,6 @@
 namespace Facebook
 {
     using System;
-    using System.Collections.Specialized;
     using System.Net;
 
     internal class WebClientWrapper : IWebClient
@@ -17,7 +16,12 @@ namespace Facebook
         public WebClientWrapper(WebClient webClient)
         {
             this.webClient = webClient;
+
+#if SILVERLIGHT
+            this.webClient.UploadStringCompleted +=
+#else
             this.webClient.UploadDataCompleted +=
+#endif
                 (o, e) =>
                 {
                     if (this.UploadDataCompleted == null)
@@ -36,7 +40,14 @@ namespace Facebook
 
                         if (error == null)
                         {
+#if SILVERLIGHT
+                            if(!string.IsNullOrEmpty(e.Result))
+                            {
+                                result = System.Text.Encoding.UTF8.GetBytes(e.Result);
+                            }
+#else
                             result = e.Result;
+#endif
                         }
                         else if (error is WebException)
                         {
@@ -47,7 +58,12 @@ namespace Facebook
                     }
                 };
 
+#if SILVERLIGHT
+            this.webClient.DownloadStringCompleted +=
+#else
             this.webClient.DownloadDataCompleted +=
+#endif
+
                 (o, e) =>
                 {
                     if (this.DownloadDataCompleted == null)
@@ -66,7 +82,14 @@ namespace Facebook
 
                         if (error == null)
                         {
+#if SILVERLIGHT
+                            if(!string.IsNullOrEmpty(e.Result))
+                            {
+                                result = System.Text.Encoding.UTF8.GetBytes(e.Result);
+                            }
+#else
                             result = e.Result;
+#endif
                         }
                         else if (error is WebException)
                         {
@@ -84,17 +107,7 @@ namespace Facebook
             set { this.webClient.Headers = value; }
         }
 
-        public NameValueCollection QueryString
-        {
-            get { return this.webClient.QueryString; }
-            set { this.webClient.QueryString = value; }
-        }
-
-        public WebHeaderCollection ResponseHeaders
-        {
-            get { return this.webClient.ResponseHeaders; }
-        }
-
+#if !SILVERLIGHT
         public IWebProxy Proxy
         {
             get { return this.webClient.Proxy; }
@@ -124,15 +137,30 @@ namespace Facebook
                 throw new WebExceptionWrapper(webException);
             }
         }
+#endif
 
         public void DownloadDataAsync(Uri address, object userToken)
         {
+#if SILVERLIGHT
+            this.webClient.DownloadStringAsync(address, userToken);
+#else
             this.webClient.DownloadDataAsync(address, userToken);
+#endif
         }
 
         public void UploadDataAsync(Uri address, string method, byte[] data, object userToken)
         {
+#if SILVERLIGHT
+            string str = null;
+            if (data != null)
+            {
+                str = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+            }
+
+            this.webClient.UploadStringAsync(address, method, str, userToken);
+#else
             this.webClient.UploadDataAsync(address, method, data, userToken);
+#endif
         }
 
         public void CancelAsync()
@@ -146,7 +174,9 @@ namespace Facebook
 
         public void Dispose()
         {
+#if !SILVERLIGHT
             webClient.Dispose();
+#endif
         }
     }
 }

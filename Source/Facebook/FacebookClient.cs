@@ -681,21 +681,7 @@ namespace Facebook
             string method = FacebookUtils.ConvertToString(httpMethod);
             var webClient = this.WebClient;
 
-#if SILVERLIGHT
-            webClient.UploadStringCompleted += UploadStringCompleted;
-            webClient.DownloadStringCompleted += DownloadStringCompleted;
-            if (httpMethod == HttpMethod.Get)
-            {
-                webClient.DownloadStringAsync(requestUrl, tempState);
-            }
-            else
-            {
-                var data = Encoding.UTF8.GetString(postData, 0, postData.Length);
-                webClient.Headers["Content-Type"] = contentType;
-                webClient.UploadStringAsync(requestUrl, method, data, tempState);
-            }
-#else
-            webClient.UploadDataCompleted += this.UploadDataCompleted;
+            webClient.UploadDataCompleted = this.UploadDataCompleted;
             webClient.DownloadDataCompleted = this.DownloadDataCompleted;
 
             if (httpMethod == HttpMethod.Get)
@@ -707,7 +693,6 @@ namespace Facebook
                 webClient.Headers["Content-Type"] = contentType;
                 webClient.UploadDataAsync(requestUrl, method, postData, tempState);
             }
-#endif
         }
 
         protected void OnGetCompleted(FacebookApiEventArgs args)
@@ -1004,14 +989,13 @@ namespace Facebook
 #endif
         }
 
-#if !SILVERLIGHT
         internal void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e)
         {
             string json = null;
 
-            if (e.Error == null)
+            if (e.Error == null && e.Result != null)
             {
-                json = Encoding.UTF8.GetString(e.Result);
+                json = Encoding.UTF8.GetString(e.Result, 0, e.Result.Length);
             }
 
             HttpMethod method;
@@ -1023,9 +1007,9 @@ namespace Facebook
         {
             string json = null;
 
-            if (e.Error == null)
+            if (e.Error == null && e.Result != null)
             {
-                json = Encoding.UTF8.GetString(e.Result);
+                json = Encoding.UTF8.GetString(e.Result, 0, e.Result.Length);
             }
 
             HttpMethod method;
@@ -1044,46 +1028,10 @@ namespace Facebook
                 throw new InvalidOperationException();
             }
         }
-#endif
-
-        private void DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            OnDownloadDataCompleted(e, e.Result);
-        }
-
-        private void UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
-        {
-            OnUploadDataCompleted(e, e.Result);
-        }
-
-        private void OnDownloadDataCompleted(AsyncCompletedEventArgs e, string json)
-        {
-            HttpMethod method;
-            var args = GetApiEventArgs(e, json, out method);
-            OnGetCompleted(args);
-        }
-
-        private void OnUploadDataCompleted(AsyncCompletedEventArgs e, string json)
-        {
-            HttpMethod method;
-            var args = GetApiEventArgs(e, json, out method);
-            if (method == HttpMethod.Post)
-            {
-                OnPostCompleted(args);
-            }
-            else if (method == HttpMethod.Delete)
-            {
-                OnDeleteCompleted(args);
-            }
-            else
-            {
-                throw new InvalidOperationException();
-            }
-        }
 
         private FacebookApiEventArgs GetApiEventArgs(AsyncCompletedEventArgs e, string json, out HttpMethod httpMethod)
         {
-            var state = e.UserState as WebClientStateContainer;
+            var state = (WebClientStateContainer) e.UserState;
             httpMethod = state.Method;
 
             var cancelled = e.Cancelled;

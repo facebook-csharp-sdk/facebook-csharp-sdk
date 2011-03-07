@@ -122,16 +122,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
+    <Compile Include="DownloadDataCompletedEventArgsWrapper.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
-    <Compile Include="FacebookApiRequest.cs" />
-    <Compile Include="FacebookApiRequestUtiltity.cs" />
-    <Compile Include="FacebookApiResponse.cs" />
-    <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookApiException.cs" />
+    <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookClient.cs" />
-    <Compile Include="FacebookContext.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthClient.cs" />
     <Compile Include="FacebookOAuthException.cs" />
@@ -141,6 +139,7 @@
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="IJsonSerializer.cs" />
+    <Compile Include="IWebClient.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -154,6 +153,10 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="JsonSerializer.cs" />
+    <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
+    <Compile Include="WebClientStateContainer.cs" />
+    <Compile Include="WebClientWrapper.cs" />
+    <Compile Include="WebExceptionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">
