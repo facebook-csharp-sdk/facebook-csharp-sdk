@@ -26,13 +26,12 @@ namespace Facebook
 #endif
     public sealed class FacebookSession
     {
-
         private const string HttpContextKey = "facebook_session";
 
         /// <summary>
         /// The actual value of the facebook session.
         /// </summary>
-        private readonly object data;
+        private readonly object _data;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSession"/> class.
@@ -58,28 +57,28 @@ namespace Facebook
 
             var data = dictionary is JsonObject ? dictionary : FacebookUtils.ToDictionary(dictionary);
 
-            this.AccessToken = data.ContainsKey("access_token") ? (string)data["access_token"] : null;
+            AccessToken = data.ContainsKey("access_token") ? (string)data["access_token"] : null;
 
-            if (!data.ContainsKey("uid") && !string.IsNullOrEmpty(this.AccessToken))
+            if (!data.ContainsKey("uid") && !string.IsNullOrEmpty(AccessToken))
             {
-                data.Add("uid", ParseUserIdFromAccessToken(this.AccessToken));
+                data.Add("uid", ParseUserIdFromAccessToken(AccessToken));
             }
 
             string sUserId = data.ContainsKey("uid") ? (string)data["uid"] : null;
             long userId = 0;
             long.TryParse(sUserId, out userId);
-            this.UserId = userId;
+            UserId = userId;
 
-            this.Secret = data.ContainsKey("secret") ? (string)data["secret"] : null;
-            this.SessionKey = data.ContainsKey("session_key") ? (string)data["session_key"] : null;
+            Secret = data.ContainsKey("secret") ? (string)data["secret"] : null;
+            SessionKey = data.ContainsKey("session_key") ? (string)data["session_key"] : null;
 
-            this.Expires = data.ContainsKey("expires")
+            Expires = data.ContainsKey("expires")
                                ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(data["expires"]))
                                : DateTime.MinValue;
-            this.Signature = data.ContainsKey("sig") ? (string)data["sig"] : null;
-            this.BaseDomain = data.ContainsKey("base_domain") ? (string)data["base_domain"] : null;
+            Signature = data.ContainsKey("sig") ? (string)data["sig"] : null;
+            BaseDomain = data.ContainsKey("base_domain") ? (string)data["base_domain"] : null;
 
-            this.data = data;
+            _data = data;
         }
 
         /// <summary>
@@ -131,7 +130,7 @@ namespace Facebook
         {
             get
             {
-                return this.data;
+                return _data;
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------
-// <copyright file="FacebookContext.cs" company="Facebook C# SDK">
+// <copyright file="FacebookApplication.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
@@ -63,12 +63,12 @@ namespace Facebook
         /// <summary>
         /// The current facebook application.
         /// </summary>
-        private IFacebookApplication current = FacebookConfigurationSection.Current;
+        private IFacebookApplication _current = FacebookConfigurationSection.Current;
 #else
         /// <summary>
         /// The current facebook application.
         /// </summary>
-        private IFacebookApplication current = new DefaultFacebookApplication();
+        private IFacebookApplication _current = new DefaultFacebookApplication();
 #endif
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
-                return this.current ?? new DefaultFacebookApplication();
+                return _current ?? new DefaultFacebookApplication();
             }
         }
 
@@ -93,7 +93,7 @@ namespace Facebook
         {
             Contract.Requires(facebookApplication != null);
 
-            this.current = facebookApplication;
+            _current = facebookApplication;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Facebook
         {
             Contract.Requires(getFacebookApplication != null);
 
-            this.current = getFacebookApplication();
+            _current = getFacebookApplication();
         }
     }
 }

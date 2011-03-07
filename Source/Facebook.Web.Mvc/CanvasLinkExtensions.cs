@@ -21,7 +21,6 @@ namespace Facebook.Web.Mvc
     /// </summary>
     public static class CanvasLinkExtensions
     {
-
         /// <summary>
         /// Builds a canvas action link.
         /// </summary>

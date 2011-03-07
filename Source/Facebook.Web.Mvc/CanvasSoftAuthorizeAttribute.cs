@@ -35,20 +35,20 @@ namespace Facebook.Web.Mvc
         /// <summary>
         /// The view name.
         /// </summary>
-        private string view;
+        private string _view;
 
         /// <summary>
         /// The master.
         /// </summary>
-        private string master;
+        private string _master;
 
         /// <summary>
         /// Gets or sets the name of the View.
         /// </summary>
         public string View
         {
-            get { return !string.IsNullOrEmpty(this.view) ? this.view : DefaultView; }
-            set { this.view = value; }
+            get { return !string.IsNullOrEmpty(_view) ? _view : DefaultView; }
+            set { _view = value; }
         }
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace Facebook.Web.Mvc
         /// </summary>
         public string Master
         {
-            get { return this.master ?? string.Empty; }
-            set { this.master = value; }
+            get { return _master ?? string.Empty; }
+            set { _master = value; }
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
@@ -70,15 +70,15 @@ namespace Facebook.Web.Mvc
             Contract.Requires(settings != null);
 
             var model = new FacebookAuthorizeInfo(
-                this.GetLoginUrl(settings, filterContext.HttpContext, null),
-                this.Perms,
+                GetLoginUrl(settings, filterContext.HttpContext, null),
+                Perms,
                 filterContext.HttpContext.Request.QueryString.AllKeys.Contains("error_reason"),
                 filterContext.RouteData.Values);
 
             var viewResult = new ViewResult
                                        {
-                                           MasterName = this.Master,
-                                           ViewName = this.View,
+                                           MasterName = Master,
+                                           ViewName = View,
                                            ViewData = new ViewDataDictionary<FacebookAuthorizeInfo>(model),
                                            TempData = filterContext.Controller.TempData
                                        };
@@ -90,17 +90,17 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new FacebookCanvasAuthorizer(settings, httpContext)
             {
-                ReturnUrlPath = this.ReturnUrlPath,
-                CancelUrlPath = this.CancelUrlPath,
-                LoginDisplayMode = this.LoginDisplayMode
+                ReturnUrlPath = ReturnUrlPath,
+                CancelUrlPath = CancelUrlPath,
+                LoginDisplayMode = LoginDisplayMode
             };
 
-            if (!String.IsNullOrEmpty(this.Permissions))
+            if (!String.IsNullOrEmpty(Permissions))
             {
-                authorizer.Permissions = this.Permissions.Replace(" ", String.Empty).Split(',');
+                authorizer.Permissions = Permissions.Replace(" ", String.Empty).Split(',');
             }
 
-            if (string.IsNullOrEmpty(this.CancelUrlPath))
+            if (string.IsNullOrEmpty(CancelUrlPath))
             {
                 // set it to this same url instead of going to facebook.com
                 var canvasUrlBuilder = new CanvasUrlBuilder(settings, httpContext.Request);

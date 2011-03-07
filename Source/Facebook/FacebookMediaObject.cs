@@ -17,7 +17,7 @@ namespace Facebook
         /// <summary>
         /// The value of the media object.
         /// </summary>
-        private byte[] value;
+        private byte[] _value;
 
         /// <summary>
         /// Gets or sets the type of the content.
@@ -37,7 +37,7 @@ namespace Facebook
         /// <param name="value">The media object value.</param>
         public void SetValue(byte[] value)
         {
-            this.value = value;
+            _value = value;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Facebook
         /// <returns>The value of the media object.</returns>
         public byte[] GetValue()
         {
-            return this.value;
+            return _value;
         }
     }
 }

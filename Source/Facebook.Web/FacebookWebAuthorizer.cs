@@ -5,7 +5,7 @@
     public class FacebookWebAuthorizer
     {
 
-        private FacebookWebContext m_request;
+        private FacebookWebContext _request;
 
         public FacebookWebAuthorizer() :
             this(FacebookWebContext.Current)
@@ -14,17 +14,17 @@
 
         public FacebookWebAuthorizer(FacebookWebContext context)
         {
-            this.m_request = context;
+            _request = context;
         }
 
         public FacebookWebAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
         {
-            this.m_request = new FacebookWebContext(settings, httpContext);
+            _request = new FacebookWebContext(settings, httpContext);
         }
 
         public FacebookWebContext FacebookWebRequest
         {
-            get { return this.m_request; }
+            get { return _request; }
         }
 
         /// <summary>
@@ -55,7 +55,7 @@
 
         public bool Authorize()
         {
-            return this.Authorize(null);
+            return Authorize(null);
         }
 
         /// <summary>
@@ -66,11 +66,11 @@
         /// </returns>
         public bool Authorize(params string[] permissions)
         {
-            var isAuthorized = m_request.IsAuthorized(permissions);
+            var isAuthorized = _request.IsAuthorized(permissions);
 
             if (!isAuthorized)
             {
-                this.HandleUnauthorizedRequest();
+                HandleUnauthorizedRequest();
             }
 
             return isAuthorized;
@@ -81,7 +81,7 @@
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
-            this.m_request.HttpContext.Response.Redirect(this.CancelUrlPath);
+            _request.HttpContext.Response.Redirect(CancelUrlPath);
         }
 
     }

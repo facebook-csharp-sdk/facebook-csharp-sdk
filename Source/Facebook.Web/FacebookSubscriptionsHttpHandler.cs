@@ -74,8 +74,8 @@ namespace Facebook.Web
                                      FacebookApplication = FacebookApplication.Current,
                                  };
 
-            this.OnVerifying(subContext);
-            this.VerifyCore(subContext);
+            OnVerifying(subContext);
+            VerifyCore(subContext);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Facebook.Web
                     }
                     else
                     {
-                        this.HandleUnauthorizedRequest(context);
+                        HandleUnauthorizedRequest(context);
                     }
 
                     break;
@@ -129,11 +129,11 @@ namespace Facebook.Web
                         {
                             // might need to put try catch when desterilizing object
                             var jsonObject = JsonSerializer.Current.DeserializeObject(jsonString);
-                            this.ProcessSubscription(context, jsonObject);
+                            ProcessSubscription(context, jsonObject);
                         }
                         else
                         {
-                            this.HandleUnauthorizedRequest(context);
+                            HandleUnauthorizedRequest(context);
                         }
                     }
 

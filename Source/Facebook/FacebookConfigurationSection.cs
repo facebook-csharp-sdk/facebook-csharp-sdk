@@ -19,7 +19,7 @@ namespace Facebook
         /// <summary>
         /// The current facebook settings stored in the configuration file.
         /// </summary>
-        private static IFacebookApplication current;
+        private static IFacebookApplication _current;
 
         /// <summary>
         /// Gets or sets the app id.
@@ -100,16 +100,16 @@ namespace Facebook
         {
             get
             {
-                if (current == null)
+                if (_current == null)
                 {
                     var settings = ConfigurationManager.GetSection("facebookSettings");
                     if (settings != null)
                     {
-                        current = settings as IFacebookApplication;
+                        _current = settings as IFacebookApplication;
                     }
                 }
 
-                return current;
+                return _current;
             }
         }
 

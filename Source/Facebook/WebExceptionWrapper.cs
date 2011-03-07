@@ -10,12 +10,12 @@ namespace Facebook
 #endif
     internal class WebExceptionWrapper : Exception
     {
-        private readonly WebException webException;
+        private readonly WebException _webException;
 
         public WebExceptionWrapper(WebException webException)
             : base(webException == null ? null : webException.Message, webException == null ? null : webException.InnerException)
         {
-            this.webException = webException;
+            _webException = webException;
         }
 
 #if (!SILVERLIGHT)
@@ -34,17 +34,17 @@ namespace Facebook
 
         public virtual bool HasResponse
         {
-            get { return this.webException.Response != null; }
+            get { return _webException.Response != null; }
         }
 
         public virtual Stream GetResponseStream()
         {
-            return this.webException.Response.GetResponseStream();
+            return _webException.Response.GetResponseStream();
         }
 
         public WebException ActualWebException
         {
-            get { return this.webException; }
+            get { return _webException; }
         }
     }
 }

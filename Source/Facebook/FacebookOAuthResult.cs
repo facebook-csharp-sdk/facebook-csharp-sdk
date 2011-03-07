@@ -21,32 +21,32 @@ namespace Facebook
         /// <summary>
         /// The access token.
         /// </summary>
-        private readonly string accessToken;
+        private readonly string _accessToken;
 
         /// <summary>
         /// Date and Time when the access token expires.
         /// </summary>
-        private readonly DateTime expires;
+        private readonly DateTime _expires;
 
         /// <summary>
         /// Short error reason for failed authentication if there was an error.
         /// </summary>
-        private readonly string errorReason;
+        private readonly string _errorReason;
 
         /// <summary>
         /// Long error description for failed authentication if there was an error.
         /// </summary>
-        private readonly string errorDescription;
+        private readonly string _errorDescription;
 
         /// <summary>
         /// The code used to exchange access token.
         /// </summary>
-        private readonly string code;
+        private readonly string _code;
 
         /// <summary>
         /// Gets or sets an opaque state used to maintain application state between the request and callback.
         /// </summary>
-        private readonly string state;
+        private readonly string _state;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookOAuthResult"/> class.
@@ -63,11 +63,11 @@ namespace Facebook
 
             if (parameters.ContainsKey("error_reason"))
             {
-                this.errorReason = parameters["error_reason"].ToString();
+                _errorReason = parameters["error_reason"].ToString();
 
                 if (parameters.ContainsKey("error_description"))
                 {
-                    this.errorDescription = parameters["error_description"].ToString();
+                    _errorDescription = parameters["error_description"].ToString();
                 }
 
                 return;
@@ -75,23 +75,23 @@ namespace Facebook
 
             if (parameters.ContainsKey("code"))
             {
-                this.code = parameters["code"].ToString();
+                _code = parameters["code"].ToString();
             }
 
             if (parameters.ContainsKey("state"))
             {
-                this.state = parameters["state"].ToString();
+                _state = parameters["state"].ToString();
             }
 
             if (parameters.ContainsKey("access_token"))
             {
-                this.accessToken = parameters["access_token"].ToString();
+                _accessToken = parameters["access_token"].ToString();
             }
 
             if (parameters.ContainsKey("expires_in"))
             {
                 var expiresIn = Convert.ToDouble(parameters["expires_in"]);
-                this.expires = DateTimeConvertor.FromUnixTime(expiresIn);
+                _expires = DateTimeConvertor.FromUnixTime(expiresIn);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Facebook
         /// </summary>
         public string ErrorReason
         {
-            get { return this.errorReason; }
+            get { return _errorReason; }
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Facebook
         /// </summary>
         public string ErrorDescription
         {
-            get { return this.errorDescription; }
+            get { return _errorDescription; }
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Facebook
         /// </summary>
         public DateTime Expires
         {
-            get { return this.expires; }
+            get { return _expires; }
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Facebook
         /// </summary>
         public string AccessToken
         {
-            get { return this.accessToken; }
+            get { return _accessToken; }
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace Facebook
         {
             get
             {
-                return string.IsNullOrEmpty(this.ErrorReason) &&
-                       (!string.IsNullOrEmpty(this.AccessToken) || !string.IsNullOrEmpty(this.Code));
+                return string.IsNullOrEmpty(ErrorReason) &&
+                       (!string.IsNullOrEmpty(AccessToken) || !string.IsNullOrEmpty(Code));
             }
         }
 
@@ -144,7 +144,7 @@ namespace Facebook
         /// </summary>
         public string Code
         {
-            get { return this.code; }
+            get { return _code; }
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Facebook
         /// </summary>
         public string State
         {
-            get { return this.state; }
+            get { return _state; }
         }
 
         /// <summary>

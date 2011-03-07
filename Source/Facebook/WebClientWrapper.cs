@@ -6,7 +6,7 @@ namespace Facebook
 
     internal class WebClientWrapper : IWebClient
     {
-        private WebClient webClient = new WebClient();
+        private readonly WebClient _webClient = new WebClient();
 
         public WebClientWrapper()
             : this(new WebClient())
@@ -15,23 +15,23 @@ namespace Facebook
 
         public WebClientWrapper(WebClient webClient)
         {
-            this.webClient = webClient;
+            _webClient = webClient;
 
 #if SILVERLIGHT
-            this.webClient.UploadStringCompleted +=
+            _webClient.UploadStringCompleted +=
 #else
-            this.webClient.UploadDataCompleted +=
+            _webClient.UploadDataCompleted +=
 #endif
                 (o, e) =>
                 {
-                    if (this.UploadDataCompleted == null)
+                    if (UploadDataCompleted == null)
                     {
                         return;
                     }
 
                     if (e == null)
                     {
-                        this.UploadDataCompleted(o, null);
+                        UploadDataCompleted(o, null);
                     }
                     else
                     {
@@ -54,26 +54,26 @@ namespace Facebook
                             error = new WebExceptionWrapper((WebException)error);
                         }
 
-                        this.UploadDataCompleted(o, new UploadDataCompletedEventArgsWrapper(error, e.Cancelled, e.UserState, result));
+                        UploadDataCompleted(o, new UploadDataCompletedEventArgsWrapper(error, e.Cancelled, e.UserState, result));
                     }
                 };
 
 #if SILVERLIGHT
-            this.webClient.DownloadStringCompleted +=
+            _webClient.DownloadStringCompleted +=
 #else
-            this.webClient.DownloadDataCompleted +=
+            _webClient.DownloadDataCompleted +=
 #endif
 
                 (o, e) =>
                 {
-                    if (this.DownloadDataCompleted == null)
+                    if (DownloadDataCompleted == null)
                     {
                         return;
                     }
 
                     if (e == null)
                     {
-                        this.DownloadDataCompleted(o, null);
+                        DownloadDataCompleted(o, null);
                     }
                     else
                     {
@@ -96,29 +96,29 @@ namespace Facebook
                             error = new WebExceptionWrapper((WebException)error);
                         }
 
-                        this.DownloadDataCompleted(o, new DownloadDataCompletedEventArgsWrapper(error, e.Cancelled, e.UserState, result));
+                        DownloadDataCompleted(o, new DownloadDataCompletedEventArgsWrapper(error, e.Cancelled, e.UserState, result));
                     }
                 };
         }
 
         public WebHeaderCollection Headers
         {
-            get { return this.webClient.Headers; }
-            set { this.webClient.Headers = value; }
+            get { return _webClient.Headers; }
+            set { _webClient.Headers = value; }
         }
 
 #if !SILVERLIGHT
         public IWebProxy Proxy
         {
-            get { return this.webClient.Proxy; }
-            set { this.webClient.Proxy = value; }
+            get { return _webClient.Proxy; }
+            set { _webClient.Proxy = value; }
         }
 
         public byte[] DownloadData(Uri address)
         {
             try
             {
-                return this.webClient.DownloadData(address);
+                return _webClient.DownloadData(address);
             }
             catch (WebException webException)
             {
@@ -130,7 +130,7 @@ namespace Facebook
         {
             try
             {
-                return this.webClient.UploadData(address, method, data);
+                return _webClient.UploadData(address, method, data);
             }
             catch (WebException webException)
             {
@@ -142,9 +142,9 @@ namespace Facebook
         public void DownloadDataAsync(Uri address, object userToken)
         {
 #if SILVERLIGHT
-            this.webClient.DownloadStringAsync(address, userToken);
+            _webClient.DownloadStringAsync(address, userToken);
 #else
-            this.webClient.DownloadDataAsync(address, userToken);
+            _webClient.DownloadDataAsync(address, userToken);
 #endif
         }
 
@@ -157,15 +157,15 @@ namespace Facebook
                 str = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
             }
 
-            this.webClient.UploadStringAsync(address, method, str, userToken);
+            _webClient.UploadStringAsync(address, method, str, userToken);
 #else
-            this.webClient.UploadDataAsync(address, method, data, userToken);
+            _webClient.UploadDataAsync(address, method, data, userToken);
 #endif
         }
 
         public void CancelAsync()
         {
-            webClient.CancelAsync();
+            _webClient.CancelAsync();
         }
 
         public Action<object, DownloadDataCompletedEventArgsWrapper> DownloadDataCompleted { get; set; }
@@ -175,7 +175,7 @@ namespace Facebook
         public void Dispose()
         {
 #if !SILVERLIGHT
-            webClient.Dispose();
+            _webClient.Dispose();
 #endif
         }
     }

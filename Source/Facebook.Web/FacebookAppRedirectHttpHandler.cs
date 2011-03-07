@@ -40,7 +40,7 @@ namespace Facebook.Web
             Contract.Requires(context != null);
 
             var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url="
-                       + this.GetUrl(new HttpContextWrapper(context)) + "\"></head></html>";
+                       + GetUrl(new HttpContextWrapper(context)) + "\"></head></html>";
 
             context.Response.Write(html);
         }

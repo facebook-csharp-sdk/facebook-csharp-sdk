@@ -19,17 +19,16 @@ namespace Facebook
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
-    using System.Net;
     using System.Text;
 
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    public partial class FacebookClient : IDisposable
+    public class FacebookClient : IDisposable
     {
         internal IWebClient WebClient = new WebClientWrapper();
 
-        private bool m_isBeta = FacebookApplication.Current.UseFacebookBeta;
+        private bool _isBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
@@ -47,7 +46,7 @@ namespace Facebook
         public FacebookClient(string accessToken)
         {
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
-            this.AccessToken = accessToken;
+            AccessToken = accessToken;
         }
 
         public event EventHandler<FacebookApiEventArgs> DeleteCompleted;
@@ -65,8 +64,8 @@ namespace Facebook
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool IsBeta
         {
-            get { return this.m_isBeta; }
-            set { this.m_isBeta = value; }
+            get { return _isBeta; }
+            set { _isBeta = value; }
         }
 
         /// <summary>
@@ -89,7 +88,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
-                return this.IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
+                return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
             }
         }
 
@@ -110,7 +109,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return this.Api(path, null, HttpMethod.Delete);
+            return Api(path, null, HttpMethod.Delete);
         }
 
         /// <summary>
@@ -127,7 +126,7 @@ namespace Facebook
         /// </returns>
         public object Delete(string path, IDictionary<string, object> parameters)
         {
-            return this.Api(path, parameters, HttpMethod.Delete);
+            return Api(path, parameters, HttpMethod.Delete);
         }
 
         /// <summary>
@@ -140,7 +139,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return this.Api(path, null, HttpMethod.Get);
+            return Api(path, null, HttpMethod.Get);
         }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return this.Api(path, parameters, HttpMethod.Get);
+            return Api(path, parameters, HttpMethod.Get);
         }
 
         /// <summary>
@@ -167,7 +166,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return this.Api(null, parameters, HttpMethod.Get);
+            return Api(null, parameters, HttpMethod.Get);
         }
 
         /// <summary>
@@ -183,7 +182,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return this.Api<T>(path, null, HttpMethod.Get);
+            return Api<T>(path, null, HttpMethod.Get);
         }
 
         /// <summary>
@@ -200,7 +199,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return this.Api<T>(path, parameters, HttpMethod.Get);
+            return Api<T>(path, parameters, HttpMethod.Get);
         }
 
         /// <summary>
@@ -213,7 +212,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return this.Api<T>(null, parameters, HttpMethod.Get);
+            return Api<T>(null, parameters, HttpMethod.Get);
         }
 
         /// <summary>
@@ -226,7 +225,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return this.Api(path, parameters, HttpMethod.Post);
+            return Api(path, parameters, HttpMethod.Post);
         }
 
         /// <summary>
@@ -238,7 +237,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return this.Api(null, parameters, HttpMethod.Post);
+            return Api(null, parameters, HttpMethod.Post);
         }
 
         /// <summary>
@@ -254,7 +253,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return this.Post(FacebookUtils.ToDictionary(parameters));
+            return Post(FacebookUtils.ToDictionary(parameters));
         }
 
         /// <summary>
@@ -273,7 +272,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return this.Post(path, FacebookUtils.ToDictionary(parameters));
+            return Post(path, FacebookUtils.ToDictionary(parameters));
         }
 
 #endif
@@ -293,7 +292,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            this.DeleteAsync(path, (IDictionary<string, object>)null);
+            DeleteAsync(path, (IDictionary<string, object>)null);
         }
 
         /// <summary>
@@ -308,7 +307,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.DeleteAsync(path, parameters, (object)null);
+            DeleteAsync(path, parameters, (object)null);
         }
 
         /// <summary>
@@ -323,7 +322,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.ApiAsync(path, parameters, HttpMethod.Delete, userToken);
+            ApiAsync(path, parameters, HttpMethod.Delete, userToken);
         }
 
         /// <summary>
@@ -337,7 +336,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            this.GetAsync(path, (IDictionary<string, object>)null);
+            GetAsync(path, (IDictionary<string, object>)null);
         }
 
         /// <summary>
@@ -352,7 +351,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.GetAsync(path, parameters, (object)null);
+            GetAsync(path, parameters, (object)null);
         }
 
         /// <summary>
@@ -367,7 +366,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.ApiAsync(path, parameters, HttpMethod.Get, null);
+            ApiAsync(path, parameters, HttpMethod.Get, null);
         }
 
         /// <summary>
@@ -380,7 +379,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            this.GetAsync(null, parameters);
+            GetAsync(null, parameters);
         }
 
         /// <summary>
@@ -395,7 +394,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.PostAsync(path, parameters, (object)null);
+            PostAsync(path, parameters, (object)null);
         }
 
         /// <summary>
@@ -410,7 +409,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.ApiAsync(path, parameters, HttpMethod.Post, null);
+            ApiAsync(path, parameters, HttpMethod.Post, null);
         }
 
         /// <summary>
@@ -423,7 +422,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            this.PostAsync(null, parameters);
+            PostAsync(null, parameters);
         }
 
         /// <summary>
@@ -445,7 +444,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.PostAsync(path, FacebookUtils.ToDictionary(parameters));
+            PostAsync(path, FacebookUtils.ToDictionary(parameters));
         }
 
         /// <summary>
@@ -467,7 +466,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            this.PostAsync(path, FacebookUtils.ToDictionary(parameters), userToken);
+            PostAsync(path, FacebookUtils.ToDictionary(parameters), userToken);
         }
 
         /// <summary>
@@ -486,7 +485,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            this.PostAsync(FacebookUtils.ToDictionary(parameters));
+            PostAsync(FacebookUtils.ToDictionary(parameters));
         }
 
         #endregion
@@ -508,7 +507,8 @@ namespace Facebook
             var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
             parameters["method"] = "fql.query";
-            return this.Get(parameters);
+
+            return Get(parameters);
         }
 
         /// <summary>
@@ -533,7 +533,8 @@ namespace Facebook
             var parameters = new Dictionary<string, object>();
             parameters["queries"] = queryDict;
             parameters["method"] = "fql.multiquery";
-            return this.Get(parameters);
+
+            return Get(parameters);
         }
 #endif
 
@@ -556,7 +557,8 @@ namespace Facebook
             var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
             parameters["method"] = "fql.query";
-            this.GetAsync(parameters);
+
+            GetAsync(parameters);
         }
 
         /// <summary>
@@ -585,12 +587,13 @@ namespace Facebook
             var parameters = new Dictionary<string, object>();
             parameters["queries"] = queryDict;
             parameters["method"] = "fql.multiquery";
-            this.GetAsync(parameters);
+
+            GetAsync(parameters);
         }
 
         public void CancelAsync()
         {
-            this.WebClient.CancelAsync();
+            WebClient.CancelAsync();
         }
 
 #if (!SILVERLIGHT) // Silverlight should only have async calls
@@ -609,9 +612,9 @@ namespace Facebook
         {
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
-            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
+            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(AccessToken))
             {
-                mergedParameters["access_token"] = this.AccessToken;
+                mergedParameters["access_token"] = AccessToken;
             }
 
             Uri requestUrl;
@@ -620,7 +623,7 @@ namespace Facebook
 
             byte[] resultData;
             string method = FacebookUtils.ConvertToString(httpMethod);
-            var webClient = this.WebClient;
+            var webClient = WebClient;
             try
             {
                 if (httpMethod == HttpMethod.Get)
@@ -647,7 +650,7 @@ namespace Facebook
 
             string json = Encoding.UTF8.GetString(resultData);
 
-            var restException = ExceptionFactory.CheckForRestException(this.DomainMaps, requestUrl, json);
+            var restException = ExceptionFactory.CheckForRestException(DomainMaps, requestUrl, json);
             if (restException != null)
             {
                 throw restException;
@@ -662,9 +665,9 @@ namespace Facebook
         {
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
-            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(this.AccessToken))
+            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(AccessToken))
             {
-                mergedParameters["access_token"] = this.AccessToken;
+                mergedParameters["access_token"] = AccessToken;
             }
 
             Uri requestUrl;
@@ -679,10 +682,10 @@ namespace Facebook
             };
 
             string method = FacebookUtils.ConvertToString(httpMethod);
-            var webClient = this.WebClient;
+            var webClient = WebClient;
 
-            webClient.UploadDataCompleted = this.UploadDataCompleted;
-            webClient.DownloadDataCompleted = this.DownloadDataCompleted;
+            webClient.UploadDataCompleted = UploadDataCompleted;
+            webClient.DownloadDataCompleted = DownloadDataCompleted;
 
             if (httpMethod == HttpMethod.Get)
             {
@@ -737,12 +740,13 @@ namespace Facebook
             {
                 name = "api_video";
             }
+
             if (FacebookUtils.ReadOnlyCalls.Contains(method))
             {
                 name = "api_read";
             }
 
-            return this.GetUrl(name, "restserver.php");
+            return GetUrl(name, "restserver.php");
         }
 
         /// <summary>
@@ -755,7 +759,7 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            return this.GetUrl(name, string.Empty, null);
+            return GetUrl(name, string.Empty, null);
         }
 
         /// <summary>
@@ -769,7 +773,7 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            return this.GetUrl(name, path, null);
+            return GetUrl(name, path, null);
         }
 
         /// <summary>
@@ -783,7 +787,7 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            return this.GetUrl(name, string.Empty, parameters);
+            return GetUrl(name, string.Empty, parameters);
         }
 
         /// <summary>
@@ -798,34 +802,30 @@ namespace Facebook
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            if (this.DomainMaps[name] == null)
+            if (DomainMaps[name] == null)
             {
                 throw new ArgumentException("Invalid url name.");
             }
 
-            UriBuilder uri = new UriBuilder(this.DomainMaps[name]);
+            var uri = new UriBuilder(DomainMaps[name]);
             if (!String.IsNullOrEmpty(path))
             {
                 if (path[0] == '/')
                 {
-                    if (path.Length > 1)
-                    {
-                        path = path.Substring(1);
-                    }
-                    else
-                    {
-                        path = string.Empty;
-                    }
+                    path = path.Length > 1 ? path.Substring(1) : string.Empty;
                 }
-                if (!String.IsNullOrEmpty(path))
+
+                if (!string.IsNullOrEmpty(path))
                 {
                     uri.Path = FacebookUtils.UrlEncode(path);
                 }
             }
+
             if (parameters != null)
             {
                 uri.Query = FacebookUtils.ToJsonQueryString(parameters);
             }
+
             return uri.Uri;
         }
 
@@ -965,7 +965,7 @@ namespace Facebook
 
                 // Set the format to json
                 parameters["format"] = "json-strings";
-                baseUrl = this.GetApiUrl(parameters["method"].ToString());
+                baseUrl = GetApiUrl(parameters["method"].ToString());
             }
             else
             {
@@ -973,7 +973,7 @@ namespace Facebook
                 {
                     path = path.Substring(1, path.Length - 1);
                 }
-                baseUrl = this.GetUrl("graph", path);
+                baseUrl = GetUrl("graph", path);
             }
 
             return BuildRequestData(baseUrl, parameters, method, out requestUrl, out contentType);
@@ -982,9 +982,9 @@ namespace Facebook
         public void Dispose()
         {
 #if !SILVERLIGHT
-            if (this.WebClient != null)
+            if (WebClient != null)
             {
-                this.WebClient.Dispose();
+                WebClient.Dispose();
             }
 #endif
         }
@@ -999,8 +999,8 @@ namespace Facebook
             }
 
             HttpMethod method;
-            var args = this.GetApiEventArgs(e, json, out method);
-            this.OnGetCompleted(args);
+            var args = GetApiEventArgs(e, json, out method);
+            OnGetCompleted(args);
         }
 
         internal void UploadDataCompleted(object sender, UploadDataCompletedEventArgsWrapper e)
@@ -1013,15 +1013,15 @@ namespace Facebook
             }
 
             HttpMethod method;
-            var args = this.GetApiEventArgs(e, json, out method);
+            var args = GetApiEventArgs(e, json, out method);
 
             if (method == HttpMethod.Post)
             {
-                this.OnPostCompleted(args);
+                OnPostCompleted(args);
             }
             else if (method == HttpMethod.Delete)
             {
-                this.OnDeleteCompleted(args);
+                OnDeleteCompleted(args);
             }
             else
             {
@@ -1031,7 +1031,7 @@ namespace Facebook
 
         private FacebookApiEventArgs GetApiEventArgs(AsyncCompletedEventArgs e, string json, out HttpMethod httpMethod)
         {
-            var state = (WebClientStateContainer) e.UserState;
+            var state = (WebClientStateContainer)e.UserState;
             httpMethod = state.Method;
 
             var cancelled = e.Cancelled;
@@ -1047,7 +1047,7 @@ namespace Facebook
 
             if (error == null)
             {
-                error = ExceptionFactory.CheckForRestException(this.DomainMaps, state.RequestUri, json) ?? error;
+                error = ExceptionFactory.CheckForRestException(DomainMaps, state.RequestUri, json) ?? error;
             }
 
             var args = new FacebookApiEventArgs(error, cancelled, userState, json);

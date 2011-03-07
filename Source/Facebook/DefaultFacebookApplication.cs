@@ -1,5 +1,11 @@
-﻿
-using System;
+﻿// --------------------------------
+// <copyright file="DefaultFacebookApplication.cs" company="Facebook C# SDK">
+//     Microsoft Public License (Ms-PL)
+// </copyright>
+// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
+// <website>http://facebooksdk.codeplex.com</website>
+// ---------------------------------
 
 namespace Facebook
 {
@@ -40,9 +46,8 @@ namespace Facebook
         public string CancelUrlPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the value indicating whether it is beta.
+        /// Gets or sets a value indicating whether to use Facebook beta or not.
         /// </summary>
         public bool UseFacebookBeta { get; set; }
-
     }
 }

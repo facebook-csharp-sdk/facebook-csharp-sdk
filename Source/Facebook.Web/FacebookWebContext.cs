@@ -1,5 +1,5 @@
-﻿﻿// --------------------------------
-// <copyright file="Authorizer.cs" company="Facebook C# SDK">
+﻿// --------------------------------
+// <copyright file="FacebookWebContext.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
@@ -25,33 +25,39 @@ namespace Facebook.Web
         /// <summary>
         /// The facebook settings.
         /// </summary>
-        private readonly IFacebookApplication m_facebookApplication;
+        private readonly IFacebookApplication _facebookApplication;
 
         /// <summary>
         /// The http context.
         /// </summary>
-        private readonly HttpContextBase m_httpContext;
+        private readonly HttpContextBase _httpContext;
 
         /// <summary>
         /// The facebook session.
         /// </summary>
-        private FacebookSession m_session;
+        private FacebookSession _session;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookCanvasContext"/> class.
+        /// Initializes a new instance of the <see cref="FacebookWebContext"/> class.
         /// </summary>
         public FacebookWebContext()
             : this(FacebookApplication.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebContext"/> class.
+        /// </summary>
+        /// <param name="settings">
+        /// The settings.
+        /// </param>
         public FacebookWebContext(IFacebookApplication settings)
             : this(settings, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookCanvasContext"/> class.
+        /// Initializes a new instance of the <see cref="FacebookWebContext"/> class.
         /// </summary>
         /// <param name="settings">
         /// The settings.
@@ -69,13 +75,20 @@ namespace Facebook.Web
             Contract.Requires(httpContext.Request.Params != null);
             Contract.Requires(httpContext.Response != null);
 
-            this.m_facebookApplication = settings;
-            this.m_httpContext = httpContext;
+            _facebookApplication = settings;
+            _httpContext = httpContext;
         }
 
+        /// <summary>
+        /// Gets the current facebook web context.
+        /// </summary>
         public static FacebookWebContext Current
         {
-            get { return new FacebookWebContext(); }
+            get
+            {
+                Contract.Ensures(Contract.Result<FacebookWebContext>() != null);
+                return new FacebookWebContext();
+            }
         }
 
         /// <summary>
@@ -86,31 +99,29 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
-                return this.m_facebookApplication;
+                return _facebookApplication;
             }
         }
 
+        /// <summary>
+        /// Gets the user id.
+        /// </summary>
         public long UserId
         {
             get
             {
-                if (this.Session != null)
-                {
-                    return this.Session.UserId;
-                }
-                return 0;
+                return Session != null ? Session.UserId : 0;
             }
         }
 
+        /// <summary>
+        /// Gets the access token.
+        /// </summary>
         public string AccessToken
         {
             get
             {
-                if (this.Session != null)
-                {
-                    return this.Session.AccessToken;
-                }
-                return null;
+                return Session != null ? Session.AccessToken : null;
             }
         }
 
@@ -121,8 +132,8 @@ namespace Facebook.Web
         {
             get
             {
-                return this.m_session ??
-                       (this.m_session = FacebookSession.GetSession(this.Settings.AppId, this.Settings.AppSecret, this.HttpContext));
+                return _session ??
+                       (_session = FacebookSession.GetSession(Settings.AppId, Settings.AppSecret, HttpContext));
             }
         }
 
@@ -134,7 +145,7 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(Contract.Result<HttpContextBase>() != null);
-                return this.m_httpContext;
+                return _httpContext;
             }
         }
 
@@ -152,12 +163,12 @@ namespace Facebook.Web
             Contract.Requires(permissions != null);
             Contract.Ensures(Contract.Result<string[]>() != null);
 
-            if (this.Session == null || this.Session.UserId == 0)
+            if (Session == null || Session.UserId == 0)
             {
                 return new string[0];
             }
 
-            return HasPermissions(this.Settings.AppId, this.Settings.AppSecret, this.Session.UserId, permissions);
+            return HasPermissions(Settings.AppId, Settings.AppSecret, Session.UserId, permissions);
         }
 
         /// <summary>
@@ -176,12 +187,12 @@ namespace Facebook.Web
 
         public bool IsAuthenticated()
         {
-            return this.Session != null && this.Session.Expires > DateTime.UtcNow;
+            return Session != null && Session.Expires > DateTime.UtcNow;
         }
 
         public bool IsAuthorized()
         {
-            return this.IsAuthorized(null);
+            return IsAuthorized(null);
         }
 
         /// <summary>
@@ -196,7 +207,7 @@ namespace Facebook.Web
 
             if (isAuthorized && permissions != null)
             {
-                var currentPerms = this.HasPermissions(permissions);
+                var currentPerms = HasPermissions(permissions);
                 foreach (var perm in permissions)
                 {
                     if (!currentPerms.Contains(perm))
@@ -220,9 +231,12 @@ namespace Facebook.Web
                 if (cookieName == sessionCookieName)
                 {
                     var cookie = this.HttpContext.Request.Cookies[sessionCookieName];
-                    cookie.Expires = DateTime.UtcNow.AddDays(-1);
-                    cookie.Value = null;
-                    this.HttpContext.Response.Cookies.Set(cookie);
+                    if (cookie != null)
+                    {
+                        cookie.Expires = DateTime.UtcNow.AddDays(-1);
+                        cookie.Value = null;
+                        HttpContext.Response.Cookies.Set(cookie);
+                    }
                 }
             }
         }
@@ -324,10 +338,10 @@ namespace Facebook.Web
         [ContractInvariantMethod]
         private void InvarientObject()
         {
-            Contract.Invariant(this.m_facebookApplication != null);
-            Contract.Invariant(this.m_httpContext != null);
-            Contract.Invariant(this.m_httpContext.Request != null);
-            Contract.Invariant(this.m_httpContext.Request.Params != null);
+            Contract.Invariant(this._facebookApplication != null);
+            Contract.Invariant(this._httpContext != null);
+            Contract.Invariant(this._httpContext.Request != null);
+            Contract.Invariant(this._httpContext.Request.Params != null);
             Contract.Invariant(this.HttpContext.Response != null);
             Contract.Invariant(this.HttpContext.Request != null);
             Contract.Invariant(this.HttpContext.Request.Params != null);

@@ -33,32 +33,32 @@ namespace Facebook
         /// <summary>
         /// The actual value of the signed request.
         /// </summary>
-        private object data;
+        private object _data;
 
         /// <summary>
         /// The access token.
         /// </summary>
-        private string accessToken;
+        private string _accessToken;
 
         /// <summary>
         /// The user id.
         /// </summary>
-        private long userId;
+        private long _userId;
 
         /// <summary>
         /// The profile id.
         /// </summary>
-        private string profileId;
+        private string _profileId;
 
         /// <summary>
         /// The expires.
         /// </summary>
-        private DateTime expires;
+        private DateTime _expires;
 
         /// <summary>
         /// The issued at.
         /// </summary>
-        private DateTime issuedAt;
+        private DateTime _issuedAt;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSignedRequest"/> class.
@@ -70,7 +70,7 @@ namespace Facebook
         {
             Contract.Requires(data != null);
 
-            this.Data = data;
+            Data = data;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<object>() != null);
-                return this.data;
+                return _data;
             }
 
             private set
@@ -90,7 +90,7 @@ namespace Facebook
 
                 var data = (IDictionary<string, object>)(value is JsonObject ? value : FacebookUtils.ToDictionary(value));
 
-                this.issuedAt = data.ContainsKey("issued_at") ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["issued_at"])) : DateTime.MinValue;
+                _issuedAt = data.ContainsKey("issued_at") ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["issued_at"])) : DateTime.MinValue;
 
                 if (data.ContainsKey("payload"))
                 {
@@ -99,16 +99,16 @@ namespace Facebook
 
                     if (payload != null)
                     {
-                        this.accessToken = payload.ContainsKey("access_token") ? (string)payload["access_token"] : null;
-                        this.expires = payload.ContainsKey("expires_in")
+                        _accessToken = payload.ContainsKey("access_token") ? (string)payload["access_token"] : null;
+                        _expires = payload.ContainsKey("expires_in")
                                            ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(payload["expires_in"]))
                                            : DateTime.MinValue;
                         string sUserId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
                         long userId;
                         long.TryParse(sUserId, out userId);
-                        this.userId = userId;
+                        _userId = userId;
 
-                        this.profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
+                        _profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
                     }
                 }
                 else
@@ -117,16 +117,16 @@ namespace Facebook
                     string sUserId = data.ContainsKey("user_id") ? (string)data["user_id"] : null;
                     long userId;
                     long.TryParse(sUserId, out userId);
-                    this.userId = userId;
+                    _userId = userId;
 
-                    this.accessToken = data.ContainsKey("oauth_token") ? (string)data["oauth_token"] : null;
-                    this.expires = data.ContainsKey("expires")
+                    _accessToken = data.ContainsKey("oauth_token") ? (string)data["oauth_token"] : null;
+                    _expires = data.ContainsKey("expires")
                                        ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["expires"]))
                                        : DateTime.MinValue;
-                    this.profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
+                    _profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
                 }
 
-                this.data = data;
+                _data = data;
             }
         }
 
@@ -135,7 +135,7 @@ namespace Facebook
         /// </summary>
         public string AccessToken
         {
-            get { return this.accessToken; }
+            get { return _accessToken; }
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Facebook
         /// </summary>
         public long UserId
         {
-            get { return this.userId; }
+            get { return _userId; }
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Facebook
         /// </summary>
         public string ProfileId
         {
-            get { return this.profileId; }
+            get { return _profileId; }
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Facebook
         /// </summary>
         public DateTime Expires
         {
-            get { return this.expires; }
+            get { return _expires; }
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Facebook
         /// </summary>
         public DateTime IssuedAt
         {
-            get { return this.issuedAt; }
+            get { return _issuedAt; }
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace Facebook
         [ContractInvariantMethod]
         private void InvariantObject()
         {
-            Contract.Invariant(this.data != null);
+            Contract.Invariant(_data != null);
         }
     }
 }

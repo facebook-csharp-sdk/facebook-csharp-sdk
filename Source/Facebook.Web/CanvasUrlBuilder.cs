@@ -29,12 +29,12 @@ namespace Facebook.Web
         /// <summary>
         /// Facebook Application settings.
         /// </summary>
-        private readonly IFacebookApplication settings;
+        private readonly IFacebookApplication _settings;
 
         /// <summary>
         /// The http request.
         /// </summary>
-        private readonly HttpRequestBase httpRequest;
+        private readonly HttpRequestBase _httpRequest;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
@@ -51,8 +51,8 @@ namespace Facebook.Web
             Contract.Requires(httpRequest != null);
             Contract.Requires(httpRequest.Url != null);
 
-            this.settings = settings;
-            this.httpRequest = httpRequest;
+            _settings = settings;
+            _httpRequest = httpRequest;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
-                return FacebookUtils.RemoveTrailingSlash(new Uri(this.settings.CanvasPage));
+                return FacebookUtils.RemoveTrailingSlash(new Uri(_settings.CanvasPage));
             }
         }
 
@@ -76,7 +76,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
 
-                return this.CanvasPage.AbsolutePath;
+                return CanvasPage.AbsolutePath;
             }
         }
 
@@ -88,19 +88,19 @@ namespace Facebook.Web
             get
             {
                 string url;
-                if (this.settings.CanvasUrl != null)
+                if (_settings.CanvasUrl != null)
                 {
-                    url = this.settings.CanvasUrl;
+                    url = _settings.CanvasUrl;
                 }
-                else if (this.httpRequest.Headers.AllKeys.Contains("Host"))
+                else if (_httpRequest.Headers.AllKeys.Contains("Host"))
                 {
                     // This will attempt to get the url based on the host
                     // in case we are behind a load balancer (such as with azure)
-                    url = string.Concat(this.httpRequest.Url.Scheme, "://", this.httpRequest.Headers["Host"]);
+                    url = string.Concat(_httpRequest.Url.Scheme, "://", _httpRequest.Headers["Host"]);
                 }
                 else
                 {
-                    url = string.Concat(this.httpRequest.Url.Scheme, "://", this.httpRequest.Url.Host, ":", this.httpRequest.Url.Port);
+                    url = string.Concat(_httpRequest.Url.Scheme, "://", _httpRequest.Url.Host, ":", _httpRequest.Url.Port);
                 }
 
                 return new Uri(FacebookUtils.RemoveTrailingSlash(url));
@@ -116,8 +116,8 @@ namespace Facebook.Web
         {
             get
             {
-                var uriBuilder = new UriBuilder(this.CanvasUrl);
-                var parts = this.httpRequest.RawUrl.Split('?');
+                var uriBuilder = new UriBuilder(CanvasUrl);
+                var parts = _httpRequest.RawUrl.Split('?');
                 uriBuilder.Path = parts[0];
                 if (parts.Length > 1)
                 {
@@ -138,7 +138,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<string>() != null);
 
-                var pathAndQuery = this.httpRequest.Url.PathAndQuery;
+                var pathAndQuery = _httpRequest.Url.PathAndQuery;
                 var i = pathAndQuery.IndexOf("/");
                 if (i > 0)
                 {
@@ -157,7 +157,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
 
-                return this.BuildCanvasPageUrl(this.CurrentCanvasPathAndQuery);
+                return BuildCanvasPageUrl(CurrentCanvasPathAndQuery);
             }
         }
 
@@ -178,12 +178,12 @@ namespace Facebook.Web
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
-            if (this.CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(this.CanvasUrl.PathAndQuery))
+            if (CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(CanvasUrl.PathAndQuery))
             {
-                pathAndQuery = pathAndQuery.Substring(this.CanvasUrl.PathAndQuery.Length);
+                pathAndQuery = pathAndQuery.Substring(CanvasUrl.PathAndQuery.Length);
             }
 
-            var url = string.Concat(this.CanvasPage, pathAndQuery);
+            var url = string.Concat(CanvasPage, pathAndQuery);
             if (url.EndsWith("/"))
             {
                 url = url.Substring(0, url.Length - 1);
@@ -216,8 +216,8 @@ namespace Facebook.Web
 
             var oauth = new FacebookOAuthClient
                             {
-                                AppId = this.settings.AppId,
-                                AppSecret = this.settings.AppSecret
+                                AppId = _settings.AppId,
+                                AppSecret = _settings.AppSecret
                             };
 
             if (parameters != null && parameters.ContainsKey("state"))
@@ -237,7 +237,7 @@ namespace Facebook.Web
             if (!string.IsNullOrEmpty(returnUrlPath))
             {
                 // remove the starting /
-                oauthJsonState["r"] = this.CanvasPageApplicationPath.Substring(1);
+                oauthJsonState["r"] = CanvasPageApplicationPath.Substring(1);
 
                 // then return url path doesn't start with / add it
                 if (!returnUrlPath.StartsWith("/"))
@@ -249,7 +249,7 @@ namespace Facebook.Web
             }
             else
             {
-                oauthJsonState["r"] = this.CurrentCanvasPage.ToString().Substring(25);
+                oauthJsonState["r"] = CurrentCanvasPage.ToString().Substring(25);
             }
 
             if (string.IsNullOrEmpty(cancelUrlPath))
@@ -263,7 +263,7 @@ namespace Facebook.Web
                 if (IsRelativeUri(cancelUrlPath))
                 {
                     // remove the first /
-                    oauthJsonState["c"] = this.CanvasPageApplicationPath.Substring(1);
+                    oauthJsonState["c"] = CanvasPageApplicationPath.Substring(1);
 
                     if (!cancelUrlPath.StartsWith("/"))
                     {
@@ -288,7 +288,7 @@ namespace Facebook.Web
             var mergedParameters = FacebookUtils.Merge(parameters, null);
             mergedParameters["state"] = oauthState;
 
-            var appPath = this.httpRequest.ApplicationPath;
+            var appPath = _httpRequest.ApplicationPath;
             if (appPath != "/")
             {
                 appPath = string.Concat(appPath, "/");
@@ -296,7 +296,7 @@ namespace Facebook.Web
 
             string redirectRoot = RedirectPath;
 
-            var uriBuilder = new UriBuilder(this.CurrentCanvasUrl)
+            var uriBuilder = new UriBuilder(CurrentCanvasUrl)
                                  {
                                      Path = string.Concat(appPath, redirectRoot),
                                      Query = string.Empty
@@ -351,9 +351,9 @@ namespace Facebook.Web
         [ContractInvariantMethod]
         private void InvariantObject()
         {
-            Contract.Invariant(this.settings != null);
-            Contract.Invariant(this.httpRequest != null);
-            Contract.Invariant(this.httpRequest.Url != null);
+            Contract.Invariant(_settings != null);
+            Contract.Invariant(_httpRequest != null);
+            Contract.Invariant(_httpRequest.Url != null);
         }
     }
 }

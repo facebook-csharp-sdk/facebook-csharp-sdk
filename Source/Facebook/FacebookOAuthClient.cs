@@ -37,8 +37,8 @@ namespace Facebook
         {
             if (facebookApplication != null)
             {
-                this.AppId = facebookApplication.AppId;
-                this.AppSecret = facebookApplication.AppSecret;
+                AppId = facebookApplication.AppId;
+                AppSecret = facebookApplication.AppSecret;
             }
         }
 
@@ -91,8 +91,8 @@ namespace Facebook
             Contract.Ensures(Contract.Result<Uri>() != null);
 
             var defaultParameters = new Dictionary<string, object>();
-            defaultParameters["client_id"] = this.AppId;
-            defaultParameters["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+            defaultParameters["client_id"] = AppId;
+            defaultParameters["redirect_uri"] = RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
 #if WINDOWS_PHONE
             defaultParameters["display"] = "touch";
 #endif
@@ -148,7 +148,7 @@ namespace Facebook
 
             var defaultParams = new Dictionary<string, object>();
             defaultParams["confirm"] = 1;
-            defaultParams["next"] = this.RedirectUri ?? new Uri("http://www.facebook.com");
+            defaultParams["next"] = RedirectUri ?? new Uri("http://www.facebook.com");
 
             var mergedParameters = FacebookUtils.Merge(defaultParams, parameters);
 
@@ -312,30 +312,30 @@ namespace Facebook
         {
             Contract.Requires(!string.IsNullOrEmpty(code));
 
-            var requestUri = this.BuildExchangeCodeForAccessTokenUrl(code, parameters);
+            var requestUri = BuildExchangeCodeForAccessTokenUrl(code, parameters);
 
             var webClient = new WebClient();
 
             webClient.DownloadStringCompleted +=
-                (o, e) => this.OnExchangeCodeForAccessTokenCompleted(e);
+                (o, e) => OnExchangeCodeForAccessTokenCompleted(e);
             webClient.DownloadStringAsync(requestUri, null);
 
         }
 
         private void OnExchangeCodeForAccessTokenCompleted(DownloadStringCompletedEventArgs e)
         {
-            var args = this.GetApiEventArgs(e, e.Error == null ? this.BuildExchangeCodeResult(e.Result).ToString() : null);
+            var args = GetApiEventArgs(e, e.Error == null ? BuildExchangeCodeResult(e.Result).ToString() : null);
 
-            this.OnExchangeCodeForAccessTokenCompleted(args);
+            OnExchangeCodeForAccessTokenCompleted(args);
         }
 
         public event EventHandler<FacebookApiEventArgs> ExchangeCodeForAccessTokenCompleted;
 
         protected void OnExchangeCodeForAccessTokenCompleted(FacebookApiEventArgs e)
         {
-            if (this.ExchangeCodeForAccessTokenCompleted != null)
+            if (ExchangeCodeForAccessTokenCompleted != null)
             {
-                this.ExchangeCodeForAccessTokenCompleted(this, e);
+                ExchangeCodeForAccessTokenCompleted(this, e);
             }
         }
 
@@ -405,7 +405,7 @@ namespace Facebook
 
             var webClient = new WebClient();
             webClient.DownloadStringCompleted +=
-                (o, e) => this.OnGetApplicationAccessTokenCompleted(e);
+                (o, e) => OnGetApplicationAccessTokenCompleted(e);
 
             webClient.DownloadStringAsync(requestUri, null);
         }
@@ -417,14 +417,14 @@ namespace Facebook
             {
                 var json = new JsonObject();
                 FacebookUtils.ParseQueryParametersToDictionary("?" + e.Result, json);
-                args = this.GetApiEventArgs(e, json.ToString());
+                args = GetApiEventArgs(e, json.ToString());
             }
             else
             {
-                args = this.GetApiEventArgs(e, null);
+                args = GetApiEventArgs(e, null);
             }
 
-            this.OnGetApplicationAccessTokenCompleted(args);
+            OnGetApplicationAccessTokenCompleted(args);
         }
 
         public event EventHandler<FacebookApiEventArgs> GetApplicationAccessTokenCompleted;
@@ -439,19 +439,19 @@ namespace Facebook
 
         private Uri BuildGetApplicationAccessTokenUrl()
         {
-            if (string.IsNullOrEmpty(this.AppId))
+            if (string.IsNullOrEmpty(AppId))
             {
                 throw new Exception("ClientID required.");
             }
 
-            if (string.IsNullOrEmpty(this.AppSecret))
+            if (string.IsNullOrEmpty(AppSecret))
             {
                 throw new Exception("ClientSecret required");
             }
 
             var parameters = new Dictionary<string, object>();
-            parameters["client_id"] = this.AppId;
-            parameters["client_secret"] = this.AppSecret;
+            parameters["client_id"] = AppId;
+            parameters["client_secret"] = AppSecret;
             parameters["grant_type"] = "client_credentials";
 
             var queryString = FacebookUtils.ToJsonQueryString(parameters);
@@ -463,9 +463,9 @@ namespace Facebook
         private Uri BuildExchangeCodeForAccessTokenUrl(string code, IDictionary<string, object> parameters)
         {
             var pars = new Dictionary<string, object>();
-            pars["client_id"] = this.AppId;
-            pars["client_secret"] = this.AppSecret;
-            pars["redirect_uri"] = this.RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+            pars["client_id"] = AppId;
+            pars["client_secret"] = AppSecret;
+            pars["redirect_uri"] = RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
             pars["code"] = code;
 
             var mergedParameters = FacebookUtils.Merge(pars, parameters);

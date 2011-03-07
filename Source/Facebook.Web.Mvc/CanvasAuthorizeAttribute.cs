@@ -29,9 +29,9 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new FacebookWebContext(settings, filterContext.HttpContext);
 
-            if (!authorizer.IsAuthorized(this.Permissions))
+            if (!authorizer.IsAuthorized(Permissions))
             {
-                this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
+                HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(filterContext != null);
             Contract.Requires(settings != null);
 
-            var loginUri = this.GetLoginUrl(settings, filterContext.HttpContext, null);
+            var loginUri = GetLoginUrl(settings, filterContext.HttpContext, null);
             filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
         }
 
@@ -51,14 +51,14 @@ namespace Facebook.Web.Mvc
 
             var authorizer = new FacebookCanvasAuthorizer(settings, httpContext)
             {
-                ReturnUrlPath = this.ReturnUrlPath,
-                CancelUrlPath = this.CancelUrlPath,
-                LoginDisplayMode = this.LoginDisplayMode
+                ReturnUrlPath = ReturnUrlPath,
+                CancelUrlPath = CancelUrlPath,
+                LoginDisplayMode = LoginDisplayMode
             };
 
-            if (!String.IsNullOrEmpty(this.Permissions))
+            if (!String.IsNullOrEmpty(Permissions))
             {
-                authorizer.Permissions = this.Permissions.Replace(" ", String.Empty).Split(',');
+                authorizer.Permissions = Permissions.Replace(" ", String.Empty).Split(',');
             }
 
             return authorizer.GetLoginUrl(parameters);

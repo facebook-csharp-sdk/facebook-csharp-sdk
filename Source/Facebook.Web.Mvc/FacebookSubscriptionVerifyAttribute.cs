@@ -8,7 +8,7 @@
 
         public FacebookSubscriptionVerifyAttribute(string verificationToken)
         {
-            this.VerificationToken = verificationToken;
+            VerificationToken = verificationToken;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -21,13 +21,13 @@
 
             if (request.HttpMethod == "GET")
             {
-                if (string.IsNullOrEmpty(this.VerificationToken))
+                if (string.IsNullOrEmpty(VerificationToken))
                 {
                     errorMessage = "Verification Token is empty.";
                 }
                 else
                 {
-                    if (FacebookSubscriptionVerifier.VerifyGetSubscription(request, this.VerificationToken, out errorMessage))
+                    if (FacebookSubscriptionVerifier.VerifyGetSubscription(request, VerificationToken, out errorMessage))
                     {
                         return;
                     }

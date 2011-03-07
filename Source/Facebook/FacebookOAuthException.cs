@@ -66,7 +66,7 @@ namespace Facebook
         public FacebookOAuthException(string message, string errorType, Exception innerException)
             : base(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message), innerException)
         {
-            this.ErrorType = errorType;
+            ErrorType = errorType;
         }
 
 #if (!SILVERLIGHT)

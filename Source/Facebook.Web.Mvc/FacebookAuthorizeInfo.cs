@@ -17,7 +17,7 @@ namespace Facebook.Web.Mvc
     /// </summary>
     public sealed class FacebookAuthorizeInfo
     {
-        private RouteValueDictionary routeValues;
+        private RouteValueDictionary _routeValues;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAuthorizeInfo"/> class.
@@ -33,10 +33,10 @@ namespace Facebook.Web.Mvc
         /// <param name="routeValues">The route values.</param>
         public FacebookAuthorizeInfo(Uri authorizeUrl, string permissions, bool isCancelUrl, RouteValueDictionary routeValues)
         {
-            this.AuthorizeUrl = authorizeUrl;
-            this.Permissions = permissions;
-            this.IsCancelReturn = isCancelUrl;
-            this.routeValues = routeValues;
+            AuthorizeUrl = authorizeUrl;
+            Permissions = permissions;
+            IsCancelReturn = isCancelUrl;
+            _routeValues = routeValues;
         }
 
         /// <summary>
@@ -65,14 +65,7 @@ namespace Facebook.Web.Mvc
         /// <value>The route values.</value>
         public RouteValueDictionary RouteValues
         {
-            get
-            {
-                if (routeValues == null)
-                {
-                    routeValues = new RouteValueDictionary();
-                }
-                return routeValues;
-            }
+            get { return _routeValues ?? (_routeValues = new RouteValueDictionary()); }
         }
 
     }

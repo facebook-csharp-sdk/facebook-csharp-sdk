@@ -28,8 +28,8 @@
         /// </summary>
         public override void HandleUnauthorizedRequest()
         {
-            this.FacebookWebRequest.HttpContext.Response.ContentType = "text/html";
-            this.FacebookWebRequest.HttpContext.Response.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(this.GetLoginUrl(null)));
+            FacebookWebRequest.HttpContext.Response.ContentType = "text/html";
+            FacebookWebRequest.HttpContext.Response.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(GetLoginUrl(null)));
         }
 
         /// <summary>
@@ -47,18 +47,18 @@
 
             var defaultParameters = new Dictionary<string, object>();
 
-            if (!string.IsNullOrEmpty(this.LoginDisplayMode))
+            if (!string.IsNullOrEmpty(LoginDisplayMode))
             {
-                defaultParameters["display"] = this.LoginDisplayMode;
+                defaultParameters["display"] = LoginDisplayMode;
             }
 
-            if (this.Permissions != null)
+            if (Permissions != null)
             {
-                defaultParameters["scope"] = String.Join(",", this.Permissions);
+                defaultParameters["scope"] = String.Join(",", Permissions);
             }
 
-            var canvasUrlBuilder = new CanvasUrlBuilder(this.FacebookWebRequest.Settings, this.FacebookWebRequest.HttpContext.Request);
-            return canvasUrlBuilder.GetLoginUrl(this.ReturnUrlPath, this.CancelUrlPath, this.State, FacebookUtils.Merge(defaultParameters, parameters));
+            var canvasUrlBuilder = new CanvasUrlBuilder(FacebookWebRequest.Settings, FacebookWebRequest.HttpContext.Request);
+            return canvasUrlBuilder.GetLoginUrl(ReturnUrlPath, CancelUrlPath, State, FacebookUtils.Merge(defaultParameters, parameters));
         }
 
     }

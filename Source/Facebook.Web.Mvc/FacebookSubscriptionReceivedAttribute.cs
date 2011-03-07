@@ -13,7 +13,7 @@ namespace Facebook.Web.Mvc
             var modelState = filterContext.Controller.ViewData.ModelState;
             var appSecret = FacebookApplication.Current.AppSecret;
 
-            var parameterName = this.ParameterName;
+            var parameterName = ParameterName;
             if (string.IsNullOrEmpty(parameterName))
             {
                 parameterName = "subscription";

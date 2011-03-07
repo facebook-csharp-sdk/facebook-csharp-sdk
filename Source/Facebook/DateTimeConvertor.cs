@@ -17,7 +17,6 @@ namespace Facebook
     /// </summary>
     public static class DateTimeConvertor
     {
-
         /// <summary>
         /// Gets the epoch time.
         /// </summary>

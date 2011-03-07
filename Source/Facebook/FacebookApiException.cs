@@ -27,7 +27,6 @@ namespace Facebook
         /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
         /// </summary>
         public FacebookApiException()
-            : base()
         {
         }
 
@@ -92,19 +91,6 @@ namespace Facebook
         /// </summary>
         /// <value>The type of the error.</value>
         public string ErrorType { get; set; }
-
-        /// <summary>
-        /// Gets a message that describes the current exception.
-        /// </summary>
-        /// <value></value>
-        /// <returns>The error message that explains the reason for the exception, or an empty string("").</returns>
-        public override string Message
-        {
-            get
-            {
-                return base.Message;
-            }
-        }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

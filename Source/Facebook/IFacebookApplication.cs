@@ -47,7 +47,7 @@ namespace Facebook
         /// <summary>
         /// Gets a value indicating whether it is beta.
         /// </summary>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         bool UseFacebookBeta { get; }
-
     }
 }
