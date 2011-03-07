@@ -9,21 +9,19 @@
 
 namespace Facebook.Web
 {
-    using System.Diagnostics.Contracts;
-    using System.Linq;
-    using System.Web;
     using System;
-    using System.ComponentModel;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
+    using System.Web;
 
     /// <summary>
     /// Represents the Facebook authorizer class.
     /// </summary>
     public class FacebookWebContext
     {
-
         /// <summary>
         /// The facebook settings.
         /// </summary>

@@ -14,14 +14,16 @@ namespace Facebook
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Web;
-    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Represents a Facebook session.
     /// </summary>
+#if !NET35
     [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
+#endif
     public sealed class FacebookSession
     {
 

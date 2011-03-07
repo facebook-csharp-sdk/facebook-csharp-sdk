@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics.Contracts;
-using System.Web;
-
-namespace Facebook.Web
+﻿namespace Facebook.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Web;
+
     public class FacebookCanvasAuthorizer : FacebookWebAuthorizer
     {
 

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Facebook.Web
+﻿namespace Facebook.Web
 {
+    using System;
+    using System.Collections.Generic;
+
     public class FacebookWebClient : FacebookClient
     {
         private FacebookWebContext m_request;
