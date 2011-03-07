@@ -5,7 +5,8 @@ require 'albacore/assemblyinfolanguages/vbnetengine'
 class AssemblyInfo
   include Albacore::Task
   
-  attr_accessor :version, :title, :description, :output_file, :custom_attributes
+  attr_accessor :input_file, :output_file
+  attr_accessor :version, :title, :description, :custom_attributes
   attr_accessor :copyright, :com_visible, :com_guid, :company_name, :product_name
   attr_accessor :file_version, :trademark, :lang_engine, :custom_data
   
@@ -18,22 +19,42 @@ class AssemblyInfo
     super()
     update_attributes Albacore.configuration.assemblyinfo.to_hash
   end
+
+  def use(file)
+    @input_file = @output_file = file
+  end
   
   def execute
     @lang_engine = CSharpEngine.new unless check_lang_engine
-    write_assemblyinfo @output_file
+    write_assemblyinfo @output_file, @input_file
   end
   
-  def write_assemblyinfo(assemblyinfo_file)
+  def write_assemblyinfo(assemblyinfo_file, input_file)
     valid = check_output_file assemblyinfo_file
     return if !valid
-    
-    asm_data = build_assembly_info_data
+
+    input_data = read_input_file input_file
+    asm_data = build_assembly_info_data input_data
 
     @logger.info "Generating Assembly Info File At: " + File.expand_path(assemblyinfo_file)
     File.open(assemblyinfo_file, 'w') do |f|      
-      f.write asm_data
+      asm_data.each do |line|
+        f.puts line
+      end
     end
+  end
+
+  def read_input_file(file)
+    data = []
+    return data if file.nil?
+
+    File.open(file, 'r') do |file|
+        file.each_line do |line|
+            data << line.strip
+        end
+    end
+
+    data
   end
   
   def check_output_file(file)
@@ -46,35 +67,51 @@ class AssemblyInfo
     return !@lang_engine.nil?
   end
 
-  def build_assembly_info_data
-    asm_data = build_using_statements + "\n"
+  def build_assembly_info_data(data)
+    if data.empty?
+        data = build_using_statements
+    end
+
+    build_attribute(data, "AssemblyTitle", @title) if @title != nil
+    build_attribute(data, "AssemblyDescription", @description) if @description != nil
+    build_attribute(data, "AssemblyCompany", @company_name) if @company_name != nil
+    build_attribute(data, "AssemblyProduct", @product_name) if @product_name != nil
     
-    asm_data << build_attribute("AssemblyTitle", @title) if @title != nil
-    asm_data << build_attribute("AssemblyDescription", @description) if @description != nil
-    asm_data << build_attribute("AssemblyCompany", @company_name) if @company_name != nil
-    asm_data << build_attribute("AssemblyProduct", @product_name) if @product_name != nil
+    build_attribute(data, "AssemblyCopyright", @copyright) if @copyright != nil
+    build_attribute(data, "AssemblyTrademark", @trademark) if @trademark != nil
     
-    asm_data << build_attribute("AssemblyCopyright", @copyright) if @copyright != nil
-    asm_data << build_attribute("AssemblyTrademark", @trademark) if @trademark != nil
+    build_attribute(data, "ComVisible", @com_visible) if @com_visible != nil
+    build_attribute(data, "Guid", @com_guid) if @com_guid != nil
     
-    asm_data << build_attribute("ComVisible", @com_visible) if @com_visible != nil
-    asm_data << build_attribute("Guid", @com_guid) if @com_guid != nil
+    build_attribute(data, "AssemblyVersion", @version) if @version != nil
+    build_attribute(data, "AssemblyFileVersion", @file_version) if @file_version != nil
     
-    asm_data << build_attribute("AssemblyVersion", @version) if @version != nil
-    asm_data << build_attribute("AssemblyFileVersion", @file_version) if @file_version != nil
-    
-    asm_data << "\n"
+    data << ""
     if @custom_attributes != nil
       attributes = build_custom_attributes()
-      asm_data << attributes.join
-      asm_data << "\n"
+      data += attributes
+      data << ""
     end
-    
+
     if @custom_data != nil
-      @custom_data.each{|data| asm_data << data + "\n"}
+      @custom_data.each do |cdata| 
+        data << cdata unless data.include? cdata
+      end
     end
     
-    asm_data
+    data
+  end
+
+  def build_attribute(data, attr_name, attr_data)
+    attr_value = @lang_engine.build_attribute(attr_name, attr_data)
+    attr_re = @lang_engine.build_attribute_re(attr_name)
+    result = nil
+    @logger.debug "Build Assembly Info Attribute: " + attr_value
+    data.each do |line|
+        break unless result.nil?
+        result = line.sub! attr_re, attr_value
+    end
+    data << attr_value if result.nil?
   end
   
   def build_using_statements
@@ -84,7 +121,7 @@ class AssemblyInfo
     @namespaces << "System.Runtime.InteropServices"
     @namespaces.uniq!
     
-    ns = ''
+    ns = []
     @namespaces.each do |n|
       ns << @lang_engine.build_using_statement(n)
     end
@@ -92,16 +129,10 @@ class AssemblyInfo
     ns
   end  
 
-  def build_attribute(attr_name, attr_data)
-    attribute = @lang_engine.build_attribute(attr_name, attr_data)
-    @logger.debug "Build Assembly Info Attribute: " + attribute
-    attribute 
-  end
-  
   def build_custom_attributes()
     attributes = []
     @custom_attributes.each do |key, value|
-      attributes << build_attribute(key, value)
+      attributes << @lang_engine.build_attribute(key, value)
     end
     attributes
   end

@@ -213,30 +213,30 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
     #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
     
     [ "Facebook.dll", "Facebook.pdb", "Facebook.XML" ].each do |f|
-       # copy these 3 files of each different framework
-       cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
-       cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
-       cp "#{output_path}SL4/#{f}", "#{nuget_working_dir}lib/SL4/"
-       cp "#{output_path}WP7/#{f}", "#{nuget_working_dir}lib/WP7/"
-   end
+        # copy these 3 files of each different framework
+        cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
+        cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
+        cp "#{output_path}SL4/#{f}", "#{nuget_working_dir}lib/SL4/"
+        cp "#{output_path}WP7/#{f}", "#{nuget_working_dir}lib/WP7/"
+    end
     
     # temporarily copy Json.Net for SL and WP7
-   cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.dll", "#{nuget_working_dir}lib/SL4/"
-   cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.pdb", "#{nuget_working_dir}lib/SL4/"
-   cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.xml", "#{nuget_working_dir}lib/SL4/"
-   cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.dll", "#{nuget_working_dir}lib/WP7/"
-   cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.pdb", "#{nuget_working_dir}lib/WP7/"
-   cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.xml", "#{nuget_working_dir}lib/WP7/"
+    cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.dll", "#{nuget_working_dir}lib/SL4/"
+    cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.pdb", "#{nuget_working_dir}lib/SL4/"
+    cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.xml", "#{nuget_working_dir}lib/SL4/"
+    cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.dll", "#{nuget_working_dir}lib/WP7/"
+    cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.pdb", "#{nuget_working_dir}lib/WP7/"
+    cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.xml", "#{nuget_working_dir}lib/WP7/"
    
     [ "Facebook.Contracts.dll", "Facebook.Contracts.pdb" ].each do |f|
-       # copy code contracts of each different framework
-       cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
-       cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
-       cp "#{output_path}SL4/CodeContracts/#{f}", "#{nuget_working_dir}lib/SL4/CodeContracts/"
-       cp "#{output_path}WP7/CodeContracts/#{f}", "#{nuget_working_dir}lib/WP7/CodeContracts/"
-   end
+        # copy code contracts of each different framework
+        cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
+        cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
+        cp "#{output_path}SL4/CodeContracts/#{f}", "#{nuget_working_dir}lib/SL4/CodeContracts/"
+        cp "#{output_path}WP7/CodeContracts/#{f}", "#{nuget_working_dir}lib/WP7/CodeContracts/"
+    end
    
-   FileUtils.cp_r "#{build_config[:paths][:build]}NuGet/Facebook/.", "#{nuget_working_dir}"
+    FileUtils.cp_r "#{build_config[:paths][:build]}NuGet/Facebook/.", "#{nuget_working_dir}"
     
     nuspec.id = "Facebook"
     nuspec.version = "#{build_config[:version][:full]}"
@@ -244,7 +244,7 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
     nuspec.description = "The Facebook C# SDK core."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
-    nuspec.requireLicenseAcceptance = true
+    nuspec.requireLicenseAcceptance = "true"
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
     nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
@@ -259,36 +259,36 @@ end
 
 nuspec :nuspec_facebookweb => [:net35, :net40, "#{build_config[:paths][:working]}NuGet/FacebookWeb"] do |nuspec|
     working_dir = build_config[:paths][:working]
-   nuget_working_dir = "#{working_dir}NuGet/FacebookWeb/"
+    nuget_working_dir = "#{working_dir}NuGet/FacebookWeb/"
     
     FileUtils.rm_rf "#{nuget_working_dir}"
-   mkdir "#{nuget_working_dir}"
-   mkdir "#{nuget_working_dir}lib/"
+    mkdir "#{nuget_working_dir}"
+    mkdir "#{nuget_working_dir}lib/"
     
     nuget_dirs = [ "lib/Net35/",
-                  "lib/Net40/"]
+                    "lib/Net40/"]
        
-   nuget_dirs.each do |d|
-       mkdir "#{nuget_working_dir + d}"
-       mkdir "#{nuget_working_dir + d}CodeContracts/"
-   end
+    nuget_dirs.each do |d|
+        mkdir "#{nuget_working_dir + d}"
+        mkdir "#{nuget_working_dir + d}CodeContracts/"
+    end
     
     output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
-   #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
+    #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
     
     [ "Facebook.Web.dll", "Facebook.Web.pdb", "Facebook.Web.XML" ].each do |f|
-       # copy these 3 files of each different framework
-       cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
-       cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
-   end
+        # copy these 3 files of each different framework
+        cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
+        cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
+    end
     
     [ "Facebook.Web.Contracts.dll", "Facebook.Web.Contracts.pdb" ].each do |f|
-       # copy code contracts of each different framework
-       cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
-       cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
-   end
+        # copy code contracts of each different framework
+        cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
+        cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
+    end
    
-   FileUtils.cp_r "#{build_config[:paths][:build]}NuGet/FacebookWeb/.", "#{nuget_working_dir}"
+    FileUtils.cp_r "#{build_config[:paths][:build]}NuGet/FacebookWeb/.", "#{nuget_working_dir}"
     
     nuspec.id = "FacebookWeb"
     nuspec.version = "#{build_config[:version][:full]}"
@@ -296,7 +296,7 @@ nuspec :nuspec_facebookweb => [:net35, :net40, "#{build_config[:paths][:working]
     nuspec.description = "The Facebook C# SDK web component."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
-    nuspec.requireLicenseAcceptance = true
+    nuspec.requireLicenseAcceptance = "true"
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
     nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
@@ -347,7 +347,7 @@ nuspec :nuspec_facebookwebcompatibility => [:net40, "#{build_config[:paths][:wor
     nuspec.description = "The Facebook C# SDK web compatibility component."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
-    nuspec.requireLicenseAcceptance = true
+    nuspec.requireLicenseAcceptance = "true"
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"  
     nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
@@ -401,7 +401,7 @@ nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:worki
     nuspec.description = "The Facebook C# SDK MVC component."
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
-    nuspec.requireLicenseAcceptance = true
+    nuspec.requireLicenseAcceptance = "true"
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
     nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"

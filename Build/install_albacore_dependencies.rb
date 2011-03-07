@@ -27,7 +27,6 @@ puts "Installing required dependencies"
 install 'net-ssh'
 install 'net-sftp'
 install 'rubyzip'
-install 'nokogiri'
 #install 'jeweler'
 #install 'rspec'
 #install 'derickbailey-notamock'

@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-
 [assembly: AssemblyTitle("Facebook.Web.Compatibility")]
 [assembly: AssemblyDescription("Facebook C# SDK")]
 [assembly: AssemblyCompany("Facebook C# SDK")]
