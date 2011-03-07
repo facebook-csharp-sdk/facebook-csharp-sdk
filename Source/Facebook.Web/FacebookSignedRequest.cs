@@ -311,8 +311,8 @@ namespace Facebook
         /// <param name="appSecret">
         /// The app Secret.
         /// </param>
-        /// <param name="httpRequest">
-        /// The http request.
+        /// <param name="httpContext">
+        /// The http context.
         /// </param>
         /// <returns>
         /// Returns the signed request if found otherwise null.

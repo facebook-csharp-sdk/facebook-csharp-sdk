@@ -29,7 +29,7 @@ namespace Facebook
     {
         internal IWebClient WebClient = new WebClientWrapper();
 
-        private bool m_isBeta = FacebookContext.Current.UseFacebookBeta;
+        private bool m_isBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 

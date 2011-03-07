@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Facebook.Web
 {
-    public class FacebookCanvasRequest : FacebookWebRequest
+    /// <summary>
+    /// Represents an incoming FacebookCanvasRequest.
+    /// </summary>
+    public class FacebookCanvasContext : FacebookWebContext
     {
 
         /// <summary>
@@ -17,6 +20,11 @@ namespace Facebook.Web
         /// The facebook signed request.
         /// </summary>
         private FacebookSignedRequest m_signedRequest;
+
+        public new static FacebookCanvasContext Current
+        {
+            get { return new FacebookCanvasContext(); }
+        }
 
         /// <summary>
         /// Gets the facebook session.

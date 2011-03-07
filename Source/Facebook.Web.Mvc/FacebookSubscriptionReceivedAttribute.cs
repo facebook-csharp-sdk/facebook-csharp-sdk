@@ -11,7 +11,7 @@ namespace Facebook.Web.Mvc
             filterContext.HttpContext.Response.ContentType = "text/plain";
             var request = filterContext.HttpContext.Request;
             var modelState = filterContext.Controller.ViewData.ModelState;
-            var appSecret = FacebookContext.Current.AppSecret;
+            var appSecret = FacebookApplication.Current.AppSecret;
 
             var parameterName = this.ParameterName;
             if (string.IsNullOrEmpty(parameterName))

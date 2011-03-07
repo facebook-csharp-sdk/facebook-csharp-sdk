@@ -255,7 +255,7 @@ namespace Facebook.Web
             if (string.IsNullOrEmpty(cancelUrlPath))
             {
                 // if cancel url path is empty, get settings from default facebook application.
-                cancelUrlPath = FacebookContext.Current.CancelUrlPath;
+                cancelUrlPath = FacebookApplication.Current.CancelUrlPath;
             }
 
             if (!string.IsNullOrEmpty(cancelUrlPath))

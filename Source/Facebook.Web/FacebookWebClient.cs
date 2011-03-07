@@ -7,14 +7,14 @@ namespace Facebook.Web
 {
     public class FacebookWebClient : FacebookClient
     {
-        private FacebookWebRequest m_request;
+        private FacebookWebContext m_request;
 
         public FacebookWebClient()
-            : this(FacebookWebRequest.Current)
+            : this(FacebookWebContext.Current)
         {
         }
 
-        public FacebookWebClient(FacebookWebRequest request)
+        public FacebookWebClient(FacebookWebContext request)
             : base(request.AccessToken)
         {
             this.m_request = request;

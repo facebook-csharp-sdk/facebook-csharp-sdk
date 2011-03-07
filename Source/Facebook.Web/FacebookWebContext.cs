@@ -21,7 +21,7 @@ namespace Facebook.Web
     /// <summary>
     /// Represents the Facebook authorizer class.
     /// </summary>
-    public class FacebookWebRequest
+    public class FacebookWebContext
     {
 
         /// <summary>
@@ -40,20 +40,20 @@ namespace Facebook.Web
         private FacebookSession m_session;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookCanvasRequest"/> class.
+        /// Initializes a new instance of the <see cref="FacebookCanvasContext"/> class.
         /// </summary>
-        public FacebookWebRequest()
-            : this(FacebookContext.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
+        public FacebookWebContext()
+            : this(FacebookApplication.Current, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
-        public FacebookWebRequest(IFacebookApplication settings)
+        public FacebookWebContext(IFacebookApplication settings)
             : this(settings, new HttpContextWrapper(System.Web.HttpContext.Current))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookCanvasRequest"/> class.
+        /// Initializes a new instance of the <see cref="FacebookCanvasContext"/> class.
         /// </summary>
         /// <param name="settings">
         /// The settings.
@@ -61,7 +61,7 @@ namespace Facebook.Web
         /// <param name="httpContext">
         /// The http context.
         /// </param>
-        public FacebookWebRequest(IFacebookApplication settings, HttpContextBase httpContext)
+        public FacebookWebContext(IFacebookApplication settings, HttpContextBase httpContext)
         {
             Contract.Requires(settings != null);
             Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
@@ -75,9 +75,9 @@ namespace Facebook.Web
             this.m_httpContext = httpContext;
         }
 
-        public static FacebookWebRequest Current
+        public static FacebookWebContext Current
         {
-            get { return new FacebookWebRequest(); }
+            get { return new FacebookWebContext(); }
         }
 
         /// <summary>

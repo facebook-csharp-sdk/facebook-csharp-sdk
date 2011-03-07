@@ -71,7 +71,7 @@ namespace Facebook.Web
             var subContext = new FacebookSubscriptionContext
                                  {
                                      HttpContext = new HttpContextWrapper(context),
-                                     FacebookApplication = FacebookContext.Current,
+                                     FacebookApplication = FacebookApplication.Current,
                                  };
 
             this.OnVerifying(subContext);

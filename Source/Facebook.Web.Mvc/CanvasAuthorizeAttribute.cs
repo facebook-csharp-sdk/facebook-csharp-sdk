@@ -27,11 +27,11 @@ namespace Facebook.Web.Mvc
 
         public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            var authorizer = new FacebookWebRequest(settings, filterContext.HttpContext);
+            var authorizer = new FacebookWebContext(settings, filterContext.HttpContext);
 
             if (!authorizer.IsAuthorized(this.Permissions))
             {
-                this.HandleUnauthorizedRequest(filterContext, FacebookContext.Current);
+                this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
             }
         }
 

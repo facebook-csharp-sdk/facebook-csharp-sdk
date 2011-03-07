@@ -223,8 +223,8 @@ namespace Facebook
         /// <param name="appSecret">
         /// The app secret.
         /// </param>
-        /// <param name="httpRequest">
-        /// The http request.
+        /// <param name="httpContext">
+        /// The http context.
         /// </param>
         /// <returns>
         /// Returns the facebook session if found, otherwise null.
@@ -243,8 +243,8 @@ namespace Facebook
         /// <param name="appSecret">
         /// The app secret.
         /// </param>
-        /// <param name="httpRequest">
-        /// The http request.
+        /// <param name="httpContext">
+        /// The http context.
         /// </param>
         /// <returns>
         /// Returns the facebook session if found, otherwise null.
