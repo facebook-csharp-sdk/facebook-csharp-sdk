@@ -67,6 +67,7 @@ namespace Facebook
         {
             return GetLoginUrl(null);
         }
+
         /// <summary>
         /// Gets the login uri.
         /// </summary>
@@ -246,9 +247,6 @@ namespace Facebook
         /// <param name="code">
         /// The code to exchange.
         /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
         /// <returns>
         /// Returns the access token or expires if exists.
         /// </returns>
@@ -382,12 +380,6 @@ namespace Facebook
         /// <summary>
         /// Get the application access token asynchronously.
         /// </summary>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
         /// <example>
         /// <code>
         ///  var oauth = new FacebookOAuthClient { ClientId = "{appid}", ClientSecret = "{appsecret}" };

@@ -285,7 +285,6 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
@@ -299,7 +298,6 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -314,9 +312,9 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
+        /// <param name="userToken">user state.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
         public void DeleteAsync(string path, IDictionary<string, object> parameters, object userToken)
@@ -329,7 +327,6 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         /// <exception cref="Facebook.FacebookApiException" />
@@ -343,7 +340,6 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -358,7 +354,6 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -374,7 +369,6 @@ namespace Facebook
         /// Make an API call.
         /// </summary>
         /// <param name="parameters">object of url parameters.</param>
-        /// <param name="callback">The async callback.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         public void GetAsync(IDictionary<string, object> parameters)
         {
@@ -386,7 +380,6 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -401,7 +394,6 @@ namespace Facebook
         /// <summary>
         /// Make an api call.
         /// </summary>
-        /// <param name="callback">The async callback.</param>
         /// <param name="path">The path of the url to call such as 'me/friends'.</param>
         /// <param name="parameters">object of url parameters.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
@@ -417,7 +409,6 @@ namespace Facebook
         /// Make an API call.
         /// </summary>
         /// <param name="parameters">object of url parameters.</param>
-        /// <param name="callback">The async callback.</param>
         /// <returns>A dynamic object with the resulting data.</returns>
         public void PostAsync(IDictionary<string, object> parameters)
         {
@@ -435,12 +426,6 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        /// <param name="callback">
-        /// The async callback.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
         public void PostAsync(string path, object parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -457,12 +442,6 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        /// <param name="callback">
-        /// The async callback.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
         public void PostAsync(string path, object parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -476,12 +455,6 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        /// <param name="callback">
-        /// The async callback.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
         public void PostAsync(object parameters)
         {
             Contract.Requires(parameters != null);
@@ -492,6 +465,7 @@ namespace Facebook
         #endregion
 
 #if (!SILVERLIGHT)
+
         /// <summary>
         /// Executes a FQL query.
         /// </summary>
@@ -545,12 +519,6 @@ namespace Facebook
         /// <param name="fql">
         /// The FQL query.
         /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
         public void QueryAsync(string fql)
         {
             Contract.Requires(!String.IsNullOrEmpty(fql));
@@ -567,12 +535,6 @@ namespace Facebook
         /// </summary>
         /// <param name="fql">
         /// The FQL queries.
-        /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <param name="state">
-        /// The state.
         /// </param>
         public void QueryAsync(string[] fql)
         {
@@ -838,7 +800,6 @@ namespace Facebook
         /// <param name="uri">The request uri.</param>
         /// <param name="parameters">The request parameters.</param>
         /// <param name="httpMethod">The http method.</param>
-        /// <param name="accessToken">The access token.</param>
         /// <param name="requestUrl">The outputted request uri.</param>
         /// <param name="contentType">The request content type.</param>
         /// <returns>The request post data.</returns>

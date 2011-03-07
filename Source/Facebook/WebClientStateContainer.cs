@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Facebook
+﻿namespace Facebook
 {
+    using System;
+
     internal class WebClientStateContainer
     {
         public object UserState { get; set; }

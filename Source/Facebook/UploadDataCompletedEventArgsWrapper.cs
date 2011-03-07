@@ -10,7 +10,7 @@ namespace Facebook
         public UploadDataCompletedEventArgsWrapper(Exception error, bool cancelled, object userState, byte[] result)
             : base(error, cancelled, userState)
         {
-            result = result;
+            _result = result;
         }
 
         public byte[] Result
