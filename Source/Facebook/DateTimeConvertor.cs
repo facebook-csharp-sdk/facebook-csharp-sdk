@@ -44,7 +44,7 @@ namespace Facebook
         [Obsolete("Use double overload instead.")]
         public static DateTime FromUnixTime(long unixTime)
         {
-            return Epoch.AddSeconds((double)unixTime);
+            return Epoch.AddSeconds(unixTime);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Facebook
         public static double ToUnixTime(DateTime dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Facebook
         public static double ToUnixTime(DateTimeOffset dateTime)
         {
             Contract.Requires(dateTime >= Epoch);
-            return (double)(dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
         /// <summary>

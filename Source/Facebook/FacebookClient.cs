@@ -26,7 +26,10 @@ namespace Facebook
     /// </summary>
     public class FacebookClient : IDisposable
     {
-        internal IWebClient WebClient = new WebClientWrapper();
+        /// <summary>
+        /// The web current client.
+        /// </summary>
+        private IWebClient _webClient = new WebClientWrapper();
 
         //private bool _isBeta = FacebookApplication.Current.UseFacebookBeta;
 
@@ -49,8 +52,19 @@ namespace Facebook
             AccessToken = accessToken;
         }
 
+        /// <summary>
+        /// Event handler for delete completion.
+        /// </summary>
         public event EventHandler<FacebookApiEventArgs> DeleteCompleted;
+
+        /// <summary>
+        /// Event handler for post completion.
+        /// </summary>
         public event EventHandler<FacebookApiEventArgs> PostCompleted;
+
+        /// <summary>
+        /// Event handler for get completion.
+        /// </summary>
         public event EventHandler<FacebookApiEventArgs> GetCompleted;
 
         /// <summary>
@@ -67,6 +81,15 @@ namespace Facebook
         //    get { return _isBeta; }
         //    set { _isBeta = value; }
         //}
+
+        /// <summary>
+        /// Gets or sets the web client.
+        /// </summary>
+        internal IWebClient WebClient
+        {
+            get { return _webClient; }
+            set { _webClient = value; }
+        }
 
         /// <summary>
         /// Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
@@ -88,6 +111,7 @@ namespace Facebook
             get
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
+
                 // return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
                 return FacebookUtils.DomainMaps;
             }
@@ -104,8 +128,9 @@ namespace Facebook
         /// The resource path.
         /// </param>
         /// <returns>
-        /// Returns the json result.
+        /// The json result.
         /// </returns>
+        /// <exception cref="Facebook.FacebookApiException" />
         public object Delete(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -114,28 +139,33 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Makes a DELETE Facebook api.
+        /// Makes a DELETE request to the Facebook server.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// The resource path.
         /// </param>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// The result.
+        /// The json result.
         /// </returns>
+        /// <exception cref="Facebook.FacebookApiException" />
         public object Delete(string path, IDictionary<string, object> parameters)
         {
             return Api(path, parameters, HttpMethod.Delete);
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a GET requst to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException"/>
         public object Get(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -144,12 +174,18 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a GET request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Get(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -158,11 +194,15 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a GET request to the Facebook server.
         /// </summary>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Get(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
@@ -171,14 +211,18 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a GET request to the Facebook server.
         /// </summary>
-        /// <typeparam name="T">The result of the API call.</typeparam>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <returns>
-        /// A dynamic object with the resulting data.
-        /// </returns>
+        /// <typeparam name="T">
+        /// The result of the API call.
+        /// </typeparam>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
         /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public T Get<T>(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -187,15 +231,21 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a GET request to the Facebook server.
         /// </summary>
-        /// <typeparam name="T">The result of the API call.</typeparam>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>
-        /// A dynamic object with the resulting data.
-        /// </returns>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <typeparam name="T">
+        /// The result of the API call.
+        /// </typeparam>
         /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public T Get<T>(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -204,11 +254,18 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a GET request to the Facebook server.
         /// </summary>
-        /// <param name="parameters">Dynamic object of the request parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <typeparam name="T">
+        /// The result of the API call.
+        /// </typeparam>
         /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public T Get<T>(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
@@ -217,11 +274,18 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a POST request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The jon result.
+        /// </returns>
         public object Post(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -229,11 +293,17 @@ namespace Facebook
             return Api(path, parameters, HttpMethod.Post);
         }
 
+
         /// <summary>
-        /// Make an api call.
+        /// Makes a POST request to the Facebook server.
         /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Post(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
@@ -241,14 +311,16 @@ namespace Facebook
             return Api(null, parameters, HttpMethod.Post);
         }
 
+
         /// <summary>
-        /// Make an api call.
+        /// Makes a POST request to the Facebook server.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
         /// <returns>
-        /// The result.
+        /// The json result.
         /// </returns>
         public object Post(object parameters)
         {
@@ -258,16 +330,17 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes a POST request to the Facebook server.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// The resource path.
         /// </param>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
         /// <returns>
-        /// The result.
+        /// The json result.
         /// </returns>
         public object Post(string path, object parameters)
         {
@@ -283,11 +356,11 @@ namespace Facebook
         #region Async Get/Post/Delete Methods
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous DELETE request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
         public void DeleteAsync(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -296,12 +369,14 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous DELETE request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
         public void DeleteAsync(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -310,13 +385,17 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous DELETE request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <param name="userToken">user state.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
         public void DeleteAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -325,11 +404,11 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous GET request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
         public void GetAsync(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -338,12 +417,14 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous GET request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
         public void GetAsync(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -352,12 +433,17 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous GET request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
         public void GetAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -366,10 +452,11 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an API call.
+        /// Makes an asynchronous GET request to the Facebook server.
         /// </summary>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
         public void GetAsync(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
@@ -378,12 +465,14 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
         public void PostAsync(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -392,12 +481,17 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an api call.
+        /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
-        /// <param name="path">The path of the url to call such as 'me/friends'.</param>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
-        /// <exception cref="Facebook.FacebookApiException" />
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
         public void PostAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -406,10 +500,11 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an API call.
+        /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
-        /// <param name="parameters">object of url parameters.</param>
-        /// <returns>A dynamic object with the resulting data.</returns>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
         public void PostAsync(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
@@ -418,10 +513,10 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an API call.
+        /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// The resource path.
         /// </param>
         /// <param name="parameters">
         /// The parameters.
@@ -434,13 +529,16 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an API call.
+        /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// The resource path.
         /// </param>
         /// <param name="parameters">
         /// The parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
         /// </param>
         public void PostAsync(string path, object parameters, object userToken)
         {
@@ -450,7 +548,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Make an API call.
+        /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
@@ -472,6 +570,7 @@ namespace Facebook
         /// <param name="fql">
         /// The FQL query.
         /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
         /// <returns>
         /// The FQL query result.
         /// </returns>
@@ -492,6 +591,7 @@ namespace Facebook
         /// <param name="fql">
         /// The FQL queries.
         /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
         /// <returns>
         /// A collection of the FQL query results.
         /// </returns>
@@ -500,6 +600,7 @@ namespace Facebook
             Contract.Requires(fql != null);
 
             var queryDict = new Dictionary<string, object>();
+
             for (int i = 0; i < fql.Length; i++)
             {
                 queryDict.Add(string.Concat("query", i), fql[i]);
@@ -554,6 +655,9 @@ namespace Facebook
             GetAsync(parameters);
         }
 
+        /// <summary>
+        /// Cancels the asynchronous requests to the Facebook server. 
+        /// </summary>
         public void CancelAsync()
         {
             WebClient.CancelAsync();
@@ -690,8 +794,12 @@ namespace Facebook
         /// <summary>
         /// Build the URL for api given parameters.
         /// </summary>
-        /// <param name="method">The method name.</param>
-        /// <returns>The Url for the given parameters.</returns>
+        /// <param name="method">
+        /// The method name.
+        /// </param>
+        /// <returns>
+        /// The Url for the given parameters.
+        /// </returns>
         protected virtual Uri GetApiUrl(string method)
         {
             Contract.Requires(!String.IsNullOrEmpty(method));
@@ -715,8 +823,12 @@ namespace Facebook
         /// <summary>
         /// Build the URL for given domain alias, path and parameters.
         /// </summary>
-        /// <param name="name">The name of the domain (from the domain maps).</param>
-        /// <returns>The string of the url for the given parameters.</returns>
+        /// <param name="name">
+        /// The name of the domain (from the domain maps).
+        /// </param>
+        /// <returns>
+        /// The string of the url for the given parameters.
+        /// </returns>
         protected Uri GetUrl(string name)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
@@ -728,9 +840,15 @@ namespace Facebook
         /// <summary>
         /// Build the URL for given domain alias, path and parameters.
         /// </summary>
-        /// <param name="name">The name of the domain (from the domain maps).</param>
-        /// <param name="path">Path (without a leading slash)</param>
-        /// <returns>The string of the url for the given parameters.</returns>
+        /// <param name="name">
+        /// The name of the domain (from the domain maps).
+        /// </param>
+        /// <param name="path">
+        /// Path (without a leading slash)
+        /// </param>
+        /// <returns>
+        /// The string of the url for the given parameters.
+        /// </returns>
         protected Uri GetUrl(string name, string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
@@ -742,9 +860,15 @@ namespace Facebook
         /// <summary>
         /// Build the URL for given domain alias, path and parameters.
         /// </summary>
-        /// <param name="name">The name of the domain (from the domain maps).</param>
-        /// <param name="parameters">Optional query parameters</param>
-        /// <returns>The string of the url for the given parameters.</returns>
+        /// <param name="name">
+        /// The name of the domain (from the domain maps).
+        /// </param>
+        /// <param name="parameters">
+        /// Optional query parameters
+        /// </param>
+        /// <returns>
+        /// The string of the url for the given parameters.
+        /// </returns>
         protected Uri GetUrl(string name, IDictionary<string, object> parameters)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
@@ -756,10 +880,18 @@ namespace Facebook
         /// <summary>
         /// Build the URL for given domain alias, path and parameters.
         /// </summary>
-        /// <param name="name">The name of the domain (from the domain maps).</param>
-        /// <param name="path">Optional path (without a leading slash)</param>
-        /// <param name="parameters">Optional query parameters</param>
-        /// <returns>The string of the url for the given parameters.</returns>
+        /// <param name="name">
+        /// The name of the domain (from the domain maps).
+        /// </param>
+        /// <param name="path">
+        /// Optional path (without a leading slash)
+        /// </param>
+        /// <param name="parameters">
+        /// Optional query parameters
+        /// </param>
+        /// <returns>
+        /// The string of the url for the given parameters.
+        /// </returns>
         internal virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
@@ -797,12 +929,24 @@ namespace Facebook
         /// <summary>
         /// Builds the request post data and request uri based on the given parameters.
         /// </summary>
-        /// <param name="uri">The request uri.</param>
-        /// <param name="parameters">The request parameters.</param>
-        /// <param name="httpMethod">The http method.</param>
-        /// <param name="requestUrl">The outputted request uri.</param>
-        /// <param name="contentType">The request content type.</param>
-        /// <returns>The request post data.</returns>
+        /// <param name="uri">
+        /// The request uri.
+        /// </param>
+        /// <param name="parameters">
+        /// The request parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method.
+        /// </param>
+        /// <param name="requestUrl">
+        /// The outputted request uri.
+        /// </param>
+        /// <param name="contentType">
+        /// The request content type.
+        /// </param>
+        /// <returns>
+        /// The request post data.
+        /// </returns>
         internal static byte[] BuildRequestData(Uri uri, IDictionary<string, object> parameters, HttpMethod httpMethod, out Uri requestUrl, out string contentType)
         {
             Contract.Requires(uri != null);
@@ -855,9 +999,15 @@ namespace Facebook
         /// Builds the request post data if the request contains a media object
         /// such as an image or video to upload.
         /// </summary>
-        /// <param name="parameters">The request parameters.</param>
-        /// <param name="boundary">The multipart form request boundary.</param>
-        /// <returns>The request post data.</returns>
+        /// <param name="parameters">
+        /// The request parameters.
+        /// </param>
+        /// <param name="boundary">
+        /// The multipart form request boundary.
+        /// </param>
+        /// <returns>
+        /// The request post data.
+        /// </returns>
         internal static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, string boundary)
         {
             FacebookMediaObject mediaObject = null;
@@ -943,12 +1093,10 @@ namespace Facebook
 
         public void Dispose()
         {
-#if !SILVERLIGHT
             if (WebClient != null)
             {
                 WebClient.Dispose();
             }
-#endif
         }
 
         internal void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e)
