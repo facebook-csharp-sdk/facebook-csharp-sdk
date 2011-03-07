@@ -15,8 +15,10 @@ namespace Mvc3Website.Controllers
     public class AccountController : Controller
     {
 #if DEBUG
+        const string logoffUrl = "http://localhost:5000/";
         const string redirectUrl = "http://localhost:5000/account/oauth/";
 #else
+        const string logoffUrl = "http://www.example.com/";
         const string redirectUrl = "http://www.example.com/account/oauth/";
 #endif
 
@@ -38,8 +40,16 @@ namespace Mvc3Website.Controllers
             DateTime expiresOn = tokenResult.expires;
 
             FacebookClient fbClient = new FacebookClient(accessToken);
-            dynamic me = fbClient.Get("me?fields=id,name,first_name,last_name");
+            dynamic me = fbClient.Get("me?fields=id,name");
             long facebookId = Convert.ToInt64(me.id);
+
+            InMemoryUserStore.Add(new FacebookUser
+            {
+                AccessToken = accessToken,
+                Expires = expiresOn,
+                FacebookId = facebookId,
+                Name = (string)me.name,
+            });
 
             FormsAuthentication.SetAuthCookie(facebookId.ToString(), false);
             return Redirect(state);
@@ -48,7 +58,10 @@ namespace Mvc3Website.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-            return Redirect("/");
+            var oAuthClient = new FacebookOAuthClient();
+            oAuthClient.RedirectUri = new Uri(logoffUrl);
+            var logoutUrl = oAuthClient.GetLogoutUrl();
+            return Redirect(logoutUrl.ToString());
         }
 
     }

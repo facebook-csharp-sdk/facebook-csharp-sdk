@@ -209,25 +209,7 @@ namespace Facebook.Web
             return isAuthorized;
         }
 
-        /// <summary>
-        /// Deletes all Facebook authentication cookies found in the current request.
-        /// </summary>
-        public void DeleteAuthCookie()
-        {
-            string sessionCookieName = FacebookSession.GetCookieName(this.Settings.AppId);
-            foreach (var cookieName in this.HttpContext.Request.Cookies.AllKeys)
-            {
-                if (cookieName == sessionCookieName)
-                {
-                    var cookie = this.HttpContext.Request.Cookies[sessionCookieName];
-                    cookie.Expires = DateTime.UtcNow.AddDays(-1);
-                    cookie.Value = null;
-                    this.HttpContext.Response.Cookies.Set(cookie);
-                }
-            }
-        }
-
-        /// <summary>
+                /// <summary>
         /// Check if the Facebook App has permissions from the specified user.
         /// </summary>
         /// <param name="appId">
@@ -317,6 +299,26 @@ namespace Facebook.Web
 
             return HasPermissions(appId, appSecret, userId, new[] { permission }).Length == 1;
         }
+
+
+        /// <summary>
+        /// Deletes all Facebook authentication cookies found in the current request.
+        /// </summary>
+        public void DeleteAuthCookie()
+        {
+            string sessionCookieName = FacebookSession.GetCookieName(this.Settings.AppId);
+            foreach (var cookieName in this.HttpContext.Request.Cookies.AllKeys)
+            {
+                if (cookieName == sessionCookieName)
+                {
+                    var cookie = this.HttpContext.Request.Cookies[sessionCookieName];
+                    cookie.Expires = DateTime.UtcNow.AddDays(-1);
+                    cookie.Value = null;
+                    this.HttpContext.Response.Cookies.Set(cookie);
+                }
+            }
+        }
+
 
         /// <summary>
         /// The code contracts invariant object method.
