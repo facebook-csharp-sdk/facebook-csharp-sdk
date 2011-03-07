@@ -24,8 +24,8 @@ namespace Facebook.Web.Mvc
         [System.Obsolete("Perms is marked for removal in future version. Use Permissions instead.")]
         public string Perms
         {
-            get { return this.Permissions; }
-            set { this.Permissions = value; }
+            get { return Permissions; }
+            set { Permissions = value; }
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Facebook.Web.Mvc
         /// <param name="filterContext">The filter context.</param>
         public virtual void OnAuthorization(AuthorizationContext filterContext)
         {
-            this.OnAuthorization(filterContext, FacebookApplication.Current);
+            OnAuthorization(filterContext, FacebookApplication.Current);
         }
 
         public abstract void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication);
@@ -50,22 +50,22 @@ namespace Facebook.Web.Mvc
             // redirect to facebook login
             var oauth = new FacebookOAuthClientAuthorizer
             {
-                ClientId = this.AppId,
-                ClientSecret = this.AppSecret,
+                ClientId = AppId,
+                ClientSecret = AppSecret,
                 // set the redirect_uri
             };
 
             var parameters = new Dictionary<string, object>();
-            parameters["display"] = this.LoginDisplayMode;
+            parameters["display"] = LoginDisplayMode;
 
-            if (!string.IsNullOrEmpty(this.Perms))
+            if (!string.IsNullOrEmpty(Perms))
             {
-                parameters["scope"] = this.Perms;
+                parameters["scope"] = Perms;
             }
 
-            if (!string.IsNullOrEmpty(this.State))
+            if (!string.IsNullOrEmpty(State))
             {
-                parameters["state"] = this.State;
+                parameters["state"] = State;
             }
 
             var loginUrl = oauth.GetLoginUri(parameters);

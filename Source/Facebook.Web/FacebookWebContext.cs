@@ -182,7 +182,7 @@ namespace Facebook.Web
         /// </returns>
         public virtual bool HasPermission(string permission)
         {
-            return this.HasPermissions(new[] { permission }).Length == 1;
+            return HasPermissions(new[] { permission }).Length == 1;
         }
 
         public bool IsAuthenticated()
@@ -220,28 +220,7 @@ namespace Facebook.Web
             return isAuthorized;
         }
 
-        /// <summary>
-        /// Deletes all Facebook authentication cookies found in the current request.
-        /// </summary>
-        public void DeleteAuthCookie()
-        {
-            string sessionCookieName = FacebookSession.GetCookieName(this.Settings.AppId);
-            foreach (var cookieName in this.HttpContext.Request.Cookies.AllKeys)
-            {
-                if (cookieName == sessionCookieName)
-                {
-                    var cookie = this.HttpContext.Request.Cookies[sessionCookieName];
-                    if (cookie != null)
-                    {
-                        cookie.Expires = DateTime.UtcNow.AddDays(-1);
-                        cookie.Value = null;
-                        HttpContext.Response.Cookies.Set(cookie);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
+                /// <summary>
         /// Check if the Facebook App has permissions from the specified user.
         /// </summary>
         /// <param name="appId">
@@ -332,19 +311,39 @@ namespace Facebook.Web
             return HasPermissions(appId, appSecret, userId, new[] { permission }).Length == 1;
         }
 
+
+        /// <summary>
+        /// Deletes all Facebook authentication cookies found in the current request.
+        /// </summary>
+        public void DeleteAuthCookie()
+        {
+            string sessionCookieName = FacebookSession.GetCookieName(Settings.AppId);
+            foreach (var cookieName in HttpContext.Request.Cookies.AllKeys)
+            {
+                if (cookieName == sessionCookieName)
+                {
+                    var cookie = HttpContext.Request.Cookies[sessionCookieName];
+                    cookie.Expires = DateTime.UtcNow.AddDays(-1);
+                    cookie.Value = null;
+                    HttpContext.Response.Cookies.Set(cookie);
+                }
+            }
+        }
+
+
         /// <summary>
         /// The code contracts invariant object method.
         /// </summary>
         [ContractInvariantMethod]
         private void InvarientObject()
         {
-            Contract.Invariant(this._facebookApplication != null);
-            Contract.Invariant(this._httpContext != null);
-            Contract.Invariant(this._httpContext.Request != null);
-            Contract.Invariant(this._httpContext.Request.Params != null);
-            Contract.Invariant(this.HttpContext.Response != null);
-            Contract.Invariant(this.HttpContext.Request != null);
-            Contract.Invariant(this.HttpContext.Request.Params != null);
+            Contract.Invariant(_facebookApplication != null);
+            Contract.Invariant(_httpContext != null);
+            Contract.Invariant(_httpContext.Request != null);
+            Contract.Invariant(_httpContext.Request.Params != null);
+            Contract.Invariant(HttpContext.Response != null);
+            Contract.Invariant(HttpContext.Request != null);
+            Contract.Invariant(HttpContext.Request.Params != null);
         }
     }
 }

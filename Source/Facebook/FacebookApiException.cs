@@ -47,7 +47,7 @@ namespace Facebook
         public FacebookApiException(string message, string errorType)
             : base(message)
         {
-            this.ErrorType = errorType;
+            ErrorType = errorType;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Facebook
         public FacebookApiException(string message, string errorType, Exception innerException)
             : base(message, innerException)
         {
-            this.ErrorType = errorType;
+            ErrorType = errorType;
         }
 
 #if (!SILVERLIGHT)
@@ -103,7 +103,7 @@ namespace Facebook
         /// </PermissionSet>
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", this.ErrorType ?? "Unknown", this.Message);
+            return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", ErrorType ?? "Unknown", Message);
         }
     }
 }

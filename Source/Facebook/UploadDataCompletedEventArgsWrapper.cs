@@ -5,17 +5,17 @@ namespace Facebook
 
     internal class UploadDataCompletedEventArgsWrapper : AsyncCompletedEventArgs
     {
-        private readonly byte[] result;
+        private readonly byte[] _result;
 
         public UploadDataCompletedEventArgsWrapper(Exception error, bool cancelled, object userState, byte[] result)
             : base(error, cancelled, userState)
         {
-            this.result = result;
+            result = result;
         }
 
         public byte[] Result
         {
-            get { return this.result; }
+            get { return _result; }
         }
     }
 }

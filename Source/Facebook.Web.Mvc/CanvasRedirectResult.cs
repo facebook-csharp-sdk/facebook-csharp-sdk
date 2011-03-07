@@ -35,7 +35,7 @@ namespace Facebook.Web.Mvc
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> parameter is null.</exception>
         public override void ExecuteResult(ControllerContext context)
         {
-            var content = CanvasUrlBuilder.GetCanvasRedirectHtml(new Uri(this.Url));
+            var content = CanvasUrlBuilder.GetCanvasRedirectHtml(new Uri(Url));
 
             context.Controller.TempData.Keep();
 

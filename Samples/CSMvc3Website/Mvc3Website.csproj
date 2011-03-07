@@ -74,7 +74,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\FacebookPrincipal.cs" />
     <Compile Include="Models\FacebookUser.cs" />
     <Compile Include="Models\InMemoryUserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

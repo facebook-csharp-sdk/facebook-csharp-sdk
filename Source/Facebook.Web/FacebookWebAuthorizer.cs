@@ -52,21 +52,15 @@
         /// </summary>
         public string State { get; set; }
 
-
-        public bool Authorize()
-        {
-            return Authorize(null);
-        }
-
         /// <summary>
         /// Authorizes the user if the user is not logged in or the application does not have all the sepcified permissions.
         /// </summary>
         /// <returns>
         /// Return true if the user is authenticated and the application has all the specified permissions.
         /// </returns>
-        public bool Authorize(params string[] permissions)
+        public bool Authorize()
         {
-            var isAuthorized = _request.IsAuthorized(permissions);
+            var isAuthorized = _request.IsAuthorized(Permissions);
 
             if (!isAuthorized)
             {
