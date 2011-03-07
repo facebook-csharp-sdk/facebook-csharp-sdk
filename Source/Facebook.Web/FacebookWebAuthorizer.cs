@@ -12,13 +12,13 @@ namespace Facebook.Web
         private FacebookWebContext m_request;
 
         public FacebookWebAuthorizer() :
-            this(new FacebookWebContext())
+            this(FacebookWebContext.Current)
         {
         }
 
-        public FacebookWebAuthorizer(FacebookWebContext request)
+        public FacebookWebAuthorizer(FacebookWebContext context)
         {
-            this.m_request = request;
+            this.m_request = context;
         }
 
         public FacebookWebAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
