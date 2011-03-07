@@ -16,7 +16,7 @@ namespace Facebook.Tests.FacebookOAuthClient.GetLoginUrl
             parameters["client_id"] = "dummy client id";
             parameters["redirect_uri"] = null;
 
-            Assert.Throws<InvalidOperationException>(() => oauth.GetLoginUrl(parameters));
+            Assert.Throws<ArgumentException>(() => oauth.GetLoginUrl(parameters));
         }
 
         [Fact]

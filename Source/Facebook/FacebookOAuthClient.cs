@@ -130,7 +130,7 @@ namespace Facebook
         /// </returns>
         public Uri GetLogoutUrl()
         {
-            return GetLoginUrl(null);
+            return GetLogoutUrl(null);
         }
 
         /// <summary>
@@ -152,6 +152,15 @@ namespace Facebook
             defaultParams["next"] = RedirectUri ?? new Uri("http://www.facebook.com");
 
             var mergedParameters = FacebookUtils.Merge(defaultParams, parameters);
+
+            if (mergedParameters["next"] == null)
+            {
+                mergedParameters.Remove("next");
+            }
+            else
+            {
+                mergedParameters["next"] = mergedParameters["next"].ToString();
+            }
 
             uriBuilder.Query = FacebookUtils.ToJsonQueryString(mergedParameters);
 
@@ -241,7 +250,7 @@ namespace Facebook
 #if !SILVERLIGHT
         // Silverlight should have only async calls
 
-                /// <summary>
+        /// <summary>
         /// Gets the access token by exchanging the code.
         /// </summary>
         /// <param name="code">

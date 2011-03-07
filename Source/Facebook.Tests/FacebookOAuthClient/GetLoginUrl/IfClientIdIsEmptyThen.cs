@@ -10,7 +10,7 @@ namespace Facebook.Tests.FacebookOAuthClient.GetLoginUrl
         public void ItShouldThrowInvalidOperationException()
         {
             var oauth = new FacebookOAuthClient();
-            Assert.Throws<InvalidOperationException>(() => oauth.GetLoginUrl(null));
+            Assert.Throws<ArgumentException>(() => oauth.GetLoginUrl(null));
         }
 
         [Fact]
