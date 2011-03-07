@@ -121,11 +121,11 @@
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
+    <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookAsyncResult.Compatibility.cs" />
     <Compile Include="FacebookClient.Compatibility.cs" />
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
-    <Compile Include="FacebookContext.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthClient.cs" />
     <Compile Include="FacebookOAuthException.cs" />
@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
+    <Compile Include="WebClientStateContainer.cs" />
     <Compile Include="WebClientWrapper.cs" />
     <Compile Include="WebExceptionWrapper.cs" />
   </ItemGroup>

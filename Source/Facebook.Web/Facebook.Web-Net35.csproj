@@ -117,7 +117,7 @@
     <Compile Include="CanvasUrlBuilder.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs" />
     <Compile Include="FacebookCanvasAuthorizer.cs" />
-    <Compile Include="FacebookHttpRequest.cs" />
+    <Compile Include="FacebookCanvasContext.cs" />
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="FacebookSubscriptionsHttpHandler.cs">
@@ -126,6 +126,7 @@
     <Compile Include="FacebookSubscriptionVerifier.cs" />
     <Compile Include="FacebookWebAuthorizer.cs" />
     <Compile Include="FacebookWebClient.cs" />
+    <Compile Include="FacebookWebContext.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
