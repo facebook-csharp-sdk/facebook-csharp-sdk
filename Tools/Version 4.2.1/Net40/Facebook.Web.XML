@@ -1,0 +1,302 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Facebook.Web</name>
+  </assembly>
+  <members>
+    <member name="M:Facebook.Web.Authorizer.InvarientObject">
+      <summary>
+            The code contracts invarient object method.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.Authorizer.Perms">
+      <summary>
+            Gets or sets the extended permissions.
+            </summary>
+      <value>The permissions required.</value>
+    </member>
+    <member name="P:Facebook.Web.Authorizer.CancelUrlPath">
+      <summary>
+            Gets or sets the cancel URL path.
+            </summary>
+      <value>The cancel URL path.</value>
+    </member>
+    <member name="P:Facebook.Web.Authorizer.ReturnUrlPath">
+      <summary>
+            Gets or sets the return URL path.
+            </summary>
+      <value>The return URL path.</value>
+    </member>
+    <member name="T:Facebook.Web.CanvasConfigurationSettings">
+      <summary>
+            Represents the cansvas configuration section.
+            </summary>
+    </member>
+    <member name="T:Facebook.Web.ICanvasSettings">
+      <summary>
+            Represents the Facebook application's canvas settings.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.ICanvasSettings.CanvasPageUrl">
+      <summary>
+            The base url of your application on Facebook.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.ICanvasSettings.CanvasUrl">
+      <summary>
+            Facebook pulls the content for your application's 
+            canvas pages from this base url.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.ICanvasSettings.AuthorizeCancelUrl">
+      <summary>
+            The url to return the user after they
+            cancel authorization.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.CanvasConfigurationSettings.CanvasPageUrl">
+      <summary>
+            The base url of your application on Facebook.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.CanvasConfigurationSettings.CanvasUrl">
+      <summary>
+            Facebook pulls the content for your application's 
+            canvas pages from this base url.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.CanvasConfigurationSettings.AuthorizeCancelUrl">
+      <summary>
+            The url to return the user after they
+            cancel authorization.
+            </summary>
+    </member>
+    <member name="T:Facebook.Web.CanvasSettings">
+      <summary>
+            Represents the Facebook application's canvas settings.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.CanvasSettings.CanvasPageUrl">
+      <summary>
+            The base url of your application on Facebook.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.CanvasSettings.CanvasUrl">
+      <summary>
+            Facebook pulls the content for your application's 
+            canvas pages from this base url.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.CanvasSettings.AuthorizeCancelUrl">
+      <summary>
+            The url to return the user after they
+            cancel authorization.
+            </summary>
+    </member>
+    <member name="P:Facebook.Web.CanvasSettings.Current">
+      <summary>
+            Gets the FacebookSettings stored in the configuration file.
+            </summary>
+    </member>
+    <member name="T:Facebook.Web.CanvasUrlBuilder">
+      <summary>
+            Provides a tool for building and retreiving Facebook canvas uniform resource identifiers (URIs).
+            </summary>
+      <invariant>request != null</invariant>
+      <invariant>request.Headers != null</invariant>
+      <invariant>request.Url != null</invariant>
+      <invariant>canvasSettings != null</invariant>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.#ctor(System.Web.HttpRequestBase)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Facebook.Web.CanvasUrlBuilder" /> class.
+            </summary>
+      <param name="request">The request.</param>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.#ctor(System.Web.HttpRequestBase,Facebook.Web.ICanvasSettings)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Facebook.Web.CanvasUrlBuilder" /> class.
+            </summary>
+      <param name="request">The request.</param>
+      <param name="canvasSettings">The canvas settings.</param>
+      <requires>request != null</requires>
+      <requires>request.Url != null</requires>
+      <requires>request.Headers != null</requires>
+      <requires>canvasSettings != null</requires>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.GetCanvasRedirectHtml(System.Uri)">
+      <summary>
+            Gets the canvas redirect HTML.
+            </summary>
+      <param name="url">The URL.</param>
+      <returns />
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.GetCanvasRedirectHtml(System.String)">
+      <summary>
+            Gets the canvas redirect HTML.
+            </summary>
+      <param name="url">The URL.</param>
+      <returns />
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.GetLoginUrl(Facebook.FacebookAppBase,System.String,System.String,System.String)">
+      <summary>
+            Gets the Facebook login URL.
+            </summary>
+      <param name="facebookApp">The facebook app.</param>
+      <param name="permissions">The permissions.</param>
+      <param name="returnUrlPath">The return URL path.</param>
+      <param name="cancelUrlPath">The cancel URL path.</param>
+      <returns />
+      <requires>facebookApp != null</requires>
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.GetLoginUrl(Facebook.FacebookAppBase,System.String,System.String,System.String,System.Boolean)">
+      <summary>
+            Gets the login url for the current request.
+            </summary>
+      <param name="facebookApp">An instance of FacebookAppBase.</param>
+      <param name="permissions">The comma seperated list of requested permissions.</param>
+      <param name="returnUrlPath">The path to return the user after autheticating.</param>
+      <param name="cancelUrlPath">The path to return the user if they do not authenticate.</param>
+      <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
+      <returns>The cancel url.</returns>
+      <requires>facebookApp != null</requires>
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.BuildAuthCancelUrl">
+      <summary>
+            Builds a Facebook authorization cancel URL.
+            </summary>
+      <returns />
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.BuildAuthCancelUrl(System.String)">
+      <summary>
+            Builds a Facebook authorization cancel URL.
+            </summary>
+      <param name="pathAndQuery">The path and query.</param>
+      <returns />
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.BuildAuthReturnUrl">
+      <summary>
+            Builds a Facebook authorization return URL.
+            </summary>
+      <returns />
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.BuildAuthReturnUrl(System.String)">
+      <summary>
+            Builds a Facebook authorization return URL.
+            </summary>
+      <param name="pathAndQuery">The path and query.</param>
+      <returns />
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.BuildCanvasPageUrl(System.String)">
+      <summary>
+            Builds a Facebook canvas return URL.
+            </summary>
+      <param name="pathAndQuery">The path and query.</param>
+      <returns />
+      <requires>!String.IsNullOrEmpty(pathAndQuery)</requires>
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.CanvasUrlBuilder.BuildAuthReturnUrl(System.String,System.Boolean)">
+      <summary>
+            Builds a Facebook canvas return URL.
+            </summary>
+      <param name="pathAndQuery">The path and query.</param>
+      <param name="cancel">if set to <c>true</c> [cancel].</param>
+      <returns />
+      <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+    </member>
+    <member name="P:Facebook.Web.CanvasUrlBuilder.CanvasUrl">
+      <summary>
+            Gets the URL where Facebook pulls the content 
+            for your application's canvas pages.
+            </summary>
+      <value>The canvas URL.</value>
+    </member>
+    <member name="P:Facebook.Web.CanvasUrlBuilder.CurrentCanvasUrl">
+      <summary>
+            Gets the current URL of your application that Facebook
+            is pulling..
+            </summary>
+      <value>The current canvas URL.</value>
+    </member>
+    <member name="P:Facebook.Web.CanvasUrlBuilder.CurrentCanvasPathAndQuery">
+      <summary>
+            Gets the current Path and query of the application 
+            being pulled by Facebook.
+            </summary>
+      <getter>
+        <ensures>Contract.Result&lt;string&gt;() != null</ensures>
+      </getter>
+    </member>
+    <member name="P:Facebook.Web.CanvasUrlBuilder.CanvasPage">
+      <summary>
+            Gets the base url of your application on Facebook.
+            </summary>
+      <getter>
+        <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+      </getter>
+    </member>
+    <member name="P:Facebook.Web.CanvasUrlBuilder.CurrentCanvasPage">
+      <summary>
+            Gets the current url of the application on facebook.
+            </summary>
+      <getter>
+        <ensures>Contract.Result&lt;Uri&gt;() != null</ensures>
+      </getter>
+    </member>
+    <member name="P:Facebook.Web.CanvasUrlBuilder.CanvasPageApplicationPath">
+      <summary>
+            The Facebook Application Path.
+            </summary>
+      <getter>
+        <ensures>!String.IsNullOrEmpty(Contract.Result&lt;string&gt;())</ensures>
+      </getter>
+    </member>
+    <member name="T:Facebook.Web.FacebookAppRedirectHttpHandler">
+      <summary>
+            Represents the redirector used after a Facebook canvas authorization.
+            </summary>
+    </member>
+    <member name="M:Facebook.Web.FacebookAppRedirectHttpHandler.ProcessRequest(System.Web.HttpContext)">
+      <summary>
+            Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler" /> interface.
+            </summary>
+      <param name="context">An <see cref="T:System.Web.HttpContext" /> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
+    </member>
+    <member name="P:Facebook.Web.FacebookAppRedirectHttpHandler.IsReusable">
+      <summary>
+            Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler" /> instance.
+            </summary>
+      <value />
+      <returns>true if the <see cref="T:System.Web.IHttpHandler" /> instance is reusable; otherwise, false.</returns>
+    </member>
+    <member name="T:Facebook.Web.Authorizer">
+      <invariant>this.FacebookApp != null</invariant>
+    </member>
+    <member name="M:Facebook.Web.Authorizer.Authorize">
+      <requires>HttpContext.Current != null</requires>
+    </member>
+    <member name="M:Facebook.Web.Authorizer.HasPermissions(System.String[])">
+      <requires>permissions != null</requires>
+      <ensures>Contract.Result&lt;string[]&gt;() != null</ensures>
+    </member>
+    <member name="M:Facebook.Web.Authorizer.Authorize(System.Web.HttpContext)">
+      <requires>httpContext != null</requires>
+    </member>
+    <member name="M:Facebook.Web.Authorizer.Authorize(System.Web.HttpContextBase)">
+      <requires>httpContext != null</requires>
+    </member>
+    <member name="M:Facebook.Web.Authorizer.#ctor(Facebook.FacebookAppBase)">
+      <requires>facebookApp != null</requires>
+    </member>
+    <member name="M:Facebook.Web.CanvasAuthorizer.#ctor(Facebook.FacebookAppBase,Facebook.Web.ICanvasSettings)">
+      <requires>canvasSettings != null</requires>
+    </member>
+  </members>
+</doc>

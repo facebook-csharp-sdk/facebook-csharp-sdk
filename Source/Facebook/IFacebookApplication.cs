@@ -47,6 +47,7 @@ namespace Facebook
         /// <summary>
         /// Gets a value indicating whether it is beta.
         /// </summary>
-        bool IsBeta { get; }
+        bool UseFacebookBeta { get; }
+
     }
 }

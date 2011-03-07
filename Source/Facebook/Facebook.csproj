@@ -149,6 +149,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
+    <Compile Include="WebClientStateContainer.cs" />
     <Compile Include="WebClientWrapper.cs" />
     <Compile Include="WebExceptionWrapper.cs" />
   </ItemGroup>

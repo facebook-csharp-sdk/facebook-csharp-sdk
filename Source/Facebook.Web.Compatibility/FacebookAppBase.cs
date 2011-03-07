@@ -20,7 +20,7 @@ namespace Facebook
     /// <summary>
     /// Represents the core Facebook functionality.
     /// </summary>
-    [Obsolete("Use FacebookWebClient instead.")]
+    [Obsolete("Use Facebook.Web.FacebookWebClient instead.")]
     [ContractClass(typeof(FacebookAppBaseContracts))]
     [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public abstract class FacebookAppBase

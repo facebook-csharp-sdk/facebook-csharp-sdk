@@ -17,7 +17,7 @@ namespace Facebook.Web.Mvc
 
         public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication)
         {
-            var authorizer = new FacebookHttpRequest(facebookApplication, filterContext.HttpContext);
+            var authorizer = new FacebookWebRequest(facebookApplication, filterContext.HttpContext);
 
             if (!authorizer.IsAuthorized(this.Permissions))
             {

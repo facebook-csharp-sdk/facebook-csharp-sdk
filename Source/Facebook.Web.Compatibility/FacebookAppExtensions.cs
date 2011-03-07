@@ -17,7 +17,7 @@ namespace Facebook
     /// <summary>
     /// Extension methods that add non-standard funcationality to the FacebookAppBase object.
     /// </summary>
-    [Obsolete]
+    [Obsolete("Use Facebook.Web.FacebookWebClient instead.")]
     [TypeForwardedFrom("Facebook, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public static class FacebookAppExtensions
     {

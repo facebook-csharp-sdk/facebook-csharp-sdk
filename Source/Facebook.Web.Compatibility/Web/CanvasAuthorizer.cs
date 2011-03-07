@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace Facebook.Web
 {
-    [Obsolete]
+    [Obsolete("Use Facebook.Web.FacebookCanvasAuthorizer")]
     [TypeForwardedFrom("Facebook.Web, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public class CanvasAuthorizer : Authorizer
     {

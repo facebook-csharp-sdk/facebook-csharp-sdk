@@ -263,7 +263,7 @@ namespace Facebook
             string contentType;
             byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
 
-            var tempState = new WebClientTempState
+            var tempState = new WebClientStateContainer
             {
                 UserState = state,
                 Method = httpMethod,
@@ -274,7 +274,7 @@ namespace Facebook
             webClient.UploadDataCompleted +=
                 (o, e) =>
                 {
-                    var st = (WebClientTempState)e.UserState;
+                    var st = (WebClientStateContainer)e.UserState;
                     FacebookApiEventArgs args;
                     HttpMethod method;
 
@@ -293,7 +293,7 @@ namespace Facebook
             webClient.DownloadDataCompleted +=
                 (o, e) =>
                 {
-                    var st = (WebClientTempState)e.UserState;
+                    var st = (WebClientStateContainer)e.UserState;
                     FacebookApiEventArgs args;
                     HttpMethod method;
 
@@ -347,7 +347,7 @@ namespace Facebook
             string contentType;
             byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
 
-            var tempState = new WebClientTempState
+            var tempState = new WebClientStateContainer
             {
                 UserState = state,
                 Method = httpMethod,
@@ -358,7 +358,7 @@ namespace Facebook
             webClient.UploadDataCompleted +=
                 (o, e) =>
                 {
-                    var st = (WebClientTempState)e.UserState;
+                    var st = (WebClientStateContainer)e.UserState;
                     FacebookApiEventArgs args;
                     HttpMethod method;
 
@@ -377,7 +377,7 @@ namespace Facebook
             webClient.DownloadDataCompleted +=
                 (o, e) =>
                 {
-                    var st = (WebClientTempState)e.UserState;
+                    var st = (WebClientStateContainer)e.UserState;
                     FacebookApiEventArgs args;
                     HttpMethod method;
 

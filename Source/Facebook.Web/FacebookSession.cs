@@ -231,32 +231,60 @@ namespace Facebook
         /// </returns>
         internal static FacebookSession GetSession(string appId, string appSecret, HttpContextBase httpContext)
         {
+            return GetSession(appId, appSecret, httpContext, null);
+        }
+
+        /// <summary>
+        ///  Gets the facebook session from the http request.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The app secret.
+        /// </param>
+        /// <param name="httpRequest">
+        /// The http request.
+        /// </param>
+        /// <returns>
+        /// Returns the facebook session if found, otherwise null.
+        /// </returns>
+        internal static FacebookSession GetSession(string appId, string appSecret, HttpContextBase httpContext, FacebookSignedRequest signedRequest)
+        {
             Contract.Requires(!string.IsNullOrEmpty(appId));
             Contract.Requires(!string.IsNullOrEmpty(appSecret));
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Request != null);
             Contract.Requires(httpContext.Request.Params != null);
 
+            // If the session is not null, we explicitly DO NOT want to 
+            // read from the cookie. Cookies in iFrames == BAD
+            bool readSessionFromCookie = signedRequest == null;
 
             FacebookSession facebookSession = null;
             var httpRequest = httpContext.Request;
             var items = httpContext.Items;
             if (items[HttpContextKey] == null)
             {
-
-                // try creating session from signed_request if exists.
-                var signedRequest = FacebookSignedRequest.GetSignedRequest(appSecret, httpContext);
-
-                if (signedRequest != null)
+                if (signedRequest == null)
                 {
-                    facebookSession = FacebookSession.Create(appSecret, signedRequest);
+                    // try creating session from signed_request if exists.
+                    signedRequest = FacebookSignedRequest.GetSignedRequest(appSecret, httpContext);
+
+                    if (signedRequest != null)
+                    {
+                        facebookSession = FacebookSession.Create(appSecret, signedRequest);
+                    }
                 }
 
-                // try creating session from cookie if exists.
-                var sessionCookieValue = GetSessionCookieValue(appId, httpRequest);
-                if (!string.IsNullOrEmpty(sessionCookieValue))
+                if (readSessionFromCookie && facebookSession == null)
                 {
-                    facebookSession = FacebookSession.ParseCookieValue(appSecret, sessionCookieValue);
+                    // try creating session from cookie if exists.
+                    var sessionCookieValue = GetSessionCookieValue(appId, httpRequest);
+                    if (!string.IsNullOrEmpty(sessionCookieValue))
+                    {
+                        facebookSession = FacebookSession.ParseCookieValue(appSecret, sessionCookieValue);
+                    }
                 }
 
                 if (facebookSession != null)

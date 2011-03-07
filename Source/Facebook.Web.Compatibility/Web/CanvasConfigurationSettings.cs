@@ -7,7 +7,7 @@ namespace Facebook.Web
     /// <summary>
     /// Represents the cansvas configuration section.
     /// </summary>
-    [Obsolete]
+    [Obsolete("Use Facebook.FacebookConfigurationSettings")]
     [TypeForwardedFrom("Facebook.Web, Version=4.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de")]
     public class CanvasConfigurationSettings : ConfigurationSection, ICanvasSettings
     {

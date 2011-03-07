@@ -216,8 +216,8 @@ namespace Facebook.Web
 
             var oauth = new FacebookOAuthClient
                             {
-                                ClientId = this.settings.AppId,
-                                ClientSecret = this.settings.AppSecret
+                                AppId = this.settings.AppId,
+                                AppSecret = this.settings.AppSecret
                             };
 
             if (parameters != null && parameters.ContainsKey("state"))

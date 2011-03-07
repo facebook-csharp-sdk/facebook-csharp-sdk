@@ -88,7 +88,7 @@ namespace Facebook
 
                 var data = (IDictionary<string, object>)(value is JsonObject ? value : FacebookUtils.ToDictionary(value));
 
-                this.issuedAt = data.ContainsKey("issued_at") ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(data["issued_at"])) : DateTime.MinValue;
+                this.issuedAt = data.ContainsKey("issued_at") ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["issued_at"])) : DateTime.MinValue;
 
                 if (data.ContainsKey("payload"))
                 {
@@ -99,7 +99,7 @@ namespace Facebook
                     {
                         this.accessToken = payload.ContainsKey("access_token") ? (string)payload["access_token"] : null;
                         this.expires = payload.ContainsKey("expires_in")
-                                           ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(payload["expires_in"]))
+                                           ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(payload["expires_in"]))
                                            : DateTime.MinValue;
                         string sUserId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
                         long userId;
@@ -119,7 +119,7 @@ namespace Facebook
 
                     this.accessToken = data.ContainsKey("oauth_token") ? (string)data["oauth_token"] : null;
                     this.expires = data.ContainsKey("expires")
-                                       ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(data["expires"]))
+                                       ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["expires"]))
                                        : DateTime.MinValue;
                     this.profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
                 }
