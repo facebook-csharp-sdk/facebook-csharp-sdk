@@ -7,15 +7,12 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-
-
 namespace Facebook
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.Contracts;
-    using System.Net;
     using System.Text;
 
     /// <summary>
@@ -249,13 +246,16 @@ namespace Facebook
         /// <param name="extendedPermissions">
         /// The extended permissions (scope).
         /// </param>
+        /// <param name="logout">  
+        /// Indicates whether to logout existing logged in user or not.  
+        /// </param>  
         /// <param name="loginParameters">
         /// The login parameters.
         /// </param>
         /// <returns>
         /// The url to navigate.
         /// </returns>
-        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, IDictionary<string, object> loginParameters)
+        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, bool logout, IDictionary<string, object> loginParameters)
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -277,263 +277,49 @@ namespace Facebook
 
             var loginUrl = oauth.GetLoginUrl(mergedLoginParameters);
 
-            return loginUrl;
-        }
-
-        #endregion
-
-        /*
-#if !SILVERLIGHT
-        // Silverlight should have only async calls
-
-        /// <summary>
-        /// Gets the access token by exchanging the code.
-        /// </summary>
-        /// <param name="code">
-        /// The code to exchange.
-        /// </param>
-        /// <returns>
-        /// Returns the access token or expires if exists.
-        /// </returns>
-        public object ExchangeCodeForAccessToken(string code)
-        {
-            return ExchangeCodeForAccessToken(code, null);
-        }
-
-        /// <summary>
-        /// Gets the access token by exchanging the code.
-        /// </summary>
-        /// <param name="code">
-        /// The code to exchange.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <returns>
-        /// Returns the access token or expires if exists.
-        /// </returns>
-        public object ExchangeCodeForAccessToken(string code, IDictionary<string, object> parameters)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(code));
-
-            var uri = BuildExchangeCodeForAccessTokenUrl(code, parameters);
-
-            string json;
-            using (var webClient = new WebClient())
+            Uri navigateUrl;
+            if (logout)
             {
-                try
-                {
-                    json = webClient.DownloadString(uri);
-                }
-                catch (WebException ex)
-                {
-                    // Graph API Errors or general web exceptions
-                    var exception = ExceptionFactory.GetGraphException(ex);
-                    if (exception != null)
-                    {
-                        throw exception;
-                    }
+                var logoutParameters = new Dictionary<string, object>
+                                           {
+                                               { "next", loginUrl }
+                                           };
 
-                    throw;
-                }
-            }
-
-            return BuildExchangeCodeResult(json);
-        }
-#endif
-
-        /// <summary>
-        /// Gets the access token by exchanging the code.
-        /// </summary>
-        /// <param name="code">
-        /// The code to exchange.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(code));
-
-            var requestUri = BuildExchangeCodeForAccessTokenUrl(code, parameters);
-
-            var webClient = new WebClient();
-
-            webClient.DownloadStringCompleted +=
-                (o, e) => OnExchangeCodeForAccessTokenCompleted(e);
-            webClient.DownloadStringAsync(requestUri, null);
-
-        }
-
-        private void OnExchangeCodeForAccessTokenCompleted(DownloadStringCompletedEventArgs e)
-        {
-            var args = GetApiEventArgs(e, e.Error == null ? BuildExchangeCodeResult(e.Result).ToString() : null);
-
-            OnExchangeCodeForAccessTokenCompleted(args);
-        }
-
-        public event EventHandler<FacebookApiEventArgs> ExchangeCodeForAccessTokenCompleted;
-
-        protected void OnExchangeCodeForAccessTokenCompleted(FacebookApiEventArgs e)
-        {
-            if (ExchangeCodeForAccessTokenCompleted != null)
-            {
-                ExchangeCodeForAccessTokenCompleted(this, e);
-            }
-        }
-
-
-        /// <summary>
-        /// Get the application access token asynchronously.
-        /// </summary>
-        /// <example>
-        /// <code>
-        ///  var oauth = new FacebookOAuthClient { ClientId = "{appid}", ClientSecret = "{appsecret}" };
-        ///  oauth.GetApplicationAccessTokenAsync(
-        ///      ar =>
-        ///      {
-        ///          dynamic result = ar.Result;
-        ///          Console.WriteLine(result.access_token);
-        ///      }, null);
-        /// </code>
-        /// </example>
-        public void GetApplicationAccessTokenAsync()
-        {
-            var requestUri = BuildGetApplicationAccessTokenUrl();
-
-            var webClient = new WebClient();
-            webClient.DownloadStringCompleted +=
-                (o, e) => OnGetApplicationAccessTokenCompleted(e);
-
-            webClient.DownloadStringAsync(requestUri, null);
-        }
-
-        private void OnGetApplicationAccessTokenCompleted(DownloadStringCompletedEventArgs e)
-        {
-            FacebookApiEventArgs args;
-            if (e.Error == null)
-            {
-                var json = new JsonObject();
-                FacebookUtils.ParseQueryParametersToDictionary("?" + e.Result, json);
-                args = GetApiEventArgs(e, json.ToString());
+                navigateUrl = oauth.GetLogoutUrl(logoutParameters);
             }
             else
             {
-                args = GetApiEventArgs(e, null);
+                navigateUrl = loginUrl;
             }
 
-            OnGetApplicationAccessTokenCompleted(args);
+            return navigateUrl;
+
         }
 
-        public event EventHandler<FacebookApiEventArgs> GetApplicationAccessTokenCompleted;
-
-        protected void OnGetApplicationAccessTokenCompleted(FacebookApiEventArgs args)
+        /// <summary>
+        /// Gets the login url.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="redirectUri">
+        /// The redirect Uri.
+        /// </param>
+        /// <param name="extendedPermissions">
+        /// The extended permissions (scope).
+        /// </param>
+        /// <param name="loginParameters">
+        /// The login parameters.
+        /// </param>
+        /// <returns>
+        /// The url to navigate.
+        /// </returns>
+        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, IDictionary<string, object> loginParameters)
         {
-            if (GetApplicationAccessTokenCompleted != null)
-            {
-                GetApplicationAccessTokenCompleted(this, args);
-            }
+            return GetLoginUrl(appId, redirectUri, extendedPermissions, false, loginParameters);
         }
 
-
-        private Uri BuildGetApplicationAccessTokenUrl()
-        {
-            if (string.IsNullOrEmpty(AppId))
-            {
-                throw new Exception("ClientID required.");
-            }
-
-            if (string.IsNullOrEmpty(AppSecret))
-            {
-                throw new Exception("ClientSecret required");
-            }
-
-            var parameters = new Dictionary<string, object>();
-            parameters["client_id"] = AppId;
-            parameters["client_secret"] = AppSecret;
-            parameters["grant_type"] = "client_credentials";
-
-            var queryString = FacebookUtils.ToJsonQueryString(parameters);
-
-            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token") { Query = queryString };
-            return uriBuilder.Uri;
-        }
-
-        private Uri BuildExchangeCodeForAccessTokenUrl(string code, IDictionary<string, object> parameters)
-        {
-            var pars = new Dictionary<string, object>();
-            pars["client_id"] = AppId;
-            pars["client_secret"] = AppSecret;
-            pars["redirect_uri"] = RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
-            pars["code"] = code;
-
-            var mergedParameters = FacebookUtils.Merge(pars, parameters);
-
-            if (pars["client_id"] == null || string.IsNullOrEmpty(pars["client_id"].ToString()))
-            {
-                throw new Exception("ClientID required.");
-            }
-
-            if (pars["client_secret"] == null || string.IsNullOrEmpty(pars["client_secret"].ToString()))
-            {
-                throw new Exception("ClientSecret required");
-            }
-
-            if (pars["redirect_uri"] == null || string.IsNullOrEmpty(pars["redirect_uri"].ToString()))
-            {
-                throw new Exception("RedirectUri required");
-            }
-
-            // seems like if we don't do this and rather pass the original uri object,
-            // it seems to have http://localhost:80/csharpsamples instead of
-            // http://localhost/csharpsamples
-            // notice the port number, that shouldn't be there.
-            // this seems to happen for iis hosted apps.
-            mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
-
-            var queryString = FacebookUtils.ToJsonQueryString(mergedParameters);
-
-            var uriBuilder = new UriBuilder("https://graph.facebook.com/oauth/access_token") { Query = queryString.ToString() };
-            return uriBuilder.Uri;
-        }
-
-        private object BuildExchangeCodeResult(string json)
-        {
-            var returnParameter = new JsonObject();
-            FacebookUtils.ParseQueryParametersToDictionary("?" + json, returnParameter);
-
-            // access_token=string&expires=long or access_token=string
-            // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
-            var jsonObject = new JsonObject();
-            jsonObject["access_token"] = (string)returnParameter["access_token"];
-
-            // check if expires exist coz for offline_access it is not present.
-            if (returnParameter.ContainsKey("expires"))
-            {
-                jsonObject.Add("expires", Convert.ToInt64(returnParameter["expires"]));
-            }
-
-            return jsonObject;
-        }
-
-        private FacebookApiEventArgs GetApiEventArgs(AsyncCompletedEventArgs e, string json)
-        {
-            var cancelled = e.Cancelled;
-            var userState = e.UserState;
-            var error = e.Error;
-
-            // Check for Graph Exception
-            var webException = error as WebException;
-
-            if (webException != null)
-            {
-                error = ExceptionFactory.GetGraphException(webException);
-            }
-
-            return new FacebookApiEventArgs(error, cancelled, userState, json);
-        }
-        
-        */
+        #endregion
 
         #region Application Access Token
 
@@ -663,8 +449,180 @@ namespace Facebook
 
         #endregion
 
+        #region ExchangeCodeForAccessToken
+
+        /// <summary>
+        /// Event handler for application access token completion.
+        /// </summary>
+        public event EventHandler<FacebookApiEventArgs> ExchangeCodeForAccessTokenCompleted;
+
+#if !SILVERLIGHT
+
+        /// <summary>
+        /// Exchange code for access token.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public object ExchangeCodeForAccessToken(string code, IDictionary<string, object> parameters)
+        {
+            string name, path;
+
+            var defaultParameters = new Dictionary<string, object> { { "code", code } };
+            var mergedParameters = FacebookUtils.Merge(defaultParameters, parameters);
+
+            mergedParameters = BuildExchangeCodeForAccessTokenParameters(mergedParameters, out name, out path);
+
+            return BuildExchangeCodeForAccessTokenResult(OAuthRequest(name, path, mergedParameters));
+        }
+
+        /// <summary>
+        /// Exchange code for access token.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public object ExchangeCodeForAccessToken(string code)
+        {
+            return ExchangeCodeForAccessToken(code, null);
+        }
+
+#endif
+
+        /// <summary>
+        /// Exchange code for access token asynchronously.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
+        public void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters, object userToken)
+        {
+            string name, path;
+
+            var defaultParameters = new Dictionary<string, object> { { "code", code } };
+            var mergedParameters = FacebookUtils.Merge(defaultParameters, parameters);
+
+            mergedParameters = BuildExchangeCodeForAccessTokenParameters(mergedParameters, out name, out path);
+
+            OAuthRequestAsync(
+                name, path, mergedParameters, userToken,
+                json => BuildExchangeCodeForAccessTokenResult(json).ToString(),
+                (o, e) =>
+                {
+                    if (ExchangeCodeForAccessTokenCompleted != null)
+                    {
+                        ExchangeCodeForAccessTokenCompleted(this, e);
+                    }
+                });
+        }
+
+        /// <summary>
+        /// Exchange code for access token asynchronously.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        public void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters)
+        {
+            ExchangeCodeForAccessTokenAsync(code, parameters, null);
+        }
+
+        /// <summary>
+        /// Exchange code for access token asynchronously.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        public void ExchangeCodeForAccessTokenAsync(string code)
+        {
+            ExchangeCodeForAccessTokenAsync(code, null, null);
+        }
+
+        private IDictionary<string, object> BuildExchangeCodeForAccessTokenParameters(IDictionary<string, object> parameters, out string name, out string path)
+        {
+            name = FacebookUtils.DOMAIN_MAP_GRAPH;
+            path = "oauth/access_token";
+
+            var pars = new Dictionary<string, object>();
+            pars["client_id"] = AppId;
+            pars["client_secret"] = AppSecret;
+            pars["redirect_uri"] = RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
+            pars["code"] = null;
+
+            var mergedParameters = FacebookUtils.Merge(pars, parameters);
+
+            if (mergedParameters["client_id"] == null || string.IsNullOrEmpty(mergedParameters["client_id"].ToString()))
+            {
+                throw new Exception("ClientID required.");
+            }
+
+            if (mergedParameters["client_secret"] == null || string.IsNullOrEmpty(mergedParameters["client_secret"].ToString()))
+            {
+                throw new Exception("ClientSecret required");
+            }
+
+            if (mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
+            {
+                throw new Exception("RedirectUri required");
+            }
+
+            if (mergedParameters["code"] == null || string.IsNullOrEmpty(mergedParameters["code"].ToString()))
+            {
+                throw new Exception("code required");
+            }
+
+            // seems like if we don't do this and rather pass the original uri object,
+            // it seems to have http://localhost:80/csharpsamples instead of
+            // http://localhost/csharpsamples
+            // notice the port number, that shouldn't be there.
+            // this seems to happen for iis hosted apps.
+            mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
+
+            return mergedParameters;
+        }
+
+        private object BuildExchangeCodeForAccessTokenResult(string json)
+        {
+            var returnParameter = new JsonObject();
+            FacebookUtils.ParseQueryParametersToDictionary("?" + json, returnParameter);
+
+            // access_token=string&expires=long or access_token=string
+            // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
+            var jsonObject = new JsonObject();
+            jsonObject["access_token"] = returnParameter["access_token"];
+
+            // check if expires exist coz for offline_access it is not present.
+            if (returnParameter.ContainsKey("expires"))
+            {
+                jsonObject.Add("expires", Convert.ToInt64(returnParameter["expires"]));
+            }
+
+            return jsonObject;
+        }
+
+        #endregion
+
         #region Helper methods
 
+#if !SILVERLIGHT
         internal protected virtual string OAuthRequest(string name, string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
@@ -706,7 +664,7 @@ namespace Facebook
 
             return responseString;
         }
-
+#endif
         internal protected virtual void OAuthRequestAsync(string name, string path, IDictionary<string, object> parameters, object userToken, Func<string, string> processResponseString, Action<object, FacebookApiEventArgs> onDownloadComplete)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
@@ -741,7 +699,7 @@ namespace Facebook
         {
             Contract.Requires(onDownloadComplete != null);
 
-            var userState = (WebClientStateContainer)e.UserState;
+            // var userState = (WebClientStateContainer)e.UserState;
 
             string json = null;
 
@@ -822,6 +780,5 @@ namespace Facebook
         }
 
         #endregion
-
     }
 }
