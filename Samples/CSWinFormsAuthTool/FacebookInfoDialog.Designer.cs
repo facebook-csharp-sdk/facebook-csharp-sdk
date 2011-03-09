@@ -39,6 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.btnPostToWall = new System.Windows.Forms.Button();
+            this.btnPostPicture = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picProfilePic)).BeginInit();
             this.SuspendLayout();
             // 
@@ -139,7 +140,7 @@
             // 
             // btnPostToWall
             // 
-            this.btnPostToWall.Location = new System.Drawing.Point(325, 274);
+            this.btnPostToWall.Location = new System.Drawing.Point(197, 281);
             this.btnPostToWall.Name = "btnPostToWall";
             this.btnPostToWall.Size = new System.Drawing.Size(75, 23);
             this.btnPostToWall.TabIndex = 11;
@@ -147,11 +148,22 @@
             this.btnPostToWall.UseVisualStyleBackColor = true;
             this.btnPostToWall.Click += new System.EventHandler(this.btnPostToWall_Click);
             // 
+            // btnPostPicture
+            // 
+            this.btnPostPicture.Location = new System.Drawing.Point(278, 281);
+            this.btnPostPicture.Name = "btnPostPicture";
+            this.btnPostPicture.Size = new System.Drawing.Size(122, 23);
+            this.btnPostPicture.TabIndex = 12;
+            this.btnPostPicture.Text = "Post Picture to Wall";
+            this.btnPostPicture.UseVisualStyleBackColor = true;
+            this.btnPostPicture.Click += new System.EventHandler(this.btnPostPicture_Click);
+            // 
             // Info
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(412, 316);
+            this.Controls.Add(this.btnPostPicture);
             this.Controls.Add(this.btnPostToWall);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.label1);
@@ -186,6 +198,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnPostToWall;
+        private System.Windows.Forms.Button btnPostPicture;
 
     }
 }

@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Facebook.Samples.AuthenticationTool
 {
@@ -203,6 +204,48 @@ namespace Facebook.Samples.AuthenticationTool
                 };
 
             fb.PostAsync("/me/feed", new Dictionary<string, object> { { "message", txtMessage.Text } });
+        }
+
+        private void btnPostPicture_Click(object sender, EventArgs e)
+        {
+            var ofd = new OpenFileDialog
+                          {
+                              Filter = "JPEG Files|*.jpg",
+                              Title = "Select picture to upload"
+                          };
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                var picture = File.ReadAllBytes(ofd.FileName);
+
+                var fb = new FacebookClient(_accessToken);
+
+                fb.PostCompleted +=
+                    (o, args) =>
+                    {
+                        if (args.Error == null)
+                        {
+                            MessageBox.Show("Picture posted to wall successfully.");
+                        }
+                        else
+                        {
+                            MessageBox.Show(args.Error.Message);
+                        }
+                    };
+
+                dynamic parameters = new ExpandoObject();
+                parameters.caption = txtMessage.Text;
+                parameters.method = "facebook.photos.upload";
+
+                var mediaObject = new FacebookMediaObject
+                                      {
+                                          FileName = Path.GetFileName(ofd.FileName),
+                                          ContentType = "image/jpeg"
+                                      };
+                mediaObject.SetValue(picture);
+                parameters.source = mediaObject;
+
+                fb.PostAsync(parameters);
+            }
         }
 
         private void lnkFacebokSdkFan_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
