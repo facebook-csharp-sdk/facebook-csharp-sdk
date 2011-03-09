@@ -36,7 +36,10 @@ task :configure do
             :working => "#{root_path}Working/",
             :doc     => "#{root_path}Doc/",
             :packages=> '',
-            :nuget   => ''
+            :nuget   => '',
+            :xunit   => {
+                :x86_console_path => ''
+            }
        },
        :version => {
             :base => "#{base_version}",
@@ -69,7 +72,9 @@ task :configure do
    
    build_config[:paths][:packages]  = "#{build_config[:paths][:src]}packages/"
    build_config[:paths][:nuget]  = "#{build_config[:paths][:packages]}NuGet.CommandLine.1.0.11220.26/Tools/NuGet.exe"
-       
+   
+   build_config[:paths][:xunit][:x86_console_path]  = "#{build_config[:paths][:tools]}xunit-1.7/xunit.console.clr4.exe"
+   
    build_config[:sln][:wp7]         = "#{build_config[:paths][:src]}Facebook-WP7.sln"
    build_config[:sln][:sl4]         = "#{build_config[:paths][:src]}Facebook-SL4.sln"
    build_config[:sln][:net40]         = "#{build_config[:paths][:src]}Facebook-Net40.sln"
@@ -135,6 +140,14 @@ msbuild :clean_net40 do |msb|
    msb.properties :configuration => build_config[:configuration]
    msb.solution = build_config[:sln][:net40]
    msb.targets :Clean
+end
+
+xunit :net40_tests => [:net40] do |xunit|
+    output_path = "#{build_config[:paths][:output]}Tests/Release/"
+    xunit.command = build_config[:paths][:xunit][:x86_console_path]
+    xunit.assembly = "#{output_path}Facebook.Tests.dll"
+    xunit.html_output = "#{output_path}"
+    xunit.options = '/nunit ' + output_path + 'Facebook.Tests.nUnit.xml', '/xml ' + output_path + 'Facebook.Tests.xUnit.xml'
 end
 
 desc "Build .NET 3.5 binaries"
@@ -435,7 +448,7 @@ msbuild :clean_docs do |msb|
 end
 
 desc "Build All Libraries (default)"
-task :libs => [:net35, :net40, :sl4,:wp7]
+task :libs => [:net35, :net40, :sl4, :wp7, :net40_tests]
 
 desc "Clean All"
 task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do
