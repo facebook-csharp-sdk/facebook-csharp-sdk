@@ -17,17 +17,18 @@
             {
                 var oauth = new FacebookOAuthClient
                                 {
-                                    ClientId = "{appid}",
-                                    ClientSecret = "{app secret}",
+                                    AppId = "{app id}",
+                                    AppSecret = "{app secret}",
                                     RedirectUri = new Uri("http://localhost/fbslinbrowser/slfbinbrowserlogin.aspx")
                                 };
                 var result = (IDictionary<string, object>)oauth.ExchangeCodeForAccessToken(authResult.Code, null);
-                this.AccessToken = result["access_token"].ToString();
+                this.AccessToken = (string)result["access_token"];
             }
             else
             {
                 this.ErrorDescription = authResult.ErrorDescription;
             }
+
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
         }
         else

@@ -22,7 +22,7 @@ namespace SL4_InBrowser
         // SilverlightSite.Web project in slfbinbrowserlogin.aspx file.
 
         private string appId = "{app id}";
-        private string requestedFbPermissions = "user_about_me";
+        private string[] requestedFbPermissions = new[] { "user_about_me" };
 
         // Host SilverlightSite.Web in IIS and not cassini (visual studio web server).
         // and change this url accordingly.
@@ -35,19 +35,21 @@ namespace SL4_InBrowser
             FbLoginButton.Visibility = Visibility.Collapsed;
             InfoBox.Visibility = Visibility.Visible;
 
-            fb.GetAsync("me", (val) =>
-            {
-                if (val.Error == null)
+            fb.GetCompleted +=
+                (o, e) =>
                 {
-                    var result = (IDictionary<string, object>)val.Result;
-                    Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
-                }
-                else
-                {
-                    // TODO: Need to let the user know there was an error
-                    //failedLogin();
-                }
-            });
+                    if (e.Error == null)
+                    {
+                        var result = (IDictionary<string, object>)e.GetResultData();
+                        Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
+                    }
+                    else
+                    {
+                        // TODO: Need to let the user know there was an error
+                    }
+                };
+
+            fb.GetAsync("/me");
         }
 
         private void FbLoginButton_Click(object sender, RoutedEventArgs e)
@@ -79,19 +81,15 @@ namespace SL4_InBrowser
 
         private void LoginToFbViaJs()
         {
-            var oauth = new FacebookOAuthClient
-            {
-                ClientId = appId,
-                RedirectUri = new Uri(slfbloginUrl)
-            };
+            var loginParameters = new Dictionary<string, object>
+                                      {
+                                          { "display", "popup" },
+                                          { "response_type", "code" } // make it code and not access token for security reasons.
+                                      };
 
-            var paramaters = new Dictionary<string, object>
-                                {
-                                    { "display", "popup" },
-                                    { "response_type", "code" },  // make it code and not access token for security reasons.
-                                    { "scope", this.requestedFbPermissions }
-                                };
-            
+
+            var loginUrl = FacebookOAuthClient.GetLoginUrl(appId, new Uri(slfbloginUrl), requestedFbPermissions, loginParameters);
+
             // don't make the response_type = token
             // coz it will be saved in the browser's history.
             // so others might hack it.
@@ -99,8 +97,6 @@ namespace SL4_InBrowser
             // we need to this in server side and not in this silverlight app
             // so that the app secret doesn't get exposed to the client in case someone
             // reverse engineers this silverlight app.
-
-            var loginUrl = oauth.GetLoginUrl(paramaters);
             HtmlPage.Window.Eval(string.Format("fbLogin('{0}')", loginUrl));
         }
 
@@ -110,7 +106,6 @@ namespace SL4_InBrowser
         {
             InitializeComponent();
             HtmlPage.RegisterScriptableObject("slObject", this);
-            fb = new FacebookClient();
         }
     }
 }
