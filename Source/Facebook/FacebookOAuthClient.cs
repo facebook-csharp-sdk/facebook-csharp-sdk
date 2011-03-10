@@ -265,7 +265,11 @@ namespace Facebook
             var defaultLoginParameters = new Dictionary<string, object>
                                              {
                                                  { "response_type", "code" }, // make it "code" by default for security reasons.
+#if WINDOWS_PHONE
+                                                 { "display", "touch" }
+#else
                                                  { "display", "popup" }
+#endif
                                              };
 
             if (extendedPermissions != null && extendedPermissions.Length > 0)
