@@ -135,7 +135,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return Api(path, null, HttpMethod.Delete);
+            return Api(path, null, HttpMethod.Delete, null);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public object Delete(string path, IDictionary<string, object> parameters)
         {
-            return Api(path, parameters, HttpMethod.Delete);
+            return Api(path, parameters, HttpMethod.Delete, null);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return Api(path, null, HttpMethod.Get);
+            return Api(path, null, HttpMethod.Get, null);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return Api(path, parameters, HttpMethod.Get);
+            return Api(path, parameters, HttpMethod.Get, null);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return Api(null, parameters, HttpMethod.Get);
+            return Api(null, parameters, HttpMethod.Get, null);
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return Api(path, parameters, HttpMethod.Post);
+            return Api(path, parameters, HttpMethod.Post, null);
         }
 
 
@@ -308,7 +308,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return Api(null, parameters, HttpMethod.Post);
+            return Api(null, parameters, HttpMethod.Post, null);
         }
 
 
@@ -664,11 +664,6 @@ namespace Facebook
         }
 
 #if (!SILVERLIGHT) // Silverlight should only have async calls
-
-        protected object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            return Api(path, parameters, httpMethod, null);
-        }
 
         protected T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {

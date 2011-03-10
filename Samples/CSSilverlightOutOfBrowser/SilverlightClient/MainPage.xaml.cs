@@ -16,17 +16,21 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : UserControl
     {
-        private const string appId = "{your app id}";
+        private const string appId = "{app id}";
 
-        private string requestedFbPermissions = "user_about_me";
+        private string[] requestedFbPermissions = new[] { "user_about_me" };
 
+        // Note:
         // Host SilverlightClient.Web in IIS and not cassini (visual studio web server).
         // and change this url accordingly.
         // this silverlight app should be running out of browser in full trust mode.
+        // due to security reasons, window.external.notify will not run in slfblogin.html if it
+        // is from different domain.
+        // so make sure you run this sample from the same domain where slfblogin.html file is located
+        // i.e. http://localhost/fbsloob/
         private const string slfbloginUrl = @"http://localhost/fbsloob/slfblogin.htm";
 
         private bool loggedIn = false;
-
 
         public MainPage()
         {
@@ -43,24 +47,18 @@ namespace Facebook.Samples.AuthenticationTool
 
         private void LoginToFacebook()
         {
+
             TitleBox.Visibility = Visibility.Collapsed;
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoBox.Visibility = Visibility.Collapsed;
 
-            var oauth = new FacebookOAuthClient
-                            {
-                                ClientId = appId,
-                                RedirectUri = new Uri(slfbloginUrl)
-                            };
-
-            var paramaters = new Dictionary<string, object>
+            var loginParameters = new Dictionary<string, object>
                                 {
-                                    { "display", "popup" },
-                                    { "response_type", "token" },
-                                    { "scope", this.requestedFbPermissions }
+                                    { "response_type", "token" }
                                 };
 
-            var loginUrl = oauth.GetLoginUrl(paramaters);
+            var loginUrl = FacebookOAuthClient.GetLoginUrl(appId, new Uri(slfbloginUrl), requestedFbPermissions, loginParameters);
+
             FacebookLoginBrowser.Navigate(loginUrl);
         }
 
@@ -89,11 +87,21 @@ namespace Facebook.Samples.AuthenticationTool
 
             var fb = new FacebookClient(authResult.AccessToken);
 
-            fb.GetAsync("me", val =>
-            {
-                var result = (IDictionary<string, object>)val.Result;
-                Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
-            });
+            fb.GetCompleted +=
+                (o, e) =>
+                {
+                    if (e.Error == null)
+                    {
+                        var result = (IDictionary<string, object>)e.GetResultData();
+                        Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
+                    }
+                    else
+                    {
+                        MessageBox.Show(e.Error.Message);
+                    }
+                };
+
+            fb.GetAsync("/me");
         }
     }
 }
