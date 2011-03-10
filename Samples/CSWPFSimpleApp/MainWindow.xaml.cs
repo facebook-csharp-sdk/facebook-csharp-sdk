@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -10,9 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace Facebook.Samples.AuthenticationTool
 {
@@ -21,84 +18,40 @@ namespace Facebook.Samples.AuthenticationTool
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string appId = "{appid}";
-
-        private string requestedFbPermissions = "user_about_me";
-
-        private bool loggedIn = false;
-
-        Uri loggingInUri;
-
-        private FacebookClient fb;
-
-        private void loginSucceeded()
-        {
-            TitleBox.Visibility = Visibility.Visible;
-            FacebookLoginBrowser.Visibility = Visibility.Collapsed;
-            InfoBox.Visibility = Visibility.Visible;
-
-            fb.GetAsync("me", (val) =>
-            {
-                var result = (IDictionary<string, object>)val.Result;
-
-                Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
-                                    new Action(delegate() { InfoBox.ItemsSource = result; }));
-            });
-        }
+        private string _appId = "{app id}";
+        private string[] _extendedPermissions = new[] { "user_about_me" };
 
         public MainWindow()
         {
             InitializeComponent();
-            fb = new FacebookClient();
-            FacebookLoginBrowser.Loaded += new RoutedEventHandler(FacebookLoginBrowser_Loaded);
-            FacebookLoginBrowser.Navigated += new NavigatedEventHandler(FacebookLoginBrowser_Navigated);
         }
 
-        void FacebookLoginBrowser_Loaded(object sender, RoutedEventArgs e)
+        private void btnFacebookLogin_Click(object sender, RoutedEventArgs e)
         {
-            if (!loggedIn)
+            var facebookLoginDialog = new FacebookLoginDialog(_appId, _extendedPermissions,true);
+            facebookLoginDialog.ShowDialog();
+
+            DisplayAppropriateMessage(facebookLoginDialog.FacebookOAuthResult);
+        }
+
+        private void DisplayAppropriateMessage(FacebookOAuthResult facebookOAuthResult)
+        {
+            if (facebookOAuthResult == null)
             {
-                LoginToFacebook();
+                // most likely user closed the FacebookLoginDialog, so do nothing
+                return;
             }
-        }
 
-        private void LoginToFacebook()
-        {
-            TitleBox.Visibility = Visibility.Collapsed;
-            FacebookLoginBrowser.Visibility = Visibility.Visible;
-            InfoBox.Visibility = Visibility.Collapsed;
-
-            var oauth = new FacebookOAuthClient
+            if (facebookOAuthResult.IsSuccess)
             {
-                ClientId = appId,
-                // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
-            };
+                var fb = new FacebookClient(facebookOAuthResult.AccessToken);
 
-            var paramaters = new Dictionary<string, object>
-                                {
-                                    { "display", "popup" },
-                                    { "response_type", "token" },
-                                    { "scope", requestedFbPermissions }
-                                };
-
-            var loginUri = oauth.GetLoginUrl(paramaters);
-            FacebookLoginBrowser.Navigate(loginUri.AbsoluteUri);
-        }
-
-        void FacebookLoginBrowser_Navigated(object sender, NavigationEventArgs e)
-        {
-            FacebookOAuthResult authResult;
-            if (FacebookOAuthResult.TryParse(e.Uri, out authResult))
+                dynamic result = fb.Get("/me");
+                MessageBox.Show("Hi " + result.name);
+            }
+            else
             {
-                if (authResult.IsSuccess)
-                {
-                    fb = new FacebookClient(authResult.AccessToken);
-                    loginSucceeded();
-                }
-                else
-                {
-                    MessageBox.Show(authResult.ErrorDescription);
-                }
+                MessageBox.Show(facebookOAuthResult.ErrorDescription);
             }
         }
     }
