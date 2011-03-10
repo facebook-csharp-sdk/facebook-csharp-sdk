@@ -32,7 +32,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <phone:WebBrowser x:Name="FacebookLoginBrowser" Navigated="FacebookLoginBrowser_Navigated" LoadCompleted="FacebookLoginBrowser_LoadCompleted" IsScriptEnabled="True" Height="400" VerticalAlignment="Top" HorizontalAlignment="Center" Width="400" />
+            <phone:WebBrowser x:Name="FacebookLoginBrowser" Navigated="FacebookLoginBrowser_Navigated" IsScriptEnabled="True" Height="400" VerticalAlignment="Top" HorizontalAlignment="Center" Width="400" />
             <Grid x:Name="InfoPanel" Grid.Row="1">
                 <ListBox x:Name="MyData" Height="657" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <ListBox.ItemTemplate>

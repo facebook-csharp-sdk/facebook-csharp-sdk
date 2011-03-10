@@ -17,11 +17,12 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string appId = "{app id}";
+        private const string _appId = "{app id}";
+        private readonly string[] _extendedPermissions = new[] { "user_about_me" };
 
-        private bool loggedIn = false;
+        private bool _loggedIn = false;
 
-        private FacebookClient fbApp;
+        private FacebookClient _fbClient;
 
         // At this point we have an access token so we can get information from facebook
         private void loginSucceeded()
@@ -30,47 +31,35 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;
             InfoPanel.Visibility = Visibility.Visible;
 
-            fbApp.GetAsync("me", (val) =>
-            {
-                // Could also cast to our Dynamic object (but we are keeping things simple and familiar)
-                var result = (IDictionary<string, object>)val.Result;
-                Dispatcher.BeginInvoke(() => MyData.ItemsSource = result); // the lambda here sets the itemSource of the list box control which uses the ItemTemplate to render the items
-            });
-        }
+            _fbClient.GetCompleted +=
+                (o, e) =>
+                {
+                    if (e.Error == null)
+                    {
+                        var result = (IDictionary<string, object>)e.GetResultData();
+                        Dispatcher.BeginInvoke(() => MyData.ItemsSource = result);
+                    }
+                    else
+                    {
+                        MessageBox.Show(e.Error.Message);
+                    }
+                };
 
-        // We can use this event to capture the HTML or to make a script call (we use it right now to push an HTML fix)
-        private void FacebookLoginBrowser_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
-        {
-            // Uncomment to see the generated html.. helps with determining the allowButtonPosition value
-            //try
-            //{
-            //    var html = FacebookLoginBrowser.InvokeScript("eval", "document.documentElement.innerHTML");
-            //    Debug.WriteLine("--------------------");
-            //    Debug.WriteLine("content:" + html);
-            //    Debug.WriteLine("--------------------");
-            //}
-            //catch (Exception ex) { }
-            try
-            {
-                // HACK: Giant flaming hack to resolve an issue with Facebook's HTML in the allow screen
-                // Eventually this will be unneeded, but for now it should resolve the issue and won't hurt things in the future
-                FacebookLoginBrowser.InvokeScript("eval", "(function() { var aboveFooter=document.getElementById('platform_dialog_bottom_bar').previousSibling; document.getElementById('platform_dialog_bottom_bar').style.top=aboveFooter.offsetHeight + aboveFooter.offsetTop + 'px' })()");
-            }
-            catch (Exception ex) { }
+            _fbClient.GetAsync("/me");
         }
 
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-            fbApp = new FacebookClient();
+            _fbClient = new FacebookClient();
             FacebookLoginBrowser.Loaded += new RoutedEventHandler(FacebookLoginBrowser_Loaded);
         }
 
         // Browser control is loaded and fully ready for use
         void FacebookLoginBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!loggedIn)
+            if (!_loggedIn)
             {
                 LoginToFacebook();
             }
@@ -83,50 +72,33 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookLoginBrowser.Visibility = Visibility.Visible;
             InfoPanel.Visibility = Visibility.Collapsed;
 
-            var oauth = new FacebookOAuthClient
-            {
-                ClientId = appId,
-                // RedirectUri = new Uri("http://www.facebook.com/connect/login_success.html") // by default the redirect_uri is http://www.facebook.com/connect/login_success.html
-            };
+            var loginParameters = new Dictionary<string, object>
+                                      {
+                                          { "response_type", "token" }
+                                          // { "display", "touch" } // by default for wp7 builds only (in Facebook.dll), display is set to touch.
+                                      };
 
-            var paramaters = new Dictionary<string, object>
-                                {
-                                    { "response_type", "token" },
-                                    // { "display", "touch" } // by default for wp7 builds only (in Facebook.dll), display is set to touch.
-                                };
+            var navigateUrl = FacebookOAuthClient.GetLoginUrl(_appId, null, _extendedPermissions, loginParameters);
 
-            var extendedPermissions = this.GetExtendedPermissions();
-
-            if (!string.IsNullOrEmpty(extendedPermissions))
-            {
-                // add scope only if there is at last one extended permission
-                paramaters["scope"] = extendedPermissions;
-            }
-
-            var loginUri = oauth.GetLoginUrl(paramaters);
-            FacebookLoginBrowser.Navigate(loginUri);
+            FacebookLoginBrowser.Navigate(navigateUrl);
         }
 
         private void FacebookLoginBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            FacebookOAuthResult authResult;
-            if (FacebookOAuthResult.TryParse(e.Uri, out authResult))
+            FacebookOAuthResult oauthResult;
+            if (FacebookOAuthResult.TryParse(e.Uri, out oauthResult))
             {
-                if (authResult.IsSuccess)
+                if (oauthResult.IsSuccess)
                 {
-                    fbApp = new FacebookClient(authResult.AccessToken);
+                    _fbClient = new FacebookClient(oauthResult.AccessToken);
+                    _loggedIn = true;
                     loginSucceeded();
                 }
                 else
                 {
-                    MessageBox.Show(authResult.ErrorDescription);
+                    MessageBox.Show(oauthResult.ErrorDescription);
                 }
             }
-        }
-
-        private string GetExtendedPermissions()
-        {
-            return "user_about_me,publish_stream";
         }
     }
 }
