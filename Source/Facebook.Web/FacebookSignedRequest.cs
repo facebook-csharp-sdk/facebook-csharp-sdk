@@ -100,18 +100,14 @@ namespace Facebook
                     if (payload != null)
                     {
                         _accessToken = payload.ContainsKey("access_token") ? (string)payload["access_token"] : null;
-                        
+
                         if (data.ContainsKey("expires_in"))
                         {
-                            var expires = Convert.ToDouble(data["expires_in"]);
-                            if (expires == 0)
-                            {
-                                _expires = DateTime.MaxValue;
-                            }
-                            else
-                            {
-                                DateTimeConvertor.FromUnixTime(expires);
-                            }
+                            _expires = data["expires_in"].ToString() == "0" ? DateTime.MaxValue : DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["expires_in"]));
+                        }
+                        else
+                        {
+                            _expires = DateTime.MinValue;
                         }
 
                         string sUserId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
@@ -134,16 +130,13 @@ namespace Facebook
 
                     if (data.ContainsKey("expires"))
                     {
-                        var expires = Convert.ToDouble(data["expires"]);
-                        if (expires == 0)
-                        {
-                            _expires = DateTime.MaxValue;
-                        }
-                        else
-                        {
-                            DateTimeConvertor.FromUnixTime(expires);
-                        }
+                        _expires = data["expires"].ToString() == "0" ? DateTime.MaxValue : DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["expires"]));
                     }
+                    else
+                    {
+                        _expires = DateTime.MinValue;
+                    }
+
 
                     _profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
                 }
