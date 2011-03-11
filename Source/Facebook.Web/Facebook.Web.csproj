@@ -120,6 +120,7 @@
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
     <Compile Include="FacebookSubscriptionsHttpHandler.cs" />
+    <Compile Include="FacebookWebApp.cs" />
     <Compile Include="FacebookWebAuthorizer.cs" />
     <Compile Include="FacebookWebClient.cs" />
     <Compile Include="GlobalSuppressions.cs">
