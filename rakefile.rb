@@ -130,7 +130,7 @@ end
 Rake::Task["configure"].invoke
 
 desc "Build .NET 4 binaries"
-msbuild :net40 => [:clean_net40,:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebcompatibility,:assemblyinfo_facebookwebmvc] do |msb|
+msbuild :net40 => [:clean_net40,:assemblyinfo_facebook,:assemblyinfo_facebookweb,:assemblyinfo_facebookwebmvc] do |msb|
    msb.properties :configuration => build_config[:configuration]
    msb.solution = build_config[:sln][:net40]
    msb.targets :Build
@@ -201,7 +201,6 @@ end
 directory "#{build_config[:paths][:working]}"
 directory "#{build_config[:paths][:working]}NuGet/Facebook"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWeb"
-directory "#{build_config[:paths][:working]}NuGet/FacebookWebCompatibility"
 directory "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"
 
 nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:working]}NuGet/Facebook"] do |nuspec|
@@ -323,58 +322,6 @@ nugetpack :nuget_facebookweb => [:nuspec_facebookweb] do |nuget|
     nuget.output  = "#{build_config[:paths][:working]}NuGet/"
 end
 
-nuspec :nuspec_facebookwebcompatibility => [:net40, "#{build_config[:paths][:working]}NuGet/FacebookWebCompatibility"] do |nuspec|
-    working_dir = build_config[:paths][:working]
-    nuget_working_dir = "#{working_dir}NuGet/FacebookWebCompatibility/"
-    
-    FileUtils.rm_rf "#{nuget_working_dir}"
-    mkdir "#{nuget_working_dir}"
-    mkdir "#{nuget_working_dir}lib/"
-    
-    nuget_dirs = [ "lib/Net40/"]
-       
-    nuget_dirs.each do |d|
-        mkdir "#{nuget_working_dir + d}"
-        #mkdir "#{nuget_working_dir + d}CodeContracts/"
-    end
-    
-    output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
-    #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
-    
-    [ "Facebook.Web.Compatibility.dll", "Facebook.Web.Compatibility.pdb", "Facebook.Web.Compatibility.XML" ].each do |f|
-        # copy these 3 files of each different framework
-        cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
-    end
-    
-    #[ "Facebook.Web.Compatibility.Contracts.dll", "Facebook.Web.Compatibility.Contracts.pdb" ].each do |f|
-    #    # copy code contracts of each different framework
-    #    cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
-    #    cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
-    #end
-   
-    FileUtils.cp_r "#{build_config[:paths][:build]}NuGet/FacebookWebCompatibility/.", "#{nuget_working_dir}"
-    
-    nuspec.id = "FacebookWebCompatibility"
-    nuspec.version = "#{build_config[:version][:full]}"
-    nuspec.authors = "#{build_config[:nuspec][:authors]}"
-    nuspec.description = "The Facebook C# SDK web compatibility component."
-    nuspec.language = "en-US"
-    nuspec.licenseUrl = "http://facebooksdk.codeplex.com/license"
-    nuspec.requireLicenseAcceptance = "true"
-    nuspec.projectUrl = "http://facebooksdk.codeplex.com"
-    nuspec.tags = "Facebook"  
-    nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
-    nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
-    nuspec.dependency "FacebookWeb", "#{build_config[:version][:full]}"    
-    nuspec.output_file = "#{nuget_working_dir}/FacebookWebCompatibility.nuspec"
-end
-
-nugetpack :nuget_facebookwebcompatibility => [:nuspec_facebookwebcompatibility] do |nuget|
-    nuget.command = "#{build_config[:paths][:nuget]}"
-    nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/FacebookWebCompatibility/FacebookWebCompatibility.nuspec"
-    nuget.output  = "#{build_config[:paths][:working]}NuGet/"
-end
-
 nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:working]}NuGet/FacebookWebMvc"] do |nuspec|
     working_dir = build_config[:paths][:working]
     nuget_working_dir = "#{working_dir}NuGet/FacebookWebMvc/"
@@ -457,7 +404,7 @@ task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do
    FileUtils.rm_rf build_config[:paths][:dist]    
 end
 
-task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebcompatibility,:nuget_facebookwebmvc]
+task :nuget => [:nuget_facebook,:nuget_facebookweb,:nuget_facebookwebmvc]
 
 directory "#{build_config[:paths][:dist]}"
 directory "#{build_config[:paths][:dist]}NuGet"
@@ -484,13 +431,11 @@ desc "Create distribution packages for libraries."
 task :dist_libs => [:dist_prepare, :nuget] do
     mkdir "#{build_config[:paths][:working]}Bin/"
     mkdir "#{build_config[:paths][:working]}Bin/Facebook"
-    mkdir "#{build_config[:paths][:working]}Bin/FacebookWeb"
-    mkdir "#{build_config[:paths][:working]}Bin/FacebookWebCompatibility"    
+    mkdir "#{build_config[:paths][:working]}Bin/FacebookWeb"  
     mkdir "#{build_config[:paths][:working]}Bin/FacebookWebMvc"
     
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/Facebook/lib/.", "#{build_config[:paths][:working]}Bin/Facebook"
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWeb"
-    FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebCompatibility/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebCompatibility"
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/.", "#{build_config[:paths][:working]}Bin/FacebookWebMvc"
     
     cp "#{build_config[:paths][:root]}LICENSE.txt", "#{build_config[:paths][:working]}Bin/"
@@ -526,17 +471,6 @@ assemblyinfo :assemblyinfo_facebookweb do |asm|
     asm.output_file = "#{build_config[:paths][:src]}Facebook.Web/Properties/AssemblyInfo.cs"
     asm.version = build_config[:version][:full]
     asm.title = "Facebook.Web"
-    asm.description = "Facebook C\# SDK"
-    asm.product_name = "Facebook C\# SDK"
-    asm.company_name = "Facebook C\# SDK"
-    asm.copyright = "Microsoft Public License (Ms-PL)"
-    asm.com_visible = false
-end
-
-assemblyinfo :assemblyinfo_facebookwebcompatibility do |asm|
-    asm.output_file = "#{build_config[:paths][:src]}Facebook.Web.Compatibility/Properties/AssemblyInfo.cs"
-    asm.version = build_config[:version][:full]
-    asm.title = "Facebook.Web.Compatibility"
     asm.description = "Facebook C\# SDK"
     asm.product_name = "Facebook C\# SDK"
     asm.company_name = "Facebook C\# SDK"
