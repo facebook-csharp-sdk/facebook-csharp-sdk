@@ -9,9 +9,7 @@
 
 namespace Facebook.Web
 {
-    using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Web;
 
     /// <summary>
     /// Represents the core Facebook functionality for web applications.
@@ -21,7 +19,7 @@ namespace Facebook.Web
         /// <summary>
         /// The current http context.
         /// </summary>
-        private readonly HttpContextBase _httpContext;
+        private readonly FacebookWebContext _request;
 
         /// <summary>
         /// The current facebook session.
@@ -36,27 +34,16 @@ namespace Facebook.Web
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookWebApp"/> class.
         /// </summary>
-        public FacebookWebApp()
-            : this(new HttpContextWrapper(HttpContext.Current))
-        {
-            Contract.Requires(HttpContext.Current != null);
-            Contract.Requires(HttpContext.Current.Request != null);
-            Contract.Requires(HttpContext.Current.Response != null);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookWebApp"/> class.
-        /// </summary>
-        /// <param name="httpContext">
-        /// The http context.
+        /// <param name="request">
+        /// The request.
         /// </param>
-        public FacebookWebApp(HttpContextBase httpContext)
+        /// <param name="accessToken">
+        /// The access token.
+        /// </param>
+        public FacebookWebApp(FacebookWebContext request, string accessToken)
+            : base(accessToken)
         {
-            Contract.Requires(httpContext != null);
-            Contract.Requires(httpContext.Request != null);
-            Contract.Requires(httpContext.Response != null);
-
-            _httpContext = httpContext;
+            _request = request;
         }
 
         /// <summary>
@@ -66,9 +53,27 @@ namespace Facebook.Web
         /// The access token.
         /// </param>
         public FacebookWebApp(string accessToken)
+            : this(FacebookWebContext.Current, accessToken)
         {
-            Contract.Requires(!string.IsNullOrEmpty(accessToken));
-            AccessToken = accessToken;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebApp"/> class.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        public FacebookWebApp(FacebookWebContext request)
+            : this(request, request.AccessToken)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebApp"/> class.
+        /// </summary>
+        public FacebookWebApp()
+            : this(FacebookWebContext.Current)
+        {
         }
 
         /// <summary>
@@ -78,11 +83,11 @@ namespace Facebook.Web
         {
             get
             {
-                if (_signedRequest == null && _httpContext != null && _httpContext.Request != null)
+                if (_signedRequest == null)
                 {
-                    if (_httpContext.Request.Params.AllKeys.Contains("signed_request"))
+                    if (_request.HttpContext.Request.Params.AllKeys.Contains("signed_request"))
                     {
-                        _signedRequest = FacebookSignedRequest.Parse(AppSecret, _httpContext.Request.Params["signed_request"]);
+                        _signedRequest = FacebookSignedRequest.Parse(AppSecret, _request.HttpContext.Request.Params["signed_request"]);
                     }
                 }
 
@@ -95,20 +100,8 @@ namespace Facebook.Web
         /// </summary>
         public FacebookSession Session
         {
-            get
-            {
-                if (_session == null && _httpContext != null)
-                {
-                    _session = FacebookSession.GetSession(AppId, AppSecret, _httpContext, SignedRequest);
-                }
-
-                return _session;
-            }
-
-            set
-            {
-                _session = value;
-            }
+            get { return _session ?? (_session = _request.Session); }
+            set { _session = value; }
         }
 
         /// <summary>
@@ -142,6 +135,23 @@ namespace Facebook.Web
         public bool IsAuthenticated
         {
             get { return Session != null; }
+        }
+
+        protected internal override object Api(string path, System.Collections.Generic.IDictionary<string, object> parameters, HttpMethod httpMethod, System.Type resultType)
+        {
+            try
+            {
+                return base.Api(path, parameters, httpMethod, resultType);
+            }
+            catch (FacebookOAuthException)
+            {
+                try
+                {
+                    _request.DeleteAuthCookie();
+                }
+                catch { }
+                throw;
+            }
         }
     }
 }
