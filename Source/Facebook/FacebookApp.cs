@@ -558,6 +558,81 @@ namespace Facebook
 
         #endregion
 
+        #region Query methods
+
+#if !SILVERLIGHT
+
+        public object Query(string fql)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(fql));
+
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = fql;
+            parameters["method"] = "fql.query";
+
+            return Get(parameters);
+        }
+
+        public object Query(params string[] fql)
+        {
+            Contract.Requires(fql != null);
+
+            var queryDict = new Dictionary<string, object>();
+
+            for (int i = 0; i < fql.Length; i++)
+            {
+                queryDict.Add(string.Concat("query", i), fql[i]);
+            }
+
+            var parameters = new Dictionary<string, object>();
+            parameters["queries"] = queryDict;
+            parameters["method"] = "fql.multiquery";
+
+            return Get(parameters);
+        }
+
+#endif
+
+        public void QueryAsync(string fql, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(fql));
+
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = fql;
+            parameters["method"] = "fql.query";
+
+            GetAsync(parameters, callback, state);
+        }
+
+        public void QueryAsync(string fql, FacebookAsyncCallback callback)
+        {
+            this.QueryAsync(fql, callback, null);
+        }
+
+        public void QueryAsync(string[] fql, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(fql != null);
+            Contract.Requires(fql.Length > 0);
+
+            var queryDict = new Dictionary<string, object>();
+            for (int i = 0; i < fql.Length; i++)
+            {
+                queryDict.Add(string.Concat("query", i), fql[i]);
+            }
+
+            var parameters = new Dictionary<string, object>();
+            parameters["queries"] = queryDict;
+            parameters["method"] = "fql.multiquery";
+            this.GetAsync(parameters, callback, state);
+        }
+
+        public void QueryAsync(string[] fql, FacebookAsyncCallback callback)
+        {
+            this.QueryAsync(fql, callback, null);
+        }
+
+        #endregion
+
         /// <summary>
         /// Gets the facebook client
         /// </summary>
