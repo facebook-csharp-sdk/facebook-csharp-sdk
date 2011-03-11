@@ -591,6 +591,21 @@ namespace Facebook
             return Get(parameters);
         }
 
+        [Obsolete("You should use Query rather than this method. This method will be removed in the next version.")]
+        public object Fql(string query)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(query));
+            return Query(query);
+        }
+
+        [Obsolete("You should use Query rather than this method. This method will be removed in the next version.")]
+        public object Fql(params string[] queries)
+        {
+            Contract.Requires(queries != null);
+
+            return Query(queries);
+        }
+
 #endif
 
         public void QueryAsync(string fql, FacebookAsyncCallback callback, object state)
