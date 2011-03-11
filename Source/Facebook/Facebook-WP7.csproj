@@ -131,7 +131,9 @@
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
+    <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookApplication.cs" />
+    <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthClient.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
+    <Compile Include="IFacebookSettings.cs" />
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="IWebClient.cs" />
     <Compile Include="JsonArray.cs" />

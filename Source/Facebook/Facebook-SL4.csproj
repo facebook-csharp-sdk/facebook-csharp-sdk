@@ -128,7 +128,9 @@
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
+    <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookApplication.cs" />
+    <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookOAuthClient.cs" />
