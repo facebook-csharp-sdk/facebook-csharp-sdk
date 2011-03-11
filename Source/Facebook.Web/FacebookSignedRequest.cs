@@ -100,9 +100,20 @@ namespace Facebook
                     if (payload != null)
                     {
                         _accessToken = payload.ContainsKey("access_token") ? (string)payload["access_token"] : null;
-                        _expires = payload.ContainsKey("expires_in")
-                                           ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(payload["expires_in"]))
-                                           : DateTime.MinValue;
+                        
+                        if (data.ContainsKey("expires_in"))
+                        {
+                            var expires = Convert.ToDouble(data["expires_in"]);
+                            if (expires == 0)
+                            {
+                                _expires = DateTime.MaxValue;
+                            }
+                            else
+                            {
+                                DateTimeConvertor.FromUnixTime(expires);
+                            }
+                        }
+
                         string sUserId = payload.ContainsKey("user_id") ? (string)payload["user_id"] : null;
                         long userId;
                         long.TryParse(sUserId, out userId);
@@ -120,9 +131,20 @@ namespace Facebook
                     _userId = userId;
 
                     _accessToken = data.ContainsKey("oauth_token") ? (string)data["oauth_token"] : null;
-                    _expires = data.ContainsKey("expires")
-                                       ? DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["expires"]))
-                                       : DateTime.MinValue;
+
+                    if (data.ContainsKey("expires"))
+                    {
+                        var expires = Convert.ToDouble(data["expires"]);
+                        if (expires == 0)
+                        {
+                            _expires = DateTime.MaxValue;
+                        }
+                        else
+                        {
+                            DateTimeConvertor.FromUnixTime(expires);
+                        }
+                    }
+
                     _profileId = data.ContainsKey("profile_id") ? (string)data["profile_id"] : null;
                 }
 
@@ -331,7 +353,7 @@ namespace Facebook
             if (items[HttpContextKey] == null)
             {
                 signedRequest = httpRequest.Params.AllKeys.Contains(SignedRequestKey) ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params[SignedRequestKey]) : null;
-                items.Add(HttpContextKey, signedRequest);
+                items[HttpContextKey] = signedRequest;
             }
             else
             {
