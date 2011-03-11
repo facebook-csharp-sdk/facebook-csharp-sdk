@@ -14,13 +14,13 @@ namespace CSASPNETWebsite
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var fbRequest = FacebookWebRequest.Current;
-            if (!fbRequest.IsAuthorized())
+            var fbWebContext = FacebookWebContext.Current;
+            if (!fbWebContext.IsAuthorized())
             {
                 Response.Redirect("~/Account/Login.aspx?returnUrl=" + HttpUtility.UrlEncode(Request.Url.PathAndQuery));
             }
 
-            var fb = new FacebookWebClient(fbRequest);
+            var fb = new FacebookWebClient(fbWebContext);
 
             dynamic me = fb.Get("/me");
             lblName.Text = me.name;

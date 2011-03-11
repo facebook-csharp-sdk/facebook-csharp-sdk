@@ -14,7 +14,7 @@
     </div>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script>
-        FB.init({ appId: '<%: Facebook.FacebookContext.Current.AppId %>', status: true, cookie: true, xfbml: true });
+        FB.init({ appId: '<%: Facebook.FacebookApplication.Current.AppId %>', status: true, cookie: true, xfbml: true });
         FB.Event.subscribe('auth.sessionChange', function (response) {
             if (response.session) {
                 // A user has logged in, and a new cookie has been saved
