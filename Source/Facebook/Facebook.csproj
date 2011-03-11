@@ -119,6 +119,7 @@
     <Compile Include="External\HttpUtility.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
+    <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
