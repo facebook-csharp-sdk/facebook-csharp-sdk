@@ -271,11 +271,11 @@ namespace Facebook
                 {
                     // try creating session from signed_request if exists.
                     signedRequest = FacebookSignedRequest.GetSignedRequest(appSecret, httpContext);
+                }
 
-                    if (signedRequest != null)
-                    {
-                        facebookSession = FacebookSession.Create(appSecret, signedRequest);
-                    }
+                if (signedRequest != null)
+                {
+                    facebookSession = FacebookSession.Create(appSecret, signedRequest);
                 }
 
                 if (readSessionFromCookie && facebookSession == null)
