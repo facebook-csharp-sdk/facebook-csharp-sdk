@@ -16,9 +16,10 @@ namespace IFramedInBrowser.Web.Controllers
         [CanvasAuthorize(Permissions = "user_about_me")]
         public ActionResult Index()
         {
+
             var model = new FacebookToSilverlightViewModel
                             {
-                                FbSessionKey = this.Request.GetFacebookSession().AccessToken
+                                FbSessionKey = FacebookWebContext.Current.AccessToken
                             };
 
             return View(model);
