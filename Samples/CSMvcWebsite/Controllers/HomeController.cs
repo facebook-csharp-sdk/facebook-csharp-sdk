@@ -15,7 +15,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
     {
         public ActionResult Index()
         {
-            if (FacebookContext.Current.AppId == "{put your appId here}")
+            if (FacebookApplication.Current.AppId == "{app id}")
             {
                 return View("GettingStarted");
             }
@@ -46,7 +46,7 @@ namespace Facebook.Samples.HelloWorld.Controllers
             dynamic parameters = new ExpandoObject();
             parameters.message = "First wall post!";
 
-            dynamic result = app.Api("/me/feed", parameters, HttpMethod.Post);
+            dynamic result = app.Post("/me/feed", parameters);
 
             return RedirectToAction("About");
         }

@@ -17,7 +17,7 @@
     </div>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script>
-        FB.init({ appId: '<%: FacebookContext.Current.AppId %>', status: true, cookie: true, xfbml: true });
+        FB.init({ appId: '<%: Facebook.FacebookApplication.Current.AppId %>', status: true, cookie: true, xfbml: true });
         $('#fbLogin').click(function () {
             FB.login(function (response) {
                 if (response.session) {
