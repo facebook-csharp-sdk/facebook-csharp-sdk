@@ -72,9 +72,15 @@ namespace Facebook
             Secret = data.ContainsKey("secret") ? (string)data["secret"] : null;
             SessionKey = data.ContainsKey("session_key") ? (string)data["session_key"] : null;
 
-            Expires = data.ContainsKey("expires")
-                               ? DateTimeConvertor.FromUnixTime(Convert.ToInt64(data["expires"]))
-                               : DateTime.MinValue;
+            if (data.ContainsKey("expires"))
+            {
+                Expires = data["expires"].ToString() == "0" ? DateTime.MaxValue : DateTimeConvertor.FromUnixTime(Convert.ToDouble(data["expires"]));
+            }
+            else
+            {
+                Expires = DateTime.MinValue;
+            }
+
             Signature = data.ContainsKey("sig") ? (string)data["sig"] : null;
             BaseDomain = data.ContainsKey("base_domain") ? (string)data["base_domain"] : null;
 
