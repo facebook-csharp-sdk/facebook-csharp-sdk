@@ -207,6 +207,11 @@ namespace Facebook.Web
 
             if (isAuthorized && permissions != null)
             {
+                if (permissions.Length == 1 && permissions[0] == null)
+                {
+                    return true;
+                }
+
                 var currentPerms = HasPermissions(permissions);
                 foreach (var perm in permissions)
                 {
@@ -220,7 +225,7 @@ namespace Facebook.Web
             return isAuthorized;
         }
 
-                /// <summary>
+        /// <summary>
         /// Check if the Facebook App has permissions from the specified user.
         /// </summary>
         /// <param name="appId">
