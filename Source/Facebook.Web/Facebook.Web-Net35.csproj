@@ -124,6 +124,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FacebookSubscriptionVerifier.cs" />
+    <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookWebAuthorizer.cs" />
     <Compile Include="FacebookWebClient.cs" />
     <Compile Include="FacebookWebContext.cs" />
