@@ -191,7 +191,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return Api(path, null, HttpMethod.Delete, null);
+            return Api(path, null, null, HttpMethod.Delete);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public object Delete(string path, IDictionary<string, object> parameters)
         {
-            return Api(path, parameters, HttpMethod.Delete, null);
+            return Api(path, parameters, null, HttpMethod.Delete);
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            return Api(path, null, HttpMethod.Get, null);
+            return Api(path, null, null, HttpMethod.Get);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return Api(path, parameters, HttpMethod.Get, null);
+            return Api(path, parameters, null, HttpMethod.Get);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return Api(null, parameters, HttpMethod.Get, null);
+            return Api(null, parameters, null, HttpMethod.Get);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            return Api(path, parameters, HttpMethod.Post, null);
+            return Api(path, parameters, null, HttpMethod.Post);
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
 
-            return Api(null, parameters, HttpMethod.Post, null);
+            return Api(null, parameters, null, HttpMethod.Post);
         }
 
 
@@ -1051,12 +1051,12 @@ namespace Facebook
 
 #if(!SILVERLIGHT) // Silverlight should only have async calls
 
-        internal protected T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        public T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
-            return (T)Api(path, parameters, httpMethod, typeof(T));
+            return (T)Api(path, parameters, typeof(T), httpMethod);
         }
 
-        internal protected virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
+        public virtual object Api(string path, IDictionary<string, object> parameters, Type resultType, HttpMethod httpMethod)
         {
             try
             {
@@ -1074,8 +1074,50 @@ namespace Facebook
             }
         }
 
+        public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            return this.Api(path, parameters, null, httpMethod);
+        }
+
+        public object Api(string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            return this.Api(path, parameters, HttpMethod.Get);
+        }
+
+        public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            Contract.Requires(parameters != null);
+
+            return this.Api(null, parameters, httpMethod);
+        }
+
+        public object Api(string path, HttpMethod httpMethod)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            return this.Api(path, null, httpMethod);
+        }
+
+        public object Api(string path)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            return this.Api(path, null, HttpMethod.Get);
+        }
+
+        public object Api(IDictionary<string, object> parameters)
+        {
+            Contract.Requires(parameters != null);
+
+            return this.Api(null, parameters, HttpMethod.Get);
+        }
+
 #endif
-        internal protected virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback callback, object userToken)
+        public virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback callback, object userToken)
         {
             var facebookClient = GetFacebookClient();
 
@@ -1100,8 +1142,47 @@ namespace Facebook
             facebookClient.ApiAsync(path, parameters, httpMethod, userToken);
         }
 
-        [Obsolete("Marked for removal.")]
-        internal protected virtual void ApiAsync<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback<T> callback, object state)
+        public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            this.ApiAsync(path, parameters, httpMethod, callback, state);
+        }
+
+        public void ApiAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            this.ApiAsync(callback, state, path, parameters, HttpMethod.Get);
+        }
+
+        public void ApiAsync(string path, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            this.ApiAsync(callback, state, path, null, httpMethod);
+        }
+
+        public void ApiAsync(string path, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(!String.IsNullOrEmpty(path));
+
+            this.ApiAsync(callback, state, path, null, HttpMethod.Get);
+        }
+
+        public void ApiAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
+        {
+            Contract.Requires(callback != null);
+            Contract.Requires(parameters != null);
+
+            this.ApiAsync(callback, state, null, parameters, HttpMethod.Get);
+        }
+
+        public virtual void ApiAsync<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback<T> callback, object state)
         {
             ApiAsync(
                 path,
