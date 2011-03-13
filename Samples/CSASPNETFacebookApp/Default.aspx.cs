@@ -27,7 +27,7 @@ public partial class _Default : Page
 
         /* OR */
 
-        //var fbApp = new FacebookWebApp();
+        //var fbApp = new FacebookApp();
         //dynamic info = fbApp.Get("me");
         //lblName.Text = info.name;
         //pnlHello.Visible = true;
