@@ -1,5 +1,5 @@
 // --------------------------------
-// <copyright file="FacebookWebApp.cs" company="Facebook C# SDK">
+// <copyright file="FacebookApp.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
 // <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
