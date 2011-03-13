@@ -1051,11 +1051,40 @@ namespace Facebook
 
 #if(!SILVERLIGHT) // Silverlight should only have async calls
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             return (T)Api(path, parameters, typeof(T), httpMethod);
         }
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="resultType">
+        /// The result type.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public virtual object Api(string path, IDictionary<string, object> parameters, Type resultType, HttpMethod httpMethod)
         {
             try
@@ -1074,6 +1103,22 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -1081,6 +1126,19 @@ namespace Facebook
             return this.Api(path, parameters, null, httpMethod);
         }
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Api(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
@@ -1088,6 +1146,19 @@ namespace Facebook
             return this.Api(path, parameters, HttpMethod.Get);
         }
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Api(IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             Contract.Requires(parameters != null);
@@ -1095,6 +1166,19 @@ namespace Facebook
             return this.Api(null, parameters, httpMethod);
         }
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http method.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Api(string path, HttpMethod httpMethod)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -1102,6 +1186,16 @@ namespace Facebook
             return this.Api(path, null, httpMethod);
         }
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Api(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
@@ -1109,6 +1203,16 @@ namespace Facebook
             return this.Api(path, null, HttpMethod.Get);
         }
 
+        /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public object Api(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
@@ -1117,6 +1221,25 @@ namespace Facebook
         }
 
 #endif
+
+        /// <summary>
+        /// Makes a async request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http Method.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="userToken">
+        /// The user Token.
+        /// </param>
         public virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback callback, object userToken)
         {
             var facebookClient = GetFacebookClient();
@@ -1142,6 +1265,24 @@ namespace Facebook
             facebookClient.ApiAsync(path, parameters, httpMethod, userToken);
         }
 
+        /// <summary>
+        /// Makes a async request to the Facebook server.
+        /// </summary>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http Method.
+        /// </param>
         public virtual void ApiAsync(FacebookAsyncCallback callback, object state, string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
         {
             Contract.Requires(callback != null);
@@ -1150,6 +1291,21 @@ namespace Facebook
             this.ApiAsync(path, parameters, httpMethod, callback, state);
         }
 
+        /// <summary>
+        /// Makes a async request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
         public void ApiAsync(string path, IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -1158,6 +1314,21 @@ namespace Facebook
             this.ApiAsync(callback, state, path, parameters, HttpMethod.Get);
         }
 
+        /// <summary>
+        /// Makes a async request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http Method.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
         public void ApiAsync(string path, HttpMethod httpMethod, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -1166,6 +1337,18 @@ namespace Facebook
             this.ApiAsync(callback, state, path, null, httpMethod);
         }
 
+        /// <summary>
+        /// Makes a async request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
         public void ApiAsync(string path, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -1174,6 +1357,18 @@ namespace Facebook
             this.ApiAsync(callback, state, path, null, HttpMethod.Get);
         }
 
+        /// <summary>
+        /// Makes a async request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
         public void ApiAsync(IDictionary<string, object> parameters, FacebookAsyncCallback callback, object state)
         {
             Contract.Requires(callback != null);
@@ -1182,6 +1377,24 @@ namespace Facebook
             this.ApiAsync(callback, state, null, parameters, HttpMethod.Get);
         }
 
+        /// <summary>
+        /// Makes a async request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="httpMethod">
+        /// The http Method.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
         public virtual void ApiAsync<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, FacebookAsyncCallback<T> callback, object state)
         {
             ApiAsync(
