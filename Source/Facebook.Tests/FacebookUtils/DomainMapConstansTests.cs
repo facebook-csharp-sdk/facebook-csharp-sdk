@@ -45,5 +45,13 @@ namespace Facebook.Tests.FacebookUtils
 
             Assert.Equal("www", result);
         }
+
+        [Fact]
+        public void DomainMapAppsIsSetCorrectly()
+        {
+            var result = FacebookUtils.DOMAIN_MAP_APPS;
+
+            Assert.Equal("apps", result);
+        }
     }
 }

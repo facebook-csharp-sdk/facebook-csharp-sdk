@@ -6,11 +6,11 @@ namespace Facebook.Tests.FacebookUtils
     public class DomainMapsBetaTests
     {
         [Fact]
-        public void CountEquals5()
+        public void CountEquals6()
         {
             var result = FacebookUtils.DomainMapsBeta.Count;
 
-            Assert.Equal(5, result);
+            Assert.Equal(6, result);
         }
 
         [Fact]
@@ -50,7 +50,15 @@ namespace Facebook.Tests.FacebookUtils
         {
             var result = FacebookUtils.DomainMapsBeta[FacebookUtils.DOMAIN_MAP_WWW].ToString();
 
-            Assert.Equal("https://www.beta.facebook.com/", result);
+            Assert.Equal("http://www.beta.facebook.com/", result);
+        }
+
+        [Fact]
+        public void AppsIsSetCorrectly()
+        {
+            var result = FacebookUtils.DomainMapsBeta[FacebookUtils.DOMAIN_MAP_APPS].ToString();
+
+            Assert.Equal("http://apps.beta.facebook.com/", result);
         }
     }
 }
