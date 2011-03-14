@@ -25,7 +25,7 @@ namespace Facebook.Web.Mvc
     /// page to explain to the user why the permissions requested
     /// are needed.
     /// </summary>
-    public class CanvasSoftAuthorizeAttribute : FacebookCanvasAuthorizeAttribute
+    public class CanvasSoftAuthorizeAttribute : CanvasAuthorizeAttribute
     {
         /// <summary>
         /// The default view.

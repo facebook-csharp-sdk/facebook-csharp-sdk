@@ -1,4 +1,4 @@
-﻿// --------------------------------
+﻿﻿// --------------------------------
 // <copyright file="CanvasAuthorizeAttribute.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
@@ -17,7 +17,7 @@ namespace Facebook.Web.Mvc
     using Facebook;
     using Facebook.Web;
 
-    public class FacebookCanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
+    public class CanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
         public string LoginDisplayMode { get; set; }
 
@@ -29,9 +29,9 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new FacebookWebContext(settings, filterContext.HttpContext);
 
-            if (!authorizer.IsAuthorized(Permissions))
+            if (!authorizer.IsAuthorized(this.Permissions))
             {
-                HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
+                this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(filterContext != null);
             Contract.Requires(settings != null);
 
-            var loginUri = GetLoginUrl(settings, filterContext.HttpContext, null);
+            var loginUri = this.GetLoginUrl(settings, filterContext.HttpContext, null);
             filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
         }
 
@@ -51,23 +51,17 @@ namespace Facebook.Web.Mvc
 
             var authorizer = new FacebookCanvasAuthorizer(settings, httpContext)
             {
-                ReturnUrlPath = ReturnUrlPath,
-                CancelUrlPath = CancelUrlPath,
-                LoginDisplayMode = LoginDisplayMode
+                ReturnUrlPath = this.ReturnUrlPath,
+                CancelUrlPath = this.CancelUrlPath,
+                LoginDisplayMode = this.LoginDisplayMode
             };
 
-            if (!String.IsNullOrEmpty(Permissions))
+            if (!String.IsNullOrEmpty(this.Permissions))
             {
-                authorizer.Permissions = Permissions.Replace(" ", String.Empty).Split(',');
+                authorizer.Permissions = this.Permissions.Replace(" ", String.Empty).Split(',');
             }
 
             return authorizer.GetLoginUrl(parameters);
         }
-    }
-
-    [Obsolete("Use FacebookCanvasAuthorizerAttribute instead.")]
-    public class CanvasAuthorizeAttribute : FacebookCanvasAuthorizeAttribute
-    {
-
     }
 }
