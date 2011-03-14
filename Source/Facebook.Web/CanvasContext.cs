@@ -4,7 +4,7 @@ namespace Facebook.Web
     /// <summary>
     /// Represents an incoming FacebookCanvasRequest.
     /// </summary>
-    public class FacebookCanvasContext : FacebookWebContext
+    public class CanvasContext : FacebookWebContext
     {
         /// <summary>
         /// The facebook session.
@@ -16,9 +16,9 @@ namespace Facebook.Web
         /// </summary>
         private FacebookSignedRequest _signedRequest;
 
-        public new static FacebookCanvasContext Current
+        public new static CanvasContext Current
         {
-            get { return new FacebookCanvasContext(); }
+            get { return new CanvasContext(); }
         }
 
         /// <summary>

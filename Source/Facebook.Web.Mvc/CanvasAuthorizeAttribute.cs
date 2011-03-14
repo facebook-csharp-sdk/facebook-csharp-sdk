@@ -49,7 +49,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(settings != null);
             Contract.Requires(httpContext != null);
 
-            var authorizer = new FacebookCanvasAuthorizer(settings, httpContext)
+            var authorizer = new CanvasAuthorizer(settings, httpContext)
             {
                 ReturnUrlPath = this.ReturnUrlPath,
                 CancelUrlPath = this.CancelUrlPath,
