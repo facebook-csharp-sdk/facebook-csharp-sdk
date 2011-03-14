@@ -100,6 +100,8 @@
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodIsVideoUploadThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThanAreNotReadOnlyOrVideoUploadThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThatAreOfReadOnlyThen.cs" />
+    <Compile Include="FacebookUtils\DomainMapsBetaSecureTests.cs" />
+    <Compile Include="FacebookUtils\DomainMapsSecureTests.cs" />
     <Compile Include="FacebookUtils\DomainMapConstansTests.cs" />
     <Compile Include="FacebookUtils\DomainMapsBetaTests.cs" />
     <Compile Include="FacebookUtils\DomainMapsTests.cs" />
