@@ -1,4 +1,4 @@
-﻿﻿// --------------------------------
+﻿// --------------------------------
 // <copyright file="FacebookAuthorizeAttribute.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
@@ -10,8 +10,10 @@
 namespace Facebook.Web.Mvc
 {
     using System.Web.Mvc;
+    using System;
+    using System.ComponentModel;
 
-    public class FacebookAuthorizeAttribute : FacebookAuthorizeAttributeBase
+    public class FacebookWebAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
         public string LoginUrl { get; set; }
 
@@ -24,5 +26,12 @@ namespace Facebook.Web.Mvc
                 filterContext.Result = new RedirectResult(LoginUrl ?? "/");
             }
         }
+    }
+
+    [Obsolete("Use FacebookWebAuthorizeAttribute instead.")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class FacebookAuthorizeAttributeBase : FacebookWebAuthorizeAttribute
+    {
+
     }
 }

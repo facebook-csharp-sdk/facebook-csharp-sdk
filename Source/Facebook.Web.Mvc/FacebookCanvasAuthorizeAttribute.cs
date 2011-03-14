@@ -1,4 +1,4 @@
-﻿﻿// --------------------------------
+﻿// --------------------------------
 // <copyright file="CanvasAuthorizeAttribute.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
@@ -17,7 +17,7 @@ namespace Facebook.Web.Mvc
     using Facebook;
     using Facebook.Web;
 
-    public class CanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
+    public class FacebookCanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
         public string LoginDisplayMode { get; set; }
 
@@ -63,5 +63,11 @@ namespace Facebook.Web.Mvc
 
             return authorizer.GetLoginUrl(parameters);
         }
+    }
+
+    [Obsolete("Use FacebookCanvasAuthorizerAttribute instead.")]
+    public class CanvasAuthorizeAttribute : FacebookCanvasAuthorizeAttribute
+    {
+
     }
 }
