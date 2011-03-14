@@ -31,7 +31,10 @@ namespace Facebook
         /// </summary>
         private IWebClient _webClient = new WebClientWrapper();
 
-        //private bool _isBeta = FacebookApplication.Current.UseFacebookBeta;
+        /// <summary>
+        /// Indcates whether to use Facebook beta.
+        /// </summary>
+        private bool _isBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
@@ -72,15 +75,14 @@ namespace Facebook
         /// </summary>
         public string AccessToken { get; set; }
 
-        ///// <summary>
-        ///// Gets or sets a value indicating whether IsBeta.
-        ///// </summary>
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public bool IsBeta
-        //{
-        //    get { return _isBeta; }
-        //    set { _isBeta = value; }
-        //}
+        /// <summary>
+        /// Gets or sets a value indicating whether to use Facebook beta.
+        /// </summary>
+        public bool IsBeta
+        {
+            get { return _isBeta; }
+            set { _isBeta = value; }
+        }
 
         /// <summary>
         /// Gets or sets the web client.
@@ -112,8 +114,7 @@ namespace Facebook
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
 
-                // return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
-                return FacebookUtils.DomainMaps;
+                return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
             }
         }
 
