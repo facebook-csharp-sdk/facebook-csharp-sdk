@@ -74,6 +74,16 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or sets the secure canvas url.
+        /// </summary>
+        [ConfigurationProperty("secureCanvasUrl", IsRequired = false)]
+        public string SecureCanvasUrl
+        {
+            get { return (string)this["secureCanvasUrl"]; }
+            set { this["secureCanvasUrl"] = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the url to return the user after they cancel authorization.
         /// </summary>
         [ConfigurationProperty("cancelUrlPath", IsRequired = false)]

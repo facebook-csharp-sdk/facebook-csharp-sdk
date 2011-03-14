@@ -56,6 +56,18 @@ namespace Facebook.Web
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
+        /// </summary>
+        public CanvasUrlBuilder()
+            : this(FacebookApplication.Current, new HttpRequestWrapper(HttpContext.Current.Request))
+        {
+            Contract.Requires(FacebookApplication.Current != null);
+            Contract.Requires(HttpContext.Current != null);
+            Contract.Requires(HttpContext.Current.Request != null);
+            Contract.Requires(HttpContext.Current.Request.Url != null);
+        }
+
+        /// <summary>
         /// Gets the base url of your application on Facebook.
         /// </summary>
         public Uri CanvasPage
@@ -63,7 +75,15 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
-                return FacebookUtils.RemoveTrailingSlash(new Uri(_settings.CanvasPage));
+                var canvasPage = _settings.CanvasPage;
+                if (IsSecureUrl(_httpRequest.Url) && canvasPage.StartsWith("http:"))
+                {
+                    // seems like if we use IIS, port number 80 gets outputed.
+                    // so use Substring instead.
+                    canvasPage = "https:" + canvasPage.Substring(5);
+                }
+
+                return FacebookUtils.RemoveTrailingSlash(new Uri(canvasPage));
             }
         }
 
@@ -81,7 +101,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// Gets the URL where Facebook pull the content for your application's canvas pages.
+        /// Gets the URL where Facebook pulls the content for your application's canvas pages.
         /// </summary>
         public Uri CanvasUrl
         {
@@ -108,6 +128,33 @@ namespace Facebook.Web
         }
 
         /// <summary>
+        /// Gets the secure URL where Facebook pulls the content for your application's cavas pages.
+        /// </summary>
+        public Uri SecureCanvasUrl
+        {
+            get
+            {
+                string url;
+                if (_settings.SecureCanvasUrl != null)
+                {
+                    url = _settings.SecureCanvasUrl;
+                }
+                else if (_httpRequest.Headers.AllKeys.Contains("Host"))
+                {
+                    // This will attempt to get the url based on the host
+                    // in case we are behind a load balancer (such as with azure)
+                    url = string.Concat(_httpRequest.Url.Scheme, "://", _httpRequest.Headers["Host"]);
+                }
+                else
+                {
+                    url = string.Concat(_httpRequest.Url.Scheme, "://", _httpRequest.Url.Host, ":", _httpRequest.Url.Port);
+                }
+
+                return new Uri(FacebookUtils.RemoveTrailingSlash(url));
+            }
+        }
+
+        /// <summary>
         /// Gets the current URL of your application that Facebook
         /// is pulling..
         /// </summary>
@@ -116,7 +163,7 @@ namespace Facebook.Web
         {
             get
             {
-                var uriBuilder = new UriBuilder(CanvasUrl);
+                var uriBuilder = new UriBuilder(IsSecureUrl(_httpRequest.Url) ? SecureCanvasUrl : CanvasUrl);
                 var parts = _httpRequest.RawUrl.Split('?');
                 uriBuilder.Path = parts[0];
                 if (parts.Length > 1)
@@ -346,6 +393,21 @@ namespace Facebook.Web
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Checks if the url is a secure url.
+        /// </summary>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// Returns true if the url is secure.
+        /// </returns>
+        internal static bool IsSecureUrl(Uri url)
+        {
+            Contract.Requires(url != null);
+            return url.Scheme == "https";
         }
 
         [ContractInvariantMethod]

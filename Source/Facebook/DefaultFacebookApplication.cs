@@ -41,6 +41,11 @@ namespace Facebook
         public string CanvasUrl { get; set; }
 
         /// <summary>
+        /// Gets or sets the secure canvas url.
+        /// </summary>
+        public string SecureCanvasUrl { get; set; }
+
+        /// <summary>
         /// Gets or sets the url to return the user after they cancel authorization.
         /// </summary>
         public string CancelUrlPath { get; set; }
