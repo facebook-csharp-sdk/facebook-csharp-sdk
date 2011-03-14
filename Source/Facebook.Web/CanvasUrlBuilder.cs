@@ -37,6 +37,16 @@ namespace Facebook.Web
         private readonly HttpRequestBase _httpRequest;
 
         /// <summary>
+        /// Indicates whether the url is beta.
+        /// </summary>
+        private readonly bool _isBeta;
+
+        /// <summary>
+        /// Indicates whether the url is secure.
+        /// </summary>
+        private readonly bool _isSecure;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
         /// </summary>
         /// <param name="settings">
@@ -53,6 +63,10 @@ namespace Facebook.Web
 
             _settings = settings;
             _httpRequest = httpRequest;
+
+            // cache it for performance improvements
+            _isBeta = IsBeta(_httpRequest.UrlReferrer);
+            _isSecure = IsSecureUrl(_httpRequest.Url);
         }
 
         /// <summary>
@@ -68,6 +82,21 @@ namespace Facebook.Web
         }
 
         /// <summary>
+        /// Gets the aliases to Facebook domains.
+        /// </summary>
+        protected virtual Dictionary<string, Uri> DomainMaps
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
+
+                return _isSecure
+                           ? (_isBeta ? FacebookUtils.DomainMapsBetaSecure : FacebookUtils.DomainMapsSecure)
+                           : (_isBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps);
+            }
+        }
+
+        /// <summary>
         /// Gets the base url of your application on Facebook.
         /// </summary>
         public Uri CanvasPage
@@ -75,15 +104,8 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(Contract.Result<Uri>() != null);
-                var canvasPage = _settings.CanvasPage;
-                if (IsSecureUrl(_httpRequest.Url) && canvasPage.StartsWith("http:"))
-                {
-                    // seems like if we use IIS, port number 80 gets outputed.
-                    // so use Substring instead.
-                    canvasPage = "https:" + canvasPage.Substring(5);
-                }
 
-                return FacebookUtils.RemoveTrailingSlash(new Uri(canvasPage));
+                return new Uri(DomainMaps[FacebookUtils.DOMAIN_MAP_APPS] + CanvasPageApplicationPath.Substring(1));
             }
         }
 
@@ -95,8 +117,7 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
-
-                return CanvasPage.AbsolutePath;
+                return FacebookUtils.RemoveTrailingSlash(new Uri(_settings.CanvasPage)).AbsolutePath;
             }
         }
 
@@ -163,7 +184,7 @@ namespace Facebook.Web
         {
             get
             {
-                var uriBuilder = new UriBuilder(IsSecureUrl(_httpRequest.Url) ? SecureCanvasUrl : CanvasUrl);
+                var uriBuilder = new UriBuilder(_isSecure ? SecureCanvasUrl : CanvasUrl);
                 var parts = _httpRequest.RawUrl.Split('?');
                 uriBuilder.Path = parts[0];
                 if (parts.Length > 1)
@@ -225,9 +246,10 @@ namespace Facebook.Web
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
-            if (CanvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(CanvasUrl.PathAndQuery))
+            var canvasUrl = _isSecure ? SecureCanvasUrl : CanvasUrl;
+            if (canvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(canvasUrl.PathAndQuery))
             {
-                pathAndQuery = pathAndQuery.Substring(CanvasUrl.PathAndQuery.Length);
+                pathAndQuery = pathAndQuery.Substring(canvasUrl.PathAndQuery.Length);
             }
 
             var url = string.Concat(CanvasPage, pathAndQuery);
@@ -275,12 +297,11 @@ namespace Facebook.Web
 
             var oauthJsonState = new JsonObject();
 
-            // remove the http://apps.facebook.com/ length 25
+            // remove the http://apps.facebook.com/ length 25 or 26 if https://....
             // make it one letter character so more info can fit in.
             // r -> return_url_path
             // c -> cancel_url_path
             // s -> user_state
-
             if (!string.IsNullOrEmpty(returnUrlPath))
             {
                 // remove the starting /
@@ -296,13 +317,15 @@ namespace Facebook.Web
             }
             else
             {
-                oauthJsonState["r"] = CurrentCanvasPage.ToString().Substring(25);
+                oauthJsonState["r"] = _isSecure
+                                          ? CurrentCanvasPage.ToString().Substring(26)
+                                          : CurrentCanvasPage.ToString().Substring(25);
             }
 
             if (string.IsNullOrEmpty(cancelUrlPath))
             {
-                // if cancel url path is empty, get settings from default facebook application.
-                cancelUrlPath = FacebookApplication.Current.CancelUrlPath;
+                // if cancel url path is empty, get settings from facebook application.
+                cancelUrlPath = _settings.CancelUrlPath;
             }
 
             if (!string.IsNullOrEmpty(cancelUrlPath))
@@ -408,6 +431,25 @@ namespace Facebook.Web
         {
             Contract.Requires(url != null);
             return url.Scheme == "https";
+        }
+
+        /// <summary>
+        /// Checks if the url is beta.
+        /// </summary>
+        /// <param name="uri">
+        /// The uri.
+        /// </param>
+        /// <returns>
+        /// Returns true if the url is beta.
+        /// </returns>
+        internal bool IsBeta(Uri uri)
+        {
+            if (uri == null)
+            {
+                return _settings.UseFacebookBeta;
+            }
+
+            return uri.Host.Contains("beta");
         }
 
         [ContractInvariantMethod]
