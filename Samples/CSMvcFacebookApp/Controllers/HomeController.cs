@@ -43,7 +43,7 @@
             return View();
         }
 
-        [CanvasAuthorize(Permissions = "user_about_me")]
+        [CanvasAuthorize(Permissions = "user_about_me,publish_stream")]
         public ActionResult About()
         {
             var fb = new FacebookWebClient();
