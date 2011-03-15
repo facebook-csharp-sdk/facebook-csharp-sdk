@@ -5,8 +5,10 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNEXT (BETA)
+v5.0.6 (BETA)
 =========================================================================
+
+(support for https and beta.facebook.com)
 
 1. Facebook.Web.FacebookWebContext
 	Added in FacebookWebContext.
