@@ -269,6 +269,7 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
     nuspec.requireLicenseAcceptance = "true"
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
+    nuspec.dependency "CodeContracts.Unofficial", "1.0.0.0"
     nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
     nuspec.output_file = "#{nuget_working_dir}/Facebook.nuspec"
 end
@@ -321,6 +322,7 @@ nuspec :nuspec_facebookweb => [:net35, :net40, "#{build_config[:paths][:working]
     nuspec.requireLicenseAcceptance = "true"
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
+    nuspec.dependency "CodeContracts.Unofficial", "1.0.0.0"
     nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
     nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
     nuspec.output_file = "#{nuget_working_dir}/FacebookWeb.nuspec"
@@ -374,6 +376,7 @@ nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:worki
     nuspec.requireLicenseAcceptance = "true"
     nuspec.projectUrl = "http://facebooksdk.codeplex.com"
     nuspec.tags = "Facebook"
+    nuspec.dependency "CodeContracts.Unofficial", "1.0.0.0"
     nuspec.dependency "Newtonsoft.Json", "#{build_config[:nuspec][:newtonsoft_json_version]}"
     nuspec.dependency "Facebook", "#{build_config[:version][:full]}"
     nuspec.dependency "FacebookWeb", "#{build_config[:version][:full]}"
