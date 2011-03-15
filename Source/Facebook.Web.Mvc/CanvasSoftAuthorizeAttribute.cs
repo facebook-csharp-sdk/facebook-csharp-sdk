@@ -1,4 +1,4 @@
-﻿﻿// --------------------------------
+﻿// --------------------------------
 // <copyright file="CanvasSoftAuthorizeAttribute.cs" company="Facebook C# SDK">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
@@ -88,7 +88,7 @@ namespace Facebook.Web.Mvc
 
         protected internal override System.Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
-            var authorizer = new FacebookCanvasAuthorizer(settings, httpContext)
+            var authorizer = new CanvasAuthorizer(settings, httpContext)
             {
                 ReturnUrlPath = ReturnUrlPath,
                 CancelUrlPath = CancelUrlPath,

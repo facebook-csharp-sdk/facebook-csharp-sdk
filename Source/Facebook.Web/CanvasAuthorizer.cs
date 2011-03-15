@@ -5,20 +5,20 @@
     using System.Diagnostics.Contracts;
     using System.Web;
 
-    public class FacebookCanvasAuthorizer : FacebookWebAuthorizer
+    public class CanvasAuthorizer : FacebookWebAuthorizer
     {
 
-        public FacebookCanvasAuthorizer()
-            : base(FacebookCanvasContext.Current)
+        public CanvasAuthorizer()
+            : base(CanvasContext.Current)
         {
         }
 
-        public FacebookCanvasAuthorizer(FacebookCanvasContext context)
+        public CanvasAuthorizer(CanvasContext context)
             : base(context)
         {
         }
 
-        public FacebookCanvasAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
+        public CanvasAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
             : base(settings, httpContext)
         {
         }

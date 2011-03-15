@@ -19,9 +19,9 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new FacebookWebContext(facebookApplication, filterContext.HttpContext);
 
-            if (!authorizer.IsAuthorized(Permissions))
+            if (!authorizer.IsAuthorized(this.Permissions))
             {
-                filterContext.Result = new RedirectResult(LoginUrl ?? "/");
+                filterContext.Result = new RedirectResult(this.LoginUrl ?? "/");
             }
         }
     }

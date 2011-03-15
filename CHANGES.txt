@@ -5,32 +5,71 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNext
+vNext (BETA)
 =========================================================================
-1. all properties in FacebookSession changed to private.
-2. removed FacebookClientBase (features moved to FacebookClient)
-3. added extension methods for HttpRequest and HttpRequestBase to include
-   helper methods to get facebook signed request and facebook session.
+1. all setter properties in FacebookSession changed to private.
 
-    a. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequestBase httpRequest, string secret);
-    b. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequestBase httpRequest, IFacebookApplication facebookApplication);
-    c. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequestBase httpRequest);
-    d. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequest httpRequest, string secret);
-    e. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequest httpRequest, IFacebookApplication facebookApplication);
-    f. public static FacebookSignedRequest GetFacebookSignedRequest(this HttpRequest httpRequest);
-    g. public static FacebookSession GetFacebookSession(this HttpRequestBase httpRequest, string appId, string appSecret);
-    h. public static FacebookSession GetFacebookSession(this HttpRequestBase httpRequest, IFacebookApplication facebookApplication);
-    i. public static FacebookSession GetFacebookSession(this HttpRequestBase httpRequest);
-    j. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest, string appId, string appSecret);
-    k. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest, IFacebookApplication facebookApplication);
-    l. public static FacebookSession GetFacebookSession(this HttpRequest httpRequest);
-4. added Facebook.Web.FacebookSession.Current
-	(use Request.GetFacebookSession() extension method, if you want to write unit testable codes)
-5. added Facebook.Web.FacebookSignedRequest.Current
-	(use Request.GetFacebookSignedRequest() extension method, if you want to write unit testable codes)
-6. Facebook.Web.Authorizer renamed to Facebook.Web.FacebookAuthorizer
-7. added Perms in FacebookAuthorizer and FacebookAuthorizeAttributeBase to make it easer for sdk consumers to migrate from v4.
+2. removed FacebookClientBase (features moved to FacebookClient)
+
+3. added Perms in FacebookAuthorizeAttributeBase to make it easer for sdk consumers to migrate from v4.
    (user Permissions instead)
+
+4. FacebookApp contains the old callback methods while FacebookClient includes event driven programming model.
+	(FacebookApp is used for compatibility for v4).
+   (NOTE: FOR THOSE MIGRATION FROM v5.0.3 or v4.x make sure to change your existing FacebookClient to FacebookApp. This is a major breaking change.)
+
+5. FacebookOAuthClient includes some additoinal static helper methods to make generating login url easier.
+	
+	NOTE: 	if the redirectUri is null, it defaults to http://www.facebook.com/connect/login_success.html
+		by default the response_type=code for security reasons and display=popup (for wp7 builds display=touch)
+	a. public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, IDictionary<string, object> loginParameters);
+	b. public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, bool logout, IDictionary<string, object> loginParameters);
+	c. public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions);
+	d. public static Uri GetLoginUrl(string appId, Uri redirectUri);
+
+6. Moved FacebookApp from Facebook.dll for net 3.5 and net 4.0 projects only to Facebook.Web.dll to maintain compatibility with v4.
+   (FacebookApp in Facebook.dll is present only for SL4 and WP7 builds)
+
+7. Removed helper methods for DateTime from FacebookUtils and moved to Facebook.DateTimeConvert public class for compatibility with v4.
+
+9. Facebook.FacebookUtils changed to internal from public.
+
+9. added Facebook.DefaultFacebookApplication with EditorBrowsableState.Never attribute
+
+10. (internal/private methods visible to SDK developers)
+	a. added IWebClient, webclientWrapper, WebExceptionWrapper, UploadDataCompletedEventArgsWrapper, DownloadDataCompletedEventArgsWrapper to be able to write unit testable codes for FacebookClient and FacebookOAuthclient by mocking the WebClient.
+	b. FacebookApp internally makes use of FacebookClient.
+
+11. added Facebook.IFacebookSettings and marked as obsolete to maintain compatibility with v4. (use Facebook.IFacebookApplication instead)
+
+12. added Facebook.IJsonSerializer for serializing and deserializing JSON objects/strings.
+
+13. Facebook.JsonSerializer made public from internal.
+
+14. Facebook.JsonSerializer contains additional methods/properties which allows to get and change the default JSON serializer use by the SDK.
+	a. public static IJsonSerializer Current { get; }
+	b. public static void SetJsonSerializer(IJsonSerializer jsonSerializer);
+	c. public static void SetJsonSerializer(Func<IJsonSerializer> getJsonSerializer);
+
+15. (internal/private methods visible to SDK developers)
+	a. private class Facebook.JsonSerializer.JsonNetSerializer;  (default serializer is Newtonsoft.Json)
+
+16. FacebookApp (for net 3.5 and .net 4.0 projects) in Facebook.Web.dll behaves similar to that of v4 which allows easier migrations from v4.
+
+17. FacebookApp contains Session and SignedRequest properties to easily access the current facebook session and the current signed request.
+
+18. renamed Authorizer to FacebookWebAuthorizer.
+
+19. added FacebookWebClient (derives from FacebookClient but is meant to be used by web applications)
+
+20. added FacebookWebContext
+
+21. added FacebookCanvasContext
+
+22. 
+	a. removed FacebookWebUtils
+	b. moved subscription related helper methods to inernal class FacebookSubscriptionVerifier
+	
 
 =========================================================================
 v5.0.3 (BETA)

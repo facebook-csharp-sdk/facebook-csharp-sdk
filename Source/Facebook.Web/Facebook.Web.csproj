@@ -112,8 +112,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FacebookApp.cs" />
-    <Compile Include="FacebookCanvasAuthorizer.cs" />
-    <Compile Include="FacebookCanvasContext.cs" />
+    <Compile Include="CanvasAuthorizer.cs" />
+    <Compile Include="CanvasContext.cs" />
     <Compile Include="FacebookSubscriptionVerifier.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs">
       <SubType>Code</SubType>

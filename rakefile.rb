@@ -7,7 +7,7 @@ task :default => [:libs]
 PROJECT_NAME      = "Facebook C# SDK"
 PROJECT_NAME_SAFE = "FacebookSDK"
 LOG               = false                # TODO: enable albacore logging from ENV
-#ENV['NIGHTLY']    = 'false'
+ENV['NIGHTLY']    = 'false'
 
 build_config = nil
 
