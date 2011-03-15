@@ -13,8 +13,7 @@ namespace CSASPNETWebsiteRegistrationForm
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var fbApp = new FacebookApp();
-            var signedRequest = fbApp.SignedRequest;
+            var signedRequest = FacebookWebContext.Current.SignedRequest;
             if (signedRequest == null)
             {
                 // there is no signed request here.

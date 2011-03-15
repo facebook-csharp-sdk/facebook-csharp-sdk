@@ -24,6 +24,10 @@ v5.0.6 (BETA)
 		   
 3. CSASPNETSecureCanvas sample
 
+4. Removed Facebook.Web.CanvasContext (features moved to FacebookWebContext)
+
+5. added FacebookWebContext.SignedRequest
+
 
 =========================================================================
 v5.0.4 and v5.0.5 (BETA)

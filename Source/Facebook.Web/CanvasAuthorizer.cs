@@ -9,11 +9,11 @@
     {
 
         public CanvasAuthorizer()
-            : base(CanvasContext.Current)
+            : base(FacebookWebContext.Current)
         {
         }
 
-        public CanvasAuthorizer(CanvasContext context)
+        public CanvasAuthorizer(FacebookWebContext context)
             : base(context)
         {
         }

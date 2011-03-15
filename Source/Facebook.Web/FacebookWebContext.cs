@@ -38,6 +38,11 @@ namespace Facebook.Web
         private FacebookSession _session;
 
         /// <summary>
+        /// The facebook signed request.
+        /// </summary>
+        private FacebookSignedRequest _signedRequest;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FacebookWebContext"/> class.
         /// </summary>
         public FacebookWebContext()
@@ -135,6 +140,18 @@ namespace Facebook.Web
             {
                 return _session ??
                        (_session = FacebookSession.GetSession(Settings.AppId, Settings.AppSecret, HttpContext));
+            }
+        }
+
+        /// <summary>
+        /// Gets the signed request.
+        /// </summary>
+        public FacebookSignedRequest SignedRequest
+        {
+            get
+            {
+                return _signedRequest ??
+                    (_signedRequest = FacebookSignedRequest.GetSignedRequest(Settings.AppSecret, HttpContext));
             }
         }
 
