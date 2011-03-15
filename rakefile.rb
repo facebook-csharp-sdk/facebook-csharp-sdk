@@ -71,7 +71,7 @@ task :configure do
    }
    
    build_config[:paths][:packages]  = "#{build_config[:paths][:src]}packages/"
-   build_config[:paths][:nuget]  = "#{build_config[:paths][:packages]}NuGet.CommandLine.1.0.11220.26/Tools/NuGet.exe"
+   build_config[:paths][:nuget]  = "#{build_config[:paths][:packages]}NuGet.CommandLine.1.2.20311.3/Tools/NuGet.exe"
    
    build_config[:paths][:xunit][:x86_console_path]  = "#{build_config[:paths][:tools]}xunit-1.7/xunit.console.clr4.exe"
    
