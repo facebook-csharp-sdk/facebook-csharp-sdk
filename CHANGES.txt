@@ -21,6 +21,8 @@ v5.0.6 (BETA)
 		b. public bool UseFacebookBeta { get; set; }
 	(NOTE: The SDK sets the IsSecureConnection and UseFacebookBeta depending on the HttpRequest.
 		   You can override these two properties by using the setter.)
+		   
+3. CSASPNETSecureCanvas sample
 
 
 =========================================================================
