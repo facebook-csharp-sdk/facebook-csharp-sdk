@@ -27,6 +27,12 @@
             get { return _request; }
         }
 
+        [System.Obsolete("Use FacebookWebRequest.Session instead.")]
+        public FacebookSession Session
+        {
+            get { return FacebookWebRequest.Session; }
+        }
+
         /// <summary>
         /// Gets or sets the extended permissions.
         /// </summary>
