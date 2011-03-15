@@ -83,6 +83,10 @@ namespace Facebook
             {
                 UseFacebookBeta = true;
             }
+
+            // set app id and app secret for compatibility from v4.
+            AppSecret = FacebookApplication.Current.AppSecret;
+            AppId = FacebookApplication.Current.AppId;
         }
 
         /// <summary>
