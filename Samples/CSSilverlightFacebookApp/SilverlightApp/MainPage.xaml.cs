@@ -33,20 +33,22 @@ namespace IFramedInBrowser
                 fb = new FacebookClient(token);
                 InfoBox.Visibility = Visibility.Visible;
 
+                fb.GetCompleted += (o, args) =>
+                                       {
+                                           if (args.Error == null)
+                                           {
+                                               var result = (IDictionary<string, object>)args.GetResultData();
+                                               Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
+                                           }
+                                           else
+                                           {
+                                               // TODO: Need to let the user know there was an error
+                                               //failedLogin();
+                                           } 
+                                       };
+
                 // Making Facebook call here!
-                fb.GetAsync("me", (val) =>
-                {
-                    if (val.Error == null)
-                    {
-                        var result = (IDictionary<string, object>)val.Result;
-                        Dispatcher.BeginInvoke(() => InfoBox.ItemsSource = result);
-                    }
-                    else
-                    {
-                        // TODO: Need to let the user know there was an error
-                        //failedLogin();
-                    }
-                });
+                fb.GetAsync("/me");
             }
         }
     }
