@@ -10,9 +10,7 @@ public partial class _Default : Page
     {
         CheckIfFacebookAppIsSetupCorrectly();
 
-        var canvasUrlBuilder = new CanvasUrlBuilder();
-
-        var auth = new CanvasAuthorizer { Permissions = new[] { "user_about_me" }, CancelUrlPath = "/cancel"};
+        var auth = new CanvasAuthorizer { Permissions = new[] { "user_about_me" } };
 
         if (auth.Authorize())
         {

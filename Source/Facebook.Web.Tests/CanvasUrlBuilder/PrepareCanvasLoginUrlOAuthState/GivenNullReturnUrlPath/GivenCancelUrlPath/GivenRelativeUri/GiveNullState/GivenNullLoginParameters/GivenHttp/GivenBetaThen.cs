@@ -1,4 +1,4 @@
-namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.GivenNullReturnUrlPath.GivenNullCancelUrlPath.GivenNullState.GivenNullLoginParameters.GivenHttp
+namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.GivenNullReturnUrlPath.GivenCancelUrlPath.GivenRelativeUri.GiveNullState.GivenNullLoginParameters.GivenHttp
 {
     using System;
     using System.Collections.Generic;
@@ -6,68 +6,85 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
     using Facebook.Web;
     using Moq;
     using Xunit;
+    using Xunit.Extensions;
 
     public class GivenBetaThen
     {
-         private CanvasUrlBuilder _canvasUrlBuilder;
+        private CanvasUrlBuilder _canvasUrlBuilder;
 
         private string _returnUrlPath;
-        private string _cancelUrlPath;
-        private string _sate;
+        private string _state;
         private IDictionary<string, object> _loginParameters;
 
         public GivenBetaThen()
         {
             _canvasUrlBuilder = new CanvasUrlBuilder(
                 new DefaultFacebookApplication
-                    {
-                        CanvasUrl = "http://localhost:16151/CSASPNETFacebookApp/",
-                        CanvasPage = "http://apps.facebook.com/csharpsamplestwo/"
-                    },
+                {
+                    CanvasUrl = "http://localhost:16151/CSASPNETFacebookApp/",
+                    CanvasPage = "http://apps.facebook.com/csharpsamplestwo/"
+                },
                 GetHttpRequest());
         }
 
-        [Fact]
-        public void ResultIsOfTypeJsonObject()
+        [Theory]
+        [PropertyData("CancelUrlPath")]
+        public void ResultIsOfTypeJsonObject(string cancelUrlPath)
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-                _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+                _returnUrlPath, cancelUrlPath, _state, _loginParameters);
 
             Assert.IsType<JsonObject>(result);
         }
 
-        [Fact]
-        public void ResultContainsR()
+        [Theory]
+        [PropertyData("CancelUrlPath")]
+        public void ResultContainsR(string cancelUrlPath)
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-                _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+                _returnUrlPath, cancelUrlPath, _state, _loginParameters);
 
             Assert.True(result.ContainsKey("r"));
         }
 
-        [Fact]
-        public void ResultDoesNotContainC()
+        [Theory]
+        [PropertyData("CancelUrlPath")]
+        public void ResultContainsC(string cancelUrlPath)
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-               _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+               _returnUrlPath, cancelUrlPath, _state, _loginParameters);
 
-            Assert.False(result.ContainsKey("c"));
+            Assert.True(result.ContainsKey("c"));
         }
 
-        [Fact]
-        public void RIsSetCorrectly()
+        [Theory]
+        [PropertyData("CancelUrlPath")]
+        public void RIsSetCorrectly(string cancelUrlPath)
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-               _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+               _returnUrlPath, cancelUrlPath, _state, _loginParameters);
 
             Assert.Equal("http://apps.beta.facebook.com/csharpsamplestwo/default.aspx", result["r"]);
         }
 
-        [Fact]
-        public void ResultDoesNotContainS()
+        [Theory]
+        [PropertyData("CancelUrlPath")]
+        public void CIsSetCorrectly(string cancelUrlPath)
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-               _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+               _returnUrlPath, cancelUrlPath, _state, _loginParameters);
+
+            cancelUrlPath = FacebookUtils.RemoveStartingSlash(cancelUrlPath);
+
+            Assert.Equal("http://apps.beta.facebook.com/csharpsamplestwo/" + cancelUrlPath, result["c"]);
+        }
+
+        [Theory]
+        [PropertyData("CancelUrlPath")]
+        public void ResultDoesNotContainS(string cancelUrlPath)
+        {
+            var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
+               _returnUrlPath, cancelUrlPath, _state, _loginParameters);
 
             Assert.False(result.ContainsKey("s"));
         }
@@ -82,6 +99,11 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
         public void UseFacebookBetaIsTrue()
         {
             Assert.True(_canvasUrlBuilder.UseFacebookBeta);
+        }
+
+        public static IEnumerable<object[]> CancelUrlPath
+        {
+            get { return CanvasUrlBuilderHelper.CancelUrlPathRelativeUri; }
         }
 
         public HttpRequestBase GetHttpRequest()

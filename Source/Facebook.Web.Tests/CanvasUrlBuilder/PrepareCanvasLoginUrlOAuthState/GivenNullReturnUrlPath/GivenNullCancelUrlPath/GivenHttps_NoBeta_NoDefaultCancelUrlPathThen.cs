@@ -1,4 +1,4 @@
-namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.GivenNullReturnUrlPath.GivenNullCancelUrlPath.GivenNullState.GivenNullLoginParameters.GiveHttps
+namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.GivenNullReturnUrlPath.GivenNullCancelUrlPath.GivenNullState.GivenNullLoginParameters
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
     using Moq;
     using Xunit;
 
-    public class GivenNonBetaThen
+    public class GivenHttps_NoBeta_NoDefaultCancelUrlPathThen
     {
         private CanvasUrlBuilder _canvasUrlBuilder;
 
@@ -16,7 +16,7 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
         private string _sate;
         private IDictionary<string, object> _loginParameters;
 
-        public GivenNonBetaThen()
+        public GivenHttps_NoBeta_NoDefaultCancelUrlPathThen()
         {
             _canvasUrlBuilder = new CanvasUrlBuilder(
                 new DefaultFacebookApplication

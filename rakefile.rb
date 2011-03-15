@@ -404,8 +404,11 @@ msbuild :clean_docs do |msb|
    msb.properties
 end
 
-desc "Build All Libraries (default)"
-task :libs => [:net35, :net40, :sl4, :wp7, :net40_tests]
+desc "Build All Libraries and run tests (default)"
+task :libs => [:net35, :net40, :sl4, :wp7, :tests]
+
+desc "Run all tests"
+task :tests => [:net40_tests]
 
 desc "Clean All"
 task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do

@@ -334,9 +334,10 @@ namespace Facebook.Web
 
         internal IDictionary<string, object> PrepareCanvasLoginUrlOAuthState(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> loginParameters)
         {
-            Contract.Ensures(Contract.Result<IDictionary<string,object>>() != null);
+            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 
             var oauthJsonState = new JsonObject();
+
             // make it one letter character so more info can fit in.
             // r -> return_url_path
             // c -> cancel_url_path
@@ -371,6 +372,12 @@ namespace Facebook.Web
                 }
             }
 
+            if (string.IsNullOrEmpty(cancelUrlPath))
+            {
+                // if cancel url path is empty, get settings from facebook application.
+                cancelUrlPath = _settings.CancelUrlPath;
+            }
+
             if (!string.IsNullOrEmpty(cancelUrlPath))
             {
                 if (IsRelativeUri(cancelUrlPath))
@@ -385,124 +392,6 @@ namespace Facebook.Web
 
             return oauthJsonState;
         }
-
-        /*
-        /// <summary>
-        /// Gets the canvas login url
-        /// </summary>
-        /// <param name="returnUrlPath">
-        /// The return Url Path.
-        /// </param>
-        /// <param name="cancelUrlPath">
-        /// The cancel Url Path.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <returns>
-        /// Returns the login url.
-        /// </returns>
-        public Uri GetLoginUrl(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> parameters)
-        {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
-            var oauth = new FacebookOAuthClient
-                            {
-                                AppId = _settings.AppId,
-                                AppSecret = _settings.AppSecret
-                            };
-
-            if (parameters != null && parameters.ContainsKey("state"))
-            {
-                // parameters state override the state
-                state = parameters["state"] == null ? null : parameters["state"].ToString();
-            }
-
-            var oauthJsonState = new JsonObject();
-
-            // make it one letter character so more info can fit in.
-            // r -> return_url_path
-            // c -> cancel_url_path
-            // s -> user_state
-            if (!string.IsNullOrEmpty(returnUrlPath))
-            {
-                // remove the starting /
-                oauthJsonState["r"] = CanvasPageApplicationPath.Substring(1);
-
-                // then return url path doesn't start with / add it
-                if (!returnUrlPath.StartsWith("/"))
-                {
-                    oauthJsonState["r"] += "/";
-                }
-
-                oauthJsonState["r"] += returnUrlPath;
-            }
-            else
-            {
-                oauthJsonState["r"] = IsSecureConnection
-                                          ? CurrentCanvasPage.ToString().Substring(26)
-                                          : CurrentCanvasPage.ToString().Substring(25);
-            }
-
-            if (string.IsNullOrEmpty(cancelUrlPath))
-            {
-                // if cancel url path is empty, get settings from facebook application.
-                cancelUrlPath = _settings.CancelUrlPath;
-            }
-
-            if (!string.IsNullOrEmpty(cancelUrlPath))
-            {
-                if (IsRelativeUri(cancelUrlPath))
-                {
-                    // remove the first /
-                    oauthJsonState["c"] = CanvasPageApplicationPath.Substring(1);
-
-                    if (!cancelUrlPath.StartsWith("/"))
-                    {
-                        oauthJsonState["c"] += "/";
-                    }
-                }
-                else
-                {
-                    oauthJsonState["c"] = string.Empty;
-                }
-
-                oauthJsonState["c"] += cancelUrlPath;
-            }
-
-            // user state
-            if (!string.IsNullOrEmpty(state))
-            {
-                oauthJsonState["s"] = state;
-            }
-
-            var oauthState = FacebookUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
-            var mergedParameters = FacebookUtils.Merge(parameters, null);
-            mergedParameters["state"] = oauthState;
-
-            var appPath = _httpRequest.ApplicationPath;
-            if (appPath != "/")
-            {
-                appPath = string.Concat(appPath, "/");
-            }
-
-            string redirectRoot = RedirectPath;
-
-            var uriBuilder = new UriBuilder(CurrentCanvasUrl)
-                                 {
-                                     Path = string.Concat(appPath, redirectRoot),
-                                     Query = string.Empty
-                                 };
-
-            oauth.RedirectUri = uriBuilder.Uri;
-
-            var loginUrl = oauth.GetLoginUrl(mergedParameters);
-            return loginUrl;
-        }
-        */
 
         /// <summary>
         /// Gets the canvas redirect HTML.

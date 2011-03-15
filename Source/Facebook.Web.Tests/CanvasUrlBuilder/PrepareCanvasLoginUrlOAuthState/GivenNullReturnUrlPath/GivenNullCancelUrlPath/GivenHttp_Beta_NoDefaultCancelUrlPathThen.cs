@@ -1,4 +1,4 @@
-namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.GivenNullReturnUrlPath.GivenNullCancelUrlPath.GivenNullState.GivenNullLoginParameters.GiveHttps
+namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.GivenNullReturnUrlPath.GivenNullCancelUrlPath.GivenNullState.GivenNullLoginParameters
 {
     using System;
     using System.Collections.Generic;
@@ -7,21 +7,21 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
     using Moq;
     using Xunit;
 
-    public class GivenBetaThen
+    public class GivenHttp_Beta_NoDefaultCancelUrlPathThen
     {
         private CanvasUrlBuilder _canvasUrlBuilder;
 
         private string _returnUrlPath;
         private string _cancelUrlPath;
-        private string _sate;
+        private string _state;
         private IDictionary<string, object> _loginParameters;
 
-        public GivenBetaThen()
+        public GivenHttp_Beta_NoDefaultCancelUrlPathThen()
         {
             _canvasUrlBuilder = new CanvasUrlBuilder(
                 new DefaultFacebookApplication
                 {
-                    SecureCanvasUrl = "https://localhost:16150/CSASPNETFacebookApp/",
+                    CanvasUrl = "http://localhost:16151/CSASPNETFacebookApp/",
                     CanvasPage = "http://apps.facebook.com/csharpsamplestwo/"
                 },
                 GetHttpRequest());
@@ -31,7 +31,7 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
         public void ResultIsOfTypeJsonObject()
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-                _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+                _returnUrlPath, _cancelUrlPath, _state, _loginParameters);
 
             Assert.IsType<JsonObject>(result);
         }
@@ -40,7 +40,7 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
         public void ResultContainsR()
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-                _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+                _returnUrlPath, _cancelUrlPath, _state, _loginParameters);
 
             Assert.True(result.ContainsKey("r"));
         }
@@ -49,7 +49,7 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
         public void ResultDoesNotContainC()
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-               _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+               _returnUrlPath, _cancelUrlPath, _state, _loginParameters);
 
             Assert.False(result.ContainsKey("c"));
         }
@@ -58,24 +58,24 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
         public void RIsSetCorrectly()
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-               _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+               _returnUrlPath, _cancelUrlPath, _state, _loginParameters);
 
-            Assert.Equal("https://apps.beta.facebook.com/csharpsamplestwo/default.aspx", result["r"]);
+            Assert.Equal("http://apps.beta.facebook.com/csharpsamplestwo/default.aspx", result["r"]);
         }
 
         [Fact]
         public void ResultDoesNotContainS()
         {
             var result = _canvasUrlBuilder.PrepareCanvasLoginUrlOAuthState(
-               _returnUrlPath, _cancelUrlPath, _sate, _loginParameters);
+               _returnUrlPath, _cancelUrlPath, _state, _loginParameters);
 
             Assert.False(result.ContainsKey("s"));
         }
 
         [Fact]
-        public void IsSecuredConnectionIsTrue()
+        public void IsSecuredConnectionIsFalse()
         {
-            Assert.True(_canvasUrlBuilder.IsSecureConnection);
+            Assert.False(_canvasUrlBuilder.IsSecureConnection);
         }
 
         [Fact]
@@ -88,10 +88,10 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
         {
             var requestMock = new Mock<HttpRequestBase>();
 
-            requestMock.Setup(request => request.Url).Returns(new Uri("https://localhost:16150/CSASPNETFacebookApp/default.aspx"));
+            requestMock.Setup(request => request.Url).Returns(new Uri("http://localhost:16151/CSASPNETFacebookApp/default.aspx"));
             requestMock.Setup(request => request.ApplicationPath).Returns("/CSASPNETFacebookApp");
             requestMock.Setup(request => request.RawUrl).Returns("/CSASPNETFacebookApp/");
-            requestMock.Setup(request => request.UrlReferrer).Returns(new Uri("https://apps.beta.facebook.com/csharpsamplestwo/"));
+            requestMock.Setup(request => request.UrlReferrer).Returns(new Uri("http://apps.beta.facebook.com/csharpsamplestwo/"));
 
             return requestMock.Object;
         }

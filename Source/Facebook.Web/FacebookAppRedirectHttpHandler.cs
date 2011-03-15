@@ -56,157 +56,100 @@ namespace Facebook.Web
 
             if (!context.Request.QueryString.AllKeys.Contains("state"))
             {
-                redirectUriBuilder = new UriBuilder("http://www.facebook.com");
-            }
-            else
-            {
-                // if state is present.
-                var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
-                var json = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(state);
-
-                // make it one letter character so more info can fit in.
-                // r -> return_url_path (full uri)
-                // c -> cancel_url_path (full uri)
-                // s -> user_state
-                FacebookOAuthResult oauthResult;
-                if (!FacebookOAuthResult.TryParse(context.Request.Url, out oauthResult))
-                {
-                    throw new ApplicationException("invalid url");
-                }
-
-                if (oauthResult.IsSuccess)
-                {
-                    redirectUriBuilder = new UriBuilder(json["r"].ToString());
-                }
-                else
-                {
-                    if (!json.ContainsKey("c"))
-                    {
-                        // there is no cancel url path
-                        redirectUriBuilder = new UriBuilder("http://facebook.com");
-                    }
-                    else
-                    {
-                        redirectUriBuilder = new UriBuilder(json["c"].ToString());
-                        IDictionary<string, object> cancelUrlQueryStrings = new Dictionary<string, object>
-                                                       {
-                                                           { "error_reason", context.Request.QueryString["error_reason"] },
-                                                           { "error", context.Request.QueryString["error"] },
-                                                           { "error_description", context.Request.QueryString["error_description"] }
-                                                       };
-
-                        redirectUriBuilder.Query = FacebookUtils.ToJsonQueryString(cancelUrlQueryStrings);
-                    }
-                }
-            }
-
-            return redirectUriBuilder.Uri;
-        }
-
-        /*
-        protected Uri GetUrl(HttpContextBase context)
-        {
-            Contract.Requires(context != null);
-            Contract.Requires(context.Request != null);
-
-            // TODO: need unit tests for this method, might as well need to refactor this method.
-            UriBuilder redirectUriBuilder = null;
-
-            if (context.Request.QueryString.AllKeys.Contains("state"))
-            {
-                // if state is present.
-                var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
-                var json = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(state);
-
-                // make it one letter character so more info can fit in.
-                // r -> return_url_path (full uri)
-                // c -> cancel_url_path (full uri)
-                // s -> user_state
-                // n -> navigate url path.
-                var returnUrlPath = json["r"].ToString();
-
-                if (context.Request.QueryString.AllKeys.Contains("error_reason"))
-                {
-                    // TODO: might be good to append return_url_path
-                    if (json.ContainsKey("c"))
-                    {
-                        // if there is cancel url path.
-                        var cancelUrlPath = json["c"].ToString();
-
-                        redirectUriBuilder = new UriBuilder(cancelUrlPath);
-
-                        IDictionary<string, object> cancelUrlQueryStrings = new Dictionary<string, object>
-                                                       {
-                                                           { "error_reason", context.Request.QueryString["error_reason"] },
-                                                           { "error", context.Request.QueryString["error"] },
-                                                           { "error_description", context.Request.QueryString["error_description"] }
-                                                       };
-
-                        if (cancelUrlPath.Contains("?"))
-                        {
-                            // incase cancel url path contains querystrings.
-                            var cancelUrlParts = cancelUrlPath.Split('?');
-                            if (cancelUrlParts.Length == 2 && !string.IsNullOrEmpty(cancelUrlParts[1]))
-                            {
-                                redirectUriBuilder.Path = cancelUrlParts[0];
-                                var queryStrings = FacebookUtils.ParseUrlQueryString(cancelUrlParts[1]);
-                                cancelUrlQueryStrings = FacebookUtils.Merge(cancelUrlQueryStrings, queryStrings);
-                            }
-                        }
-
-                        redirectUriBuilder.Query = FacebookUtils.ToJsonQueryString(cancelUrlQueryStrings);
-                    }
-                    else
-                    {
-                        // if there is no cancel url path.
-                        redirectUriBuilder = new UriBuilder("http://www.facebook.com");
-                    }
-                }
-                else
-                {
-                    redirectUriBuilder = new UriBuilder(returnUrlPath);
-
-                    if (returnUrlPath.Contains("?"))
-                    {
-                        var parts = returnUrlPath.Split('?');
-                        redirectUriBuilder.Path = parts[0];
-
-                        redirectUriBuilder.Query = parts[1];
-                        var rQueryString = FacebookUtils.ParseUrlQueryString(parts[1]);
-                        if (rQueryString.ContainsKey("error_reason"))
-                        {
-                            // remove oauth stuffs.
-                            if (rQueryString.ContainsKey("error_reason"))
-                            {
-                                rQueryString.Remove("error_reason");
-                            }
-
-                            if (rQueryString.ContainsKey("error"))
-                            {
-                                rQueryString.Remove("error");
-                            }
-
-                            if (rQueryString.ContainsKey("error_description"))
-                            {
-                                rQueryString.Remove("error_description");
-                            }
-                            redirectUriBuilder.Query = FacebookUtils.ToJsonQueryString(rQueryString);
-                        }
-                    }
-                    else
-                    {
-                        redirectUriBuilder.Path = returnUrlPath;
-                    }
-                }
-            }
-
-            if (redirectUriBuilder == null)
-            {
+                // todo: better to redirect to the default canvas page.
                 return new Uri("http://www.facebook.com");
             }
 
+            // if state is present.
+            var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
+            var json = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(state);
+
+            // make it one letter character so more info can fit in.
+            // r -> return_url_path (full uri)
+            // c -> cancel_url_path (full uri)
+            // s -> user_state
+            FacebookOAuthResult oauthResult;
+            if (!FacebookOAuthResult.TryParse(context.Request.Url, out oauthResult))
+            {
+                // todo: better to redirect to the default canvas page.
+                return new Uri("http://www.facebook.com");
+            }
+
+            if (oauthResult.IsSuccess)
+            {
+                var returnUrl = json["r"].ToString();
+
+                redirectUriBuilder = new UriBuilder(returnUrl);
+
+                if (returnUrl.Contains("?"))
+                {
+                    // incase return url path contains querystrings.
+                    var returnUrlParts = returnUrl.Split('?');
+                    if (returnUrlParts.Length == 2 && !string.IsNullOrEmpty(returnUrlParts[1]))
+                    {
+                        var queryStrings = FacebookUtils.ParseUrlQueryString(returnUrlParts[1]);
+
+                        if (queryStrings.ContainsKey("error_reason"))
+                        {
+                            // remove oauth stuffs.
+                            if (queryStrings.ContainsKey("error_reason"))
+                            {
+                                queryStrings.Remove("error_reason");
+                            }
+
+                            if (queryStrings.ContainsKey("error"))
+                            {
+                                queryStrings.Remove("error");
+                            }
+
+                            if (queryStrings.ContainsKey("error_description"))
+                            {
+                                queryStrings.Remove("error_description");
+                            }
+
+                            redirectUriBuilder.Query = FacebookUtils.ToJsonQueryString(queryStrings);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!json.ContainsKey("c"))
+                {
+                    // there is no cancel url path
+                    redirectUriBuilder = new UriBuilder("http://facebook.com");
+                }
+                else
+                {
+                    var cancelUrl = json["c"].ToString();
+
+                    IDictionary<string, object> cancelUrlQueryStrings = new Dictionary<string, object>
+                                                                            {
+                                                                                { "error_reason", context.Request.QueryString["error_reason"] },
+                                                                                { "error", context.Request.QueryString["error"] },
+                                                                                { "error_description", context.Request.QueryString["error_description"] }
+                                                                            };
+
+                    if (cancelUrl.Contains("?"))
+                    {
+                        // incase cancel url path contains querystrings.
+                        var cancelUrlParts = cancelUrl.Split('?');
+                        if (cancelUrlParts.Length == 2 && !string.IsNullOrEmpty(cancelUrlParts[1]))
+                        {
+                            var queryStrings = FacebookUtils.ParseUrlQueryString(cancelUrlParts[1]);
+                            cancelUrlQueryStrings = FacebookUtils.Merge(cancelUrlQueryStrings, queryStrings);
+                        }
+                    }
+
+                    redirectUriBuilder = new UriBuilder(cancelUrl)
+                                             {
+                                                 Query = FacebookUtils.ToJsonQueryString(cancelUrlQueryStrings)
+                                             };
+                }
+            }
+
             return redirectUriBuilder.Uri;
         }
-        */
+
     }
 }
