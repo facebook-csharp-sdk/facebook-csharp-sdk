@@ -73,14 +73,6 @@
     <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenAUrlReferrer\AndHttpsUrlAndReferUrlAsNonAppBetaFacebookThen.cs" />
     <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenUrlReferrerAsNull\HttpsUrlThen.cs" />
     <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenUrlReferrerAsNull\HttpUrlThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenAbsoluteUri\GiveNullState\GivenNullLoginParameters\GiveHttps\GiveBetaThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenAbsoluteUri\GiveNullState\GivenNullLoginParameters\GiveHttps\GivenNonBetaThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenAbsoluteUri\GiveNullState\GivenNullLoginParameters\GivenHttp\GivenBetaThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenAbsoluteUri\GiveNullState\GivenNullLoginParameters\GivenHttp\GivenNonBetaThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenRelativeUri\GiveNullState\GivenNullLoginParameters\GiveHttps\GiveBetaThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenRelativeUri\GiveNullState\GivenNullLoginParameters\GiveHttps\GivenNonBetaThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenRelativeUri\GiveNullState\GivenNullLoginParameters\GivenHttp\GivenBetaThen.cs" />
-    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenCancelUrlPath\GivenRelativeUri\GiveNullState\GivenNullLoginParameters\GivenHttp\GivenNonBetaThen.cs" />
     <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenNullCancelUrlPath\GivenHttp_Beta_DefaultAbsoluteCancelUrlPathThen.cs" />
     <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenNullCancelUrlPath\GivenHttps_NoBeta_NoDefaultCancelUrlPathThen.cs" />
     <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenNullCancelUrlPath\GivenHttps_Beta_NoDefaultCancelUrlPathThen.cs" />
