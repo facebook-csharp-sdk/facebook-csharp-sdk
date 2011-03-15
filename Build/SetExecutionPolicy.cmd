@@ -1,1 +1,0 @@
-powershell -Command "& {Set-ExecutionPolicy Unrestricted %*}"
