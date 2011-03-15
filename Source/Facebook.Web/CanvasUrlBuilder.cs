@@ -39,12 +39,12 @@ namespace Facebook.Web
         /// <summary>
         /// Indicates whether the url is beta.
         /// </summary>
-        private readonly bool _isBeta;
+        private bool _isBeta;
 
         /// <summary>
         /// Indicates whether the url is secure.
         /// </summary>
-        private readonly bool _isSecure;
+        private bool _isSecureConnection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasUrlBuilder"/> class.
@@ -66,7 +66,7 @@ namespace Facebook.Web
 
             // cache it for performance improvements
             _isBeta = IsBeta(_httpRequest.UrlReferrer);
-            _isSecure = IsSecureUrl(_httpRequest.Url);
+            _isSecureConnection = IsSecureUrl(_httpRequest.Url);
         }
 
         /// <summary>
@@ -90,9 +90,9 @@ namespace Facebook.Web
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
 
-                return _isSecure
-                           ? (_isBeta ? FacebookUtils.DomainMapsBetaSecure : FacebookUtils.DomainMapsSecure)
-                           : (_isBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps);
+                return IsSecureConnection
+                           ? (UseFacebookBeta ? FacebookUtils.DomainMapsBetaSecure : FacebookUtils.DomainMapsSecure)
+                           : (UseFacebookBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps);
             }
         }
 
@@ -184,7 +184,7 @@ namespace Facebook.Web
         {
             get
             {
-                var uriBuilder = new UriBuilder(_isSecure ? SecureCanvasUrl : CanvasUrl);
+                var uriBuilder = new UriBuilder(IsSecureConnection ? SecureCanvasUrl : CanvasUrl);
                 var parts = _httpRequest.RawUrl.Split('?');
                 uriBuilder.Path = parts[0];
                 if (parts.Length > 1)
@@ -230,6 +230,24 @@ namespace Facebook.Web
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the connection is secure.
+        /// </summary>
+        public bool IsSecureConnection
+        {
+            get { return _isSecureConnection; }
+            set { _isSecureConnection = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use facebook beta.
+        /// </summary>
+        public bool UseFacebookBeta
+        {
+            get { return _isBeta; }
+            set { _isBeta = value; }
+        }
+
+        /// <summary>
         /// Builds a Facebook canvas return URL.
         /// </summary>
         /// <param name="pathAndQuery">The path and query.</param>
@@ -246,7 +264,7 @@ namespace Facebook.Web
                 pathAndQuery = String.Concat("/", pathAndQuery);
             }
 
-            var canvasUrl = _isSecure ? SecureCanvasUrl : CanvasUrl;
+            var canvasUrl = IsSecureConnection ? SecureCanvasUrl : CanvasUrl;
             if (canvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(canvasUrl.PathAndQuery))
             {
                 pathAndQuery = pathAndQuery.Substring(canvasUrl.PathAndQuery.Length);
@@ -317,7 +335,7 @@ namespace Facebook.Web
             }
             else
             {
-                oauthJsonState["r"] = _isSecure
+                oauthJsonState["r"] = IsSecureConnection
                                           ? CurrentCanvasPage.ToString().Substring(26)
                                           : CurrentCanvasPage.ToString().Substring(25);
             }
@@ -449,7 +467,7 @@ namespace Facebook.Web
                 return _settings.UseFacebookBeta;
             }
 
-            return uri.Host.Contains("beta");
+            return uri.Host == "apps.beta.facebook.com";
         }
 
         [ContractInvariantMethod]

@@ -72,6 +72,7 @@ namespace Facebook.Web
             Contract.Requires(!string.IsNullOrEmpty(settings.AppSecret));
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Request != null);
+            Contract.Requires(httpContext.Request.Url != null);
             Contract.Requires(httpContext.Request.Params != null);
             Contract.Requires(httpContext.Response != null);
 
@@ -147,6 +148,14 @@ namespace Facebook.Web
                 Contract.Ensures(Contract.Result<HttpContextBase>() != null);
                 return _httpContext;
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the request is a secure connection or not.
+        /// </summary>
+        public bool IsSecureConnection
+        {
+            get { return _httpContext.Request.Url.Scheme == "https"; }
         }
 
         /// <summary>

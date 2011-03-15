@@ -34,7 +34,7 @@ namespace Facebook
         /// <summary>
         /// Indcates whether to use Facebook beta.
         /// </summary>
-        private bool _isBeta = FacebookApplication.Current.UseFacebookBeta;
+        private bool _useFacebookBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
@@ -78,10 +78,10 @@ namespace Facebook
         /// <summary>
         /// Gets or sets a value indicating whether to use Facebook beta.
         /// </summary>
-        public bool IsBeta
+        public bool UseFacebookBeta
         {
-            get { return _isBeta; }
-            set { _isBeta = value; }
+            get { return _useFacebookBeta; }
+            set { _useFacebookBeta = value; }
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Facebook
             {
                 Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
 
-                return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
+                return UseFacebookBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
             }
         }
 

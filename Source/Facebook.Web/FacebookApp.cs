@@ -35,6 +35,8 @@ namespace Facebook
         /// </summary>
         private FacebookSignedRequest _signedRequest;
 
+        private bool _isSecureConnection;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookApp"/> class.
         /// </summary>
@@ -45,10 +47,10 @@ namespace Facebook
         /// The access token.
         /// </param>
         public FacebookApp(FacebookWebContext request, string accessToken)
+            : this(request)
         {
             Contract.Requires(!string.IsNullOrEmpty(accessToken));
 
-            _request = request;
             AccessToken = accessToken;
         }
 
@@ -70,8 +72,17 @@ namespace Facebook
         /// The request.
         /// </param>
         public FacebookApp(FacebookWebContext request)
-            : this(request, request.AccessToken)
         {
+            _request = request;
+            AccessToken = request.AccessToken;
+            _isSecureConnection = request.IsSecureConnection;
+
+            UseFacebookBeta = _request.Settings.UseFacebookBeta;
+
+            if (request.HttpContext.Request.UrlReferrer != null && _request.HttpContext.Request.UrlReferrer.Host == "apps.beta.facebook.com")
+            {
+                UseFacebookBeta = true;
+            }
         }
 
         /// <summary>
@@ -161,7 +172,7 @@ namespace Facebook
 
             set
             {
-                Session = new FacebookSession(value);
+                Session = string.IsNullOrEmpty(value) ? null : new FacebookSession(value);
             }
         }
 
@@ -172,6 +183,20 @@ namespace Facebook
         {
             get { return Session != null; }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the scheme is secure.
+        /// </summary>
+        public bool IsSecureConnection
+        {
+            get { return _isSecureConnection; }
+            set { _isSecureConnection = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use Facebook beta.
+        /// </summary>
+        public bool UseFacebookBeta { get; set; }
 
         #region Api Get/Post/Delete methods
 
@@ -1044,7 +1069,9 @@ namespace Facebook
         protected FacebookClient GetFacebookClient()
         {
             // make this a method so others can easily mock the internal FacebookClient.
-            return string.IsNullOrEmpty(AccessToken) ? new FacebookClient() : new FacebookClient(AccessToken);
+            var facebokClient = string.IsNullOrEmpty(AccessToken) ? new FacebookClient() : new FacebookClient(AccessToken);
+            facebokClient.UseFacebookBeta = UseFacebookBeta;
+            return facebokClient;
         }
 
         #region ApiMethods
@@ -1090,7 +1117,8 @@ namespace Facebook
             try
             {
                 var facebookClient = GetFacebookClient();
-                return facebookClient.Api(path, parameters, httpMethod, resultType);
+
+                return facebookClient.Api(path, FacebookWebClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, resultType);
             }
             catch (FacebookOAuthException)
             {
@@ -1262,7 +1290,7 @@ namespace Facebook
                 }
             }
 
-            facebookClient.ApiAsync(path, parameters, httpMethod, userToken);
+            facebookClient.ApiAsync(path, FacebookWebClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, userToken);
         }
 
         /// <summary>
@@ -1399,7 +1427,7 @@ namespace Facebook
         {
             ApiAsync(
                 path,
-                parameters,
+                FacebookWebClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection),
                 httpMethod,
                 ar =>
                 {

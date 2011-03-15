@@ -5,7 +5,24 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNext (BETA)
+vNEXT (BETA)
+=========================================================================
+
+1. Facebook.Web.FacebookWebContext
+	Added in FacebookWebContext.
+		a. public bool IsSecureConnection { get; }
+
+2. Facebook.Web.CanvasUrlBuilder
+	
+	Added in CanvasUrlBuilder
+		a. public bool IsSecureConnection { get; set; }
+		b. public bool UseFacebookBeta { get; set; }
+	(NOTE: The SDK sets the IsSecureConnection and UseFacebookBeta depending on the HttpRequest.
+		   You can override these two properties by using the setter.)
+
+
+=========================================================================
+v5.0.4 and v5.0.5 (BETA)
 =========================================================================
 1. all setter properties in FacebookSession changed to private.
 
