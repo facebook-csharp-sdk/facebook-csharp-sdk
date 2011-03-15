@@ -39,7 +39,7 @@ namespace Facebook.Web
         /// <summary>
         /// Indicates whether the url is beta.
         /// </summary>
-        private bool _isBeta;
+        private bool _useFacebookBeta;
 
         /// <summary>
         /// Indicates whether the url is secure.
@@ -65,7 +65,7 @@ namespace Facebook.Web
             _httpRequest = httpRequest;
 
             // cache it for performance improvements
-            _isBeta = IsBeta(_httpRequest.UrlReferrer);
+            _useFacebookBeta = IsBeta(_httpRequest.UrlReferrer);
             _isSecureConnection = IsSecureUrl(_httpRequest.Url);
         }
 
@@ -243,8 +243,8 @@ namespace Facebook.Web
         /// </summary>
         public bool UseFacebookBeta
         {
-            get { return _isBeta; }
-            set { _isBeta = value; }
+            get { return _useFacebookBeta; }
+            set { _useFacebookBeta = value; }
         }
 
         /// <summary>

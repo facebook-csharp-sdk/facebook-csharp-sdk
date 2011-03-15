@@ -66,6 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizerTests.cs" />
+    <Compile Include="CanvasUrlBuilder\CanvasUrlBuilderHelper.cs" />
+    <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenAUrlReferrer\AndHttpUrlAndReferUrlAsNonAppBetaFacebookThen.cs" />
+    <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenAUrlReferrer\AndHttpUrlAndReferUrlAsAppBetaFacebookThen.cs" />
+    <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenAUrlReferrer\AndHttpsUrlAndReferUrlAsAppBetaFacebookThen.cs" />
+    <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenAUrlReferrer\AndHttpsUrlAndReferUrlAsNonAppBetaFacebookThen.cs" />
+    <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenUrlReferrerAsNull\HttpsUrlThen.cs" />
+    <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenUrlReferrerAsNull\HttpUrlThen.cs" />
     <Compile Include="FacebookSessionTests.cs" />
     <Compile Include="FacebookSession\ctor_accessToken\GivenAnApplicationAccessTokenThen.cs" />
     <Compile Include="FacebookSession\ctor_accessToken\GivenAValidUserAccessTokenWhichDoesNotExpireThen.cs" />
