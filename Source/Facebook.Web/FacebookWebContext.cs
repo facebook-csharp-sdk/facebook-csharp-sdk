@@ -177,6 +177,18 @@ namespace Facebook.Web
                 return new string[0];
             }
 
+            if (permissions.Length == 1)
+            {
+                if (string.IsNullOrEmpty(permissions[0]))
+                {
+                    return new string[0];
+                }
+                else
+                {
+                    permissions = permissions[0].Split(',');
+                }
+            }
+
             return HasPermissions(Settings.AppId, Settings.AppSecret, Session.UserId, permissions);
         }
 
@@ -216,9 +228,16 @@ namespace Facebook.Web
 
             if (isAuthorized && permissions != null)
             {
-                if (permissions.Length == 1 && permissions[0] == null)
+                if (permissions.Length == 1)
                 {
-                    return true;
+                    if (string.IsNullOrEmpty(permissions[0]))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        permissions = permissions[0].Split(',');
+                    }
                 }
 
                 var currentPerms = HasPermissions(permissions);
