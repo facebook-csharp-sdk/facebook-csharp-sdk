@@ -142,12 +142,22 @@ msbuild :clean_net40 do |msb|
    msb.targets :Clean
 end
 
-xunit :net40_tests => [:net40] do |xunit|
+task :net40_tests => [:net40_facebook_tests, :net40_facebookweb_tests]
+
+xunit :net40_facebook_tests => [:net40] do |xunit|
     output_path = "#{build_config[:paths][:output]}Tests/Release/"
     xunit.command = build_config[:paths][:xunit][:x86_console_path]
     xunit.assembly = "#{output_path}Facebook.Tests.dll"
     xunit.html_output = "#{output_path}"
     xunit.options = '/nunit ' + output_path + 'Facebook.Tests.nUnit.xml', '/xml ' + output_path + 'Facebook.Tests.xUnit.xml'
+end
+
+xunit :net40_facebookweb_tests => [:net40] do |xunit|
+    output_path = "#{build_config[:paths][:output]}Tests/Release/"
+    xunit.command = build_config[:paths][:xunit][:x86_console_path]
+    xunit.assembly = "#{output_path}Facebook.Web.Tests.dll"
+    xunit.html_output = "#{output_path}"
+    xunit.options = '/nunit ' + output_path + 'Facebook.Web.Tests.nUnit.xml', '/xml ' + output_path + 'Facebook.Web.Tests.xUnit.xml'
 end
 
 desc "Build .NET 3.5 binaries"
