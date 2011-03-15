@@ -73,6 +73,10 @@
     <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenAUrlReferrer\AndHttpsUrlAndReferUrlAsNonAppBetaFacebookThen.cs" />
     <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenUrlReferrerAsNull\HttpsUrlThen.cs" />
     <Compile Include="CanvasUrlBuilder\ctor\GivenUseBetaAsFalseInCanvasSettings\GivenUrlReferrerAsNull\HttpUrlThen.cs" />
+    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenNullCancelUrlPath\GivenNullState\GivenNullLoginParameters\GiveHttps\GivenBetaThen.cs" />
+    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenNullCancelUrlPath\GivenNullState\GivenNullLoginParameters\GiveHttps\GivenNonBetaThen.cs" />
+    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenNullCancelUrlPath\GivenNullState\GivenNullLoginParameters\GivenHttp\GivenBetaThen.cs" />
+    <Compile Include="CanvasUrlBuilder\PrepareCanvasLoginUrlOAuthState\GivenNullReturnUrlPath\GivenNullCancelUrlPath\GivenNullState\GivenNullLoginParameters\GivenHttp\GivenNonBetaThen.cs" />
     <Compile Include="FacebookSessionTests.cs" />
     <Compile Include="FacebookSession\ctor_accessToken\GivenAnApplicationAccessTokenThen.cs" />
     <Compile Include="FacebookSession\ctor_accessToken\GivenAValidUserAccessTokenWhichDoesNotExpireThen.cs" />

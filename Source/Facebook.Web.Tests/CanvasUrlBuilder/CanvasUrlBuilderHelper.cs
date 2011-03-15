@@ -19,7 +19,7 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder
 
         public static DefaultFacebookApplication GetFakeFacebookApplication(bool useBeta)
         {
-            return new DefaultFacebookApplication {UseFacebookBeta = useBeta};
+            return new DefaultFacebookApplication { UseFacebookBeta = useBeta };
         }
     }
 }

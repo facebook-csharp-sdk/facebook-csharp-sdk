@@ -291,21 +291,50 @@ namespace Facebook.Web
         /// <param name="state">
         /// The state.
         /// </param>
-        /// <param name="parameters">
+        /// <param name="loginParameters">
         /// The parameters.
         /// </param>
         /// <returns>
         /// Returns the login url.
         /// </returns>
-        public Uri GetLoginUrl(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> parameters)
+        public Uri GetLoginUrl(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> loginParameters)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
 
             var oauth = new FacebookOAuthClient
             {
-                AppId = _settings.AppId,
-                AppSecret = _settings.AppSecret
+                AppId = _settings.AppId
             };
+
+            var oauthJsonState = PrepareCanvasLoginUrlOAuthState(returnUrlPath, cancelUrlPath, state, loginParameters);
+
+            var oauthState = FacebookUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
+            var mergedLoginParameters = FacebookUtils.Merge(loginParameters, null);
+            mergedLoginParameters["state"] = oauthState;
+
+            var appPath = _httpRequest.ApplicationPath;
+            if (appPath != "/")
+            {
+                appPath = string.Concat(appPath, "/");
+            }
+
+            string redirectRoot = RedirectPath;
+
+            var uriBuilder = new UriBuilder(CurrentCanvasUrl)
+            {
+                Path = string.Concat(appPath, redirectRoot),
+                Query = string.Empty
+            };
+
+            oauth.RedirectUri = uriBuilder.Uri;
+
+            var loginUrl = oauth.GetLoginUrl(mergedLoginParameters);
+            return loginUrl;
+        }
+
+        internal IDictionary<string, object> PrepareCanvasLoginUrlOAuthState(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> loginParameters)
+        {
+            Contract.Ensures(Contract.Result<IDictionary<string,object>>() != null);
 
             var oauthJsonState = new JsonObject();
             // make it one letter character so more info can fit in.
@@ -313,7 +342,7 @@ namespace Facebook.Web
             // c -> cancel_url_path
             // s -> user_state
 
-            var mergedParameters = FacebookUtils.Merge(null, parameters);
+            var mergedParameters = FacebookUtils.Merge(null, loginParameters);
 
             if (mergedParameters.ContainsKey("state"))
             {
@@ -354,28 +383,7 @@ namespace Facebook.Web
                 }
             }
 
-            var oauthState = FacebookUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
-            var mergedLoginParameters = FacebookUtils.Merge(parameters, null);
-            mergedLoginParameters["state"] = oauthState;
-
-            var appPath = _httpRequest.ApplicationPath;
-            if (appPath != "/")
-            {
-                appPath = string.Concat(appPath, "/");
-            }
-
-            string redirectRoot = RedirectPath;
-
-            var uriBuilder = new UriBuilder(CurrentCanvasUrl)
-            {
-                Path = string.Concat(appPath, redirectRoot),
-                Query = string.Empty
-            };
-
-            oauth.RedirectUri = uriBuilder.Uri;
-
-            var loginUrl = oauth.GetLoginUrl(mergedLoginParameters);
-            return loginUrl;
+            return oauthJsonState;
         }
 
         /*
