@@ -107,7 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
-      <HintPath>..\..\Tools\CodeContracts\Silverlight3\Microsoft.Contracts.dll</HintPath>
+      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.0\lib\WP7\Microsoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json.WindowsPhone">
@@ -168,6 +168,7 @@
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
