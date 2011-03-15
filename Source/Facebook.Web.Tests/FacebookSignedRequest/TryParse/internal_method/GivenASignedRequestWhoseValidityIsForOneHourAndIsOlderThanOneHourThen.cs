@@ -1,7 +1,7 @@
 namespace Facebook.Web.Tests.FacebookSignedRequest.TryParse.internal_method
 {
     using System;
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenASignedRequestWhoseValidityIsForOneHourAndIsOlderThanOneHourThen

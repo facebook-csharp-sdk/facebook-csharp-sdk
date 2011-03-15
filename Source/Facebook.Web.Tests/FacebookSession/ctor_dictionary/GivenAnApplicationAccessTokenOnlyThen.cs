@@ -1,6 +1,6 @@
 namespace Facebook.Web.Tests.FacebookSession.ctor_dictionary
 {
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenAnApplicationAccessTokenOnlyThen
@@ -24,9 +24,9 @@ namespace Facebook.Web.Tests.FacebookSession.ctor_dictionary
         }
 
         [Fact]
-        public void UserIdShouldBeNull()
+        public void UserIdShouldBe0()
         {
-            Assert.Null(session.UserId);
+            Assert.Equal(0, session.UserId);
         }
     }
 }

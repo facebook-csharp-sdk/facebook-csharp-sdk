@@ -491,6 +491,25 @@ namespace Facebook
 #endif
         }
 
+        internal static string RemoveStartingSlash(string input)
+        {
+            Contract.Ensures(Contract.Result<string>() != null);
+
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
+
+            // if not null or empty
+            if (input[0] == '/')
+            {
+                // if starts with / remove it
+                return input.Length > 1 ? input.Substring(1) : string.Empty;
+            }
+
+            return input;
+        }
+
         /// <summary>
         /// Removes the trailing slash.
         /// </summary>

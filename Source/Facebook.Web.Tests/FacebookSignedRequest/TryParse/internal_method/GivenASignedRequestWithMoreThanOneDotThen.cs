@@ -2,7 +2,7 @@ namespace Facebook.Web.Tests.FacebookSignedRequest.TryParse.internal_method
 {
     using System;
     using System.Collections.Generic;
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
     using Xunit.Extensions;
 

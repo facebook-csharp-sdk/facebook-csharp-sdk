@@ -1,7 +1,7 @@
 namespace Facebook.Web.Tests.FacebookSession.ctor_dictionary
 {
     using System.Collections.Generic;
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenEmptyDictionaryThen

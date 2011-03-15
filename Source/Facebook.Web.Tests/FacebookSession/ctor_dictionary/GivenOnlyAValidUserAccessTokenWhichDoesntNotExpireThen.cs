@@ -2,7 +2,7 @@ namespace Facebook.Web.Tests.FacebookSession.ctor_dictionary
 {
     using System;
     using System.Collections.Generic;
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenOnlyAValidUserAccessTokenWhichDoesntNotExpireThen
@@ -37,7 +37,7 @@ namespace Facebook.Web.Tests.FacebookSession.ctor_dictionary
         {
             var session = new FacebookSession(parameterWithAccessTokenOnly);
 
-            Assert.Equal("100001327642026", session.UserId);
+            Assert.Equal(100001327642026, session.UserId);
         }
 
         [Fact]

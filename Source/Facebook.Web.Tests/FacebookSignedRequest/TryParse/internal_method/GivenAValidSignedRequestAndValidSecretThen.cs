@@ -1,6 +1,6 @@
 namespace Facebook.Web.Tests.FacebookSignedRequest.TryParse.internal_method
 {
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenAValidSignedRequestAndValidSecretThen

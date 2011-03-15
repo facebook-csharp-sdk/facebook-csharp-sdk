@@ -1,7 +1,7 @@
 namespace Facebook.Web.Tests.FacebookSession.ctor_accessToken
 {
     using System;
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenAValidUserAccessTokenWhichDoesNotExpireThen
@@ -30,7 +30,7 @@ namespace Facebook.Web.Tests.FacebookSession.ctor_accessToken
         [Fact]
         public void UserIdShouldBeSetCorrectly()
         {
-            Assert.Equal("100001327642026", session.UserId);
+            Assert.Equal(100001327642026, session.UserId);
         }
 
         [Fact]

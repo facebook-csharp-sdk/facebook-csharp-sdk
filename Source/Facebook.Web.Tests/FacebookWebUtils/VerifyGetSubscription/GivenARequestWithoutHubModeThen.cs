@@ -14,7 +14,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyGetSubscription
             var request = GetRequest();
             string errorMessage;
 
-            var result = FacebookWebUtils.VerifyGetSubscription(request, "dummy verify token", out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyGetSubscription(request, "dummy verify token", out errorMessage);
 
             Assert.False(result);
         }
@@ -25,7 +25,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyGetSubscription
             var request = GetRequest();
             string errorMessage;
 
-            var result = FacebookWebUtils.VerifyGetSubscription(request, "dummy verify token", out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyGetSubscription(request, "dummy verify token", out errorMessage);
 
             Assert.NotNull(errorMessage);
         }
@@ -36,7 +36,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyGetSubscription
             var request = GetRequest();
             string errorMessage;
 
-            var result = FacebookWebUtils.VerifyGetSubscription(request, "dummy verify token", out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyGetSubscription(request, "dummy verify token", out errorMessage);
 
             Assert.Equal(Properties.Resources.InvalidHubMode, errorMessage);
         }

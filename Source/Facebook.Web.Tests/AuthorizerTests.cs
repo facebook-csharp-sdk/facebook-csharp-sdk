@@ -1,3 +1,4 @@
+
 namespace Facebook.Web.Tests
 {
     using System;
@@ -15,8 +16,10 @@ namespace Facebook.Web.Tests
             var requestParams = new NameValueCollection();
             var httpContext = GetHttpContext(requestParams);
 
-            var authorizer = new Authorizer("dummy", "dummy", httpContext);
-            var session = authorizer.Session;
+            var authorizer =
+                new FacebookWebAuthorizer(new DefaultFacebookApplication { AppId = "dummy", AppSecret = "dummy" },
+                                          httpContext);
+            var session = authorizer.FacebookWebRequest.Session;
 
             Assert.Null(session);
         }
@@ -31,8 +34,11 @@ namespace Facebook.Web.Tests
 
             var httpContext = GetHttpContext(requestParams);
 
-            var authorizer = new Authorizer("dummy", "543690fae0cd186965412ac4a49548b5", httpContext);
-            var session = authorizer.Session;
+            var authorizer =
+                new FacebookWebAuthorizer(new DefaultFacebookApplication { AppId = "dummy", AppSecret = "543690fae0cd186965412ac4a49548b5" },
+                                          httpContext);
+
+            var session = authorizer.FacebookWebRequest.Session;
 
             Assert.NotNull(session);
         }
@@ -46,9 +52,10 @@ namespace Facebook.Web.Tests
                                     };
 
             var httpContext = GetHttpContext(requestParams);
-            var authorizer = new Authorizer("dummy", "invalid_secret", httpContext);
+            var authorizer = new FacebookWebAuthorizer(
+                new DefaultFacebookApplication { AppId = "dummy", AppSecret = "invalid_secret" }, httpContext);
 
-            Assert.Throws<InvalidOperationException>(() => authorizer.Session);
+            Assert.Throws<InvalidOperationException>(() => authorizer.FacebookWebRequest.Session);
         }
 
         [Fact(DisplayName = "Session: Given a request with valid session cookie and no signed request and valid secret Then it should not return null")]
@@ -60,8 +67,10 @@ namespace Facebook.Web.Tests
 
             var httpContext = GetHttpContext(requestParams);
 
-            var authorizer = new Authorizer(appId, appSecret, httpContext);
-            var session = authorizer.Session;
+            var authorizer = new FacebookWebAuthorizer(
+                new DefaultFacebookApplication { AppId = appId, AppSecret = appSecret }, httpContext);
+
+            var session = authorizer.FacebookWebRequest.Session;
 
             Assert.NotNull(session);
         }
@@ -70,7 +79,7 @@ namespace Facebook.Web.Tests
         public void Session_GivenARequestWithValidSessionCookieSignedRequestAppIdAndSecret_ThenItShouldNotReturnNull()
         {
             var appId = "dummy";
-            var secret = "543690fae0cd186965412ac4a49548b5";
+            var appSecret = "543690fae0cd186965412ac4a49548b5";
             var requestParams = new NameValueCollection
                                     {
                                         { "signed_request", "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0" },
@@ -78,8 +87,10 @@ namespace Facebook.Web.Tests
                                     };
             var httpContext = GetHttpContext(requestParams);
 
-            var authorizer = new Authorizer(appId, secret, httpContext);
-            var session = authorizer.Session;
+            var authorizer = new FacebookWebAuthorizer(
+                new DefaultFacebookApplication { AppId = appId, AppSecret = appSecret }, httpContext);
+
+            var session = authorizer.FacebookWebRequest.Session;
 
             Assert.NotNull(session);
         }
@@ -88,7 +99,7 @@ namespace Facebook.Web.Tests
         public void Session_GivenARequestWithValidSessionCookieSignedRequestAppIdAndSecret_ThenTheAccessTokenShouldBeEqualToThatOfSignedRequest()
         {
             var appId = "dummy";
-            var secret = "543690fae0cd186965412ac4a49548b5";
+            var appSecret = "543690fae0cd186965412ac4a49548b5";
             var requestParams = new NameValueCollection
                                     {
                                         { "signed_request", "Iin8a5nlQOHhlvHu_4lNhKDDvut6s__fm6-jJytkHis.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyODI5Mjg0MDAsIm9hdXRoX3Rva2VuIjoiMTIwNjI1NzAxMzAxMzQ3fDIuSTNXUEZuXzlrSmVnUU5EZjVLX0kyZ19fLjM2MDAuMTI4MjkyODQwMC0xNDgxMjAxN3xxcmZpT2VwYnY0ZnN3Y2RZdFJXZkFOb3I5YlEuIiwidXNlcl9pZCI6IjE0ODEyMDE3In0" },
@@ -96,8 +107,10 @@ namespace Facebook.Web.Tests
                                     };
             var httpContext = GetHttpContext(requestParams);
 
-            var authorizer = new Authorizer(appId, secret, httpContext);
-            var session = authorizer.Session;
+            var authorizer = new FacebookWebAuthorizer(
+                new DefaultFacebookApplication { AppId = appId, AppSecret = appSecret }, httpContext);
+
+            var session = authorizer.FacebookWebRequest.Session;
             var accessToken = session.AccessToken;
 
             Assert.Equal("120625701301347|2.I3WPFn_9kJegQNDf5K_I2g__.3600.1282928400-14812017|qrfiOepbv4fswcdYtRWfANor9bQ.", accessToken);
@@ -112,9 +125,11 @@ namespace Facebook.Web.Tests
             var responseMock = new Mock<HttpResponseBase>();
 
             requestMock.Setup(request => request.Params).Returns(requestParams);
+            requestMock.Setup(request => request.Url).Returns(new Uri("http://app.facebook.com/appname"));
 
             httpContextMock.Setup(context => context.Request).Returns(requestMock.Object);
             httpContextMock.Setup(context => context.Response).Returns(responseMock.Object);
+            httpContextMock.Setup(context => context.Items).Returns(new System.Collections.Generic.Dictionary<object, object>());
 
             return httpContextMock.Object;
         }

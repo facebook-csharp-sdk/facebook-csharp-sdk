@@ -64,7 +64,7 @@ namespace Facebook
                 data.Add("uid", ParseUserIdFromAccessToken(AccessToken));
             }
 
-            string sUserId = data.ContainsKey("uid") ? (string)data["uid"] : null;
+            string sUserId = data.ContainsKey("uid") && data["uid"] != null ? data["uid"].ToString() : null;
             long userId = 0;
             long.TryParse(sUserId, out userId);
             UserId = userId;
@@ -261,6 +261,7 @@ namespace Facebook
             Contract.Requires(!string.IsNullOrEmpty(appId));
             Contract.Requires(!string.IsNullOrEmpty(appSecret));
             Contract.Requires(httpContext != null);
+            Contract.Requires(httpContext.Items != null);
             Contract.Requires(httpContext.Request != null);
             Contract.Requires(httpContext.Request.Params != null);
 

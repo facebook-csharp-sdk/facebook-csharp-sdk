@@ -302,6 +302,106 @@ namespace Facebook.Web
             Contract.Ensures(Contract.Result<Uri>() != null);
 
             var oauth = new FacebookOAuthClient
+            {
+                AppId = _settings.AppId,
+                AppSecret = _settings.AppSecret
+            };
+
+            var oauthJsonState = new JsonObject();
+            // make it one letter character so more info can fit in.
+            // r -> return_url_path
+            // c -> cancel_url_path
+            // s -> user_state
+
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
+
+            if (mergedParameters.ContainsKey("state"))
+            {
+                // override the user state if present in the parameters.
+                state = mergedParameters["state"] == null ? null : mergedParameters["state"].ToString();
+            }
+
+            if (!string.IsNullOrEmpty(state))
+            {
+                oauthJsonState["s"] = state;
+            }
+
+            if (string.IsNullOrEmpty(returnUrlPath))
+            {
+                oauthJsonState["r"] = CurrentCanvasPage.ToString();
+            }
+            else
+            {
+                if (IsRelativeUri(returnUrlPath))
+                {
+                    oauthJsonState["r"] = BuildCanvasPageUrl(returnUrlPath).ToString();
+                }
+                else
+                {
+                    oauthJsonState["r"] = returnUrlPath;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(cancelUrlPath))
+            {
+                if (IsRelativeUri(cancelUrlPath))
+                {
+                    oauthJsonState["c"] = BuildCanvasPageUrl(cancelUrlPath).ToString();
+                }
+                else
+                {
+                    oauthJsonState["c"] = cancelUrlPath;
+                }
+            }
+
+            var oauthState = FacebookUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
+            var mergedLoginParameters = FacebookUtils.Merge(parameters, null);
+            mergedLoginParameters["state"] = oauthState;
+
+            var appPath = _httpRequest.ApplicationPath;
+            if (appPath != "/")
+            {
+                appPath = string.Concat(appPath, "/");
+            }
+
+            string redirectRoot = RedirectPath;
+
+            var uriBuilder = new UriBuilder(CurrentCanvasUrl)
+            {
+                Path = string.Concat(appPath, redirectRoot),
+                Query = string.Empty
+            };
+
+            oauth.RedirectUri = uriBuilder.Uri;
+
+            var loginUrl = oauth.GetLoginUrl(mergedLoginParameters);
+            return loginUrl;
+        }
+
+        /*
+        /// <summary>
+        /// Gets the canvas login url
+        /// </summary>
+        /// <param name="returnUrlPath">
+        /// The return Url Path.
+        /// </param>
+        /// <param name="cancelUrlPath">
+        /// The cancel Url Path.
+        /// </param>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the login url.
+        /// </returns>
+        public Uri GetLoginUrl(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> parameters)
+        {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            var oauth = new FacebookOAuthClient
                             {
                                 AppId = _settings.AppId,
                                 AppSecret = _settings.AppSecret
@@ -315,7 +415,6 @@ namespace Facebook.Web
 
             var oauthJsonState = new JsonObject();
 
-            // remove the http://apps.facebook.com/ length 25 or 26 if https://....
             // make it one letter character so more info can fit in.
             // r -> return_url_path
             // c -> cancel_url_path
@@ -395,6 +494,7 @@ namespace Facebook.Web
             var loginUrl = oauth.GetLoginUrl(mergedParameters);
             return loginUrl;
         }
+        */
 
         /// <summary>
         /// Gets the canvas redirect HTML.

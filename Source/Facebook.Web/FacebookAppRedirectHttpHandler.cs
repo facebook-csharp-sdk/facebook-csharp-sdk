@@ -40,7 +40,7 @@ namespace Facebook.Web
             Contract.Requires(context != null);
 
             var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url="
-                       + GetUrl(new HttpContextWrapper(context)) + "\"></head></html>";
+                       + GetUrl(new HttpContextWrapper(context)).AbsoluteUri + "\"></head></html>";
 
             context.Response.Write(html);
         }
@@ -49,19 +49,78 @@ namespace Facebook.Web
         {
             Contract.Requires(context != null);
             Contract.Requires(context.Request != null);
+            Contract.Ensures(Contract.Result<Uri>() != null);
 
             // TODO: need unit tests for this method, might as well need to refactor this method.
-            var uri = new Uri("http://apps.facebook.com/");
-            var redirectUriBuilder = new UriBuilder(uri);
+            UriBuilder redirectUriBuilder;
 
-            if (context.Request.QueryString.AllKeys.Contains("state"))
+            if (!context.Request.QueryString.AllKeys.Contains("state"))
             {
+                redirectUriBuilder = new UriBuilder("http://www.facebook.com");
+            }
+            else
+            {
+                // if state is present.
                 var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
                 var json = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(state);
 
                 // make it one letter character so more info can fit in.
-                // r -> return_url_path
-                // c -> cancel_url_path
+                // r -> return_url_path (full uri)
+                // c -> cancel_url_path (full uri)
+                // s -> user_state
+                FacebookOAuthResult oauthResult;
+                if (!FacebookOAuthResult.TryParse(context.Request.Url, out oauthResult))
+                {
+                    throw new ApplicationException("invalid url");
+                }
+
+                if (oauthResult.IsSuccess)
+                {
+                    redirectUriBuilder = new UriBuilder(json["r"].ToString());
+                }
+                else
+                {
+                    if (!json.ContainsKey("c"))
+                    {
+                        // there is no cancel url path
+                        redirectUriBuilder = new UriBuilder("http://facebook.com");
+                    }
+                    else
+                    {
+                        redirectUriBuilder = new UriBuilder(json["c"].ToString());
+                        IDictionary<string, object> cancelUrlQueryStrings = new Dictionary<string, object>
+                                                       {
+                                                           { "error_reason", context.Request.QueryString["error_reason"] },
+                                                           { "error", context.Request.QueryString["error"] },
+                                                           { "error_description", context.Request.QueryString["error_description"] }
+                                                       };
+
+                        redirectUriBuilder.Query = FacebookUtils.ToJsonQueryString(cancelUrlQueryStrings);
+                    }
+                }
+            }
+
+            return redirectUriBuilder.Uri;
+        }
+
+        /*
+        protected Uri GetUrl(HttpContextBase context)
+        {
+            Contract.Requires(context != null);
+            Contract.Requires(context.Request != null);
+
+            // TODO: need unit tests for this method, might as well need to refactor this method.
+            UriBuilder redirectUriBuilder = null;
+
+            if (context.Request.QueryString.AllKeys.Contains("state"))
+            {
+                // if state is present.
+                var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
+                var json = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(state);
+
+                // make it one letter character so more info can fit in.
+                // r -> return_url_path (full uri)
+                // c -> cancel_url_path (full uri)
                 // s -> user_state
                 // n -> navigate url path.
                 var returnUrlPath = json["r"].ToString();
@@ -74,14 +133,7 @@ namespace Facebook.Web
                         // if there is cancel url path.
                         var cancelUrlPath = json["c"].ToString();
 
-                        if (CanvasUrlBuilder.IsRelativeUri(cancelUrlPath))
-                        {
-                            redirectUriBuilder.Path = json["c"].ToString();
-                        }
-                        else
-                        {
-                            redirectUriBuilder = new UriBuilder(cancelUrlPath);
-                        }
+                        redirectUriBuilder = new UriBuilder(cancelUrlPath);
 
                         IDictionary<string, object> cancelUrlQueryStrings = new Dictionary<string, object>
                                                        {
@@ -112,6 +164,8 @@ namespace Facebook.Web
                 }
                 else
                 {
+                    redirectUriBuilder = new UriBuilder(returnUrlPath);
+
                     if (returnUrlPath.Contains("?"))
                     {
                         var parts = returnUrlPath.Split('?');
@@ -145,13 +199,14 @@ namespace Facebook.Web
                     }
                 }
             }
-            else
+
+            if (redirectUriBuilder == null)
             {
-                // if not state was given.
-                redirectUriBuilder = new UriBuilder("http://www.facebook.com");
+                return new Uri("http://www.facebook.com");
             }
 
             return redirectUriBuilder.Uri;
         }
+        */
     }
 }

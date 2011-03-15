@@ -1,7 +1,7 @@
 namespace Facebook.Web.Tests.FacebookSession.ctor_accessToken
 {
     using System;
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenAnApplicationAccessTokenThen
@@ -25,15 +25,15 @@ namespace Facebook.Web.Tests.FacebookSession.ctor_accessToken
         }
 
         [Fact]
-        public void UserIdShouldBeNull()
+        public void UserIdShouldBe0()
         {
-            Assert.Null(session.UserId);
+            Assert.Equal(0,session.UserId);
         }
 
         [Fact]
-        public void UserIdIsNull()
+        public void UserIdIs0()
         {
-            Assert.Null(session.UserId);
+            Assert.Equal(0, session.UserId);
         }
 
         [Fact]

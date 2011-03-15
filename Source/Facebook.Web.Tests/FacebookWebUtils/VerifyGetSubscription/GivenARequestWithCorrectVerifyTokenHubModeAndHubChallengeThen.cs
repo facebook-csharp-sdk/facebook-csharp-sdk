@@ -14,7 +14,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyGetSubscription
             var request = GetRequest();
             string errorMessage;
 
-            var result = FacebookWebUtils.VerifyGetSubscription(request, "correct_verify_token", out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyGetSubscription(request, "correct_verify_token", out errorMessage);
 
             Assert.True(result);
         }
@@ -25,7 +25,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyGetSubscription
             var request = GetRequest();
             string errorMessage;
 
-            var result = FacebookWebUtils.VerifyGetSubscription(request, "correct_verify_token", out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyGetSubscription(request, "correct_verify_token", out errorMessage);
 
             Assert.Null(errorMessage);
         }

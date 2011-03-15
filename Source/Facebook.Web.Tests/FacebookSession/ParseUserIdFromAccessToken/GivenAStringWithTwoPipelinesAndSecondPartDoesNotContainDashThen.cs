@@ -1,6 +1,6 @@
 namespace Facebook.Web.Tests.FacebookSession.ParseUserIdFromAccessToken
 {
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenAStringWithTwoPipelinesAndSecondPartDoesNotContainDashThen

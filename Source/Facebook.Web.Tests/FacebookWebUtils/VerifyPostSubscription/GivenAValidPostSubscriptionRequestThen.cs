@@ -16,7 +16,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyPostSubscription
             string secret = "18b8c40f4e48e2616a0c548ec96fdeb2";
             string jsonString = "{\"object\":\"user\",\"entry\":[{\"uid\":\"100000326364373\",\"id\":\"100000326364373\",\"time\":1297087737,\"changed_fields\":[\"feed\"]}]}";
 
-            var result = FacebookWebUtils.VerifyPostSubscription(request, secret, jsonString, out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyPostSubscription(request, secret, jsonString, out errorMessage);
 
             Assert.True(result);
         }
@@ -29,7 +29,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyPostSubscription
             string secret = "18b8c40f4e48e2616a0c548ec96fdeb2";
             string jsonString = "{\"object\":\"user\",\"entry\":[{\"uid\":\"100000326364373\",\"id\":\"100000326364373\",\"time\":1297087737,\"changed_fields\":[\"feed\"]}]}";
 
-            var result = FacebookWebUtils.VerifyPostSubscription(request, secret, jsonString, out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyPostSubscription(request, secret, jsonString, out errorMessage);
 
             Assert.Null(errorMessage);
         }

@@ -2,19 +2,19 @@ namespace Facebook.Web.Tests.FacebookSession.ctor_dictionary
 {
     using System;
     using System.Collections.Generic;
-    using Facebook.Web;
+    using Facebook;
     using Xunit;
 
     public class GivenAnAccessTokenAndUserIdThen
     {
         private string accessToken;
         private IDictionary<string, object> parameterWithAccessTokenAndUIdOnly;
-        private string uid;
+        private long uid;
 
         public GivenAnAccessTokenAndUserIdThen()
         {
             accessToken = "1249203702|76a68f298-100001327642026|q_BXv8TmYg";
-            uid = "123";
+            uid = 123;
             parameterWithAccessTokenAndUIdOnly = new Dictionary<string, object>
                                                {
                                                    { "access_token", accessToken },

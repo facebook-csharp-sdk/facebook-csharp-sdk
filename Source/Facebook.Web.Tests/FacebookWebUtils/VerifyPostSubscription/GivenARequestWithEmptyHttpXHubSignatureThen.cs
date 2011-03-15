@@ -15,7 +15,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyPostSubscription
             string errorMessage;
             string dummyJson = "{}";
 
-            var result = FacebookWebUtils.VerifyPostSubscription(request, "dummy_secret", dummyJson, out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyPostSubscription(request, "dummy_secret", dummyJson, out errorMessage);
 
             Assert.False(result);
         }
@@ -27,7 +27,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyPostSubscription
             string errorMessage;
             string dummyJson = "{}";
 
-            var result = FacebookWebUtils.VerifyPostSubscription(request, "dummy_secret", dummyJson, out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyPostSubscription(request, "dummy_secret", dummyJson, out errorMessage);
 
             Assert.NotNull(errorMessage);
         }
@@ -39,7 +39,7 @@ namespace Facebook.Web.Tests.FacebookWebUtils.VerifyPostSubscription
             string errorMessage;
             string dummyJson = "{}";
 
-            var result = FacebookWebUtils.VerifyPostSubscription(request, "dummy_secret", dummyJson, out errorMessage);
+            var result = FacebookSubscriptionVerifier.VerifyPostSubscription(request, "dummy_secret", dummyJson, out errorMessage);
 
             Assert.Equal(Properties.Resources.InvalidHttpXHubSignature, errorMessage);
         }
