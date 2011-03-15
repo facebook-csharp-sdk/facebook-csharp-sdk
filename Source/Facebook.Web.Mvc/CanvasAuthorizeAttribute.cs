@@ -29,7 +29,7 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new FacebookWebContext(settings, filterContext.HttpContext);
 
-            if (!authorizer.IsAuthorized(this.Permissions))
+            if (!authorizer.IsAuthorized(ToArrayString(Permissions)))
             {
                 this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
             }

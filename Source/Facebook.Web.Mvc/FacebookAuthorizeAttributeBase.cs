@@ -44,6 +44,11 @@ namespace Facebook.Web.Mvc
 
         public abstract void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication);
 
+        internal static string[] ToArrayString(string str)
+        {
+            return string.IsNullOrEmpty(str) ? null : str.Split(',');
+        }
+
         /*
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {

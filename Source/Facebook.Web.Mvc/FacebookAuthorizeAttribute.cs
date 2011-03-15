@@ -19,7 +19,7 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new FacebookWebContext(facebookApplication, filterContext.HttpContext);
 
-            if (!authorizer.IsAuthorized(this.Permissions))
+            if (!authorizer.IsAuthorized(ToArrayString(Permissions)))
             {
                 filterContext.Result = new RedirectResult(this.LoginUrl ?? "/");
             }
