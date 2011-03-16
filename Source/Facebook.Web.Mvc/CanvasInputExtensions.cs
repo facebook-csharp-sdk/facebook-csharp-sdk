@@ -7,7 +7,12 @@
     {
         public static MvcHtmlString FacebookSignedRequest(this HtmlHelper htmlHelper)
         {
-            return htmlHelper.Hidden("signed_request", htmlHelper.ViewContext.RequestContext.HttpContext.Request["signed_request"]);
+            return htmlHelper.FacebookSignedRequest(htmlHelper.ViewContext.RequestContext.HttpContext.Request["signed_request"]);
+        }
+
+        public static MvcHtmlString FacebookSignedRequest(this HtmlHelper htmlHelper, string signedRequestValue)
+        {
+            return htmlHelper.Hidden("signed_request", signedRequestValue);
         }
 
     }
