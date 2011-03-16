@@ -118,6 +118,24 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApp"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public FacebookApp(IFacebookApplication facebookApplication)
+            : this(FacebookWebContext.Current)
+        {
+            if (facebookApplication != null)
+            {
+                if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
+                {
+                    this.AccessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the Application ID.
         /// </summary>
         public string AppId { get; set; }
