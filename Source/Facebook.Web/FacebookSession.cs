@@ -330,9 +330,18 @@ namespace Facebook
             var dictionary = new Dictionary<string, object>
             {
                 { "uid", signedRequest.UserId.ToString() },
-                { "access_token", signedRequest.AccessToken },
-                { "expires", DateTimeConvertor.ToUnixTime(signedRequest.Expires) }
+                { "access_token", signedRequest.AccessToken }
             };
+
+            if (signedRequest.Expires == DateTime.MaxValue)
+            {
+                dictionary["expires"] = 0;
+            }
+            else if(signedRequest.Expires != DateTime.MinValue)
+            {
+                dictionary["expires"] = DateTimeConvertor.ToUnixTime(signedRequest.Expires);
+            }
+
             dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
 
             return new FacebookSession(dictionary);
