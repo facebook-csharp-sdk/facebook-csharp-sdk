@@ -5,6 +5,7 @@
 </asp:Content>
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
 <asp:Label runat="server" ID="a" />
+    <a href="<%: this.ResolveCanvasPageUrl("~/") %>" target="_top">Home</a><br />
     <asp:Panel ID="pnlHello" runat="server" Visible="false">
         <h2>
             Hello

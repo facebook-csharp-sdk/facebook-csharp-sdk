@@ -34,12 +34,7 @@
                 </asp:LoginView>
             </div>
             <div class="clear hideSkiplink">
-                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false"
-                    IncludeStyleBlock="false" Orientation="Horizontal">
-                    <Items>
-                        <asp:MenuItem Target="_top" Text="Home" />
-                    </Items>
-                </asp:Menu>
+                
             </div>
         </div>
         <div class="main">
@@ -50,6 +45,7 @@
     </div>
     <div class="footer">
     </div>
+    
     </form>
 </body>
 </html>
