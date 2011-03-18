@@ -26,6 +26,7 @@ namespace Facebook.Samples.AuthenticationTool
             LegacyRestApiAsyncExample();
             FqlAsyncSample();
             FqlMultiQueryAsyncSample();
+            GraphApiBatchRequestAsyncSample();
 
             GraphApiExample();
         }
@@ -246,6 +247,26 @@ namespace Facebook.Samples.AuthenticationTool
 
                 fb.PostAsync(parameters);
             }
+        }
+
+        private void GraphApiBatchRequestAsyncSample()
+        {
+            var fb = new FacebookClient(_accessToken);
+
+            var parameters =
+                new
+                    {
+                        batch = new[]
+                                    {
+                                        new { method = "GET", relative_url = "me" },
+                                        new { method = "GET", relative_url = "me/friends?limit=50" },
+                                    }
+                    };
+
+            dynamic result = fb.Post(parameters);
+
+            var result1 = result[0].body;
+            var result2 = result[1].body;
         }
 
         private void lnkFacebokSdkFan_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
