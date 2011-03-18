@@ -271,10 +271,6 @@ namespace Facebook.Web
             }
 
             var url = string.Concat(CanvasPage, pathAndQuery);
-            if (url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
-            }
 
             return new Uri(FacebookUtils.RemoveTrailingSlash(url));
         }
@@ -300,10 +296,6 @@ namespace Facebook.Web
             }
 
             var url = string.Concat(canvasUrl, pathAndQuery);
-            if (url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
-            }
 
             return new Uri(FacebookUtils.RemoveTrailingSlash(url));
         }
