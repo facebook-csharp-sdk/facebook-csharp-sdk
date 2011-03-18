@@ -5,6 +5,14 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+vNEXT (BETA)
+=========================================================================
+
+1. added extension methods to generate CanvasPageUrl and CanvasUrl for webforms
+	a. public static string ResolveCanvasPageUrl(this Control control, string relativeUrl)
+	a. public static string ResolveCanvasUrl(this Control control, string relativeUrl);
+
+=========================================================================
 v5.0.6 (BETA)
 =========================================================================
 
