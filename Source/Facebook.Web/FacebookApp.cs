@@ -18,6 +18,8 @@ namespace Facebook
     /// <summary>
     /// Represents the core Facebook functionality for web applications.
     /// </summary>
+    [Obsolete("Use FacebookWebClient instead.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class FacebookApp
     {
         /// <summary>

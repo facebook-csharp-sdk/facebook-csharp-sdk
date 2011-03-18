@@ -15,6 +15,7 @@ namespace Facebook
     /// Represents the settings of a Facebook application.
     /// </summary>
     [Obsolete("Use IFacebookApplication instead.")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public interface IFacebookSettings : IFacebookApplication
     {
         /// <summary>

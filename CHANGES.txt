@@ -12,6 +12,8 @@ vNEXT (BETA)
 	a. public static string ResolveCanvasPageUrl(this Control control, string relativeUrl)
 	a. public static string ResolveCanvasUrl(this Control control, string relativeUrl);
 
+2. marked FacebookApp as obsolete.
+
 =========================================================================
 v5.0.6 (BETA)
 =========================================================================
