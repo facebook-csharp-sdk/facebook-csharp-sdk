@@ -1,6 +1,7 @@
 
 namespace Facebook.Web
 {
+    using System.Diagnostics.Contracts;
     using System.Web;
     using System.Web.UI;
 
@@ -9,6 +10,8 @@ namespace Facebook.Web
     /// </summary>
     public static class CanvasUrlBuilderExtensions
     {
+        private const string HttpContextKey = "facebook_canvasurlbuilder";
+
         /// <summary>
         /// Gets a canvas page url that can be used by the browser.
         /// </summary>
@@ -25,7 +28,12 @@ namespace Facebook.Web
         {
             var resolvedUrl = control.ResolveUrl(relativeUrl);
 
-            return GetCanvasPageUrl(FacebookApplication.Current, new HttpRequestWrapper(HttpContext.Current.Request), resolvedUrl);
+            return ResolveCanvasPageUrl(resolvedUrl, new HttpContextWrapper(HttpContext.Current));
+        }
+
+        internal static string ResolveCanvasPageUrl(string resolvedUrl, HttpContextWrapper httpContext)
+        {
+            return GetCanvasUrlBuilder(httpContext).BuildCanvasPageUrl(resolvedUrl).AbsoluteUri;
         }
 
         /// <summary>
@@ -44,21 +52,33 @@ namespace Facebook.Web
         {
             var resolvedUrl = control.ResolveUrl(relativeUrl);
 
-            return GetCanvasUrl(FacebookApplication.Current, new HttpRequestWrapper(HttpContext.Current.Request), resolvedUrl);
+            return ResolveCanvasUrl(resolvedUrl, new HttpContextWrapper(HttpContext.Current));
         }
 
-        internal static string GetCanvasPageUrl(IFacebookApplication facebookApplication, HttpRequestBase request, string pathAndQuery)
+        private static string ResolveCanvasUrl(string resolvedUrl, HttpContextWrapper httpContext)
         {
-            var canvasUrlBuilder = new CanvasUrlBuilder(facebookApplication, request);
-
-            return canvasUrlBuilder.BuildCanvasPageUrl(pathAndQuery).AbsoluteUri;
+            return GetCanvasUrlBuilder(httpContext).BuildCanvasUrl(resolvedUrl).AbsoluteUri;
         }
 
-        internal static string GetCanvasUrl(IFacebookApplication facebookApplication, HttpRequestWrapper request, string pathAndQuery)
+        internal static CanvasUrlBuilder GetCanvasUrlBuilder(HttpContextWrapper httpContext)
         {
-            var canvasUrlBuilder = new CanvasUrlBuilder(facebookApplication, request);
+            Contract.Ensures(Contract.Result<CanvasUrlBuilder>() != null);
 
-            return canvasUrlBuilder.BuildCanvasUrl(pathAndQuery).AbsoluteUri;
+            var items = httpContext.Items;
+            var httpRequest = httpContext.Request;
+            CanvasUrlBuilder canvasUrlBuilder;
+
+            if (items[HttpContextKey] == null)
+            {
+                canvasUrlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, httpRequest);
+                items[HttpContextKey] = canvasUrlBuilder;
+            }
+            else
+            {
+                canvasUrlBuilder = (CanvasUrlBuilder)items[HttpContextKey];
+            }
+
+            return canvasUrlBuilder;
         }
     }
 }
