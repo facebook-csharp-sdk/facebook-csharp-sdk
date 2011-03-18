@@ -10,21 +10,81 @@
 
         private bool _isSecureConnection;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebClient"/> class.
+        /// </summary>
         public FacebookWebClient()
             : this(FacebookWebContext.Current)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebClient"/> class.
+        /// </summary>
+        /// <param name="accessToken">
+        /// The access token.
+        /// </param>
         public FacebookWebClient(string accessToken)
-            : this()
+            : base(accessToken)
         {
             Contract.Requires(!string.IsNullOrEmpty(accessToken));
-            AccessToken = accessToken;
+
+            Initialize(FacebookWebContext.Current);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebClient"/> class.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The app secret.
+        /// </param>
+        public FacebookWebClient(string appId, string appSecret)
+            : base(appId, appSecret)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+
+            Initialize(FacebookWebContext.Current);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebClient"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public FacebookWebClient(IFacebookApplication facebookApplication)
+            : base(facebookApplication)
+        {
+            Initialize(FacebookWebContext.Current);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebClient"/> class.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
         public FacebookWebClient(FacebookWebContext request)
         {
+            Contract.Requires(request != null);
+
+            Initialize(request);
             AccessToken = request.AccessToken;
+        }
+
+        /// <summary>
+        /// Initializes the FacebookWebClient from <see cref="FacebookWebContext"/>.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        private void Initialize(FacebookWebContext request)
+        {
+            Contract.Requires(request != null);
 
             _request = request;
             _isSecureConnection = request.IsSecureConnection;

@@ -291,7 +291,7 @@ namespace Facebook.Web
                 parameters["query"] = query;
                 parameters["method"] = "fql.query";
 
-                var fb = new FacebookWebClient(string.Concat(appId, "|", appSecret));
+                var fb = new FacebookWebClient(appId, appSecret);
                 var data = fb.Get(parameters) as IList<object>;
 
                 if (data != null && data.Count > 0)

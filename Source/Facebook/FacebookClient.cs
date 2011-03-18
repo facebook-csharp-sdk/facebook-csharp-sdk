@@ -56,6 +56,39 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="appSecret">
+        /// The app secret.
+        /// </param>
+        public FacebookClient(string appId, string appSecret)
+            : this(string.Concat(appId, "|", appSecret))
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">
+        /// The facebook application.
+        /// </param>
+        public FacebookClient(IFacebookApplication facebookApplication)
+        {
+            if (facebookApplication != null)
+            {
+                if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
+                {
+                    this.AccessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
+                }
+            }
+        }
+
+        /// <summary>
         /// Event handler for delete completion.
         /// </summary>
         public event EventHandler<FacebookApiEventArgs> DeleteCompleted;
