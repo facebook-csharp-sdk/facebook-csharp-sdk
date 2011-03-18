@@ -50,7 +50,7 @@
 <br />
 
 <p>
-    <a target="_top" href="<%: CanvasUrlBuilder.BuildCanvasPageUrl("/") %>">Home (<%: CanvasUrlBuilder.BuildCanvasPageUrl("/") %>)</a>
+    <a target="_top" href="<%: this.ResolveCanvasPageUrl("~/") %>">Home (<%: this.ResolveCanvasPageUrl("~/") %>)</a>
 </p>
 
 <p>

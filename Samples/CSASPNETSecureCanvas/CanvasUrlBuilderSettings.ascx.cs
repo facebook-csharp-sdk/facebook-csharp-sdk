@@ -19,7 +19,7 @@ namespace CSASPNETSecureCanvas
 
             var client = new FacebookWebClient();
             PicUrlWebClient = ((dynamic)client.Get("/4", new Dictionary<string, object> { { "fields", "picture" } })).picture;
-
+            
             var app = new FacebookApp();
             PicUrlApp = ((dynamic)app.Get("/4", new Dictionary<string, object> { { "fields", "picture" } })).picture;
         }
