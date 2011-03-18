@@ -248,7 +248,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// Builds a Facebook canvas return URL.
+        /// Builds a Facebook canvas page return URL.
         /// </summary>
         /// <param name="pathAndQuery">The path and query.</param>
         /// <returns>
@@ -271,6 +271,35 @@ namespace Facebook.Web
             }
 
             var url = string.Concat(CanvasPage, pathAndQuery);
+            if (url.EndsWith("/"))
+            {
+                url = url.Substring(0, url.Length - 1);
+            }
+
+            return new Uri(FacebookUtils.RemoveTrailingSlash(url));
+        }
+
+        /// <summary>
+        /// Builds a Facebook canvas return URL.
+        /// </summary>
+        /// <param name="pathAndQuery">The path and query.</param>
+        /// <returns>
+        /// The canvas url.
+        /// </returns>
+        public Uri BuildCanvasUrl(string pathAndQuery)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            pathAndQuery = FacebookUtils.RemoveStartingSlash(pathAndQuery);
+
+            var canvasUrl = IsSecureConnection ? SecureCanvasUrl : CanvasUrl;
+            if (canvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(canvasUrl.PathAndQuery))
+            {
+                pathAndQuery = pathAndQuery.Substring(canvasUrl.PathAndQuery.Length);
+            }
+
+            var url = string.Concat(canvasUrl, pathAndQuery);
             if (url.EndsWith("/"))
             {
                 url = url.Substring(0, url.Length - 1);

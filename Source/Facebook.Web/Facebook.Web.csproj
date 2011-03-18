@@ -111,6 +111,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanvasUrlBuilderExtensions.cs" />
     <Compile Include="FacebookApp.cs" />
     <Compile Include="CanvasAuthorizer.cs" />
     <Compile Include="FacebookSubscriptionVerifier.cs" />

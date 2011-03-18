@@ -37,6 +37,14 @@
         <td>Use Facebook Beta</td>
         <td><%: CanvasUrlBuilder.UseFacebookBeta %></td>
     </tr>
+    <tr>
+        <td>ResolveCanvasUrl sample</td>
+        <td><%: this.ResolveCanvasUrl("~/default.aspx") %></td>
+    </tr>
+    <tr>
+        <td>ResolveCanvasPageUrl sample</td>
+        <td><%: this.ResolveCanvasPageUrl("~/default.aspx") %></td>
+    </tr>
 </table>
 
 <br />
