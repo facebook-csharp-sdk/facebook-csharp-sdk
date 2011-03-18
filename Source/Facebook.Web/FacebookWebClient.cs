@@ -15,6 +15,13 @@
         {
         }
 
+        public FacebookWebClient(string accessToken)
+            : this()
+        {
+            Contract.Requires(!string.IsNullOrEmpty(accessToken));
+            AccessToken = accessToken;
+        }
+
         public FacebookWebClient(FacebookWebContext request)
         {
             AccessToken = request.AccessToken;
