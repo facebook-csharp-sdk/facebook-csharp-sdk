@@ -21,51 +21,6 @@ namespace Facebook
     internal static class ExceptionFactory
     {
         /// <summary>
-        /// Gets the path or parameters required exception.
-        /// </summary>
-        /// <value>The path or parameters required exception.</value>
-        internal static ArgumentException PathOrParametersRequired
-        {
-            get { return new ArgumentException("You must supply either the 'path' or 'parameters' argument."); }
-        }
-
-        /// <summary>
-        /// Gets the method required for rest call exception.
-        /// </summary>
-        /// <value>The method required for rest call exception.</value>
-        internal static ArgumentException MethodRequiredForRestCall
-        {
-            get { return new ArgumentException("A method must be specified in order to make a rest call."); }
-        }
-
-        /// <summary>
-        /// Gets the cannot include multiple media objects exception.
-        /// </summary>
-        /// <value>The cannot include multiple media objects exception.</value>
-        internal static InvalidOperationException CannotIncludeMultipleMediaObjects
-        {
-            get { return new InvalidOperationException("You cannot include more than one Facebook Media Object in a single request."); }
-        }
-
-        /// <summary>
-        /// Gets the media object must have properties set exception.
-        /// </summary>
-        /// <value>The media object must have properties set exception.</value>
-        internal static InvalidOperationException MediaObjectMustHavePropertiesSet
-        {
-            get { return new InvalidOperationException("The media object must have a content type, file name, and value set."); }
-        }
-
-        /// <summary>
-        /// Gets the invalid cookie exception.
-        /// </summary>
-        /// <value>The invalid cookie exception.</value>
-        internal static InvalidOperationException InvalidCookie
-        {
-            get { return new InvalidOperationException("The cookie value is invalid. The cookie contains multiple value sets."); }
-        }
-
-        /// <summary>
         /// Gets the rest exception if possible.
         /// </summary>
         /// <param name="result">The web request result object to check for exception information.</param>

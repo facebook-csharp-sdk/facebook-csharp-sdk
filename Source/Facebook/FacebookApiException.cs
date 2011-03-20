@@ -45,7 +45,7 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="errorType">Type of the error.</param>
         public FacebookApiException(string message, string errorType)
-            : base(message)
+            : this(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message))
         {
             ErrorType = errorType;
         }
@@ -58,18 +58,6 @@ namespace Facebook
         public FacebookApiException(string message, Exception innerException)
             : base(message, innerException)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="errorType">Type of the error.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public FacebookApiException(string message, string errorType, Exception innerException)
-            : base(message, innerException)
-        {
-            ErrorType = errorType;
         }
 
 #if (!SILVERLIGHT)
@@ -91,19 +79,5 @@ namespace Facebook
         /// </summary>
         /// <value>The type of the error.</value>
         public string ErrorType { get; set; }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        /// <PermissionSet>
-        ///     <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" PathDiscovery="*AllFiles*"/>
-        /// </PermissionSet>
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", ErrorType ?? "Unknown", Message);
-        }
     }
 }

@@ -1026,7 +1026,7 @@ namespace Facebook
                     // Check to make sure the file upload hasn't already been set.
                     if (mediaObject != null)
                     {
-                        throw ExceptionFactory.CannotIncludeMultipleMediaObjects;
+                        throw new InvalidOperationException(Facebook.Properties.Resources.MultipleMediaObjectsError);
                     }
 
                     mediaObject = kvp.Value as FacebookMediaObject;
@@ -1046,7 +1046,7 @@ namespace Facebook
 
             if (mediaObject.ContentType == null || mediaObject.GetValue() == null || mediaObject.FileName == null)
             {
-                throw ExceptionFactory.MediaObjectMustHavePropertiesSet;
+                throw new InvalidOperationException(Facebook.Properties.Resources.MediaObjectMustHavePropertiesSetError);
             }
 
             sb.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
