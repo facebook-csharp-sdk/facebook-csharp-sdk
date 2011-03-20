@@ -37,14 +37,10 @@ namespace Facebook
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookOAuthException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="errorType">Type of the error.</param>
         public FacebookOAuthException(string message, string errorType)
-            : this(message, errorType, null)
+            : base(message, errorType)
         {
+
         }
 
         /// <summary>
@@ -53,20 +49,8 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
         public FacebookOAuthException(string message, Exception innerException)
-            : this(message, null, innerException)
+            : base(message, innerException)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookOAuthException"/> class.
-        /// </summary>
-        /// <param name="message">The error message text.</param>
-        /// <param name="errorType">Type of the facebook error.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public FacebookOAuthException(string message, string errorType, Exception innerException)
-            : base(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message), innerException)
-        {
-            ErrorType = errorType;
         }
 
 #if (!SILVERLIGHT)

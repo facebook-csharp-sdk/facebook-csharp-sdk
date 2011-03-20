@@ -45,7 +45,7 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="errorType">Type of the error.</param>
         public FacebookApiException(string message, string errorType)
-            : base(message)
+            : this(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message))
         {
             ErrorType = errorType;
         }
@@ -58,18 +58,6 @@ namespace Facebook
         public FacebookApiException(string message, Exception innerException)
             : base(message, innerException)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="errorType">Type of the error.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public FacebookApiException(string message, string errorType, Exception innerException)
-            : base(message, innerException)
-        {
-            ErrorType = errorType;
         }
 
 #if (!SILVERLIGHT)
@@ -91,13 +79,5 @@ namespace Facebook
         /// </summary>
         /// <value>The type of the error.</value>
         public string ErrorType { get; set; }
-
-        public override string Message
-        {
-            get
-            {
-                return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", ErrorType ?? "Unknown", Message);
-            }
-        }
     }
 }
