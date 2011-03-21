@@ -1,6 +1,17 @@
+// --------------------------------
+// <copyright file="FacebookBatchParameter.cs" company="Facebook C# SDK">
+//     Microsoft Public License (Ms-PL)
+// </copyright>
+// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
+// <website>http://facebooksdk.codeplex.com</website>
+// ---------------------------------
+
 namespace Facebook
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents a batch parameter for the creating batch requests.
@@ -96,5 +107,25 @@ namespace Facebook
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public object Data { get; set; }
+
+        /// <summary>
+        /// Returns a <see cref="FacebookBatchParameter"/> representing FQL query.
+        /// </summary>
+        /// <param name="fql">
+        /// The fql query.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FacebookBatchParameter"/>.
+        /// </returns>
+        public FacebookBatchParameter Query(string fql)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(fql));
+
+            HttpMethod = HttpMethod.Get;
+            Path = "/method/fql.query";
+            Parameters = new Dictionary<string, object> { { "query", fql } };
+
+            return this;
+        }
     }
 }
