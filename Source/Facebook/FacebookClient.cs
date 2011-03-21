@@ -596,6 +596,8 @@ namespace Facebook
 
         #endregion
 
+        #region Query (FQL)
+
 #if (!SILVERLIGHT)
 
         /// <summary>
@@ -688,6 +690,105 @@ namespace Facebook
 
             GetAsync(parameters);
         }
+
+        #endregion
+
+        #region Batch Requests
+
+        /// <summary>
+        /// Makes a batch request.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// The batch parameters.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public object Batch(params FacebookBatchParameter[] batchParameters)
+        {
+            Contract.Requires(batchParameters != null);
+            Contract.Requires(batchParameters.Length > 0);
+
+            var parameters = new List<object>();
+            foreach (var parameter in batchParameters)
+            {
+                parameters.Add(ToParameters(parameter));
+            }
+
+            return Post(new Dictionary<string, object> { { "batch", parameters } });
+        }
+
+        /// <summary>
+        /// Converts the facebook batch to POST parameters.
+        /// </summary>
+        /// <param name="batchParameter">
+        /// The batch parameter.
+        /// </param>
+        /// <returns>
+        /// The post parameters.
+        /// </returns>
+        protected IDictionary<string, object> ToParameters(FacebookBatchParameter batchParameter)
+        {
+            Contract.Requires(batchParameter != null);
+            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
+
+            IDictionary<string, object> returnResult = null;
+
+            var defaultParameters = new Dictionary<string, object>();
+
+            defaultParameters["method"] = FacebookUtils.ConvertToString(batchParameter.HttpMethod);
+
+            IDictionary<string, object> parameters = null;
+            if (batchParameter.Parameters == null)
+            {
+                parameters = new Dictionary<string, object>();
+            }
+            else
+            {
+                if (batchParameter.Parameters is IDictionary<string, object>)
+                {
+                    parameters = (IDictionary<string, object>)batchParameter.Parameters;
+                }
+                else
+                {
+                    parameters = FacebookUtils.ToDictionary(batchParameter.Parameters);
+                }
+            }
+
+            var path = FacebookUtils.ParseQueryParametersToDictionary(batchParameter.Path, parameters);
+            string queryString = string.Empty;
+            if (batchParameter.HttpMethod == HttpMethod.Get)
+            {
+                queryString = FacebookUtils.ToJsonQueryString(parameters);
+            }
+
+            var relativeUrl = new StringBuilder(path);
+            if (!string.IsNullOrEmpty(queryString))
+            {
+                relativeUrl.AppendFormat("?{0}", queryString);
+            }
+
+            defaultParameters["relative_url"] = relativeUrl.ToString();
+
+            var data = batchParameter.Data;
+            if (data == null)
+            {
+                returnResult = defaultParameters;
+            }
+            else
+            {
+                if (!(data is IDictionary<string, object>))
+                {
+                    data = FacebookUtils.ToDictionary(batchParameter.Data);
+                }
+
+                returnResult = FacebookUtils.Merge(defaultParameters, (IDictionary<string, object>)data);
+            }
+
+            return returnResult;
+        }
+
+        #endregion
 
         /// <summary>
         /// Cancels the asynchronous requests to the Facebook server. 
