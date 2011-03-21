@@ -52,7 +52,7 @@ namespace Facebook.Tests.ExceptionFactory.GetRestException
         {
             var result = ExceptionFactory.GetRestException(dict);
 
-            Assert.Equal(errorMessage, result.Message);
+            Assert.Equal("(100) The parameter fields is required", result.Message);
         }
     }
 }
