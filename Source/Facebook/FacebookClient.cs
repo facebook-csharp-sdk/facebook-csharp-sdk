@@ -761,6 +761,10 @@ namespace Facebook
             {
                 queryString = FacebookUtils.ToJsonQueryString(parameters);
             }
+            else
+            {
+                defaultParameters["body"] = FacebookUtils.ToJsonQueryString(parameters);
+            }
 
             var relativeUrl = new StringBuilder(path);
             if (!string.IsNullOrEmpty(queryString))
