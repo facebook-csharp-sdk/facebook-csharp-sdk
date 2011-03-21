@@ -21,6 +21,28 @@ namespace Facebook
     /// </remarks>
     public class FacebookBatchParameter
     {
+        /*
+         * 
+         * example of batch requesting showing usages of 
+         * GET, POST query, multi-query and dependencies
+         * 
+         * 
+           var fb = new FacebookClient("access_token");
+           var result = fb.Batch(
+                new FacebookBatchParameter { HttpMethod = HttpMethod.Get, Path = "/4" },
+                new FacebookBatchParameter(HttpMethod.Get, "/me/friends", new Dictionary<string, object> { { "limit", 10 } }),
+                new FacebookBatchParameter("/me/friends", new { limit = 1 }) { Data = new { name = "one-friend", omit_response_on_success = false } },
+                new FacebookBatchParameter { Parameters = new { ids = "{result=one-friend:$.data.0.id}" } },
+                new FacebookBatchParameter("{result=one-friend:$.data.0.id}/feed", new { limit = 5 }),
+                new FacebookBatchParameter(HttpMethod.Post, "/me/feed", new { message = "test status update" }),
+                new FacebookBatchParameter().Query("SELECT name FROM user WHERE uid=4"),
+                new FacebookBatchParameter().Query(
+                    "SELECT first_name FROM user WHERE uid=me()",
+                    "SELECT last_name FROM user WHERE uid=me()"));
+         * 
+         * 
+         */
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookBatchParameter"/> class.
         /// </summary>
