@@ -91,6 +91,7 @@
     <Compile Include="FacebookClient\DownloadDataCompleted\GivenHttpMethodAsGet\GivenARestApiErrorThen\AndStateAsNull\ThrowsRestApiErrorThen.cs" />
     <Compile Include="FacebookClient\DownloadDataCompleted\GivenHttpMethodAsGet\GivenGraphPath\AndStateAsNull\WhichReturnJsonObject.cs" />
     <Compile Include="FacebookClient\DownloadDataCompleted\GivenHttpMethodAsGet\GivenGraphPath\AndStateAsNull\WhichThrowsGraphExceptionThen.cs" />
+    <Compile Include="FacebookClient\ProcessBatchResult\ProcessBatchResultTests.cs" />
     <Compile Include="FacebookClient\UploadDataCompleted\GivenHttpMethodAsDelete\GivenAGraphPath\AndStateIsNull\WhichReturnsJsonObjectThen.cs" />
     <Compile Include="FacebookClient\UploadDataCompleted\GivenHttpMethodAsDelete\GivenAGraphPath\AndStateIsNull\WhichThrowsGraphExceptionThen.cs" />
     <Compile Include="FacebookClient\UploadDataCompleted\GivenHttpMethodAsPost\GivenAGraphPath\AndStateIsNull\WhichReturnsAJsonObjectThen.cs" />

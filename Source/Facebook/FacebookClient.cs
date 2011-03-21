@@ -695,7 +695,7 @@ namespace Facebook
 
         #region Batch Requests
 
-        #if !SILVERLIGHT
+#if !SILVERLIGHT
 
         /// <summary>
         /// Makes a batch request.
@@ -717,10 +717,10 @@ namespace Facebook
                 parameters.Add(ToParameters(parameter));
             }
 
-            return Post(new Dictionary<string, object> { { "batch", parameters } });
+            return ProcessBatchResult(Post(new Dictionary<string, object> { { "batch", parameters } }));
         }
 
-        #endif
+#endif
 
         /// <summary>
         /// Converts the facebook batch to POST parameters.
@@ -794,6 +794,43 @@ namespace Facebook
             }
 
             return returnResult;
+        }
+
+        /// <summary>
+        /// Processes the batch result.
+        /// </summary>
+        /// <param name="result">
+        /// The json result.
+        /// </param>
+        /// <returns>
+        /// Batch result.
+        /// </returns>
+        internal protected object ProcessBatchResult(object result)
+        {
+            Contract.Requires(result != null);
+            Contract.Ensures(Contract.Result<object>() != null);
+
+            IList<object> list = new JsonArray();
+
+            var resultList = (IList<object>)result;
+
+            foreach (var row in resultList)
+            {
+                var body = (string)((IDictionary<string, object>)row)["body"];
+                var exception = ExceptionFactory.GetGraphException(body);
+
+                object jsonObject = null;
+                if (exception == null)
+                {
+                    // check for rest exception
+                    jsonObject = JsonSerializer.Current.DeserializeObject(body);
+                    exception = ExceptionFactory.GetRestException(jsonObject);
+                }
+
+                list.Add(exception ?? jsonObject);
+            }
+
+            return list;
         }
 
         #endregion
