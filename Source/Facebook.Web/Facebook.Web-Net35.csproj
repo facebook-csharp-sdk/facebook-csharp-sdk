@@ -100,7 +100,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.0\lib\Net35\Microsoft.Contracts.dll</HintPath>
+      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.1\lib\Net35\Microsoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Net35">
       <HintPath>..\packages\Newtonsoft.Json.4.0.1\lib\35\Newtonsoft.Json.Net35.dll</HintPath>

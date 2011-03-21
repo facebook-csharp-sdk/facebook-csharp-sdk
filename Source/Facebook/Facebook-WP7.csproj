@@ -107,7 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.0\lib\WP7\Microsoft.Contracts.dll</HintPath>
+      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.1\lib\WP7\Microsoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json.WindowsPhone">
