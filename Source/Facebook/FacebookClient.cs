@@ -695,6 +695,8 @@ namespace Facebook
 
         #region Batch Requests
 
+        #region !SILVERLIGHT
+
         /// <summary>
         /// Makes a batch request.
         /// </summary>
@@ -717,6 +719,8 @@ namespace Facebook
 
             return Post(new Dictionary<string, object> { { "batch", parameters } });
         }
+
+        #endregion
 
         /// <summary>
         /// Converts the facebook batch to POST parameters.

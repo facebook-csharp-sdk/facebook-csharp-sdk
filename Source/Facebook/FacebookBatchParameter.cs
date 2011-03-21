@@ -127,5 +127,32 @@ namespace Facebook
 
             return this;
         }
+
+        /// <summary>
+        /// Returns a <see cref="FacebookBatchParameter"/> representing FQL multi-query.
+        /// </summary>
+        /// <param name="fql">
+        /// The fql queries.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FacebookBatchParameter"/>.
+        /// </returns>
+        public FacebookBatchParameter Query(params string[] fql)
+        {
+            Contract.Requires(fql != null);
+
+            var queryDict = new Dictionary<string, object>();
+
+            for (int i = 0; i < fql.Length; i++)
+            {
+                queryDict.Add(string.Concat("query", i), fql[i]);
+            }
+
+            HttpMethod = HttpMethod.Get;
+            Path = "/method/fql.multiquery";
+            Parameters = new Dictionary<string, object> { { "queries", queryDict } };
+
+            return this;
+        }
     }
 }
