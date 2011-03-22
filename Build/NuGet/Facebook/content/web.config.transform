@@ -6,18 +6,4 @@
 	<facebookSettings
 		appId="{app id}"
 		appSecret="{app secret}" />
-		
-	<system.web>
-		<httpHandlers>
-			<add verb="*" path="facebookredirect.axd"
-				 type="Facebook.Web.FacebookAppRedirectHttpHandler, Facebook.Web" />
-		</httpHandlers>
-	</system.web>
-	
-	<system.webServer>
-		<handlers>
-			<add name="facebookredirect.axd" verb="*" path="facebookredirect.axd"
-				 type="Facebook.Web.FacebookAppRedirectHttpHandler, Facebook.Web" />
-		</handlers>
-	</system.webServer>
 </configuration>
