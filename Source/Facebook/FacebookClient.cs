@@ -658,11 +658,27 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(fql));
 
+            QueryAsync(fql, null);
+        }
+
+        /// <summary>
+        /// Executes a FQL query asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL query.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
+        public void QueryAsync(string fql, object userToken)
+        {
+            Contract.Requires(!String.IsNullOrEmpty(fql));
+
             var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
             parameters["method"] = "fql.query";
 
-            GetAsync(parameters);
+            GetAsync(null, parameters, userToken);
         }
 
         /// <summary>
@@ -672,6 +688,23 @@ namespace Facebook
         /// The FQL queries.
         /// </param>
         public void QueryAsync(string[] fql)
+        {
+            Contract.Requires(fql != null);
+            Contract.Requires(fql.Length > 0);
+
+            QueryAsync(fql, null);
+        }
+
+        /// <summary>
+        /// Executes a FQL multiquery asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL queries.
+        /// </param>
+        /// <param name="userToken">
+        /// The user Token.
+        /// </param>
+        public void QueryAsync(string[] fql, object userToken)
         {
             Contract.Requires(fql != null);
             Contract.Requires(fql.Length > 0);
@@ -686,7 +719,7 @@ namespace Facebook
             parameters["queries"] = queryDict;
             parameters["method"] = "fql.multiquery";
 
-            GetAsync(parameters);
+            GetAsync(null, parameters, userToken);
         }
 
         /// <summary>
