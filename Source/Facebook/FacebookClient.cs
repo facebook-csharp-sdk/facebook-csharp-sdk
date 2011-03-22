@@ -731,7 +731,7 @@ namespace Facebook
 #if !SILVERLIGHT
 
         /// <summary>
-        /// Makes a batch request.
+        /// Executes a batch request.
         /// </summary>
         /// <param name="batchParameters">
         /// The batch parameters.
@@ -754,6 +754,43 @@ namespace Facebook
         }
 
 #endif
+
+        /// <summary>
+        /// Executes a batch request asynchronously.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// The batch parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
+        public void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
+        {
+            Contract.Requires(batchParameters != null);
+            Contract.Requires(batchParameters.Length > 0);
+
+            var parameters = new List<object>();
+            foreach (var parameter in batchParameters)
+            {
+                parameters.Add(ToParameters(parameter));
+            }
+
+            PostAsync(new Dictionary<string, object> { { "batch", parameters } });
+        }
+
+        /// <summary>
+        /// Executes a batch request asynchronously.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// The batch parameters.
+        /// </param>
+        public void BatchAsync(FacebookBatchParameter[] batchParameters)
+        {
+            Contract.Requires(batchParameters != null);
+            Contract.Requires(batchParameters.Length > 0);
+
+            BatchAsync(batchParameters, null);
+        }
 
         /// <summary>
         /// Converts the facebook batch to POST parameters.
@@ -838,7 +875,7 @@ namespace Facebook
         /// <returns>
         /// Batch result.
         /// </returns>
-        internal protected object ProcessBatchResult(object result)
+        internal static object ProcessBatchResult(object result)
         {
             Contract.Requires(result != null);
             Contract.Ensures(Contract.Result<object>() != null);
@@ -1327,7 +1364,7 @@ namespace Facebook
         {
             var state = (WebClientStateContainer)e.UserState;
             httpMethod = state.Method;
-
+            
             var cancelled = e.Cancelled;
             var userState = state.UserState;
             var error = e.Error;

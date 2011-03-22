@@ -71,5 +71,16 @@ namespace Facebook
         {
             return JsonSerializer.Current.DeserializeObject<T>(_json);
         }
+
+        /// <summary>
+        /// Get the batch result data.
+        /// </summary>
+        /// <returns>
+        /// The result.
+        /// </returns>
+        public object GetBatchResultData()
+        {
+            return FacebookClient.ProcessBatchResult(GetResultData());
+        }
     }
 }
