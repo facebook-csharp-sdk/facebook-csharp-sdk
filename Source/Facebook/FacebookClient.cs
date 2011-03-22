@@ -399,7 +399,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            DeleteAsync(path, (IDictionary<string, object>)null);
+            DeleteAsync(path, null);
         }
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            DeleteAsync(path, parameters, (object)null);
+            DeleteAsync(path, parameters, null);
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace Facebook
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
-            GetAsync(path, (IDictionary<string, object>)null);
+            GetAsync(path, null);
         }
 
         /// <summary>
@@ -463,7 +463,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            GetAsync(path, parameters, (object)null);
+            GetAsync(path, parameters, null);
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            ApiAsync(path, parameters, HttpMethod.Get, null);
+            ApiAsync(path, parameters, HttpMethod.Get, userToken);
         }
 
         /// <summary>
@@ -511,7 +511,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            PostAsync(path, parameters, (object)null);
+            PostAsync(path, parameters, null);
         }
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            ApiAsync(path, parameters, HttpMethod.Post, null);
+            ApiAsync(path, parameters, HttpMethod.Post, userToken);
         }
 
         /// <summary>
@@ -775,7 +775,7 @@ namespace Facebook
                 parameters.Add(ToParameters(parameter));
             }
 
-            PostAsync(new Dictionary<string, object> { { "batch", parameters } });
+            PostAsync(null, new Dictionary<string, object> { { "batch", parameters } }, userToken);
         }
 
         /// <summary>
