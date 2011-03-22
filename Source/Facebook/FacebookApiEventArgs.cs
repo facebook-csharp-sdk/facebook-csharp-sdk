@@ -18,6 +18,11 @@ namespace Facebook
     public class FacebookApiEventArgs : AsyncCompletedEventArgs
     {
         /// <summary>
+        /// Indicates whether the result is a batch result.
+        /// </summary>
+        private readonly bool _isBatchResult;
+
+        /// <summary>
         /// The json string.
         /// </summary>
         private readonly string _json;
@@ -37,9 +42,35 @@ namespace Facebook
         /// <param name="json">
         /// The json string.
         /// </param>
+        [Obsolete]
         public FacebookApiEventArgs(Exception error, bool cancelled, object userState, string json)
+            : this(error, cancelled, userState, json, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApiEventArgs"/> class.
+        /// </summary>
+        /// <param name="error">
+        /// The error.
+        /// </param>
+        /// <param name="cancelled">
+        /// The cancelled.
+        /// </param>
+        /// <param name="userState">
+        /// The user state.
+        /// </param>
+        /// <param name="json">
+        /// The json string.
+        /// </param>
+        /// <param name="isBatchResult">
+        /// Indicates whether the result is a batch result.
+        /// </param>
+        public FacebookApiEventArgs(Exception error, bool cancelled, object userState, string json, bool isBatchResult)
             : base(error, cancelled, userState)
         {
+            _isBatchResult = isBatchResult;
+
             // check for error coz if its is rest api, json is not null
             if (error == null)
             {
@@ -55,7 +86,9 @@ namespace Facebook
         /// </returns>
         public object GetResultData()
         {
-            return JsonSerializer.Current.DeserializeObject(_json);
+            var json = JsonSerializer.Current.DeserializeObject(_json);
+
+            return _isBatchResult ? FacebookClient.ProcessBatchResult(json) : json;
         }
 
         /// <summary>
@@ -69,18 +102,12 @@ namespace Facebook
         /// </returns>
         public T GetResultData<T>()
         {
-            return JsonSerializer.Current.DeserializeObject<T>(_json);
-        }
+            if (_isBatchResult)
+            {
+                throw new InvalidOperationException("GetResultData<T> not suported for batch results.");
+            }
 
-        /// <summary>
-        /// Get the batch result data.
-        /// </summary>
-        /// <returns>
-        /// The result.
-        /// </returns>
-        public object GetBatchResultData()
-        {
-            return FacebookClient.ProcessBatchResult(GetResultData());
+            return JsonSerializer.Current.DeserializeObject<T>(_json);
         }
     }
 }

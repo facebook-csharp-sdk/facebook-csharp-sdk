@@ -1005,6 +1005,11 @@ namespace Facebook
             }
             else
             {
+                if (httpMethod == HttpMethod.Post && path == null && mergedParameters.ContainsKey("batch"))
+                {
+                    tempState.IsBatchRequest = true;
+                }
+
                 webClient.Headers["Content-Type"] = contentType;
                 webClient.UploadDataAsync(requestUrl, method, postData, tempState);
             }
@@ -1364,7 +1369,7 @@ namespace Facebook
         {
             var state = (WebClientStateContainer)e.UserState;
             httpMethod = state.Method;
-            
+
             var cancelled = e.Cancelled;
             var userState = state.UserState;
             var error = e.Error;
@@ -1378,10 +1383,10 @@ namespace Facebook
 
             if (error == null)
             {
-                error = ExceptionFactory.CheckForRestException(DomainMaps, state.RequestUri, json) ?? error;
+                error = ExceptionFactory.CheckForRestException(DomainMaps, state.RequestUri, json);
             }
 
-            var args = new FacebookApiEventArgs(error, cancelled, userState, json);
+            var args = new FacebookApiEventArgs(error, cancelled, userState, json, state.IsBatchRequest);
             return args;
         }
     }
