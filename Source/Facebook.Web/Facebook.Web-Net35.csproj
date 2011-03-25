@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="CanvasAuthorizer.cs" />
     <Compile Include="CanvasUrlBuilder.cs" />
+    <Compile Include="CanvasUrlBuilderExtensions.cs" />
     <Compile Include="FacebookAppRedirectHttpHandler.cs" />
     <Compile Include="FacebookSession.cs" />
     <Compile Include="FacebookSignedRequest.cs" />
