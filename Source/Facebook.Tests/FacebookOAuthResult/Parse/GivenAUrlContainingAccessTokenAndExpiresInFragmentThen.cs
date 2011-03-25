@@ -26,14 +26,14 @@ namespace Facebook.Tests.FacebookOAuthResult.Parse
         }
 
         [Fact]
-        public void TheExpiresInOfResultIsEqualToTheValuePassedInTheExpiresInQuerystring()
+        public void IfExpiresIs0ThenTheResultOfExpiresIsMaxDateTime()
         {
             var url = "http://www.facebook.com/connect/login_success.html#access_token=123|654aaaee068db-100001327642026|sd&expires_in=0";
 
             var result = FacebookOAuthResult.Parse(url);
 
-            var expiresIn = DateTimeConvertor.ToUnixTime(result.Expires);
-            Assert.Equal(0, expiresIn);
+            var expiresIn = result.Expires;
+            Assert.Equal(System.DateTime.MaxValue, expiresIn);
         }
 
         [Fact]

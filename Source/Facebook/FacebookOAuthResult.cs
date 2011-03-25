@@ -91,7 +91,7 @@ namespace Facebook
             if (parameters.ContainsKey("expires_in"))
             {
                 var expiresIn = Convert.ToDouble(parameters["expires_in"]);
-                _expires = DateTimeConvertor.FromUnixTime(expiresIn);
+                _expires = expiresIn == 0 ? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(expiresIn);
             }
         }
 
