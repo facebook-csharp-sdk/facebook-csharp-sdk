@@ -206,6 +206,23 @@ namespace Facebook
             return (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(json);
         }
 
+        internal static string EscapeToJavascriptString(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return str;
+            }
+
+            return str
+                .Replace(@"\b", "\b")
+                .Replace(@"\t", "\t")
+                .Replace(@"\n", "\n")
+                .Replace(@"\f", "\f")
+                .Replace(@"\r", "\r")
+                .Replace(@"""", "\"")
+                .Replace(@"\""", "\"");
+        }
+
         /// <summary>
         /// Converts the dictionary to a json formatted query string.
         /// </summary>
@@ -234,6 +251,7 @@ namespace Facebook
                 {
                     // Format Object As Json And Remove leading and trailing parenthesis
                     string jsonValue = JsonSerializer.Current.SerializeObject(dictionary[key]);
+                    jsonValue = EscapeToJavascriptString(jsonValue);
                     if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
                     {
                         jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);
