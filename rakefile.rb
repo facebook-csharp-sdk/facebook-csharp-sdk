@@ -461,18 +461,17 @@ task :dist_libs => [:dist_prepare, :nuget] do
     
     sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.bin.zip\" \"#{build_config[:paths][:working]}Bin/*\""
     
-    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.packages.zip\" \"#{build_config[:paths][:working]}NuGet/*.nupkg\""
-    sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.nuget.nuspec.zip\" \"#{build_config[:paths][:working]}NuGet/*\" -x!*.nupkg"
+    FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/.", "#{build_config[:paths][:dist]}NuGet/"
  end
 
 desc "Create distribution package for documentations."
 task :dist_docs => [:dist_prepare, :docs] do
-   sh "#{build_config[:paths][:tools]}7-zip/7za.exe a -tzip -r \"#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.docs.zip\" \"#{build_config[:paths][:working]}Documentation/*\""
-   cp "#{build_config[:paths][:working]}Documentation/Documentation.chm", "#{build_config[:paths][:dist]}#{PROJECT_NAME_SAFE}-#{build_config[:version][:long]}.chm"
+   FileUtils.cp_r "#{build_config[:paths][:working]}Documentation/.", "#{build_config[:paths][:dist]}Documentation/"
 end
 
 desc "Create distribution packages"
 task :dist => [:dist_prepare, :dist_libs, :dist_source, :dist_docs] do
+    
 end
 
 assemblyinfo :assemblyinfo_facebook do |asm|
