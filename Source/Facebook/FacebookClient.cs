@@ -10,6 +10,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.IO;
+using System.Net;
+
 namespace Facebook
 {
     using System;
@@ -993,25 +996,101 @@ namespace Facebook
                 RequestUri = requestUrl
             };
 
-            string method = FacebookUtils.ConvertToString(httpMethod);
-            var webClient = WebClient;
+            Action<string, Exception> callback =
+                (json, ex) =>
+                {
+                    byte[] result = null;
 
-            webClient.UploadDataCompleted = UploadDataCompleted;
-            webClient.DownloadDataCompleted = DownloadDataCompleted;
+                    if (ex == null)
+                    {
+                        result = Encoding.UTF8.GetBytes(json);
+                    }
 
-            if (httpMethod == HttpMethod.Get)
+                    if (httpMethod == HttpMethod.Get)
+                    {
+                        DownloadDataCompleted(this, new DownloadDataCompletedEventArgsWrapper(ex, false, tempState, result));
+                    }
+                    else
+                    {
+                        UploadDataCompleted(this, new UploadDataCompletedEventArgsWrapper(ex, false, tempState, result));
+                    }
+                };
+
+            var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
+            request.Method = FacebookUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+
+            if (httpMethod == HttpMethod.Post)
             {
-                webClient.DownloadDataAsync(requestUrl, tempState);
-            }
-            else
-            {
-                if (httpMethod == HttpMethod.Post && path == null && mergedParameters.ContainsKey("batch"))
+                if (path == null && mergedParameters.ContainsKey("batch"))
                 {
                     tempState.IsBatchRequest = true;
                 }
 
-                webClient.Headers["Content-Type"] = contentType;
-                webClient.UploadDataAsync(requestUrl, method, postData, tempState);
+                request.ContentType = contentType;
+                request.BeginGetRequestStream((ar) => { RequestCallback(ar, postData, callback, tempState); }, request);
+            }
+            else
+            {
+                request.BeginGetResponse((ar) => { ResponseCallback(ar, callback, tempState); }, request);
+            }
+        }
+
+        /// <summary>
+        /// The asynchronous web request callback.
+        /// </summary>
+        /// <param name="asyncResult">The asynchronous result.</param>
+        /// <param name="postData">The post data.</param>
+        /// <param name="callback">The callback method.</param>
+        /// <param name="state">The asynchronous state.</param>
+        private static void RequestCallback(IAsyncResult asyncResult, byte[] postData, Action<string, Exception> callback, object state)
+        {
+            var request = (HttpWebRequest)asyncResult.AsyncState;
+            using (Stream stream = request.EndGetRequestStream(asyncResult))
+            {
+                stream.Write(postData, 0, postData.Length);
+            }
+
+            request.BeginGetResponse((ar) => { ResponseCallback(ar, callback, state); }, request);
+        }
+
+        /// <summary>
+        /// The asynchronous web response callback.
+        /// </summary>
+        /// <param name="asyncResult">The asynchronous result.</param>
+        /// <param name="callback">The callback method.</param>
+        /// <param name="state">The asynchronous state.</param>
+        private static void ResponseCallback(IAsyncResult asyncResult, Action<string, Exception> callback, object state)
+        {
+            string result = null;
+            Exception exception = null;
+
+            try
+            {
+                var request = (HttpWebRequest)asyncResult.AsyncState;
+                var response = (HttpWebResponse)request.EndGetResponse(asyncResult);
+
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    using (StreamReader reader = new StreamReader(responseStream))
+                    {
+                        result = reader.ReadToEnd();
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                exception = new WebExceptionWrapper(ex);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            finally
+            {
+                if (callback != null)
+                {
+                    callback(result, exception);
+                }
             }
         }
 
@@ -1379,11 +1458,21 @@ namespace Facebook
             if (webException != null)
             {
                 error = ExceptionFactory.GetGraphException(webException);
+
+                if (error == null)
+                {
+                    error = webException.ActualWebException;
+                }
             }
 
             if (error == null)
             {
-                error = ExceptionFactory.CheckForRestException(DomainMaps, state.RequestUri, json);
+                var jsonObj = JsonSerializer.Current.DeserializeObject(json);
+
+                // we need to check for graph exception here again coz fb return 200ok
+                // for https://graph.facebook.com/i_dont_exist
+                error = ExceptionFactory.GetGraphException(jsonObj) ??
+                        ExceptionFactory.CheckForRestException(DomainMaps, state.RequestUri, jsonObj);
             }
 
             var args = new FacebookApiEventArgs(error, cancelled, userState, json, state.IsBatchRequest);
