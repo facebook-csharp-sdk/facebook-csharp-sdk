@@ -1,0 +1,17 @@
+<?xml version='1.0'?>
+<package xmlns='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd'>
+  <metadata>
+    <id>Facebook.JavascriptMvcWebsite</id>
+    <version>1.0.0.0</version>
+    <authors>Nathan Totten</authors>
+    <description>Facebook initialization script partial for ASP.NET MVC 3 Razor website.</description>
+    <language>en-US</language>
+	<tags>Facebook</tags>
+	<iconUrl>http://bit.ly/facebooksdkicon</iconUrl>
+    <licenseUrl>http://facebooksdk.codeplex.com/license/</licenseUrl>
+    <projectUrl>http://facebooksdk.codeplex.com</projectUrl>
+	<dependencies>
+      <dependency id="FacebookWebMvc" version="5.0.8" />
+    </dependencies> 
+  </metadata>
+</package>
