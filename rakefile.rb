@@ -234,8 +234,8 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
     output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
     #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
     
-    [ "Facebook.dll", "Facebook.pdb", "Facebook.XML" ].each do |f|
-        # copy these 3 files of each different framework
+    [ "Facebook.dll", "Facebook.XML" ].each do |f|
+        # copy these 2 files of each different framework
         cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
         cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
         cp "#{output_path}SL4/#{f}", "#{nuget_working_dir}lib/SL4/"
@@ -244,13 +244,11 @@ nuspec :nuspec_facebook => [:net35, :net40, :sl4,:wp7,"#{build_config[:paths][:w
     
     # temporarily copy Json.Net for SL and WP7
     cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.dll", "#{nuget_working_dir}lib/SL4/"
-    cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.pdb", "#{nuget_working_dir}lib/SL4/"
     cp "#{output_path}SL4/Newtonsoft.Json.Silverlight.xml", "#{nuget_working_dir}lib/SL4/"
     cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.dll", "#{nuget_working_dir}lib/WP7/"
-    cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.pdb", "#{nuget_working_dir}lib/WP7/"
     cp "#{output_path}WP7/Newtonsoft.Json.WindowsPhone.xml", "#{nuget_working_dir}lib/WP7/"
    
-    [ "Facebook.Contracts.dll", "Facebook.Contracts.pdb" ].each do |f|
+    [ "Facebook.Contracts.dll" ].each do |f|
         # copy code contracts of each different framework
         cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
         cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
@@ -300,13 +298,13 @@ nuspec :nuspec_facebookweb => [:net35, :net40, "#{build_config[:paths][:working]
     output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
     #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
     
-    [ "Facebook.Web.dll", "Facebook.Web.pdb", "Facebook.Web.XML" ].each do |f|
-        # copy these 3 files of each different framework
+    [ "Facebook.Web.dll", "Facebook.Web.XML" ].each do |f|
+        # copy these 2 files of each different framework
         cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
         cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
     end
     
-    [ "Facebook.Web.Contracts.dll", "Facebook.Web.Contracts.pdb" ].each do |f|
+    [ "Facebook.Web.Contracts.dll" ].each do |f|
         # copy code contracts of each different framework
         cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
         cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
@@ -355,13 +353,13 @@ nuspec :nuspec_facebookwebmvc => [:net35, :net40, "#{build_config[:paths][:worki
     output_path = "#{build_config[:paths][:output]}Release/" if build_config[:configuration] == :Release
     #output_path = "#{build_config[:paths][:output]}Debug/"   if build_config[:configuration] == :Debug
     
-    [ "Facebook.Web.Mvc.dll", "Facebook.Web.Mvc.pdb", "Facebook.Web.Mvc.XML" ].each do |f|
-        # copy these 3 files of each different framework
+    [ "Facebook.Web.Mvc.dll", "Facebook.Web.Mvc.XML" ].each do |f|
+        # copy these 2 files of each different framework
         cp "#{output_path}Net35/#{f}", "#{nuget_working_dir}lib/Net35/"
         cp "#{output_path}Net40/#{f}", "#{nuget_working_dir}lib/Net40/"
     end
    
-   [ "Facebook.Web.Mvc.Contracts.dll", "Facebook.Web.Mvc.Contracts.pdb" ].each do |f|
+   [ "Facebook.Web.Mvc.Contracts.dll" ].each do |f|
        # copy code contracts of each different framework
        cp "#{output_path}Net35/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net35/CodeContracts/"
        cp "#{output_path}Net40/CodeContracts/#{f}", "#{nuget_working_dir}lib/Net40/CodeContracts/"
