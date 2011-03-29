@@ -10,9 +10,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.IO;
-using System.Net;
-
 namespace Facebook
 {
     using System;
@@ -21,19 +18,16 @@ namespace Facebook
     using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Text;
 
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    public class FacebookClient : IDisposable
+    public class FacebookClient
     {
-        /// <summary>
-        /// The web current client.
-        /// </summary>
-        private IWebClient _webClient = new WebClientWrapper();
-
         /// <summary>
         /// Indcates whether to use Facebook beta.
         /// </summary>
@@ -118,15 +112,6 @@ namespace Facebook
         {
             get { return _useFacebookBeta; }
             set { _useFacebookBeta = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the web client.
-        /// </summary>
-        internal IWebClient WebClient
-        {
-            get { return _webClient; }
-            set { _webClient = value; }
         }
 
         /// <summary>
@@ -908,14 +893,6 @@ namespace Facebook
 
         #endregion
 
-        /// <summary>
-        /// Cancels the asynchronous requests to the Facebook server. 
-        /// </summary>
-        public void CancelAsync()
-        {
-            WebClient.CancelAsync();
-        }
-
 #if (!SILVERLIGHT) // Silverlight should only have async calls
 
         protected T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
@@ -927,7 +904,7 @@ namespace Facebook
         {
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
-            if (!mergedParameters.ContainsKey("access_token") && !String.IsNullOrEmpty(AccessToken))
+            if (!mergedParameters.ContainsKey("access_token") && !string.IsNullOrEmpty(AccessToken))
             {
                 mergedParameters["access_token"] = AccessToken;
             }
@@ -936,44 +913,83 @@ namespace Facebook
             string contentType;
             byte[] postData = BuildRequestData(path, mergedParameters, httpMethod, out requestUrl, out contentType);
 
-            byte[] resultData;
-            string method = FacebookUtils.ConvertToString(httpMethod);
-            var webClient = WebClient;
+            var jsonString = MakeRequest(httpMethod, requestUrl, postData, contentType);
+
+            var json = JsonSerializer.Current.DeserializeObject(jsonString);
+
+            FacebookApiException facebookApiException =
+                ExceptionFactory.GetGraphException(json) ??
+                ExceptionFactory.CheckForRestException(DomainMaps, requestUrl, json);
+
+            if (facebookApiException != null)
+            {
+                throw facebookApiException;
+            }
+
+            return resultType == null ? json : JsonSerializer.Current.DeserializeObject(jsonString, resultType);
+        }
+
+        private static string MakeRequest(HttpMethod httpMethod, Uri requestUrl, byte[] postData, string contentType)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
+            request.Method = FacebookUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
+
+            if (postData != null)
+            {
+                request.ContentLength = postData.Length;
+                request.ContentType = contentType;
+                using (var dataStream = request.GetRequestStream())
+                {
+                    dataStream.Write(postData, 0, postData.Length);
+                }
+            }
+
+            var responseData = string.Empty;
+            Exception exception = null;
             try
             {
-                if (httpMethod == HttpMethod.Get)
+                var response = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
                 {
-                    resultData = webClient.DownloadData(requestUrl);
+                    responseData = streamReader.ReadToEnd();
+                }
+
+                response.Close();
+            }
+            catch (WebException ex)
+            {
+                if (ex.Response != null)
+                {
+                    using (var stream = ex.Response.GetResponseStream())
+                    {
+                        if (stream != null)
+                        {
+                            using (var reader = new StreamReader(stream))
+                            {
+                                responseData = reader.ReadToEnd();
+                            }
+                        }
+                        else
+                        {
+                            exception = ex;
+                        }
+                    }
                 }
                 else
                 {
-                    webClient.Headers.Add("Content-Type", contentType);
-                    resultData = webClient.UploadData(requestUrl, method, postData);
+                    exception = ex;
                 }
             }
-            catch (WebExceptionWrapper ex)
+            finally
             {
-                // Graph API Errors or general web exceptions
-                var exception = ExceptionFactory.GetGraphException(ex);
                 if (exception != null)
                 {
                     throw exception;
                 }
-
-                throw;
             }
 
-            string json = Encoding.UTF8.GetString(resultData);
-
-            var restException = ExceptionFactory.CheckForRestException(DomainMaps, requestUrl, json);
-            if (restException != null)
-            {
-                throw restException;
-            }
-
-            return JsonSerializer.Current.DeserializeObject(json, resultType);
+            return responseData;
         }
-
 #endif
 
         internal protected virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
@@ -1396,14 +1412,6 @@ namespace Facebook
             return BuildRequestData(baseUrl, parameters, method, out requestUrl, out contentType);
         }
 
-        public void Dispose()
-        {
-            if (WebClient != null)
-            {
-                WebClient.Dispose();
-            }
-        }
-
         internal void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgsWrapper e)
         {
             string json = null;
@@ -1457,12 +1465,7 @@ namespace Facebook
             var webException = error as WebExceptionWrapper;
             if (webException != null)
             {
-                error = ExceptionFactory.GetGraphException(webException);
-
-                if (error == null)
-                {
-                    error = webException.ActualWebException;
-                }
+                error = ExceptionFactory.GetGraphException(webException) ?? (Exception)webException.ActualWebException;
             }
 
             if (error == null)
