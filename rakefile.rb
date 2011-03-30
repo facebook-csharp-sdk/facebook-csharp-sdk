@@ -295,7 +295,9 @@ desc "Create distribution packages for libraries."
 task :dist_libs => [:dist_prepare, :nuget] do
     # copy nuget outputs
     mkdir "#{build_config[:paths][:dist]}NuGet/"
+    mkdir "#{build_config[:paths][:dist]}SymbolSource/"
     cp Dir["#{build_config[:paths][:working]}NuGet/*.nupkg"], "#{build_config[:paths][:dist]}NuGet/"
+    cp Dir["#{build_config[:paths][:working]}SymbolSource/*.nupkg"], "#{build_config[:paths][:dist]}SymbolSource/"
     
     # copy binary .dll files
     mkdir "#{build_config[:paths][:working]}Bin/"
@@ -391,7 +393,7 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     DaCopier.new(["Facebook.Web.*","Newtonsoft*","Microsoft.Contracts.dll","F*.XML.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"
     DaCopier.new(["SL4","WP7","Facebook.dll","Facebook.xml","Facebook.Contracts.dll","Facebook.Web.Mvc*","Newtonsoft*","Microsoft.Contracts.dll","F*.XML.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/"
     DaCopier.new(["SL4","WP7","Facebook.dll","Facebook.xml","Facebook.Contracts.dll","Facebook.Web.dll","Facebook.Web.xml","Newtonsoft*","Facebook.Web.Contracts.dll","Microsoft.Contracts.dll","F*.XML.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/"
-
+       
     # duplicate to SymbolSource folder
     rm_rf "#{build_config[:paths][:working]}SymbolSource/"
     mkdir "#{build_config[:paths][:working]}SymbolSource/" 
@@ -403,20 +405,35 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     FileUtils.rm Dir.glob("#{build_config[:paths][:working]}NuGet/Facebook/**/*.pdb")
     FileUtils.rm Dir.glob("#{build_config[:paths][:working]}NuGet/FacebookWeb/**/*.pdb")
     FileUtils.rm Dir.glob("#{build_config[:paths][:working]}NuGet/FacebookWebMvc/**/*.pdb")    
+    
+    # prepare to copy src to SymbolSource folder
+    mkdir "#{build_config[:paths][:working]}SymbolSource/Facebook/src"
+    mkdir "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src"
+    mkdir "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src"
+    
+    # copy the source codes
+    DaCopier.new(["obj","packages.config"]).copy "#{build_config[:paths][:src]}Facebook/", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/Facebook"
+    cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/"
+    DaCopier.new(["obj","packages.config"]).copy "#{build_config[:paths][:src]}Facebook.Web/", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/Facebook.Web"
+    cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/"
+    DaCopier.new(["obj","packages.config"]).copy "#{build_config[:paths][:src]}Facebook.Web.Mvc/", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/Facebook.Web.Mvc"
+    cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/"
+    
 end
 
 task :nuget => [:nuspec] do
-    Dir.entries(base_dir = "#{build_config[:paths][:build]}NuGet/").each do |name|
-        path = "#{base_dir}#{name}/"
-        dest_path = "#{build_config[:paths][:working]}NuGet/#{name}/"
-        if name == '.' or name == '..' then
-            next
-        end
-        
+    # copy nuspec files from NuGet to SymbolSource
+    cp "#{build_config[:paths][:working]}NuGet/Facebook/Facebook.nuspec", "#{build_config[:paths][:working]}SymbolSource/Facebook/"
+    cp "#{build_config[:paths][:working]}NuGet/FacebookWeb/FacebookWeb.nuspec", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/"
+    cp "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/FacebookWebMvc.nuspec", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/"
+
+    Dir["#{build_config[:paths][:working]}*/*/*.nuspec"].each do |name|
         nugetpack :nuget do |nuget|
             nuget.command = "#{build_config[:paths][:nuget]}"
-            nuget.nuspec  = "#{build_config[:paths][:working]}NuGet/#{name}/#{name}.nuspec"
-            nuget.output  = "#{build_config[:paths][:working]}NuGet/"
+            nuget.nuspec  = name            
+            nuget.output = "#{build_config[:paths][:working]}" +
+                 (name.start_with?("#{build_config[:paths][:working]}NuGet") ? "NuGet/" : "SymbolSource")
         end
     end
+
 end
