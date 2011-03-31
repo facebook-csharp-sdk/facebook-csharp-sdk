@@ -238,6 +238,8 @@ end
 
 directory "#{build_config[:paths][:working]}"
 directory "#{build_config[:paths][:working]}NuGet/"
+directory "#{build_config[:paths][:dist]}"
+directory "#{build_config[:paths][:dist]}NuGet"
 
 msbuild :docs => [:net40] do |msb|
    msb.properties :configuration => build_config[:configuration]
@@ -269,9 +271,6 @@ task :clean => [:clean_net35, :clean_net40, :clean_sl4, :clean_wp7] do
    FileUtils.rm_rf build_config[:paths][:working]
    FileUtils.rm_rf build_config[:paths][:dist]    
 end
-
-directory "#{build_config[:paths][:dist]}"
-directory "#{build_config[:paths][:dist]}NuGet"
 
 task :dist_prepare do
 	rm_rf "#{build_config[:paths][:dist]}"
@@ -390,10 +389,10 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     end
     
     # copy libs for Facebook.dll, Facebook.Web.dll and Facebook.Web.Mvc.dll
-    DaCopier.new(["Facebook.Web.*","Newtonsoft*","Microsoft.Contracts.dll","F*.XML.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"
-    DaCopier.new(["SL4","WP7","Facebook.dll","Facebook.xml","Facebook.Contracts.dll","Facebook.Web.Mvc*","Newtonsoft*","Microsoft.Contracts.dll","F*.XML.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/"
-    DaCopier.new(["SL4","WP7","Facebook.dll","Facebook.xml","Facebook.Contracts.dll","Facebook.Web.dll","Facebook.Web.xml","Newtonsoft*","Facebook.Web.Contracts.dll","Microsoft.Contracts.dll","F*.XML.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/"
-       
+    DaCopier.new(["net35(?!-)","net40(?!-)","sl4","sl3-wp",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"    
+    DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.Mvc",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/"
+    DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.dll","Facebook.Web.xml","Facebook.Web.pdb","Facebook.Web.Contracts.dll",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/"
+    
     # duplicate to SymbolSource folder
     rm_rf "#{build_config[:paths][:working]}SymbolSource/"
     mkdir "#{build_config[:paths][:working]}SymbolSource/" 
@@ -402,9 +401,7 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     FileUtils.cp_r "#{build_config[:paths][:working]}NuGet/FacebookWebMvc", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc"
     
     # remove pdb files from original NuGetFolder as it is present in SymbolSource folder instead
-    FileUtils.rm Dir.glob("#{build_config[:paths][:working]}NuGet/Facebook/**/*.pdb")
-    FileUtils.rm Dir.glob("#{build_config[:paths][:working]}NuGet/FacebookWeb/**/*.pdb")
-    FileUtils.rm Dir.glob("#{build_config[:paths][:working]}NuGet/FacebookWebMvc/**/*.pdb")    
+    FileUtils.rm Dir.glob("#{build_config[:paths][:working]}NuGet/*/**/*.pdb")   
     
     # prepare to copy src to SymbolSource folder
     mkdir "#{build_config[:paths][:working]}SymbolSource/Facebook/src"
@@ -412,11 +409,11 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     mkdir "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src"
     
     # copy the source codes
-    DaCopier.new(["obj","packages.config"]).copy "#{build_config[:paths][:src]}Facebook/", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/"
+    DaCopier.new(["obj","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook/", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/"
     cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/Properties"
-    DaCopier.new(["obj","packages.config"]).copy "#{build_config[:paths][:src]}Facebook.Web/", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/"
+    DaCopier.new(["obj","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook.Web/", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/"
     cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/Properties"
-    DaCopier.new(["obj","packages.config"]).copy "#{build_config[:paths][:src]}Facebook.Web.Mvc/", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/"
+    DaCopier.new(["obj","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook.Web.Mvc/", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/"
     cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/Properties"
 end
 
