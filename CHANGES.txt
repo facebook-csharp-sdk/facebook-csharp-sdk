@@ -8,6 +8,24 @@ SDK developers: developers writing this SDK.
 vNEXT (BETA)
 =========================================================================
 
+1. bug fix for WP7/SL4 FacebookMediaObject upload
+2. added support for creating NuGet packages for SymbolSource in build script.
+
+=========================================================================
+v5.0.8 (BETA)
+=========================================================================
+
+1. support for Batch requests.
+	a. Facebook.FacebookBatchParameter
+	b. added Batch and BatchAsync methods in FacebookClient
+		public object Batch(params FacebookBatchParameter[] batchParameters);
+		public void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken);
+		public void BatchAsync(FacebookBatchParameter[] batchParameters);
+
+=========================================================================
+v5.0.7 (BETA)
+=========================================================================
+
 1. added extension methods to generate CanvasPageUrl and CanvasUrl for webforms
 	a. public static string ResolveCanvasPageUrl(this Control control, string relativeUrl)
 	a. public static string ResolveCanvasUrl(this Control control, string relativeUrl);
