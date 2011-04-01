@@ -11,7 +11,7 @@ namespace $rootnamespace$.Samples.Facebook
             GetSampleWithoutAccessToken();
             GetSampleWithAccessToken(accessToken);
 
-            var postId = PostToMyWall(accessToken, "message posted from Facebook C# SDK sample");
+            var postId = PostToMyWall(accessToken, "message posted from Facebook C# SDK sample using graph api");
 
             Console.WriteLine();
             Console.WriteLine("Goto www.facebook.com and check if the message was posted in the wall. Then press any key to continue");
