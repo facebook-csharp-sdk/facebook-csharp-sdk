@@ -107,5 +107,44 @@ namespace $rootnamespace$.Samples.Facebook
                 throw;
             }
         }
+
+        public static string UploadPhoto(string accessToken, string filePath)
+        {
+            // sample usage: UploadPhoto(accessToken, @"C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg");
+
+            var mediaObject = new FacebookMediaObject
+            {
+                FileName = System.IO.Path.GetFileName(filePath),
+                ContentType = "image/jpeg"
+            };
+
+            mediaObject.SetValue(System.IO.File.ReadAllBytes(filePath));
+
+            try
+            {
+                var fb = new FacebookClient(accessToken);
+
+                var parameters = new Dictionary<string, object>();
+                parameters["method"] = "facebook.photos.upload";
+                parameters["caption"] = "photo upload using rest api";
+                parameters["source"] = mediaObject;
+
+                var result = (IDictionary<string, object>)fb.Post(parameters);
+
+                var pictureId = (string)result["pid"];
+
+                Console.WriteLine("Post Id: {0}", pictureId);
+
+                // Note: This json result is not the orginal json string as returned by Facebook.
+                Console.WriteLine("Json: {0}", result.ToString());
+
+                return pictureId;
+            }
+            catch (FacebookApiException ex)
+            {
+                // Note: make sure to handle this exception.
+                throw;
+            }
+        }
     }
 }
