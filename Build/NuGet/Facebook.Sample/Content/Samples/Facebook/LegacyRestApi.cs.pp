@@ -15,6 +15,12 @@ namespace $rootnamespace$.Samples.Facebook
             Console.WriteLine();
             Console.WriteLine("Goto www.facebook.com and check if the message was posted in the wall. Then press any key to continue");
             Console.ReadKey();
+
+            DeletePost(accessToken, postId);
+
+            Console.WriteLine();
+            Console.WriteLine("Goto www.facebook.com and check if the message was deleted in the wall. Then press any key to continue");
+            Console.ReadKey();
         }
 
         public static void GetSample(string accessToken)
@@ -63,6 +69,32 @@ namespace $rootnamespace$.Samples.Facebook
                 var postId = (string)result;
 
                 Console.WriteLine("Post Id: {0}", postId);
+
+                // Note: This json result is not the orginal json string as returned by Facebook.
+                Console.WriteLine("Json: {0}", result.ToString());
+
+                return postId;
+            }
+            catch (FacebookApiException ex)
+            {
+                // Note: make sure to handle this exception.
+                throw;
+            }
+        }
+
+        public static string DeletePost(string accessToken, string postId)
+        {
+            try
+            {
+                var fb = new FacebookClient(accessToken);
+
+                var parameters = new Dictionary<string, object>
+                                     {
+                                         { "method", "stream.remove" },
+                                         { "post_id", postId }
+                                     };
+
+                var result = fb.Post(parameters);
 
                 // Note: This json result is not the orginal json string as returned by Facebook.
                 Console.WriteLine("Json: {0}", result.ToString());
