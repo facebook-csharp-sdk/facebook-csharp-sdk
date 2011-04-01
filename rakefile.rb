@@ -95,6 +95,12 @@ task :configure do
         },
         "Facebook.JavascriptMvcWebsite" => {
             :description => "Facebook.JavascriptMvcWebsite"
+        },
+        "Facebook.Sample" => {
+            :description => "This package contains samples that demonstrate the use of the Facebook library.",
+            :dependencies => [ 
+                { :id => "Facebook", :version => "#{build_config[:version][:full]}" }
+            ]
         }
     }
    
@@ -355,6 +361,7 @@ assemblyinfo :assemblyinfo_facebookwebmvc do |asm|
 end
 
 task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
+    
     rm_rf "#{build_config[:paths][:working]}NuGet/"
     mkdir "#{build_config[:paths][:working]}NuGet/"
     
