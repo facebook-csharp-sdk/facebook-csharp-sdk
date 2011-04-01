@@ -133,12 +133,51 @@ namespace $rootnamespace$.Samples.Facebook
 
                 var pictureId = (string)result["pid"];
 
-                Console.WriteLine("Post Id: {0}", pictureId);
+                Console.WriteLine("Picture Id: {0}", pictureId);
 
                 // Note: This json result is not the orginal json string as returned by Facebook.
                 Console.WriteLine("Json: {0}", result.ToString());
 
                 return pictureId;
+            }
+            catch (FacebookApiException ex)
+            {
+                // Note: make sure to handle this exception.
+                throw;
+            }
+        }
+
+        public static string UploadVideo(string accessToken, string filePath)
+        {
+            // sample usage: UploadPhoto(accessToken, @"C:\video.3gp");
+
+            var mediaObject = new FacebookMediaObject
+            {
+                FileName = System.IO.Path.GetFileName(filePath),
+                ContentType = "video/3gpp"
+            };
+
+            mediaObject.SetValue(System.IO.File.ReadAllBytes(filePath));
+
+            try
+            {
+                var fb = new FacebookClient(accessToken);
+
+                var parameters = new Dictionary<string, object>();
+                parameters["method"] = "video.upload";
+                parameters["caption"] = "video upload using rest api";
+                parameters["source"] = mediaObject;
+
+                var result = (IDictionary<string, object>)fb.Post(parameters);
+
+                var videoId = (string)result["vid"];
+
+                Console.WriteLine("Video Id: {0}", videoId);
+
+                // Note: This json result is not the orginal json string as returned by Facebook.
+                Console.WriteLine("Json: {0}", result.ToString());
+
+                return videoId;
             }
             catch (FacebookApiException ex)
             {

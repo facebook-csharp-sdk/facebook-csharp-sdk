@@ -110,6 +110,4 @@ namespace Facebook.Tests.Graph
             Assert.NotEqual(null, result.vid);
         }
     }
-
-
 }
