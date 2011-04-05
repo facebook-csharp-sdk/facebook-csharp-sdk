@@ -938,7 +938,7 @@ namespace Facebook
             {
                 request.ContentLength = postData.Length;
                 request.ContentType = contentType;
-                using (var dataStream = request.GetRequestStream())
+                using (Stream dataStream = request.GetRequestStream())
                 {
                     dataStream.Write(postData, 0, postData.Length);
                 }
@@ -958,27 +958,7 @@ namespace Facebook
             }
             catch (WebException ex)
             {
-                if (ex.Response != null)
-                {
-                    using (var stream = ex.Response.GetResponseStream())
-                    {
-                        if (stream != null)
-                        {
-                            using (var reader = new StreamReader(stream))
-                            {
-                                responseData = reader.ReadToEnd();
-                            }
-                        }
-                        else
-                        {
-                            exception = ex;
-                        }
-                    }
-                }
-                else
-                {
-                    exception = ex;
-                }
+                exception = (Exception)ExceptionFactory.GetGraphException(ex) ?? ex;
             }
             finally
             {
