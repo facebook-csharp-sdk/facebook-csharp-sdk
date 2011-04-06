@@ -102,6 +102,12 @@ task :configure do
                 { :id => "Facebook", :version => "#{build_config[:version][:full]}" }
             ]
         },
+        "Facebook.Sample.Dynamic" => {
+            :description => "This package contains samples that demonstrate the use of the Facebook library using dynamic.",
+            :dependencies => [ 
+                { :id => "Facebook", :version => "#{build_config[:version][:full]}" }
+            ]
+        },
         "Facebook.Sample.Winforms.Login" => {
             :description => "This package contains samples that demonstrate the use of the Facebook Login in WinForms.",
             :dependencies => [ 
