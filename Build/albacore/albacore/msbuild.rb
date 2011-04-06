@@ -6,7 +6,7 @@ class MSBuild
   include Albacore::RunCommand
   include Configuration::MSBuild
   
-  attr_accessor :solution, :verbosity
+  attr_accessor :solution, :verbosity, :loggermodule
   attr_array :targets
   attr_hash :properties
   
@@ -25,6 +25,7 @@ class MSBuild
     command_parameters = []
     command_parameters << "\"#{solution}\""
     command_parameters << "\"/verbosity:#{@verbosity}\"" if @verbosity != nil
+    command_parameters << "\"/logger:#{@loggermodule}\"" if @loggermodule != nil
     command_parameters << build_properties if @properties != nil
     command_parameters << "\"/target:#{build_targets}\"" if @targets != nil
     

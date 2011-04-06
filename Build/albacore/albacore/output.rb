@@ -1,6 +1,7 @@
 require 'albacore/albacoretask'
 require 'erb'
 require 'ostruct'
+require 'fileutils'
 
 class OutputBuilder
   include FileUtils

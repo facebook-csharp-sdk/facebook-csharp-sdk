@@ -4,7 +4,7 @@ class SQLCmd
   include Albacore::Task
   include Albacore::RunCommand
   
-  attr_accessor :server, :database, :username, :password, :trusted_connection, :batch_abort
+  attr_accessor :server, :database, :username, :password, :trusted_connection, :batch_abort, :severity
   attr_array :scripts
   attr_hash :variables
   
@@ -14,6 +14,7 @@ class SQLCmd
     @variables={}
     @trusted_connection = true
     @batch_abort = true
+    @severity = nil
     super()
     update_attributes Albacore.configuration.sqlcmd.to_hash
   end
@@ -29,6 +30,7 @@ class SQLCmd
     cmd_params << build_variable_list if @variables.length > 0
     cmd_params << get_batch_abort_param
     cmd_params << build_script_list if @scripts.length > 0
+    cmd_params << build_parameter("V", @severity) unless @severity.nil?
     
     result = run_command "SQLCmd", cmd_params.join(" ")
     
