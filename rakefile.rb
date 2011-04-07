@@ -373,7 +373,6 @@ assemblyinfo :assemblyinfo_facebookwebmvc do |asm|
 end
 
 task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
-    
     rm_rf "#{build_config[:paths][:working]}NuGet/"
     mkdir "#{build_config[:paths][:working]}NuGet/"
     
@@ -408,7 +407,7 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     end
     
     # copy libs for Facebook.dll, Facebook.Web.dll and Facebook.Web.Mvc.dll
-    DaCopier.new(["net35(?!-)","net40(?!-)","sl4","sl3-wp",".xml.old","Newtonsoft.Json"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"    
+    DaCopier.new(["net35(?!-)","net40(?!-)",".xml.old","Newtonsoft.Json"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"    
     DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.Mvc",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/"
     DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.dll","Facebook.Web.xml","Facebook.Web.pdb","Facebook.Web.Contracts.dll",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/"
     
