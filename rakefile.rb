@@ -77,7 +77,7 @@ task :configure do
         "Facebook" => {
             :description => "The Facebook C# SDK core.",
             :dependencies => [
-               { :id => "CodeContracts.Unofficial", :version => "1.0.0.1" },
+               { :id => "CodeContracts.Unofficial", :version => "1.0.0.2" },
                { :id => "Newtonsoft.Json", :version => "#{build_config[:nuspec][:newtonsoft_json_version]}" }
             ]
         },
