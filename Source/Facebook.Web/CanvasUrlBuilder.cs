@@ -117,6 +117,7 @@ namespace Facebook.Web
             get
             {
                 Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
+
                 return FacebookUtils.RemoveTrailingSlash(new Uri(_settings.CanvasPage)).AbsolutePath;
             }
         }
@@ -144,6 +145,11 @@ namespace Facebook.Web
                     url = string.Concat(_httpRequest.Url.Scheme, "://", _httpRequest.Url.Host, ":", _httpRequest.Url.Port);
                 }
 
+                if (string.IsNullOrEmpty(url))
+                {
+                    throw new Exception("CanvasUrl is null or empty");
+                }
+
                 return new Uri(FacebookUtils.RemoveTrailingSlash(url));
             }
         }
@@ -169,6 +175,11 @@ namespace Facebook.Web
                 else
                 {
                     url = string.Concat(_httpRequest.Url.Scheme, "://", _httpRequest.Url.Host, ":", _httpRequest.Url.Port);
+                }
+
+                if (string.IsNullOrEmpty(url))
+                {
+                    throw new Exception("SecureCanvasUrl is null or empty");
                 }
 
                 return new Uri(FacebookUtils.RemoveTrailingSlash(url));
