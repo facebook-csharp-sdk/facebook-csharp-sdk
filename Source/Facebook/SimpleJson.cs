@@ -2,8 +2,11 @@
 // http://bit.ly/simplejson
 // License: Apache License 2.0 (Apache)
 
-// NOTE: uncomment the following line to make simple json classes internal.
+// NOTE: uncomment the following line to make SimpleJson class internal.
 //#define SIMPLE_JSON_INTERNAL
+
+// NOTE: uncomment the following line to make JsonArray and JsonObject class internal.
+//#define SIMPLE_JSON_OBJARRAYINTERNAL
 
 // NOTE: uncomment the following line to enable dynamic support.
 //#define SIMPLE_JSON_DYNAMIC
@@ -17,25 +20,26 @@
 // original code from http://techblog.procurios.nl/k/618/news/view/14605/14863/How-do-I-write-my-own-parser-for-JSON.html
 // most of the reflection methods taken from https://github.com/jsonfx/jsonfx
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+#if SIMPLE_JSON_DYNAMIC
+using System.Dynamic;
+#endif
+using System.Globalization;
+using System.Reflection;
+#if SIMPLE_JSON_DATACONTRACT
+using System.Runtime.Serialization;
+#endif
+using System.Text;
+using SimpleJson.Reflection;
+
+
 namespace SimpleJson
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-#if SIMPLE_JSON_DYNAMIC
-    using System.Dynamic;
-#endif
-    using System.Globalization;
-    using System.Reflection;
-#if SIMPLE_JSON_DATACONTRACT
-    using System.Runtime.Serialization;
-#endif
-    using System.Text;
-    using Reflection;
-
     #region JsonArray
 
-#if SIMPLE_JSON_INTERNAL
+#if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
     public
@@ -44,13 +48,11 @@ namespace SimpleJson
     {
         public JsonArray() { }
 
-        public JsonArray(IEnumerable<object> collection) : base(collection) { }
-
         public JsonArray(int capacity) : base(capacity) { }
 
         public override string ToString()
         {
-            return SimpleJson.SerializeObject(this) ?? string.Empty;
+            return global::SimpleJson.SimpleJson.SerializeObject(this) ?? string.Empty;
         }
     }
 
@@ -58,7 +60,7 @@ namespace SimpleJson
 
     #region JsonObject
 
-#if SIMPLE_JSON_INTERNAL
+#if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
     public
@@ -266,7 +268,7 @@ namespace SimpleJson
         /// </returns>
         public override string ToString()
         {
-            return SimpleJson.SerializeObject(this);
+            return global::SimpleJson.SimpleJson.SerializeObject(this);
         }
 
 #if SIMPLE_JSON_DYNAMIC
@@ -407,7 +409,10 @@ namespace SimpleJson
     }
 
     #endregion
+}
 
+namespace SimpleJson
+{
     #region JsonParser
 
     /// <summary>
@@ -1262,7 +1267,12 @@ namespace SimpleJson
 
     namespace Reflection
     {
-        public class ReflectionUtils
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ class ReflectionUtils
         {
             public static Attribute GetAttribute(MemberInfo info, Type type)
             {
@@ -1296,21 +1306,36 @@ namespace SimpleJson
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public delegate object FactoryDelegate(params object[] args);
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ delegate object FactoryDelegate(params object[] args);
 
         /// <summary>
         /// Generalized delegate for getting a field or property value
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public delegate object GetterDelegate(object target);
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ delegate object GetterDelegate(object target);
 
         /// <summary>
         /// Generalized delegate for setting a field or property value
         /// </summary>
         /// <param name="target"></param>
         /// <param name="value"></param>
-        public delegate void SetterDelegate(object target, object value);
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ delegate void SetterDelegate(object target, object value);
 
         /// <summary>
         /// Delegate represnting Action&lt;T1,T2>
@@ -1322,7 +1347,12 @@ namespace SimpleJson
         /// <remarks>
         /// Since .net 2.0 doesn't support Action taking 2 parameters we need this delegate.
         /// </remarks>
-        public delegate void Action<TArg1, TArg2>(TArg1 arg1, TArg2 arg2);
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ delegate void Action<TArg1, TArg2>(TArg1 arg1, TArg2 arg2);
 
         /// <summary>
         /// Generates delegates for getting/setting properties and field and invoking constructors
@@ -1449,7 +1479,12 @@ namespace SimpleJson
             #endregion Type Factory Generators
         }
 
-        public sealed class FactoryMap
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ sealed class FactoryMap
         {
             public readonly FactoryDelegate Ctor;
 
@@ -1465,7 +1500,12 @@ namespace SimpleJson
             }
         }
 
-        public sealed class MemberMap
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ sealed class MemberMap
         {
             /// <summary>
             /// The original member info
@@ -1512,7 +1552,12 @@ namespace SimpleJson
             }
         }
 
-        public class ResolverCache
+#if SIMPLE_JSON_INTERNAL
+    internal
+#else
+        public
+#endif
+ class ResolverCache
         {
             private readonly Action<Type, IDictionary<string, MemberMap>> _memberMapsCreator;
 
