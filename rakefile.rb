@@ -69,7 +69,6 @@ task :configure do
        },
 	   :nuspec => {
             :authors                 => "Jim Zimmerman, Nathan Totten, Prabir Shrestha",
-            :newtonsoft_json_version => "4.0.1"
        }
    }
    
@@ -77,8 +76,7 @@ task :configure do
         "Facebook" => {
             :description => "The Facebook C# SDK core.",
             :dependencies => [
-               { :id => "CodeContracts.Unofficial", :version => "1.0.0.2" },
-               { :id => "Newtonsoft.Json", :version => "#{build_config[:nuspec][:newtonsoft_json_version]}" }
+               { :id => "CodeContracts.Unofficial", :version => "1.0.0.2" }
             ]
         },
         "FacebookWeb" => {
@@ -407,7 +405,7 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     end
     
     # copy libs for Facebook.dll, Facebook.Web.dll and Facebook.Web.Mvc.dll
-    DaCopier.new(["net35(?!-)","net40(?!-)",".xml.old","Newtonsoft.Json"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"    
+    DaCopier.new(["net35(?!-)","net40(?!-)",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"    
     DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.Mvc",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/"
     DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.dll","Facebook.Web.xml","Facebook.Web.pdb","Facebook.Web.Contracts.dll",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/"
     

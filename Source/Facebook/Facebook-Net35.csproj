@@ -104,10 +104,6 @@
       <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.1\lib\Net35\Microsoft.Contracts.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json.Net35">
-      <HintPath>..\packages\Newtonsoft.Json.4.0.1\lib\35\Newtonsoft.Json.Net35.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
