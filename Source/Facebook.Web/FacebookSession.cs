@@ -327,7 +327,7 @@ namespace Facebook
                 return null;
             }
 
-            var dictionary = new Dictionary<string, object>
+            var dictionary = new JsonObject
             {
                 { "uid", signedRequest.UserId.ToString() },
                 { "access_token", signedRequest.AccessToken }
@@ -369,7 +369,7 @@ namespace Facebook
             // var result = FacebookSession.Parse("3b4a872617be2ae1932baa1d4d240272", cookieValue);
 
             // Parse the cookie
-            var dictionary = new Dictionary<string, object>();
+            var dictionary = new JsonObject();
             var parts = cookieValue.Replace("\"", string.Empty).Split('&');
             foreach (var part in parts)
             {

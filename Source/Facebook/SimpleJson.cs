@@ -1,4 +1,4 @@
-// SimpleJson http://simplejson.codeplex.com/
+// SimpleJson http://simplejson.codeplex.com/ (changeset 772e385abb5a)
 // http://bit.ly/simplejson
 // License: Apache License 2.0 (Apache)
 
@@ -207,7 +207,14 @@ namespace Facebook
         /// <param name="arrayIndex">Index of the array.</param>
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            int num = Count;
+            foreach (var kvp in this)
+            {
+                array[arrayIndex++] = kvp;
+
+                if (--num <= 0)
+                    return;
+            }
         }
 
         /// <summary>
