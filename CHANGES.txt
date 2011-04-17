@@ -5,7 +5,13 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNEXT (BETA)
+vNext
+=========================================================================
+
+1. Use SimpleJson (http://simplejson.codeplex.com) instead of Newtonsoft.Json
+
+=========================================================================
+v5.0.9
 =========================================================================
 
 1. bug fix for WP7/SL4 FacebookMediaObject upload
