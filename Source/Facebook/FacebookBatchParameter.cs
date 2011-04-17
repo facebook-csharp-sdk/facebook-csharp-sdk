@@ -145,7 +145,7 @@ namespace Facebook
 
             HttpMethod = HttpMethod.Get;
             Path = "/method/fql.query";
-            Parameters = new Dictionary<string, object> { { "query", fql } };
+            Parameters = new JsonObject { { "query", fql } };
 
             return this;
         }
@@ -163,7 +163,7 @@ namespace Facebook
         {
             Contract.Requires(fql != null);
 
-            var queryDict = new Dictionary<string, object>();
+            var queryDict = new JsonObject();
 
             for (int i = 0; i < fql.Length; i++)
             {
@@ -172,7 +172,7 @@ namespace Facebook
 
             HttpMethod = HttpMethod.Get;
             Path = "/method/fql.multiquery";
-            Parameters = new Dictionary<string, object> { { "queries", queryDict } };
+            Parameters = new JsonObject { { "queries", queryDict } };
 
             return this;
         }

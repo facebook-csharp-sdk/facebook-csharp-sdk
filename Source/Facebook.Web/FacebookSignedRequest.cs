@@ -434,11 +434,11 @@ namespace Facebook
                 }
                 else
                 {
-                    result = new Dictionary<string, object>();
+                    result = new JsonObject();
 
                     result["algorithm"] = algorithm;
 
-                    long issuedAt = (long)envelope["issued_at"];
+                    long issuedAt = Convert.ToInt64(envelope["issued_at"]);
 
                     if (issuedAt < currentTime)
                     {

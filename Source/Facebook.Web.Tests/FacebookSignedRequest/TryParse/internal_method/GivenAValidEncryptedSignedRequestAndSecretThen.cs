@@ -90,7 +90,7 @@ namespace Facebook.Web.Tests.FacebookSignedRequest.TryParse.internal_method
         [Fact]
         public void ExpiresInIsSetCorrectly()
         {
-            long expiresInUnixTime = 6412;
+            double expiresInUnixTime = 6412;
 
             var result = FacebookSignedRequest.TryParse(secret, signedRequest, maxAge, currentTime, true);
             var payload = (IDictionary<string, object>)result["payload"];
