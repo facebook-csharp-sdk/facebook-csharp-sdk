@@ -33,7 +33,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\sl4\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;SILVERLIGHT;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -68,7 +68,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\sl4\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -110,6 +110,7 @@
       <HintPath>..\packages\Newtonsoft.Json.4.0.1\lib\SL\Newtonsoft.Json.Silverlight.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -157,6 +158,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="JsonSerializer.cs" />
+    <Compile Include="SimpleJson.cs" />
     <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
     <Compile Include="WebClientStateContainer.cs" />
     <Compile Include="WebClientWrapper.cs" />

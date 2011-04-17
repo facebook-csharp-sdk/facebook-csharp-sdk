@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Diagnostics.Contracts;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -11,51 +10,71 @@
 
     public class JsonSerializer
     {
-        private static JsonSerializer instance = new JsonSerializer();
+        private static readonly JsonSerializer _instance = new JsonSerializer();
 
         public static IJsonSerializer Current
         {
             get
             {
                 Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
-                return instance.InnerCurrent;
+                return _instance.InnerCurrent;
             }
         }
 
         public static void SetJsonSerializer(IJsonSerializer jsonSerializer)
         {
-            Contract.Requires(jsonSerializer != null);
-            instance.InnerSetApplication(jsonSerializer);
+            _instance.InnerSetApplication(jsonSerializer);
         }
 
         public static void SetJsonSerializer(Func<IJsonSerializer> getJsonSerializer)
         {
             Contract.Requires(getJsonSerializer != null);
-            instance.InnerSetApplication(getJsonSerializer);
+            _instance.InnerSetApplication(getJsonSerializer);
         }
 
-        private IJsonSerializer current = new JsonNetSerializer();
-
+        private IJsonSerializer _current = new SimpleJsonSerializer();
 
         public IJsonSerializer InnerCurrent
         {
             get
             {
                 Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
-                return this.current;
+                return _current;
             }
         }
 
         public void InnerSetApplication(IJsonSerializer jsonSerializer)
         {
-            Contract.Requires(jsonSerializer != null);
-            this.current = jsonSerializer;
+            _current = jsonSerializer ?? new SimpleJsonSerializer();
         }
 
         public void InnerSetApplication(Func<IJsonSerializer> getJsonSerializer)
         {
             Contract.Requires(getJsonSerializer != null);
-            this.current = getJsonSerializer();
+            InnerSetApplication(getJsonSerializer());
+        }
+
+        private class SimpleJsonSerializer : IJsonSerializer
+        {
+            public string SerializeObject(object obj)
+            {
+                return SimpleJson.SimpleJson.SerializeObject(obj);
+            }
+
+            public object DeserializeObject(string json, Type type)
+            {
+                return SimpleJson.SimpleJson.DeserializeObject(json, type);
+            }
+
+            public T DeserializeObject<T>(string json)
+            {
+                return SimpleJson.SimpleJson.DeserializeObject<T>(json);
+            }
+
+            public object DeserializeObject(string json)
+            {
+                return SimpleJson.SimpleJson.DeserializeObject(json);
+            }
         }
 
         private class JsonNetSerializer : IJsonSerializer
@@ -64,7 +83,6 @@
 
             public JsonNetSerializer()
             {
-
                 // Standard settings
                 var isoDate = new IsoDateTimeConverter();
                 isoDate.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
@@ -238,7 +256,5 @@
                 return jsonObject;
             }
         }
-
-
     }
 }

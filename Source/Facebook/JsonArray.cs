@@ -14,7 +14,7 @@ namespace Facebook
     /// <summary>
     /// Represents a json array.
     /// </summary>
-    public sealed class JsonArray : List<object>
+    public sealed class JsonArray : SimpleJson.JsonArray
     {
         /// <summary>
         /// Json string representation of <see cref="JsonArray"/>.
@@ -27,6 +27,5 @@ namespace Facebook
             var result = JsonSerializer.Current.SerializeObject(this);
             return result ?? string.Empty;
         }
-
     }
 }
