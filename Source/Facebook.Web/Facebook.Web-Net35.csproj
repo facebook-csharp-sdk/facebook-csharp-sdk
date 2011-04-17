@@ -99,9 +99,8 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.1\lib\Net35\Microsoft.Contracts.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.Contracts">
+      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.2\lib\net35-client\Microsoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
