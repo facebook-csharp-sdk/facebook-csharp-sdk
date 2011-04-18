@@ -1,4 +1,4 @@
-// SimpleJson http://simplejson.codeplex.com/ (changeset 772e385abb5a)
+// SimpleJson http://simplejson.codeplex.com/ (changeset: 4ade47911a0b)
 // http://bit.ly/simplejson
 // License: Apache License 2.0 (Apache)
 
@@ -1100,10 +1100,12 @@ namespace SimpleJson
 
         public virtual object DeserializeObject(object value, Type type)
         {
-            if (value is string || value is bool || value is double)
+            if (value is string || value is bool)
                 return value;
             else if (value == null)
                 return null;
+            else if (value is double && type != typeof (double))
+                return typeof(IConvertible).IsAssignableFrom(type) ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture) : value;
 
             object obj = null;
 
@@ -1138,21 +1140,21 @@ namespace SimpleJson
                     list = (IList)Activator.CreateInstance(type, jsonObject.Count);
                     int i = 0;
                     foreach (var o in jsonObject)
-                        list[i++] = DeserializeObject(o, type);
+                        list[i++] = DeserializeObject(o, type.GetElementType());
                 }
-                else if (typeof(IList).IsAssignableFrom(type))
-                {
-                    list = (IList)ResolverCache.LoadFactory(type).Ctor();
-                    foreach (var o in jsonObject)
-                        list.Add(DeserializeObject(o, type));
-                }
+                //else if (typeof(IList).IsAssignableFrom(type))
+                //{
+                //    list = (IList)ResolverCache.LoadFactory(type).Ctor();
+                //    foreach (var o in jsonObject)
+                //        list.Add(DeserializeObject(o, type));
+                //}
                 else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type))
                 {
                     Type innerType = type.GetGenericArguments()[0];
                     Type genericType = typeof(List<>).MakeGenericType(innerType);
                     list = (IList)ResolverCache.LoadFactory(genericType).Ctor();
                     foreach (var o in jsonObject)
-                        list.Add(DeserializeObject(o, type));
+                        list.Add(DeserializeObject(o, innerType));
                 }
 
                 obj = list;
