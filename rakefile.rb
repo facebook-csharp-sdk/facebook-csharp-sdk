@@ -425,11 +425,11 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     mkdir "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src"
     
     # copy the source codes
-    DaCopier.new(["obj","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook/", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/"
+    DaCopier.new(["^obj$","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook/", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/"
     cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/Facebook/src/Properties"
-    DaCopier.new(["obj","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook.Web/", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/"
+    DaCopier.new(["^obj$","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook.Web/", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/"
     cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/FacebookWeb/src/Properties"
-    DaCopier.new(["obj","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook.Web.Mvc/", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/"
+    DaCopier.new(["^obj$","packages.config",".cd",".user"]).copy "#{build_config[:paths][:src]}Facebook.Web.Mvc/", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/"
     cp "#{build_config[:paths][:src]}GlobalAssemblyInfo.cs", "#{build_config[:paths][:working]}SymbolSource/FacebookWebMvc/src/Properties"
 end
 
