@@ -29,6 +29,11 @@ namespace Facebook.Web.Mvc
         {
             var authorizer = new FacebookWebContext(settings, filterContext.HttpContext);
 
+            if (!string.IsNullOrEmpty(Permissions) && Permissions.IndexOf(" ") != -1)
+            {
+                throw new ArgumentException("Permissions cannot contain whitespace.");
+            }
+
             if (!authorizer.IsAuthorized(ToArrayString(Permissions)))
             {
                 this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
