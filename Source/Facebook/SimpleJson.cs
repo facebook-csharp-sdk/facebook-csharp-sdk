@@ -1,4 +1,4 @@
-// SimpleJson http://simplejson.codeplex.com/ (changeset: c76fe0ef0881)
+// SimpleJson http://simplejson.codeplex.com/ (changeset: 5a0f599f0441)
 // http://bit.ly/simplejson
 // License: Apache License 2.0 (Apache)
 
@@ -17,6 +17,9 @@
 // NOTE: uncomment the following line to enable ConcurrentDictionary instead of using locks.
 //#define SIMPLE_JSON_CONCURRENTDICTIONARY
 
+// NOTE: uncomment the following line to use Reflection.Emit (better performance) instead for method.invoke().
+//#define SIMPLE_JSON_REFLECTIONEMIT
+
 // original code from http://techblog.procurios.nl/k/618/news/view/14605/14863/How-do-I-write-my-own-parser-for-JSON.html
 // most of the reflection methods taken from https://github.com/jsonfx/jsonfx
 
@@ -28,6 +31,9 @@ using System.Dynamic;
 #endif
 using System.Globalization;
 using System.Reflection;
+#if SIMPLE_JSON_REFLECTIONEMIT
+using System.Reflection.Emit;
+#endif
 #if SIMPLE_JSON_DATACONTRACT
 using System.Runtime.Serialization;
 #endif
@@ -1082,19 +1088,19 @@ namespace SimpleJson
 #endif
  class PocoJsonSerializerStrategy : IJsonSerializerStrategy
     {
-        internal ResolverCache ResolverCache;
+        internal CacheResolver CacheResolver;
 
         public PocoJsonSerializerStrategy()
         {
-            ResolverCache = new ResolverCache(BuildMap);
+            CacheResolver = new CacheResolver(BuildMap);
         }
 
-        protected virtual void BuildMap(Type type, IDictionary<string, MemberMap> map)
+        protected virtual void BuildMap(Type type, SafeDictionary<string, CacheResolver.MemberMap> memberMaps)
         {
             foreach (PropertyInfo info in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
-                map.Add(info.Name, new MemberMap(info));
+                memberMaps.Add(info.Name, new CacheResolver.MemberMap(info));
             foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
-                map.Add(info.Name, new MemberMap(info));
+                memberMaps.Add(info.Name, new CacheResolver.MemberMap(info));
         }
 
         public virtual bool SerializeNonPrimitiveObject(object input, out object output)
@@ -1108,7 +1114,9 @@ namespace SimpleJson
                 return value;
             else if (value == null)
                 return null;
-            else if (value is double && type != typeof(double))
+            else if ((value is long && type == typeof(long)) || (value is double && type == typeof(double)))
+                return value;
+            else if ((value is double && type != typeof(double)) || (value is long && type != typeof(long)))
                 return typeof(IConvertible).IsAssignableFrom(type) ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture) : value;
 
             object obj = null;
@@ -1117,13 +1125,13 @@ namespace SimpleJson
             {
                 var jsonObject = (IDictionary<string, object>)value;
 
-                obj = ResolverCache.LoadFactory(type).Ctor();
-                var maps = ResolverCache.LoadMaps(type);
+                obj = CacheResolver.GetNewInstance(type);
+                var maps = CacheResolver.LoadMaps(type);
 
-                foreach (KeyValuePair<string, MemberMap> keyValuePair in maps)
+                foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
                 {
                     var v = keyValuePair.Value;
-                    if (!v.CanWrite)
+                    if (v.Setter == null)
                         continue;
 
                     var jsonKey = keyValuePair.Key;
@@ -1156,7 +1164,7 @@ namespace SimpleJson
                 {
                     Type innerType = type.GetGenericArguments()[0];
                     Type genericType = typeof(List<>).MakeGenericType(innerType);
-                    list = (IList)ResolverCache.LoadFactory(genericType).Ctor();
+                    list = (IList)CacheResolver.GetNewInstance(genericType);
                     foreach (var o in jsonObject)
                         list.Add(DeserializeObject(o, innerType));
                 }
@@ -1204,11 +1212,11 @@ namespace SimpleJson
 
             IDictionary<string, object> obj = new JsonObject();
 
-            var maps = ResolverCache.LoadMaps(type);
+            var maps = CacheResolver.LoadMaps(type);
 
-            foreach (KeyValuePair<string, MemberMap> keyValuePair in maps)
+            foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
             {
-                if (keyValuePair.Value.CanRead)
+                if (keyValuePair.Value.Getter != null)
                     obj.Add(keyValuePair.Key, keyValuePair.Value.Getter(input));
             }
 
@@ -1227,10 +1235,10 @@ namespace SimpleJson
     {
         public DataContractJsonSerializerStrategy()
         {
-            ResolverCache = new ResolverCache(BuildMap);
+            CacheResolver = new CacheResolver(BuildMap);
         }
 
-        protected override void BuildMap(Type type, IDictionary<string, MemberMap> map)
+        protected override void BuildMap(Type type, SafeDictionary<string, CacheResolver.MemberMap> map)
         {
             bool hasDataContract = ReflectionUtils.GetAttribute(type, typeof(DataContractAttribute)) != null;
             if (!hasDataContract)
@@ -1244,13 +1252,13 @@ namespace SimpleJson
             foreach (PropertyInfo info in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 if (CanAdd(info, out jsonKey))
-                    map.Add(jsonKey, new MemberMap(info));
+                    map.Add(jsonKey, new CacheResolver.MemberMap(info));
             }
 
             foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 if (CanAdd(info, out jsonKey))
-                    map.Add(jsonKey, new MemberMap(info));
+                    map.Add(jsonKey, new CacheResolver.MemberMap(info));
             }
 
             // todo implement sorting for DATACONTRACT.
@@ -1314,254 +1322,216 @@ namespace SimpleJson
             }
         }
 
-        /// <summary>
-        /// Generalized delegate for invoking a constructor
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /*********************/
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
         public
 #endif
- delegate object FactoryDelegate(params object[] args);
+ delegate object GetHandler(object source);
 
-        /// <summary>
-        /// Generalized delegate for getting a field or property value
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
         public
 #endif
- delegate object GetterDelegate(object target);
+ delegate void SetHandler(object source, object value);
 
-        /// <summary>
-        /// Generalized delegate for setting a field or property value
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="value"></param>
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
         public
 #endif
- delegate void SetterDelegate(object target, object value);
+ delegate void MemberMapLoader(Type type, SafeDictionary<string, CacheResolver.MemberMap> memberMaps);
 
-        /// <summary>
-        /// Delegate represnting Action&lt;T1,T2>
-        /// </summary>
-        /// <typeparam name="TArg1"></typeparam>
-        /// <typeparam name="TArg2"></typeparam>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
-        /// <remarks>
-        /// Since .net 2.0 doesn't support Action taking 2 parameters we need this delegate.
-        /// </remarks>
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
         public
 #endif
- delegate void Action<TArg1, TArg2>(TArg1 arg1, TArg2 arg2);
-
-        /// <summary>
-        /// Generates delegates for getting/setting properties and field and invoking constructors
-        /// </summary>
-#if NET20
-        [System.Security.SecurityTreatAsSafe]
-        [System.Security.SecurityCritical]
-#else
-        [System.Security.SecuritySafeCritical]
-#endif
-        static class DynamicMethodGenerator
+ class CacheResolver
         {
-            #region Getter / Setter Generators
+            private readonly MemberMapLoader _memberMapLoader;
+            private readonly SafeDictionary<Type, SafeDictionary<string, MemberMap>> _memberMapsCache = new SafeDictionary<Type, SafeDictionary<string, MemberMap>>();
 
-            /// <summary>
-            /// Creates a property getter delegate for the specified property
-            /// </summary>
-            /// <param name="propertyInfo"></param>
-            /// <returns>GetterDelegate if property CanRead, otherwise null</returns>
-            /// <remarks>
-            /// Note: use with caution this method will expose private and protected constructors without safety checks.
-            /// </remarks>
-            public static GetterDelegate GetPropertyGetter(PropertyInfo propertyInfo)
+            delegate object CtorDelegate();
+            readonly static SafeDictionary<Type, CtorDelegate> ConstructorCache = new SafeDictionary<Type, CtorDelegate>();
+
+            public CacheResolver(MemberMapLoader memberMapLoader)
             {
-                if (!propertyInfo.CanRead)
-                    return null;
-
-                MethodInfo methodInfo = propertyInfo.GetGetMethod(true);
-                if (methodInfo == null)
-                    return null;
-
-                return delegate(object instance) { return methodInfo.Invoke(instance, Type.EmptyTypes); };
+                _memberMapLoader = memberMapLoader;
             }
 
-            /// <summary>
-            /// Creates a property setter delegate for the specified property
-            /// </summary>
-            /// <param name="propertyInfo"></param>
-            /// <returns>GetterDelegate if property CanWrite, otherwise null</returns>
-            /// <remarks>
-            /// Note: use with caution this method will expose private and protected constructors without safety checks.
-            /// </remarks>
-            public static SetterDelegate GetPropertySetter(PropertyInfo propertyInfo)
+            public static object GetNewInstance(Type type)
             {
-                if (!propertyInfo.CanWrite)
-                    return null;
-
-                MethodInfo methodInfo = propertyInfo.GetSetMethod(true);
-                if (methodInfo == null)
-                    return null;
-
-                return delegate(object instance, object value) { methodInfo.Invoke(instance, new[] { value }); };
+                CtorDelegate c;
+                if (ConstructorCache.TryGetValue(type, out c))
+                    return c();
+#if SIMPLE_JSON_REFLECTIONEMIT
+                DynamicMethod dynamicMethod = new DynamicMethod("Create" + type.FullName, typeof(object), Type.EmptyTypes, type, true);
+                dynamicMethod.InitLocals = true;
+                ILGenerator generator = dynamicMethod.GetILGenerator();
+                if (type.IsValueType)
+                {
+                    generator.DeclareLocal(type);
+                    generator.Emit(OpCodes.Ldloc_0);
+                    generator.Emit(OpCodes.Box, type);
+                }
+                else
+                {
+                    ConstructorInfo constructorInfo = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+                    if (constructorInfo == null)
+                        throw new Exception(string.Format("Could not get constructor for {0}.", type));
+                    generator.Emit(OpCodes.Newobj, constructorInfo);
+                }
+                generator.Emit(OpCodes.Ret);
+                c = (CtorDelegate)dynamicMethod.CreateDelegate(typeof(CtorDelegate));
+                ConstructorCache.Add(type, c);
+                return c();
+#else
+                ConstructorInfo constructorInfo = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+                c = delegate { return constructorInfo.Invoke(null); };
+                ConstructorCache.Add(type, c);
+                return c();
+#endif
             }
 
-            /// <summary>
-            /// Creates a field getter delegate for the specified field
-            /// </summary>
-            /// <param name="fieldInfo"></param>
-            /// <returns>GetterDelegate which returns field unless is enum in which will return enum value</returns>
-            /// <remarks>
-            /// Note: use with caution this method will expose private and protected constructors without safety checks.
-            /// </remarks>
-            public static GetterDelegate GetFieldGetter(FieldInfo fieldInfo)
+            public SafeDictionary<string, MemberMap> LoadMaps(Type type)
             {
+                if (type == null || type == typeof(object))
+                    return null;
+                SafeDictionary<string, MemberMap> maps;
+                if (_memberMapsCache.TryGetValue(type, out maps))
+                    return maps;
+                maps = new SafeDictionary<string, MemberMap>();
+                _memberMapLoader(type, maps);
+                _memberMapsCache.Add(type, maps);
+                return maps;
+            }
+
+#if SIMPLE_JSON_REFLECTIONEMIT
+            static DynamicMethod CreateDynamicMethod(string name, Type returnType, Type[] parameterTypes, Type owner)
+            {
+                DynamicMethod dynamicMethod = !owner.IsInterface
+                  ? new DynamicMethod(name, returnType, parameterTypes, owner, true)
+                  : new DynamicMethod(name, returnType, parameterTypes, (Module)null, true);
+
+                return dynamicMethod;
+            }
+#endif
+
+            static GetHandler CreateGetHandler(FieldInfo fieldInfo)
+            {
+#if SIMPLE_JSON_REFLECTIONEMIT
+                Type type = fieldInfo.FieldType;
+                DynamicMethod dynamicGet = CreateDynamicMethod("Get" + fieldInfo.Name, fieldInfo.DeclaringType, new[] { typeof(object) }, fieldInfo.DeclaringType);
+                ILGenerator getGenerator = dynamicGet.GetILGenerator();
+
+                getGenerator.Emit(OpCodes.Ldarg_0);
+                getGenerator.Emit(OpCodes.Ldfld, fieldInfo);
+                if (type.IsValueType)
+                    getGenerator.Emit(OpCodes.Box, type);
+                getGenerator.Emit(OpCodes.Ret);
+
+                return (GetHandler)dynamicGet.CreateDelegate(typeof(GetHandler));
+#else
                 return delegate(object instance) { return fieldInfo.GetValue(instance); };
+#endif
             }
 
-            /// <summary>
-            /// Creates a field setter delegate for the specified field
-            /// </summary>
-            /// <param name="fieldInfo"></param>
-            /// <returns>SetterDelegate unless field IsInitOnly then returns null</returns>
-            /// <remarks>
-            /// Note: use with caution this method will expose private and protected constructors without safety checks.
-            /// </remarks>
-            public static SetterDelegate GetFieldSetter(FieldInfo fieldInfo)
+            static SetHandler CreateSetHandler(FieldInfo fieldInfo)
             {
                 if (fieldInfo.IsInitOnly || fieldInfo.IsLiteral)
                     return null;
+#if SIMPLE_JSON_REFLECTIONEMIT
+                Type type = fieldInfo.FieldType;
+                DynamicMethod dynamicSet = CreateDynamicMethod("Set" + fieldInfo.Name, null, new[] { typeof(object), typeof(object) }, fieldInfo.DeclaringType);
+                ILGenerator setGenerator = dynamicSet.GetILGenerator();
 
+                setGenerator.Emit(OpCodes.Ldarg_0);
+                setGenerator.Emit(OpCodes.Ldarg_1);
+                if (type.IsValueType)
+                    setGenerator.Emit(OpCodes.Unbox_Any, type);
+                setGenerator.Emit(OpCodes.Stfld, fieldInfo);
+                setGenerator.Emit(OpCodes.Ret);
+
+                return (SetHandler)dynamicSet.CreateDelegate(typeof(SetHandler));
+#else
                 return delegate(object instance, object value) { fieldInfo.SetValue(instance, value); };
-            }
-
-            #endregion Getter / Setter Generators
-
-            #region Type Factory Generators
-
-            /// <summary>
-            /// Creates a default constructor delegate
-            /// </summary>
-            /// <param name="type">type to be created</param>
-            /// <returns>FactoryDelegate or null if default constructor not found</returns>
-            /// <remarks>
-            /// Note: use with caution this method will expose private and protected constructors without safety checks.
-            /// </remarks>
-            public static FactoryDelegate GetTypeFactory(Type type)
-            {
-                if (type == null)
-                    throw new ArgumentNullException("type");
-
-                ConstructorInfo ctor = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy, null, Type.EmptyTypes, null);
-                if (ctor == null)
-                    return null;
-
-                return GetTypeFactory(ctor);
-            }
-
-            /// <summary>
-            /// Creates a constructor delegate accepting specified arguments
-            /// </summary>
-            /// <param name="ctor">The constructor</param>
-            /// <returns>FactoryDelegate or null if constructor not found</returns>
-            /// <remarks>
-            /// Note: use with caution this method will expose private and protected constructors without safety checks.
-            /// </remarks>
-            public static FactoryDelegate GetTypeFactory(ConstructorInfo ctor)
-            {
-                if (ctor == null)
-                    throw new ArgumentNullException("ctor");
-
-                return delegate(object[] args) { return ctor.Invoke(args); };
-            }
-
-            #endregion Type Factory Generators
-        }
-
-#if SIMPLE_JSON_INTERNAL
-    internal
-#else
-        public
 #endif
- sealed class FactoryMap
-        {
-            public readonly FactoryDelegate Ctor;
-
-            public FactoryMap(Type type)
-            {
-                if (type == null)
-                    throw new ArgumentNullException("type");
-
-                if (type.IsInterface || type.IsAbstract || type.IsValueType)
-                    throw new ArgumentException(string.Format("Invalid type. Cannot create an instance of {0}", type.FullName));
-
-                Ctor = DynamicMethodGenerator.GetTypeFactory(type);
             }
-        }
+
+            static GetHandler CreateGetHandler(PropertyInfo propertyInfo)
+            {
+                MethodInfo getMethodInfo = propertyInfo.GetGetMethod(true);
+                if (getMethodInfo == null)
+                    return null;
+#if SIMPLE_JSON_REFLECTIONEMIT
+                Type type = propertyInfo.PropertyType;
+                DynamicMethod dynamicGet = CreateDynamicMethod("Get" + propertyInfo.Name, propertyInfo.DeclaringType, new[] { typeof(object) }, propertyInfo.DeclaringType);
+                ILGenerator getGenerator = dynamicGet.GetILGenerator();
+
+                getGenerator.Emit(OpCodes.Ldarg_0);
+                getGenerator.Emit(OpCodes.Call, getMethodInfo);
+                if (type.IsValueType)
+                    getGenerator.Emit(OpCodes.Box, type);
+                getGenerator.Emit(OpCodes.Ret);
+
+                return (GetHandler)dynamicGet.CreateDelegate(typeof(GetHandler));
+#else
+                return delegate(object instance) { return getMethodInfo.Invoke(instance, Type.EmptyTypes); };
+#endif
+            }
+
+            static SetHandler CreateSetHandler(PropertyInfo propertyInfo)
+            {
+                MethodInfo setMethodInfo = propertyInfo.GetSetMethod(true);
+                if (setMethodInfo == null)
+                    return null;
+#if SIMPLE_JSON_REFLECTIONEMIT
+                Type type = propertyInfo.PropertyType;
+                DynamicMethod dynamicSet = CreateDynamicMethod("Set" + propertyInfo.Name, null, new[] { typeof(object), typeof(object) }, propertyInfo.DeclaringType);
+                ILGenerator setGenerator = dynamicSet.GetILGenerator();
+
+                setGenerator.Emit(OpCodes.Ldarg_0);
+                setGenerator.Emit(OpCodes.Ldarg_1);
+                if (type.IsValueType)
+                    setGenerator.Emit(OpCodes.Unbox_Any, type);
+                setGenerator.Emit(OpCodes.Call, setMethodInfo);
+                setGenerator.Emit(OpCodes.Ret);
+                return (SetHandler)dynamicSet.CreateDelegate(typeof(SetHandler));
+#else
+                return delegate(object instance, object value) { setMethodInfo.Invoke(instance, new[] { value }); };
+#endif
+            }
 
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
-        public
+            public
 #endif
  sealed class MemberMap
-        {
-            /// <summary>
-            /// The original member info
-            /// </summary>
-            public readonly MemberInfo MemberInfo;
-
-            /// <summary>
-            /// The member type
-            /// </summary>
-            public readonly Type Type;
-
-            /// <summary>
-            /// The getter method
-            /// </summary>
-            public readonly GetterDelegate Getter;
-
-            /// <summary>
-            /// The setter method
-            /// </summary>
-            public readonly SetterDelegate Setter;
-
-            public readonly bool CanWrite;
-
-            public readonly bool CanRead;
-
-            public MemberMap(PropertyInfo propertyInfo)
             {
-                MemberInfo = propertyInfo;
-                Type = propertyInfo.PropertyType;
-                Getter = DynamicMethodGenerator.GetPropertyGetter(propertyInfo);
-                Setter = DynamicMethodGenerator.GetPropertySetter(propertyInfo);
-                CanWrite = propertyInfo.CanWrite;
-                CanRead = propertyInfo.CanRead;
-            }
+                public readonly MemberInfo MemberInfo;
+                public readonly Type Type;
+                public readonly GetHandler Getter;
+                public readonly SetHandler Setter;
 
-            public MemberMap(FieldInfo fieldInfo)
-            {
-                MemberInfo = fieldInfo;
-                Type = fieldInfo.FieldType;
-                Getter = DynamicMethodGenerator.GetFieldGetter(fieldInfo);
-                Setter = DynamicMethodGenerator.GetFieldSetter(fieldInfo);
-                CanWrite = true;
-                CanRead = true;
+                public MemberMap(PropertyInfo propertyInfo)
+                {
+                    MemberInfo = propertyInfo;
+                    Type = propertyInfo.PropertyType;
+                    Getter = CreateGetHandler(propertyInfo);
+                    Setter = CreateSetHandler(propertyInfo);
+                }
+
+                public MemberMap(FieldInfo fieldInfo)
+                {
+                    MemberInfo = fieldInfo;
+                    Type = fieldInfo.FieldType;
+                    Getter = CreateGetHandler(fieldInfo);
+                    Setter = CreateSetHandler(fieldInfo);
+                }
             }
         }
 
@@ -1570,78 +1540,32 @@ namespace SimpleJson
 #else
         public
 #endif
- class ResolverCache
+ class SafeDictionary<TKey, TValue>
         {
-            private readonly Action<Type, IDictionary<string, MemberMap>> _memberMapsCreator;
+            private readonly object _padlock = new object();
+            private readonly Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
 
-#if SIMPLE_JSON_CONCURRENTDICTIONARY
-        private readonly IDictionary<Type, FactoryMap> _factories = new System.Collections.Concurrent.ConcurrentDictionary<Type, FactoryMap>();
-        private readonly IDictionary<Type, IDictionary<string, MemberMap>> _memberMaps = new System.Collections.Concurrent.ConcurrentDictionary<Type, IDictionary<string, MemberMap>>();
-#else
-            private readonly IDictionary<Type, FactoryMap> _factories = new Dictionary<Type, FactoryMap>();
-            private readonly IDictionary<Type, IDictionary<string, MemberMap>> _memberMaps = new Dictionary<Type, IDictionary<string, MemberMap>>();
-#endif
-
-            public ResolverCache(Action<Type, IDictionary<string, MemberMap>> memberMapsCreator)
+            public bool TryGetValue(TKey key, out TValue value)
             {
-                _memberMapsCreator = memberMapsCreator;
+                return _dictionary.TryGetValue(key, out value);
             }
 
-            public FactoryMap LoadFactory(Type type)
+            public TValue this[TKey key]
             {
-                if (type == null || type == typeof(object))
-                    return null;
-
-                FactoryMap map;
-
-#if !SIMPLE_JSON_CONCURRENTDICTIONARY
-                lock (_factories)
-#endif
-                {
-                    // try getting from cache
-                    if (_factories.TryGetValue(type, out map))
-                        return map;
-                }
-
-                map = new FactoryMap(type);
-
-#if !SIMPLE_JSON_CONCURRENTDICTIONARY
-                lock (_factories)
-#endif
-                {
-                    // store in cache for future requests.
-                    return (_factories[type] = map);
-                }
+                get { return _dictionary[key]; }
             }
 
-            public IDictionary<string, MemberMap> LoadMaps(Type type)
+            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
             {
-                if (type == null || type == typeof(object))
-                    return null;
+                return ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).GetEnumerator();
+            }
 
-                IDictionary<string, MemberMap> maps;
-
-#if !SIMPLE_JSON_CONCURRENTDICTIONARY
-                lock (_memberMaps)
-#endif
+            public void Add(TKey key, TValue value)
+            {
+                lock (_padlock)
                 {
-                    if (_memberMaps.TryGetValue(type, out maps))
-                        return maps;
-                }
-
-#if !SIMPLE_JSON_CONCURRENTDICTIONARY
-                maps = new Dictionary<string, MemberMap>();
-#else
-                maps = new System.Collections.Concurrent.ConcurrentDictionary<string, MemberMap>();
-#endif
-                _memberMapsCreator(type, maps);
-
-#if !SIMPLE_JSON_CONCURRENTDICTIONARY
-                lock (_memberMaps)
-#endif
-                {
-                    // store in cache for future requests.
-                    return (_memberMaps[type] = maps);
+                    if (_dictionary.ContainsKey(key) == false)
+                        _dictionary.Add(key, value);
                 }
             }
         }

@@ -28,7 +28,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\net35-client\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CODE_ANALYSIS;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -63,7 +63,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\net35-client\</OutputPath>
-    <DefineConstants>TRACE;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;</DefineConstants>
+    <DefineConstants>TRACE;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
