@@ -343,7 +343,7 @@ assemblyinfo :assemblyinfo_facebook do |asm|
     asm.title = "Facebook"
     asm.description = "Facebook C\# SDK"
     asm.product_name = "Facebook C\# SDK"
-    asm.company_name = "Facebook C\# SDK"
+    asm.company_name = "Thuzi"
     asm.copyright = "Microsoft Public License (Ms-PL)"
     asm.com_visible = false
 end
@@ -354,7 +354,7 @@ assemblyinfo :assemblyinfo_facebookweb do |asm|
     asm.title = "Facebook.Web"
     asm.description = "Facebook C\# SDK"
     asm.product_name = "Facebook C\# SDK"
-    asm.company_name = "Facebook C\# SDK"
+    asm.company_name = "Thuzi"
     asm.copyright = "Microsoft Public License (Ms-PL)"
     asm.com_visible = false
 end
@@ -365,7 +365,7 @@ assemblyinfo :assemblyinfo_facebookwebmvc do |asm|
     asm.title = "Facebook.Web.Mvc"
     asm.description = "Facebook C\# SDK"
     asm.product_name = "Facebook C\# SDK"
-    asm.company_name = "Facebook C\# SDK"
+    asm.company_name = "Thuzi"
     asm.copyright = "Microsoft Public License (Ms-PL)"
     asm.com_visible = false
 end

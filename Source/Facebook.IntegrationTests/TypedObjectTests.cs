@@ -9,7 +9,6 @@
         public TypedObjectTests()
         {
             app = new FacebookClient();
-            app.MaxRetries = 0;
             //app.Session = new FacebookSession
             //{
             //    AccessToken = ConfigurationManager.AppSettings["AccessToken"],

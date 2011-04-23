@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Facebook.Samples.AuthenticationTool")]
+[assembly: AssemblyTitle("Facebook.Samples.WP7Sample")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Facebook.Samples.AuthenticationTool")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
+[assembly: AssemblyCompany("Thuzi")]
+[assembly: AssemblyProduct("Facebook.Samples.WP7Sample")]
+[assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
