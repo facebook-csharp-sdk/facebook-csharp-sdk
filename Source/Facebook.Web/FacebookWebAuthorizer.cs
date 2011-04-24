@@ -1,10 +1,18 @@
-﻿namespace Facebook.Web
+﻿// --------------------------------
+// <copyright file="FacebookWebAuthorizer.cs" company="Thuzi LLC (www.thuzi.com)">
+//     Microsoft Public License (Ms-PL)
+// </copyright>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
+// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
+// <website>http://facebooksdk.codeplex.com</website>
+// ---------------------------------
+
+namespace Facebook.Web
 {
     using System.Web;
 
     public class FacebookWebAuthorizer
     {
-
         private FacebookWebContext _request;
 
         public FacebookWebAuthorizer() :
