@@ -38,7 +38,6 @@ namespace Facebook.Tests.Graph
         public GraphReadTests()
         {
             app = new FacebookClient();
-            app.MaxRetries = 0;
             app.AccessToken = ConfigurationManager.AppSettings["AccessToken"];
         }
 

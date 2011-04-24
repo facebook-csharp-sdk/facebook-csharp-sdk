@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WebHost")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Thuzi")]
 [assembly: AssemblyProduct("WebHost")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
+[assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

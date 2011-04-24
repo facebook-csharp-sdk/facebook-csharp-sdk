@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CSMvc3FacebookApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Thuzi")]
 [assembly: AssemblyProduct("CSMvc3FacebookApp")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

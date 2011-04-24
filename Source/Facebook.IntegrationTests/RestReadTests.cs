@@ -19,7 +19,6 @@ namespace Facebook.Tests.Rest
         public RestReadTests()
         {
             app = new FacebookClient();
-            app.MaxRetries = 0;
             app.AccessToken = ConfigurationManager.AppSettings["AccessToken"];
         }
 
