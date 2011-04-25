@@ -7,6 +7,8 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+using System.ComponentModel;
+
 namespace Facebook.Web.Mvc
 {
     using System;
@@ -69,7 +71,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return CanvasActionLink(htmlHelper, linkText, actionName, null /* controllerName */, new RouteValueDictionary(routeValues), new RouteValueDictionary(htmlAttributes));
+            return CanvasActionLink(htmlHelper, linkText, actionName, null /* controllerName */, new RouteValueDictionary(routeValues), AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
         /// <summary>
@@ -140,7 +142,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return CanvasActionLink(htmlHelper, linkText, actionName, controllerName, new RouteValueDictionary(routeValues), new RouteValueDictionary(htmlAttributes));
+            return CanvasActionLink(htmlHelper, linkText, actionName, controllerName, new RouteValueDictionary(routeValues), AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
         /// <summary>
@@ -181,7 +183,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return CanvasActionLink(htmlHelper, linkText, actionName, controllerName, protocol, hostName, fragment, new RouteValueDictionary(routeValues), new RouteValueDictionary(htmlAttributes));
+            return CanvasActionLink(htmlHelper, linkText, actionName, controllerName, protocol, hostName, fragment, new RouteValueDictionary(routeValues), AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
         /// <summary>
@@ -303,7 +305,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return CanvasRouteLink(htmlHelper, linkText, new RouteValueDictionary(routeValues), new RouteValueDictionary(htmlAttributes));
+            return CanvasRouteLink(htmlHelper, linkText, new RouteValueDictionary(routeValues), AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
         /// <summary>
@@ -338,7 +340,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return CanvasRouteLink(htmlHelper, linkText, routeName, new RouteValueDictionary(routeValues), new RouteValueDictionary(htmlAttributes));
+            return CanvasRouteLink(htmlHelper, linkText, routeName, new RouteValueDictionary(routeValues), AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
         /// <summary>
@@ -377,7 +379,7 @@ namespace Facebook.Web.Mvc
             Contract.Requires(htmlHelper != null);
             Contract.Requires(htmlHelper.ViewContext != null);
 
-            return CanvasRouteLink(htmlHelper, linkText, routeName, protocol, hostName, fragment, new RouteValueDictionary(routeValues), new RouteValueDictionary(htmlAttributes));
+            return CanvasRouteLink(htmlHelper, linkText, routeName, protocol, hostName, fragment, new RouteValueDictionary(routeValues), AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
         /// <summary>
@@ -401,6 +403,20 @@ namespace Facebook.Web.Mvc
             return MvcHtmlString.Create(GenerateRouteLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, routeName, protocol, hostName, fragment, routeValues, htmlAttributes));
         }
 
+        internal static RouteValueDictionary AnonymousObjectToHtmlAttributes(object htmlAttributes)
+        {
+            RouteValueDictionary result = new RouteValueDictionary();
+
+            if (htmlAttributes != null)
+            {
+                foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(htmlAttributes))
+                {
+                    result.Add(property.Name.Replace('_', '-'), property.GetValue(htmlAttributes));
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Generates the link.
@@ -418,7 +434,6 @@ namespace Facebook.Web.Mvc
         {
             return GenerateLink(requestContext, routeCollection, linkText, routeName, actionName, controllerName, null/* protocol */, null/* hostName */, null/* fragment */, routeValues, htmlAttributes);
         }
-
 
         /// <summary>
         /// Generates the link.
@@ -500,7 +515,7 @@ namespace Facebook.Web.Mvc
             {
                 webUrl = webUrl.Substring(applicationPath.Length);
             }
-
+            
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, requestContext.HttpContext.Request);
             string url = urlBuilder.BuildCanvasPageUrl(webUrl).ToString();
             var tagBuilder = new TagBuilder("a")
@@ -511,6 +526,5 @@ namespace Facebook.Web.Mvc
             tagBuilder.MergeAttribute("href", url);
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
-
     }
 }
