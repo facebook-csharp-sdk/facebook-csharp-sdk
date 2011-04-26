@@ -117,7 +117,7 @@ task :configure do
    build_config[:paths][:packages]  = "#{build_config[:paths][:src]}packages/"
    build_config[:paths][:nuget]  = "#{build_config[:paths][:packages]}NuGet.CommandLine.1.3.20425.372/Tools/NuGet.exe"
    
-   build_config[:paths][:xunit][:x86_console_path]  = "#{build_config[:paths][:tools]}xunit-1.7/xunit.console.clr4.exe"
+   build_config[:paths][:xunit][:x86_console_path]  = "#{build_config[:paths][:tools]}xunit-1.8/xunit.console.clr4.x86.exe"
    
    build_config[:sln][:wp7]         = "#{build_config[:paths][:src]}Facebook-WP7.sln"
    build_config[:sln][:sl4]         = "#{build_config[:paths][:src]}Facebook-SL4.sln"

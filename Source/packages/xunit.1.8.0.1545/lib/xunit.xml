@@ -299,6 +299,16 @@
             <param name="object">The object to be inspected</param>
             <exception cref="T:Xunit.Sdk.NullException">Thrown when the object reference is not null</exception>
         </member>
+        <member name="M:Xunit.Assert.PropertyChanged(System.ComponentModel.INotifyPropertyChanged,System.String,Xunit.Assert.PropertyChangedDelegate)">
+            <summary>
+            Verifies that the provided object raised INotifyPropertyChanged.PropertyChanged
+            as a result of executing the given test code.
+            </summary>
+            <param name="object">The object which should raise the notification</param>
+            <param name="propertyName">The property name for which the notification should be raised</param>
+            <param name="testCode">The test code which should cause the notification to be raised</param>
+            <exception cref="T:Xunit.Sdk.PropertyChangedException">Thrown when the notification is not raised</exception>
+        </member>
         <member name="M:Xunit.Assert.Same(System.Object,System.Object)">
             <summary>
             Verifies that two objects are the same instance.
@@ -317,6 +327,18 @@
             <exception cref="T:Xunit.Sdk.SingleException">Thrown when the collection does not contain
             exactly one element.</exception>
         </member>
+        <member name="M:Xunit.Assert.Single(System.Collections.IEnumerable,System.Object)">
+            <summary>
+            Verifies that the given collection contains only a single
+            element of the given value. The collection may or may not
+            contain other values.
+            </summary>
+            <param name="collection">The collection.</param>
+            <param name="expected">The value to find in the collection.</param>
+            <returns>The single item in the collection.</returns>
+            <exception cref="T:Xunit.Sdk.SingleException">Thrown when the collection does not contain
+            exactly one element.</exception>
+        </member>
         <member name="M:Xunit.Assert.Single``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Verifies that the given collection contains only a single
@@ -331,7 +353,9 @@
         <member name="M:Xunit.Assert.Single``1(System.Collections.Generic.IEnumerable{``0},System.Predicate{``0})">
             <summary>
             Verifies that the given collection contains only a single
-            element of the given type which matches the given predicate.
+            element of the given type which matches the given predicate. The
+            collection may or may not contain other values which do not
+            match the given predicate.
             </summary>
             <typeparam name="T">The collection type.</typeparam>
             <param name="collection">The collection.</param>
@@ -392,6 +416,11 @@
             <param name="condition">The condition to be inspected</param>
             <param name="userMessage">The message to be shown when the condition is false</param>
             <exception cref="T:Xunit.Sdk.TrueException">Thrown when the condition is false</exception>
+        </member>
+        <member name="T:Xunit.Assert.PropertyChangedDelegate">
+            <summary>
+            Used by the PropertyChanged.
+            </summary>
         </member>
         <member name="T:Xunit.Assert.ThrowsDelegate">
             <summary>
@@ -667,6 +696,18 @@
         </member>
         <member name="M:Xunit.Sdk.ParameterCountMismatchException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary/>
+        </member>
+        <member name="T:Xunit.Sdk.PropertyChangedException">
+            <summary>
+            Exception thrown when code unexpectedly fails change a property.
+            </summary>
+        </member>
+        <member name="M:Xunit.Sdk.PropertyChangedException.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Xunit.Sdk.ThrowsException"/> class. Call this constructor
+            when no exception was thrown.
+            </summary>
+            <param name="expectedType">The type of the exception that was expected</param>
         </member>
         <member name="T:Xunit.Sdk.SingleException">
             <summary>
@@ -2048,6 +2089,12 @@
             <param name="testClass">The instance of the test class (may be null if
             the test method is static).</param>
             <param name="parameters">The parameters to be passed to the test method.</param>
+        </member>
+        <member name="P:Xunit.Sdk.IMethodInfo.Class">
+            <summary>
+            Gets a value which represents the class that this method was
+            reflected from (i.e., equivalent to MethodInfo.ReflectedType)
+            </summary>
         </member>
         <member name="P:Xunit.Sdk.IMethodInfo.IsAbstract">
             <summary>
