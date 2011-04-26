@@ -35,9 +35,9 @@ using System.Runtime.Serialization;
 #endif
 using System.Text;
 using SimpleJson.Reflection;
-using Facebook;
 
-namespace Facebook
+
+namespace SimpleJson
 {
     #region JsonArray
 
