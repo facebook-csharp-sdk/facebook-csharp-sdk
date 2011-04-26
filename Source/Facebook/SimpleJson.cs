@@ -534,7 +534,7 @@ namespace SimpleJson
 
         public static string EscapeToJavascriptString(string str)
         {
-            return string.IsNullOrEmpty(str) ? str : str.Replace(@"\b", "\b").Replace(@"\t", "\t").Replace(@"\n", "\n").Replace(@"\f", "\f").Replace(@"\r", "\r").Replace(@"""", "\"").Replace(@"\""", "\"");
+            return string.IsNullOrEmpty(str) ? str : str.Replace(@"\b", "\b").Replace(@"\t", "\t").Replace(@"\n", "\n").Replace(@"\f", "\f").Replace(@"\r", "\r").Replace(@"""", "\"").Replace(@"\""", "\"").Replace(@"\\", "\\");
         }
 
         protected static IDictionary<string, object> ParseObject(char[] json, ref int index, ref bool success)
@@ -771,7 +771,6 @@ namespace SimpleJson
                 double number;
                 success = double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out number);
                 returnNumber = number;
-
             }
             else
             {
