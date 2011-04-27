@@ -532,9 +532,60 @@ namespace SimpleJson
             return SerializeObject(json, CurrentJsonSerializerStrategy);
         }
 
-        public static string EscapeToJavascriptString(string str)
+        public static string EscapeToJavascriptString(string jsonString)
         {
-            return string.IsNullOrEmpty(str) ? str : str.Replace(@"\b", "\b").Replace(@"\t", "\t").Replace(@"\n", "\n").Replace(@"\f", "\f").Replace(@"\r", "\r").Replace(@"""", "\"").Replace(@"\""", "\"").Replace(@"\\", "\\");
+            if (string.IsNullOrEmpty(jsonString))
+            {
+                return jsonString;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            char c;
+
+            for (int i = 0; i < jsonString.Length; )
+            {
+                c = jsonString[i++];
+
+                if (c == '\\')
+                {
+                    int remainingLength = jsonString.Length - i;
+                    if (remainingLength >= 2)
+                    {
+                        var lookahead = jsonString[i];
+                        if (lookahead == '\\')
+                        {
+                            sb.Append('\\');
+                            ++i;
+                        }
+                        else if (lookahead == 't')
+                        {
+                            sb.Append('\t');
+                            ++i;
+                        }
+                        else if (lookahead == 'b')
+                        {
+                            sb.Append('\b');
+                            ++i;
+                        }
+                        else if (lookahead == 'n')
+                        {
+                            sb.Append('\n');
+                            ++i;
+                        }
+                        else if (lookahead == 'r')
+                        {
+                            sb.Append('\r');
+                            ++i;
+                        }
+                    }
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
         }
 
         protected static IDictionary<string, object> ParseObject(char[] json, ref int index, ref bool success)
