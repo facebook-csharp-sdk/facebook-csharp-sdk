@@ -405,9 +405,9 @@ task :nuspec => ["#{build_config[:paths][:working]}",:libs] do
     end
     
     # copy libs for Facebook.dll, Facebook.Web.dll and Facebook.Web.Mvc.dll
-    DaCopier.new(["net35(?!-)","net40(?!-)",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"    
-    DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.Mvc",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/"
-    DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.dll","Facebook.Web.xml","Facebook.Web.pdb","Facebook.Web.Contracts.dll",".xml.old"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/"
+    DaCopier.new(["net35(?!-)","net40(?!-)",".xml.old","^Microsoft.Contracts.dll$"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/Facebook/lib/"    
+    DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.Mvc",".xml.old","^Microsoft.Contracts.dll$"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWeb/lib/"
+    DaCopier.new(["net35-client","net40-client","sl4","sl3-wp","Facebook.Web.dll","Facebook.Web.xml","Facebook.Web.pdb","Facebook.Web.Contracts.dll",".xml.old","^Microsoft.Contracts.dll$"]).copy "#{build_config[:paths][:output]}Release", "#{build_config[:paths][:working]}NuGet/FacebookWebMvc/lib/"
     
     # duplicate to SymbolSource folder
     rm_rf "#{build_config[:paths][:working]}SymbolSource/"
