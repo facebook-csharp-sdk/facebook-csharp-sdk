@@ -95,19 +95,25 @@ task :configure do
             :description => "Facebook.JavascriptMvcWebsite"
         },
         "Facebook.Sample" => {
-            :description => "This package contains samples that demonstrate the use of the Facebook library.",
+            :description => "This package contains samples that demonstrate the use of the Facebook library in C#.",
             :dependencies => [ 
                 { :id => "Facebook", :version => "#{build_config[:version][:full]}" }
             ]
         },
+        "Facebook.Sample.VB" => {
+            :description => "This package contains samples that demonstrate the use of the Facebook library in VB.",
+            :dependencies => [ 
+                { :id => "Facebook", :version => "#{build_config[:version][:full]}" }
+            ]
+        },    
         "Facebook.Sample.Dynamic" => {
-            :description => "This package contains samples that demonstrate the use of the Facebook library using dynamic.",
+            :description => "This package contains samples that demonstrate the use of the Facebook library using dynamic in C#.",
             :dependencies => [ 
                 { :id => "Facebook", :version => "#{build_config[:version][:full]}" }
             ]
         },
         "Facebook.Sample.Winforms.Login" => {
-            :description => "This package contains samples that demonstrate the use of the Facebook Login in WinForms.",
+            :description => "This package contains samples that demonstrate the use of the Facebook Login in WinForms in C#.",
             :dependencies => [ 
                 { :id => "Facebook", :version => "#{build_config[:version][:full]}" }
             ]
