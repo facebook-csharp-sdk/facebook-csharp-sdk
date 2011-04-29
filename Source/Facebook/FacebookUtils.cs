@@ -202,6 +202,11 @@ namespace Facebook
             Contract.Requires(parameters != null);
             Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 
+            if (parameters is JsonObject)
+            {
+                return (JsonObject)parameters;
+            }
+
             var json = JsonSerializer.Current.SerializeObject(parameters);
             return (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(json);
         }

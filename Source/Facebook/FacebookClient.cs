@@ -344,6 +344,10 @@ namespace Facebook
         public object Post(object parameters)
         {
             Contract.Requires(parameters != null);
+            if (parameters is IDictionary<string, object>)
+            {
+                return Post((IDictionary<string, object>)parameters);
+            }
 
             return Post(FacebookUtils.ToDictionary(parameters));
         }
@@ -364,6 +368,11 @@ namespace Facebook
         public object Post(string path, object parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+
+            if (parameters is IDictionary<string, object>)
+            {
+                return Post(path, (IDictionary<string, object>)parameters);
+            }
 
             return Post(path, FacebookUtils.ToDictionary(parameters));
         }
