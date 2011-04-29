@@ -947,7 +947,15 @@ namespace SimpleJson
             if (value is string)
                 success = SerializeString((string)value, builder);
             else if (value is IDictionary<string, object>)
-                success = SerializeObject(jsonSerializerStrategy, (IDictionary<string, object>)value, builder);
+            {
+                var dict = (IDictionary<string, object>)value;
+                success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
+            }
+            else if (value is IDictionary<string, string>)
+            {
+                var dict = (IDictionary<string, string>)value;
+                success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
+            }
             else if (value is IEnumerable)
                 success = SerializeArray(jsonSerializerStrategy, (IEnumerable)value, builder);
             else if (IsNumeric(value))
@@ -967,21 +975,27 @@ namespace SimpleJson
             return success;
         }
 
-        protected static bool SerializeObject(IJsonSerializerStrategy jsonSerializerStrategy, IDictionary<string, object> anObject, StringBuilder builder)
+        protected static bool SerializeObject(IJsonSerializerStrategy jsonSerializerStrategy, IEnumerable keys, IEnumerable values, StringBuilder builder)
         {
             builder.Append("{");
 
-            IEnumerator<KeyValuePair<string, object>> e = anObject.GetEnumerator();
+            IEnumerator ke = keys.GetEnumerator();
+            IEnumerator ve = values.GetEnumerator();
+
             bool first = true;
-            while (e.MoveNext())
+            while (ke.MoveNext() && ve.MoveNext())
             {
-                string key = e.Current.Key;
-                object value = e.Current.Value;
+                object key = ke.Current;
+                object value = ve.Current;
 
                 if (!first)
                     builder.Append(",");
 
-                SerializeString(key, builder);
+                if (key is string)
+                    SerializeString((string)key, builder);
+                else
+                    if (!SerializeValue(jsonSerializerStrategy, value, builder)) return false;
+
                 builder.Append(":");
                 if (!SerializeValue(jsonSerializerStrategy, value, builder))
                     return false;
