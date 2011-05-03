@@ -4,14 +4,23 @@ FACEBOOK C# SDK CHANGE LIST
 SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
+
 =========================================================================
-vNext
+v5.0.11
+=========================================================================
+
+1. Updated SimpleJson to v0.1.2 (supports Dictionary<string,string>)
+2. bug fix for VB dynamic objects for Post. and optimizations for Post
+   when parameter passed is object.
+
+=========================================================================
+v5.0.10 (RC)
 =========================================================================
 
 1. Use SimpleJson (http://simplejson.codeplex.com) instead of Newtonsoft.Json
 
 =========================================================================
-v5.0.9
+v5.0.9 (BETA)
 =========================================================================
 
 1. bug fix for WP7/SL4 FacebookMediaObject upload
