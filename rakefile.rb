@@ -8,8 +8,9 @@ task :default => [:libs]
 
 PROJECT_NAME      = "Facebook C# SDK"
 PROJECT_NAME_SAFE = "FacebookSDK"
-LOG               = false                # TODO: enable albacore logging from ENV
+LOG               = true                # TODO: enable albacore logging from ENV
 ENV['NIGHTLY']    = 'false'
+ENV['NUGET_FACEBOOK_API_KEY'] = ''
 
 build_config = nil
 nuspec_config = nil
@@ -318,7 +319,7 @@ task :dist_source => [:dist_prepare] do
    end
 end
 
-desc "Create distribution packages for libraries."
+desc "Create distribution packages for libraries"
 task :dist_libs => [:dist_prepare, :nuget] do
     # copy nuget outputs
     mkdir "#{build_config[:paths][:dist]}NuGet/"
@@ -340,7 +341,7 @@ task :dist_libs => [:dist_prepare, :nuget] do
     end
  end
 
-desc "Create distribution package for documentations."
+desc "Create distribution package for documentations"
 task :dist_docs => [:dist_prepare, :docs] do
    FileUtils.cp_r "#{build_config[:paths][:working]}Documentation/.", "#{build_config[:paths][:dist]}Documentation/"
 end
@@ -457,6 +458,34 @@ task :nuget => [:nuspec] do
             nuget.nuspec  = name            
             nuget.output = "#{build_config[:paths][:working]}" +
                  (name.start_with?("#{build_config[:paths][:working]}NuGet") ? "NuGet/" : "SymbolSource")
+        end
+    end
+end
+
+desc "Push .nupkg to nuget.org but don't publish"
+task :nuget_push => [] do
+    base_dir = "#{build_config[:paths][:build]}NuGet/"
+    Dir["#{base_dir}*"].each do |name|
+        base_name = File.basename(name)
+        nugetpush :nuget_push do |nuget|
+            nuget.command = "#{build_config[:paths][:nuget]}"
+            nuget.package = "#{build_config[:paths][:dist]}NuGet/#{base_name}.#{build_config[:version][:full]}.nupkg"
+            nuget.apikey = ENV['NUGET_FACEBOOK_API_KEY']
+            nuget.create_only = true
+        end
+    end
+end
+
+desc "Push .nupkg to symbol source & publish"
+task :nuget_push_source => [] do
+    base_dir = "#{build_config[:paths][:build]}NuGet/"
+    Dir["#{base_dir}*"].each do |name|
+        base_name = File.basename(name)
+        nugetpush :nuget_push_symbolsource do |nuget|
+            nuget.command = "#{build_config[:paths][:nuget]}"
+            nuget.package = "#{build_config[:paths][:dist]}SymbolSource/#{base_name}.#{build_config[:version][:full]}.nupkg"
+            nuget.apikey = ENV['NUGET_FACEBOOK_API_KEY']
+            nuget.source = "http://nuget.gw.symbolsource.org/Public/NuGet"
         end
     end
 end
