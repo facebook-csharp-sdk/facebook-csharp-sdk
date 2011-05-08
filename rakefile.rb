@@ -481,7 +481,7 @@ task :nuget_push_source => [] do
     base_dir = "#{build_config[:paths][:build]}NuGet/"
     Dir["#{base_dir}*"].each do |name|
         base_name = File.basename(name)
-        nugetpush :nuget_push_symbolsource do |nuget|
+        nugetpush :nuget_push_source do |nuget|
             nuget.command = "#{build_config[:paths][:nuget]}"
             nuget.package = "#{build_config[:paths][:dist]}SymbolSource/#{base_name}.#{build_config[:version][:full]}.nupkg"
             nuget.apikey = ENV['NUGET_FACEBOOK_API_KEY']
