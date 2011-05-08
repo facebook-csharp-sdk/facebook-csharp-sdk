@@ -133,7 +133,7 @@ Namespace $rootnamespace$.Samples.Facebook.Dynamic.VB
                 parameters.source = mediaObject
                 parameters.message = "photo"
 
-                Dim result = fb.Post("me/photos", CTypeDynamic(Of ExpandoObject)(parameters))
+                Dim result = fb.Post("me/photos", parameters)
 
                 Dim postId = result.id
 

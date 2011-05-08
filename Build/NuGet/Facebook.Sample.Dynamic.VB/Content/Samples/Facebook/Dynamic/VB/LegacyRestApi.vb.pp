@@ -108,7 +108,7 @@ Namespace $rootnamespace$.Samples.Facebook.Dynamic.VB
                 parameters.caption = "photo upload using rest api"
                 parameters.source = mediaObject
 
-                Dim result = fb.Post(CTypeDynamic(Of ExpandoObject)(parameters))
+                Dim result = fb.Post(parameters)
 
                 Dim pictureId = result.pid
 
