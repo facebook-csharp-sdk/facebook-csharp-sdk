@@ -4,9 +4,14 @@ FACEBOOK C# SDK CHANGE LIST
 SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
+=========================================================================
+v5.0.25 (RTW)
+=========================================================================
+
+1. Renamed RC1 to RTW
 
 =========================================================================
-v5.0.11
+v5.0.11 (RC1)
 =========================================================================
 
 1. Updated SimpleJson to v0.1.2 (supports Dictionary<string,string>)
