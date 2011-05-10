@@ -553,6 +553,11 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
+            if (parameters is IDictionary<string, object>)
+            {
+                PostAsync(path, (IDictionary<string, object>)parameters);
+            }
+
             PostAsync(path, FacebookUtils.ToDictionary(parameters));
         }
 
@@ -572,6 +577,11 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
+            if (parameters is IDictionary<string, object>)
+            {
+                PostAsync(path, (IDictionary<string, object>)parameters, userToken);
+            }
+
             PostAsync(path, FacebookUtils.ToDictionary(parameters), userToken);
         }
 
@@ -584,6 +594,11 @@ namespace Facebook
         public void PostAsync(object parameters)
         {
             Contract.Requires(parameters != null);
+
+            if (parameters is IDictionary<string, object>)
+            {
+                PostAsync((IDictionary<string, object>)parameters);
+            }
 
             PostAsync(FacebookUtils.ToDictionary(parameters));
         }
