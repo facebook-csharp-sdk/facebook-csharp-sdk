@@ -1036,6 +1036,14 @@ namespace Facebook
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
             request.Method = FacebookUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
 
+#if SILVERLIGHT
+            // silverlight doesn't support delete
+            if (httpMethod == HttpMethod.Delete)
+            {
+                request.Method = "POST";
+            }
+#endif
+
             if (httpMethod == HttpMethod.Post)
             {
                 if (path == null && mergedParameters.ContainsKey("batch"))
@@ -1297,6 +1305,13 @@ namespace Facebook
                     queryString = string.Concat("oauth_token=", parameters["oauth_token"]);
                     parameters.Remove("oauth_token");
                 }
+
+#if SILVERLIGHT
+                if (httpMethod == HttpMethod.Delete)
+                {
+                    parameters["method"] = "delete";
+                }
+#endif
 
                 var containsMediaObject = parameters.Where(p => p.Value is FacebookMediaObject).Count() > 0;
                 if (containsMediaObject)
