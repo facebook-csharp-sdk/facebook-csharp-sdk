@@ -10,7 +10,7 @@ PROJECT_NAME      = "Facebook C# SDK"
 PROJECT_NAME_SAFE = "FacebookSDK"
 LOG               = false                # TODO: enable albacore logging from ENV
 ENV['NIGHTLY']    = 'false'
-ENV['NUGET_FACEBOOK_API_KEY'] = ''
+#ENV['NUGET_FACEBOOK_API_KEY'] = ''
 
 build_config = nil
 nuspec_config = nil
@@ -478,12 +478,10 @@ end
 
 desc "Push .nupkg to symbol source & publish"
 task :nuget_push_source => [] do
-    base_dir = "#{build_config[:paths][:build]}NuGet/"
-    Dir["#{base_dir}*"].each do |name|
-        base_name = File.basename(name)
-        nugetpush :nuget_push_symbolsource do |nuget|
+    ["Facebook","FacebookWeb","FacebookWebMvc"].each do |name|
+        nugetpush :nuget_push_source do |nuget|
             nuget.command = "#{build_config[:paths][:nuget]}"
-            nuget.package = "#{build_config[:paths][:dist]}SymbolSource/#{base_name}.#{build_config[:version][:full]}.nupkg"
+            nuget.package = "#{build_config[:paths][:dist]}SymbolSource/#{name}.#{build_config[:version][:full]}.nupkg"
             nuget.apikey = ENV['NUGET_FACEBOOK_API_KEY']
             nuget.source = "http://nuget.gw.symbolsource.org/Public/NuGet"
         end
