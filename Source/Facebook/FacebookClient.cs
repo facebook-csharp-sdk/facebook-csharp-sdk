@@ -1036,14 +1036,6 @@ namespace Facebook
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
             request.Method = FacebookUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
 
-#if SILVERLIGHT
-            // silverlight doesn't support delete
-            if (httpMethod == HttpMethod.Delete)
-            {
-                request.Method = "POST";
-            }
-#endif
-
             if (httpMethod == HttpMethod.Post)
             {
                 if (path == null && mergedParameters.ContainsKey("batch"))

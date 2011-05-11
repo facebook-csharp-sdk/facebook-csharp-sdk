@@ -400,10 +400,12 @@ namespace Facebook
             {
                 case HttpMethod.Get:
                     return "GET";
+                case HttpMethod.Delete:
+#if !SILVERLIGHT
+                    return "DELETE";
+#endif
                 case HttpMethod.Post:
                     return "POST";
-                case HttpMethod.Delete:
-                    return "DELETE";
             }
 
             throw new InvalidOperationException();
