@@ -5,6 +5,13 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+v5.0.26 (RTW)
+=========================================================================
+
+1. Bug fix for silverlight when using Delete method.
+2. Bug fix for PostAsync methods when parameter is a dynamic object.
+
+=========================================================================
 v5.0.25 (RTW)
 =========================================================================
 
