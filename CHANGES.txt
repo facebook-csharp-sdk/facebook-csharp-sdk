@@ -10,6 +10,8 @@ v5.0.26 (RTW)
 
 1. Bug fix for silverlight when using Delete method.
 2. Bug fix for PostAsync methods when parameter is a dynamic object.
+3. Bug fix for ParseUserIdFromAccessToken when userid from accessToken 
+   has 2 or more hyphens in idParts (issue #5874)
 
 =========================================================================
 v5.0.25 (RTW)
