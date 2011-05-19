@@ -169,10 +169,14 @@ namespace Facebook
                 var idPart = accessTokenParts[1];
                 if (!string.IsNullOrEmpty(idPart))
                 {
-                    var idParts = idPart.Split('-');
-                    if (idParts.Length == 2 && !string.IsNullOrEmpty(idParts[1]))
+                    var index = idPart.LastIndexOf('-');
+                    if (index >= 0)
                     {
-                        return idParts[1];
+                        string id = idPart.Substring(index + 1);
+                        if (!string.IsNullOrEmpty(id))
+                        {
+                            return id;
+                        }
                     }
                 }
             }
@@ -337,7 +341,7 @@ namespace Facebook
             {
                 dictionary["expires"] = 0;
             }
-            else if(signedRequest.Expires != DateTime.MinValue)
+            else if (signedRequest.Expires != DateTime.MinValue)
             {
                 dictionary["expires"] = DateTimeConvertor.ToUnixTime(signedRequest.Expires);
             }
