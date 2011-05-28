@@ -1305,21 +1305,117 @@ namespace Facebook
                 }
 #endif
 
-                var containsMediaObject = parameters.Where(p => p.Value is FacebookMediaObject).Count() > 0;
-                if (containsMediaObject)
+                var mediaObjects = ExtractMediaObjects(parameters);
+                if (mediaObjects.Count == 0)
                 {
-                    string boundary = DateTime.Now.Ticks.ToString("x", CultureInfo.InvariantCulture);
-                    postData = BuildMediaObjectPostData(parameters, boundary);
-                    contentType = String.Concat("multipart/form-data; boundary=", boundary);
+                    postData = Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters));
                 }
                 else
                 {
-                    postData = Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters));
+                    string boundary = DateTime.Now.Ticks.ToString("x", CultureInfo.InvariantCulture);
+                    postData = BuildMediaObjectPostData(parameters, mediaObjects, boundary);
+                    contentType = string.Concat("multipart/form-data; boundary=", boundary);
                 }
             }
 
             requestUrlBuilder.Query = queryString;
             requestUrl = requestUrlBuilder.Uri;
+
+            return postData;
+        }
+
+        internal static IDictionary<string, FacebookMediaObject> ExtractMediaObjects(IDictionary<string, object> parameters)
+        {
+            var mediaObjects = new Dictionary<string, FacebookMediaObject>();
+
+            if (parameters == null)
+            {
+                return mediaObjects;
+            }
+
+            foreach (var parameter in parameters)
+            {
+                if (parameter.Value is FacebookMediaObject)
+                {
+                    mediaObjects.Add(parameter.Key, (FacebookMediaObject)parameter.Value);
+                }
+            }
+
+            foreach (var mediaObject in mediaObjects)
+            {
+                parameters.Remove(mediaObject.Key);
+            }
+
+            return mediaObjects;
+        }
+
+        internal static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, IDictionary<string, FacebookMediaObject> mediaObjects, string boundary)
+        {
+            Contract.Requires(parameters != null);
+            Contract.Requires(mediaObjects != null);
+            Contract.Requires(mediaObjects.Count > 0);
+            Contract.Requires(!string.IsNullOrEmpty(boundary));
+
+            List<byte[]> postDataList = new List<byte[]>();
+            int postDataLength;
+
+            // Build up the post message header
+            var sb = new StringBuilder();
+            foreach (var kvp in parameters)
+            {
+                sb.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
+                sb.Append("Content-Disposition: form-data; name=\"").Append(kvp.Key).Append("\"");
+                sb.Append(FacebookUtils.MultiPartNewLine);
+                sb.Append(FacebookUtils.MultiPartNewLine);
+                sb.Append(kvp.Value);
+                sb.Append(FacebookUtils.MultiPartNewLine);
+            }
+
+            byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sb.ToString());
+            postDataList.Add(postHeaderBytes);
+            postDataLength = postHeaderBytes.Length;
+
+            foreach (var facebookMediaObject in mediaObjects)
+            {
+                var sbMediaObject = new StringBuilder();
+                var mediaObject = facebookMediaObject.Value;
+
+                if (mediaObject.ContentType == null || mediaObject.GetValue() == null || string.IsNullOrEmpty(mediaObject.FileName))
+                {
+                    throw new InvalidOperationException(Properties.Resources.MediaObjectMustHavePropertiesSetError);
+                }
+
+                sbMediaObject.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
+                sbMediaObject.Append("Content-Disposition: form-data; filename=\"").Append(mediaObject.FileName).Append("\"").Append(FacebookUtils.MultiPartNewLine);
+                sbMediaObject.Append("Content-Type: ").Append(mediaObject.ContentType).Append(FacebookUtils.MultiPartNewLine).Append(FacebookUtils.MultiPartNewLine);
+
+                var mediaObjectHeaderBytes = Encoding.UTF8.GetBytes(sbMediaObject.ToString());
+                postDataList.Add(mediaObjectHeaderBytes);
+                postDataLength += mediaObjectHeaderBytes.Length;
+
+                byte[] fileData = mediaObject.GetValue();
+
+                Debug.Assert(fileData != null, "The value of FacebookMediaObject is null.");
+
+                postDataList.Add(fileData);
+                postDataLength += fileData.Length;
+
+                var newLine = Encoding.UTF8.GetBytes(FacebookUtils.MultiPartNewLine);
+                postDataList.Add(newLine);
+                postDataLength += newLine.Length;
+            }
+
+            byte[] boundaryBytes = Encoding.UTF8.GetBytes(String.Concat(FacebookUtils.MultiPartNewLine, FacebookUtils.MultiPartFormPrefix, boundary, FacebookUtils.MultiPartFormPrefix, FacebookUtils.MultiPartNewLine));
+            postDataList.Add(boundaryBytes);
+            postDataLength += boundaryBytes.Length;
+
+            var postData = new byte[postDataLength];
+            int dstOffset = 0;
+            foreach (var data in postDataList)
+            {
+                Buffer.BlockCopy(data, 0, postData, dstOffset, data.Length);
+                dstOffset += data.Length;
+            }
 
             return postData;
         }
