@@ -3,7 +3,7 @@
 obj/
 
 *.sln.cache
-*.sln.docstates
+*.docstates
 *.suo
 *.user
 *.xap
