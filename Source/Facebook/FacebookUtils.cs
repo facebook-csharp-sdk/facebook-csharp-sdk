@@ -411,6 +411,33 @@ namespace Facebook
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        /// Gets the string representation of the specified http method.
+        /// </summary>
+        /// <param name="httpMethod">
+        /// The http method.
+        /// </param>
+        /// <returns>
+        /// The string representation of the http method.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Throws error if the http method is not Get,Post or Delete.
+        /// </exception>
+        internal static string ConvertToStringForce(HttpMethod httpMethod)
+        {
+            switch (httpMethod)
+            {
+                case HttpMethod.Get:
+                    return "GET";
+                case HttpMethod.Delete:
+                    return "DELETE";
+                case HttpMethod.Post:
+                    return "POST";
+            }
+
+            throw new InvalidOperationException();
+        }
+
         #endregion
 
         #region Html Decoding and Encoding

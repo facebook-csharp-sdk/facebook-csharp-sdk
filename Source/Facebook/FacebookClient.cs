@@ -819,7 +819,7 @@ namespace Facebook
 
             var defaultParameters = new Dictionary<string, object>();
 
-            defaultParameters["method"] = FacebookUtils.ConvertToString(batchParameter.HttpMethod);
+            defaultParameters["method"] = FacebookUtils.ConvertToStringForce(batchParameter.HttpMethod);
 
             IDictionary<string, object> parameters = null;
             if (batchParameter.Parameters == null)
