@@ -753,13 +753,7 @@ namespace Facebook
             Contract.Requires(batchParameters != null);
             Contract.Requires(batchParameters.Length > 0);
 
-            var parameters = new List<object>();
-            foreach (var parameter in batchParameters)
-            {
-                parameters.Add(ToParameters(parameter));
-            }
-
-            return ProcessBatchResult(Post(new Dictionary<string, object> { { "batch", parameters } }));
+            return ProcessBatchResult(Post(PrepareBatchParameter(batchParameters)));
         }
 
 #endif
@@ -778,13 +772,34 @@ namespace Facebook
             Contract.Requires(batchParameters != null);
             Contract.Requires(batchParameters.Length > 0);
 
+            PostAsync(null, PrepareBatchParameter(batchParameters), userToken);
+        }
+
+        internal IDictionary<string, object> PrepareBatchParameter(FacebookBatchParameter[] batchParameters)
+        {
+            Contract.Requires(batchParameters != null);
+            Contract.Requires(batchParameters.Length > 0);
+
+            var actualParameters = new Dictionary<string, object>();
             var parameters = new List<object>();
+
             foreach (var parameter in batchParameters)
             {
-                parameters.Add(ToParameters(parameter));
+                IDictionary<string, FacebookMediaObject> mediaObjects;
+                parameters.Add(ToParameters(parameter, out mediaObjects));
+
+                if (mediaObjects != null)
+                {
+                    foreach (var facebookMediaObject in mediaObjects)
+                    {
+                        actualParameters.Add(facebookMediaObject.Key, facebookMediaObject.Value);
+                    }
+                }
             }
 
-            PostAsync(null, new Dictionary<string, object> { { "batch", parameters } }, userToken);
+            actualParameters["batch"] = JsonSerializer.Current.SerializeObject(parameters);
+
+            return actualParameters;
         }
 
         /// <summary>
@@ -810,11 +825,12 @@ namespace Facebook
         /// <returns>
         /// The post parameters.
         /// </returns>
-        protected IDictionary<string, object> ToParameters(FacebookBatchParameter batchParameter)
+        protected IDictionary<string, object> ToParameters(FacebookBatchParameter batchParameter, out IDictionary<string, FacebookMediaObject> mediaObjects)
         {
             Contract.Requires(batchParameter != null);
             Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 
+            mediaObjects = null;
             IDictionary<string, object> returnResult = null;
 
             var defaultParameters = new Dictionary<string, object>();
@@ -831,6 +847,11 @@ namespace Facebook
                 if (batchParameter.Parameters is IDictionary<string, object>)
                 {
                     parameters = (IDictionary<string, object>)batchParameter.Parameters;
+                    mediaObjects = ExtractMediaObjects(parameters);
+                    if (mediaObjects.Count == 1)
+                    {
+                        defaultParameters["attached_files"] = mediaObjects.ElementAt(0).Key;
+                    }
                 }
                 else
                 {
