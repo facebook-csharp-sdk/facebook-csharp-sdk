@@ -1349,6 +1349,14 @@ namespace Facebook
             return mediaObjects;
         }
 
+        /// <summary>
+        /// Builds the request post data if the request contains a media object
+        /// such as an image or video to upload.
+        /// </summary>
+        /// <param name="parameters">The request parameters without media objects.</param>
+        /// <param name="mediaObjects">Media objects</param>
+        /// <param name="boundary">The multipart form request boundary.</param>
+        /// <returns>The request post data.</returns>
         internal static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, IDictionary<string, FacebookMediaObject> mediaObjects, string boundary)
         {
             Contract.Requires(parameters != null);
@@ -1416,72 +1424,6 @@ namespace Facebook
                 Buffer.BlockCopy(data, 0, postData, dstOffset, data.Length);
                 dstOffset += data.Length;
             }
-
-            return postData;
-        }
-
-        /// <summary>
-        /// Builds the request post data if the request contains a media object
-        /// such as an image or video to upload.
-        /// </summary>
-        /// <param name="parameters">
-        /// The request parameters.
-        /// </param>
-        /// <param name="boundary">
-        /// The multipart form request boundary.
-        /// </param>
-        /// <returns>
-        /// The request post data.
-        /// </returns>
-        internal static byte[] BuildMediaObjectPostData(IDictionary<string, object> parameters, string boundary)
-        {
-            FacebookMediaObject mediaObject = null;
-
-            // Build up the post message header
-            var sb = new StringBuilder();
-            foreach (var kvp in parameters)
-            {
-                if (kvp.Value is FacebookMediaObject)
-                {
-                    // Check to make sure the file upload hasn't already been set.
-                    if (mediaObject != null)
-                    {
-                        throw new InvalidOperationException(Facebook.Properties.Resources.MultipleMediaObjectsError);
-                    }
-
-                    mediaObject = kvp.Value as FacebookMediaObject;
-                }
-                else
-                {
-                    sb.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
-                    sb.Append("Content-Disposition: form-data; name=\"").Append(kvp.Key).Append("\"");
-                    sb.Append(FacebookUtils.MultiPartNewLine);
-                    sb.Append(FacebookUtils.MultiPartNewLine);
-                    sb.Append(kvp.Value);
-                    sb.Append(FacebookUtils.MultiPartNewLine);
-                }
-            }
-
-            Debug.Assert(mediaObject != null, "The mediaObject is null.");
-
-            if (mediaObject.ContentType == null || mediaObject.GetValue() == null || mediaObject.FileName == null)
-            {
-                throw new InvalidOperationException(Facebook.Properties.Resources.MediaObjectMustHavePropertiesSetError);
-            }
-
-            sb.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
-            sb.Append("Content-Disposition: form-data; filename=\"").Append(mediaObject.FileName).Append("\"").Append(FacebookUtils.MultiPartNewLine);
-            sb.Append("Content-Type: ").Append(mediaObject.ContentType).Append(FacebookUtils.MultiPartNewLine).Append(FacebookUtils.MultiPartNewLine);
-
-            byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sb.ToString());
-            byte[] fileData = mediaObject.GetValue();
-            byte[] boundaryBytes = Encoding.UTF8.GetBytes(String.Concat(FacebookUtils.MultiPartNewLine, FacebookUtils.MultiPartFormPrefix, boundary, FacebookUtils.MultiPartFormPrefix, FacebookUtils.MultiPartNewLine));
-
-            // Combine all bytes to post
-            var postData = new byte[postHeaderBytes.Length + fileData.Length + boundaryBytes.Length];
-            Buffer.BlockCopy(postHeaderBytes, 0, postData, 0, postHeaderBytes.Length);
-            Buffer.BlockCopy(fileData, 0, postData, postHeaderBytes.Length, fileData.Length);
-            Buffer.BlockCopy(boundaryBytes, 0, postData, postHeaderBytes.Length + fileData.Length, boundaryBytes.Length);
 
             return postData;
         }
