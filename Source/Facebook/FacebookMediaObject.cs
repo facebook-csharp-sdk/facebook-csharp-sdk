@@ -9,6 +9,7 @@
 
 namespace Facebook
 {
+    using System.Diagnostics.Contracts;
     /// <summary>
     /// Represents a media object such as a photo or video.
     /// </summary>
@@ -35,9 +36,12 @@ namespace Facebook
         /// Sets the value of the media object.
         /// </summary>
         /// <param name="value">The media object value.</param>
-        public void SetValue(byte[] value)
+        /// <returns>Facebook Media Object</returns>
+        public FacebookMediaObject SetValue(byte[] value)
         {
+            Contract.Ensures(Contract.Result<FacebookMediaObject>() != null);
             _value = value;
+            return this;
         }
 
         /// <summary>
