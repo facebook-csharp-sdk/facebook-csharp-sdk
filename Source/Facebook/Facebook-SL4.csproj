@@ -139,6 +139,8 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
+    <Compile Include="IFacebookClient.cs" />
+    <Compile Include="IFacebookOAuthClient.cs" />
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="IWebClient.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

@@ -23,7 +23,7 @@ namespace Facebook
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    public class FacebookClient
+    public class FacebookClient : IFacebookClient
     {
         /// <summary>
         /// Indcates whether to use Facebook beta.

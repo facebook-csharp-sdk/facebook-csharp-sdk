@@ -18,7 +18,7 @@ namespace Facebook
     /// <summary>
     /// Represents the Facebook OAuth Helpers
     /// </summary>
-    public class FacebookOAuthClient
+    public class FacebookOAuthClient : IFacebookOAuthClient
     {
         /// <summary>
         /// The current web client.
