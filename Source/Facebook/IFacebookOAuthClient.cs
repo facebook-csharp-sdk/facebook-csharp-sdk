@@ -198,5 +198,55 @@ namespace Facebook
         /// The code.
         /// </param>
         void ExchangeCodeForAccessTokenAsync(string code);
+
+        /// <summary>
+        /// Parse the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The url to parse.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="IFacebookOAuthResult"/>.
+        /// </returns>
+        IFacebookOAuthResult ParseResult(string uriString);
+
+        /// <summary>
+        /// Parse the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The url to parse.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="IFacebookOAuthResult"/>.
+        /// </returns>
+        IFacebookOAuthResult ParseResult(Uri uri);
+
+        /// <summary>
+        /// Try parsing the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The url to parse.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="IFacebookOAuthResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
+        bool TryParseResult(string uriString, out IFacebookOAuthResult result);
+
+        /// <summary>
+        /// Try parsing the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The url to parse.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="IFacebookOAuthResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
+        bool TryParseResult(Uri uri, out IFacebookOAuthResult result);
     }
 }

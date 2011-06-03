@@ -16,7 +16,7 @@ namespace Facebook
     /// <summary>
     /// Represents the authentication result of Facebook.
     /// </summary>
-    public sealed class FacebookOAuthResult
+    public sealed class FacebookOAuthResult : IFacebookOAuthResult
     {
         /// <summary>
         /// The access token.

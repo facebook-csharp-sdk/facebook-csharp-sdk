@@ -560,6 +560,74 @@ namespace Facebook
             ExchangeCodeForAccessTokenAsync(code, null, null);
         }
 
+        /// <summary>
+        /// Parse the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The url to parse.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="IFacebookOAuthResult"/>.
+        /// </returns>
+        public IFacebookOAuthResult ParseResult(string uriString)
+        {
+            return FacebookOAuthResult.Parse(uriString);
+        }
+
+        /// <summary>
+        /// Parse the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The url to parse.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="IFacebookOAuthResult"/>.
+        /// </returns>
+        public IFacebookOAuthResult ParseResult(Uri uri)
+        {
+            return FacebookOAuthResult.Parse(uri);
+        }
+
+        /// <summary>
+        /// Try parsing the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The url to parse.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="IFacebookOAuthResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
+        public bool TryParseResult(string uriString, out IFacebookOAuthResult result)
+        {
+            FacebookOAuthResult parseResult;
+            bool parsed = FacebookOAuthResult.TryParse(uriString, out parseResult);
+            result = parseResult;
+            return parsed;
+        }
+
+        /// <summary>
+        /// Try parsing the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The url to parse.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="IFacebookOAuthResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
+        public bool TryParseResult(Uri uri, out IFacebookOAuthResult result)
+        {
+            FacebookOAuthResult parseResult;
+            bool parsed = FacebookOAuthResult.TryParse(uri, out parseResult);
+            result = parseResult;
+            return parsed;
+        }
+
         private IDictionary<string, object> BuildExchangeCodeForAccessTokenParameters(IDictionary<string, object> parameters, out string name, out string path)
         {
             name = FacebookUtils.DOMAIN_MAP_GRAPH;
