@@ -23,7 +23,7 @@ namespace Facebook
     /// <summary>
     /// Provides access to the Facebook Platform.
     /// </summary>
-    public class FacebookClient : IFacebookClient
+    public class FacebookClient
     {
         /// <summary>
         /// Indcates whether to use Facebook beta.
@@ -100,12 +100,12 @@ namespace Facebook
         /// <summary>
         /// Gets or sets the access token.
         /// </summary>
-        public string AccessToken { get; set; }
+        public virtual string AccessToken { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use Facebook beta.
         /// </summary>
-        public bool UseFacebookBeta
+        public virtual bool UseFacebookBeta
         {
             get { return _useFacebookBeta; }
             set { _useFacebookBeta = value; }
@@ -150,7 +150,7 @@ namespace Facebook
         /// The json result.
         /// </returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public object Delete(string path)
+        public virtual object Delete(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
@@ -170,7 +170,7 @@ namespace Facebook
         /// The json result.
         /// </returns>
         /// <exception cref="Facebook.FacebookApiException" />
-        public object Delete(string path, IDictionary<string, object> parameters)
+        public virtual object Delete(string path, IDictionary<string, object> parameters)
         {
             return Api(path, parameters, HttpMethod.Delete, null);
         }
@@ -185,7 +185,7 @@ namespace Facebook
         /// The json result.
         /// </returns>
         /// <exception cref="Facebook.FacebookApiException"/>
-        public object Get(string path)
+        public virtual object Get(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
@@ -205,7 +205,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object Get(string path, IDictionary<string, object> parameters)
+        public virtual object Get(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -222,7 +222,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object Get(IDictionary<string, object> parameters)
+        public virtual object Get(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -242,7 +242,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public T Get<T>(string path)
+        public virtual T Get<T>(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
@@ -265,7 +265,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public T Get<T>(string path, IDictionary<string, object> parameters)
+        public virtual T Get<T>(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -285,7 +285,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public T Get<T>(IDictionary<string, object> parameters)
+        public virtual T Get<T>(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -305,7 +305,7 @@ namespace Facebook
         /// <returns>
         /// The jon result.
         /// </returns>
-        public object Post(string path, IDictionary<string, object> parameters)
+        public virtual object Post(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -323,7 +323,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object Post(IDictionary<string, object> parameters)
+        public virtual object Post(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -341,7 +341,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object Post(object parameters)
+        public virtual object Post(object parameters)
         {
             Contract.Requires(parameters != null);
             if (parameters is IDictionary<string, object>)
@@ -365,7 +365,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object Post(string path, object parameters)
+        public virtual object Post(string path, object parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -389,7 +389,7 @@ namespace Facebook
         /// <param name="path">
         /// The resource path.
         /// </param>
-        public void DeleteAsync(string path)
+        public virtual void DeleteAsync(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
@@ -405,7 +405,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void DeleteAsync(string path, IDictionary<string, object> parameters)
+        public virtual void DeleteAsync(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -424,7 +424,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void DeleteAsync(string path, IDictionary<string, object> parameters, object userToken)
+        public virtual void DeleteAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -437,7 +437,7 @@ namespace Facebook
         /// <param name="path">
         /// The resource path.
         /// </param>
-        public void GetAsync(string path)
+        public virtual void GetAsync(string path)
         {
             Contract.Requires(!String.IsNullOrEmpty(path));
 
@@ -453,7 +453,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void GetAsync(string path, IDictionary<string, object> parameters)
+        public virtual void GetAsync(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -472,7 +472,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void GetAsync(string path, IDictionary<string, object> parameters, object userToken)
+        public virtual void GetAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -485,7 +485,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void GetAsync(IDictionary<string, object> parameters)
+        public virtual void GetAsync(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -501,7 +501,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void PostAsync(string path, IDictionary<string, object> parameters)
+        public virtual void PostAsync(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -520,7 +520,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void PostAsync(string path, IDictionary<string, object> parameters, object userToken)
+        public virtual void PostAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -533,7 +533,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void PostAsync(IDictionary<string, object> parameters)
+        public virtual void PostAsync(IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -549,7 +549,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void PostAsync(string path, object parameters)
+        public virtual void PostAsync(string path, object parameters)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -573,7 +573,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void PostAsync(string path, object parameters, object userToken)
+        public virtual void PostAsync(string path, object parameters, object userToken)
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
@@ -591,7 +591,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void PostAsync(object parameters)
+        public virtual void PostAsync(object parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -619,7 +619,7 @@ namespace Facebook
         /// <returns>
         /// The FQL query result.
         /// </returns>
-        public object Query(string fql)
+        public virtual object Query(string fql)
         {
             Contract.Requires(!String.IsNullOrEmpty(fql));
 
@@ -640,7 +640,7 @@ namespace Facebook
         /// <returns>
         /// A collection of the FQL query results.
         /// </returns>
-        public object Query(params string[] fql)
+        public virtual object Query(params string[] fql)
         {
             Contract.Requires(fql != null);
 
@@ -665,7 +665,7 @@ namespace Facebook
         /// <param name="fql">
         /// The FQL query.
         /// </param>
-        public void QueryAsync(string fql)
+        public virtual void QueryAsync(string fql)
         {
             Contract.Requires(!String.IsNullOrEmpty(fql));
 
@@ -681,7 +681,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void QueryAsync(string fql, object userToken)
+        public virtual void QueryAsync(string fql, object userToken)
         {
             Contract.Requires(!String.IsNullOrEmpty(fql));
 
@@ -698,7 +698,7 @@ namespace Facebook
         /// <param name="fql">
         /// The FQL queries.
         /// </param>
-        public void QueryAsync(string[] fql)
+        public virtual void QueryAsync(string[] fql)
         {
             Contract.Requires(fql != null);
             Contract.Requires(fql.Length > 0);
@@ -715,7 +715,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user Token.
         /// </param>
-        public void QueryAsync(string[] fql, object userToken)
+        public virtual void QueryAsync(string[] fql, object userToken)
         {
             Contract.Requires(fql != null);
             Contract.Requires(fql.Length > 0);
@@ -748,7 +748,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object Batch(params FacebookBatchParameter[] batchParameters)
+        public virtual object Batch(params FacebookBatchParameter[] batchParameters)
         {
             Contract.Requires(batchParameters != null);
             Contract.Requires(batchParameters.Length > 0);
@@ -773,7 +773,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
+        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
         {
             Contract.Requires(batchParameters != null);
             Contract.Requires(batchParameters.Length > 0);
@@ -793,7 +793,7 @@ namespace Facebook
         /// <param name="batchParameters">
         /// The batch parameters.
         /// </param>
-        public void BatchAsync(FacebookBatchParameter[] batchParameters)
+        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters)
         {
             Contract.Requires(batchParameters != null);
             Contract.Requires(batchParameters.Length > 0);
