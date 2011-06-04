@@ -132,7 +132,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
-    <Compile Include="IFacebookOAuthResult.cs" />
     <Compile Include="IFacebookSettings.cs" />
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="IWebClient.cs" />

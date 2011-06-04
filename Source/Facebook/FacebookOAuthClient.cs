@@ -561,15 +561,15 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Parse the uri to <see cref="IFacebookOAuthResult"/>.
+        /// Parse the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
         /// The url to parse.
         /// </param>
         /// <returns>
-        /// Returns an instance of <see cref="IFacebookOAuthResult"/>.
+        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
         /// </returns>
-        public virtual IFacebookOAuthResult ParseResult(string uriString)
+        public virtual FacebookOAuthResult ParseResult(string uriString)
         {
             return FacebookOAuthResult.Parse(uriString);
         }
@@ -581,51 +581,45 @@ namespace Facebook
         /// The url to parse.
         /// </param>
         /// <returns>
-        /// Returns an instance of <see cref="IFacebookOAuthResult"/>.
+        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
         /// </returns>
-        public virtual IFacebookOAuthResult ParseResult(Uri uri)
+        public virtual FacebookOAuthResult ParseResult(Uri uri)
         {
             return FacebookOAuthResult.Parse(uri);
         }
 
         /// <summary>
-        /// Try parsing the uri to <see cref="IFacebookOAuthResult"/>.
+        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
         /// The url to parse.
         /// </param>
         /// <param name="result">
-        /// An instance of <see cref="IFacebookOAuthResult"/>.
+        /// An instance of <see cref="FacebookOAuthResult"/>.
         /// </param>
         /// <returns>
         /// Returns true if parsing was successful otherwise false.
         /// </returns>
-        public virtual bool TryParseResult(string uriString, out IFacebookOAuthResult result)
+        public virtual bool TryParseResult(string uriString, out FacebookOAuthResult result)
         {
-            FacebookOAuthResult parseResult;
-            bool parsed = FacebookOAuthResult.TryParse(uriString, out parseResult);
-            result = parseResult;
-            return parsed;
+            return FacebookOAuthResult.TryParse(uriString, out result);
         }
 
         /// <summary>
-        /// Try parsing the uri to <see cref="IFacebookOAuthResult"/>.
+        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
         /// The url to parse.
         /// </param>
         /// <param name="result">
-        /// An instance of <see cref="IFacebookOAuthResult"/>.
+        /// An instance of <see cref="FacebookOAuthResult"/>.
         /// </param>
         /// <returns>
         /// Returns true if parsing was successful otherwise false.
         /// </returns>
-        public virtual bool TryParseResult(Uri uri, out IFacebookOAuthResult result)
+        public virtual bool TryParseResult(Uri uri, out FacebookOAuthResult result)
         {
-            FacebookOAuthResult parseResult;
-            bool parsed = FacebookOAuthResult.TryParse(uri, out parseResult);
-            result = parseResult;
-            return parsed;
+            return FacebookOAuthResult.TryParse(uri, out result);
         }
 
         private IDictionary<string, object> BuildExchangeCodeForAccessTokenParameters(IDictionary<string, object> parameters, out string name, out string path)
