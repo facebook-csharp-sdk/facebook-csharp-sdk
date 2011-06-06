@@ -19,7 +19,7 @@
                                 {
                                     AppId = "{app id}",
                                     AppSecret = "{app secret}",
-                                    RedirectUri = new Uri("http://localhost/fbslinbrowser/slfbinbrowserlogin.aspx")
+                                    RedirectUri = new Uri("http://localhost:18201/slfbinbrowserlogin.aspx")
                                 };
                 var result = (IDictionary<string, object>)oauth.ExchangeCodeForAccessToken(authResult.Code, null);
                 this.AccessToken = (string)result["access_token"];
