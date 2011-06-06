@@ -10,6 +10,7 @@
 namespace Facebook
 {
     using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Represents a media object such as a photo or video.
     /// </summary>

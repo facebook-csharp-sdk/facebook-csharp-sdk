@@ -5,6 +5,12 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+vNext
+=========================================================================
+
+1. FacebookMediaObject.SetValue returns FacebookMediaObject instead of void.
+
+=========================================================================
 v5.0.26 (RTW)
 =========================================================================
 
