@@ -575,7 +575,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Parse the uri to <see cref="IFacebookOAuthResult"/>.
+        /// Parse the uri to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
         /// The url to parse.
