@@ -50,17 +50,17 @@ namespace Facebook
         /// <summary>
         /// Gets or sets the app id.
         /// </summary>
-        public string AppId { get; set; }
+        public virtual string AppId { get; set; }
 
         /// <summary>
         /// Gets or sets the app secret.
         /// </summary>
-        public string AppSecret { get; set; }
+        public virtual string AppSecret { get; set; }
 
         /// <summary>
         /// Gets or sets the redirect uri.
         /// </summary>
-        public Uri RedirectUri { get; set; }
+        public virtual Uri RedirectUri { get; set; }
 
         /// <summary>
         /// Gets the aliases to Facebook domains.
@@ -93,7 +93,7 @@ namespace Facebook
         /// <returns>
         /// Returns the facebook login uri.
         /// </returns>
-        public Uri GetLoginUrl()
+        public virtual Uri GetLoginUrl()
         {
             return GetLoginUrl(null);
         }
@@ -117,7 +117,7 @@ namespace Facebook
         ///     response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code_and_token).
         ///     display       : The display mode in which to render the dialog. The default is page on the www subdomain and wap on the m subdomain. This is automatically specified by most SDKs. (For WP7 builds it is set to touch.)
         /// </remarks>
-        public Uri GetLoginUrl(IDictionary<string, object> parameters)
+        public virtual Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
             Contract.Ensures(Contract.Result<Uri>() != null);
 
@@ -158,7 +158,7 @@ namespace Facebook
         /// <returns>
         /// Returns the logout url.
         /// </returns>
-        public Uri GetLogoutUrl()
+        public virtual Uri GetLogoutUrl()
         {
             return GetLogoutUrl(null);
         }
@@ -172,7 +172,7 @@ namespace Facebook
         /// <returns>
         /// Returns the logout url.
         /// </returns>
-        public Uri GetLogoutUrl(IDictionary<string, object> parameters)
+        public virtual Uri GetLogoutUrl(IDictionary<string, object> parameters)
         {
             // more information on this at http://stackoverflow.com/questions/2764436/facebook-oauth-logout
             var uriBuilder = new UriBuilder("http://m.facebook.com/logout.php");
@@ -340,7 +340,7 @@ namespace Facebook
         /// <returns>
         /// The application access token.
         /// </returns>
-        public object GetApplicationAccessToken()
+        public virtual object GetApplicationAccessToken()
         {
             return GetApplicationAccessToken(null);
         }
@@ -354,7 +354,7 @@ namespace Facebook
         /// <returns>
         /// The application access token.
         /// </returns>
-        public object GetApplicationAccessToken(IDictionary<string, object> parameters)
+        public virtual object GetApplicationAccessToken(IDictionary<string, object> parameters)
         {
             string name, path;
 
@@ -374,7 +374,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void GetApplicationAccessTokenAsync(IDictionary<string, object> parameters, object userToken)
+        public virtual void GetApplicationAccessTokenAsync(IDictionary<string, object> parameters, object userToken)
         {
             string name, path;
 
@@ -398,7 +398,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void GetApplicationAccessTokenAsync(object userToken)
+        public virtual void GetApplicationAccessTokenAsync(object userToken)
         {
             GetApplicationAccessTokenAsync(null, userToken);
         }
@@ -406,7 +406,7 @@ namespace Facebook
         /// <summary>
         /// Gets the application access token asynchronously.
         /// </summary>
-        public void GetApplicationAccessTokenAsync()
+        public virtual void GetApplicationAccessTokenAsync()
         {
             GetApplicationAccessTokenAsync(null, null);
         }
@@ -474,7 +474,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object ExchangeCodeForAccessToken(string code, IDictionary<string, object> parameters)
+        public virtual object ExchangeCodeForAccessToken(string code, IDictionary<string, object> parameters)
         {
             string name, path;
 
@@ -495,7 +495,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
-        public object ExchangeCodeForAccessToken(string code)
+        public virtual object ExchangeCodeForAccessToken(string code)
         {
             return ExchangeCodeForAccessToken(code, null);
         }
@@ -514,7 +514,7 @@ namespace Facebook
         /// <param name="userToken">
         /// The user token.
         /// </param>
-        public void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters, object userToken)
+        public virtual void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters, object userToken)
         {
             string name, path;
 
@@ -544,7 +544,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters)
+        public virtual void ExchangeCodeForAccessTokenAsync(string code, IDictionary<string, object> parameters)
         {
             ExchangeCodeForAccessTokenAsync(code, parameters, null);
         }
@@ -555,9 +555,71 @@ namespace Facebook
         /// <param name="code">
         /// The code.
         /// </param>
-        public void ExchangeCodeForAccessTokenAsync(string code)
+        public virtual void ExchangeCodeForAccessTokenAsync(string code)
         {
             ExchangeCodeForAccessTokenAsync(code, null, null);
+        }
+
+        /// <summary>
+        /// Parse the uri to <see cref="FacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The url to parse.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
+        /// </returns>
+        public virtual FacebookOAuthResult ParseResult(string uriString)
+        {
+            return FacebookOAuthResult.Parse(uriString);
+        }
+
+        /// <summary>
+        /// Parse the uri to <see cref="IFacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The url to parse.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
+        /// </returns>
+        public virtual FacebookOAuthResult ParseResult(Uri uri)
+        {
+            return FacebookOAuthResult.Parse(uri);
+        }
+
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uriString">
+        /// The url to parse.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookOAuthResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
+        public virtual bool TryParseResult(string uriString, out FacebookOAuthResult result)
+        {
+            return FacebookOAuthResult.TryParse(uriString, out result);
+        }
+
+        /// <summary>
+        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
+        /// </summary>
+        /// <param name="uri">
+        /// The url to parse.
+        /// </param>
+        /// <param name="result">
+        /// An instance of <see cref="FacebookOAuthResult"/>.
+        /// </param>
+        /// <returns>
+        /// Returns true if parsing was successful otherwise false.
+        /// </returns>
+        public virtual bool TryParseResult(Uri uri, out FacebookOAuthResult result)
+        {
+            return FacebookOAuthResult.TryParse(uri, out result);
         }
 
         private IDictionary<string, object> BuildExchangeCodeForAccessTokenParameters(IDictionary<string, object> parameters, out string name, out string path)
