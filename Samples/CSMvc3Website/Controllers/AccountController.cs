@@ -15,8 +15,8 @@ namespace Mvc3Website.Controllers
     public class AccountController : Controller
     {
 #if DEBUG
-        const string logoffUrl = "http://localhost:5000/";
-        const string redirectUrl = "http://localhost:5000/account/oauth/";
+        const string logoffUrl = "http://localhost:25125/";
+        const string redirectUrl = "http://localhost:25125/account/oauth/";
         private const string appId = "{appId}";
         private const string appSecret = "{appSecret}";
 #else
