@@ -9,6 +9,15 @@ vNext
 =========================================================================
 
 1. FacebookMediaObject.SetValue returns FacebookMediaObject instead of void.
+2. Support for multiple FacebookMediaObjects in one request.
+3. Marked methods/properties in FacebookClient, FacebookOAuthClient and 
+   FacebookOAuthResult as virtual methods for easier unit testing.
+4. Removed 'sealed' from FacebookOAuthResult and added a protected empty ctor.
+5. Added in FacebookOAuthClient
+	a. public virtual FacebookOAuthResult ParseResult(string uriString);
+	b. public virtual FacebookOAuthResult ParseResult(Uri uri);
+	c. public virtual bool TryParseResult(string uriString, out FacebookOAuthResult result);
+	d. public virtual bool TryParseResult(Uri uri, out FacebookOAuthResult result);
 
 =========================================================================
 v5.0.26 (RTW)
