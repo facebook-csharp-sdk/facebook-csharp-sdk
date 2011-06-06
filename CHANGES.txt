@@ -18,6 +18,8 @@ vNext
 	b. public virtual FacebookOAuthResult ParseResult(Uri uri);
 	c. public virtual bool TryParseResult(string uriString, out FacebookOAuthResult result);
 	d. public virtual bool TryParseResult(Uri uri, out FacebookOAuthResult result);
+6. official dropped support for Cassini (Visual Studio inbuilt Web Server).
+   use either IIS or IIS express.
 
 =========================================================================
 v5.0.26 (RTW)
