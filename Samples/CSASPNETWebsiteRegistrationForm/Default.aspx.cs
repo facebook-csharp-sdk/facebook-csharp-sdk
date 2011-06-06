@@ -37,7 +37,7 @@ namespace CSASPNETWebsiteRegistrationForm
                 return string.Format(
                         "http://www.facebook.com/plugins/registration.php?client_id={0}&redirect_uri={1}&fields={2}",
                         FacebookApplication.Current.AppId,
-                        HttpUtility.UrlEncode("http://localhost:5000/fbregcallback.aspx"),
+                        HttpUtility.UrlEncode("http://localhost:24922/fbregcallback.aspx"),
                         HttpUtility.UrlEncode("[{\"name\":\"name\"},{\"name\":\"email\"},{\"name\":\"location\"},{\"name\":\"gender\"},{\"name\":\"birthday\"},{\"name\":\"password\",\"view\":\"not_prefilled\"},{\"name\":\"like\",\"description\":\"Doyoulikethisplugin?\",\"type\":\"checkbox\",\"default\":\"checked\"},{\"name\":\"phone\",\"description\":\"PhoneNumber\",\"type\":\"text\"},{\"name\":\"captcha\"}]"));
             }
         }
