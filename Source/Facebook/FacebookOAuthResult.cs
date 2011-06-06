@@ -16,7 +16,7 @@ namespace Facebook
     /// <summary>
     /// Represents the authentication result of Facebook.
     /// </summary>
-    public sealed class FacebookOAuthResult
+    public class FacebookOAuthResult
     {
         /// <summary>
         /// The access token.
@@ -47,6 +47,13 @@ namespace Facebook
         /// Gets or sets an opaque state used to maintain application state between the request and callback.
         /// </summary>
         private readonly string _state;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookOAuthResult"/> class.
+        /// </summary>
+        protected FacebookOAuthResult()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookOAuthResult"/> class.
@@ -98,7 +105,7 @@ namespace Facebook
         /// <summary>
         /// Gets the short error reason for failed authentication if an error occurred.
         /// </summary>
-        public string ErrorReason
+        public virtual string ErrorReason
         {
             get { return _errorReason; }
         }
@@ -106,7 +113,7 @@ namespace Facebook
         /// <summary>
         /// Gets the long error description for failed authentication if an error occurred.
         /// </summary>
-        public string ErrorDescription
+        public virtual string ErrorDescription
         {
             get { return _errorDescription; }
         }
@@ -114,7 +121,7 @@ namespace Facebook
         /// <summary>
         /// Gets the <see cref="DateTime"/> when the access token will expire.
         /// </summary>
-        public DateTime Expires
+        public virtual DateTime Expires
         {
             get { return _expires; }
         }
@@ -122,7 +129,7 @@ namespace Facebook
         /// <summary>
         /// Gets the access token.
         /// </summary>
-        public string AccessToken
+        public virtual string AccessToken
         {
             get { return _accessToken; }
         }
@@ -130,7 +137,7 @@ namespace Facebook
         /// <summary>
         /// Gets a value indicating whether access token or code was successfully retrieved.
         /// </summary>
-        public bool IsSuccess
+        public virtual bool IsSuccess
         {
             get
             {
@@ -142,7 +149,7 @@ namespace Facebook
         /// <summary>
         /// Gets the code used to exchange with facebook to retrieve access token.
         /// </summary>
-        public string Code
+        public virtual string Code
         {
             get { return _code; }
         }
@@ -150,7 +157,7 @@ namespace Facebook
         /// <summary>
         /// Gets an opaque state used to maintain application state between the request and callback.
         /// </summary>
-        public string State
+        public virtual string State
         {
             get { return _state; }
         }
