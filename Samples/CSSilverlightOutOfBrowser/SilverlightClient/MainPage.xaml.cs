@@ -21,14 +21,14 @@ namespace Facebook.Samples.AuthenticationTool
         private string[] requestedFbPermissions = new[] { "user_about_me" };
 
         // Note:
-        // Host SilverlightClient.Web in IIS and not cassini (visual studio web server).
+        // Host SilverlightClient.Web in IIS (or IIS express) and not cassini (visual studio web server).
         // and change this url accordingly.
         // this silverlight app should be running out of browser in full trust mode.
         // due to security reasons, window.external.notify will not run in slfblogin.html if it
         // is from different domain.
         // so make sure you run this sample from the same domain where slfblogin.html file is located
-        // i.e. http://localhost/fbsloob/
-        private const string slfbloginUrl = @"http://localhost/fbsloob/slfblogin.htm";
+        // i.e. http://localhost:23964/
+        private const string slfbloginUrl = @"http://localhost:23964/slfblogin.htm";
 
         private bool loggedIn = false;
 

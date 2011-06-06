@@ -24,9 +24,9 @@ namespace SL4_InBrowser
         private string appId = "{app id}";
         private string[] requestedFbPermissions = new[] { "user_about_me" };
 
-        // Host SilverlightSite.Web in IIS and not cassini (visual studio web server).
+        // Host SilverlightSite.Web in IIS (or IIS express) and not cassini (visual studio web server).
         // and change this url accordingly.
-        private const string slfbloginUrl = @"http://localhost/fbslinbrowser/slfbinbrowserlogin.aspx";
+        private const string slfbloginUrl = @"http://localhost:18201/slfbinbrowserlogin.aspx";
 
         private FacebookClient fb;
 
