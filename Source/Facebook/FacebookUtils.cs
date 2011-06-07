@@ -211,6 +211,24 @@ namespace Facebook
             return (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(json);
         }
 
+        internal static string ToJsonString(object value)
+        {
+            // Format Object As Json And Remove leading and trailing parenthesis
+            string jsonValue = JsonSerializer.Current.SerializeObject(value);
+            jsonValue = SimpleJson.SimpleJson.EscapeToJavascriptString(jsonValue);
+            if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
+            {
+                jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);
+            }
+
+            if (jsonValue.EndsWith("\"", StringComparison.Ordinal))
+            {
+                jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
+            }
+
+            return jsonValue;
+        }
+
         /// <summary>
         /// Converts the dictionary to a json formatted query string.
         /// </summary>
@@ -238,17 +256,7 @@ namespace Facebook
                 if (dictionary[key] != null)
                 {
                     // Format Object As Json And Remove leading and trailing parenthesis
-                    string jsonValue = JsonSerializer.Current.SerializeObject(dictionary[key]);
-                    jsonValue = SimpleJson.SimpleJson.EscapeToJavascriptString(jsonValue);
-                    if (jsonValue.StartsWith("\"", StringComparison.Ordinal))
-                    {
-                        jsonValue = jsonValue.Substring(1, jsonValue.Length - 1);
-                    }
-
-                    if (jsonValue.EndsWith("\"", StringComparison.Ordinal))
-                    {
-                        jsonValue = jsonValue.Substring(0, jsonValue.Length - 1);
-                    }
+                    string jsonValue = ToJsonString(dictionary[key]);
 
                     if (!String.IsNullOrEmpty(jsonValue))
                     {

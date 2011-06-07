@@ -1396,7 +1396,11 @@ namespace Facebook
                 sb.Append("Content-Disposition: form-data; name=\"").Append(kvp.Key).Append("\"");
                 sb.Append(FacebookUtils.MultiPartNewLine);
                 sb.Append(FacebookUtils.MultiPartNewLine);
-                sb.Append(kvp.Value);
+
+                // Format Object As Json And Remove leading and trailing parenthesis
+                string jsonValue = FacebookUtils.ToJsonString(kvp.Value);
+
+                sb.Append(jsonValue);
                 sb.Append(FacebookUtils.MultiPartNewLine);
             }
 
