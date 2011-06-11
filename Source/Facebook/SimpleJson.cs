@@ -210,7 +210,7 @@ namespace Facebook
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
             int num = Count;
-            foreach (var kvp in this)
+            foreach (KeyValuePair<string, object> kvp in this)
             {
                 array[arrayIndex++] = kvp;
 
@@ -495,7 +495,7 @@ namespace SimpleJson
 
         public static object DeserializeObject(string json, Type type, IJsonSerializerStrategy jsonSerializerStrategy)
         {
-            var jsonObject = DeserializeObject(json);
+            object jsonObject = DeserializeObject(json);
 
             return type == null ? jsonObject : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
         }
@@ -551,7 +551,7 @@ namespace SimpleJson
                     int remainingLength = jsonString.Length - i;
                     if (remainingLength >= 2)
                     {
-                        var lookahead = jsonString[i];
+                        char lookahead = jsonString[i];
                         if (lookahead == '\\')
                         {
                             sb.Append('\\');
@@ -816,7 +816,7 @@ namespace SimpleJson
             int charLength = (lastIndex - index) + 1;
 
             object returnNumber;
-            var str = new string(json, index, charLength);
+            string str = new string(json, index, charLength);
             if (str.IndexOf(".", StringComparison.OrdinalIgnoreCase) != -1 || str.IndexOf("e", StringComparison.OrdinalIgnoreCase) != -1)
             {
                 double number;
@@ -948,12 +948,12 @@ namespace SimpleJson
                 success = SerializeString((string)value, builder);
             else if (value is IDictionary<string, object>)
             {
-                var dict = (IDictionary<string, object>)value;
+                IDictionary<string, object> dict = (IDictionary<string, object>)value;
                 success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
             }
             else if (value is IDictionary<string, string>)
             {
-                var dict = (IDictionary<string, string>)value;
+                IDictionary<string, string> dict = (IDictionary<string, string>)value;
                 success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
             }
             else if (value is IEnumerable)
@@ -1012,8 +1012,7 @@ namespace SimpleJson
             builder.Append("[");
 
             bool first = true;
-
-            foreach (var value in anArray)
+            foreach (object value in anArray)
             {
                 if (!first)
                     builder.Append(",");
@@ -1066,14 +1065,22 @@ namespace SimpleJson
 
         /// <summary>
         /// Determines if a given object is numeric in any way
-        /// (can be integer, double, null, etc). 
-        /// 
-        /// Thanks to mtighe for pointing out Double.TryParse to me.
+        /// (can be integer, double, null, etc).
         /// </summary>
-        protected static bool IsNumeric(object o)
+        protected static bool IsNumeric(object value)
         {
-            double result;
-            return (o == null) ? false : Double.TryParse(o.ToString(), out result);
+            if (value is sbyte) return true;
+            if (value is byte) return true;
+            if (value is short) return true;
+            if (value is ushort) return true;
+            if (value is int) return true;
+            if (value is uint) return true;
+            if (value is long) return true;
+            if (value is ulong) return true;
+            if (value is float) return true;
+            if (value is double) return true;
+            if (value is decimal) return true;
+            return false;
         }
 
         private static IJsonSerializerStrategy currentJsonSerializerStrategy;
@@ -1183,35 +1190,35 @@ namespace SimpleJson
 
             if (value is IDictionary<string, object>)
             {
-                var jsonObject = (IDictionary<string, object>)value;
+                IDictionary<string, object> jsonObject = (IDictionary<string, object>)value;
 
                 obj = CacheResolver.GetNewInstance(type);
-                var maps = CacheResolver.LoadMaps(type);
+                SafeDictionary<string, CacheResolver.MemberMap> maps = CacheResolver.LoadMaps(type);
 
                 foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
                 {
-                    var v = keyValuePair.Value;
+                    CacheResolver.MemberMap v = keyValuePair.Value;
                     if (v.Setter == null)
                         continue;
 
-                    var jsonKey = keyValuePair.Key;
+                    string jsonKey = keyValuePair.Key;
                     if (jsonObject.ContainsKey(jsonKey))
                     {
-                        var jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
+                        object jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
                         v.Setter(obj, jsonValue);
                     }
                 }
             }
             else if (value is IList<object>)
             {
-                var jsonObject = (IList<object>)value;
+                IList<object> jsonObject = (IList<object>)value;
                 IList list = null;
 
                 if (type.IsArray)
                 {
                     list = (IList)Activator.CreateInstance(type, jsonObject.Count);
                     int i = 0;
-                    foreach (var o in jsonObject)
+                    foreach (object o in jsonObject)
                         list[i++] = DeserializeObject(o, type.GetElementType());
                 }
                 //else if (typeof(IList).IsAssignableFrom(type))
@@ -1225,7 +1232,7 @@ namespace SimpleJson
                     Type innerType = type.GetGenericArguments()[0];
                     Type genericType = typeof(List<>).MakeGenericType(innerType);
                     list = (IList)CacheResolver.GetNewInstance(genericType);
-                    foreach (var o in jsonObject)
+                    foreach (object o in jsonObject)
                         list.Add(DeserializeObject(o, innerType));
                 }
 
@@ -1265,14 +1272,14 @@ namespace SimpleJson
             output = null;
 
             // todo: implement caching for types
-            var type = input.GetType();
+            Type type = input.GetType();
 
             if (type.FullName == null)
                 return false;
 
             IDictionary<string, object> obj = new JsonObject();
 
-            var maps = CacheResolver.LoadMaps(type);
+            SafeDictionary<string, CacheResolver.MemberMap> maps = CacheResolver.LoadMaps(type);
 
             foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
             {
@@ -1484,7 +1491,7 @@ namespace SimpleJson
             {
 #if SIMPLE_JSON_REFLECTIONEMIT
                 Type type = fieldInfo.FieldType;
-                DynamicMethod dynamicGet = CreateDynamicMethod("Get" + fieldInfo.Name, fieldInfo.DeclaringType, new[] { typeof(object) }, fieldInfo.DeclaringType);
+                DynamicMethod dynamicGet = CreateDynamicMethod("Get" + fieldInfo.Name, fieldInfo.DeclaringType, new Type[] { typeof(object) }, fieldInfo.DeclaringType);
                 ILGenerator getGenerator = dynamicGet.GetILGenerator();
 
                 getGenerator.Emit(OpCodes.Ldarg_0);
@@ -1505,7 +1512,7 @@ namespace SimpleJson
                     return null;
 #if SIMPLE_JSON_REFLECTIONEMIT
                 Type type = fieldInfo.FieldType;
-                DynamicMethod dynamicSet = CreateDynamicMethod("Set" + fieldInfo.Name, null, new[] { typeof(object), typeof(object) }, fieldInfo.DeclaringType);
+                DynamicMethod dynamicSet = CreateDynamicMethod("Set" + fieldInfo.Name, null, new Type[] { typeof(object), typeof(object) }, fieldInfo.DeclaringType);
                 ILGenerator setGenerator = dynamicSet.GetILGenerator();
 
                 setGenerator.Emit(OpCodes.Ldarg_0);
@@ -1528,7 +1535,7 @@ namespace SimpleJson
                     return null;
 #if SIMPLE_JSON_REFLECTIONEMIT
                 Type type = propertyInfo.PropertyType;
-                DynamicMethod dynamicGet = CreateDynamicMethod("Get" + propertyInfo.Name, propertyInfo.DeclaringType, new[] { typeof(object) }, propertyInfo.DeclaringType);
+                DynamicMethod dynamicGet = CreateDynamicMethod("Get" + propertyInfo.Name, propertyInfo.DeclaringType, new Type[] { typeof(object) }, propertyInfo.DeclaringType);
                 ILGenerator getGenerator = dynamicGet.GetILGenerator();
 
                 getGenerator.Emit(OpCodes.Ldarg_0);
@@ -1550,7 +1557,7 @@ namespace SimpleJson
                     return null;
 #if SIMPLE_JSON_REFLECTIONEMIT
                 Type type = propertyInfo.PropertyType;
-                DynamicMethod dynamicSet = CreateDynamicMethod("Set" + propertyInfo.Name, null, new[] { typeof(object), typeof(object) }, propertyInfo.DeclaringType);
+                DynamicMethod dynamicSet = CreateDynamicMethod("Set" + propertyInfo.Name, null, new Type[] { typeof(object), typeof(object) }, propertyInfo.DeclaringType);
                 ILGenerator setGenerator = dynamicSet.GetILGenerator();
 
                 setGenerator.Emit(OpCodes.Ldarg_0);
