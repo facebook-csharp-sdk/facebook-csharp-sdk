@@ -1221,13 +1221,15 @@ namespace SimpleJson
                     foreach (object o in jsonObject)
                         list[i++] = DeserializeObject(o, type.GetElementType());
                 }
-                //else if (typeof(IList).IsAssignableFrom(type))
-                //{
-                //    list = (IList)ResolverCache.LoadFactory(type).Ctor();
-                //    foreach (var o in jsonObject)
-                //        list.Add(DeserializeObject(o, type));
-                //}
                 else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type))
+                {
+                    Type innerType = type.GetGenericArguments()[0];
+                    Type genericType = typeof(List<>).MakeGenericType(innerType);
+                    list = (IList)CacheResolver.GetNewInstance(genericType);
+                    foreach (object o in jsonObject)
+                        list.Add(DeserializeObject(o, innerType));
+                }
+                else if (typeof(IList).IsAssignableFrom(type))
                 {
                     Type innerType = type.GetGenericArguments()[0];
                     Type genericType = typeof(List<>).MakeGenericType(innerType);
