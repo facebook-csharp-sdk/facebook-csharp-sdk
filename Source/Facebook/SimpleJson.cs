@@ -1192,20 +1192,38 @@ namespace SimpleJson
             {
                 IDictionary<string, object> jsonObject = (IDictionary<string, object>)value;
 
-                obj = CacheResolver.GetNewInstance(type);
-                SafeDictionary<string, CacheResolver.MemberMap> maps = CacheResolver.LoadMaps(type);
-
-                foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
+                if (ReflectionUtils.IsTypeDictionary(type))
                 {
-                    CacheResolver.MemberMap v = keyValuePair.Value;
-                    if (v.Setter == null)
-                        continue;
+                    // if dictionary then
+                    Type keyType = type.GetGenericArguments()[0];
+                    Type valueType = type.GetGenericArguments()[1];
+                    Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+                    IDictionary dict = (IDictionary)CacheResolver.GetNewInstance(genericType);
 
-                    string jsonKey = keyValuePair.Key;
-                    if (jsonObject.ContainsKey(jsonKey))
+                    foreach (KeyValuePair<string, object> kvp in jsonObject)
                     {
-                        object jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
-                        v.Setter(obj, jsonValue);
+                        dict.Add(kvp.Key, DeserializeObject(kvp.Value, valueType));
+                    }
+
+                    obj = dict;
+                }
+                else
+                {
+                    obj = CacheResolver.GetNewInstance(type);
+                    SafeDictionary<string, CacheResolver.MemberMap> maps = CacheResolver.LoadMaps(type);
+
+                    foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
+                    {
+                        CacheResolver.MemberMap v = keyValuePair.Value;
+                        if (v.Setter == null)
+                            continue;
+
+                        string jsonKey = keyValuePair.Key;
+                        if (jsonObject.ContainsKey(jsonKey))
+                        {
+                            object jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
+                            v.Setter(obj, jsonValue);
+                        }
                     }
                 }
             }
@@ -1221,15 +1239,7 @@ namespace SimpleJson
                     foreach (object o in jsonObject)
                         list[i++] = DeserializeObject(o, type.GetElementType());
                 }
-                else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type))
-                {
-                    Type innerType = type.GetGenericArguments()[0];
-                    Type genericType = typeof(List<>).MakeGenericType(innerType);
-                    list = (IList)CacheResolver.GetNewInstance(genericType);
-                    foreach (object o in jsonObject)
-                        list.Add(DeserializeObject(o, innerType));
-                }
-                else if (typeof(IList).IsAssignableFrom(type))
+                else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || typeof(IList).IsAssignableFrom(type))
                 {
                     Type innerType = type.GetGenericArguments()[0];
                     Type genericType = typeof(List<>).MakeGenericType(innerType);
@@ -1388,6 +1398,18 @@ namespace SimpleJson
                 Type genericDefinition = type.GetGenericTypeDefinition();
 
                 return (genericDefinition == typeof(IList<>) || genericDefinition == typeof(ICollection<>) || genericDefinition == typeof(IEnumerable<>));
+            }
+
+            public static bool IsTypeDictionary(Type type)
+            {
+                if (typeof(IDictionary).IsAssignableFrom(type))
+                    return true;
+
+                if (!type.IsGenericType)
+                    return false;
+
+                Type genericDefinition = type.GetGenericTypeDefinition();
+                return genericDefinition == typeof(IDictionary<,>);
             }
         }
 
