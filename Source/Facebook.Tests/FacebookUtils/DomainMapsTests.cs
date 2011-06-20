@@ -6,11 +6,11 @@ namespace Facebook.Tests.FacebookUtils
     public class DomainMapsTests
     {
         [Fact]
-        public void CountEquals6()
+        public void CountEquals7()
         {
             var result = FacebookUtils.DomainMaps.Count;
 
-            Assert.Equal(6, result);
+            Assert.Equal(7, result);
         }
 
         [Fact]
@@ -43,6 +43,14 @@ namespace Facebook.Tests.FacebookUtils
             var result = FacebookUtils.DomainMaps[FacebookUtils.DOMAIN_MAP_GRAPH].ToString();
 
             Assert.Equal("https://graph.facebook.com/", result);
+        }
+
+        [Fact]
+        public void GraphVideoIsSetCorrectly()
+        {
+            var result = FacebookUtils.DomainMaps[FacebookUtils.DOMAIN_MAP_GRAPH_VIDEO].ToString();
+
+            Assert.Equal("https://graph-video.facebook.com/", result);
         }
 
         [Fact]

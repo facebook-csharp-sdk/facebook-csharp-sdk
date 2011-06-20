@@ -41,6 +41,7 @@ namespace Facebook
         internal const string DOMAIN_MAP_API_READ = "api_read";
         internal const string DOMAIN_MAP_API_VIDEO = "api_video";
         internal const string DOMAIN_MAP_GRAPH = "graph";
+        internal const string DOMAIN_MAP_GRAPH_VIDEO = "graph_video";
         internal const string DOMAIN_MAP_WWW = "www";
         internal const string DOMAIN_MAP_APPS = "apps";
 
@@ -52,6 +53,7 @@ namespace Facebook
             { DOMAIN_MAP_API_READ,  new Uri("https://api-read.facebook.com/") },
             { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.facebook.com/") },
             { DOMAIN_MAP_GRAPH,     new Uri("https://graph.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.facebook.com/")},
             { DOMAIN_MAP_WWW,       new Uri("http://www.facebook.com/") },
             { DOMAIN_MAP_APPS,      new Uri("http://apps.facebook.com/") }
         };
@@ -64,6 +66,7 @@ namespace Facebook
             { DOMAIN_MAP_API_READ,  new Uri("https://api-read.facebook.com/") },
             { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.facebook.com/") },
             { DOMAIN_MAP_GRAPH,     new Uri("https://graph.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.facebook.com/")},
             { DOMAIN_MAP_WWW,       new Uri("https://www.facebook.com/") },
             { DOMAIN_MAP_APPS,      new Uri("https://apps.facebook.com/") }
         };
@@ -73,6 +76,7 @@ namespace Facebook
             { DOMAIN_MAP_API_READ,  new Uri("https://api-read.beta.facebook.com/") },
             { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.beta.facebook.com/") },
             { DOMAIN_MAP_GRAPH,     new Uri("https://graph.beta.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.beta.facebook.com/")},
             { DOMAIN_MAP_WWW,       new Uri("http://www.beta.facebook.com/") },
             { DOMAIN_MAP_APPS,      new Uri("http://apps.beta.facebook.com/") }
         };
@@ -82,6 +86,7 @@ namespace Facebook
             { DOMAIN_MAP_API_READ,  new Uri("https://api-read.beta.facebook.com/") },
             { DOMAIN_MAP_API_VIDEO, new Uri("https://api-video.beta.facebook.com/") },
             { DOMAIN_MAP_GRAPH,     new Uri("https://graph.beta.facebook.com/") },
+            { DOMAIN_MAP_GRAPH_VIDEO,new Uri("https://graph-video.beta.facebook.com/")},
             { DOMAIN_MAP_WWW,       new Uri("https://www.beta.facebook.com/") },
             { DOMAIN_MAP_APPS,      new Uri("https://apps.beta.facebook.com/") }
         };

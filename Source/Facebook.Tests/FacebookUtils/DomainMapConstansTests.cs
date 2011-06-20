@@ -39,6 +39,14 @@ namespace Facebook.Tests.FacebookUtils
         }
 
         [Fact]
+        public void DomainMapGraphVideoIsSetCorrectly()
+        {
+            var result = FacebookUtils.DOMAIN_MAP_GRAPH_VIDEO;
+
+            Assert.Equal("graph_video", result);
+        }
+
+        [Fact]
         public void DomainMapWwwIsSetCorrectly()
         {
             var result = FacebookUtils.DOMAIN_MAP_WWW;
