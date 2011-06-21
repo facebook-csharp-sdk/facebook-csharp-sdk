@@ -5,6 +5,26 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+vNEXT
+=========================================================================
+1. support uploading video using graph api.
+
+   If the path ends with "/videos" and is a POST, it uses 
+   https://graph-video.facebook.com instead of https://graph.facebook.com
+   More details on this can be found at https://developers.facebook.com/blog/post/515/
+
+	dynamic parameters = new ExpandoObject();
+	parameters.title = "video title";
+	parameters.description = "video description";
+	parameters.file = new FacebookMediaObject 
+			{ 
+				ContentType = "video/3gpp", 
+				FileName = "do-beer-not-drugs.3gp" 
+			}
+			.SetValue(File.ReadAllBytes(@"C:\do-beer-not-drugs.3gp"));
+	dynamic result = fb.Post("/me/videos", parameters);
+
+=========================================================================
 v5.0.40 (RTW)
 =========================================================================
 
