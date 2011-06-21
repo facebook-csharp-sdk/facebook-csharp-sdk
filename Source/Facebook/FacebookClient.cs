@@ -1477,7 +1477,15 @@ namespace Facebook
                 {
                     path = path.Substring(1, path.Length - 1);
                 }
-                baseUrl = GetUrl("graph", path);
+
+                if (!String.IsNullOrEmpty(path) && method == HttpMethod.Post && path.EndsWith("/videos"))
+                {
+                    baseUrl = GetUrl(FacebookUtils.DOMAIN_MAP_GRAPH_VIDEO, path);
+                }
+                else
+                {
+                    baseUrl = GetUrl(FacebookUtils.DOMAIN_MAP_GRAPH, path);
+                }
             }
 
             return BuildRequestData(baseUrl, parameters, method, out requestUrl, out contentType);
