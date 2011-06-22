@@ -381,7 +381,7 @@ namespace Facebook
                             var kv = kvp.Split('=');
                             if (kv.Length == 2 && !String.IsNullOrEmpty(kv[0]))
                             {
-                                parameters[kv[0]] = kv[1];
+                                parameters[UrlDecode(kv[0])] = UrlDecode(kv[1]);
                             }
                         }
                     }
