@@ -338,7 +338,7 @@ namespace Facebook
             Uri url;
             if (Uri.TryCreate(path, UriKind.Absolute, out url))
             {
-                if (url.Host == "graph.facebook.com")
+                if (url.Host == "graph.facebook.com" || url.Host == "graph-video.facebook.com")
                 {
                     // If the host is graph.facebook.com the user has passed in the full url.
                     // We remove the host part and continue with the parsing.
