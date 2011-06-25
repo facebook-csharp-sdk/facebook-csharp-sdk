@@ -25,6 +25,7 @@ vNEXT
 	dynamic result = fb.Post("/me/videos", parameters);
 2. fixed issue #5882
 	ParseQueryParametersToDictionary now decodes values that are part of querystring.
+3. parallel build with rake
 
 =========================================================================
 v5.0.40 (RTW)

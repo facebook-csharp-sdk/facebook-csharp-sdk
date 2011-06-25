@@ -1,0 +1,33 @@
+project:
+ name: Facebook C# SDK
+ safe_name: FacebookSDK
+version:
+ base: <%= base_version %>
+ build_number: "<%= build_number %>"
+ full: <%= version_full %>
+ is_nightly: <%= ENV['nightly'].nil? ? true : ENV['nightly'].match(/(true|1)$/i) != nil %>
+ configuration: :Release
+vcs:
+ rev_id: "0"
+ name: unknown
+ short_rev_id: "0"
+path:
+ root: <%= root_path %>
+ src: <%= path_src = "#{root_path}Source/" %>
+ output: <%= "#{root_path}Bin/" %>
+ build: <%= "#{root_path}Build/" %>
+ dist: <%= "#{root_path}Dist/" %>
+ tools: <%= tools_path = "#{root_path}Tools/" %>
+ working: <%= "#{root_path}Working/" %>
+ doc: <%= path_doc = "#{root_path}Doc/" %>
+ nuget_packages: <%= nuget_packages_path = "#{path_src}packages/" %>
+ nuget: <%= nuget_tool(nuget_packages_path,'NuGet.CommandLine','NuGet.exe') %>
+ xunit:
+  console:
+   x86: <%= "#{tools_path}xunit-1.8/xunit.console.clr4.x86.exe" %>
+ sln:
+  wp7	: <%= "#{path_src}Facebook-WP7.sln" %>
+  sl4	: <%= "#{path_src}Facebook-SL4.sln" %>
+  net40	: <%= "#{path_src}Facebook-Net40.sln" %>
+  net35	: <%= "#{path_src}Facebook-Net35.sln" %>
+  shfb	: <%= "#{path_doc}doc.shfbproj" %>

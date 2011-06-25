@@ -11,6 +11,7 @@
     <RootNamespace>Facebook.Web.Mvc</RootNamespace>
     <AssemblyName>Facebook.Web.Mvc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <BaseIntermediateOutputPath>..\..\Working\obj\FacebookWebMvc2\net35\</BaseIntermediateOutputPath>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <SccProjectName>
@@ -103,6 +104,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Contracts">
       <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.2\lib\net35-client\Microsoft.Contracts.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

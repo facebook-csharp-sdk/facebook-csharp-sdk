@@ -11,6 +11,7 @@
     <RootNamespace>Facebook.Web.Mvc</RootNamespace>
     <AssemblyName>Facebook.Web.Mvc</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+	<BaseIntermediateOutputPath>..\..\Working\obj\FacebookWebMvc\net40\</BaseIntermediateOutputPath>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <SccProjectName>
