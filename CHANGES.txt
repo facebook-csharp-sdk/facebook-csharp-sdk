@@ -26,6 +26,8 @@ vNEXT
 2. fixed issue #5882
 	ParseQueryParametersToDictionary now decodes values that are part of querystring.
 3. parallel build with rake
+4. fixed issue #5883
+	Batch Request NullReferenceException when omit_response_on_success = true 
 
 =========================================================================
 v5.0.40 (RTW)

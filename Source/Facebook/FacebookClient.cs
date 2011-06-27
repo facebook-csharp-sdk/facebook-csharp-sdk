@@ -916,18 +916,26 @@ namespace Facebook
 
             foreach (var row in resultList)
             {
-                var body = (string)((IDictionary<string, object>)row)["body"];
-                var exception = ExceptionFactory.GetGraphException(body);
-
-                object jsonObject = null;
-                if (exception == null)
+                if (row == null)
                 {
-                    // check for rest exception
-                    jsonObject = JsonSerializer.Current.DeserializeObject(body);
-                    exception = ExceptionFactory.GetRestException(jsonObject);
+                    // row is null when omit_response_on_success = true
+                    list.Add(null);
                 }
+                else
+                {
+                    var body = (string)((IDictionary<string, object>)row)["body"];
+                    var exception = ExceptionFactory.GetGraphException(body);
 
-                list.Add(exception ?? jsonObject);
+                    object jsonObject = null;
+                    if (exception == null)
+                    {
+                        // check for rest exception
+                        jsonObject = JsonSerializer.Current.DeserializeObject(body);
+                        exception = ExceptionFactory.GetRestException(jsonObject);
+                    }
+
+                    list.Add(exception ?? jsonObject);
+                }
             }
 
             return list;
