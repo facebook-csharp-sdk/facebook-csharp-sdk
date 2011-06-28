@@ -139,7 +139,7 @@ namespace :zip do
 		if (config["vcs"]["name"] == 'git') then
 			sh "git archive HEAD --format=zip > \"#{src_archive_name}\""
 		elsif (config["vcs"]["name"] == 'hg') then
-			sh "hg archive -tzip \"#{src_archive_name}\" -p \"#{PROJECT_NAME_SAFE}\""
+			sh "hg archive -tzip \"#{src_archive_name}\" -p \"#{config['project']['safe_name']}\""
 		end
 	end
 	
