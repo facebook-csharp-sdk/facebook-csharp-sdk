@@ -115,6 +115,7 @@
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAPathStartingWithForwardSlashWithQuerystringAndEmptyParametersThen.cs" />
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAPathWith2QuerystringsAndEmptyParametersThen.cs" />
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAPathWithoutQuerystringAndEmptyParametersThen.cs" />
+    <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAPathWithQueryStringShouldUrlDecodeCorrectly.cs" />
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAUrlHostIsFacebookGraphWithoutQuerystringAndParameterIsEmptyThen.cs" />
     <Compile Include="FacebookUtils\ParseQueryParametersToDictionary\GivenAUrlHostIsFacebookGraphWithQuerystringAndParameterIsEmptyThen.cs" />
     <Compile Include="FacebookOAuthClient\GetLoginUrl\IfClientIdIsEmptyThen.cs" />
