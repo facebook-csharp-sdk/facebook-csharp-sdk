@@ -27,7 +27,7 @@ task :configure do
 	begin
         config["vcs"]["rev_id"] = `hg id -i`.chomp.chop # remove the +
         config["vcs"]["name"] = 'hg'
-        config["vcs"]["short_rev_id"] = config[:vcs][:rev_id]
+        config["vcs"]["short_rev_id"] = config["vcs"]["rev_id"]
     rescue
     end
 	
@@ -41,13 +41,13 @@ task :configure do
 		end
 	end
 	
-	if(config["version"]["is_nightly"])
+    if(config["version"]["is_nightly"])
         config["version"]["long"] = "#{config["version"]["full"]}-nightly-#{config["vcs"]["short_rev_id"]}"
     else
-		config["version"]["long"] = "#{config["version"]["full"]}-#{config["vcs"]["short_rev_id"]}"
+	config["version"]["long"] = "#{config["version"]["full"]}-#{config["vcs"]["short_rev_id"]}"
     end
 	
-	puts
+    puts
     puts  "     Project Name: #{config["project"]["name"]}"
     puts  "Safe Project Name: #{config["project"]["safe_name"]}"
 	puts  "          Version: #{config["version"]["full"]} (#{config["version"]["long"]})"
