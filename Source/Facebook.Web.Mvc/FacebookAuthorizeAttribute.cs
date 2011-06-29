@@ -14,7 +14,7 @@ namespace Facebook.Web.Mvc
 
     public class FacebookAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
-        public string LoginUrl { get; set; }
+        public virtual string LoginUrl { get; set; }
 
         public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication)
         {

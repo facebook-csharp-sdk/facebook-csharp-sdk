@@ -7,6 +7,12 @@ SDK developers: developers writing this SDK.
 =========================================================================
 vNEXT
 =========================================================================
+1. renamed v5.0.45 BETA to RTW with following minor changes
+	a. properties of ActionFilterAttribute in Facebook.Web.Mvc marked as virtual (issue #5873)
+
+=========================================================================
+v5.0.45 (BETA)
+=========================================================================
 1. support uploading video using graph api.
 
    If the path ends with "/videos" and is a POST, it uses 

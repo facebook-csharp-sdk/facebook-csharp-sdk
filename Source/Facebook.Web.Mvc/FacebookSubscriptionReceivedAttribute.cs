@@ -13,7 +13,7 @@ namespace Facebook.Web.Mvc
 
     public class FacebookSubscriptionReceivedAttribute : ActionFilterAttribute
     {
-        public string ParameterName { get; set; }
+        public virtual string ParameterName { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {

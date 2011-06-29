@@ -19,11 +19,11 @@ namespace Facebook.Web.Mvc
 
     public class CanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
-        public string LoginDisplayMode { get; set; }
+        public virtual string LoginDisplayMode { get; set; }
 
-        public string CancelUrlPath { get; set; }
+        public virtual string CancelUrlPath { get; set; }
 
-        public string ReturnUrlPath { get; set; }
+        public virtual string ReturnUrlPath { get; set; }
 
         public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication settings)
         {

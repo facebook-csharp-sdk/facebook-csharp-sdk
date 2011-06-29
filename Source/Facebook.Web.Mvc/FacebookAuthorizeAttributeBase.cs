@@ -22,7 +22,8 @@ namespace Facebook.Web.Mvc
         /// Gets or sets the extended permissions.
         /// </summary>
         [System.Obsolete("Perms is marked for removal in future version. Use Permissions instead.")]
-        public string Perms
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public virtual string Perms
         {
             get { return Permissions; }
             set { Permissions = value; }
@@ -31,7 +32,7 @@ namespace Facebook.Web.Mvc
         /// <summary>
         /// Gets or sets the extended permissions.
         /// </summary>
-        public string Permissions { get; set; }
+        public virtual string Permissions { get; set; }
 
         /// <summary>
         /// Called when authorization is required.

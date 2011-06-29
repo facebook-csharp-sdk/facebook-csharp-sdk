@@ -13,7 +13,7 @@ namespace Facebook.Web.Mvc
 
     public class FacebookSubscriptionVerifyAttribute : ActionFilterAttribute
     {
-        public string VerificationToken { get; set; }
+        public virtual string VerificationToken { get; set; }
 
         public FacebookSubscriptionVerifyAttribute(string verificationToken)
         {

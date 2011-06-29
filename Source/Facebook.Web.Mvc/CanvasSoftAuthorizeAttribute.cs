@@ -45,7 +45,7 @@ namespace Facebook.Web.Mvc
         /// <summary>
         /// Gets or sets the name of the View.
         /// </summary>
-        public string View
+        public virtual string View
         {
             get { return !string.IsNullOrEmpty(_view) ? _view : DefaultView; }
             set { _view = value; }
@@ -54,7 +54,7 @@ namespace Facebook.Web.Mvc
         /// <summary>
         /// Gets or sets the Master.
         /// </summary>
-        public string Master
+        public virtual string Master
         {
             get { return _master ?? string.Empty; }
             set { _master = value; }
