@@ -348,6 +348,10 @@ namespace Facebook
             {
                 return Post((IDictionary<string, object>)parameters);
             }
+            else if (parameters is string)
+            {
+                return Post((string)parameters, null);
+            }
 
             return Post(FacebookUtils.ToDictionary(parameters));
         }
@@ -557,8 +561,10 @@ namespace Facebook
             {
                 PostAsync(path, (IDictionary<string, object>)parameters);
             }
-
-            PostAsync(path, FacebookUtils.ToDictionary(parameters));
+            else
+            {
+                PostAsync(path, FacebookUtils.ToDictionary(parameters));
+            }
         }
 
         /// <summary>
@@ -581,8 +587,10 @@ namespace Facebook
             {
                 PostAsync(path, (IDictionary<string, object>)parameters, userToken);
             }
-
-            PostAsync(path, FacebookUtils.ToDictionary(parameters), userToken);
+            else
+            {
+                PostAsync(path, FacebookUtils.ToDictionary(parameters), userToken);
+            }
         }
 
         /// <summary>
@@ -599,8 +607,14 @@ namespace Facebook
             {
                 PostAsync((IDictionary<string, object>)parameters);
             }
-
-            PostAsync(FacebookUtils.ToDictionary(parameters));
+            else if (parameters is string)
+            {
+                PostAsync((string)parameters, null);
+            }
+            else
+            {
+                PostAsync(FacebookUtils.ToDictionary(parameters));
+            }
         }
 
         #endregion
@@ -1065,7 +1079,7 @@ namespace Facebook
             var request = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
             request.Method = FacebookUtils.ConvertToString(httpMethod); // Set the http method GET, POST, etc.
 
-            if (httpMethod == HttpMethod.Post)
+            if (request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
             {
                 if (path == null && mergedParameters.ContainsKey("batch"))
                 {
