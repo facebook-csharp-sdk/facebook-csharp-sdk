@@ -768,6 +768,30 @@ namespace SimpleJson
                                 return "";
 
                             // convert the integer codepoint to a unicode char and add to string
+
+                            if (0xD800 <= codePoint && codePoint <= 0xDBFF)  // if high surrogate
+                            {
+                                index += 4; // skip 4 chars
+                                remainingLength = json.Length - index;
+                                if (remainingLength >= 6)
+                                {
+                                    uint lowCodePoint;
+                                    if (new string(json, index, 2) == "\\u" &&
+                                        UInt32.TryParse(new string(json, index + 2, 4), NumberStyles.HexNumber,
+                                                        CultureInfo.InvariantCulture, out lowCodePoint))
+                                    {
+                                        if (0xDC00 <= lowCodePoint && lowCodePoint <= 0xDFFF)    // if low surrogate
+                                        {
+                                            s.Append((char)codePoint);
+                                            s.Append((char)lowCodePoint);
+                                            index += 6; // skip 6 chars
+                                            continue;
+                                        }
+                                    }
+                                }
+                                success = false;    // invalid surrogate pair
+                                return "";
+                            }
 #if SILVERLIGHT
                             s.Append(ConvertFromUtf32((int)codePoint));
 #else
