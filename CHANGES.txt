@@ -5,10 +5,11 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNEXT
+v5.0.46 (BETA)
 =========================================================================
-1. renamed v5.0.45 BETA to RTW with following minor changes
-	a. properties of ActionFilterAttribute in Facebook.Web.Mvc marked as virtual (issue #5873)
+1. properties of ActionFilterAttribute in Facebook.Web.Mvc marked as virtual (issue #5873)
+2. DELETE fix for Silverlight (issue #5885)
+3. UTF32 surrogate pair bug fix in SimpleJson (issue #5878) updated to SimpleJson v0.7.0
 
 =========================================================================
 v5.0.45 (BETA)
