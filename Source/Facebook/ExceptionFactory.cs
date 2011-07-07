@@ -144,6 +144,28 @@ namespace Facebook
                                 }
                             }
                         }
+                        else
+                        {
+                            long? errorNumber = null;
+                            if (responseDict["error"] is long)
+                                errorNumber = (long)responseDict["error"];
+                            if (errorNumber == null && responseDict["error"] is int)
+                                errorNumber = (int)responseDict["error"];
+                            string errorDescription = null;
+                            if (responseDict.ContainsKey("error_description"))
+                                errorDescription = responseDict["error_description"] as string;
+                            if (errorNumber != null && !string.IsNullOrEmpty(errorDescription))
+                            {
+                                if (errorNumber == 190)
+                                {
+                                    resultException = new FacebookOAuthException(errorDescription, "API_EC_PARAM_ACCESS_TOKEN");
+                                }
+                                else
+                                {
+                                    resultException = new FacebookApiException(errorDescription, errorNumber.Value.ToString());
+                                }
+                            }
+                        }
                     }
                 }
             }
