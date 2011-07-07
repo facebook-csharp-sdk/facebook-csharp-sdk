@@ -303,7 +303,7 @@ namespace Facebook
         /// </param>
         /// <exception cref="Facebook.FacebookApiException" />
         /// <returns>
-        /// The jon result.
+        /// The json result.
         /// </returns>
         public virtual object Post(string path, IDictionary<string, object> parameters)
         {
