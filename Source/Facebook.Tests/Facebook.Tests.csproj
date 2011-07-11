@@ -79,6 +79,7 @@
     <Compile Include="ExceptionFactory\GetRestException\GivenANonEmptyDictionaryOfStringObjectThatDoesNotContainErrorCodeKeyThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenInputAsNullThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenNonNullInputNotOfTypeIDictionaryStringObjectThen.cs" />
+    <Compile Include="FacebookClient\ctor\CtorAccessTokenTests.cs" />
     <Compile Include="FacebookClient\ctor\CtorWithFacebookApplicationParameter.cs" />
     <Compile Include="FacebookClient\ExtractMediaObject\GivenEmptyParametersThen.cs" />
     <Compile Include="FacebookClient\ExtractMediaObject\GivenMoreThanOneMediaObjectsOnlyThen.cs" />
