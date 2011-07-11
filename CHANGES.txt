@@ -5,6 +5,14 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+v5.0.50 (RTW)
+=========================================================================
+1. Renamed v5.0.46 BETA to RTW.
+2. fixed issu #5887
+   throws non-generic webexception for batch request errors due to different 
+   json error message from fb
+
+=========================================================================
 v5.0.46 (BETA)
 =========================================================================
 1. properties of ActionFilterAttribute in Facebook.Web.Mvc marked as virtual (issue #5873)
