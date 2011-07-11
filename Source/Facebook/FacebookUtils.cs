@@ -466,33 +466,7 @@ namespace Facebook
         /// </returns>
         internal static string HtmlDecode(string input)
         {
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.HtmlDecode(input);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.HtmlDecode(input);
-#else
-            return External.HttpUtility.HtmlDecode(input);
-#endif
-        }
-
-        /// <summary>
-        /// Html encode the input string.
-        /// </summary>
-        /// <param name="input">
-        /// The string to encode.
-        /// </param>
-        /// <returns>
-        /// The html encoded string.
-        /// </returns>
-        internal static string HtmlEncode(string input)
-        {
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.HtmlEncode(input);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.HtmlEncode(input);
-#else
-            return External.HttpUtility.HtmlEncode(input);
-#endif
+            return FluentHttp.HttpHelper.HtmlDecode(input);
         }
 
         #endregion
@@ -510,13 +484,7 @@ namespace Facebook
         /// </returns>
         internal static string UrlDecode(string input)
         {
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.UrlDecode(input);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.UrlDecode(input);
-#else
-            return External.HttpUtility.UrlDecode(input);
-#endif
+            return FluentHttp.HttpHelper.UrlDecode(input);
         }
 
         /// <summary>
@@ -530,13 +498,7 @@ namespace Facebook
         /// </returns>
         internal static string UrlEncode(string input)
         {
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.UrlEncode(input);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.UrlEncode(input);
-#else
-            return External.HttpUtility.UrlEncode(input);
-#endif
+            return FluentHttp.HttpHelper.UrlEncode(input);
         }
 
         internal static string RemoveStartingSlash(string input)
@@ -937,9 +899,10 @@ namespace Facebook
         /// </returns>
         internal static string GetResponseString(WebExceptionWrapper webException)
         {
-            if (webException.HasResponse)
+            var httpResponse = webException.GetResponse();
+            if (httpResponse != null)
             {
-                using (var stream = webException.GetResponseStream())
+                using (var stream = httpResponse.GetResponseStream())
                 {
                     if (stream != null)
                     {

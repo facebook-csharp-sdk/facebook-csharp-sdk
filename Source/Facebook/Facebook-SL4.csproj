@@ -13,7 +13,7 @@
     <AssemblyName>Facebook</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-	<BaseIntermediateOutputPath>..\..\Working\obj\Facebook\sl4\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\Working\obj\Facebook\sl4\</BaseIntermediateOutputPath>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
@@ -34,7 +34,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\sl4\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CODE_ANALYSIS;SILVERLIGHT;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -69,7 +69,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\sl4\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -137,6 +137,7 @@
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookOAuthResult.cs" />
     <Compile Include="FacebookUtils.cs" />
+    <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
@@ -157,7 +158,6 @@
     <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
     <Compile Include="WebClientStateContainer.cs" />
     <Compile Include="WebClientWrapper.cs" />
-    <Compile Include="WebExceptionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">

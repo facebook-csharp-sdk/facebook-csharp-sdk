@@ -29,7 +29,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\net35-client\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CODE_ANALYSIS;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -64,7 +64,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\net35-client\</OutputPath>
-    <DefineConstants>TRACE;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT</DefineConstants>
+    <DefineConstants>TRACE;NET35;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -116,8 +116,6 @@
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
     <Compile Include="DownloadDataCompletedEventArgsWrapper.cs" />
-    <Compile Include="External\HttpEncoder.cs" />
-    <Compile Include="External\HttpUtility.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
@@ -131,6 +129,7 @@
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookOAuthResult.cs" />
     <Compile Include="FacebookUtils.cs" />
+    <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
     <Compile Include="WebClientStateContainer.cs" />
     <Compile Include="WebClientWrapper.cs" />
-    <Compile Include="WebExceptionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">

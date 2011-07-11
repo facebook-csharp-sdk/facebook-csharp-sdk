@@ -235,11 +235,12 @@ namespace Facebook
             FacebookApiException resultException = null;
             try
             {
-                if (exception.HasResponse)
+                var httpResponse = exception.GetResponse();
+                if (httpResponse != null)
                 {
                     object response = null;
                     string json = null;
-                    using (var stream = exception.GetResponseStream())
+                    using (var stream = httpResponse.GetResponseStream())
                     {
                         if (stream != null)
                         {

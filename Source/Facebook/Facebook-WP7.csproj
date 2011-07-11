@@ -35,7 +35,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\sl3-wp\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;SILVERLIGHT;WINDOWS_PHONE;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -70,7 +70,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\sl3-wp\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DATACONTRACT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -141,6 +141,7 @@
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookOAuthResult.cs" />
     <Compile Include="FacebookUtils.cs" />
+    <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
@@ -162,7 +163,6 @@
     <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
     <Compile Include="WebClientStateContainer.cs" />
     <Compile Include="WebClientWrapper.cs" />
-    <Compile Include="WebExceptionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">

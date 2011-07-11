@@ -22,14 +22,24 @@ namespace Facebook.Tests.FakeWebClients
         {
         }
 
-        public override bool HasResponse
+        public override HttpWebResponseWrapper GetResponse()
         {
-            get { return true; }
+            return new FakeHttpWebResponse(responseStream);
         }
 
-        public override Stream GetResponseStream()
+        class FakeHttpWebResponse : HttpWebResponseWrapper
         {
-            return this.responseStream;
+            private readonly Stream _stream;
+
+            public FakeHttpWebResponse(Stream stream)
+            {
+                _stream = stream;
+            }
+
+            public override Stream GetResponseStream()
+            {
+                return _stream;
+            }
         }
     }
 }
