@@ -7,34 +7,50 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System.Diagnostics.Contracts;
-
 namespace Facebook
 {
     using System;
+    using System.Diagnostics.Contracts;
 
+    /// <summary>
+    /// Represents the json serializer class.
+    /// </summary>
     public class JsonSerializer
     {
-        private static readonly JsonSerializer _instance = new JsonSerializer();
+        /// <summary>
+        /// The current instance of the json serializer.
+        /// </summary>
+        private static readonly JsonSerializer Instance = new JsonSerializer();
 
+        /// <summary>
+        /// Gets the current json serializer.
+        /// </summary>
         public static IJsonSerializer Current
         {
             get
             {
                 Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
-                return _instance.InnerCurrent;
+                return Instance.InnerCurrent;
             }
         }
 
+        /// <summary>
+        /// Sets the json serializer.
+        /// </summary>
+        /// <param name="jsonSerializer"></param>
         public static void SetJsonSerializer(IJsonSerializer jsonSerializer)
         {
-            _instance.InnerSetApplication(jsonSerializer);
+            Instance.InnerSetApplication(jsonSerializer);
         }
 
+        /// <summary>
+        /// Sets the json serializer.
+        /// </summary>
+        /// <param name="getJsonSerializer"></param>
         public static void SetJsonSerializer(Func<IJsonSerializer> getJsonSerializer)
         {
             Contract.Requires(getJsonSerializer != null);
-            _instance.InnerSetApplication(getJsonSerializer);
+            Instance.InnerSetApplication(getJsonSerializer);
         }
 
         private IJsonSerializer _current = new SimpleJsonSerializer();
