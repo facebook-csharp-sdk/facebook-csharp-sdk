@@ -1172,7 +1172,7 @@ namespace Facebook
             }
 
             urlBuilder.Query = queryString.ToString();
-            var httpHelper = new HttpHelper(urlBuilder.Uri);
+            var httpHelper = CreateHttpHelper(urlBuilder.Uri);
 
             var httpWebRequest = httpHelper.HttpWebRequest;
             httpWebRequest.Method = FacebookUtils.ConvertToString(httpMethod);
@@ -1224,6 +1224,19 @@ namespace Facebook
                 exception = ex;
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Creates the http helper instance.
+        /// </summary>
+        /// <param name="url">The url of the http web request.</param>
+        /// <returns>The http helper.</returns>
+        internal virtual HttpHelper CreateHttpHelper(Uri url)
+        {
+            Contract.Requires(url != null);
+            Contract.Ensures(Contract.Result<HttpHelper>() != null);
+
+            return new HttpHelper(url);
         }
 
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
