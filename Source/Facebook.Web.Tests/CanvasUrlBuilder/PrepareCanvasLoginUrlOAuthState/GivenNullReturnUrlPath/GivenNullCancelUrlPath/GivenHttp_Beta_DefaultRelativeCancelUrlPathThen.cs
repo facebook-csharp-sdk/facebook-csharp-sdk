@@ -84,7 +84,7 @@ namespace Facebook.Web.Tests.CanvasUrlBuilder.PrepareCanvasLoginUrlOAuthState.Gi
             var result = GetCanvasUrlBuilder(cancelUrlPath).PrepareCanvasLoginUrlOAuthState(
                _returnUrlPath, null, _state, _loginParameters);
 
-            cancelUrlPath = FacebookUtils.RemoveStartingSlash(cancelUrlPath);
+            cancelUrlPath = FacebookWebUtils.RemoveStartingSlash(cancelUrlPath);
 
             Assert.Equal("http://apps.beta.facebook.com/csharpsamplestwo/" + cancelUrlPath, result["c"]);
         }

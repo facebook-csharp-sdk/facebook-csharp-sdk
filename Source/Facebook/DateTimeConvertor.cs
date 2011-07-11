@@ -96,7 +96,6 @@ namespace Facebook
         /// </returns>
         public static string ToIso8601FormattedDateTime(DateTime dateTime)
         {
-            Contract.Requires(dateTime != null);
             return dateTime.ToString("o");
         }
 

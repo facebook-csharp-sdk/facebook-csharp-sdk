@@ -35,10 +35,10 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Set the current facebook application.
+        /// Set the current Facebook application.
         /// </summary>
         /// <param name="facebookApplication">
-        /// The facebook application.
+        /// The Facebook application.
         /// </param>
         public static void SetApplication(IFacebookApplication facebookApplication)
         {
@@ -47,10 +47,10 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Set the current facebook application.
+        /// Set the current Facebook application.
         /// </summary>
         /// <param name="getFacebookApplication">
-        /// The get facebook application.
+        /// The get Facebook application.
         /// </param>
         public static void SetApplication(Func<IFacebookApplication> getFacebookApplication)
         {
@@ -61,12 +61,12 @@ namespace Facebook
 
 #if !SILVERLIGHT
         /// <summary>
-        /// The current facebook application.
+        /// The current Facebook application.
         /// </summary>
         private IFacebookApplication _current = FacebookConfigurationSection.Current;
 #else
         /// <summary>
-        /// The current facebook application.
+        /// The current Facebook application.
         /// </summary>
         private IFacebookApplication _current = new DefaultFacebookApplication();
 #endif
@@ -87,7 +87,7 @@ namespace Facebook
         /// Set the inner application.
         /// </summary>
         /// <param name="facebookApplication">
-        /// The facebook application.
+        /// The Facebook application.
         /// </param>
         public void InnerSetApplication(IFacebookApplication facebookApplication)
         {
@@ -100,7 +100,7 @@ namespace Facebook
         /// Set the inner application.
         /// </summary>
         /// <param name="getFacebookApplication">
-        /// The get facebook application.
+        /// The get Facebook application.
         /// </param>
         public void InnerSetApplication(Func<IFacebookApplication> getFacebookApplication)
         {

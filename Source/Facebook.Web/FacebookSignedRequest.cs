@@ -7,6 +7,8 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+using Facebook.Web;
+
 namespace Facebook
 {
     using System;
@@ -407,7 +409,7 @@ namespace Facebook
                     throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
                 }
 
-                var envelope = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(encodedEnvelope)));
+                var envelope = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(Encoding.UTF8.GetString(FacebookWebUtils.Base64UrlDecode(encodedEnvelope)));
 
                 string algorithm = (string)envelope["algorithm"];
 
@@ -418,9 +420,9 @@ namespace Facebook
                 }
 
                 byte[] key = Encoding.UTF8.GetBytes(secret);
-                byte[] digest = FacebookUtils.ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
+                byte[] digest = FacebookWebUtils.ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
 
-                if (!digest.SequenceEqual(FacebookUtils.Base64UrlDecode(encodedSignature)))
+                if (!digest.SequenceEqual(FacebookWebUtils.Base64UrlDecode(encodedSignature)))
                 {
                     throw new InvalidOperationException(Facebook.Web.Properties.Resources.InvalidSignedRequestSignature);
                 }
@@ -448,9 +450,9 @@ namespace Facebook
                     result["issued_at"] = issuedAt;
 
                     // otherwise, decrypt the payload
-                    byte[] iv = FacebookUtils.Base64UrlDecode((string)envelope["iv"]);
-                    byte[] rawCipherText = FacebookUtils.Base64UrlDecode((string)envelope["payload"]);
-                    var plainText = FacebookUtils.DecryptAes256CBCNoPadding(rawCipherText, key, iv);
+                    byte[] iv = FacebookWebUtils.Base64UrlDecode((string)envelope["iv"]);
+                    byte[] rawCipherText = FacebookWebUtils.Base64UrlDecode((string)envelope["payload"]);
+                    var plainText = FacebookWebUtils.DecryptAes256CBCNoPadding(rawCipherText, key, iv);
 
                     var payload = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(plainText);
                     result["payload"] = payload;

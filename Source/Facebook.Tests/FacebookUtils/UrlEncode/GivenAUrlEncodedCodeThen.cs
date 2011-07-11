@@ -10,7 +10,7 @@ namespace Facebook.Tests.FacebookUtils.UrlEncode
         [Theory]
         public void ItShouldDecodeCorrectly(string encodedCode, string expectedCode)
         {
-            var result = FacebookUtils.UrlDecode(encodedCode);
+            var result = FluentHttp.HttpHelper.UrlDecode(encodedCode);
 
             Assert.Equal(expectedCode, result);
         }

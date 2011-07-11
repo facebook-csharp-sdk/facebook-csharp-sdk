@@ -1611,6 +1611,7 @@ namespace FluentHttp
 
         #endregion
 
+        /*
         #region Utils
 
         public static string BuildRequestUrl<TKey, TValue>(string baseUrl, string resourcePath, IEnumerable<KeyValuePair<TKey, TValue>> queryStrings)
@@ -1794,6 +1795,7 @@ namespace FluentHttp
 #endif
 
         #endregion
+        */
 
         #region Authentication
 

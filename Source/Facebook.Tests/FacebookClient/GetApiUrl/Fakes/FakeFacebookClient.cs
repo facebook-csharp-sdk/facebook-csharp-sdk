@@ -7,7 +7,7 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl.Fakes
     class FakeFacebookClient : FacebookClient
     {
         #region not implemented
-
+        
         internal protected override object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             throw new NotImplementedException();

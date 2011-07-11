@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GetResultDataGenericNotSupportedForBatchRequests" xml:space="preserve">
+    <value>GetResultData&lt;T&gt; not supported for batch results.</value>
+  </data>
   <data name="InvalidSignedRequest" xml:space="preserve">
     <value>Invalid signed request.</value>
   </data>
   <data name="MediaObjectMustHavePropertiesSetError" xml:space="preserve">
     <value>The media object must have a content type, file name, and value set.</value>
   </data>
-  <data name="MultipleMediaObjectsError" xml:space="preserve">
-    <value>You cannot include more than one Facebook Media Object in a single request.</value>
+  <data name="ParameterMethodValueRequired" xml:space="preserve">
+    <value>You must specify a value for the method parameter.</value>
   </data>
 </root>

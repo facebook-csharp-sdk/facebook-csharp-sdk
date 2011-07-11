@@ -9,7 +9,7 @@ namespace Facebook.Tests.FacebookUtils.ToJsonQueryString
         [Fact]
         public void ResultShouldBeEmptyString()
         {
-            var dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, object>();
 
             var result = FacebookUtils.ToJsonQueryString(dict);
 

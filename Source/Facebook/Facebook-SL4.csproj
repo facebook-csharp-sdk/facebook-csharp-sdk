@@ -121,12 +121,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CombinationStream.cs" />
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
-    <Compile Include="DownloadDataCompletedEventArgsWrapper.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
+    <Compile Include="FacebookApiUploadProgressChangedEventArgs.cs" />
     <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
@@ -142,7 +143,6 @@
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="IJsonSerializer.cs" />
-    <Compile Include="IWebClient.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -155,9 +155,6 @@
     </Compile>
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="SimpleJson.cs" />
-    <Compile Include="UploadDataCompletedEventArgsWrapper.cs" />
-    <Compile Include="WebClientStateContainer.cs" />
-    <Compile Include="WebClientWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">

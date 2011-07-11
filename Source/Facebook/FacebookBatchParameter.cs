@@ -9,7 +9,6 @@
 
 namespace Facebook
 {
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.Contracts;
 
@@ -166,9 +165,7 @@ namespace Facebook
             var queryDict = new JsonObject();
 
             for (int i = 0; i < fql.Length; i++)
-            {
                 queryDict.Add(string.Concat("query", i), fql[i]);
-            }
 
             HttpMethod = HttpMethod.Get;
             Path = "/method/fql.multiquery";

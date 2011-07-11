@@ -11,7 +11,7 @@
     <RootNamespace>Facebook.Web</RootNamespace>
     <AssemblyName>Facebook.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-	<BaseIntermediateOutputPath>..\..\Working\obj\FacebookWeb\net40\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\Working\obj\FacebookWeb\net40\</BaseIntermediateOutputPath>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -120,6 +120,7 @@
     <Compile Include="FacebookSubscriptionsHttpHandler.cs" />
     <Compile Include="FacebookWebAuthorizer.cs" />
     <Compile Include="FacebookWebClient.cs" />
+    <Compile Include="FacebookWebUtils.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <SubType>Code</SubType>
     </Compile>

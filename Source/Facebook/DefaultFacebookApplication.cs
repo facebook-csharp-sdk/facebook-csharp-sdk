@@ -10,7 +10,7 @@
 namespace Facebook
 {
     /// <summary>
-    /// Represents the default facebook application.
+    /// Represents the default Facebook application.
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class DefaultFacebookApplication : IFacebookApplication

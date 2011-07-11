@@ -7,10 +7,11 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+using System.Diagnostics.Contracts;
+
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     public class JsonSerializer
     {

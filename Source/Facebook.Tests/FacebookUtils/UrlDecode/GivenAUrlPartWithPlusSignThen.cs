@@ -10,7 +10,7 @@ namespace Facebook.Tests.FacebookUtils.UrlDecode
         {
             var urlPart = "The+user+denied+your+request.";
 
-            var result = FacebookUtils.UrlDecode(urlPart);
+            var result = FluentHttp.HttpHelper.UrlDecode(urlPart);
 
             Assert.Equal("The user denied your request.", result);
         }

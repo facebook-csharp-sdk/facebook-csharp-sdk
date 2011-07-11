@@ -11,7 +11,7 @@ namespace Facebook.Tests.FacebookUtils.UrlEncode
         [Theory]
         public void ItShouldEncodePipleAsPercent7C(string expectedUrl, string strToEncode)
         {
-            var result = FacebookUtils.UrlEncode(strToEncode);
+            var result = FluentHttp.HttpHelper.UrlEncode(strToEncode);
 
             Assert.Equal(expectedUrl, result);
         }

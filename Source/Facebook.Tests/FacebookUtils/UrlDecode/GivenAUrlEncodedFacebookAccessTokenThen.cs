@@ -11,7 +11,7 @@ namespace Facebook.Tests.FacebookUtils.UrlDecode
         [Theory(DisplayName = "UrlDecode: Given a url encoded facebook access token Then it should decode correctly")]
         public void ItShouldDecodeCorrectly(string encodedAccessToken, string expectedAccessToken)
         {
-            var result = FacebookUtils.UrlDecode(encodedAccessToken);
+            var result = FluentHttp.HttpHelper.UrlDecode(encodedAccessToken);
 
             Assert.Equal(expectedAccessToken, result);
         }

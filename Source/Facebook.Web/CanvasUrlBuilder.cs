@@ -118,7 +118,7 @@ namespace Facebook.Web
             {
                 Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
 
-                return FacebookUtils.RemoveTrailingSlash(new Uri(_settings.CanvasPage)).AbsolutePath;
+                return FacebookWebUtils.RemoveTrailingSlash(new Uri(_settings.CanvasPage)).AbsolutePath;
             }
         }
 
@@ -150,7 +150,7 @@ namespace Facebook.Web
                     throw new Exception("CanvasUrl is null or empty");
                 }
 
-                return new Uri(FacebookUtils.RemoveTrailingSlash(url));
+                return new Uri(FacebookWebUtils.RemoveTrailingSlash(url));
             }
         }
 
@@ -182,7 +182,7 @@ namespace Facebook.Web
                     throw new Exception("SecureCanvasUrl is null or empty");
                 }
 
-                return new Uri(FacebookUtils.RemoveTrailingSlash(url));
+                return new Uri(FacebookWebUtils.RemoveTrailingSlash(url));
             }
         }
 
@@ -203,7 +203,7 @@ namespace Facebook.Web
                     uriBuilder.Query = parts[1];
                 }
 
-                return FacebookUtils.RemoveTrailingSlash(uriBuilder.Uri);
+                return FacebookWebUtils.RemoveTrailingSlash(uriBuilder.Uri);
             }
         }
 
@@ -283,7 +283,7 @@ namespace Facebook.Web
 
             var url = string.Concat(CanvasPage, pathAndQuery);
 
-            return new Uri(FacebookUtils.RemoveTrailingSlash(url));
+            return new Uri(FacebookWebUtils.RemoveTrailingSlash(url));
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace Facebook.Web
             Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
             Contract.Ensures(Contract.Result<Uri>() != null);
 
-            pathAndQuery = FacebookUtils.RemoveStartingSlash(pathAndQuery);
+            pathAndQuery = FacebookWebUtils.RemoveStartingSlash(pathAndQuery);
 
             var canvasUrl = IsSecureConnection ? SecureCanvasUrl : CanvasUrl;
             if (canvasUrl.PathAndQuery != "/" && pathAndQuery.StartsWith(canvasUrl.PathAndQuery))
@@ -308,7 +308,7 @@ namespace Facebook.Web
 
             var url = string.Concat(canvasUrl, pathAndQuery);
 
-            return new Uri(FacebookUtils.RemoveTrailingSlash(url));
+            return new Uri(FacebookWebUtils.RemoveTrailingSlash(url));
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace Facebook.Web
 
             var oauthJsonState = PrepareCanvasLoginUrlOAuthState(returnUrlPath, cancelUrlPath, state, loginParameters);
 
-            var oauthState = FacebookUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
+            var oauthState = FacebookWebUtils.Base64UrlEncode(Encoding.UTF8.GetBytes(oauthJsonState.ToString()));
             var mergedLoginParameters = FacebookUtils.Merge(loginParameters, null);
             mergedLoginParameters["state"] = oauthState;
 

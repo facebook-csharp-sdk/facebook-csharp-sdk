@@ -61,7 +61,7 @@ namespace Facebook.Web
             }
 
             // if state is present.
-            var state = Encoding.UTF8.GetString(FacebookUtils.Base64UrlDecode(context.Request.QueryString["state"]));
+            var state = Encoding.UTF8.GetString(FacebookWebUtils.Base64UrlDecode(context.Request.QueryString["state"]));
             var json = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(state);
 
             // make it one letter character so more info can fit in.

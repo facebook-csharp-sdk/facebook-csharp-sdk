@@ -11,7 +11,7 @@ namespace Facebook.Tests.FacebookUtils.UrlDecode
         [Theory]
         public void ItShouldBeConvertedToPipeLineSymbol(string encodedUrl, string expected)
         {
-            var result = FacebookUtils.UrlDecode(encodedUrl);
+            var result = FluentHttp.HttpHelper.UrlDecode(encodedUrl);
 
             Assert.Equal(expected, result);
         }

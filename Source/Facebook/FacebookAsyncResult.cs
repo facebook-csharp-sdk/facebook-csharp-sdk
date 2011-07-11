@@ -10,53 +10,60 @@
 namespace Facebook
 {
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// Represents the method that handles the post-call result.
     /// </summary>
     /// <param name="asyncResult">The Facebook asynchronous result.</param>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete]
     public delegate void FacebookAsyncCallback(FacebookAsyncResult asyncResult);
 
     /// <summary>
     /// Represents the method that handles the post-call result.
     /// </summary>
     /// <param name="asyncResult">The Facebook asynchronous result.</param>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete]
     public delegate void FacebookAsyncCallback<T>(FacebookAsyncResult<T> asyncResult);
 
     /// <summary>
     /// Represents the status of an asynchronous Facebook api call.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete]
     public class FacebookAsyncResult : IAsyncResult
     {
         /// <summary>
         /// The result of the asynchronous operation.
         /// </summary>
-        private object result;
+        private readonly object _result;
 
         /// <summary>
         /// The user-defined object that qualifies or contains information about an asynchronous operation
         /// </summary>
-        private object asyncState;
+        private readonly object _asyncState;
 
         /// <summary>
         /// A <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.
         /// </summary>
-        private System.Threading.WaitHandle asyncWaitHandle;
+        private readonly System.Threading.WaitHandle _asyncWaitHandle;
 
         /// <summary>
         /// A value that indicates whether the asynchronous operation completed synchronously.
         /// </summary>
-        private bool completedSynchronously;
+        private readonly bool _completedSynchronously;
 
         /// <summary>
         /// A value that indicates whether the asynchronous operation has completed.
         /// </summary>
-        private bool isCompleted;
+        private readonly bool _isCompleted;
 
         /// <summary>
         /// The error that occurred processing this api call.
         /// </summary>
-        private FacebookApiException error;
+        private readonly FacebookApiException _error;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookAsyncResult"/> class.
@@ -75,12 +82,12 @@ namespace Facebook
             bool isCompleted,
             FacebookApiException error)
         {
-            this.result = result;
-            this.asyncState = asyncState;
-            this.asyncWaitHandle = asyncWaitHandle;
-            this.completedSynchronously = completedSynchronously;
-            this.isCompleted = isCompleted;
-            this.error = error;
+            _result = result;
+            _asyncState = asyncState;
+            _asyncWaitHandle = asyncWaitHandle;
+            _completedSynchronously = completedSynchronously;
+            _isCompleted = isCompleted;
+            _error = error;
         }
 
         /// <summary>
@@ -89,7 +96,7 @@ namespace Facebook
         /// <value>The error.</value>
         public FacebookApiException Error
         {
-            get { return this.error; }
+            get { return _error; }
         }
 
         /// <summary>
@@ -98,7 +105,7 @@ namespace Facebook
         /// <value>The result.</value>
         public object Result
         {
-            get { return this.result; }
+            get { return _result; }
         }
 
         /// <summary>
@@ -108,7 +115,7 @@ namespace Facebook
         /// <returns>A user-defined object that qualifies or contains information about an asynchronous operation.</returns>
         public object AsyncState
         {
-            get { return this.asyncState; }
+            get { return _asyncState; }
         }
 
         /// <summary>
@@ -118,7 +125,7 @@ namespace Facebook
         /// <returns>A <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.</returns>
         public System.Threading.WaitHandle AsyncWaitHandle
         {
-            get { return this.asyncWaitHandle; }
+            get { return _asyncWaitHandle; }
         }
 
         /// <summary>
@@ -128,7 +135,7 @@ namespace Facebook
         /// <returns>true if the asynchronous operation completed synchronously; otherwise, false.</returns>
         public bool CompletedSynchronously
         {
-            get { return this.completedSynchronously; }
+            get { return _completedSynchronously; }
         }
 
         /// <summary>
@@ -138,10 +145,15 @@ namespace Facebook
         /// <returns>true if the operation is complete; otherwise, false.</returns>
         public bool IsCompleted
         {
-            get { return this.isCompleted; }
+            get { return _isCompleted; }
         }
     }
 
+    /// <summary>
+    /// Represents the status of a generic asynchronous Facebook api call.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete]
     public class FacebookAsyncResult<T> : FacebookAsyncResult
     {
         /// <summary>
@@ -170,17 +182,7 @@ namespace Facebook
         /// <value>The result.</value>
         public new T Result
         {
-            get
-            {
-                if (base.Result == null)
-                {
-                    return default(T);
-                }
-                else
-                {
-                    return (T)base.Result;
-                }
-            }
+            get { return base.Result == null ? default(T) : (T) base.Result; }
         }
 
     }

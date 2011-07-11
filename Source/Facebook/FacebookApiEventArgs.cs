@@ -13,7 +13,7 @@ namespace Facebook
     using System.ComponentModel;
 
     /// <summary>
-    /// Represents the facebook api event args.
+    /// Represents the Facebook api event args.
     /// </summary>
     public class FacebookApiEventArgs : AsyncCompletedEventArgs
     {
@@ -73,9 +73,7 @@ namespace Facebook
 
             // check for error coz if its is rest api, json is not null
             if (error == null)
-            {
                 _json = json;
-            }
         }
 
         /// <summary>
@@ -103,9 +101,7 @@ namespace Facebook
         public T GetResultData<T>()
         {
             if (_isBatchResult)
-            {
-                throw new InvalidOperationException("GetResultData<T> not suported for batch results.");
-            }
+                throw new InvalidOperationException(Properties.Resources.GetResultDataGenericNotSupportedForBatchRequests);
 
             return JsonSerializer.Current.DeserializeObject<T>(_json);
         }

@@ -7,6 +7,8 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+using Facebook.Web;
+
 namespace Facebook
 {
     using System;
@@ -382,7 +384,7 @@ namespace Facebook
                     var nameValue = part.Split('=');
                     if (nameValue.Length == 2)
                     {
-                        var s = FacebookUtils.UrlDecode(nameValue[1]);
+                        var s = FluentHttp.HttpHelper.UrlDecode(nameValue[1]);
                         dictionary.Add(nameValue[0], s);
                     }
                 }
@@ -429,7 +431,7 @@ namespace Facebook
             parts.ForEach(s => payload.Append(s));
             payload.Append(secret);
 
-            var hash = FacebookUtils.ComputerMd5Hash(Encoding.UTF8.GetBytes(payload.ToString()));
+            var hash = FacebookWebUtils.ComputerMd5Hash(Encoding.UTF8.GetBytes(payload.ToString()));
 
             var signature = new StringBuilder();
             foreach (var h in hash)

@@ -11,21 +11,58 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
-    using System.IO;
-    using System.Net;
 
     /// <summary>
-    /// A utility for generating facebook exceptions.
+    /// A utility for generating Facebook exceptions.
     /// </summary>
-    internal static class ExceptionFactory
+    internal class ExceptionFactory
     {
+        /// <summary>
+        /// Gets the graph/rest api exception.
+        /// </summary>
+        /// <param name="domainMaps">The domain maps.</param>
+        /// <param name="requestUri">The request uri.</param>
+        /// <param name="responseString">The response string.</param>
+        /// <param name="innerException">The actual web exception.</param>
+        /// <param name="json">The json object.</param>
+        /// <returns>The exception if found else null.</returns>
+        public static Exception GetException(IDictionary<string, Uri> domainMaps, Uri requestUri, string responseString, Exception innerException, out object json)
+        {
+            json = null;
+            try
+            {
+                json = JsonSerializer.Current.DeserializeObject(responseString);
+                // we need to check for graph exception here again coz fb return 200ok
+                // for https://graph.facebook.com/i_dont_exist
+                return TryGetRestException(domainMaps, requestUri, json) ?? GetGraphException(json);
+            }
+            catch (Exception ex)
+            {
+                return innerException ?? ex;
+            }
+        }
+
+        public static FacebookApiException TryGetRestException(IDictionary<string, Uri> domainMaps, Uri requestUri, object json)
+        {
+            FacebookApiException error = null;
+
+            // HACK: We have to do this because the REST Api doesn't return
+            // the correct status codes when an error has occurred.
+            if (FacebookUtils.IsUsingRestApi(domainMaps, requestUri))
+            {
+                // If we are using the REST API we need to check for an exception
+                error = GetRestException(json);
+            }
+
+            return error;
+        }
+
         /// <summary>
         /// Gets the rest exception if possible.
         /// </summary>
         /// <param name="result">The web request result object to check for exception information.</param>
         /// <returns>The Facebook API exception or null.</returns>
-        internal static FacebookApiException GetRestException(object result)
+        public static FacebookApiException GetRestException(object result)
         {
             // The REST API does not return a status that causes a WebException
             // even when there is an error. For this reason we have to parse a
@@ -67,96 +104,11 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Checks for rest exception.
-        /// </summary>
-        /// <param name="domainMaps">
-        /// The domain maps.
-        /// </param>
-        /// <param name="requestUri">
-        /// The request uri.
-        /// </param>
-        /// <param name="json">
-        /// The json string.
-        /// </param>
-        /// <returns>
-        /// Returns <see cref="FacebookApiException"/> if it is a rest exception otherwise null.
-        /// </returns>
-        internal static FacebookApiException CheckForRestException(IDictionary<string, Uri> domainMaps, Uri requestUri, string json)
-        {
-            Contract.Requires(requestUri != null);
-
-            FacebookApiException error = null;
-
-            // HACK: We have to do this because the REST Api doesn't return
-            // the correct status codes when an error has occurred.
-            if (FacebookUtils.IsUsingRestApi(domainMaps, requestUri))
-            {
-                // If we are using the REST API we need to check for an exception
-                var resultObject = JsonSerializer.Current.DeserializeObject(json);
-                error = GetRestException(resultObject);
-            }
-
-            return error;
-        }
-
-        /// <summary>
-        /// Checks for rest exception.
-        /// </summary>
-        /// <param name="domainMaps">
-        /// The domain maps.
-        /// </param>
-        /// <param name="requestUri">
-        /// The request uri.
-        /// </param>
-        /// <param name="json">
-        /// The json string.
-        /// </param>
-        /// <returns>
-        /// Returns <see cref="FacebookApiException"/> if it is a rest exception otherwise null.
-        /// </returns>
-        internal static FacebookApiException CheckForRestException(IDictionary<string, Uri> domainMaps, Uri requestUri, object json)
-        {
-            Contract.Requires(requestUri != null);
-
-            FacebookApiException error = null;
-
-            // HACK: We have to do this because the REST Api doesn't return
-            // the correct status codes when an error has occurred.
-            if (FacebookUtils.IsUsingRestApi(domainMaps, requestUri))
-            {
-                // If we are using the REST API we need to check for an exception
-                error = GetRestException(json);
-            }
-
-            return error;
-        }
-
-
-        internal static FacebookApiException GetGraphException(string json)
-        {
-            FacebookApiException resultException;
-
-            try
-            {
-                resultException = GetGraphException(JsonSerializer.Current.DeserializeObject(json));
-            }
-            catch
-            {
-                resultException = null;
-
-                // We dont want to throw anything associated with 
-                // trying to build the FacebookApiException
-            }
-
-            return resultException;
-        }
-
-        /// <summary>
         /// Gets the graph exception if possible.
         /// </summary>
         /// <param name="result">The web request result object to check for exception information.</param>
         /// <returns>A Facebook API exception or null.</returns>
-        internal static FacebookApiException GetGraphException(object result)
+        public static FacebookApiException GetGraphException(object result)
         {
             // Note: broke down GetGraphException into different method for unit testing.
             FacebookApiException resultException = null;
@@ -192,28 +144,6 @@ namespace Facebook
                                 }
                             }
                         }
-                        else
-                        {
-                            long? errorNumber = null;
-                            if (responseDict["error"] is long)
-                                errorNumber = (long)responseDict["error"];
-                            if (errorNumber == null && responseDict["error"] is int)
-                                errorNumber = (int)responseDict["error"];
-                            string errorDescription = null;
-                            if (responseDict.ContainsKey("error_description"))
-                                errorDescription = responseDict["error_description"] as string;
-                            if (errorNumber != null && !string.IsNullOrEmpty(errorDescription))
-                            {
-                                if (errorNumber == 190)
-                                {
-                                    resultException = new FacebookOAuthException(errorDescription, "API_EC_PARAM_ACCESS_TOKEN");
-                                }
-                                else
-                                {
-                                    resultException = new FacebookApiException(errorDescription, errorNumber.Value.ToString());
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -224,64 +154,25 @@ namespace Facebook
         /// <summary>
         /// Gets the graph exception if possible.
         /// </summary>
-        /// <param name="exception">The web exception.</param>
+        /// <param name="json">The web request result string to check for exception information.</param>
         /// <returns>A Facebook API exception or null.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
-            Justification = "We don't want to have any exceptions that are part of building the FacebookApiException throw.")]
-        internal static FacebookApiException GetGraphException(WebExceptionWrapper exception)
+        internal static FacebookApiException GetGraphException(string json)
         {
-            Contract.Requires(exception != null);
+            FacebookApiException resultException;
 
-            FacebookApiException resultException = null;
             try
             {
-                var httpResponse = exception.GetResponse();
-                if (httpResponse != null)
-                {
-                    object response = null;
-                    string json = null;
-                    using (var stream = httpResponse.GetResponseStream())
-                    {
-                        if (stream != null)
-                        {
-                            using (var reader = new StreamReader(stream))
-                            {
-                                json = reader.ReadToEnd();
-                            }
-                        }
-                    }
-
-                    if (json != null)
-                    {
-                        response = JsonSerializer.Current.DeserializeObject(json);
-                    }
-
-                    resultException = GetGraphException(response);
-                }
+                resultException = GetGraphException(JsonSerializer.Current.DeserializeObject(json));
             }
             catch
             {
                 resultException = null;
 
-                // We dont want to throw anything associated with 
+                // We don't want to throw anything associated with 
                 // trying to build the FacebookApiException
             }
 
             return resultException;
-        }
-
-        /// <summary>
-        /// Gets the graph exception if possible.
-        /// </summary>
-        /// <param name="exception">The web exception.</param>
-        /// <returns>A Facebook API exception or null.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
-            Justification = "We don't want to have any exceptions that are part of building the FacebookApiException throw.")]
-        internal static FacebookApiException GetGraphException(WebException exception)
-        {
-            Contract.Requires(exception != null);
-
-            return GetGraphException(new WebExceptionWrapper(exception));
         }
     }
 }

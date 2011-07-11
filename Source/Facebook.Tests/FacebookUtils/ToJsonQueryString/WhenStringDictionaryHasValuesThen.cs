@@ -9,7 +9,7 @@ namespace Facebook.Tests.FacebookUtils.ToJsonQueryString
         [Fact]
         public void ResultShouldNotBeEmptyStringOrNull()
         {
-            var dict = new Dictionary<string, string>
+            var dict = new Dictionary<string, object>
                            {
                                {"key1", "value1"},
                                {"key2", "value2"}
@@ -23,7 +23,7 @@ namespace Facebook.Tests.FacebookUtils.ToJsonQueryString
         [Fact]
         public void ResultShouldBeQuerstringFormatted()
         {
-            var dict = new Dictionary<string, string>
+            var dict = new Dictionary<string, object>
                            {
                                {"key1", "value1"},
                                {"key2", "value2"}

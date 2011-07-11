@@ -5,11 +5,39 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+vNEXT
+=========================================================================
+(for SDK consumers)
+1. hide and mark as obsolete
+   a. FacebookAsyncCallback
+   b. FacebookAsyncCallback<T>
+   c. FacebookAsyncResult
+   d. FacebookAsyncResult<T>
+2. Facebook.FacebookApiUploadProgressChangedEventArgs
+3. support progress report for ASYNC uploads only if there is at least one MediaObject.
+
+
+(for SDK developers)
+4. complete rewrite of FacebookClient and FacebookOAuthClient http requests
+   using FluentHttp.Core (FluentHttp.HttpHelper)
+5. moved methods used only in Facebook.Web and Facebook.Web.Mvc to 
+   Facebook.Web.FacebookWebUtils class
+   a. Base64UrlDecode
+   b. Base64UrlEncode
+   c. ComputerMd5Hash
+   d. ComputeHmacSha256Hash
+   e. DecryptAes256CBCNoPadding
+   f. RemoveStartingSlash
+6. CombinationStream
+7. removed UrlEncode/UrlDecode/HtmlDecode from FacebookUtils and used from 
+   FluentHttp.HttpHelper instead.
+
+=========================================================================
 v5.0.50 (RTW)
 =========================================================================
 1. Renamed v5.0.46 BETA to RTW.
-2. fixed issu #5887
-   throws non-generic webexception for batch request errors due to different 
+2. fixed issue #5887
+   throws non-generic web exception for batch request errors due to different 
    json error message from fb
 
 =========================================================================
