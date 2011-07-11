@@ -2,6 +2,7 @@
 // Copyright 2011. Prabir Shrestha (www.prabir.me)
 // Apache License, Version 2.0 
 
+//#define FLUENTHTTP_CORE_UTILS
 //#define FLUENTHTTP_CORE_TPL
 //#define FLUENTHTTP_CORE_STREAM
 //#define FLUENTHTTP_URLENCODING
@@ -471,6 +472,8 @@ namespace FluentHttp
     {
         private readonly WebException _webException;
 
+        protected WebExceptionWrapper() { }
+
         public WebExceptionWrapper(WebException webException)
             : base(webException == null ? null : webException.Message, webException == null ? null : webException.InnerException)
         {
@@ -651,7 +654,8 @@ namespace FluentHttp
             catch (WebExceptionWrapper webException)
             {
                 _httpWebResponse = webException.GetResponse();
-                throw;
+                _innerException = webException;
+                throw _innerException;
             }
             catch (Exception ex)
             {
@@ -1610,8 +1614,10 @@ namespace FluentHttp
 #endif
 
         #endregion
-
+        
         #region Utils
+
+#if FLUENTHTTP_CORE_UTILS
 
         public static string BuildRequestUrl<TKey, TValue>(string baseUrl, string resourcePath, IEnumerable<KeyValuePair<TKey, TValue>> queryStrings)
         {
@@ -1701,6 +1707,8 @@ namespace FluentHttp
                 }
             }
         }
+
+#endif
 
 #if FLUENTHTTP_CORE_STREAM
 
@@ -1794,7 +1802,7 @@ namespace FluentHttp
 #endif
 
         #endregion
-
+        
         #region Authentication
 
 #if FLUENTHTTP_HTTPBASIC_AUTHENTICATION

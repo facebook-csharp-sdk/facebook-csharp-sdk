@@ -7,6 +7,8 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
+using System.Net;
+
 namespace Facebook
 {
     using System;
@@ -1172,24 +1174,17 @@ namespace Facebook
             }
 
             urlBuilder.Query = queryString.ToString();
-            var httpHelper = CreateHttpHelper(urlBuilder.Uri);
+            var httpHelper = new HttpHelper(CreateHttpWebRequest(urlBuilder.Uri));
 
             var httpWebRequest = httpHelper.HttpWebRequest;
             httpWebRequest.Method = FacebookUtils.ConvertToString(httpMethod);
 
-            if (contentType != null)
-            {
-                httpWebRequest.ContentType = contentType;
-            }
+            httpWebRequest.ContentType = contentType;
 
 #if !WINDOWS_PHONE
             if (input != null)
-            {
                 httpWebRequest.ContentLength = input.Length;
-            }
 #endif
-
-            ModifyHttpWebRequest(httpWebRequest);
 
             return httpHelper;
         }
@@ -1227,25 +1222,17 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Creates the http helper instance.
+        /// Creates the http web request.
         /// </summary>
         /// <param name="url">The url of the http web request.</param>
         /// <returns>The http helper.</returns>
-        internal virtual HttpHelper CreateHttpHelper(Uri url)
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        protected virtual HttpWebRequestWrapper CreateHttpWebRequest(Uri url)
         {
             Contract.Requires(url != null);
-            Contract.Ensures(Contract.Result<HttpHelper>() != null);
+            Contract.Ensures(Contract.Result<HttpWebRequestWrapper>() != null);
 
-            return new HttpHelper(url);
-        }
-
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        protected virtual void ModifyHttpWebRequest(HttpWebRequestWrapper httpWebRequest)
-        {
-            // allow users to modify the http web request for additional advanced stuffs.
-            // such as (Changing Local End Point) http://facebooksdk.codeplex.com/workitem/5861
-            // proxy (http://facebooksdk.codeplex.com/discussions/250498)
-            // credentials and so on.
+            return new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(url));
         }
 
         #endregion

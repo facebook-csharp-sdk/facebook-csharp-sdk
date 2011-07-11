@@ -87,6 +87,7 @@
     <Compile Include="FacebookClient\ExtractMediaObject\GivenNullParametersThen.cs" />
     <Compile Include="FacebookClient\ExtractMediaObject\GivenOneMediaObjectThen.cs" />
     <Compile Include="FacebookClient\ExtractMediaObject\GiveOneMediaObjectOnlyThen.cs" />
+    <Compile Include="FacebookClient\Get\PathOnly.cs" />
     <Compile Include="FacebookClient\ProcessBatchResult\ProcessBatchResultTests.cs" />
     <Compile Include="FacebookClient\GetApiUrl\Fakes\FakeFacebookClient.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodIsVideoUploadThen.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="TestUtils.cs" />
+    <Compile Include="TestExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">
