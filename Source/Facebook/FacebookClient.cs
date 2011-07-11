@@ -26,9 +26,14 @@ namespace Facebook
     public class FacebookClient
     {
         /// <summary>
-        /// Indcates whether to use Facebook beta.
+        /// The value indicating whether to use Facebook beta.
         /// </summary>
         private bool _useFacebookBeta = FacebookApplication.Current.UseFacebookBeta;
+
+        /// <summary>
+        /// The Facebook access token.
+        /// </summary>
+        private string _accessToken;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
@@ -46,7 +51,7 @@ namespace Facebook
         public FacebookClient(string accessToken)
         {
             Contract.Requires(!String.IsNullOrEmpty(accessToken));
-            AccessToken = accessToken;
+            _accessToken = accessToken;
         }
 
         /// <summary>
@@ -69,7 +74,7 @@ namespace Facebook
         /// Initializes a new instance of the <see cref="FacebookClient"/> class.
         /// </summary>
         /// <param name="facebookApplication">
-        /// The facebook application.
+        /// The Facebook application.
         /// </param>
         public FacebookClient(IFacebookApplication facebookApplication)
         {
@@ -77,7 +82,7 @@ namespace Facebook
             {
                 if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
                 {
-                    this.AccessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
+                    _accessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
                 }
             }
         }
@@ -100,7 +105,11 @@ namespace Facebook
         /// <summary>
         /// Gets or sets the access token.
         /// </summary>
-        public virtual string AccessToken { get; set; }
+        public virtual string AccessToken
+        {
+            get { return _accessToken; }
+            set { _accessToken = value; }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use Facebook beta.
@@ -109,18 +118,6 @@ namespace Facebook
         {
             get { return _useFacebookBeta; }
             set { _useFacebookBeta = value; }
-        }
-
-        /// <summary>
-        /// Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
-        /// </summary>
-        protected virtual ICollection<string> DropQueryParameters
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ICollection<string>>() != null);
-                return FacebookUtils.DropQueryParameters;
-            }
         }
 
         /// <summary>
@@ -176,7 +173,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Makes a GET requst to the Facebook server.
+        /// Makes a GET request to the Facebook server.
         /// </summary>
         /// <param name="path">
         /// The resource path.
@@ -345,13 +342,9 @@ namespace Facebook
         {
             Contract.Requires(parameters != null);
             if (parameters is IDictionary<string, object>)
-            {
-                return Post((IDictionary<string, object>)parameters);
-            }
-            else if (parameters is string)
-            {
-                return Post((string)parameters, null);
-            }
+                return Post((IDictionary<string, object>) parameters);
+            if (parameters is string)
+                return Post((string) parameters, null);
 
             return Post(FacebookUtils.ToDictionary(parameters));
         }
@@ -374,9 +367,7 @@ namespace Facebook
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             if (parameters is IDictionary<string, object>)
-            {
-                return Post(path, (IDictionary<string, object>)parameters);
-            }
+                return Post(path, (IDictionary<string, object>) parameters);
 
             return Post(path, FacebookUtils.ToDictionary(parameters));
         }
@@ -558,13 +549,9 @@ namespace Facebook
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             if (parameters is IDictionary<string, object>)
-            {
-                PostAsync(path, (IDictionary<string, object>)parameters);
-            }
+                PostAsync(path, (IDictionary<string, object>) parameters);
             else
-            {
                 PostAsync(path, FacebookUtils.ToDictionary(parameters));
-            }
         }
 
         /// <summary>
@@ -584,13 +571,9 @@ namespace Facebook
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
             if (parameters is IDictionary<string, object>)
-            {
-                PostAsync(path, (IDictionary<string, object>)parameters, userToken);
-            }
+                PostAsync(path, (IDictionary<string, object>) parameters, userToken);
             else
-            {
                 PostAsync(path, FacebookUtils.ToDictionary(parameters), userToken);
-            }
         }
 
         /// <summary>
@@ -604,17 +587,11 @@ namespace Facebook
             Contract.Requires(parameters != null);
 
             if (parameters is IDictionary<string, object>)
-            {
-                PostAsync((IDictionary<string, object>)parameters);
-            }
+                PostAsync((IDictionary<string, object>) parameters);
             else if (parameters is string)
-            {
-                PostAsync((string)parameters, null);
-            }
+                PostAsync((string) parameters, null);
             else
-            {
                 PostAsync(FacebookUtils.ToDictionary(parameters));
-            }
         }
 
         #endregion
@@ -661,9 +638,7 @@ namespace Facebook
             var queryDict = new Dictionary<string, object>();
 
             for (int i = 0; i < fql.Length; i++)
-            {
                 queryDict.Add(string.Concat("query", i), fql[i]);
-            }
 
             var parameters = new Dictionary<string, object>();
             parameters["queries"] = queryDict;
@@ -736,9 +711,7 @@ namespace Facebook
 
             var queryDict = new Dictionary<string, object>();
             for (int i = 0; i < fql.Length; i++)
-            {
                 queryDict.Add(string.Concat("query", i), fql[i]);
-            }
 
             var parameters = new Dictionary<string, object>();
             parameters["queries"] = queryDict;
@@ -805,9 +778,7 @@ namespace Facebook
                 if (mediaObjects != null)
                 {
                     foreach (var facebookMediaObject in mediaObjects)
-                    {
                         actualParameters.Add(facebookMediaObject.Key, facebookMediaObject.Value);
-                    }
                 }
             }
 
@@ -863,9 +834,7 @@ namespace Facebook
                     parameters = (IDictionary<string, object>)batchParameter.Parameters;
                     mediaObjects = ExtractMediaObjects(parameters);
                     if (mediaObjects.Count == 1)
-                    {
                         defaultParameters["attached_files"] = mediaObjects.ElementAt(0).Key;
-                    }
                 }
                 else
                 {
@@ -876,19 +845,13 @@ namespace Facebook
             var path = FacebookUtils.ParseQueryParametersToDictionary(batchParameter.Path, parameters);
             string queryString = string.Empty;
             if (batchParameter.HttpMethod == HttpMethod.Get)
-            {
                 queryString = FacebookUtils.ToJsonQueryString(parameters);
-            }
             else
-            {
                 defaultParameters["body"] = FacebookUtils.ToJsonQueryString(parameters);
-            }
 
             var relativeUrl = new StringBuilder(path);
             if (!string.IsNullOrEmpty(queryString))
-            {
                 relativeUrl.AppendFormat("?{0}", queryString);
-            }
 
             defaultParameters["relative_url"] = relativeUrl.ToString();
 
@@ -900,9 +863,7 @@ namespace Facebook
             else
             {
                 if (!(data is IDictionary<string, object>))
-                {
                     data = FacebookUtils.ToDictionary(batchParameter.Data);
-                }
 
                 returnResult = FacebookUtils.Merge(defaultParameters, (IDictionary<string, object>)data);
             }
@@ -969,9 +930,7 @@ namespace Facebook
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
             if (!mergedParameters.ContainsKey("access_token") && !string.IsNullOrEmpty(AccessToken))
-            {
                 mergedParameters["access_token"] = AccessToken;
-            }
 
             Uri requestUrl;
             string contentType;
@@ -986,9 +945,7 @@ namespace Facebook
                 ExceptionFactory.CheckForRestException(DomainMaps, requestUrl, json);
 
             if (facebookApiException != null)
-            {
                 throw facebookApiException;
-            }
 
             return resultType == null ? json : JsonSerializer.Current.DeserializeObject(jsonString, resultType);
         }
@@ -1157,25 +1114,19 @@ namespace Facebook
         protected void OnGetCompleted(FacebookApiEventArgs args)
         {
             if (GetCompleted != null)
-            {
                 GetCompleted(this, args);
-            }
         }
 
         protected void OnPostCompleted(FacebookApiEventArgs args)
         {
             if (PostCompleted != null)
-            {
                 PostCompleted(this, args);
-            }
         }
 
         protected void OnDeleteCompleted(FacebookApiEventArgs args)
         {
             if (DeleteCompleted != null)
-            {
                 DeleteCompleted(this, args);
-            }
         }
 
         #region Url helper methods
@@ -1197,14 +1148,10 @@ namespace Facebook
             string name = "api";
 
             if (method.Equals("video.upload"))
-            {
                 name = "api_video";
-            }
 
             if (FacebookUtils.ReadOnlyCalls.Contains(method))
-            {
                 name = "api_read";
-            }
 
             return GetUrl(name, "restserver.php");
         }
@@ -1372,22 +1319,16 @@ namespace Facebook
             var mediaObjects = new Dictionary<string, FacebookMediaObject>();
 
             if (parameters == null)
-            {
                 return mediaObjects;
-            }
 
             foreach (var parameter in parameters)
             {
                 if (parameter.Value is FacebookMediaObject)
-                {
-                    mediaObjects.Add(parameter.Key, (FacebookMediaObject)parameter.Value);
-                }
+                    mediaObjects.Add(parameter.Key, (FacebookMediaObject) parameter.Value);
             }
 
             foreach (var mediaObject in mediaObjects)
-            {
                 parameters.Remove(mediaObject.Key);
-            }
 
             return mediaObjects;
         }
@@ -1484,10 +1425,8 @@ namespace Facebook
             Uri baseUrl;
             if (parameters.ContainsKey("method"))
             {
-                if (String.IsNullOrEmpty((string)parameters["method"]))
-                {
+                if (String.IsNullOrEmpty((string) parameters["method"]))
                     throw new ArgumentException("You must specify a value for the method parameter.");
-                }
 
                 // Set the format to json
                 parameters["format"] = "json-strings";

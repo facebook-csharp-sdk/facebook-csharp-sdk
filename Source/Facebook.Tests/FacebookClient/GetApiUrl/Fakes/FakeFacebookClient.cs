@@ -8,11 +8,6 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl.Fakes
     {
         #region not implemented
 
-        protected override ICollection<string> DropQueryParameters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         internal protected override object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
         {
             throw new NotImplementedException();
