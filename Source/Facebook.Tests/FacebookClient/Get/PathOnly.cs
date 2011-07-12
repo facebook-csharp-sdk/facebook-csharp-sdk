@@ -1,21 +1,23 @@
 ﻿
-
 namespace Facebook.Tests.FacebookClient.Get
 {
     using System;
     using System.Collections.Generic;
     using Facebook;
     using Moq;
-    using Xunit;    
+    using Xunit;
 
     public class PathOnly
     {
-
         [Fact]
         public void Sync_DoesNotCallGetCompletedEvent()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}");
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+
+            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}",
+                out mockRequest, out mockResponse);
 
             var fb = mockFb.Object;
             int called = 0;
@@ -24,6 +26,10 @@ namespace Facebook.Tests.FacebookClient.Get
 
             fb.Get("/4");
 
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyGetResponse();
+            mockResponse.VerifyGetResponseStream();
+
             Assert.Equal(0, called);
         }
 
@@ -31,7 +37,11 @@ namespace Facebook.Tests.FacebookClient.Get
         public void Sync_DoesNotCallPostCompletedEvent()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}");
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+
+            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}",
+                out mockRequest, out mockResponse);
 
             var fb = mockFb.Object;
             int called = 0;
@@ -40,6 +50,10 @@ namespace Facebook.Tests.FacebookClient.Get
 
             fb.Get("/4");
 
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyGetResponse();
+            mockResponse.VerifyGetResponseStream();
+
             Assert.Equal(0, called);
         }
 
@@ -47,7 +61,11 @@ namespace Facebook.Tests.FacebookClient.Get
         public void Sync_DoesNotCallDeleteCompletedEvent()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}");
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+
+            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}",
+                out mockRequest, out mockResponse);
 
             var fb = mockFb.Object;
             int called = 0;
@@ -56,6 +74,10 @@ namespace Facebook.Tests.FacebookClient.Get
 
             fb.Get("/4");
 
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyGetResponse();
+            mockResponse.VerifyGetResponseStream();
+
             Assert.Equal(0, called);
         }
 
@@ -63,7 +85,11 @@ namespace Facebook.Tests.FacebookClient.Get
         public void SyncWhenThereIsNoInternetConnectionAndFiddlerIsOpen_ThrowsWebExceptionWrapper()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.FiddlerNoInternetConnection();
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.FiddlerNoInternetConnection(out mockRequest, out mockResponse, out mockWebException);
 
             var fb = mockFb.Object;
 
@@ -78,6 +104,11 @@ namespace Facebook.Tests.FacebookClient.Get
                 exception = ex;
             }
 
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyGetResponse();
+            mockWebException.VerifyGetReponse();
+            mockResponse.VerifyGetResponseStream();
+
             Assert.IsAssignableFrom<WebExceptionWrapper>(exception);
         }
 
@@ -85,7 +116,10 @@ namespace Facebook.Tests.FacebookClient.Get
         public void SyncWhenThereIsNotInternetConnectionAndFiddlerIsNotOpen_ThrowsWebExceptionWrapper()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.NoInternetConnection();
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.NoInternetConnection(out mockRequest, out mockWebException);
 
             Exception exception = null;
 
@@ -99,6 +133,10 @@ namespace Facebook.Tests.FacebookClient.Get
                 exception = ex;
             }
 
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyGetResponse();
+            mockWebException.VerifyGetReponse();
+
             Assert.IsAssignableFrom<WebExceptionWrapper>(exception);
         }
 
@@ -106,10 +144,17 @@ namespace Facebook.Tests.FacebookClient.Get
         public void SyncReturnsJsonObjectIfObject()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}");
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}",
+                out mockRequest, out mockResponse);
 
             var fb = mockFb.Object;
             dynamic result = fb.Get("/4");
+
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyGetResponse();
+            mockResponse.VerifyGetResponseStream();
 
             Assert.IsAssignableFrom<IDictionary<string, object>>(result);
             Assert.IsType<JsonObject>(result);
@@ -119,14 +164,25 @@ namespace Facebook.Tests.FacebookClient.Get
         public void Async_CallsGetCompletedEvent()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}");
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+
+            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}",
+                 out mockRequest, out mockResponse);
 
             var fb = mockFb.Object;
             int called = 0;
 
-            fb.GetCompleted += (o, e) => ++called;
+            TestExtensions.Do(evt =>
+                                  {
+                                      fb.GetCompleted += (o, e) => ++called;
+                                  },
+                              () => fb.GetAsync("/4"), 5000);
 
-            fb.GetAsync("/4");
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockResponse.VerifyGetResponseStream();
 
             Assert.Equal(1, called);
         }
@@ -135,14 +191,25 @@ namespace Facebook.Tests.FacebookClient.Get
         public void Async_DoesNotCallPostCompletedEvent()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}");
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+
+            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}",
+                out mockRequest, out mockResponse);
 
             var fb = mockFb.Object;
             int called = 0;
 
-            fb.PostCompleted += (o, e) => ++called;
+            TestExtensions.Do(evt =>
+                                  {
+                                      fb.PostCompleted += (o, e) => ++called;
+                                  },
+                              () => fb.GetAsync("/4"), 5000);
 
-            fb.GetAsync("/4");
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockResponse.VerifyGetResponseStream();
 
             Assert.Equal(0, called);
         }
@@ -151,14 +218,25 @@ namespace Facebook.Tests.FacebookClient.Get
         public void Async_DoesNotCallDeleteCompletedEvent()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}");
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+
+            mockFb.ReturnsJson("{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}",
+                 out mockRequest, out mockResponse);
 
             var fb = mockFb.Object;
             int called = 0;
 
-            fb.DeleteCompleted += (o, e) => ++called;
+            TestExtensions.Do(evt =>
+                                  {
+                                      fb.DeleteCompleted += (o, e) => ++called;
+                                  },
+                              () => fb.GetAsync("/4"), 5000);
 
-            fb.GetAsync("/4");
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockResponse.VerifyGetResponseStream();
 
             Assert.Equal(0, called);
         }
@@ -167,7 +245,10 @@ namespace Facebook.Tests.FacebookClient.Get
         public void AsyncWhenThereIsNoInternetConnectionAndFiddlerIsNotOpen_GetCompletedIsCalled()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.NoInternetConnection();
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.NoInternetConnection(out mockRequest, out mockWebException);
 
             int called = 0;
             var fb = mockFb.Object;
@@ -182,6 +263,11 @@ namespace Facebook.Tests.FacebookClient.Get
                                   },
                               () => fb.GetAsync("/4"), 5000);
 
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockWebException.VerifyGetReponse();
+
             Assert.Equal(1, called);
         }
 
@@ -189,7 +275,10 @@ namespace Facebook.Tests.FacebookClient.Get
         public void AsyncWhenThereIsNoInternetConnectionAndFiddlerIsNotOpen_PostCompletedIsNotCalled()
         {
             var mockFb = new Mock<FacebookClient> { CallBase = true };
-            mockFb.NoInternetConnection();
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.NoInternetConnection(out mockRequest, out mockWebException);
 
             int called = 0;
             var fb = mockFb.Object;
@@ -203,6 +292,137 @@ namespace Facebook.Tests.FacebookClient.Get
                                                               };
                                   },
                               () => fb.GetAsync("/4"), 5000);
+
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockWebException.VerifyGetReponse();
+
+            Assert.Equal(0, called);
+        }
+
+        [Fact]
+        public void AsyncWhenThereIsNoInternetConnectionAndFiddlerIsNotOpen_DeleteCompletedIsNotCalled()
+        {
+            var mockFb = new Mock<FacebookClient> { CallBase = true };
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.NoInternetConnection(out mockRequest, out mockWebException);
+
+            int called = 0;
+            var fb = mockFb.Object;
+
+            TestExtensions.Do(evt =>
+                                  {
+                                      fb.DeleteCompleted += (o, e) =>
+                                                                {
+                                                                    called++;
+                                                                    evt.Set();
+                                                                };
+                                  },
+                              () => fb.GetAsync("/4"), 5000);
+
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockWebException.VerifyGetReponse();
+
+            Assert.Equal(0, called);
+        }
+
+        [Fact]
+        public void AsyncWhenThereIsNoInternetConnectionAndFiddlerIsOpen_GetCompletedIsCalled()
+        {
+            var mockFb = new Mock<FacebookClient> { CallBase = true };
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.FiddlerNoInternetConnection(out mockRequest, out mockResponse, out mockWebException);
+
+            int called = 0;
+            var fb = mockFb.Object;
+
+            TestExtensions.Do(evt =>
+                                  {
+                                      fb.GetCompleted += (o, e) =>
+                                                             {
+                                                                 ++called;
+                                                                 evt.Set();
+                                                             };
+                                  }
+                                  , () => fb.GetAsync("/4"), 5000);
+
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockWebException.VerifyGetReponse();
+            mockResponse.VerifyGetResponseStream();
+
+            Assert.Equal(1, called);
+        }
+
+        [Fact]
+        public void AsyncWhenThereIsNoInternetConnectionAndFiddlerIsOpen_PostCompletedIsNotCalled()
+        {
+            var mockFb = new Mock<FacebookClient> { CallBase = true };
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.FiddlerNoInternetConnection(out mockRequest, out mockResponse, out mockWebException);
+
+            int called = 0;
+            var fb = mockFb.Object;
+
+            TestExtensions.Do(evt =>
+                                  {
+                                      fb.PostCompleted += (o, e) =>
+                                                              {
+                                                                  ++called;
+                                                                  evt.Set();
+                                                              };
+                                  }
+                              , () => fb.GetAsync("/4"), 5000);
+
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockWebException.VerifyGetReponse();
+            mockResponse.VerifyGetResponseStream();
+
+            Assert.Equal(0, called);
+        }
+
+        [Fact]
+        public void AsyncWhenThereIsNoInternetConnectionAndFiddlerIsOpen_DeleteCompletedIsNotCalled()
+        {
+            var mockFb = new Mock<FacebookClient> { CallBase = true };
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            mockFb.FiddlerNoInternetConnection(out mockRequest, out mockResponse, out mockWebException);
+
+            int called = 0;
+            var fb = mockFb.Object;
+
+            TestExtensions.Do(evt =>
+                                  {
+                                      fb.DeleteCompleted += (o, e) =>
+                                                                {
+                                                                    ++called;
+                                                                    evt.Set();
+                                                                };
+                                  }
+                              , () => fb.GetAsync("/4"), 5000);
+
+            mockFb.VerifyCreateHttpWebRequest(Times.Once());
+            mockRequest.VerifyBeginGetResponse();
+            mockRequest.VerifyEndGetResponse();
+            mockWebException.VerifyGetReponse();
+            mockResponse.VerifyGetResponseStream();
 
             Assert.Equal(0, called);
         }

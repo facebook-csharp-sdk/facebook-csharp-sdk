@@ -11,8 +11,15 @@ namespace Facebook.Tests
     {
         public static void ReturnsJson(this Mock<Facebook.FacebookClient> facebookClient, string json)
         {
-            var mockRequest = new Mock<HttpWebRequestWrapper>();
-            var mockResponse = new Mock<HttpWebResponseWrapper>();
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+            facebookClient.ReturnsJson(json, out mockRequest, out mockResponse);
+        }
+
+        public static void ReturnsJson(this Mock<Facebook.FacebookClient> facebookClient, string json, out Mock<HttpWebRequestWrapper> mockRequest, out Mock<HttpWebResponseWrapper> mockResponse)
+        {
+            mockRequest = new Mock<HttpWebRequestWrapper>();
+            mockResponse = new Mock<HttpWebResponseWrapper>();
             var mockAsyncResult = new Mock<IAsyncResult>();
 
             var request = mockRequest.Object;
@@ -58,16 +65,26 @@ namespace Facebook.Tests
                 .Setup(r => r.ContentLength)
                 .Returns(responseStream.Length);
 
+            var mockRequestCopy = mockRequest;
+
             facebookClient.Protected()
                 .Setup<HttpWebRequestWrapper>("CreateHttpWebRequest", ItExpr.IsAny<Uri>())
-                .Callback<Uri>(uri => mockRequest.Setup(r => r.RequestUri).Returns(uri))
+                .Callback<Uri>(uri => mockRequestCopy.Setup(r => r.RequestUri).Returns(uri))
                 .Returns(request);
         }
 
         public static void NoInternetConnection(this Mock<Facebook.FacebookClient> facebookClient)
         {
-            var mockRequest = new Mock<HttpWebRequestWrapper>();
-            var mockWebException = new Mock<WebExceptionWrapper>();
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            facebookClient.NoInternetConnection(out mockRequest, out mockWebException);
+        }
+
+        public static void NoInternetConnection(this Mock<Facebook.FacebookClient> facebookClient, out Mock<HttpWebRequestWrapper> mockRequest, out Mock<WebExceptionWrapper> mockWebException)
+        {
+            mockRequest = new Mock<HttpWebRequestWrapper>();
+            mockWebException = new Mock<WebExceptionWrapper>();
             var mockAsyncResult = new Mock<IAsyncResult>();
 
             var request = mockRequest.Object;
@@ -107,29 +124,47 @@ namespace Facebook.Tests
                                  return asyncResult;
                              });
 
+            var mockRequestCopy = mockRequest;
+            var mockWebExceptionCopy = mockWebException;
+
             facebookClient.Protected()
                 .Setup<HttpWebRequestWrapper>("CreateHttpWebRequest", ItExpr.IsAny<Uri>())
                 .Callback<Uri>(uri =>
                                    {
-                                       mockRequest.Setup(r => r.RequestUri).Returns(uri);
-                                       mockWebException.Setup(e => e.Message).Returns(string.Format("The remote name could not be resolved: '{0}'", uri.Host));
+                                       mockRequestCopy.Setup(r => r.RequestUri).Returns(uri);
+                                       mockWebExceptionCopy.Setup(e => e.Message).Returns(string.Format("The remote name could not be resolved: '{0}'", uri.Host));
                                    })
                 .Returns(request);
         }
 
         public static void FiddlerNoInternetConnection(this Mock<Facebook.FacebookClient> facebookClient)
         {
-            var mockRequest = new Mock<HttpWebRequestWrapper>();
-            var mockResponse = new Mock<HttpWebResponseWrapper>();
-            var mockWebException = new Mock<WebExceptionWrapper>();
+            Mock<HttpWebRequestWrapper> mockRequest;
+            Mock<HttpWebResponseWrapper> mockResponse;
+            Mock<WebExceptionWrapper> mockWebException;
+
+            facebookClient.FiddlerNoInternetConnection(out mockRequest, out mockResponse, out mockWebException);
+        }
+
+        public static void FiddlerNoInternetConnection(this Mock<Facebook.FacebookClient> facebookClient, out Mock<HttpWebRequestWrapper> mockRequest, out Mock<HttpWebResponseWrapper> mockResponse, out Mock<WebExceptionWrapper> mockWebException)
+        {
+            mockRequest = new Mock<HttpWebRequestWrapper>();
+            mockResponse = new Mock<HttpWebResponseWrapper>();
+            mockWebException = new Mock<WebExceptionWrapper>();
+
+            var mockAsyncResult = new Mock<IAsyncResult>();
 
             var request = mockRequest.Object;
             var response = mockResponse.Object;
             var webException = mockWebException.Object;
+            var asyncResult = mockAsyncResult.Object;
 
             mockRequest.SetupProperty(r => r.Method);
             mockRequest.SetupProperty(r => r.ContentType);
             mockRequest.SetupProperty(r => r.ContentLength);
+            mockAsyncResult
+               .Setup(ar => ar.AsyncWaitHandle)
+               .Returns((ManualResetEvent)null);
 
             var responseStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes("Fiddler: DNS Lookup for graph.facebook.com failed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "));
 
@@ -149,10 +184,62 @@ namespace Facebook.Tests
                 .Setup(r => r.GetResponse())
                 .Throws(webException);
 
+            mockRequest
+                .Setup(r => r.EndGetResponse(It.IsAny<IAsyncResult>()))
+                .Throws(webException);
+
+            AsyncCallback callback = null;
+
+            mockRequest
+                .Setup(r => r.BeginGetResponse(It.IsAny<AsyncCallback>(), It.IsAny<object>()))
+                .Callback<AsyncCallback, object>((c, s) =>
+                {
+                    callback = c;
+                })
+                .Returns(() =>
+                {
+                    callback(asyncResult);
+                    return asyncResult;
+                });
+
+            var mockRequestCopy = mockRequest;
+
             facebookClient.Protected()
                 .Setup<HttpWebRequestWrapper>("CreateHttpWebRequest", ItExpr.IsAny<Uri>())
-                .Callback<Uri>(uri => mockRequest.Setup(r => r.RequestUri).Returns(uri))
+                .Callback<Uri>(uri => mockRequestCopy.Setup(r => r.RequestUri).Returns(uri))
                 .Returns(request);
+        }
+
+        public static void VerifyGetResponse(this Mock<HttpWebRequestWrapper> mockRequest)
+        {
+            mockRequest.Verify(r => r.GetResponse());
+        }
+
+        public static void VerifyBeginGetResponse(this Mock<HttpWebRequestWrapper> mockRequest)
+        {
+            mockRequest.Verify(r => r.BeginGetResponse(It.IsAny<AsyncCallback>(), It.IsAny<object>()));
+        }
+
+        public static void VerifyEndGetResponse(this Mock<HttpWebRequestWrapper> mockRequest)
+        {
+            mockRequest.Verify(r => r.EndGetResponse(It.IsAny<IAsyncResult>()));
+        }
+
+        public static void VerifyGetReponse(this Mock<WebExceptionWrapper> mockWebException)
+        {
+            mockWebException.Verify(e => e.GetResponse());
+        }
+
+        public static void VerifyGetResponseStream(this Mock<HttpWebResponseWrapper> mockResponse)
+        {
+            mockResponse.Verify(r => r.GetResponseStream());
+        }
+
+        public static void VerifyCreateHttpWebRequest(this Mock<Facebook.FacebookClient> mockFb, Times times)
+        {
+            mockFb
+                .Protected()
+                .Verify("CreateHttpWebRequest", times, ItExpr.IsAny<Uri>());
         }
 
         public static void Do(Action<ManualResetEvent> callback, Action action, int timeout)
