@@ -20,6 +20,9 @@ using System.Runtime.InteropServices;
 
 #if !(SILVERLIGHT || TESTS)
 [assembly: AllowPartiallyTrustedCallers]
+    #if !NET35
+        [assembly: SecurityRules(SecurityRuleSet.Level1)]
+    #endif
 #endif
 
 #if !WINDOWS_PHONE
@@ -32,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Facebook.Web.Compatibility, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 
 #if !TESTS
-[assembly: InternalsVisibleTo("Facebook.Web.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+[assembly: InternalsVisibleTo("Facebook.Web.Tests,PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Web.Mvc.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 #endif
 

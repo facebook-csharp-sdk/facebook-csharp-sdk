@@ -15,12 +15,13 @@ vNEXT
    d. FacebookAsyncResult<T>
 2. Facebook.FacebookApiUploadProgressChangedEventArgs
 3. support progress report for ASYNC uploads only if there is at least one MediaObject.
+4. Facebook.dll [assembly: SecurityRules(SecurityRuleSet.Level1)]
 
 
 (for SDK developers)
-4. complete rewrite of FacebookClient and FacebookOAuthClient http requests
+1. complete rewrite of FacebookClient and FacebookOAuthClient http requests
    using FluentHttp.Core (FluentHttp.HttpHelper)
-5. moved methods used only in Facebook.Web and Facebook.Web.Mvc to 
+2. moved methods used only in Facebook.Web and Facebook.Web.Mvc to 
    Facebook.Web.FacebookWebUtils class
    a. Base64UrlDecode
    b. Base64UrlEncode
@@ -28,9 +29,10 @@ vNEXT
    d. ComputeHmacSha256Hash
    e. DecryptAes256CBCNoPadding
    f. RemoveStartingSlash
-6. CombinationStream
-7. removed UrlEncode/UrlDecode/HtmlDecode from FacebookUtils and used from 
+3. CombinationStream
+4. removed UrlEncode/UrlDecode/HtmlDecode from FacebookUtils and used from 
    FluentHttp.HttpHelper instead.
+5. updated to Moq 4.0.10827
 
 =========================================================================
 v5.0.50 (RTW)

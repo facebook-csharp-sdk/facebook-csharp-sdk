@@ -1,14 +1,16 @@
 ﻿
+
 namespace Facebook.Tests.FacebookClient.Get
 {
     using System;
     using System.Collections.Generic;
     using Facebook;
     using Moq;
-    using Xunit;
+    using Xunit;    
 
     public class PathOnly
     {
+
         [Fact]
         public void Sync_DoesNotCallGetCompletedEvent()
         {
