@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-SL4", "Facebook\Facebook-SL4.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Silverlight.Tests", "Facebook.Silverlight.Tests\Facebook.Silverlight.Tests.csproj", "{DA43E372-3ED5-4A49-9DC6-AB8BD0211A34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests-SL4", "Facebook.Tests\Facebook.Tests-SL4.csproj", "{DA43E372-3ED5-4A49-9DC6-AB8BD0211A34}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

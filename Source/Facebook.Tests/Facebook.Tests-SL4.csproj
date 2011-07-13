@@ -86,13 +86,21 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
+    <Reference Include="xunit-silverlight4">
+      <HintPath>..\..\Tools\xunitcontrib-silverlight.0.2\Silverlight4\xunit-silverlight4.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions-silverlight4">
+      <HintPath>..\..\Tools\xunitcontrib-silverlight.0.2\Silverlight4\xunit.extensions-silverlight4.dll</HintPath>
+    </Reference>
+    <Reference Include="xunitcontrib.runner.silverlight.toolkit-sl4">
+      <HintPath>..\..\Tools\xunitcontrib-silverlight.0.2\Silverlight4\xunitcontrib.runner.silverlight.toolkit-sl4.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

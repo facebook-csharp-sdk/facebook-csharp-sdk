@@ -1,9 +1,10 @@
-﻿using System;
-using System.Windows;
-using Microsoft.Silverlight.Testing;
-
+﻿
 namespace Facebook.Silverlight.Tests
 {
+    using System;
+    using System.Windows;
+    using Microsoft.Silverlight.Testing;
+
     public partial class App : Application
     {
 
@@ -18,6 +19,7 @@ namespace Facebook.Silverlight.Tests
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            UnitTestSystem.RegisterUnitTestProvider(new XunitContrib.Runner.Silverlight.Toolkit.UnitTestProvider());
             RootVisual = UnitTestSystem.CreateTestPage();
         }
 
