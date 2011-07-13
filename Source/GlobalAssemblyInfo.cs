@@ -25,20 +25,20 @@ using System.Runtime.InteropServices;
     #endif
 #endif
 
-#if !WINDOWS_PHONE
-[assembly: InternalsVisibleTo("Facebook.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-#endif
-
 #if !(SILVERLIGHT || WINDOWS_PHONE)
 [assembly: InternalsVisibleTo("Facebook.Web, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Web.Mvc, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Web.Compatibility, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
-
+[assembly: InternalsVisibleTo("Facebook.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 #if !TESTS
 [assembly: InternalsVisibleTo("Facebook.Web.Tests,PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 [assembly: InternalsVisibleTo("Facebook.Web.Mvc.Tests, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
 #endif
 
+#endif
+
+#if SILVERLIGHT
+[assembly: InternalsVisibleTo("Facebook.Tests")]
 #endif
 
 

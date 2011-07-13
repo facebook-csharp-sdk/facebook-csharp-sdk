@@ -6,6 +6,24 @@ namespace Facebook.Tests.FacebookUtils.ConvertToString
 
     public class GivenAHttpMethodEnumThen
     {
+#if SILVERLIGHT
+        [InlineData(HttpMethod.Get, "GET")]
+        [InlineData(HttpMethod.Post, "POST")]
+        [Theory]
+        public void ItShouldReturnTheEquivalentString(HttpMethod httpMethod, string strHttpMethod)
+        {
+            var result = FacebookUtils.ConvertToString(httpMethod);
+
+            Assert.Equal(strHttpMethod, result);
+        }
+
+        [Fact]
+        public void DeleteShouldReturnPost()
+        {
+            var result = FacebookUtils.ConvertToString(HttpMethod.Delete);
+            Assert.Equal("POST", result);
+        }
+#else
         [InlineData(HttpMethod.Get, "GET")]
         [InlineData(HttpMethod.Post, "POST")]
         [InlineData(HttpMethod.Delete, "DELETE")]
@@ -16,5 +34,6 @@ namespace Facebook.Tests.FacebookUtils.ConvertToString
 
             Assert.Equal(strHttpMethod, result);
         }
+#endif
     }
 }

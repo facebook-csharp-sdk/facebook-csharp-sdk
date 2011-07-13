@@ -5,7 +5,7 @@ namespace Facebook.Utils.Tests.ToDictionary
 
     public class GivenAObjectThen
     {
-        private Post post;
+        public Post post;
 
         public GivenAObjectThen()
         {
@@ -61,7 +61,7 @@ namespace Facebook.Utils.Tests.ToDictionary
         }
 
         [DataContract]
-        private class Post
+        public class Post
         {
             [DataMember(Name = "message")]
             public string Message { get; set; }
