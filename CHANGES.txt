@@ -15,12 +15,13 @@ vNEXT
    d. FacebookAsyncResult<T>
 2. Facebook.FacebookApiUploadProgressChangedEventArgs
 3. support progress report for ASYNC uploads only if there is at least one MediaObject.
-4. Facebook.dll [assembly: SecurityRules(SecurityRuleSet.Level1)]
-
+4. Facebook.dll [assembly: SecurityRules(SecurityRuleSet.Level1)] for .net 4.0 project.
+5. SimpleJson in Facebook.dll for Silverlight doesn't use Reflection.Emit
 
 (for SDK developers)
 1. complete rewrite of FacebookClient and FacebookOAuthClient http requests
-   using FluentHttp.Core (FluentHttp.HttpHelper)
+   using FluentHttp.Core (FluentHttp.HttpHelper) with 100% backward compatible 
+   with v5.0.50
 2. moved methods used only in Facebook.Web and Facebook.Web.Mvc to 
    Facebook.Web.FacebookWebUtils class
    a. Base64UrlDecode
@@ -33,6 +34,9 @@ vNEXT
 4. removed UrlEncode/UrlDecode/HtmlDecode from FacebookUtils and used from 
    FluentHttp.HttpHelper instead.
 5. updated to Moq 4.0.10827
+6. added unit test for Silverlight by using xunitcontrib-silverlight-0.2.
+   (requires April 2010 Silverlight Toolkit)
+7. Silverlight test runs during rake build using StatLight.1.4.4147
 
 =========================================================================
 v5.0.50 (RTW)
