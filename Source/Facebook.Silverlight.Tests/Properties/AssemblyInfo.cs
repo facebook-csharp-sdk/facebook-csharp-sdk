@@ -1,15 +1,17 @@
-﻿using System.Reflection;
+﻿// Copyright © Microsoft 2011
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Facebook.Silverlight")]
+[assembly: AssemblyTitle("Facebook.Silverlight.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Facebook.Silverlight")]
+[assembly: AssemblyProduct("Facebook.Silverlight.Tests")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("30dde0e8-cfd4-4f1b-9e60-53d093edca75")]
+[assembly: Guid("808e8f5b-c9c7-41cc-bb71-433a92c92eaf")]
 
 // Version information for an assembly consists of the following four values:
 //
