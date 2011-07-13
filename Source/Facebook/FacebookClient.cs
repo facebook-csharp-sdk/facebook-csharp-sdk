@@ -405,7 +405,17 @@ namespace Facebook
                     FacebookUtils.CopyStream(input, requestStream, null);
                 }
 
-                input.Dispose();
+                if (input is CombinationStream.CombinationStream)
+                {
+                    var cs = (CombinationStream.CombinationStream)input;
+                    foreach (var stream in cs.InternalStreams)
+                        stream.Dispose();
+                    cs.Dispose();
+                }
+                else
+                {
+                    input.Dispose();
+                }
             }
 
             Stream responseStream;
@@ -759,7 +769,18 @@ namespace Facebook
                                     }
                                 }
 
-                                input.Dispose();
+                                if (input is CombinationStream.CombinationStream)
+                                {
+                                    var cs = (CombinationStream.CombinationStream)input;
+                                    foreach (var stream in cs.InternalStreams)
+                                        stream.Dispose();
+                                    cs.Dispose();
+                                }
+                                else
+                                {
+                                    input.Dispose();
+                                }
+
                                 httpHelper.OpenReadAsync();
                                 return;
                             }
@@ -1173,11 +1194,9 @@ namespace Facebook
             }
 
             urlBuilder.Query = queryString.ToString();
-            var httpHelper = new HttpHelper(CreateHttpWebRequest(urlBuilder.Uri));
 
-            var httpWebRequest = httpHelper.HttpWebRequest;
+            var httpWebRequest = CreateHttpWebRequest(urlBuilder.Uri);
             httpWebRequest.Method = FacebookUtils.ConvertToString(httpMethod);
-
             httpWebRequest.ContentType = contentType;
 
 #if !WINDOWS_PHONE
@@ -1185,6 +1204,7 @@ namespace Facebook
                 httpWebRequest.ContentLength = input.Length;
 #endif
 
+            var httpHelper = new HttpHelper(httpWebRequest);
             return httpHelper;
         }
 
