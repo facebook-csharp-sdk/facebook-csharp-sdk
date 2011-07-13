@@ -95,6 +95,7 @@ namespace :build do
 	msbuild :sl4 => ['clean:sl4','assemblyinfo:facebook'] do |msb|
 	   # temporary hack for bug caused by code contracts
 	   FileUtils.rm_rf "#{config["path"]["working"]}obj/Facebook/sl4/"
+	   FileUtils.rm_rf "#{config["path"]["working"]}obj/Facebook.Tests/sl4/"
 	   
 	   msb.properties :configuration => config['version']['configuration']
 	   msb.solution = config['path']['sln']['sl4']
@@ -116,7 +117,8 @@ namespace :build do
 		msb.properties
 	end
 	
-	multitask :all => ['build:net40','build:net35','build:sl4','build:wp7']
+	multitask :all => ['build:net40','build:net35','build:sl4', 'build:wp7']
+	#task :all => ['build:parallel','build:sl4']
 	
 end
 
