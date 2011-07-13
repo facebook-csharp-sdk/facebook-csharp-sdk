@@ -218,10 +218,23 @@ namespace :tests do
 		multitask :all => ['tests:net40:facebook','tests:net40:facebookweb']
 	
 	end
+
+	namespace :sl4 do
+
+		exec :facebook => ['build:sl4'] do |cmd|
+			cmd.command = config["path"]["stat_light"]
+			cmd.parameters = "-x\"#{config["path"]["output"]}Tests/sl4/Release/Facebook.Tests-SL4.xap\""
+		end
+
+		multitask :all => ['tests:sl4:facebook']
+
+	end
 	
 	multitask :net40 => ['tests:net40:all']
+
+	multitask :sl4 => ['tests:sl4:all']
 	
-	multitask :all => ['tests:net40']
+	multitask :all => ['tests:net40', 'tests:sl4']
 end
 
 desc "Run tests"

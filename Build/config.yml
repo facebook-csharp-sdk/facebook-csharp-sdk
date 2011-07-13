@@ -22,9 +22,11 @@ path:
  doc: <%= path_doc = "#{root_path}Doc/" %>
  nuget_packages: <%= nuget_packages_path = "#{path_src}packages/" %>
  nuget: <%= nuget_tool(nuget_packages_path,'NuGet.CommandLine','NuGet.exe') %>
+ stat_light: <%= nuget_tool(nuget_packages_path,'StatLight','StatLight.exe') %>
  xunit:
   console:
    x86: <%= "#{tools_path}xunit-1.8/xunit.console.clr4.x86.exe" %>
+
  sln:
   wp7	: <%= "#{path_src}Facebook-WP7.sln" %>
   sl4	: <%= "#{path_src}Facebook-SL4.sln" %>
