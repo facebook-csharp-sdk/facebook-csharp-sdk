@@ -17,6 +17,7 @@ vNEXT
 3. support progress report for ASYNC uploads only if there is at least one MediaObject.
 4. Facebook.dll [assembly: SecurityRules(SecurityRuleSet.Level1)] for .net 4.0 project.
 5. SimpleJson in Facebook.dll for Silverlight doesn't use Reflection.Emit
+6. updated SimpleJson to v0.8
 
 (for SDK developers)
 1. complete rewrite of FacebookClient and FacebookOAuthClient http requests

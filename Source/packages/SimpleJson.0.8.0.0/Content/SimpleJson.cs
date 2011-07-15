@@ -41,6 +41,9 @@ namespace SimpleJson
 {
     #region JsonArray
 
+   /// <summary>
+   /// Represents the json array.
+   /// </summary>
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -48,10 +51,21 @@ namespace SimpleJson
 #endif
  class JsonArray : List<object>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonArray"/> class. 
+        /// </summary>
         public JsonArray() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonArray"/> class. 
+        /// </summary>
+        /// <param name="capacity">The capacity of the json array.</param>
         public JsonArray(int capacity) : base(capacity) { }
 
+        /// <summary>
+        /// The json representation of the array.
+        /// </summary>
+        /// <returns>The json representation of the array.</returns>
         public override string ToString()
         {
             return global::SimpleJson.SimpleJson.SerializeObject(this) ?? string.Empty;
@@ -62,6 +76,9 @@ namespace SimpleJson
 
     #region JsonObject
 
+   /// <summary>
+   /// Represents the json object.
+   /// </summary>
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -497,7 +514,9 @@ namespace SimpleJson
         {
             object jsonObject = DeserializeObject(json);
 
-            return type == null ? jsonObject : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
+            return type == null || jsonObject != null && jsonObject.GetType().IsAssignableFrom(type)
+                       ? jsonObject
+                       : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
         }
 
         public static object DeserializeObject(string json, Type type)
