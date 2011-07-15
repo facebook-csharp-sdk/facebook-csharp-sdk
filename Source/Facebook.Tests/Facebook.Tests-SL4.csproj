@@ -132,6 +132,7 @@
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThanAreNotReadOnlyOrVideoUploadThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThatAreOfReadOnlyThen.cs" />
     <Compile Include="FacebookClient\ProcessBatchResult\ProcessBatchResultTests.cs" />
+    <Compile Include="FacebookClient\ProcessBatchResult\ProcessBatchResultTestsWhenOmitResponseOnSuccessIsTrue.cs" />
     <Compile Include="FacebookOAuthClient\GetLoginUrl\IfClientIdIsEmptyThen.cs" />
     <Compile Include="FacebookOAuthClient\GetLoginUrl\IfRedirectUriIsEmptyThen.cs" />
     <Compile Include="FacebookOAuthResult\ctor\GivenADictionaryWithAccessTokenThen.cs" />
