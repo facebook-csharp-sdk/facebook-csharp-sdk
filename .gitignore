@@ -7,6 +7,7 @@ obj/
 *.suo
 *.user
 *.xap
+!*StatLight.Client.For.*.xap
 
 *.ncb
 
