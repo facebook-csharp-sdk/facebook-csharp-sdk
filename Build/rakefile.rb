@@ -109,6 +109,7 @@ namespace :build do
 	  msb.targets :Build
 	end
 	
+    desc "Build documentation files"
 	msbuild :docs => ['build:net40'] do |msb|
 		msb.properties :configuration => config['version']['configuration']
 		msb.properties :DocumentationSourcePath => "#{ config['path']['output']}Release/Net40/"
