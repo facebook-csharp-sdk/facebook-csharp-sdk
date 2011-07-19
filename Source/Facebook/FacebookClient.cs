@@ -106,7 +106,7 @@ namespace Facebook
         /// <summary>
         /// Event handler for upload progress changed.
         /// </summary>
-        public event EventHandler<FacebookApiUploadProgressChangedEventArgs> UploadProgressChanged;
+        public event EventHandler<FacebookUploadProgressChangedEventArgs> UploadProgressChanged;
 
         /// <summary>
         /// Gets or sets the access token.
@@ -765,7 +765,7 @@ namespace Facebook
                                     if (notifyUploadProgressChanged)
                                     {
                                         bytesSent += nread;
-                                        OnUploadProgressChanged(new FacebookApiUploadProgressChangedEventArgs(0, 0, bytesSent, totalBytesToSend, ((int)(bytesSent * 100 / totalBytesToSend)), userToken));
+                                        OnUploadProgressChanged(new FacebookUploadProgressChangedEventArgs(0, 0, bytesSent, totalBytesToSend, ((int)(bytesSent * 100 / totalBytesToSend)), userToken));
                                     }
                                 }
 
@@ -1396,7 +1396,7 @@ namespace Facebook
                 DeleteCompleted(this, args);
         }
 
-        protected void OnUploadProgressChanged(FacebookApiUploadProgressChangedEventArgs args)
+        protected void OnUploadProgressChanged(FacebookUploadProgressChangedEventArgs args)
         {
             if (UploadProgressChanged != null)
                 UploadProgressChanged(this, args);

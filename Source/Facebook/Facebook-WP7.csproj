@@ -131,7 +131,7 @@
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
-    <Compile Include="FacebookApiUploadProgressChangedEventArgs.cs" />
+    <Compile Include="FacebookUploadProgressChangedEventArgs.cs" />
     <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookAsyncResult.cs" />

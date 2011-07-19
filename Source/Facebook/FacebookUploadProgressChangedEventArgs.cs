@@ -14,7 +14,7 @@ namespace Facebook
     /// <summary>
     /// Represents Facebook api upload progress changed event args.
     /// </summary>
-    public class FacebookApiUploadProgressChangedEventArgs : ProgressChangedEventArgs
+    public class FacebookUploadProgressChangedEventArgs : ProgressChangedEventArgs
     {
         private readonly long _received;
         private readonly long _sent;
@@ -22,7 +22,7 @@ namespace Facebook
         private readonly long _totalSend;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApiUploadProgressChangedEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="FacebookUploadProgressChangedEventArgs"/> class.
         /// </summary>
         /// <param name="bytesReceived">Bytes received.</param>
         /// <param name="totalBytesToReceive">Total bytes to receive.</param>
@@ -30,7 +30,7 @@ namespace Facebook
         /// <param name="totalBytesToSend">Total bytes to send.</param>
         /// <param name="progressPercentage">Progress percentage.</param>
         /// <param name="userToken">User token.</param>
-        public FacebookApiUploadProgressChangedEventArgs(long bytesReceived, long totalBytesToReceive, long bytesSent, long totalBytesToSend, int progressPercentage, object userToken)
+        public FacebookUploadProgressChangedEventArgs(long bytesReceived, long totalBytesToReceive, long bytesSent, long totalBytesToSend, int progressPercentage, object userToken)
             : base(progressPercentage, userToken)
         {
             _received = bytesReceived;

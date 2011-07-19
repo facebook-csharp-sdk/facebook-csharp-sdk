@@ -117,7 +117,6 @@
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
-    <Compile Include="FacebookApiUploadProgressChangedEventArgs.cs" />
     <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookBatchParameter.cs" />
@@ -127,6 +126,7 @@
     <Compile Include="FacebookOAuthClient.cs" />
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookOAuthResult.cs" />
+    <Compile Include="FacebookUploadProgressChangedEventArgs.cs" />
     <Compile Include="FacebookUtils.cs" />
     <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
