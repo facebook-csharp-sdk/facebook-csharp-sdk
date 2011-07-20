@@ -1,6 +1,6 @@
 ﻿// Fluent HTTP CORE
 // Copyright 2011. Prabir Shrestha (www.prabir.me)
-// Apache License, Version 2.0 
+// Apache License, Version 2.0
 
 //#define FLUENTHTTP_CORE_UTILS
 //#define FLUENTHTTP_CORE_TPL
@@ -17,6 +17,10 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+
+#if FLUENTHTTP_CORE_TPL
+using System.Threading.Tasks;
+#endif
 
 
 namespace FluentHttp
@@ -287,6 +291,20 @@ namespace FluentHttp
         {
             return _httpWebRequest.EndGetRequestStream(asyncResult);
         }
+
+#if FLUENTHTTP_CORE_TPL
+
+        public virtual Task<HttpWebResponseWrapper> GetResponseAsync()
+        {
+            return Task<HttpWebResponseWrapper>.Factory.FromAsync(BeginGetResponse, EndGetResponse, null);
+        }
+
+        public virtual Task<Stream> GetRequestStreamAsync()
+        {
+            return Task<Stream>.Factory.FromAsync(BeginGetRequestStream, EndGetRequestStream, null);
+        }
+
+#endif
 
 #if !SILVERLIGHT
 
@@ -766,76 +784,65 @@ namespace FluentHttp
 
 #if FLUENTHTTP_CORE_TPL
 
-        static System.Threading.Tasks.TaskCompletionSource<T> CreateSource<T>(object state)
+        static void TransferCompletionToTask<T>(TaskCompletionSource<T> tcs, bool requireMatch, AsyncCompletedEventArgs e, Func<T> getResult, Action unregisterHandler)
         {
-            return new System.Threading.Tasks.TaskCompletionSource<T>(state);
-        }
+            if (requireMatch)
+            {
+                if (e.UserState != tcs)
+                    return;
+            }
 
-        static void TransferCompletionToTask<T>(System.Threading.Tasks.TaskCompletionSource<T> tcs, AsyncCompletedEventArgs e, Func<T> getResult, Action unregisterHandler)
-        {
-            if (e.UserState == tcs)
+            try
+            {
+                unregisterHandler();
+            }
+            finally
             {
                 if (e.Cancelled) tcs.TrySetCanceled();
                 else if (e.Error != null) tcs.TrySetException(e.Error);
                 else tcs.TrySetResult(getResult());
-                if (unregisterHandler != null) unregisterHandler();
             }
         }
 
-        public virtual System.Threading.Tasks.Task<Stream> OpenReadAsyncTask(object state)
+        public virtual Task<Stream> OpenReadAsyncTask()
         {
-            var tcs = CreateSource<Stream>(state);
-
+            var tcs = new TaskCompletionSource<Stream>(_httpWebRequest);
             OpenReadCompletedEventHandler handler = null;
-            handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => OpenReadCompleted -= handler);
-
+            handler = (sender, e) => TransferCompletionToTask(tcs, true, e, () => e.Result, () => OpenReadCompleted -= handler);
             OpenReadCompleted += handler;
 
             try
             {
-                OpenReadAsync(state);
+                OpenReadAsync(tcs);
             }
-            catch (Exception)
+            catch
             {
                 OpenReadCompleted -= handler;
-                tcs.TrySetCanceled();
                 throw;
             }
 
             return tcs.Task;
         }
 
-        public virtual System.Threading.Tasks.Task<Stream> OpenReadAsyncTask()
+        public virtual Task<Stream> OpenWriteAsyncTask()
         {
-            return OpenReadAsyncTask(null);
-        }
-
-        public virtual System.Threading.Tasks.Task<Stream> OpenWriteAsyncTask(object state)
-        {
-            var tcs = CreateSource<Stream>(state);
+            var tcs = new TaskCompletionSource<Stream>(_httpWebRequest);
 
             OpenWriteCompletedEventHandler handler = null;
-            handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => OpenWriteCompleted -= handler);
-
+            handler = (sender, e) => TransferCompletionToTask(tcs, true, e, () => e.Result, () => OpenWriteCompleted -= handler);
             OpenWriteCompleted += handler;
 
             try
             {
-                OpenReadAsync(state);
+                OpenReadAsync(tcs);
             }
-            catch (Exception)
+            catch
             {
                 OpenWriteCompleted -= handler;
-                tcs.TrySetCanceled();
                 throw;
             }
 
             return tcs.Task;
-        }
-
-        public virtual System.Threading.Tasks.Task<Stream> OpenWriteAsyncTask()
-        {
-            return OpenWriteAsyncTask(null);
         }
 
 #endif
@@ -1614,7 +1621,7 @@ namespace FluentHttp
 #endif
 
         #endregion
-        
+
         #region Utils
 
 #if FLUENTHTTP_CORE_UTILS
@@ -1802,7 +1809,7 @@ namespace FluentHttp
 #endif
 
         #endregion
-        
+
         #region Authentication
 
 #if FLUENTHTTP_HTTPBASIC_AUTHENTICATION
