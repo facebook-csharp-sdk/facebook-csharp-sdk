@@ -1,15 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using FluentHttp;
+﻿// --------------------------------
+// <copyright file="FacebookUtils.cs" company="Thuzi LLC (www.thuzi.com)">
+//     Microsoft Public License (Ms-PL)
+// </copyright>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
+// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
+// <website>http://facebooksdk.codeplex.com</website>
+// ---------------------------------
 
 namespace Facebook
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics.Contracts;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using FluentHttp;
+
     internal class FacebookUtils
     {
         #region Constants
@@ -175,7 +184,7 @@ namespace Facebook
         /// <exception cref="InvalidOperationException">
         /// Throws error if the http method is not Get,Post or Delete.
         /// </exception>
-        internal static string ConvertToString(HttpMethod httpMethod)
+        public static string ConvertToString(HttpMethod httpMethod)
         {
             switch (httpMethod)
             {
@@ -199,7 +208,7 @@ namespace Facebook
         /// <param name="path">The path to parse.</param>
         /// <param name="parameters">The dictionary</param>
         /// <returns></returns>
-        internal static string ParseQueryParametersToDictionary(string path, IDictionary<string, object> parameters)
+        public static string ParseQueryParametersToDictionary(string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(parameters != null);
 
@@ -282,7 +291,7 @@ namespace Facebook
         /// <returns>
         /// The string of the url for the given parameters.
         /// </returns>
-        internal static Uri GetUrl(IDictionary<string, Uri> domainMaps, string name, string path, IDictionary<string, object> parameters)
+        public static Uri GetUrl(IDictionary<string, Uri> domainMaps, string name, string path, IDictionary<string, object> parameters)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
@@ -319,7 +328,7 @@ namespace Facebook
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <returns>A Json formatted querystring.</returns>
-        internal static string ToJsonQueryString(IDictionary<string, object> dictionary)
+        public static string ToJsonQueryString(IDictionary<string, object> dictionary)
         {
             Contract.Requires(dictionary != null);
             Contract.Ensures(Contract.Result<string>() != null);
@@ -358,7 +367,7 @@ namespace Facebook
             return sb.ToString();
         }
 
-        internal static string ToJsonString(object value)
+        public static string ToJsonString(object value)
         {
             // Format Object As Json And Remove leading and trailing parenthesis
             string jsonValue = JsonSerializer.Current.SerializeObject(value);
@@ -376,7 +385,7 @@ namespace Facebook
             return jsonValue;
         }
 
-        internal static bool IsUsingRestApi(IDictionary<string, Uri> domainMaps, Uri requestUri)
+        public static bool IsUsingRestApi(IDictionary<string, Uri> domainMaps, Uri requestUri)
         {
             Contract.Requires(requestUri != null);
 
@@ -408,7 +417,7 @@ namespace Facebook
         /// <returns>
         /// Returns the dictionary equivalent of the specified object.
         /// </returns>
-        internal static IDictionary<string, object> ToDictionary(object parameters)
+        public static IDictionary<string, object> ToDictionary(object parameters)
         {
             Contract.Requires(parameters != null);
             Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
@@ -428,7 +437,7 @@ namespace Facebook
         /// <param name="first">Default values, only used if second does not contain a value.</param>
         /// <param name="second">Every value of the merged object is used.</param>
         /// <returns>The merged dictionary</returns>
-        internal static IDictionary<TKey, TValue> Merge<TKey, TValue>(IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+        public static IDictionary<TKey, TValue> Merge<TKey, TValue>(IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
         {
             Contract.Ensures(Contract.Result<IDictionary<TKey, TValue>>() != null);
 
@@ -461,7 +470,7 @@ namespace Facebook
         /// <returns>
         /// Returns a dictionary of keys and values for the querystring.
         /// </returns>
-        internal static IDictionary<string, object> ParseUrlQueryString(string query)
+        public static IDictionary<string, object> ParseUrlQueryString(string query)
         {
             Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 

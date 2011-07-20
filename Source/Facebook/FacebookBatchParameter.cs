@@ -39,7 +39,6 @@ namespace Facebook
                     "SELECT first_name FROM user WHERE uid=me()",
                     "SELECT last_name FROM user WHERE uid=me()"));
          * 
-         * 
          */
 
         /// <summary>
