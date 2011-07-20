@@ -13,6 +13,7 @@ namespace Facebook
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.IO;
+    using System.Net;
     using FluentHttp;
 
     public class FacebookOAuthClient
@@ -608,13 +609,12 @@ namespace Facebook
 
             var requestUrl = GetUrl(name, path, parameters);
 
-            var httpHelper = new HttpHelper(requestUrl);
-            var httpWebRequest = httpHelper.HttpWebRequest;
+            var httpWebRequest = CreateHttpWebRequest(requestUrl);
             httpWebRequest.Method = "GET";
 
-            ModifyHttpWebRequest(httpWebRequest);
-
+            var httpHelper = new HttpHelper(httpWebRequest);
             Stream responseStream;
+
             try
             {
                 responseStream = httpHelper.OpenRead();
@@ -652,11 +652,10 @@ namespace Facebook
 
             var requestUrl = GetUrl(name, path, parameters);
 
-            var httpHelper = new HttpHelper(requestUrl);
-            var httpWebRequest = httpHelper.HttpWebRequest;
+            var httpWebRequest = CreateHttpWebRequest(requestUrl);
             httpWebRequest.Method = "GET";
 
-            ModifyHttpWebRequest(httpWebRequest);
+            var httpHelper = new HttpHelper(httpWebRequest);
 
             httpHelper.OpenReadCompleted +=
                 (o, e) =>
@@ -743,13 +742,18 @@ namespace Facebook
             return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
         }
 
+        /// <summary>
+        /// Creates the http web request.
+        /// </summary>
+        /// <param name="url">The url of the http web request.</param>
+        /// <returns>The http helper.</returns>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        protected virtual void ModifyHttpWebRequest(HttpWebRequestWrapper httpWebRequest)
+        protected virtual HttpWebRequestWrapper CreateHttpWebRequest(Uri url)
         {
-            // allow users to modify the http web request for additional advanced stuffs.
-            // such as (Changing Local End Point) http://facebooksdk.codeplex.com/workitem/5861
-            // proxy (http://facebooksdk.codeplex.com/discussions/250498)
-            // credentials and so on.
+            Contract.Requires(url != null);
+            Contract.Ensures(Contract.Result<HttpWebRequestWrapper>() != null);
+
+            return new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(url));
         }
 
         #region Parse OAuth Result
