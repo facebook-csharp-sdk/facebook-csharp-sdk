@@ -29,7 +29,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\net40-client\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;TPL;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -64,7 +64,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\net40-client\</OutputPath>
-    <DefineConstants>TRACE;TPL;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING</DefineConstants>
+    <DefineConstants>TRACE;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
