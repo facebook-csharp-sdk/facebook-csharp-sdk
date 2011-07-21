@@ -775,22 +775,24 @@ namespace Facebook
                         {
                             try
                             {
-                                byte[] buffer = new byte[1024 * 4]; // 4 kb
-
-                                int nread;
-                                long totalBytesToSend = input.Length;
-                                long bytesSent = 0;
-
-                                var output = e.Result;
-                                while ((nread = input.Read(buffer, 0, buffer.Length)) != 0)
+                                using (var output = e.Result)
                                 {
-                                    output.Write(buffer, 0, nread);
+                                    byte[] buffer = new byte[1024 * 4]; // 4 kb
 
-                                    // notify upload progress changed if required.
-                                    if (notifyUploadProgressChanged)
+                                    int nread;
+                                    long totalBytesToSend = input.Length;
+                                    long bytesSent = 0;
+
+                                    while ((nread = input.Read(buffer, 0, buffer.Length)) != 0)
                                     {
-                                        bytesSent += nread;
-                                        OnUploadProgressChanged(new FacebookUploadProgressChangedEventArgs(0, 0, bytesSent, totalBytesToSend, ((int)(bytesSent * 100 / totalBytesToSend)), userToken));
+                                        output.Write(buffer, 0, nread);
+
+                                        // notify upload progress changed if required.
+                                        if (notifyUploadProgressChanged)
+                                        {
+                                            bytesSent += nread;
+                                            OnUploadProgressChanged(new FacebookUploadProgressChangedEventArgs(0, 0, bytesSent, totalBytesToSend, ((int)(bytesSent * 100 / totalBytesToSend)), userToken));
+                                        }
                                     }
                                 }
 
