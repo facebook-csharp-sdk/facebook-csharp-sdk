@@ -395,7 +395,7 @@ namespace Facebook
             Stream input;
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
-            var httpHelper = PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects);
+            var httpHelper = new HttpHelper(PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects));
 
             if (input != null)
             {
@@ -692,12 +692,15 @@ namespace Facebook
 
         #endregion
 
+        private HttpWebRequestWrapper _httpWebRequest;
+
         internal protected virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
         {
             Stream input;
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
-            var httpHelper = PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects);
+            var httpHelper = new HttpHelper(PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects));
+            _httpWebRequest = httpHelper.HttpWebRequest;
 
             bool isBatchRequest = httpMethod == HttpMethod.Post && path == null && parameters.ContainsKey("batch");
 
@@ -707,7 +710,11 @@ namespace Facebook
                 (o, e) =>
                 {
                     FacebookApiEventArgs args = null;
-                    if (e.Error == null)
+                    if (e.Cancelled)
+                    {
+                        args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest);
+                    }
+                    else if (e.Error == null)
                     {
                         Exception ex;
                         string responseString;
@@ -745,8 +752,11 @@ namespace Facebook
                     (o, e) =>
                     {
                         FacebookApiEventArgs args;
-
-                        if (e.Error == null)
+                        if (e.Cancelled)
+                        {
+                            args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest);
+                        }
+                        else if (e.Error == null)
                         {
                             try
                             {
@@ -784,6 +794,14 @@ namespace Facebook
                                 httpHelper.OpenReadAsync();
                                 return;
                             }
+                            catch (WebException ex)
+                            {
+                                args = new FacebookApiEventArgs(new WebExceptionWrapper(ex), ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest);
+                            }
+                            catch (WebExceptionWrapper ex)
+                            {
+                                args = new FacebookApiEventArgs(ex, ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest);
+                            }
                             catch (Exception ex)
                             {
                                 args = new FacebookApiEventArgs(ex, false, userToken, null, isBatchRequest);
@@ -798,6 +816,18 @@ namespace Facebook
                     };
 
                 httpHelper.OpenWriteAsync(userToken);
+            }
+        }
+
+        /// <summary>
+        /// Cancels the asynchronous request.
+        /// </summary>
+        public void CancelAsync()
+        {
+            lock (this)
+            {
+                if (_httpWebRequest != null)
+                    _httpWebRequest.Abort();
             }
         }
 
@@ -1142,7 +1172,7 @@ namespace Facebook
 
         #endregion
 
-        private HttpHelper PrepareRequest(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, out Stream input, out IDictionary<string, FacebookMediaObject> mediaObjects)
+        private HttpWebRequestWrapper PrepareRequest(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, out Stream input, out IDictionary<string, FacebookMediaObject> mediaObjects)
         {
             parameters = parameters ?? new Dictionary<string, object>();
             mediaObjects = null;
@@ -1204,8 +1234,7 @@ namespace Facebook
                 httpWebRequest.ContentLength = input.Length;
 #endif
 
-            var httpHelper = new HttpHelper(httpWebRequest);
-            return httpHelper;
+            return httpWebRequest;
         }
 
         private object ProcessResponse(HttpHelper httpHelper, Stream responseStream, Type resultType, out string responseStr, out Exception exception)

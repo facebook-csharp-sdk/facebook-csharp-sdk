@@ -17,7 +17,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
-
 #if FLUENTHTTP_CORE_TPL
 using System.Threading.Tasks;
 #endif
@@ -489,6 +488,7 @@ namespace FluentHttp
     public class WebExceptionWrapper : Exception
     {
         private readonly WebException _webException;
+        private readonly WebExceptionStatus _status = WebExceptionStatus.UnknownError;
 
         protected WebExceptionWrapper() { }
 
@@ -496,6 +496,7 @@ namespace FluentHttp
             : base(webException == null ? null : webException.Message, webException == null ? null : webException.InnerException)
         {
             _webException = webException;
+            _status = webException == null ? WebExceptionStatus.UnknownError : webException.Status;
         }
 
 #if (!SILVERLIGHT)
@@ -523,6 +524,11 @@ namespace FluentHttp
         {
             get { return _webException; }
         }
+
+        public virtual WebExceptionStatus Status
+        {
+            get { return _status; }
+        }
     }
 
 }
@@ -532,16 +538,6 @@ namespace FluentHttp
     internal delegate void OpenReadCompletedEventHandler(object sender, OpenReadCompletedEventArgs e);
 
     internal delegate void OpenWriteCompletedEventHandler(object sender, OpenWriteCompletedEventArgs e);
-
-#if FLUENTHTTP_CORE_STREAM
-
-    internal delegate void StreamCopyCompletedDelegate(Stream input, Stream output, bool cancelled, Exception exception);
-
-    delegate void CopyStreamDoneDelegate(bool cancelled, Exception exception);
-
-#endif
-
-    internal delegate bool HttpWebRequestCancelDelegate();
 
     internal class OpenReadCompletedEventArgs : AsyncCompletedEventArgs
     {
@@ -687,20 +683,46 @@ namespace FluentHttp
         {
             if (_httpWebResponse == null)
             {
-                IAsyncResult asyncResult = _httpWebRequest.BeginGetResponse(ar => ResponseCallback(ar, userToken), null);
+                WebExceptionWrapper webExceptionWrapper = null;
+                try
+                {
+                    IAsyncResult asyncResult = _httpWebRequest.BeginGetResponse(ar => ResponseCallback(ar, userToken), null);
 
-                int timeout = 0;
+                    int timeout = 0;
 
 #if !SILVERLIGHT
-                if (HttpWebRequest.Timeout > 0)
-                    timeout = HttpWebRequest.Timeout;
+                    if (HttpWebRequest.Timeout > 0)
+                        timeout = HttpWebRequest.Timeout;
 #endif
 
-                if (Timeout > 0)
-                    timeout = Timeout;
+                    if (Timeout > 0)
+                        timeout = Timeout;
 
-                if (timeout > 0)
-                    ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, ScanTimoutCallback, userToken, timeout, true);
+                    if (timeout > 0)
+                        ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, ScanTimoutCallback, userToken, timeout, true);
+                }
+                catch (WebException webException)
+                {
+                    if (webException.Response != null)
+                        _httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
+                    webExceptionWrapper = new WebExceptionWrapper(webException);
+                    _innerException = webExceptionWrapper;
+                }
+                catch (WebExceptionWrapper webException)
+                {
+                    _httpWebResponse = webException.GetResponse();
+                    webExceptionWrapper = webException;
+                    _innerException = webExceptionWrapper;
+                }
+                catch (Exception ex)
+                {
+                    webExceptionWrapper = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                }
+                finally
+                {
+                    if (webExceptionWrapper != null)
+                        OnOpenReadCompleted(new OpenReadCompletedEventArgs(null, webExceptionWrapper, webExceptionWrapper.Status == WebExceptionStatus.RequestCanceled, userToken));
+                }
             }
             else
                 ResponseCallback(null, userToken);
@@ -713,31 +735,53 @@ namespace FluentHttp
 
         public virtual void OpenWriteAsync(object userToken)
         {
-            _httpWebRequest.BeginGetRequestStream(
-                ar =>
-                {
-                    Stream stream = null;
-                    Exception exception = null;
+            WebExceptionWrapper webExceptionWrapper = null;
 
-                    try
+            try
+            {
+                _httpWebRequest.BeginGetRequestStream(
+                    ar =>
                     {
-                        stream = _httpWebRequest.EndGetRequestStream(ar);
-                    }
-                    catch (WebException webException)
-                    {
-                        exception = new WebExceptionWrapper(webException);
-                    }
-                    catch (WebExceptionWrapper webException)
-                    {
-                        exception = webException;
-                    }
-                    catch (Exception ex)
-                    {
-                        exception = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
-                    }
+                        Stream stream = null;
+                        Exception exception = null;
 
-                    OnOpenWriteCompleted(new OpenWriteCompletedEventArgs(stream, exception, false, userToken));
-                }, userToken);
+                        try
+                        {
+                            stream = _httpWebRequest.EndGetRequestStream(ar);
+                        }
+                        catch (WebException webException)
+                        {
+                            exception = new WebExceptionWrapper(webException);
+                        }
+                        catch (WebExceptionWrapper webException)
+                        {
+                            exception = webException;
+                        }
+                        catch (Exception ex)
+                        {
+                            exception = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                        }
+
+                        OnOpenWriteCompleted(new OpenWriteCompletedEventArgs(stream, exception, false, userToken));
+                    }, userToken);
+            }
+            catch (WebException webException)
+            {
+                webExceptionWrapper = new WebExceptionWrapper(webException);
+            }
+            catch (WebExceptionWrapper webException)
+            {
+                webExceptionWrapper = webException;
+            }
+            catch (Exception ex)
+            {
+                webExceptionWrapper = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+            }
+            finally
+            {
+                if (webExceptionWrapper != null)
+                    OnOpenWriteCompleted(new OpenWriteCompletedEventArgs(null, webExceptionWrapper, webExceptionWrapper.Status == WebExceptionStatus.RequestCanceled, userToken));
+            }
         }
 
         public virtual void OpenWriteAsync()
@@ -747,7 +791,7 @@ namespace FluentHttp
 
         private void ResponseCallback(IAsyncResult asyncResult, object userToken)
         {
-            Exception exception = null;
+            WebExceptionWrapper webExceptionWrapper = null;
             Stream stream = null;
             try
             {
@@ -759,21 +803,22 @@ namespace FluentHttp
             {
                 if (webException.Response != null)
                     _httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
-                _innerException = new WebExceptionWrapper(webException);
-                exception = _innerException;
+                webExceptionWrapper = new WebExceptionWrapper(webException);
+                _innerException = webExceptionWrapper;
             }
             catch (WebExceptionWrapper webException)
             {
                 _httpWebResponse = webException.GetResponse();
-                _innerException = webException;
-                exception = _innerException;
+                webExceptionWrapper = webException;
+                _innerException = webExceptionWrapper;
             }
             catch (Exception ex)
             {
-                exception = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                webExceptionWrapper = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                _innerException = webExceptionWrapper;
             }
 
-            OnOpenReadCompleted(new OpenReadCompletedEventArgs(stream, exception, false, userToken));
+            OnOpenReadCompleted(new OpenReadCompletedEventArgs(stream, webExceptionWrapper, webExceptionWrapper != null && webExceptionWrapper.Status == WebExceptionStatus.RequestCanceled, userToken));
         }
 
         private void ScanTimoutCallback(object state, bool timedOut)
@@ -784,13 +829,10 @@ namespace FluentHttp
 
 #if FLUENTHTTP_CORE_TPL
 
-        static void TransferCompletionToTask<T>(TaskCompletionSource<T> tcs, bool requireMatch, AsyncCompletedEventArgs e, Func<T> getResult, Action unregisterHandler)
+        static void TransferCompletionToTask<T>(TaskCompletionSource<T> tcs, AsyncCompletedEventArgs e, Func<T> getResult, Action unregisterHandler)
         {
-            if (requireMatch)
-            {
-                if (e.UserState != tcs)
-                    return;
-            }
+            if (e.UserState != tcs)
+                return;
 
             try
             {
@@ -804,42 +846,71 @@ namespace FluentHttp
             }
         }
 
-        public virtual Task<Stream> OpenReadAsyncTask()
+        public virtual Task<Stream> OpenReadTaskAsync(CancellationToken cancellationToken)
         {
-            var tcs = new TaskCompletionSource<Stream>(_httpWebRequest);
-            OpenReadCompletedEventHandler handler = null;
-            handler = (sender, e) => TransferCompletionToTask(tcs, true, e, () => e.Result, () => OpenReadCompleted -= handler);
-            OpenReadCompleted += handler;
-
-            try
+            var tcs = new TaskCompletionSource<Stream>(this);
+            if (cancellationToken.IsCancellationRequested)
             {
-                OpenReadAsync(tcs);
+                tcs.TrySetCanceled();
             }
-            catch
+            else
             {
-                OpenReadCompleted -= handler;
-                throw;
+                var ctr = cancellationToken.Register(CancelAsync);
+                OpenReadCompletedEventHandler handler = null;
+                handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenReadCompleted -= handler; });
+                OpenReadCompleted += handler;
+
+                try
+                {
+                    OpenReadAsync(tcs);
+                    if (cancellationToken.IsCancellationRequested)
+                        CancelAsync();
+                }
+                catch
+                {
+                    OpenReadCompleted -= handler;
+                    throw;
+                }
             }
 
             return tcs.Task;
         }
 
-        public virtual Task<Stream> OpenWriteAsyncTask()
+        public virtual Task<Stream> OpenReadTaskAsync()
         {
-            var tcs = new TaskCompletionSource<Stream>(_httpWebRequest);
+            return OpenReadTaskAsync(CancellationToken.None);
+        }
 
-            OpenWriteCompletedEventHandler handler = null;
-            handler = (sender, e) => TransferCompletionToTask(tcs, true, e, () => e.Result, () => OpenWriteCompleted -= handler);
-            OpenWriteCompleted += handler;
+        public virtual Task<Stream> OpenWriteTaskAsync()
+        {
+            return OpenWriteTaskAsync(CancellationToken.None);
+        }
 
-            try
+        public virtual Task<Stream> OpenWriteTaskAsync(CancellationToken cancellationToken)
+        {
+            var tcs = new TaskCompletionSource<Stream>(this);
+            if (cancellationToken.IsCancellationRequested)
             {
-                OpenReadAsync(tcs);
+                tcs.TrySetCanceled();
             }
-            catch
+            else
             {
-                OpenWriteCompleted -= handler;
-                throw;
+                var ctr = cancellationToken.Register(CancelAsync);
+                OpenWriteCompletedEventHandler handler = null;
+                handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenWriteCompleted -= handler; });
+                OpenWriteCompleted += handler;
+
+                try
+                {
+                    OpenWriteAsync(tcs);
+                    if (cancellationToken.IsCancellationRequested)
+                        CancelAsync();
+                }
+                catch
+                {
+                    OpenWriteCompleted -= handler;
+                    throw;
+                }
             }
 
             return tcs.Task;
@@ -847,32 +918,9 @@ namespace FluentHttp
 
 #endif
 
-        private HttpWebRequestCancelDelegate _cancelFunc;
-
-        public void CancelAsync(HttpWebRequestCancelDelegate cancelFunc)
-        {
-            lock (this)
-            {
-                _cancelFunc = cancelFunc;
-            }
-        }
-
         public void CancelAsync()
         {
-            CancelAsync(() => true);
-        }
-
-        public bool IsCancelled
-        {
-            get
-            {
-                if (_cancelFunc != null && _cancelFunc())
-                {
-                    HttpWebRequest.Abort();
-                    return true;
-                }
-                return false;
-            }
+            HttpWebRequest.Abort();
         }
 
         protected virtual void OnOpenReadCompleted(OpenReadCompletedEventArgs args)
@@ -1746,50 +1794,6 @@ namespace FluentHttp
                 if (read <= 0)
                     return;
             }
-        }
-
-        public void CopyStreamAsync(Stream input, Stream output, int? bufferSize, bool flushInput, bool flushOutput, StreamCopyCompletedDelegate completed)
-        {
-            byte[] buffer = new byte[bufferSize ?? 1024 * 4];
-            var asyncOp = AsyncOperationManager.CreateOperation(null);
-
-            CopyStreamDoneDelegate done = (c, e) =>
-            {
-                if (completed != null) asyncOp.Post(delegate
-                {
-                    completed(input, output, c, e);
-                }, null);
-            };
-
-            AsyncCallback rc = null;
-            rc = readResult =>
-            {
-                try
-                {
-                    int read = input.EndRead(readResult);
-                    if (read > 0)
-                    {
-                        if (flushInput) input.Flush();
-                        output.BeginWrite(buffer, 0, read, writeResult =>
-                        {
-                            try
-                            {
-                                output.EndWrite(writeResult);
-                                if (flushOutput) output.Flush();
-                                if (IsCancelled)
-                                    done(true, null);
-                                else
-                                    input.BeginRead(buffer, 0, buffer.Length, rc, null);
-                            }
-                            catch (Exception exc) { done(false, exc); }
-                        }, null);
-                    }
-                    else done(false, null);
-                }
-                catch (Exception exc) { done(false, exc); }
-            };
-
-            input.BeginRead(buffer, 0, buffer.Length, rc, null);
         }
 
 #if FLUENTHTTP_CORE_TPL
