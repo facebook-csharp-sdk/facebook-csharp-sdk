@@ -108,6 +108,16 @@ namespace Facebook
         /// </summary>
         public event EventHandler<FacebookUploadProgressChangedEventArgs> UploadProgressChanged;
 
+#if TPL
+
+        /// <summary>
+        /// Event handler when http web request wrapper is created for async api only.
+        /// (used internally by TPL for cancellation support)
+        /// </summary>
+        private event EventHandler<HttpWebRequestCreatedEventArgs> HttpWebRequestWrapperCreated;
+
+#endif
+
         /// <summary>
         /// Gets or sets the access token.
         /// </summary>
@@ -819,6 +829,283 @@ namespace Facebook
             }
         }
 
+#if TPL
+
+        #region Get
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(path));
+
+            return GetTaskAsync(path, null);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(IDictionary<string, object> parameters)
+        {
+            Contract.Requires(parameters != null);
+
+            return GetTaskAsync(null, parameters);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+
+            return GetTaskAsync(path, parameters, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
+        {
+            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+
+            return ApiTaskAsync(path, parameters, HttpMethod.Get, null, cancellationToken);
+        }
+
+        #endregion
+
+        #region Post
+
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(IDictionary<string, object> parameters)
+        {
+            Contract.Requires(parameters != null);
+
+            return PostTaskAsync(null, parameters, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters)
+        {
+            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+
+            return PostTaskAsync(path, parameters, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
+        {
+            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+
+            return ApiTaskAsync(path, parameters, HttpMethod.Post, null, cancellationToken);
+        }
+
+        #endregion
+
+        #region Delete
+
+        /// <summary>
+        /// Makes an asynchronous DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public virtual System.Threading.Tasks.Task<object> DeleteTaskAsync(string path)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(path));
+
+            return DeleteTaskAsync(path, null);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public virtual System.Threading.Tasks.Task<object> DeleteTaskAsync(string path, IDictionary<string, object> parameters)
+        {
+            return DeleteTaskAsync(path, parameters, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        /// <exception cref="Facebook.FacebookApiException" />
+        public virtual System.Threading.Tasks.Task<object> DeleteTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
+        {
+            return ApiTaskAsync(path, parameters, HttpMethod.Delete, null, cancellationToken);
+        }
+        
+        #endregion
+
+        protected virtual System.Threading.Tasks.Task<object> ApiTaskAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken, System.Threading.CancellationToken cancellationToken)
+        {
+            var tcs = new System.Threading.Tasks.TaskCompletionSource<object>(userToken);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                tcs.TrySetCanceled();
+            }
+            else
+            {
+                HttpWebRequestWrapper httpWebRequest = null;
+                EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
+                httpWebRequestCreatedHandler += (o, e) =>
+                {
+                    if (e.UserState != tcs)
+                        return;
+                    httpWebRequest = e.HttpWebRequest;
+                };
+
+                var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
+
+                EventHandler<FacebookApiEventArgs> handler = null;
+                handler = (sender, e) =>
+                        {
+                            FacebookUtils.TransferCompletionToTask(tcs, e, e.GetResultData, () =>
+                                                                                                {
+                                                                                                    if (ctr != null) ctr.Dispose();
+                                                                                                    RemoveTaskAsyncHandlers(httpMethod, handler);
+                                                                                                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                                                                                                });
+                        };
+
+                if (httpMethod == HttpMethod.Get)
+                    GetCompleted += handler;
+                else if (httpMethod == HttpMethod.Post)
+                    PostCompleted += handler;
+                else if (httpMethod == HttpMethod.Delete)
+                    DeleteCompleted += handler;
+                else
+                    throw new ArgumentOutOfRangeException("httpMethod");
+
+                HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
+
+                try
+                {
+                    ApiAsync(path, parameters, httpMethod, tcs);
+                    if (cancellationToken.IsCancellationRequested && httpWebRequest != null) httpWebRequest.Abort();
+                }
+                catch
+                {
+                    RemoveTaskAsyncHandlers(httpMethod, handler);
+                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                    throw;
+                }
+            }
+
+            return tcs.Task;
+        }
+
+        private void RemoveTaskAsyncHandlers(HttpMethod httpMethod, EventHandler<FacebookApiEventArgs> handler)
+        {
+            if (httpMethod == HttpMethod.Get)
+                GetCompleted -= handler;
+            else if (httpMethod == HttpMethod.Post)
+                PostCompleted -= handler;
+            else if (httpMethod == HttpMethod.Delete)
+                DeleteCompleted -= handler;
+        }
+
+#endif
+
         /// <summary>
         /// Cancels the asynchronous request.
         /// </summary>
@@ -1448,5 +1735,30 @@ namespace Facebook
                     throw new ArgumentOutOfRangeException("httpMethod");
             }
         }
+
+#if TPL
+        class HttpWebRequestCreatedEventArgs : EventArgs
+        {
+            private readonly object _userToken;
+            private readonly HttpWebRequestWrapper _httpWebRequestWrapper;
+
+            public HttpWebRequestCreatedEventArgs(object userToken, HttpWebRequestWrapper httpWebRequestWrapper)
+            {
+                _userToken = userToken;
+                _httpWebRequestWrapper = httpWebRequestWrapper;
+            }
+
+            public HttpWebRequestWrapper HttpWebRequest
+            {
+                get { return _httpWebRequestWrapper; }
+            }
+
+            public object UserState
+            {
+                get { return _userToken; }
+            }
+        }
+#endif
+
     }
 }

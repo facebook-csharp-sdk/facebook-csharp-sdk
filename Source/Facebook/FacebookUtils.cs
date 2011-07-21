@@ -548,5 +548,26 @@ namespace Facebook
 
             return result;
         }
+
+#if TPL
+
+        public static void TransferCompletionToTask<T>(System.Threading.Tasks.TaskCompletionSource<T> tcs, System.ComponentModel.AsyncCompletedEventArgs e, Func<T> getResult, Action unregisterHandler)
+        {
+            if (e.UserState != tcs)
+                return;
+
+            try
+            {
+                unregisterHandler();
+            }
+            finally
+            {
+                if (e.Cancelled) tcs.TrySetCanceled();
+                else if (e.Error != null) tcs.TrySetException(e.Error);
+                else tcs.TrySetResult(getResult());
+            }
+        }
+
+#endif
     }
 }
