@@ -655,6 +655,11 @@ namespace Facebook
             var httpWebRequest = CreateHttpWebRequest(requestUrl);
             httpWebRequest.Method = "GET";
 
+#if TPL
+            if (HttpWebRequestWrapperCreated != null)
+                HttpWebRequestWrapperCreated(this, new HttpWebRequestCreatedEventArgs(userToken, httpWebRequest));
+#endif
+
             var httpHelper = new HttpHelper(httpWebRequest);
 
             httpHelper.OpenReadCompleted +=
@@ -690,6 +695,180 @@ namespace Facebook
             httpHelper.OpenReadAsync();
         }
 
+#if TPL
+
+        /// <summary>
+        /// Event handler when http web request wrapper is created for async api only.
+        /// (used internally by TPL for cancellation support)
+        /// </summary>
+        private event EventHandler<HttpWebRequestCreatedEventArgs> HttpWebRequestWrapperCreated;
+
+        /// <summary>
+        /// Exchange code for access token asynchronously.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> ExchangeCodeForAccessTokenTaskAsync(string code, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
+        {
+            var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                tcs.TrySetCanceled();
+            }
+            else
+            {
+                HttpWebRequestWrapper httpWebRequest = null;
+                EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
+                httpWebRequestCreatedHandler += (o, e) =>
+                                                    {
+                                                        if (e.UserState != tcs)
+                                                            return;
+                                                        httpWebRequest = e.HttpWebRequest;
+                                                    };
+
+                var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
+
+                EventHandler<FacebookApiEventArgs> handler = null;
+                handler = (sender, e) => FacebookUtils.TransferCompletionToTask(tcs, e, e.GetResultData,
+                                                                                () =>
+                                                                                {
+                                                                                    if (ctr != null) ctr.Dispose();
+                                                                                    ExchangeCodeForAccessTokenCompleted -= handler;
+                                                                                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                                                                                });
+                ExchangeCodeForAccessTokenCompleted += handler;
+                HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
+
+                try
+                {
+                    ExchangeCodeForAccessTokenAsync(code, parameters, tcs);
+                    if (cancellationToken.IsCancellationRequested && httpWebRequest != null) httpWebRequest.Abort();
+                }
+                catch
+                {
+                    ExchangeCodeForAccessTokenCompleted -= handler;
+                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                    throw;
+                }
+            }
+
+            return tcs.Task;
+        }
+
+        /// <summary>
+        /// Exchange code for access token asynchronously.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> ExchangeCodeForAccessTokenTaskAsync(string code, IDictionary<string, object> parameters)
+        {
+            return ExchangeCodeForAccessTokenTaskAsync(code, parameters, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Exchange code for access token asynchronously.
+        /// </summary>
+        /// <param name="code">
+        /// The code.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> ExchangeCodeForAccessTokenTaskAsync(string code)
+        {
+            return ExchangeCodeForAccessTokenTaskAsync(code, null);
+        }
+
+        /// <summary>
+        /// Gets the application access token asynchronously.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>
+        /// The application access token.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> GetApplicationAccessTokenTaskAsync(IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
+        {
+            var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                tcs.TrySetCanceled();
+            }
+            else
+            {
+                HttpWebRequestWrapper httpWebRequest = null;
+                EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
+                httpWebRequestCreatedHandler += (o, e) =>
+                {
+                    if (e.UserState != tcs)
+                        return;
+                    httpWebRequest = e.HttpWebRequest;
+                };
+
+                var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
+
+                EventHandler<FacebookApiEventArgs> handler = null;
+                handler = (sender, e) => FacebookUtils.TransferCompletionToTask(tcs, e, e.GetResultData,
+                                                                                () =>
+                                                                                {
+                                                                                    if (ctr != null) ctr.Dispose();
+                                                                                    GetApplicationAccessTokenCompleted -= handler;
+                                                                                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                                                                                });
+                GetApplicationAccessTokenCompleted += handler;
+                HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
+
+                try
+                {
+                    GetApplicationAccessTokenAsync(parameters, tcs);
+                    if (cancellationToken.IsCancellationRequested && httpWebRequest != null) httpWebRequest.Abort();
+                }
+                catch
+                {
+                    GetApplicationAccessTokenCompleted -= handler;
+                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                    throw;
+                }
+            }
+
+            return tcs.Task;
+        }
+
+        /// <summary>
+        /// Gets the application access token asynchronously.
+        /// </summary>
+        /// <returns>
+        /// The application access token.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> GetApplicationAccessTokenTaskAsync()
+        {
+            return GetApplicationAccessTokenTaskAsync(null, System.Threading.CancellationToken.None);
+        }
+
+#endif
         private string ProcessResponse(HttpHelper httpHelper, Stream responseStream, out Exception exception)
         {
             exception = null;

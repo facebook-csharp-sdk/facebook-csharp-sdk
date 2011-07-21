@@ -712,6 +712,11 @@ namespace Facebook
             var httpHelper = new HttpHelper(PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects));
             _httpWebRequest = httpHelper.HttpWebRequest;
 
+#if TPL
+            if (HttpWebRequestWrapperCreated != null)
+                HttpWebRequestWrapperCreated(this, new HttpWebRequestCreatedEventArgs(userToken, httpHelper.HttpWebRequest));
+#endif
+
             bool isBatchRequest = httpMethod == HttpMethod.Post && path == null && parameters.ContainsKey("batch");
 
             bool notifyUploadProgressChanged = UploadProgressChanged != null && mediaObjects != null && mediaObjects.Count > 0;
@@ -1048,11 +1053,11 @@ namespace Facebook
                 HttpWebRequestWrapper httpWebRequest = null;
                 EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
                 httpWebRequestCreatedHandler += (o, e) =>
-                {
-                    if (e.UserState != tcs)
-                        return;
-                    httpWebRequest = e.HttpWebRequest;
-                };
+                                                    {
+                                                        if (e.UserState != tcs)
+                                                            return;
+                                                        httpWebRequest = e.HttpWebRequest;
+                                                    };
 
                 var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
 
