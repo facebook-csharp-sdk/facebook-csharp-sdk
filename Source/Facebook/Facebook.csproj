@@ -131,6 +131,7 @@
     <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HttpMethod.cs" />
+    <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="IFacebookSettings.cs" />
     <Compile Include="IJsonSerializer.cs" />

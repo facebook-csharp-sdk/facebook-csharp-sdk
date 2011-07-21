@@ -145,6 +145,7 @@
     <Compile Include="FacebookUtils.cs" />
     <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="IJsonSerializer.cs" />
