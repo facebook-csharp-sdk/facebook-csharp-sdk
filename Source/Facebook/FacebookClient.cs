@@ -1401,6 +1401,90 @@ namespace Facebook
             BatchAsync(batchParameters, null);
         }
 
+
+#if TPL
+
+        /// <summary>
+        /// Executes a batch request.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// The batch parameters.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(params FacebookBatchParameter[] batchParameters)
+        {
+            Contract.Requires(batchParameters != null);
+            Contract.Requires(batchParameters.Length > 0);
+
+            return BatchTaskAsync(batchParameters, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Executes a batch request.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// The batch parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, System.Threading.CancellationToken cancellationToken)
+        {
+            Contract.Requires(batchParameters != null);
+            Contract.Requires(batchParameters.Length > 0);
+
+            var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
+            if (cancellationToken.IsCancellationRequested)
+            {
+                tcs.TrySetCanceled();
+            }
+            else
+            {
+                HttpWebRequestWrapper httpWebRequest = null;
+                EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
+                httpWebRequestCreatedHandler += (o, e) =>
+                                                        {
+                                                            if (e.UserState != tcs)
+                                                                return;
+                                                            httpWebRequest = e.HttpWebRequest;
+                                                        };
+
+                var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
+
+                EventHandler<FacebookApiEventArgs> handler = null;
+
+                handler = (sender, e) => FacebookUtils.TransferCompletionToTask(tcs, e, e.GetResultData, () =>
+                                                                                        {
+                                                                                            if (ctr != null) ctr.Dispose();
+                                                                                            PostCompleted -= handler;
+                                                                                            HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                                                                                        });
+                PostCompleted += handler;
+                HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
+
+                try
+                {
+                    BatchAsync(batchParameters, tcs);
+                    if (cancellationToken.IsCancellationRequested && httpWebRequest != null) httpWebRequest.Abort();
+                }
+                catch
+                {
+                    PostCompleted -= handler;
+                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+                    throw;
+                }
+            }
+
+            return tcs.Task;
+        }
+
+#endif
+
         internal IDictionary<string, object> PrepareBatchParameter(FacebookBatchParameter[] batchParameters)
         {
             Contract.Requires(batchParameters != null);
