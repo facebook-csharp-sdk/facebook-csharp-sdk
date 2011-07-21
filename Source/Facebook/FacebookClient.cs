@@ -1033,7 +1033,7 @@ namespace Facebook
         {
             return ApiTaskAsync(path, parameters, HttpMethod.Delete, null, cancellationToken);
         }
-        
+
         #endregion
 
         protected virtual System.Threading.Tasks.Task<object> ApiTaskAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken, System.Threading.CancellationToken cancellationToken)
@@ -1248,6 +1248,102 @@ namespace Facebook
 
             GetAsync(null, parameters, userToken);
         }
+
+
+#if TPL
+
+        /// <summary>
+        /// Executes a FQL query asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL query.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The FQL query result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string fql)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(fql));
+
+            return QueryTaskAsync(fql, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Executes a FQL query asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL query.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The FQL query result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string fql, System.Threading.CancellationToken cancellationToken)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(fql));
+
+            var parameters = new Dictionary<string, object>();
+            parameters["query"] = fql;
+            parameters["method"] = "fql.query";
+
+            return GetTaskAsync(null, parameters, cancellationToken);
+        }
+
+        /// <summary>
+        /// Executes a FQL multiquery asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL queries.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// A collection of the FQL query results.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(params string[] fql)
+        {
+            Contract.Requires(fql != null);
+            Contract.Requires(fql.Length > 0);
+
+            return QueryTaskAsync(fql, System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Executes a FQL multiquery asynchronously.
+        /// </summary>
+        /// <param name="fql">
+        /// The FQL queries.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// A collection of the FQL query results.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string[] fql, System.Threading.CancellationToken cancellationToken)
+        {
+            Contract.Requires(fql != null);
+            Contract.Requires(fql.Length > 0);
+
+            var queryDict = new Dictionary<string, object>();
+
+            for (int i = 0; i < fql.Length; i++)
+            {
+                queryDict.Add(string.Concat("query", i), fql[i]);
+            }
+
+            var parameters = new Dictionary<string, object>();
+            parameters["queries"] = queryDict;
+            parameters["method"] = "fql.multiquery";
+
+            return GetTaskAsync(null, parameters, cancellationToken);
+        }
+
+#endif
 
         #endregion
 
