@@ -15,10 +15,11 @@ vNEXT
    d. FacebookAsyncResult<T>
 2. Facebook.FacebookUploadProgressChangedEventArgs
 3. support progress report for ASYNC uploads only if there is at least one MediaObject.
+   (issue #5886)
 4. Facebook.dll [assembly: SecurityRules(SecurityRuleSet.Level1)] for .net 4.0 project.
 5. SimpleJson in Facebook.dll for Silverlight doesn't use Reflection.Emit
 6. updated SimpleJson to v0.8
-7. support for async cancellation in FacebookClient
+7. support for async cancellation in FacebookClient (issue #5891)
     public void CancelAsync();
 
 (for SDK developers)
