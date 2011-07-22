@@ -21,6 +21,7 @@ vNEXT
 6. updated SimpleJson to v0.8
 7. support for async cancellation in FacebookClient (issue #5891)
     public void CancelAsync();
+7. added Facebook.xd_receiver nuget package
 
 (for SDK developers)
 1. complete rewrite of FacebookClient and FacebookOAuthClient http requests
