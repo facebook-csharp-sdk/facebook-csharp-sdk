@@ -410,21 +410,26 @@ namespace Facebook
             if (input != null)
             {
                 // we have a request body, so write it.
-                using (Stream requestStream = httpHelper.OpenWrite())
+                try
                 {
-                    FacebookUtils.CopyStream(input, requestStream, null);
+                    using (Stream requestStream = httpHelper.OpenWrite())
+                    {
+                        FacebookUtils.CopyStream(input, requestStream, null);
+                    }
                 }
-
-                if (input is CombinationStream.CombinationStream)
+                finally
                 {
-                    var cs = (CombinationStream.CombinationStream)input;
-                    foreach (var stream in cs.InternalStreams)
-                        stream.Dispose();
-                    cs.Dispose();
-                }
-                else
-                {
-                    input.Dispose();
+                    if (input is CombinationStream.CombinationStream)
+                    {
+                        var cs = (CombinationStream.CombinationStream)input;
+                        foreach (var stream in cs.InternalStreams)
+                            stream.Dispose();
+                        cs.Dispose();
+                    }
+                    else
+                    {
+                        input.Dispose();
+                    }
                 }
             }
 
