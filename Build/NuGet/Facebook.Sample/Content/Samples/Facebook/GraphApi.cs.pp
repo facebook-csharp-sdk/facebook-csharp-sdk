@@ -43,7 +43,7 @@ namespace $rootnamespace$.Samples.Facebook
                 Console.WriteLine("Last Name: {0}", lastName);
                 Console.WriteLine();
 
-                // Note: This json result is not the orginal json string as returned by Facebook.
+                // Note: This json result is not the original json string as returned by Facebook.
                 Console.WriteLine("Json: {0}", result.ToString());
             }
             catch (FacebookApiException ex)
@@ -72,7 +72,7 @@ namespace $rootnamespace$.Samples.Facebook
                 Console.WriteLine("Last Name: {0}", lastName);
                 Console.WriteLine();
 
-                // Note: This json result is not the orginal json string as returned by Facebook.
+                // Note: This json result is not the original json string as returned by Facebook.
                 Console.WriteLine("Json: {0}", result.ToString());
             }
             catch (FacebookApiException ex)
@@ -96,7 +96,7 @@ namespace $rootnamespace$.Samples.Facebook
 
                 Console.WriteLine("Post Id: {0}", postId);
 
-                // Note: This json result is not the orginal json string as returned by Facebook.
+                // Note: This json result is not the original json string as returned by Facebook.
                 Console.WriteLine("Json: {0}", result.ToString());
 
 				return postId;
@@ -118,7 +118,7 @@ namespace $rootnamespace$.Samples.Facebook
 
                 var result = fb.Delete(id);
 
-                // Note: This json result is not the orginal json string as returned by Facebook.
+                // Note: This json result is not the original json string as returned by Facebook.
                 Console.WriteLine("Json: {0}", result.ToString());
             }
             catch (FacebookApiException ex)
@@ -154,10 +154,43 @@ namespace $rootnamespace$.Samples.Facebook
 
                 Console.WriteLine("Post Id: {0}", postId);
 
-                // Note: This json result is not the orginal json string as returned by Facebook.
+                // Note: This json result is not the original json string as returned by Facebook.
                 Console.WriteLine("Json: {0}", result.ToString());
 
                 return postId;
+            }
+            catch (FacebookApiException ex)
+            {
+                // Note: make sure to handle this exception.
+                throw;
+            }
+        }
+
+		public static string GetPageAccessToken(string accessToken, string pageId)
+        {
+            try
+            {
+                var fb = new FacebookClient(accessToken);
+
+                var parameters = new Dictionary<string, object>();
+
+                // Note that the access_token field is a non-default field and
+                // must be requested explicitly via the fields URL parameter.
+                // In addition, you must use a user access_token with the 
+                // manage_pages permission to make this request, 
+                // where the user is an administrator of the Page. 
+                parameters["fields"] = "access_token";
+                var result = (IDictionary<string, object>)fb.Get(pageId, parameters);
+
+                var pageAccessToken = (string)result["access_token"];
+
+                Console.WriteLine("Access Token: {0}", accessToken);
+                Console.WriteLine();
+
+                // Note: This json result is not the original json string as returned by Facebook.
+                Console.WriteLine("Json: {0}", result.ToString());
+
+                return pageAccessToken;
             }
             catch (FacebookApiException ex)
             {

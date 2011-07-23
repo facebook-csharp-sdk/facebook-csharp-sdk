@@ -23,7 +23,7 @@ Note:
 * Most of the samples requires an access_token. If you would like to get
   an access_token you can try installing Facebook.Sample.Winforms.Login nuget
   package.
-* You need user_about_me and publish_stream to run most of the samples.
+* You need user_about_me, publish_stream and manage_pages to run most of the samples.
 * Certain samples writes on your facebook wall.
 
 	Samples.Facebook.Dynamic.GraphApiSamples.RunSamples(accessToken);
