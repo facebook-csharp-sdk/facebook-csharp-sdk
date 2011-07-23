@@ -22,10 +22,12 @@ vNEXT
 7. support for async cancellation in FacebookClient (issue #5891)
     public void CancelAsync();
 7. added Facebook.xd_receiver nuget package
+8. added CSWinFormsUploadProgressAndCancel.sln sample demonstrating Upload Progress and
+   Cancellation
 
 (for SDK developers)
 1. complete rewrite of FacebookClient and FacebookOAuthClient http requests
-   using FluentHttp.Core v0.1 (FluentHttp.HttpHelper) with 100% backward compatible 
+   using FluentHttp.Core v0.2.1.0 (FluentHttp.HttpHelper) with 100% backward compatible 
    with v5.0.50
 2. moved methods used only in Facebook.Web and Facebook.Web.Mvc to 
    Facebook.Web.FacebookWebUtils class

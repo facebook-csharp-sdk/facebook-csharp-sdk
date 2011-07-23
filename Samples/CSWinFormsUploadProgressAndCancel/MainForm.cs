@@ -6,9 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
+using Facebook;
+using Facebook.Samples.AuthenticationTool;
 
-namespace Facebook.Samples.AuthenticationTool
+namespace CSWinFormsUploadProgressAndCancel
 {
     public partial class MainForm : Form
     {
@@ -25,17 +26,9 @@ namespace Facebook.Samples.AuthenticationTool
             InitializeComponent();
         }
 
-        private void btnFacebookLogin_Click(object sender, EventArgs e)
+        private void btnLogin_Click(object sender, EventArgs e)
         {
             var facebookLoginDialog = new FacebookLoginDialog(_appId, _extendedPermissions);
-            facebookLoginDialog.ShowDialog();
-
-            DisplayAppropriateMessage(facebookLoginDialog.FacebookOAuthResult);
-        }
-
-        private void btnFacebookLoginDifferent_Click(object sender, EventArgs e)
-        {
-            var facebookLoginDialog = new FacebookLoginDialog(_appId, _extendedPermissions, true);
             facebookLoginDialog.ShowDialog();
 
             DisplayAppropriateMessage(facebookLoginDialog.FacebookOAuthResult);
@@ -52,8 +45,8 @@ namespace Facebook.Samples.AuthenticationTool
             if (facebookOAuthResult.IsSuccess)
             {
                 // we got the access token
-                var infoDialog = new Info(facebookOAuthResult.AccessToken);
-                infoDialog.ShowDialog();
+                var uploadProgressDialog = new UploadProgressForm(facebookOAuthResult.AccessToken);
+                uploadProgressDialog.ShowDialog();
             }
             else
             {
