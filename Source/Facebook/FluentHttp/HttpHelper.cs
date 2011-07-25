@@ -637,16 +637,19 @@ namespace FluentHttp
             {
                 if (webException.Response != null)
                     _httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
+                _innerException = webException;
                 throw new WebExceptionWrapper(webException);
             }
             catch (WebExceptionWrapper webException)
             {
                 _httpWebResponse = webException.GetResponse();
+                _innerException = webException;
                 throw;
             }
             catch (Exception ex)
             {
-                throw new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                _innerException = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                throw _innerException;
             }
         }
 
@@ -673,7 +676,8 @@ namespace FluentHttp
             }
             catch (Exception ex)
             {
-                throw new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                _innerException = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                throw _innerException;
             }
         }
 
@@ -717,6 +721,7 @@ namespace FluentHttp
                 catch (Exception ex)
                 {
                     webExceptionWrapper = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                    _innerException = webExceptionWrapper;
                 }
                 finally
                 {
@@ -751,15 +756,21 @@ namespace FluentHttp
                         }
                         catch (WebException webException)
                         {
+                            if (webException.Response != null)
+                                _httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
                             exception = new WebExceptionWrapper(webException);
+                            _innerException = webException;
                         }
                         catch (WebExceptionWrapper webException)
                         {
+                            _httpWebResponse = webException.GetResponse();
                             exception = webException;
+                            _innerException = webException;
                         }
                         catch (Exception ex)
                         {
                             exception = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                            _innerException = exception;
                         }
 
                         OnOpenWriteCompleted(new OpenWriteCompletedEventArgs(stream, exception, exception != null && exception.Status == WebExceptionStatus.RequestCanceled, userToken));
@@ -768,14 +779,17 @@ namespace FluentHttp
             catch (WebException webException)
             {
                 webExceptionWrapper = new WebExceptionWrapper(webException);
+                _innerException = webException;
             }
             catch (WebExceptionWrapper webException)
             {
                 webExceptionWrapper = webException;
+                _innerException = webException;
             }
             catch (Exception ex)
             {
                 webExceptionWrapper = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                _innerException = webExceptionWrapper;
             }
             finally
             {
@@ -849,28 +863,20 @@ namespace FluentHttp
         public virtual Task<Stream> OpenReadTaskAsync(CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<Stream>(this);
-            if (cancellationToken.IsCancellationRequested)
-            {
-                tcs.TrySetCanceled();
-            }
-            else
-            {
-                var ctr = cancellationToken.Register(CancelAsync);
-                OpenReadCompletedEventHandler handler = null;
-                handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenReadCompleted -= handler; });
-                OpenReadCompleted += handler;
 
-                try
-                {
-                    OpenReadAsync(tcs);
-                    if (cancellationToken.IsCancellationRequested)
-                        CancelAsync();
-                }
-                catch
-                {
-                    OpenReadCompleted -= handler;
-                    throw;
-                }
+            var ctr = cancellationToken.Register(CancelAsync);
+            OpenReadCompletedEventHandler handler = null;
+            handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenReadCompleted -= handler; });
+            OpenReadCompleted += handler;
+
+            try
+            {
+                OpenReadAsync(tcs);
+            }
+            catch
+            {
+                OpenReadCompleted -= handler;
+                throw;
             }
 
             return tcs.Task;
@@ -889,28 +895,20 @@ namespace FluentHttp
         public virtual Task<Stream> OpenWriteTaskAsync(CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<Stream>(this);
-            if (cancellationToken.IsCancellationRequested)
-            {
-                tcs.TrySetCanceled();
-            }
-            else
-            {
-                var ctr = cancellationToken.Register(CancelAsync);
-                OpenWriteCompletedEventHandler handler = null;
-                handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenWriteCompleted -= handler; });
-                OpenWriteCompleted += handler;
 
-                try
-                {
-                    OpenWriteAsync(tcs);
-                    if (cancellationToken.IsCancellationRequested)
-                        CancelAsync();
-                }
-                catch
-                {
-                    OpenWriteCompleted -= handler;
-                    throw;
-                }
+            var ctr = cancellationToken.Register(CancelAsync);
+            OpenWriteCompletedEventHandler handler = null;
+            handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenWriteCompleted -= handler; });
+            OpenWriteCompleted += handler;
+
+            try
+            {
+                OpenWriteAsync(tcs);
+            }
+            catch
+            {
+                OpenWriteCompleted -= handler;
+                throw;
             }
 
             return tcs.Task;

@@ -417,25 +417,22 @@ namespace Facebook
                         FacebookUtils.CopyStream(input, requestStream, null);
                     }
                 }
+                catch (WebExceptionWrapper ex)
+                {
+                    if (ex.GetResponse() == null)
+                        throw;
+                }
                 finally
                 {
-                    if (input is CombinationStream.CombinationStream)
-                    {
-                        var cs = (CombinationStream.CombinationStream)input;
-                        foreach (var stream in cs.InternalStreams)
-                            stream.Dispose();
-                        cs.Dispose();
-                    }
-                    else
-                    {
-                        input.Dispose();
-                    }
+                    DisposeInputRequestStream(input);
                 }
             }
 
             Stream responseStream;
+
             try
             {
+                // responseStream is disposed by ProcessReponse method
                 responseStream = httpHelper.OpenRead();
             }
             catch (WebExceptionWrapper ex)
@@ -448,12 +445,17 @@ namespace Facebook
 
             Exception exception;
             string responseString;
-            var result = ProcessResponse(httpHelper, responseStream, resultType, out responseString, out exception);
+            bool cancelled;
 
+            var result = ProcessResponse(httpHelper, responseStream, resultType, out responseString, out exception, out cancelled);
+
+            // unlike async versions, we don't need to check responseStream.CanRead
+            // as we don't allow synchronous methods to be cancelled.
             if (exception == null)
                 return result;
 
             throw exception;
+
         }
 
         protected T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
@@ -738,8 +740,10 @@ namespace Facebook
                     {
                         Exception ex;
                         string responseString;
-                        ProcessResponse(httpHelper, e.Result, null, out responseString, out ex);
-                        args = new FacebookApiEventArgs(ex, e.Cancelled, userToken, responseString, isBatchRequest);
+                        bool cancelled;
+                        ProcessResponse(httpHelper, e.Result, null, out responseString, out ex, out cancelled);
+
+                        args = new FacebookApiEventArgs(ex, cancelled, userToken, responseString, isBatchRequest);
                     }
                     else
                     {
@@ -774,6 +778,8 @@ namespace Facebook
                         FacebookApiEventArgs args;
                         if (e.Cancelled)
                         {
+                            // input might still be open, so dispose it.
+                            DisposeInputRequestStream(input);
                             args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest);
                         }
                         else if (e.Error == null)
@@ -801,18 +807,6 @@ namespace Facebook
                                     }
                                 }
 
-                                if (input is CombinationStream.CombinationStream)
-                                {
-                                    var cs = (CombinationStream.CombinationStream)input;
-                                    foreach (var stream in cs.InternalStreams)
-                                        stream.Dispose();
-                                    cs.Dispose();
-                                }
-                                else
-                                {
-                                    input.Dispose();
-                                }
-
                                 httpHelper.OpenReadAsync();
                                 return;
                             }
@@ -828,16 +822,30 @@ namespace Facebook
                             {
                                 args = new FacebookApiEventArgs(ex, false, userToken, null, isBatchRequest);
                             }
+                            finally
+                            {
+                                DisposeInputRequestStream(input);
+                            }
                         }
                         else
                         {
+                            DisposeInputRequestStream(input);
+                            if (e.Error is WebExceptionWrapper)
+                            {
+                                var ex = (WebExceptionWrapper)e.Error;
+                                if (ex.GetResponse() != null)
+                                {
+                                    httpHelper.OpenReadAsync();
+                                    return;
+                                }
+                            }
                             args = new FacebookApiEventArgs(e.Error, false, userToken, null, isBatchRequest);
                         }
 
                         OnCompleted(httpMethod, args);
                     };
 
-                httpHelper.OpenWriteAsync(userToken);
+                httpHelper.OpenWriteAsync();
             }
         }
 
@@ -1716,9 +1724,11 @@ namespace Facebook
             return httpWebRequest;
         }
 
-        private object ProcessResponse(HttpHelper httpHelper, Stream responseStream, Type resultType, out string responseStr, out Exception exception)
+        private object ProcessResponse(HttpHelper httpHelper, Stream responseStream, Type resultType, out string responseStr, out Exception exception, out bool cancelled)
         {
             responseStr = null;
+            cancelled = true;
+
             try
             {
                 using (var stream = responseStream)
@@ -1728,6 +1738,8 @@ namespace Facebook
                         responseStr = reader.ReadToEnd();
                     }
                 }
+
+                cancelled = false;
 
                 object json;
                 exception = ExceptionFactory.GetException(DomainMaps, httpHelper.HttpWebRequest.RequestUri, responseStr, httpHelper.InnerException, out json);
@@ -1745,6 +1757,26 @@ namespace Facebook
             {
                 exception = ex;
                 return null;
+            }
+        }
+
+        private void DisposeInputRequestStream(Stream input)
+        {
+            if (input == null)
+            {
+                return;
+            }
+
+            if (input is CombinationStream.CombinationStream)
+            {
+                var cs = (CombinationStream.CombinationStream)input;
+                foreach (var stream in cs.InternalStreams)
+                    stream.Dispose();
+                cs.Dispose();
+            }
+            else
+            {
+                input.Dispose();
             }
         }
 
