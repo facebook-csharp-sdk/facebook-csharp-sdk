@@ -149,7 +149,7 @@ namespace $rootnamespace$.Samples.Facebook
 
         public static string UploadVideo(string accessToken, string filePath)
         {
-            // sample usage: UploadPhoto(accessToken, @"C:\video.3gp");
+            // sample usage: UploadVideo(accessToken, @"C:\video.3gp");
 
             var mediaObject = new FacebookMediaObject
             {

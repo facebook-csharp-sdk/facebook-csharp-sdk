@@ -726,7 +726,7 @@ namespace Facebook
 
             bool isBatchRequest = httpMethod == HttpMethod.Post && path == null && parameters.ContainsKey("batch");
 
-            bool notifyUploadProgressChanged = UploadProgressChanged != null && mediaObjects != null && mediaObjects.Count > 0;
+            bool notifyUploadProgressChanged = httpMethod == HttpMethod.Post && UploadProgressChanged != null && mediaObjects != null && mediaObjects.Count > 0;
 
             httpHelper.OpenReadCompleted +=
                 (o, e) =>
