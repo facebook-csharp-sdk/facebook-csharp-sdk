@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiResultSerializationTest.cs" />
+    <Compile Include="FacebookIntegrationTests.cs" />
     <Compile Include="FqlReadTests.cs" />
     <Compile Include="GraphInsiteTests.cs" />
     <Compile Include="GraphPublishTests.cs" />
