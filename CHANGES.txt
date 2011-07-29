@@ -5,7 +5,7 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNEXT
+v5.1 (BETA)
 =========================================================================
 (for SDK consumers)
 1. hide and mark as obsolete
