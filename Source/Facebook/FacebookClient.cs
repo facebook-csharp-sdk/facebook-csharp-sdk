@@ -1640,15 +1640,10 @@ namespace Facebook
                 else
                 {
                     var body = (string)((IDictionary<string, object>)row)["body"];
-                    var exception = ExceptionFactory.GetGraphException(body);
+                    object jsonObject;
 
-                    object jsonObject = null;
-                    if (exception == null)
-                    {
-                        // check for rest exception
-                        jsonObject = JsonSerializer.Current.DeserializeObject(body);
-                        exception = ExceptionFactory.GetRestException(jsonObject);
-                    }
+                    var exception = ExceptionFactory.GetGraphException(body, out jsonObject) ??
+                                    ExceptionFactory.GetRestException(jsonObject);
 
                     list.Add(exception ?? jsonObject);
                 }

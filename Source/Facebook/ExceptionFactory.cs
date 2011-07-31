@@ -176,20 +176,22 @@ namespace Facebook
         /// <summary>
         /// Gets the graph exception if possible.
         /// </summary>
-        /// <param name="json">The web request result string to check for exception information.</param>
+        /// <param name="jsonString">The web request result string to check for exception information.</param>
+        /// <param name="json">The json object.</param>
         /// <returns>A Facebook API exception or null.</returns>
-        internal static FacebookApiException GetGraphException(string json)
+        internal static FacebookApiException GetGraphException(string jsonString, out object json)
         {
             FacebookApiException resultException;
 
             try
             {
-                resultException = GetGraphException(JsonSerializer.Current.DeserializeObject(json));
+                json = JsonSerializer.Current.DeserializeObject(jsonString);
+                resultException = GetGraphException(json);
             }
             catch
             {
                 resultException = null;
-
+                json = null;
                 // We don't want to throw anything associated with 
                 // trying to build the FacebookApiException
             }

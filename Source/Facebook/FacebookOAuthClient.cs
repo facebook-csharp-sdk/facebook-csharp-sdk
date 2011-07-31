@@ -887,7 +887,8 @@ namespace Facebook
                 if (httpHelper.InnerException == null)
                     return responseString;
 
-                exception = ExceptionFactory.GetGraphException(responseString) ?? httpHelper.InnerException;
+                object jsonObject;
+                exception = ExceptionFactory.GetGraphException(responseString, out jsonObject) ?? httpHelper.InnerException;
 
                 return null;
             }
