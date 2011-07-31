@@ -15,10 +15,21 @@ namespace Facebook
     using System.IO;
     using System.Net;
     using FluentHttp;
+    using System.ComponentModel;
 
+    /// <summary>
+    /// Represents the Facebook OAuth Client.
+    /// </summary>
     public class FacebookOAuthClient
     {
+        /// <summary>
+        /// The Facebook AppId.
+        /// </summary>
         private string _appId;
+
+        /// <summary>
+        /// The Facebook AppSecret.
+        /// </summary>
         private string _appSecret;
 
         /// <summary>
@@ -85,10 +96,10 @@ namespace Facebook
         #region Login/Logout url helpers
 
         /// <summary>
-        /// Gets the login uri.
+        /// Gets the login url.
         /// </summary>
         /// <returns>
-        /// Returns the facebook login uri.
+        /// Returns the Facebook login url.
         /// </returns>
         public virtual Uri GetLoginUrl()
         {
@@ -96,13 +107,13 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the login uri.
+        /// Gets the login url.
         /// </summary>
         /// <param name="parameters">
         /// The parameters.
         /// </param>
         /// <returns>
-        /// Returns the facebook login uri.
+        /// Returns the Facebook login url.
         /// </returns>
         /// <remarks>
         /// http://developers.facebook.com/docs/reference/dialogs/oauth
@@ -155,6 +166,8 @@ namespace Facebook
         /// <returns>
         /// Returns the logout url.
         /// </returns>
+        [Obsolete]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Uri GetLogoutUrl()
         {
             return GetLogoutUrl(null);
@@ -169,6 +182,8 @@ namespace Facebook
         /// <returns>
         /// Returns the logout url.
         /// </returns>
+        [Obsolete]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Uri GetLogoutUrl(IDictionary<string, object> parameters)
         {
             // more information on this at http://stackoverflow.com/questions/2764436/facebook-oauth-logout
@@ -252,6 +267,8 @@ namespace Facebook
         /// <returns>
         /// The url to navigate.
         /// </returns>
+        [Obsolete]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, bool logout, IDictionary<string, object> loginParameters)
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));

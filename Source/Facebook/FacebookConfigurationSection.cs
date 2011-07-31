@@ -17,7 +17,7 @@ namespace Facebook
     public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookApplication
     {
         /// <summary>
-        /// The current facebook settings stored in the configuration file.
+        /// The current Facebook settings stored in the configuration file.
         /// </summary>
         private static IFacebookApplication _current;
 
