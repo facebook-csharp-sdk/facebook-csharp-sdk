@@ -1903,12 +1903,14 @@ namespace Facebook
             Contract.Requires(!string.IsNullOrEmpty(method));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
-            string name = "api";
+            string name;
 
             if (method.Equals("video.upload"))
                 name = "api_video";
             else if (FacebookUtils.ReadOnlyCalls.Contains(method))
                 name = "api_read";
+            else
+                name = "api";
 
             return GetUrl(name, "restserver.php", null);
         }
