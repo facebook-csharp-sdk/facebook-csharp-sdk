@@ -23,6 +23,21 @@ namespace Facebook
         private static readonly FacebookApplication Instance = new FacebookApplication();
 
         /// <summary>
+        /// The current Facebook application.
+        /// </summary>
+        private IFacebookApplication _current;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApplication"/> class. 
+        /// </summary>
+        public FacebookApplication()
+        {
+#if !SILVERLIGHT
+            _current = FacebookConfigurationSection.Current;
+#endif
+        }
+
+        /// <summary>
         /// Gets the current Facebook application.
         /// </summary>
         public static IFacebookApplication Current
@@ -58,18 +73,6 @@ namespace Facebook
 
             Instance.InnerSetApplication(getFacebookApplication);
         }
-
-#if !SILVERLIGHT
-        /// <summary>
-        /// The current Facebook application.
-        /// </summary>
-        private IFacebookApplication _current = FacebookConfigurationSection.Current;
-#else
-        /// <summary>
-        /// The current Facebook application.
-        /// </summary>
-        private IFacebookApplication _current = new DefaultFacebookApplication();
-#endif
 
         /// <summary>
         /// Gets InnerCurrent.
