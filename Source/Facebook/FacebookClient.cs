@@ -304,7 +304,7 @@ namespace Facebook
         /// </param>
         /// <exception cref="Facebook.FacebookApiException" />
         /// <returns>
-        /// The jon result.
+        /// The json result.
         /// </returns>
         public virtual object Post(string path, IDictionary<string, object> parameters)
         {
@@ -1547,13 +1547,13 @@ namespace Facebook
             Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
 
             mediaObjects = null;
-            IDictionary<string, object> returnResult = null;
+            IDictionary<string, object> returnResult;
 
             var defaultParameters = new Dictionary<string, object>();
 
             defaultParameters["method"] = FacebookUtils.ConvertToStringForce(batchParameter.HttpMethod);
 
-            IDictionary<string, object> parameters = null;
+            IDictionary<string, object> parameters;
             if (batchParameter.Parameters == null)
             {
                 parameters = new Dictionary<string, object>();

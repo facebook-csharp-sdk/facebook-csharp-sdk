@@ -42,27 +42,6 @@ namespace Facebook
         /// <param name="json">
         /// The json string.
         /// </param>
-        [Obsolete]
-        public FacebookApiEventArgs(Exception error, bool cancelled, object userState, string json)
-            : this(error, cancelled, userState, json, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApiEventArgs"/> class.
-        /// </summary>
-        /// <param name="error">
-        /// The error.
-        /// </param>
-        /// <param name="cancelled">
-        /// The cancelled.
-        /// </param>
-        /// <param name="userState">
-        /// The user state.
-        /// </param>
-        /// <param name="json">
-        /// The json string.
-        /// </param>
         /// <param name="isBatchResult">
         /// Indicates whether the result is a batch result.
         /// </param>
