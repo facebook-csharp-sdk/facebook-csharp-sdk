@@ -3,7 +3,7 @@ http://facebooksdk.codeplex.com/license
 Facebook C# SDK is intended to be used in both open-source and commercial environments.
 =======================================================================================
 
-The Facebook C# SDK is licensed under Microsoft Public Licese (MS-PL). Facebook C# SDK also makes use of Newtonsoft.Json which is licensed under the MIT License (http://json.codeplex.com/license).
+The Facebook C# SDK is licensed under Microsoft Public Licese (MS-PL).
 
 
 
