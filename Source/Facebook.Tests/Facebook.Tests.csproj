@@ -87,6 +87,7 @@
     <Compile Include="FacebookClient\ExtractMediaObject\GivenNullParametersThen.cs" />
     <Compile Include="FacebookClient\ExtractMediaObject\GivenOneMediaObjectThen.cs" />
     <Compile Include="FacebookClient\ExtractMediaObject\GiveOneMediaObjectOnlyThen.cs" />
+    <Compile Include="FacebookClient\GetApiUrl\GivenMethodIsNotAllSmallLetterThen.cs" />
     <Compile Include="FacebookClient\Get\ParametersOnly.cs" />
     <Compile Include="FacebookClient\Get\PathOnly.cs" />
     <Compile Include="FacebookClient\ProcessBatchResult\ProcessBatchResultTests.cs" />

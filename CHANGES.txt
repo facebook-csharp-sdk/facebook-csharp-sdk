@@ -5,6 +5,14 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+vNEXT (BETA)
+=========================================================================
+1. case insensitive method names for legacy rest api (# 5896)
+2. marked methods in FacebookOAuthClient that uses GetLogoutUrl as obsolete
+   and EditorBrowsableState as never
+3. removed obsolete FacebookApiEventArgs constructor
+
+=========================================================================
 v5.1 (BETA)
 =========================================================================
 (for SDK consumers)

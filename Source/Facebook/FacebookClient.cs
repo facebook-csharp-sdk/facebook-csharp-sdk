@@ -1903,6 +1903,8 @@ namespace Facebook
             Contract.Requires(!string.IsNullOrEmpty(method));
             Contract.Ensures(Contract.Result<Uri>() != default(Uri));
 
+            method = method.ToLowerInvariant();
+
             string name;
 
             if (method.Equals("video.upload"))

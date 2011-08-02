@@ -7,7 +7,6 @@ namespace Facebook.Tests.FacebookClient.GetApiUrl
     public class GivenMethodsThanAreNotReadOnlyOrVideoUploadThen
     {
         [InlineData("admin.banUsers")]
-        [InlineData("admin.getMetrics")]
         [Theory]
         public void TheUriShouldStartWithApiFacebookDomain(string method)
         {

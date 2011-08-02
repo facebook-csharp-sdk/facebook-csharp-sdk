@@ -128,6 +128,7 @@
     <Compile Include="FacebookClient\ExtractMediaObject\GivenOneMediaObjectThen.cs" />
     <Compile Include="FacebookClient\ExtractMediaObject\GiveOneMediaObjectOnlyThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\Fakes\FakeFacebookClient.cs" />
+    <Compile Include="FacebookClient\GetApiUrl\GivenMethodIsNotAllSmallLetterThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodIsVideoUploadThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThanAreNotReadOnlyOrVideoUploadThen.cs" />
     <Compile Include="FacebookClient\GetApiUrl\GivenMethodsThatAreOfReadOnlyThen.cs" />
