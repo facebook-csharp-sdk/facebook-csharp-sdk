@@ -17,15 +17,16 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string _appId = "{app id}";
+        private const string AppId = ""
+
         private readonly string[] _extendedPermissions = new[] { "user_about_me" };
 
-        private bool _loggedIn = false;
+        private bool _loggedIn;
 
         private FacebookClient _fbClient;
 
         // At this point we have an access token so we can get information from facebook
-        private void loginSucceeded()
+        private void LoginSucceeded()
         {
             TitlePanel.Visibility = Visibility.Visible;
             FacebookLoginBrowser.Visibility = Visibility.Collapsed;
@@ -78,7 +79,7 @@ namespace Facebook.Samples.AuthenticationTool
                                           // { "display", "touch" } // by default for wp7 builds only (in Facebook.dll), display is set to touch.
                                       };
 
-            var navigateUrl = FacebookOAuthClient.GetLoginUrl(_appId, null, _extendedPermissions, loginParameters);
+            var navigateUrl = FacebookOAuthClient.GetLoginUrl(AppId, null, _extendedPermissions, loginParameters);
 
             FacebookLoginBrowser.Navigate(navigateUrl);
         }
@@ -92,7 +93,7 @@ namespace Facebook.Samples.AuthenticationTool
                 {
                     _fbClient = new FacebookClient(oauthResult.AccessToken);
                     _loggedIn = true;
-                    loginSucceeded();
+                    LoginSucceeded();
                 }
                 else
                 {
