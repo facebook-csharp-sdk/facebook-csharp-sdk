@@ -18,18 +18,22 @@ namespace Facebook.Samples.AuthenticationTool
     /// </summary>
     public partial class FacebookLoginDialog : Window
     {
-        private Uri _navigateUrl;
+        private readonly Uri _navigateUrl;
 
         public FacebookOAuthResult FacebookOAuthResult { get; private set; }
 
         public FacebookLoginDialog(string appId, string[] extendedPermissions, bool logout)
         {
+            // there is a bug in wpf browser which omits anything in the fragment part of the uri
+            // due to this bug we can't see the access token (#access_token=....) in the uri
+            // to fix this either use win forms for login only or ask for code instead of token.
+
             var loginParameters = new Dictionary<string, object>
                                       {
-                                          { "response_type", "token" }
+                                          { "response_type", "code" } 
                                       };
 
-            _navigateUrl = FacebookOAuthClient.GetLoginUrl(appId, null, extendedPermissions, logout, loginParameters);
+            _navigateUrl = FacebookOAuthClient.GetLoginUrl(appId, null, extendedPermissions, loginParameters);
             InitializeComponent();
         }
 
@@ -43,12 +47,12 @@ namespace Facebook.Samples.AuthenticationTool
             FacebookOAuthResult oauthResult;
             if (FacebookOAuthResult.TryParse(e.Uri, out oauthResult))
             {
-                this.FacebookOAuthResult = oauthResult;
-                this.DialogResult = oauthResult.IsSuccess;
+                FacebookOAuthResult = oauthResult;
+                DialogResult = oauthResult.IsSuccess;
             }
             else
             {
-                this.FacebookOAuthResult = null;
+                FacebookOAuthResult = null;
             }
         }
 

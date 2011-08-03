@@ -18,8 +18,10 @@ namespace Facebook.Samples.AuthenticationTool
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string _appId = "{app id}";
-        private string[] _extendedPermissions = new[] { "user_about_me" };
+        private const string AppId = ""
+        private const string AppSecret = ""
+
+        private readonly string[] _extendedPermissions = new[] { "user_about_me" };
 
         public MainWindow()
         {
@@ -28,7 +30,7 @@ namespace Facebook.Samples.AuthenticationTool
 
         private void btnFacebookLogin_Click(object sender, RoutedEventArgs e)
         {
-            var facebookLoginDialog = new FacebookLoginDialog(_appId, _extendedPermissions,true);
+            var facebookLoginDialog = new FacebookLoginDialog(AppId, _extendedPermissions, true);
             facebookLoginDialog.ShowDialog();
 
             DisplayAppropriateMessage(facebookLoginDialog.FacebookOAuthResult);
@@ -44,7 +46,13 @@ namespace Facebook.Samples.AuthenticationTool
 
             if (facebookOAuthResult.IsSuccess)
             {
-                var fb = new FacebookClient(facebookOAuthResult.AccessToken);
+                // we only have code, but no access token, so in order to get access token use ExchangeCodeForAccessToken
+                var oauth = new FacebookOAuthClient { AppId = AppId, AppSecret = AppSecret };
+
+                dynamic accessTokenResult = oauth.ExchangeCodeForAccessToken(facebookOAuthResult.Code);
+                string accessToken = accessTokenResult.access_token;
+
+                var fb = new FacebookClient(accessToken);
 
                 dynamic result = fb.Get("/me");
                 MessageBox.Show("Hi " + result.name);
