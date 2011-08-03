@@ -13,22 +13,18 @@ namespace CSWinFormsUploadProgressAndCancel
 {
     public partial class MainForm : Form
     {
-        private string _appId = "{app id}";
-        private string[] _extendedPermissions = new[] { "user_about_me", "publish_stream" };
+        private const string AppId = ""
+
+        private readonly string[] _extendedPermissions = new[] { "user_about_me", "publish_stream" };
 
         public MainForm()
         {
-            if (_appId == "{app id}")
-            {
-                throw new ApplicationException("Please set the _appId");
-            }
-
             InitializeComponent();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            var facebookLoginDialog = new FacebookLoginDialog(_appId, _extendedPermissions);
+            var facebookLoginDialog = new FacebookLoginDialog(AppId, _extendedPermissions);
             facebookLoginDialog.ShowDialog();
 
             DisplayAppropriateMessage(facebookLoginDialog.FacebookOAuthResult);

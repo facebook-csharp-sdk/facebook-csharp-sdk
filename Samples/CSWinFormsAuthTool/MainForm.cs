@@ -12,7 +12,8 @@ namespace Facebook.Samples.AuthenticationTool
 {
     public partial class MainForm : Form
     {
-        private string _appId = "{app id}";
+        private string _appId = ""
+
         private string[] _extendedPermissions = new[] { "user_about_me", "publish_stream" };
 
         public MainForm()
