@@ -566,7 +566,7 @@ namespace Facebook
         {
             Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
 
-            ApiAsync(path, parameters, HttpMethod.Post, null);
+            ApiAsync(path, parameters, HttpMethod.Post, userToken);
         }
 
         /// <summary>

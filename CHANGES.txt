@@ -11,6 +11,8 @@ vNEXT (BETA)
 2. marked methods in FacebookOAuthClient that uses GetLogoutUrl as obsolete
    and EditorBrowsableState as never
 3. removed obsolete FacebookApiEventArgs constructor
+4. fixed BatchAsync does not correctly pass userstate into async method in
+   PostAsync method (issue #5897)
 
 =========================================================================
 v5.1 (BETA)
