@@ -8,7 +8,7 @@ namespace $rootnamespace$.Samples.Facebook.Winforms
     {
         public static void RunSample(string appId, string[] extendedPermissions)
         {
-            var fbLoginDialog = new FacebookLoginDialog(appId, extendedPermissions, true);
+            var fbLoginDialog = new FacebookLoginDialog(appId, extendedPermissions);
             fbLoginDialog.ShowDialog();
 
             DisplayAppropriateMessage(fbLoginDialog.FacebookOAuthResult);

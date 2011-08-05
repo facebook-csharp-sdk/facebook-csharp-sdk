@@ -15,11 +15,6 @@ namespace $rootnamespace$.Samples.Facebook.Winforms
         private Uri navigateUrl;
 
         public FacebookLoginDialog(string appId, string[] extendedPermissions)
-            : this(appId, extendedPermissions, false)
-        {
-        }
-
-        public FacebookLoginDialog(string appId, string[] extendedPermissions, bool logout)
         {
             var oauth = new FacebookOAuthClient { AppId = appId };
 
@@ -38,20 +33,8 @@ namespace $rootnamespace$.Samples.Facebook.Winforms
 
             var loginUrl = oauth.GetLoginUrl(loginParameters);
 
-            if (logout)
-            {
-                var logoutParameters = new Dictionary<string, object>
-                                           {
-                                               { "next", loginUrl }
-                                           };
-
-                this.navigateUrl = oauth.GetLogoutUrl(logoutParameters);
-            }
-            else
-            {
-                this.navigateUrl = loginUrl;
-            }
-
+            this.navigateUrl = loginUrl;
+          
             InitializeComponent();
         }
 
