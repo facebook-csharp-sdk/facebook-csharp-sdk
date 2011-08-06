@@ -122,7 +122,7 @@ namespace Facebook
         ///     redirect_uri  : The URL to redirect to after the user clicks a button on the dialog. Required, but automatically specified by most SDKs.
         ///     scope         : Optional. A comma-delimited list of permissions.
         ///     state         : Optional. An opaque string used to maintain application state between the request and callback. When Facebook redirects the user back to your redirect_uri, this value will be included unchanged in the response.
-        ///     response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code_and_token).
+        ///     response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code token).
         ///     display       : The display mode in which to render the dialog. The default is page on the www subdomain and wap on the m subdomain. This is automatically specified by most SDKs. (For WP7 builds it is set to touch.)
         /// </remarks>
         public virtual Uri GetLoginUrl(IDictionary<string, object> parameters)
@@ -156,6 +156,12 @@ namespace Facebook
             mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
 
             var url = "http://www.facebook.com/dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
+            
+            // In order to be compliant with the OAuth spec Facebook have made changes to their auth APIs.
+            // As part of this update, they will be deprecating 'code_and_token' and need developers 
+            // to use 'code%20token'. Everything is identical, just replace '_and_' with encoded
+            // <space> '%20'.
+            url = url.Replace("response_type=code+token", "response_type=code%20token");
 
             return new Uri(url);
         }

@@ -13,6 +13,8 @@ vNEXT (BETA)
 3. removed obsolete FacebookApiEventArgs constructor
 4. fixed BatchAsync does not correctly pass userstate into async method in
    PostAsync method (issue #5897)
+5. response_type=code token encoding to response_type=code%20token 
+   for GetLoginUrl (issue# 5895)
 
 =========================================================================
 v5.1 (BETA)
