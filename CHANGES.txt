@@ -5,6 +5,13 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+vNEXT
+=========================================================================
+1. *breaking changes*
+   fixed Facebook.DateTimeConvertor.ToIso8601FormattedDateTime and
+   Facebook.DateTimeConvertor.FromIso8601FormattedDateTime (issue #5863)
+
+=========================================================================
 v5.1.1 (RTW)
 =========================================================================
 1. case insensitive method names for legacy rest api (# 5896)

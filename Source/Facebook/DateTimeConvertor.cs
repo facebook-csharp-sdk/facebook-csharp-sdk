@@ -11,12 +11,18 @@ namespace Facebook
 {
     using System;
     using System.Diagnostics.Contracts;
+    using System.Globalization;
 
     /// <summary>
     /// Utilities to convert dates to and from unix time.
     /// </summary>
     public static class DateTimeConvertor
     {
+        private static readonly string[] Iso8601Format = new[]
+                                                             {
+                                                                 "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'",
+                                                                 @"yyyy-MM-dd\THH:mm:ssK"
+                                                             };
         /// <summary>
         /// Gets the epoch time.
         /// </summary>
@@ -96,14 +102,14 @@ namespace Facebook
         /// </returns>
         public static string ToIso8601FormattedDateTime(DateTime dateTime)
         {
-            return dateTime.ToString("o");
+            return dateTime.ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
         }
 
         /// <summary>
         /// Converts ISO-8601 format (yyyy-MM-ddTHH:mm:ssZ) date time to <see cref="DateTime"/>.
         /// </summary>
         /// <param name="iso8601DateTime">
-        /// The iso 8601 formatted date time.
+        /// The ISO-8601 formatted date time.
         /// </param>
         /// <returns>
         /// Returns the <see cref="DateTime"/> equivalent to the ISO-8601 formatted date time. 
@@ -111,7 +117,7 @@ namespace Facebook
         public static DateTime FromIso8601FormattedDateTime(string iso8601DateTime)
         {
             Contract.Requires(!string.IsNullOrEmpty(iso8601DateTime));
-            return DateTime.ParseExact(iso8601DateTime, "o", System.Globalization.CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(iso8601DateTime, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
         }
     }
 }
