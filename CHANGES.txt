@@ -10,6 +10,14 @@ vNEXT
 1. *breaking changes*
    fixed Facebook.DateTimeConvertor.ToIso8601FormattedDateTime and
    Facebook.DateTimeConvertor.FromIso8601FormattedDateTime (issue #5863)
+2. *breaking changes*
+   moved the following delegates and classes to Facebook.Web.dll for .net 3.5 and
+   .net 4.0 but still under Facebook namespace.
+
+	public delegate void FacebookAsyncCallback(FacebookAsyncResult asyncResult);
+	public delegate void FacebookAsyncCallback<T>(FacebookAsyncResult<T> asyncResult);
+	public class FacebookAsyncResult;
+	public class FacebookAsyncResult<T>;
 
 =========================================================================
 v5.1.1 (RTW)

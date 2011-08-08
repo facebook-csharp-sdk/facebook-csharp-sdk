@@ -120,7 +120,6 @@
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApplication.cs" />
-    <Compile Include="FacebookAsyncResult.cs" />
     <Compile Include="FacebookBatchParameter.cs" />
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
