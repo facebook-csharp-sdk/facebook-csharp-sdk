@@ -127,7 +127,7 @@ namespace :zip do
 	
 	zip :libs => ['build:all',"#{config['path']['dist']}"] do |zip|
 		zip.directories_to_zip "#{config['path']['output']}Release/"
-		zip.output_file = "#{config['project']['name']}-#{config['version']['long']}.bin.zip"
+		zip.output_file = "#{config['project']['safe_name']}-#{config['version']['long']}.bin.zip"
 		zip.output_path = "#{config['path']['dist']}"
 		zip.additional_files = [ 
 									"#{config['path']['root']}LICENSE.txt",

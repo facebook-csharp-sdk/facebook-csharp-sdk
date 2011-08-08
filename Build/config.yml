@@ -1,6 +1,6 @@
 project:
  name: Facebook C# SDK
- safe_name: FacebookSDK
+ safe_name: FacebookCSharpSDK
 version:
  base: <%= base_version %>
  build_number: "<%= build_number %>"
