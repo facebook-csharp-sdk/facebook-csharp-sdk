@@ -151,7 +151,7 @@ namespace Facebook.Web
             get
             {
                 return _signedRequest ??
-                    (_signedRequest = FacebookSignedRequest.GetSignedRequest(Settings.AppSecret, HttpContext));
+                    (_signedRequest = FacebookSignedRequest.GetSignedRequest(Settings.AppId, Settings.AppSecret, HttpContext));
             }
         }
 

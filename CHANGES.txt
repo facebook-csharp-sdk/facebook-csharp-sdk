@@ -18,6 +18,7 @@ vNEXT
 	public delegate void FacebookAsyncCallback<T>(FacebookAsyncResult<T> asyncResult);
 	public class FacebookAsyncResult;
 	public class FacebookAsyncResult<T>;
+3. support for OAuth 2.0 JS SDK (issue #5893)
 
 =========================================================================
 v5.1.1 (RTW)

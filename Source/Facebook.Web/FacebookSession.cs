@@ -7,8 +7,6 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using Facebook.Web;
-
 namespace Facebook
 {
     using System;
@@ -19,6 +17,7 @@ namespace Facebook
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Web;
+    using Facebook.Web;
 
     /// <summary>
     /// Represents a Facebook session.
@@ -101,11 +100,56 @@ namespace Facebook
         /// <value>The secret.</value>
         public string Secret { get; private set; }
 
+        private string _accessToken;
+        private bool _invalidAccessToken;
+
         /// <summary>
         /// Gets the access token.
         /// </summary>
         /// <value>The access token.</value>
-        public string AccessToken { get; private set; }
+        public string AccessToken
+        {
+            get
+            {
+                if (!_invalidAccessToken && string.IsNullOrEmpty(_accessToken))
+                {
+                    var data = Data as IDictionary<string, object>;
+                    if (data != null && data.ContainsKey("code"))
+                    {
+                        var oauth = new FacebookOAuthClient(FacebookApplication.Current);
+                        try
+                        {
+                            var result = (IDictionary<string, object>)oauth.ExchangeCodeForAccessToken((string)data["code"],
+                                                                          new Dictionary<string, object> { { "redirect_uri", null } });
+                            _invalidAccessToken = false;
+                            _accessToken = (string)result["access_token"];
+
+                            if (result.ContainsKey("expires"))
+                            {
+                                data["expires"] = result["expires"];
+                                Expires = data["expires"].ToString() == "0" ? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(Convert.ToDouble(data["expires"]));
+                            }
+                            else
+                            {
+                                Expires = DateTime.MinValue;
+                            }
+                        }
+                        catch (FacebookOAuthException)
+                        {
+                            _accessToken = null;
+                            _invalidAccessToken = true;
+                        }
+                    }
+                }
+
+                return _accessToken;
+            }
+            set
+            {
+                _accessToken = value;
+                _invalidAccessToken = false;
+            }
+        }
 
         /// <summary>
         /// Gets the session key.
@@ -113,11 +157,21 @@ namespace Facebook
         /// <value>The session key.</value>
         public string SessionKey { get; private set; }
 
+        private DateTime _expires;
         /// <summary>
         /// Gets the expires.
         /// </summary>
         /// <value>The expires.</value>
-        public DateTime Expires { get; private set; }
+        public DateTime Expires
+        {
+            get
+            {
+                // this forces to exchange code for access token, incase there is code.
+                string accessToken = AccessToken;
+                return _expires;
+            }
+            private set { _expires = value; }
+        }
 
         /// <summary>
         /// Gets the signature.
@@ -185,7 +239,6 @@ namespace Facebook
 
             return null;
         }
-
 
         /// <summary>
         /// Gets the facebook session cookie name for the specified facebook application.
@@ -283,7 +336,7 @@ namespace Facebook
                 if (signedRequest == null)
                 {
                     // try creating session from signed_request if exists.
-                    signedRequest = FacebookSignedRequest.GetSignedRequest(appSecret, httpContext);
+                    signedRequest = FacebookSignedRequest.GetSignedRequest(appId, appSecret, httpContext);
                 }
 
                 if (signedRequest != null)
@@ -328,27 +381,52 @@ namespace Facebook
         /// </returns>
         internal static FacebookSession Create(string appSecret, FacebookSignedRequest signedRequest)
         {
-            if (signedRequest == null || String.IsNullOrEmpty(signedRequest.AccessToken))
+            if (signedRequest == null)
+            {
+                return null;
+            }
+
+            var data = (IDictionary<string, object>)signedRequest.Data;
+            if (data == null)
+            {
+                return null;
+            }
+
+            if (!data.ContainsKey("code") && string.IsNullOrEmpty(signedRequest.AccessToken))
             {
                 return null;
             }
 
             var dictionary = new JsonObject
             {
-                { "uid", signedRequest.UserId.ToString() },
-                { "access_token", signedRequest.AccessToken }
+                { "uid", signedRequest.UserId.ToString() }
             };
 
-            if (signedRequest.Expires == DateTime.MaxValue)
+            if (!string.IsNullOrEmpty(signedRequest.AccessToken))
             {
-                dictionary["expires"] = 0;
-            }
-            else if (signedRequest.Expires != DateTime.MinValue)
-            {
-                dictionary["expires"] = DateTimeConvertor.ToUnixTime(signedRequest.Expires);
+                dictionary["access_token"] = signedRequest.AccessToken;
             }
 
-            dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
+            if (data.ContainsKey("code"))
+            {
+                foreach (var key in data.Keys)
+                {
+                    dictionary[key] = data[key];
+                }
+            }
+            else
+            {
+                if (signedRequest.Expires == DateTime.MaxValue)
+                {
+                    dictionary["expires"] = 0;
+                }
+                else if (signedRequest.Expires != DateTime.MinValue)
+                {
+                    dictionary["expires"] = DateTimeConvertor.ToUnixTime(signedRequest.Expires);
+                }
+
+                dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
+            }
 
             return new FacebookSession(dictionary);
         }

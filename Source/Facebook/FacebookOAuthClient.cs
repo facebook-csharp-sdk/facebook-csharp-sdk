@@ -156,7 +156,7 @@ namespace Facebook
             mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
 
             var url = "http://www.facebook.com/dialog/oauth/?" + FacebookUtils.ToJsonQueryString(mergedParameters);
-            
+
             // In order to be compliant with the OAuth spec Facebook have made changes to their auth APIs.
             // As part of this update, they will be deprecating 'code_and_token' and need developers 
             // to use 'code%20token'. Everything is identical, just replace '_and_' with encoded
@@ -580,18 +580,21 @@ namespace Facebook
             if (mergedParameters["client_secret"] == null || string.IsNullOrEmpty(mergedParameters["client_secret"].ToString()))
                 throw new Exception("ClientSecret required");
 
-            if (mergedParameters["redirect_uri"] == null || string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
-                throw new Exception("RedirectUri required");
+            if (mergedParameters["redirect_uri"] != null &&
+                !string.IsNullOrEmpty(mergedParameters["redirect_uri"].ToString()))
+            {
+                // seems like if we don't do this and rather pass the original uri object,
+                // it seems to have http://localhost:80/csharpsamples instead of
+                // http://localhost/csharpsamples
+                // notice the port number, that shouldn't be there.
+                // this seems to happen for iis hosted apps.
+                mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
+            }
 
             if (mergedParameters["code"] == null || string.IsNullOrEmpty(mergedParameters["code"].ToString()))
                 throw new Exception("code required");
 
-            // seems like if we don't do this and rather pass the original uri object,
-            // it seems to have http://localhost:80/csharpsamples instead of
-            // http://localhost/csharpsamples
-            // notice the port number, that shouldn't be there.
-            // this seems to happen for iis hosted apps.
-            mergedParameters["redirect_uri"] = mergedParameters["redirect_uri"].ToString();
+
 
             return mergedParameters;
         }

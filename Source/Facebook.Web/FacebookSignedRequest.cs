@@ -123,7 +123,8 @@ namespace Facebook
                 else
                 {
                     // old signed_request: http://developers.facebook.com/docs/authentication/canvas
-                    string sUserId = data.ContainsKey("user_id") ? (string)data["user_id"] : null;
+                    // userId can be long or string so call ToString()
+                    string sUserId = data.ContainsKey("user_id") ? data["user_id"].ToString() : null;
                     long userId;
                     long.TryParse(sUserId, out userId);
                     _userId = userId;
@@ -296,9 +297,17 @@ namespace Facebook
         /// </returns>
         public static FacebookSignedRequest Parse(IFacebookApplication facebookApplication, HttpRequestBase request)
         {
-            return request.Params.AllKeys.Contains(SignedRequestKey)
+            var signedRequest = request.Params.AllKeys.Contains(SignedRequestKey)
                        ? Parse(facebookApplication, request.Params[SignedRequestKey])
                        : null;
+
+            if (signedRequest == null && facebookApplication != null && !string.IsNullOrEmpty(facebookApplication.AppId))
+            {
+                var signedRequestCookieValue = GetSignedRequestCookieValue(facebookApplication.AppId, request);
+                signedRequest = Parse(facebookApplication, signedRequestCookieValue);
+            }
+
+            return signedRequest;
         }
 
         /// <summary>
@@ -336,7 +345,7 @@ namespace Facebook
         /// <returns>
         /// Returns the signed request if found otherwise null.
         /// </returns>
-        internal static FacebookSignedRequest GetSignedRequest(string appSecret, HttpContextBase httpContext)
+        internal static FacebookSignedRequest GetSignedRequest(string appId, string appSecret, HttpContextBase httpContext)
         {
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Request != null);
@@ -348,6 +357,15 @@ namespace Facebook
             if (items[HttpContextKey] == null)
             {
                 signedRequest = httpRequest.Params.AllKeys.Contains(SignedRequestKey) ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params[SignedRequestKey]) : null;
+                if (signedRequest == null && !string.IsNullOrEmpty(appId))
+                {
+                    var signedRequestCookieValue = GetSignedRequestCookieValue(appId, httpRequest);
+                    if (!string.IsNullOrEmpty(signedRequestCookieValue))
+                    {
+                        signedRequest = Parse(appSecret, signedRequestCookieValue);
+                    }
+                }
+
                 items[HttpContextKey] = signedRequest;
             }
             else
@@ -469,6 +487,30 @@ namespace Facebook
 
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets the facebook cookie that potentially houses the signed request for the app user.
+        /// </summary>
+        /// <param name="appId">The app id.</param>
+        /// <returns>The name of the cookie that would house the signed request.</returns>
+        internal static string GetSignedRequestCookieName(string appId)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+            return string.Concat("fbsr_", appId);
+        }
+
+        internal static string GetSignedRequestCookieValue(string appId, HttpRequestBase httpRequest)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Contract.Requires(httpRequest != null);
+            Contract.Requires(httpRequest.Params != null);
+
+            var cookieName = GetSignedRequestCookieName(appId);
+
+            return httpRequest.Params.AllKeys.Contains(cookieName) ? httpRequest.Params[cookieName] : null;
         }
 
         [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
