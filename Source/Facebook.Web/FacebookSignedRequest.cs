@@ -7,8 +7,6 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using Facebook.Web;
-
 namespace Facebook
 {
     using System;
@@ -19,6 +17,7 @@ namespace Facebook
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Web;
+    using Facebook.Web;
 
     /// <summary>
     /// Represents a Facebook signed request.

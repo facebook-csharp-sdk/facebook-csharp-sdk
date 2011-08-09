@@ -274,7 +274,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Build the URL for given domain alias, paht and parameters.
+        /// Build the URL for given domain alias, path and parameters.
         /// </summary>
         /// <param name="domainMaps">
         /// The domain maps.
@@ -327,7 +327,7 @@ namespace Facebook
         /// Converts the dictionary to a json formatted query string.
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
-        /// <returns>A Json formatted querystring.</returns>
+        /// <returns>A json formatted querystring.</returns>
         public static string ToJsonQueryString(IDictionary<string, object> dictionary)
         {
             Contract.Requires(dictionary != null);
@@ -349,7 +349,7 @@ namespace Facebook
 
                 if (dictionary[key] != null)
                 {
-                    // Format Object As Json And Remove leading and trailing parenthesis
+                    // Format Object As json And Remove leading and trailing parenthesis
                     string jsonValue = ToJsonString(dictionary[key]);
 
                     if (!string.IsNullOrEmpty(jsonValue))
@@ -369,7 +369,7 @@ namespace Facebook
 
         public static string ToJsonString(object value)
         {
-            // Format Object As Json And Remove leading and trailing parenthesis
+            // Format Object As json And Remove leading and trailing parenthesis
             string jsonValue = JsonSerializer.Current.SerializeObject(value);
             jsonValue = SimpleJson.SimpleJson.EscapeToJavascriptString(jsonValue);
             if (jsonValue.StartsWith("\"", StringComparison.Ordinal))

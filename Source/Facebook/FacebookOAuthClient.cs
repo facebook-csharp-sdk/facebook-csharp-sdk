@@ -167,55 +167,6 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the logout url.
-        /// </summary>
-        /// <returns>
-        /// Returns the logout url.
-        /// </returns>
-        [Obsolete]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Uri GetLogoutUrl()
-        {
-            return GetLogoutUrl(null);
-        }
-
-        /// <summary>
-        /// Gets the logout url.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <returns>
-        /// Returns the logout url.
-        /// </returns>
-        [Obsolete]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Uri GetLogoutUrl(IDictionary<string, object> parameters)
-        {
-            // more information on this at http://stackoverflow.com/questions/2764436/facebook-oauth-logout
-            var uriBuilder = new UriBuilder("http://m.facebook.com/logout.php");
-
-            var defaultParams = new Dictionary<string, object>();
-            defaultParams["confirm"] = 1;
-            defaultParams["next"] = RedirectUri ?? new Uri("http://www.facebook.com");
-
-            var mergedParameters = FacebookUtils.Merge(defaultParams, parameters);
-
-            if (mergedParameters["next"] == null)
-            {
-                mergedParameters.Remove("next");
-            }
-            else
-            {
-                mergedParameters["next"] = mergedParameters["next"].ToString();
-            }
-
-            uriBuilder.Query = FacebookUtils.ToJsonQueryString(mergedParameters);
-
-            return uriBuilder.Uri;
-        }
-
-        /// <summary>
         /// Gets the login url.
         /// </summary>
         /// <param name="appId">
@@ -264,18 +215,13 @@ namespace Facebook
         /// <param name="extendedPermissions">
         /// The extended permissions (scope).
         /// </param>
-        /// <param name="logout">  
-        /// Indicates whether to logout existing logged in user or not.  
-        /// </param>  
         /// <param name="loginParameters">
         /// The login parameters.
         /// </param>
         /// <returns>
         /// The url to navigate.
         /// </returns>
-        [Obsolete]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, bool logout, IDictionary<string, object> loginParameters)
+        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, IDictionary<string, object> loginParameters)
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));
             Contract.Ensures(Contract.Result<Uri>() != null);
@@ -300,47 +246,7 @@ namespace Facebook
             var mergedLoginParameters = FacebookUtils.Merge(defaultLoginParameters, loginParameters);
 
             var loginUrl = oauth.GetLoginUrl(mergedLoginParameters);
-
-            Uri navigateUrl;
-            if (logout)
-            {
-                var logoutParameters = new Dictionary<string, object>
-                                           {
-                                               { "next", loginUrl }
-                                           };
-
-                navigateUrl = oauth.GetLogoutUrl(logoutParameters);
-            }
-            else
-            {
-                navigateUrl = loginUrl;
-            }
-
-            return navigateUrl;
-
-        }
-
-        /// <summary>
-        /// Gets the login url.
-        /// </summary>
-        /// <param name="appId">
-        /// The app id.
-        /// </param>
-        /// <param name="redirectUri">
-        /// The redirect Uri.
-        /// </param>
-        /// <param name="extendedPermissions">
-        /// The extended permissions (scope).
-        /// </param>
-        /// <param name="loginParameters">
-        /// The login parameters.
-        /// </param>
-        /// <returns>
-        /// The url to navigate.
-        /// </returns>
-        public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, IDictionary<string, object> loginParameters)
-        {
-            return GetLoginUrl(appId, redirectUri, extendedPermissions, false, loginParameters);
+            return loginUrl;
         }
 
         #endregion
@@ -593,8 +499,6 @@ namespace Facebook
 
             if (mergedParameters["code"] == null || string.IsNullOrEmpty(mergedParameters["code"].ToString()))
                 throw new Exception("code required");
-
-
 
             return mergedParameters;
         }

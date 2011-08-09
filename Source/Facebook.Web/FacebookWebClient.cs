@@ -13,6 +13,9 @@ namespace Facebook.Web
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    /// <summary>
+    /// Represents the Facebook Web Client.
+    /// </summary>
     public class FacebookWebClient : FacebookClient
     {
         private FacebookWebContext _request;
@@ -63,7 +66,7 @@ namespace Facebook.Web
         /// Initializes a new instance of the <see cref="FacebookWebClient"/> class.
         /// </summary>
         /// <param name="facebookApplication">
-        /// The facebook application.
+        /// The Facebook application.
         /// </param>
         public FacebookWebClient(IFacebookApplication facebookApplication)
             : base(facebookApplication)

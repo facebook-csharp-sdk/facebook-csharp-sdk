@@ -11,10 +11,20 @@ namespace Facebook.Web.Mvc
 {
     using System.Web.Mvc;
 
+    /// <summary>
+    /// Represents Facebook Subscription Verifiy attribute.
+    /// </summary>
     public class FacebookSubscriptionVerifyAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// The verification token.
+        /// </summary>
         public virtual string VerificationToken { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookSubscriptionVerifyAttribute"/> class.
+        /// </summary>
+        /// <param name="verificationToken"></param>
         public FacebookSubscriptionVerifyAttribute(string verificationToken)
         {
             VerificationToken = verificationToken;

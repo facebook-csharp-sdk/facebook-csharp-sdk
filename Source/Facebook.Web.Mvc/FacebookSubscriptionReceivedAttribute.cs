@@ -11,8 +11,14 @@ namespace Facebook.Web.Mvc
 {
     using System.Web.Mvc;
 
+    /// <summary>
+    /// Represents the Facebook subscription received attribute.
+    /// </summary>
     public class FacebookSubscriptionReceivedAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// The parameter name.
+        /// </summary>
         public virtual string ParameterName { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)

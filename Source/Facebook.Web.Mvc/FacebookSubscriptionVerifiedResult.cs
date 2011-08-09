@@ -11,6 +11,9 @@ namespace Facebook.Web.Mvc
 {
     using System.Web.Mvc;
 
+    /// <summary>
+    /// Represents the Facebook subscription verified result.
+    /// </summary>
     public class FacebookSubscriptionVerifiedResult : ActionResult
     {
         public override void ExecuteResult(ControllerContext context)

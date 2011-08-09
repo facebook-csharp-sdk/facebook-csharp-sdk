@@ -14,19 +14,33 @@ namespace Facebook.Web
     using System.Diagnostics.Contracts;
     using System.Web;
 
+    /// <summary>
+    /// Represents the authorizer for the Canvas Applications.
+    /// </summary>
     public class CanvasAuthorizer : FacebookWebAuthorizer
     {
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class. 
+        /// </summary>
         public CanvasAuthorizer()
             : base(FacebookWebContext.Current)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class. 
+        /// </summary>
+        /// <param name="context">The <see cref="FacebookWebContext"/></param>
         public CanvasAuthorizer(FacebookWebContext context)
             : base(context)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasAuthorizer"/> class. 
+        /// </summary>
+        /// <param name="settings">The Facebook application settings.</param>
+        /// <param name="httpContext">The HttpContext.</param>
         public CanvasAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
             : base(settings, httpContext)
         {
@@ -63,7 +77,7 @@ namespace Facebook.Web
 
             if (Permissions != null)
             {
-                defaultParameters["scope"] = String.Join(",", Permissions);
+                defaultParameters["scope"] = string.Join(",", Permissions);
             }
 
             var canvasUrlBuilder = new CanvasUrlBuilder(FacebookWebRequest.Settings, FacebookWebRequest.HttpContext.Request);

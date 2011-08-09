@@ -23,7 +23,7 @@ namespace Facebook.Web
     public class FacebookWebContext
     {
         /// <summary>
-        /// The facebook settings.
+        /// The Facebook settings.
         /// </summary>
         private readonly IFacebookApplication _facebookApplication;
 
@@ -33,12 +33,12 @@ namespace Facebook.Web
         private readonly HttpContextBase _httpContext;
 
         /// <summary>
-        /// The facebook session.
+        /// The Facebook session.
         /// </summary>
         private FacebookSession _session;
 
         /// <summary>
-        /// The facebook signed request.
+        /// The Facebook signed request.
         /// </summary>
         private FacebookSignedRequest _signedRequest;
 
@@ -86,7 +86,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// Gets the current facebook web context.
+        /// Gets the current Facebook web context.
         /// </summary>
         public static FacebookWebContext Current
         {
@@ -132,7 +132,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// Gets the facebook session.
+        /// Gets the Facebook session.
         /// </summary>
         public virtual FacebookSession Session
         {
@@ -211,11 +211,19 @@ namespace Facebook.Web
             return HasPermissions(new[] { permission }).Length == 1;
         }
 
+        /// <summary>
+        /// Checks whether the user is authenticated or not.
+        /// </summary>
+        /// <returns>Returns true if the user is authenticated else false.</returns>
         public bool IsAuthenticated()
         {
             return Session != null && Session.Expires > DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Checks if the user is authorized or not.
+        /// </summary>
+        /// <returns>Returns true if the user is authorized else false.</returns>
         public bool IsAuthorized()
         {
             return IsAuthorized(null);

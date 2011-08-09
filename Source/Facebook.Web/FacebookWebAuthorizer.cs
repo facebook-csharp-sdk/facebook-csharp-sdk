@@ -11,31 +11,53 @@ namespace Facebook.Web
 {
     using System.Web;
 
+    /// <summary>
+    /// Represents the Facebook Web Authorizer
+    /// </summary>
     public class FacebookWebAuthorizer
     {
-        private FacebookWebContext _request;
+        private readonly FacebookWebContext _request;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebAuthorizer"/> class.
+        /// </summary>
         public FacebookWebAuthorizer() :
             this(FacebookWebContext.Current)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebAuthorizer"/> class.
+        /// </summary>
+        /// <param name="context">The <see cref="FacebookWebContext"/></param>
         public FacebookWebAuthorizer(FacebookWebContext context)
         {
             _request = context;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookWebAuthorizer"/> class.
+        /// </summary>
+        /// <param name="settings">The Facebook application settings.</param>
+        /// <param name="httpContext">The HttpContext.</param>
         public FacebookWebAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
         {
             _request = new FacebookWebContext(settings, httpContext);
         }
 
+        /// <summary>
+        /// The <see cref="FacebookWebContext"/>.
+        /// </summary>
         public FacebookWebContext FacebookWebRequest
         {
             get { return _request; }
         }
 
+        /// <summary>
+        /// The Facebook session.
+        /// </summary>
         [System.Obsolete("Use FacebookWebRequest.Session instead.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public FacebookSession Session
         {
             get { return FacebookWebRequest.Session; }

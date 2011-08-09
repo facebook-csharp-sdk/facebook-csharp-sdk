@@ -241,7 +241,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the facebook session cookie name for the specified facebook application.
+        /// Gets the Facebook session cookie name for the specified Facebook application.
         /// </summary>
         /// <param name="appId">
         /// The app id.
@@ -258,7 +258,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the facebook session cookie value for the specified application.
+        /// Gets the Facebook session cookie value for the specified application.
         /// </summary>
         /// <param name="appId">
         /// The app id.
@@ -267,7 +267,7 @@ namespace Facebook
         /// The http request.
         /// </param>
         /// <returns>
-        /// Returns the facebook session cookie value if present otherwise null.
+        /// Returns the Facebook session cookie value if present otherwise null.
         /// </returns>
         internal static string GetSessionCookieValue(string appId, HttpRequestBase httpRequet)
         {
@@ -281,7 +281,7 @@ namespace Facebook
         }
 
         /// <summary>
-        ///  Gets the facebook session from the http request.
+        ///  Gets the Facebook session from the http request.
         /// </summary>
         /// <param name="appId">
         /// The app id.
@@ -293,7 +293,7 @@ namespace Facebook
         /// The http context.
         /// </param>
         /// <returns>
-        /// Returns the facebook session if found, otherwise null.
+        /// Returns the Facebook session if found, otherwise null.
         /// </returns>
         internal static FacebookSession GetSession(string appId, string appSecret, HttpContextBase httpContext)
         {
@@ -301,7 +301,7 @@ namespace Facebook
         }
 
         /// <summary>
-        ///  Gets the facebook session from the http request.
+        ///  Gets the Facebook session from the http request.
         /// </summary>
         /// <param name="appId">
         /// The app id.
@@ -313,7 +313,7 @@ namespace Facebook
         /// The http context.
         /// </param>
         /// <returns>
-        /// Returns the facebook session if found, otherwise null.
+        /// Returns the Facebook session if found, otherwise null.
         /// </returns>
         internal static FacebookSession GetSession(string appId, string appSecret, HttpContextBase httpContext, FacebookSignedRequest signedRequest)
         {
@@ -368,7 +368,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Creates a facebook session from a signed request.
+        /// Creates a Facebook session from a signed request.
         /// </summary>
         /// <param name="appSecret">
         /// The app secret.
@@ -377,7 +377,7 @@ namespace Facebook
         /// The signed request.
         /// </param>
         /// <returns>
-        /// The facebook session.
+        /// The Facebook session.
         /// </returns>
         internal static FacebookSession Create(string appSecret, FacebookSignedRequest signedRequest)
         {
@@ -478,7 +478,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Generates a MD5 signature for the facebook session.
+        /// Generates a MD5 signature for the Facebook session.
         /// </summary>
         /// <param name="secret">
         /// The app secret.

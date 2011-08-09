@@ -250,7 +250,7 @@ namespace Facebook.Web
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use facebook beta.
+        /// Gets or sets a value indicating whether to use Facebook beta.
         /// </summary>
         public bool UseFacebookBeta
         {
@@ -442,7 +442,7 @@ namespace Facebook.Web
                 throw new ArgumentNullException("url");
             }
 
-            return "<html><head><script type=\"text/javascript\">\ntop.location = \"" + url + "\";\n" + "</script></head><body></body></html>";
+            return string.Concat("<html><head><script type=\"text/javascript\">\ntop.location = \"", url, "\";\n", "</script></head><body></body></html>");
         }
 
         /// <summary>

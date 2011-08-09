@@ -7,12 +7,11 @@
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System.ComponentModel;
-
 namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Diagnostics.Contracts;
     using System.Web;
     using System.Web.Mvc;

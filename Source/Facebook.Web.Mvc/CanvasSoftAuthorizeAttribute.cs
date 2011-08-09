@@ -9,6 +9,7 @@
 
 namespace Facebook.Web.Mvc
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -16,12 +17,11 @@ namespace Facebook.Web.Mvc
     using System.Web.Mvc;
     using Facebook;
     using Facebook.Web;
-    using System;
 
     /// <summary>
     /// This filter will send an unauthorized user to the 
     /// specified view rather than redirecting them directly
-    /// to the facebook login page. This allows for a landing
+    /// to the Facebook login page. This allows for a landing
     /// page to explain to the user why the permissions requested
     /// are needed.
     /// </summary>
@@ -71,7 +71,7 @@ namespace Facebook.Web.Mvc
 
             var model = new FacebookAuthorizeInfo(
                 GetLoginUrl(settings, filterContext.HttpContext, null),
-                Perms,
+                Permissions,
                 filterContext.HttpContext.Request.QueryString.AllKeys.Contains("error_reason"),
                 filterContext.RouteData.Values);
 
@@ -86,7 +86,7 @@ namespace Facebook.Web.Mvc
             filterContext.Result = viewResult;
         }
 
-        protected internal override System.Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
+        protected internal override Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
             var authorizer = new CanvasAuthorizer(settings, httpContext)
             {

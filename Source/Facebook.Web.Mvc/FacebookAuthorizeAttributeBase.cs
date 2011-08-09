@@ -43,8 +43,18 @@ namespace Facebook.Web.Mvc
             OnAuthorization(filterContext, FacebookApplication.Current);
         }
 
+        /// <summary>
+        /// On Authorization.
+        /// </summary>
+        /// <param name="filterContext">The filter context.</param>
+        /// <param name="facebookApplication">The Facebook application settings.</param>
         public abstract void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication);
 
+        /// <summary>
+        /// Splits string to string array using comma.
+        /// </summary>
+        /// <param name="str">Input string.</param>
+        /// <returns>Array of strings.</returns>
         internal static string[] ToArrayString(string str)
         {
             return string.IsNullOrEmpty(str) ? null : str.Split(',');

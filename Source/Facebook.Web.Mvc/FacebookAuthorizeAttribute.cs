@@ -12,10 +12,21 @@ namespace Facebook.Web.Mvc
     using System;
     using System.Web.Mvc;
 
+    /// <summary>
+    /// Represents the Facebook Authorize Attribute.
+    /// </summary>
     public class FacebookAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
+        /// <summary>
+        /// The login url.
+        /// </summary>
         public virtual string LoginUrl { get; set; }
 
+        /// <summary>
+        /// Authorization.
+        /// </summary>
+        /// <param name="filterContext">The filter context.</param>
+        /// <param name="facebookApplication">The Facebook applicatio settings.</param>
         public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication facebookApplication)
         {
             var authorizer = new FacebookWebContext(facebookApplication, filterContext.HttpContext);
@@ -27,7 +38,7 @@ namespace Facebook.Web.Mvc
 
             if (!authorizer.IsAuthorized(ToArrayString(Permissions)))
             {
-                filterContext.Result = new RedirectResult(this.LoginUrl ?? "/");
+                filterContext.Result = new RedirectResult(LoginUrl ?? "/");
             }
         }
     }

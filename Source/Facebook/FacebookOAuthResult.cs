@@ -147,7 +147,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the code used to exchange with facebook to retrieve access token.
+        /// Gets the code used to exchange with Facebook to retrieve access token.
         /// </summary>
         public virtual string Code
         {
@@ -163,7 +163,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Parse the uri to <see cref="FacebookOAuthResult"/>.
+        /// Parse the url to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
         /// The url to parse.
@@ -177,7 +177,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Parse the uri to <see cref="FacebookOAuthResult"/>.
+        /// Parse the url to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
         /// The url to parse.
@@ -191,7 +191,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
+        /// Try parsing the url to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uriString">
         /// The url to parse.
@@ -214,7 +214,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Try parsing the uri to <see cref="FacebookOAuthResult"/>.
+        /// Try parsing the url to <see cref="FacebookOAuthResult"/>.
         /// </summary>
         /// <param name="uri">
         /// The url to parse.
@@ -232,7 +232,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Internal method for parsing the Facebook oauth ur..
+        /// Internal method for parsing the Facebook OAuth url.
         /// </summary>
         /// <param name="uri">
         /// The url to parse.
