@@ -327,10 +327,18 @@ namespace Facebook
         /// </returns>
         public static bool TryParse(IFacebookApplication facebookApplication, HttpRequestBase request, out FacebookSignedRequest signedRequest)
         {
-            signedRequest = null;
+            if (request.Params.AllKeys.Contains(SignedRequestKey))
+            {
+                return TryParse(facebookApplication, request.Params[SignedRequestKey], out signedRequest);
+            }
+            if (facebookApplication != null && !string.IsNullOrEmpty(facebookApplication.AppId))
+            {
+                var signedRequestCookieValue = GetSignedRequestCookieValue(facebookApplication.AppId, request);
+                return TryParse(facebookApplication, signedRequestCookieValue, out signedRequest);
+            }
 
-            return request.Params.AllKeys.Contains(SignedRequestKey) &&
-                   TryParse(facebookApplication, request.Params[SignedRequestKey], out signedRequest);
+            signedRequest = null;
+            return false;
         }
 
         /// <summary>
