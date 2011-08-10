@@ -194,7 +194,7 @@ namespace Facebook.Web
                 return new string[0];
             }
 
-            return HasPermissions(Settings.AppId, Settings.AppSecret, Session.UserId, permissions);
+            return HasPermissions(Session.AccessToken, Settings.AppId, Session.UserId, permissions) ?? new string[0];
         }
 
         /// <summary>
@@ -208,7 +208,10 @@ namespace Facebook.Web
         /// </returns>
         public virtual bool HasPermission(string permission)
         {
-            return HasPermissions(new[] { permission }).Length == 1;
+            Contract.Requires(!string.IsNullOrEmpty(permission));
+
+            var result = HasPermissions(new[] { permission });
+            return result != null && result.Length == 1;
         }
 
         /// <summary>
@@ -239,14 +242,20 @@ namespace Facebook.Web
         {
             bool isAuthorized = IsAuthenticated();
 
-            if (isAuthorized && permissions != null)
+            if (isAuthorized)
             {
-                var currentPerms = HasPermissions(permissions);
-                foreach (var perm in permissions)
+                var currentPerms = HasPermissions(AccessToken, Settings.AppId, UserId, permissions);
+                if (currentPerms == null)
+                    return false;
+
+                if (permissions != null)
                 {
-                    if (!currentPerms.Contains(perm))
+                    foreach (var perm in permissions)
                     {
-                        return false;
+                        if (!currentPerms.Contains(perm))
+                        {
+                            return false;
+                        }
                     }
                 }
             }
@@ -272,79 +281,43 @@ namespace Facebook.Web
         /// <returns>
         /// The list of permissions that are allowed from the specified permissions.
         /// </returns>
-        internal static string[] HasPermissions(string appId, string appSecret, long userId, string[] permissions)
+        internal static string[] HasPermissions(string accessToken, string appId, long userId, string[] permissions)
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(!string.IsNullOrEmpty(appSecret));
-            Contract.Requires(permissions != null);
             Contract.Requires(userId >= 0);
-            Contract.Ensures(Contract.Result<string[]>() != null);
 
-            var result = new string[0];
-
-            if (userId != 0)
+            if (userId != 0 && !string.IsNullOrEmpty(accessToken))
             {
-                var perms = new StringBuilder();
-                for (int i = 0; i < permissions.Length; i++)
+                try
                 {
-                    perms.Append(permissions[i]);
-                    if (i < permissions.Length - 1)
+                    var fb = new FacebookWebClient(accessToken);
+                    var remoteResult = ((IDictionary<string, object>)fb.Get("me/permissions"));
+                    if (remoteResult != null && remoteResult.ContainsKey("data"))
                     {
-                        perms.Append(",");
+                        var data = remoteResult["data"] as IList<object>;
+
+                        if (data != null && data.Count > 0)
+                        {
+                            var permData = data[0] as IDictionary<string, object>;
+                            if (permData == null)
+                                return new string[0];
+                            else
+                            {
+                                return (from perm in permData
+                                        where perm.Value.ToString() == "1"
+                                        select perm.Key).ToArray();
+                            }
+                        }
                     }
                 }
-
-                var query = string.Format(CultureInfo.InvariantCulture, "SELECT {0} FROM permissions WHERE uid == {1}", perms, userId);
-                var parameters = new Dictionary<string, object>();
-                parameters["query"] = query;
-                parameters["method"] = "fql.query";
-
-                var fb = new FacebookWebClient(appId, appSecret);
-                var data = fb.Get(parameters) as IList<object>;
-
-                if (data != null && data.Count > 0)
+                catch (FacebookOAuthException)
                 {
-                    var permData = data[0] as IDictionary<string, object>;
-                    if (permData != null)
-                    {
-                        result = (from perm in permData
-                                  where perm.Value.ToString() == "1"
-                                  select perm.Key).ToArray();
-                    }
+                    return null;
                 }
             }
 
-            return result;
+            return null;
         }
-
-        /// <summary>
-        ///  Check if the Facebook App has permission from the specified user.
-        /// </summary>
-        /// <param name="appId">
-        /// The app id.
-        /// </param>
-        /// <param name="appSecret">
-        /// The app secret.
-        /// </param>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="permission">
-        /// The permission.
-        /// </param>
-        /// <returns>
-        /// Returns true if the facebook app has the specified permission.
-        /// </returns>
-        internal static bool HasPermission(string appId, string appSecret, long userId, string permission)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(!string.IsNullOrEmpty(appSecret));
-            Contract.Requires(!string.IsNullOrEmpty(permission));
-            Contract.Requires(userId >= 0);
-
-            return HasPermissions(appId, appSecret, userId, new[] { permission }).Length == 1;
-        }
-
 
         /// <summary>
         /// Deletes all Facebook authentication cookies found in the current request.
@@ -363,7 +336,6 @@ namespace Facebook.Web
                 }
             }
         }
-
 
         /// <summary>
         /// The code contracts invariant object method.

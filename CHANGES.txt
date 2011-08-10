@@ -20,7 +20,8 @@ vNEXT
 	public class FacebookAsyncResult<T>;
 3. support for OAuth 2.0 JS SDK (issue #5893)
 4. Facebook.FacebookWebAuthorizer.Session editor browsable state set to never
-5. 
+5. FacebookWebContext.IsAuthorzied now uses the user access_token instead of the 
+   app access_token (issue #5826)
 
 =========================================================================
 v5.1.1 (RTW)
