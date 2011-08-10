@@ -1682,7 +1682,7 @@ namespace Facebook
                     parameters.Remove("access_token");
                 }
 
-#if !SILVERLIGHT
+#if SILVERLIGHT
                 if (httpMethod == HttpMethod.Delete)
                 {
                     if (queryString.Length > 0)
@@ -1695,7 +1695,8 @@ namespace Facebook
                 if (mediaObjects.Count == 0)
                 {
                     contentType = "application/x-www-form-urlencoded";
-                    input = new MemoryStream(Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters)));
+                    var data = Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters));
+                    input = data.Length == 0 ? null : new MemoryStream(data);
                 }
                 else
                 {
