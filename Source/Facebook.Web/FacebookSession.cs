@@ -131,7 +131,7 @@ namespace Facebook
                             }
                             else
                             {
-                                Expires = DateTime.MinValue;
+                                Expires = DateTime.MaxValue;
                             }
                         }
                         catch (FacebookOAuthException)
