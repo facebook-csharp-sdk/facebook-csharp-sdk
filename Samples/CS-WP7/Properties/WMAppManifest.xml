@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.0">
-  <App xmlns="" ProductID="{4fd69471-4feb-448e-ba2d-7f2ddab7a19f}" Title="Facebook.Samples.AuthenticationTool" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="Facebook.Samples.AuthenticationTool author" Description="Sample description" Publisher="Facebook.Samples.AuthenticationTool">
+  <App xmlns="" ProductID="{e17154fb-bae6-4e38-a4da-80c739f01921}" Title="CS_WP7" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="CS_WP7 author" Description="Sample description" Publisher="CS_WP7">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES"/>
@@ -20,11 +20,11 @@
       <DefaultTask  Name ="_default" NavigationPage="MainPage.xaml"/>
     </Tasks>
     <Tokens>
-      <PrimaryToken TokenID="Facebook.Samples.AuthenticationToolToken" TaskName="_default">
+      <PrimaryToken TokenID="CS_WP7Token" TaskName="_default">
         <TemplateType5>
           <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
           <Count>0</Count>
-          <Title>Facebook.Samples.AuthenticationTool</Title>
+          <Title>CS_WP7</Title>
         </TemplateType5>
       </PrimaryToken>
     </Tokens>
