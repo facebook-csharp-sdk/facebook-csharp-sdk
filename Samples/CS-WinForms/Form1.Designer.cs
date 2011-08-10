@@ -1,6 +1,6 @@
-﻿namespace Facebook.Samples.AuthenticationTool
+﻿namespace CS_WinForms
 {
-    partial class MainForm
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
@@ -29,40 +29,28 @@
         private void InitializeComponent()
         {
             this.btnFacebookLogin = new System.Windows.Forms.Button();
-            this.btnFacebookLoginDifferent = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnFacebookLogin
             // 
-            this.btnFacebookLogin.Location = new System.Drawing.Point(64, 69);
+            this.btnFacebookLogin.Location = new System.Drawing.Point(83, 62);
             this.btnFacebookLogin.Name = "btnFacebookLogin";
-            this.btnFacebookLogin.Size = new System.Drawing.Size(125, 52);
+            this.btnFacebookLogin.Size = new System.Drawing.Size(166, 41);
             this.btnFacebookLogin.TabIndex = 0;
             this.btnFacebookLogin.Text = "Login To Facebook";
             this.btnFacebookLogin.UseVisualStyleBackColor = true;
             this.btnFacebookLogin.Click += new System.EventHandler(this.btnFacebookLogin_Click);
             // 
-            // btnFacebookLoginDifferent
-            // 
-            this.btnFacebookLoginDifferent.Location = new System.Drawing.Point(247, 69);
-            this.btnFacebookLoginDifferent.Name = "btnFacebookLoginDifferent";
-            this.btnFacebookLoginDifferent.Size = new System.Drawing.Size(125, 52);
-            this.btnFacebookLoginDifferent.TabIndex = 1;
-            this.btnFacebookLoginDifferent.Text = "Login to Facebook as different user";
-            this.btnFacebookLoginDifferent.UseVisualStyleBackColor = true;
-            this.btnFacebookLoginDifferent.Click += new System.EventHandler(this.btnFacebookLoginDifferent_Click);
-            // 
-            // MainForm
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(446, 152);
-            this.Controls.Add(this.btnFacebookLoginDifferent);
+            this.ClientSize = new System.Drawing.Size(366, 163);
             this.Controls.Add(this.btnFacebookLogin);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.Name = "MainForm";
-            this.Text = "Facebook C# SDK Samples - http://facebooksdk.codeplex.com";
+            this.Name = "Form1";
+            this.Text = "CS-Winforms Facebook C# SDK Sample";
             this.ResumeLayout(false);
 
         }
@@ -70,6 +58,6 @@
         #endregion
 
         private System.Windows.Forms.Button btnFacebookLogin;
-        private System.Windows.Forms.Button btnFacebookLoginDifferent;
     }
 }
+
