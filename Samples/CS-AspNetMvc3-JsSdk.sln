@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS-AspNetMvc3-JsSdk", "CS-AspNetMvc3-JsSdk\CS-AspNetMvc3-JsSdk.csproj", "{F039DEB1-F5D7-4E9B-9FEF-43CB7C86846D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F039DEB1-F5D7-4E9B-9FEF-43CB7C86846D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F039DEB1-F5D7-4E9B-9FEF-43CB7C86846D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F039DEB1-F5D7-4E9B-9FEF-43CB7C86846D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F039DEB1-F5D7-4E9B-9FEF-43CB7C86846D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

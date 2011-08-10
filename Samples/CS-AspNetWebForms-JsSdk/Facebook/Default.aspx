@@ -11,7 +11,7 @@
         <input type="button" id="fblogout" value="Logout from Facebook" disabled="disabled"/>
 
         <h1>Facebook C# SDK ASP.NET WebForms with Facebook JavaScript SDK</h1>
-        <p>This sample demonstrates the use of Facebook C# SDK along with the oauth 2.0 feautre of the Facebook Javascript SDK.</p>
+        <p>This sample demonstrates the use of Facebook C# SDK along with the OAuth 2.0 feature of the Facebook Javascript SDK and ASP.NET WebForms</p>
         
         <strong>Hi <asp:Label runat="server" ID="lblName"></asp:Label></strong> <br/>
 
