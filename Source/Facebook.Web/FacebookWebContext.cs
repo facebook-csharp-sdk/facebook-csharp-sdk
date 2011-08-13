@@ -266,11 +266,11 @@ namespace Facebook.Web
         /// <summary>
         /// Check if the Facebook App has permissions from the specified user.
         /// </summary>
+        /// <param name="accessToken">
+        /// The access token.
+        /// </param>
         /// <param name="appId">
         /// The app id.
-        /// </param>
-        /// <param name="appSecret">
-        /// The app secret.
         /// </param>
         /// <param name="userId">
         /// The user id.
