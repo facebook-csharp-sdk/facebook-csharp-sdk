@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS-Canvas-AspNetWebForms-WithoutJsSdk", "CS-Canvas-AspNetWebForms-WithoutJsSdk\CS-Canvas-AspNetWebForms-WithoutJsSdk.csproj", "{F8BCF053-F8D7-4DD3-98DD-280A5C97C200}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8BCF053-F8D7-4DD3-98DD-280A5C97C200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8BCF053-F8D7-4DD3-98DD-280A5C97C200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8BCF053-F8D7-4DD3-98DD-280A5C97C200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8BCF053-F8D7-4DD3-98DD-280A5C97C200}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
