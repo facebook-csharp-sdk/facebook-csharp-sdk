@@ -26,6 +26,7 @@ vNEXT
 7. build.cmd is meant to be used with samples (allowing starters to easily
    start running the samples. don't use build.cmd to build production .dll files)
 8. fixed Silverlight/WP7 uses POST http method with method=delete
+9. parse signed_request only if it is not null or empty when parsing from HttpRequestBase
 
 =========================================================================
 v5.1.1 (RTW)

@@ -217,7 +217,7 @@ namespace Facebook
         /// Try parsing the signed request.
         /// </summary>
         /// <param name="facebookApplication">
-        /// The facebook application.
+        /// The Facebook application.
         /// </param>
         /// <param name="signedRequestValue">
         /// The signed request value.
@@ -264,7 +264,7 @@ namespace Facebook
         /// Parse the signed request.
         /// </summary>
         /// <param name="facebookApplication">
-        /// The facebook application.
+        /// The Facebook application.
         /// </param>
         /// <param name="signedRequestValue">
         /// The signed request value.
@@ -296,7 +296,7 @@ namespace Facebook
         /// </returns>
         public static FacebookSignedRequest Parse(IFacebookApplication facebookApplication, HttpRequestBase request)
         {
-            var signedRequest = request.Params.AllKeys.Contains(SignedRequestKey)
+            var signedRequest = request.Params.AllKeys.Contains(SignedRequestKey) && !string.IsNullOrEmpty(request.Params[SignedRequestKey])
                        ? Parse(facebookApplication, request.Params[SignedRequestKey])
                        : null;
 
@@ -326,7 +326,7 @@ namespace Facebook
         /// </returns>
         public static bool TryParse(IFacebookApplication facebookApplication, HttpRequestBase request, out FacebookSignedRequest signedRequest)
         {
-            if (request.Params.AllKeys.Contains(SignedRequestKey))
+            if (request.Params.AllKeys.Contains(SignedRequestKey) && !string.IsNullOrEmpty(request.Params[SignedRequestKey]))
             {
                 return TryParse(facebookApplication, request.Params[SignedRequestKey], out signedRequest);
             }
@@ -363,7 +363,7 @@ namespace Facebook
             FacebookSignedRequest signedRequest;
             if (items[HttpContextKey] == null)
             {
-                signedRequest = httpRequest.Params.AllKeys.Contains(SignedRequestKey) ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params[SignedRequestKey]) : null;
+                signedRequest = httpRequest.Params.AllKeys.Contains(SignedRequestKey) && !string.IsNullOrEmpty(httpRequest.Params[SignedRequestKey]) ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params[SignedRequestKey]) : null;
                 if (signedRequest == null && !string.IsNullOrEmpty(appId))
                 {
                     var signedRequestCookieValue = GetSignedRequestCookieValue(appId, httpRequest);
