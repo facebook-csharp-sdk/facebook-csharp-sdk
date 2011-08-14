@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="Facebook.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="1" osVersion="*">
-  <Role name="AzureFacebookApp.Web">
-    <Instances count="1" />
-    <ConfigurationSettings>
-    </ConfigurationSettings>
-  </Role>
-</ServiceConfiguration>

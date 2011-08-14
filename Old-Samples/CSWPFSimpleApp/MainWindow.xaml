@@ -1,8 +1,0 @@
-﻿<Window x:Class="Facebook.Samples.AuthenticationTool.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="300" Width="300">
-    <Grid Height="154" Width="263">
-        <Button Content="Login To Facebook" Height="23" HorizontalAlignment="Left" Margin="59,59,0,0" Name="btnFacebookLogin" VerticalAlignment="Top" Width="122" Click="btnFacebookLogin_Click" />
-    </Grid>
-</Window>
