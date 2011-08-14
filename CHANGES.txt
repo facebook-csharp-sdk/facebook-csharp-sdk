@@ -22,6 +22,10 @@ vNEXT
 4. Facebook.FacebookWebAuthorizer.Session editor browsable state set to never
 5. FacebookWebContext.IsAuthorzied now uses the user access_token instead of the 
    app access_token (issue #5826)
+6. complete rewrite of sample with comments. (javascript sdk samples is used with oauth 2.0 enabled)
+7. build.cmd is meant to be used with samples (allowing starters to easily
+   start running the samples. don't use build.cmd to build production .dll files)
+8. fixed Silverlight/WP7 uses POST http method with method=delete
 
 =========================================================================
 v5.1.1 (RTW)
