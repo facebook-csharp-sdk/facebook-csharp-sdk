@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Web;
 using Facebook;
 
-namespace CS_SL4_OutOfBrowser.Web
+namespace CS_SL4_InBrowser.Web
 {
     public partial class SilverlightFacebookCallback : System.Web.UI.Page
     {
         private const string AppId = ""
         private const string AppSecret = ""
-        private const string _silverlightFacebookCallback = "http://localhost:1383/SilverlightFacebookCallback.aspx";
+        private const string _silverlightFacebookCallback = "http://localhost:1530/SilverlightFacebookCallback.aspx";
 
         protected string AccessToken { get; private set; }
         protected string ErrorDescription { get; private set; }

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Browser;
 using System.Windows;
+using System.Windows.Browser;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Facebook;
-using System.Net;
 
-namespace CS_SL4_OutOfBrowser
+namespace CS_SL4_InBrowser
 {
+    [ScriptableType]
     public partial class MainPage : UserControl
     {
         private const string AppId = ""
@@ -23,22 +25,19 @@ namespace CS_SL4_OutOfBrowser
         private const string ExtendedPermissions = "user_about_me,publish_stream,offline_access";
 
         // Note:
-        // Host CS-SL4-OutOfBrowser.Web in IIS (or IIS express) and not Cassini (visual studio web server).
+        // Host CS-SL4-InBrowser.Web in IIS (or IIS express) and not cassini (visual studio web server).
         // and change this url accordingly.
-        // this Silverlight app should be running out of browser in full trust mode.
-        // due to security reasons, window.external.notify will not run silverlight_facebook_callback.htm if it
-        // is from different domain.
         // make sure you run this sample from the same domain where SilverlightFacebookCallback.aspx file is located
-        // i.e. http://localhost:1383/
-        // make sure to also set the SiteUrl to http://localhost:1383/
-        private const string _silverlightFacebookCallback = "http://localhost:1383/SilverlightFacebookCallback.aspx";
+        // i.e. http://localhost:1530/
+        // make sure to also set the SiteUrl to http://localhost:1530/
+        private const string _silverlightFacebookCallback = "http://localhost:1530/SilverlightFacebookCallback.aspx";
 
-        private bool _loggedIn;
         private string _accessToken;
 
         public MainPage()
         {
             InitializeComponent();
+            HtmlPage.RegisterScriptableObject("slObject", this);
 
             // note: make sure to register https:// prefix as ClientHttp as 
             // Facebook might return different error codes besides 200 or 404,
@@ -48,55 +47,17 @@ namespace CS_SL4_OutOfBrowser
             WebRequest.RegisterPrefix("https://", WebRequestCreator.ClientHttp);
         }
 
-        private void webBrowser1_Loaded(object sender, RoutedEventArgs e)
+        #region Javascript Callable (& related) Code
+
+        [ScriptableMember]
+        public void LoginComplete(string value)
         {
-            if (!_loggedIn)
-            {
-                LoginToFacebook();
-            }
-        }
-
-        private void LoginToFacebook()
-        {
-            TitleBox.Visibility = Visibility.Collapsed;
-            webBrowser1.Visibility = Visibility.Visible;
-            InfoBox.Visibility = Visibility.Collapsed;
-
-            var loginParameters = new Dictionary<string, object>
-                                {
-                                    { "display", "popup" }
-                                };
-
-            // The requested response: an access token (token), an authorization code (code), or both (code token).
-            // note: there is a bug in wpf browser control which ignores the fragment part (#) of the url
-            // so we cannot get the access token. To fix this, set response_type to code as code is set in
-            // the querystring.
-            loginParameters["response_type"] = "code";
-
-            // add the 'scope' parameter only if we have extendedPermissions.
-            if (!string.IsNullOrEmpty(ExtendedPermissions))
-            {
-                // A comma-delimited list of permissions
-                loginParameters["scope"] = ExtendedPermissions;
-            }
-
-            // Make sure to set the app id.
-            var oauthClient = new FacebookOAuthClient { AppId = AppId, RedirectUri = new Uri(_silverlightFacebookCallback) };
-
-            var loginUrl = oauthClient.GetLoginUrl(loginParameters);
-
-            webBrowser1.Navigate(loginUrl);
-        }
-
-        private void webBrowser1_ScriptNotify(object sender, NotifyEventArgs e)
-        {
-            var result = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(e.Value);
+            var result = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(value);
             string errorDescription = (string)result["error_description"];
             string accessToken = (string)result["access_token"];
 
             if (string.IsNullOrEmpty(errorDescription))
             {
-                _loggedIn = true;
                 LoginSucceeded(accessToken);
             }
             else
@@ -105,45 +66,74 @@ namespace CS_SL4_OutOfBrowser
             }
         }
 
+        #endregion
+
         private void LoginSucceeded(string accessToken)
         {
             TitleBox.Visibility = Visibility.Visible;
-            webBrowser1.Visibility = Visibility.Collapsed;
             InfoBox.Visibility = Visibility.Visible;
 
             _accessToken = accessToken;
 
-            GraphApiGetExample();
+            GraphApiExample();
             FQLExample();
             FQLMultiQueryExample();
         }
 
-        private void GraphApiGetExample()
+        private void FbLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            FbLoginButton.IsEnabled = false;
+            LoginToFbViaJs();
+        }
+
+        private void LoginToFbViaJs()
+        {
+            var loginParameters = new Dictionary<string, object>
+                                      {
+                                          { "display", "popup" },
+                                          { "response_type", "code" } // make it code and not access token for security reasons.
+                                      };
+
+            var oauthClient = new FacebookOAuthClient { AppId = AppId, RedirectUri = new Uri(_silverlightFacebookCallback) };
+
+            var loginUrl = oauthClient.GetLoginUrl(loginParameters);
+
+            // don't make the response_type = token
+            // coz it will be saved in the browser's history.
+            // so others might hack it.
+            // rather call ExchangeCodeForAccessToken to get access token in server side.
+            // we need to this in server side and not in this Silverlight app
+            // so that the app secret doesn't get exposed to the client in case someone
+            // reverse engineers this Silverlight app.
+            HtmlPage.Window.Eval(string.Format("fbLogin('{0}')", loginUrl));
+        }
+
+        private void GraphApiExample()
         {
             var fb = new FacebookClient(_accessToken);
 
             fb.GetCompleted += (o, e) =>
-                                   {
-                                       if (e.Error == null)
-                                       {
-                                           // make sure to reference Microsoft.CSharp if you want to use dynamic
-                                           dynamic me = e.GetResultData();
+            {
+                if (e.Error == null)
+                {
+                    // make sure to reference Microsoft.CSharp if you want to use dynamic
+                    dynamic me = e.GetResultData();
 
-                                           Dispatcher.BeginInvoke(
-                                               () =>
-                                               {
-                                                   picProfile.Source = new BitmapImage(new Uri(string.Format("https://graph.facebook.com/{0}/picture", me.id)));
+                    Dispatcher.BeginInvoke(
+                        () =>
+                        {
+                            picProfile.Source = new BitmapImage(new Uri(string.Format("https://graph.facebook.com/{0}/picture", me.id)));
 
-                                                   ProfileName.Text = "Hi " + me.name;
-                                                   FirstName.Text = "First Name: " + me.first_name;
-                                                   LastName.Text = "Last Name: " + me.last_name;
-                                               });
-                                       }
-                                       else
-                                       {
-                                           Dispatcher.BeginInvoke(() => MessageBox.Show(e.Error.Message));
-                                       }
-                                   };
+                            ProfileName.Text = "Hi " + me.name;
+                            FirstName.Text = "First Name: " + me.first_name;
+                            LastName.Text = "Last Name: " + me.last_name;
+                        });
+                }
+                else
+                {
+                    Dispatcher.BeginInvoke(() => MessageBox.Show(e.Error.Message));
+                }
+            };
             fb.GetAsync("me");
         }
 
