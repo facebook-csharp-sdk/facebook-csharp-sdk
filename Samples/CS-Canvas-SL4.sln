@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS-Canvas-SL4.Web", "CS-Canvas-SL4.Web\CS-Canvas-SL4.Web.csproj", "{FEA242D3-B51D-4900-A919-E1F66C3FEC17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS-Canvas-SL4", "CS-Canvas-SL4\CS-Canvas-SL4.csproj", "{C496A278-23A4-4809-B78A-2CB5F0B089B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEA242D3-B51D-4900-A919-E1F66C3FEC17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA242D3-B51D-4900-A919-E1F66C3FEC17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA242D3-B51D-4900-A919-E1F66C3FEC17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA242D3-B51D-4900-A919-E1F66C3FEC17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C496A278-23A4-4809-B78A-2CB5F0B089B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C496A278-23A4-4809-B78A-2CB5F0B089B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C496A278-23A4-4809-B78A-2CB5F0B089B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C496A278-23A4-4809-B78A-2CB5F0B089B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
