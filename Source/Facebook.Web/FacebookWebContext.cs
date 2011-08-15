@@ -325,9 +325,11 @@ namespace Facebook.Web
         public void DeleteAuthCookie()
         {
             string sessionCookieName = FacebookSession.GetCookieName(Settings.AppId);
+            string signedRequestCookieName = FacebookSignedRequest.GetSignedRequestCookieName(Settings.AppId);
+
             foreach (var cookieName in HttpContext.Request.Cookies.AllKeys)
             {
-                if (cookieName == sessionCookieName)
+                if (cookieName == signedRequestCookieName || cookieName == sessionCookieName)
                 {
                     var cookie = HttpContext.Request.Cookies[sessionCookieName];
                     cookie.Expires = DateTime.UtcNow.AddDays(-1);
