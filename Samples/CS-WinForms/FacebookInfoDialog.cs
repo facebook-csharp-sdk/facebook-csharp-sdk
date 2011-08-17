@@ -796,5 +796,11 @@ namespace CS_WinForms
         {
             System.Diagnostics.Process.Start("http://www.facebook.com/csharpsdk");
         }
+
+        private void btnProgressAndCancellation_Click(object sender, EventArgs e)
+        {
+            var dlg = new UploadProgressCancelForm(_accessToken);
+            dlg.ShowDialog();
+        }
     }
 }

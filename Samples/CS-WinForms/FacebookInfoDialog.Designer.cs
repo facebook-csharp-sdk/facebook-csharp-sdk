@@ -42,6 +42,7 @@
             this.btnPostVideo = new System.Windows.Forms.Button();
             this.btnDeleteLastMessage = new System.Windows.Forms.Button();
             this.lnkFacebokSdkFan = new System.Windows.Forms.LinkLabel();
+            this.btnProgressAndCancellation = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picProfile)).BeginInit();
             this.SuspendLayout();
             // 
@@ -181,11 +182,22 @@
             this.lnkFacebokSdkFan.Visible = false;
             this.lnkFacebokSdkFan.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkFacebokSdkFan_LinkClicked);
             // 
+            // btnProgressAndCancellation
+            // 
+            this.btnProgressAndCancellation.Location = new System.Drawing.Point(168, 341);
+            this.btnProgressAndCancellation.Name = "btnProgressAndCancellation";
+            this.btnProgressAndCancellation.Size = new System.Drawing.Size(178, 23);
+            this.btnProgressAndCancellation.TabIndex = 14;
+            this.btnProgressAndCancellation.Text = "Upload Progress and Cancellation Sample";
+            this.btnProgressAndCancellation.UseVisualStyleBackColor = true;
+            this.btnProgressAndCancellation.Click += new System.EventHandler(this.btnProgressAndCancellation_Click);
+            // 
             // FacebookInfoDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 344);
+            this.ClientSize = new System.Drawing.Size(449, 372);
+            this.Controls.Add(this.btnProgressAndCancellation);
             this.Controls.Add(this.lnkFacebokSdkFan);
             this.Controls.Add(this.btnDeleteLastMessage);
             this.Controls.Add(this.btnPostVideo);
@@ -227,5 +239,6 @@
         private System.Windows.Forms.Button btnPostVideo;
         private System.Windows.Forms.Button btnDeleteLastMessage;
         private System.Windows.Forms.LinkLabel lnkFacebokSdkFan;
+        private System.Windows.Forms.Button btnProgressAndCancellation;
     }
 }
