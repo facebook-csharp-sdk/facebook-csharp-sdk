@@ -7,6 +7,11 @@ SDK developers: developers writing this SDK.
 =========================================================================
 vNEXT
 =========================================================================
+1. fixed DeleteAuthCookie() for oAuth 2 (issue #5899)
+
+=========================================================================
+v5.2 (BETA)
+=========================================================================
 1. *breaking changes*
    fixed Facebook.DateTimeConvertor.ToIso8601FormattedDateTime and
    Facebook.DateTimeConvertor.FromIso8601FormattedDateTime (issue #5863)

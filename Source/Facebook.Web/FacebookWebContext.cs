@@ -329,7 +329,14 @@ namespace Facebook.Web
 
             foreach (var cookieName in HttpContext.Request.Cookies.AllKeys)
             {
-                if (cookieName == signedRequestCookieName || cookieName == sessionCookieName)
+                if (cookieName == signedRequestCookieName)
+                {
+                    var cookie = HttpContext.Request.Cookies[signedRequestCookieName];
+                    cookie.Expires = DateTime.UtcNow.AddDays(-1);
+                    cookie.Value = null;
+                    HttpContext.Response.Cookies.Set(cookie);
+                }
+                if (cookieName == sessionCookieName)
                 {
                     var cookie = HttpContext.Request.Cookies[sessionCookieName];
                     cookie.Expires = DateTime.UtcNow.AddDays(-1);
