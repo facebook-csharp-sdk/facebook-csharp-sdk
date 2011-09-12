@@ -90,7 +90,7 @@ namespace Facebook.Tests
             var secret = "3b4a872617be2ae1932baa1d4d240272";
             var cookieValue = "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026";
 
-            Assert.NotNull(FacebookSession.ParseCookieValue(secret, cookieValue));
+            Assert.NotNull(FacebookSession.ParseCookieValue(new DefaultFacebookApplication { AppSecret = secret }, cookieValue));
         }
 
         [Fact(DisplayName = "ParseCookieValue: Given valid fbs_ cookie value Then should extract the access token correctly")]
@@ -100,7 +100,7 @@ namespace Facebook.Tests
             var cookieValue = "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026";
             var expectedAccessToken = "124973200873702|2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026|vz4H9xjlRZPfg2quCv0XOM5g9_o";
 
-            var session = FacebookSession.ParseCookieValue(secret, cookieValue);
+            var session = FacebookSession.ParseCookieValue(new DefaultFacebookApplication { AppSecret = secret }, cookieValue);
 
             Assert.Equal(expectedAccessToken, session.AccessToken);
         }
@@ -112,7 +112,7 @@ namespace Facebook.Tests
             var cookieValue = "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026";
             long expectedUserId = 100001327642026;
 
-            var session = FacebookSession.ParseCookieValue(secret, cookieValue);
+            var session = FacebookSession.ParseCookieValue(new DefaultFacebookApplication { AppSecret = secret }, cookieValue);
 
             Assert.Equal(expectedUserId, session.UserId);
         }
@@ -124,7 +124,7 @@ namespace Facebook.Tests
             var cookieValue = "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026";
             var expectedSecret = "lddpssZCuPoEtjcDFcWtoA__";
 
-            var session = FacebookSession.ParseCookieValue(secret, cookieValue);
+            var session = FacebookSession.ParseCookieValue(new DefaultFacebookApplication { AppSecret = secret }, cookieValue);
 
             Assert.Equal(expectedSecret, session.Secret);
         }
@@ -136,7 +136,7 @@ namespace Facebook.Tests
             var cookieValue = "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026";
             var expectedSessionKey = "2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026";
 
-            var session = FacebookSession.ParseCookieValue(secret, cookieValue);
+            var session = FacebookSession.ParseCookieValue(new DefaultFacebookApplication { AppSecret = secret }, cookieValue);
 
             Assert.Equal(expectedSessionKey, session.SessionKey);
         }
@@ -148,7 +148,7 @@ namespace Facebook.Tests
             var cookieValue = "access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026";
             var expectedSignature = "1d95fa4b3dfa5b26c01c8ac8676d80b8";
 
-            var session = FacebookSession.ParseCookieValue(secret, cookieValue);
+            var session = FacebookSession.ParseCookieValue(new DefaultFacebookApplication { AppSecret = secret }, cookieValue);
 
             Assert.Equal(expectedSignature, session.Signature);
         }

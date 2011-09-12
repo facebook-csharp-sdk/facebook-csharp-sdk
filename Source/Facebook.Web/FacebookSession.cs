@@ -34,6 +34,8 @@ namespace Facebook
         /// </summary>
         private readonly object _data;
 
+        private readonly IFacebookApplication _settings;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookSession"/> class.
         /// </summary>
@@ -46,16 +48,12 @@ namespace Facebook
             Contract.Requires(!string.IsNullOrEmpty(accessToken));
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
-        /// </summary>
-        /// <param name="dictionary">
-        /// The dictionary.
-        /// </param>
-        public FacebookSession(IDictionary<string, object> dictionary)
+        public FacebookSession(IDictionary<string, object> dictionary, IFacebookApplication settings)
         {
             Contract.Requires(dictionary != null);
+            Contract.Requires(settings != null);
 
+            _settings = settings;
             var data = dictionary is JsonObject ? dictionary : FacebookUtils.ToDictionary(dictionary);
 
             AccessToken = data.ContainsKey("access_token") ? (string)data["access_token"] : null;
@@ -89,6 +87,17 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookSession"/> class.
+        /// </summary>
+        /// <param name="dictionary">
+        /// The dictionary.
+        /// </param>
+        public FacebookSession(IDictionary<string, object> dictionary)
+            : this(dictionary, FacebookApplication.Current)
+        {
+        }
+
+        /// <summary>
         /// Gets the user id.
         /// </summary>
         /// <value>The user id.</value>
@@ -116,7 +125,7 @@ namespace Facebook
                     var data = Data as IDictionary<string, object>;
                     if (data != null && data.ContainsKey("code"))
                     {
-                        var oauth = new FacebookOAuthClient(FacebookApplication.Current);
+                        var oauth = new FacebookOAuthClient(_settings);
                         try
                         {
                             var result = (IDictionary<string, object>)oauth.ExchangeCodeForAccessToken((string)data["code"],
@@ -295,9 +304,13 @@ namespace Facebook
         /// <returns>
         /// Returns the Facebook session if found, otherwise null.
         /// </returns>
-        internal static FacebookSession GetSession(string appId, string appSecret, HttpContextBase httpContext)
+        internal static FacebookSession GetSession(IFacebookApplication settings, HttpContextBase httpContext)
         {
-            return GetSession(appId, appSecret, httpContext, null);
+            Contract.Requires(settings != null);
+            Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(settings.AppSecret));
+
+            return GetSession(settings, httpContext, null);
         }
 
         /// <summary>
@@ -315,10 +328,11 @@ namespace Facebook
         /// <returns>
         /// Returns the Facebook session if found, otherwise null.
         /// </returns>
-        internal static FacebookSession GetSession(string appId, string appSecret, HttpContextBase httpContext, FacebookSignedRequest signedRequest)
+        internal static FacebookSession GetSession(IFacebookApplication settings, HttpContextBase httpContext, FacebookSignedRequest signedRequest)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+            Contract.Requires(settings != null);
+            Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
+            Contract.Requires(!string.IsNullOrEmpty(settings.AppSecret));
             Contract.Requires(httpContext != null);
             Contract.Requires(httpContext.Items != null);
             Contract.Requires(httpContext.Request != null);
@@ -336,21 +350,21 @@ namespace Facebook
                 if (signedRequest == null)
                 {
                     // try creating session from signed_request if exists.
-                    signedRequest = FacebookSignedRequest.GetSignedRequest(appId, appSecret, httpContext);
+                    signedRequest = FacebookSignedRequest.GetSignedRequest(settings.AppId, settings.AppSecret, httpContext);
                 }
 
                 if (signedRequest != null)
                 {
-                    facebookSession = FacebookSession.Create(appSecret, signedRequest);
+                    facebookSession = FacebookSession.Create(settings, signedRequest);
                 }
 
                 if (readSessionFromCookie && facebookSession == null)
                 {
                     // try creating session from cookie if exists.
-                    var sessionCookieValue = GetSessionCookieValue(appId, httpRequest);
+                    var sessionCookieValue = GetSessionCookieValue(settings.AppId, httpRequest);
                     if (!string.IsNullOrEmpty(sessionCookieValue))
                     {
-                        facebookSession = FacebookSession.ParseCookieValue(appSecret, sessionCookieValue);
+                        facebookSession = FacebookSession.ParseCookieValue(settings, sessionCookieValue);
                     }
                 }
 
@@ -379,8 +393,10 @@ namespace Facebook
         /// <returns>
         /// The Facebook session.
         /// </returns>
-        internal static FacebookSession Create(string appSecret, FacebookSignedRequest signedRequest)
+        internal static FacebookSession Create(IFacebookApplication settings, FacebookSignedRequest signedRequest)
         {
+            Contract.Requires(settings != null);
+
             if (signedRequest == null)
             {
                 return null;
@@ -425,10 +441,13 @@ namespace Facebook
                     dictionary["expires"] = DateTimeConvertor.ToUnixTime(signedRequest.Expires);
                 }
 
-                dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
+                if (settings != null && !string.IsNullOrEmpty(settings.AppSecret))
+                {
+                    dictionary["sig"] = GenerateSessionSignature(settings.AppSecret, dictionary);
+                }
             }
 
-            return new FacebookSession(dictionary);
+            return new FacebookSession(dictionary, settings);
         }
 
         /// <summary>
@@ -443,9 +462,10 @@ namespace Facebook
         /// <returns>
         /// The Facebook session object.
         /// </returns>
-        internal static FacebookSession ParseCookieValue(string appSecret, string cookieValue)
+        internal static FacebookSession ParseCookieValue(IFacebookApplication settings, string cookieValue)
         {
-            Contract.Requires(!String.IsNullOrEmpty(appSecret));
+            Contract.Requires(settings != null);
+            Contract.Requires(!String.IsNullOrEmpty(settings.AppSecret));
             Contract.Requires(!String.IsNullOrEmpty(cookieValue));
             Contract.Requires(!cookieValue.Contains(","), "Session value must not contain a comma.");
 
@@ -468,10 +488,10 @@ namespace Facebook
                 }
             }
 
-            var signature = GenerateSessionSignature(appSecret, dictionary);
+            var signature = GenerateSessionSignature(settings.AppSecret, dictionary);
             if (dictionary.ContainsKey("sig") && dictionary["sig"].ToString() == signature)
             {
-                return new FacebookSession(dictionary);
+                return new FacebookSession(dictionary, settings);
             }
 
             return null;

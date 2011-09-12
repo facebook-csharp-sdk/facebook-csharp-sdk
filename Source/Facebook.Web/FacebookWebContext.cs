@@ -138,8 +138,9 @@ namespace Facebook.Web
         {
             get
             {
+                Contract.Requires(Settings != null);
                 return _session ??
-                       (_session = FacebookSession.GetSession(Settings.AppId, Settings.AppSecret, HttpContext));
+                       (_session = FacebookSession.GetSession(Settings, HttpContext));
             }
         }
 
