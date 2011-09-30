@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "LogOn";
+}
+
+<h2>LogOn</h2>
+
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+    FB.init({
+        appId: '@Facebook.FacebookApplication.Current.AppId',
+        status: true, // check login status
+        cookie: true, // enable cookies to allow the server to access the session
+        xfbml: true, // parse XFBML
+        channelURL: '@(Url.Action("Index", "Home", null, Request.Url.Scheme))channel.html', // channel.html file
+        oauth: true // enable OAuth 2.0
+    });
+    FB.Event.subscribe('auth.login', function (response) {
+        window.location.reload();
+    });
+</script>
+
+<fb:login-button>Login with Facebook</fb:login-button>
