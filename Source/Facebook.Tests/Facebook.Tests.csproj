@@ -80,6 +80,7 @@
     <Compile Include="ExceptionFactory\GetRestException\GivenInputAsNullThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenNonNullInputNotOfTypeIDictionaryStringObjectThen.cs" />
     <Compile Include="FacebookApplication\FacebookApplicationTests.cs" />
+    <Compile Include="FacebookBatchParameter\FacebookBatchParameterTests.cs" />
     <Compile Include="FacebookClient\ctor\CtorAccessTokenTests.cs" />
     <Compile Include="FacebookClient\ctor\CtorAppIdAppSecretTests.cs" />
     <Compile Include="FacebookClient\ctor\CtorWithFacebookApplicationParameter.cs" />
