@@ -161,7 +161,7 @@ namespace Facebook
             // As part of this update, they will be deprecating 'code_and_token' and need developers 
             // to use 'code%20token'. Everything is identical, just replace '_and_' with encoded
             // <space> '%20'.
-            url = url.Replace("response_type=code+token", "response_type=code%20token");
+            // url = url.Replace("response_type=code+token", "response_type=code%20token");
 
             return new Uri(url);
         }

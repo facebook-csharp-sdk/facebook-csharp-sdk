@@ -4,6 +4,7 @@
 
 //#define FLUENTHTTP_CORE_UTILS
 //#define FLUENTHTTP_CORE_TPL
+//#define FLUENTHTTP_CORE_WINRT
 //#define FLUENTHTTP_CORE_STREAM
 //#define FLUENTHTTP_URLENCODING
 //#define FLUENTHTTP_HTMLENCODING
@@ -83,7 +84,8 @@ namespace FluentHttp
             set { _httpWebRequest.Headers = value; }
         }
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || FLUENTHTTP_CORE_WINRT)
+
         /// <summary>
         /// Gets or sets the content length.
         /// </summary>
@@ -94,6 +96,7 @@ namespace FluentHttp
         }
 #endif
 
+#if !FLUENTHTTP_CORE_WINRT
         /// <summary>
         /// Gets or sets the user agent.
         /// </summary>
@@ -102,6 +105,7 @@ namespace FluentHttp
             get { return _httpWebRequest.UserAgent; }
             set { _httpWebRequest.UserAgent = value; }
         }
+#endif
 
         /// <summary>
         /// Gets or sets the cookie container.
@@ -140,63 +144,11 @@ namespace FluentHttp
 
 #if !SILVERLIGHT
 
+#if !FLUENTHTTP_CORE_WINRT
+
         public virtual ServicePoint ServicePoint
         {
             get { return _httpWebRequest.ServicePoint; }
-        }
-
-        /// <summary>
-        /// Gets or sets the proxy.
-        /// </summary>
-        public virtual IWebProxy Proxy
-        {
-            get { return _httpWebRequest.Proxy; }
-            set { _httpWebRequest.Proxy = value; }
-        }
-
-        /// <summary>
-        /// Gets or set the time in milliseconds, before the request times out.
-        /// </summary>
-        public virtual int Timeout
-        {
-            get { return _httpWebRequest.Timeout; }
-            set { _httpWebRequest.Timeout = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the if modified since.
-        /// </summary>
-        public virtual DateTime IfModifiedSince
-        {
-            get { return _httpWebRequest.IfModifiedSince; }
-            set { _httpWebRequest.IfModifiedSince = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the referrer.
-        /// </summary>
-        public virtual string Referer
-        {
-            get { return _httpWebRequest.Referer; }
-            set { _httpWebRequest.Referer = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the transfer encoding.
-        /// </summary>
-        public virtual string TransferEncoding
-        {
-            get { return _httpWebRequest.TransferEncoding; }
-            set { _httpWebRequest.TransferEncoding = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the read write timeout.
-        /// </summary>
-        public virtual int ReadWriteTimeout
-        {
-            get { return _httpWebRequest.ReadWriteTimeout; }
-            set { _httpWebRequest.ReadWriteTimeout = value; }
         }
 
         /// <summary>
@@ -209,6 +161,15 @@ namespace FluentHttp
         }
 
         /// <summary>
+        /// Gets or sets the connection.
+        /// </summary>
+        public virtual string Connection
+        {
+            get { return _httpWebRequest.Connection; }
+            set { _httpWebRequest.Connection = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the expect.
         /// </summary>
         public virtual string Expect
@@ -218,13 +179,61 @@ namespace FluentHttp
         }
 
         /// <summary>
-        /// Gets or sets the connection.
+        /// Gets or sets the if modified since.
         /// </summary>
-        public virtual string Connection
+        public virtual DateTime IfModifiedSince
         {
-            get { return _httpWebRequest.Connection; }
-            set { _httpWebRequest.Connection = value; }
+            get { return _httpWebRequest.IfModifiedSince; }
+            set { _httpWebRequest.IfModifiedSince = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the read write timeout.
+        /// </summary>
+        public virtual int ReadWriteTimeout
+        {
+            get { return _httpWebRequest.ReadWriteTimeout; }
+            set { _httpWebRequest.ReadWriteTimeout = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the referrer.
+        /// </summary>
+        public virtual string Referer
+        {
+            get { return _httpWebRequest.Referer; }
+            set { _httpWebRequest.Referer = value; }
+        }
+
+        /// <summary>
+        /// Gets or set the time in milliseconds, before the request times out.
+        /// </summary>
+        public virtual int Timeout
+        {
+            get { return _httpWebRequest.Timeout; }
+            set { _httpWebRequest.Timeout = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the transfer encoding.
+        /// </summary>
+        public virtual string TransferEncoding
+        {
+            get { return _httpWebRequest.TransferEncoding; }
+            set { _httpWebRequest.TransferEncoding = value; }
+        }
+
+#endif
+
+        /// <summary>
+        /// Gets or sets the proxy.
+        /// </summary>
+        public virtual IWebProxy Proxy
+        {
+            get { return _httpWebRequest.Proxy; }
+            set { _httpWebRequest.Proxy = value; }
+        }
+
 #endif
 
         /// <summary>
@@ -305,7 +314,7 @@ namespace FluentHttp
 
 #endif
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
 
         public virtual HttpWebResponseWrapper GetResponse()
         {
@@ -405,14 +414,6 @@ namespace FluentHttp
 #if !SILVERLIGHT
 
         /// <summary>
-        /// Gets a value indicating whether response is mutually authenticated.
-        /// </summary>
-        public virtual bool IsMutuallyAuthenticated
-        {
-            get { return _httpWebResponse.IsMutuallyAuthenticated; }
-        }
-
-        /// <summary>
         /// Gets the http cookies.
         /// </summary>
         public virtual CookieCollection Cookies
@@ -428,21 +429,7 @@ namespace FluentHttp
             get { return _httpWebResponse.Headers; }
         }
 
-        /// <summary>
-        /// Gets the server.
-        /// </summary>
-        public virtual string Server
-        {
-            get { return _httpWebResponse.Server; }
-        }
-
-        /// <summary>
-        /// Gets the protocol version.
-        /// </summary>
-        public virtual Version ProtocolVersion
-        {
-            get { return _httpWebResponse.ProtocolVersion; }
-        }
+#if !FLUENTHTTP_CORE_WINRT
 
         /// <summary>
         /// Gets the content encoding.
@@ -450,6 +437,22 @@ namespace FluentHttp
         public virtual string ContentEncoding
         {
             get { return _httpWebResponse.ContentEncoding; }
+        }
+
+        /// <summary>
+        /// Gets the character set.
+        /// </summary>
+        public virtual string CharacterSet
+        {
+            get { return _httpWebResponse.CharacterSet; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether response is mutually authenticated.
+        /// </summary>
+        public virtual bool IsMutuallyAuthenticated
+        {
+            get { return _httpWebResponse.IsMutuallyAuthenticated; }
         }
 
         /// <summary>
@@ -461,12 +464,22 @@ namespace FluentHttp
         }
 
         /// <summary>
-        /// Gets the character set.
+        /// Gets the protocol version.
         /// </summary>
-        public virtual string CharacterSet
+        public virtual Version ProtocolVersion
         {
-            get { return _httpWebResponse.CharacterSet; }
+            get { return _httpWebResponse.ProtocolVersion; }
         }
+
+        /// <summary>
+        /// Gets the server.
+        /// </summary>
+        public virtual string Server
+        {
+            get { return _httpWebResponse.Server; }
+        }
+
+#endif
 
 #endif
         /// <summary>
@@ -481,7 +494,7 @@ namespace FluentHttp
         }
     }
 
-#if (!SILVERLIGHT)
+#if !(FLUENTHTTP_CORE_WINRT || SILVERLIGHT)
     [Serializable]
 #endif
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -499,7 +512,7 @@ namespace FluentHttp
             _status = webException == null ? WebExceptionStatus.UnknownError : webException.Status;
         }
 
-#if (!SILVERLIGHT)
+#if !(FLUENTHTTP_CORE_WINRT || SILVERLIGHT)
         /// <summary>
         /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
         /// </summary>
@@ -581,8 +594,6 @@ namespace FluentHttp
 
     internal class HttpHelper
     {
-        private static readonly char[] HexChars = "0123456789abcdef".ToCharArray();
-
         /// <summary>
         /// Gets the inner exception.
         /// </summary>
@@ -625,7 +636,7 @@ namespace FluentHttp
             get { return _httpWebResponse; }
         }
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
 
         public virtual Stream OpenWrite()
         {
@@ -694,7 +705,7 @@ namespace FluentHttp
 
                     int timeout = 0;
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
                     if (HttpWebRequest.Timeout > 0)
                         timeout = HttpWebRequest.Timeout;
 #endif
@@ -939,48 +950,8 @@ namespace FluentHttp
 
         public static string UrlEncode(string s)
         {
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.UrlEncode(s);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.UrlEncode(s);
-#else
-            return UrlEncode(s, Encoding.UTF8);
-#endif
+            return Uri.EscapeDataString(s);
         }
-
-#if !(SILVERLIGHT || WINDOWS_PHONE)
-        private static string UrlEncode(string s, Encoding enc)
-        {
-            if (s == null)
-                return null;
-
-            if (s == String.Empty)
-                return String.Empty;
-
-            bool needEncode = false;
-            int len = s.Length;
-            for (int i = 0; i < len; i++)
-            {
-                char c = s[i];
-                if ((c < '0') || (c < 'A' && c > '9') || (c > 'Z' && c < 'a') || (c > 'z'))
-                {
-                    if (NotEncoded(c))
-                        continue;
-
-                    needEncode = true;
-                    break;
-                }
-            }
-
-            if (!needEncode)
-                return s;
-
-            // avoided GetByteCount call
-            byte[] bytes = new byte[enc.GetMaxByteCount(s.Length)];
-            int realLen = enc.GetBytes(s, 0, s.Length, bytes, 0);
-            return Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, 0, realLen));
-        }
-#endif
 
         public static string UrlDecode(string s)
         {
@@ -1047,100 +1018,8 @@ namespace FluentHttp
 
             byte[] buf = bytes.ToArray();
             bytes = null;
-            return e.GetString(buf);
+            return e.GetString(buf, 0, buf.Length);
 
-        }
-
-        private static bool NotEncoded(char c)
-        {
-            return (c == '!' || c == '(' || c == ')' || c == '*' || c == '-' || c == '.' || c == '_'
-#if !NET_4_0
- || c == '\''
-#endif
-);
-        }
-
-        private static byte[] UrlEncodeToBytes(byte[] bytes, int offset, int count)
-        {
-            if (bytes == null)
-                return null;
-
-            if (bytes == null)
-                throw new ArgumentNullException("bytes");
-
-            int blen = bytes.Length;
-            if (blen == 0)
-                return new byte[0];
-
-            if (offset < 0 || offset >= blen)
-                throw new ArgumentOutOfRangeException("offset");
-
-            if (count < 0 || count > blen - offset)
-                throw new ArgumentOutOfRangeException("count");
-
-            MemoryStream result = new MemoryStream(count);
-            int end = offset + count;
-            for (int i = offset; i < end; i++)
-                UrlEncodeChar((char)bytes[i], result, false);
-
-            return result.ToArray();
-        }
-
-        private static void UrlEncodeChar(char c, Stream result, bool isUnicode)
-        {
-            if (c > 255)
-            {
-                //FIXME: what happens when there is an internal error?
-                //if (!isUnicode)
-                //	throw new ArgumentOutOfRangeException ("c", c, "c must be less than 256");
-                int idx;
-                int i = (int)c;
-
-                result.WriteByte((byte)'%');
-                result.WriteByte((byte)'u');
-                idx = i >> 12;
-                result.WriteByte((byte)HexChars[idx]);
-                idx = (i >> 8) & 0x0F;
-                result.WriteByte((byte)HexChars[idx]);
-                idx = (i >> 4) & 0x0F;
-                result.WriteByte((byte)HexChars[idx]);
-                idx = i & 0x0F;
-                result.WriteByte((byte)HexChars[idx]);
-                return;
-            }
-
-            if (c > ' ' && NotEncoded(c))
-            {
-                result.WriteByte((byte)c);
-                return;
-            }
-            if (c == ' ')
-            {
-                result.WriteByte((byte)'+');
-                return;
-            }
-            if ((c < '0') ||
-                (c < 'A' && c > '9') ||
-                (c > 'Z' && c < 'a') ||
-                (c > 'z'))
-            {
-                if (isUnicode && c > 127)
-                {
-                    result.WriteByte((byte)'%');
-                    result.WriteByte((byte)'u');
-                    result.WriteByte((byte)'0');
-                    result.WriteByte((byte)'0');
-                }
-                else
-                    result.WriteByte((byte)'%');
-
-                int idx = ((int)c) >> 4;
-                result.WriteByte((byte)HexChars[idx]);
-                idx = ((int)c) & 0x0F;
-                result.WriteByte((byte)HexChars[idx]);
-            }
-            else
-                result.WriteByte((byte)c);
         }
 
         private static void WriteCharBytes(IList buf, char ch, Encoding e)
@@ -1616,9 +1495,17 @@ namespace FluentHttp
 #endif
                         have_trailing_digits = false;
                     }
+#if FLUENTHTTP_CORE_WINRT
+                    else if (is_hex_value && IsHexDigit(c))
+#else
                     else if (is_hex_value && Uri.IsHexDigit(c))
+#endif
                     {
+#if FLUENTHTTP_CORE_WINRT
+                        number = number * 16 + FromHex(c);
+#else
                         number = number * 16 + Uri.FromHex(c);
+#endif
                         have_trailing_digits = true;
 #if NET_4_0
 						rawEntity.Append (c);
@@ -1663,6 +1550,31 @@ namespace FluentHttp
             return output.ToString();
 #endif
         }
+
+#if FLUENTHTTP_CORE_WINRT
+        private static bool IsHexDigit(char digit)
+        {
+            return (('0' <= digit && digit <= '9') ||
+                    ('a' <= digit && digit <= 'f') ||
+                    ('A' <= digit && digit <= 'F'));
+        }
+
+        private static int FromHex(char digit)
+        {
+            if ('0' <= digit && digit <= '9')
+            {
+                return (int)(digit - '0');
+            }
+
+            if ('a' <= digit && digit <= 'f')
+                return (int)(digit - 'a' + 10);
+
+            if ('A' <= digit && digit <= 'F')
+                return (int)(digit - 'A' + 10);
+
+            throw new ArgumentException("digit");
+        }
+#endif
 
 #endif
 
@@ -1740,7 +1652,7 @@ namespace FluentHttp
                 }
                 else if (name.Equals("content-length", StringComparison.OrdinalIgnoreCase))
                 {
-#if WINDOWS_PHONE
+#if (WINDOWS_PHONE ||FLUENTHTTP_CORE_WINRT)
                     throw new Exception("Cannot set content-length.");
 #else
                     _httpWebRequest.ContentLength = Convert.ToInt64(value);
@@ -1748,15 +1660,15 @@ namespace FluentHttp
                 }
                 else if (name.Equals("user-agent", StringComparison.OrdinalIgnoreCase))
                 {
+#if FLUENTHTTP_CORE_WINRT
+                    throw new Exception("Cannot set user-agent.");
+#else
                     _httpWebRequest.UserAgent = value;
+#endif
                 }
                 else
                 {
-#if SILVERLIGHT
                     _httpWebRequest.Headers[name] = value;
-#else
-                    _httpWebRequest.Headers.Add(name, value);
-#endif
                 }
             }
         }
@@ -1818,10 +1730,7 @@ namespace FluentHttp
 
         public void AuthenticateUsingHttpBasicAuthentication(string username, string password)
         {
-            SetHeaders(new Dictionary<string, object>
-                           {
-                               { "Authorization", string.Concat("Basic ",Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}",username,password)))) }
-                           });
+            _httpWebRequest.Headers["Authorization"] = string.Concat("Basic ", Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password))));
         }
 
 #endif
