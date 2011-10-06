@@ -12,7 +12,6 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -210,7 +209,8 @@ namespace Facebook
         /// <returns></returns>
         public static string ParseQueryParametersToDictionary(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             if (String.IsNullOrEmpty(path))
             {
@@ -293,8 +293,8 @@ namespace Facebook
         /// </returns>
         public static Uri GetUrl(IDictionary<string, Uri> domainMaps, string name, string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!String.IsNullOrEmpty(name));
-            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
 
             if (!domainMaps.ContainsKey(name))
             {
@@ -330,11 +330,10 @@ namespace Facebook
         /// <returns>A json formatted querystring.</returns>
         public static string ToJsonQueryString(IDictionary<string, object> dictionary)
         {
-            Contract.Requires(dictionary != null);
-            Contract.Ensures(Contract.Result<string>() != null);
-            Contract.EndContractBlock();
+            if (dictionary == null)
+                throw new ArgumentNullException("dictionary");
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             bool isFirst = true;
             foreach (var key in dictionary.Keys)
             {
@@ -387,7 +386,8 @@ namespace Facebook
 
         public static bool IsUsingRestApi(IDictionary<string, Uri> domainMaps, Uri requestUri)
         {
-            Contract.Requires(requestUri != null);
+            if (requestUri == null)
+                throw new ArgumentNullException("requestUri");
 
             var map = domainMaps ?? DomainMaps;
 
@@ -419,8 +419,8 @@ namespace Facebook
         /// </returns>
         public static IDictionary<string, object> ToDictionary(object parameters)
         {
-            Contract.Requires(parameters != null);
-            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             if (parameters is JsonObject)
             {
@@ -439,8 +439,6 @@ namespace Facebook
         /// <returns>The merged dictionary</returns>
         public static IDictionary<TKey, TValue> Merge<TKey, TValue>(IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
         {
-            Contract.Ensures(Contract.Result<IDictionary<TKey, TValue>>() != null);
-
             first = first ?? new Dictionary<TKey, TValue>();
             second = second ?? new Dictionary<TKey, TValue>();
             var merged = new Dictionary<TKey, TValue>();
@@ -472,8 +470,6 @@ namespace Facebook
         /// </returns>
         public static IDictionary<string, object> ParseUrlQueryString(string query)
         {
-            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
-
             var result = new Dictionary<string, object>();
 
             // if string is null, empty or whitespace
