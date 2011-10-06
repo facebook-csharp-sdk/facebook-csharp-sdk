@@ -10,7 +10,6 @@
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the json serializer class.
@@ -27,11 +26,7 @@ namespace Facebook
         /// </summary>
         public static IJsonSerializer Current
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
-                return Instance.InnerCurrent;
-            }
+            get { return Instance.InnerCurrent; }
         }
 
         /// <summary>
@@ -49,7 +44,6 @@ namespace Facebook
         /// <param name="getJsonSerializer"></param>
         public static void SetJsonSerializer(Func<IJsonSerializer> getJsonSerializer)
         {
-            Contract.Requires(getJsonSerializer != null);
             Instance.InnerSetApplication(getJsonSerializer);
         }
 
@@ -57,11 +51,7 @@ namespace Facebook
 
         public IJsonSerializer InnerCurrent
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
-                return _current;
-            }
+            get { return _current; }
         }
 
         public void InnerSetApplication(IJsonSerializer jsonSerializer)
@@ -71,7 +61,9 @@ namespace Facebook
 
         public void InnerSetApplication(Func<IJsonSerializer> getJsonSerializer)
         {
-            Contract.Requires(getJsonSerializer != null);
+            if (getJsonSerializer == null)
+                throw new ArgumentNullException("getJsonSerializer");
+
             InnerSetApplication(getJsonSerializer());
         }
 
