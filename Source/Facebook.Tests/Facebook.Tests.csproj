@@ -103,6 +103,7 @@
     <Compile Include="FacebookUtils\DomainMapsBetaTests.cs" />
     <Compile Include="FacebookUtils\DomainMapsTests.cs" />
     <Compile Include="FacebookUtils\DropQueryParametersTests.cs" />
+    <Compile Include="FacebookUtils\FromIso8601FormattedDateTimeTests.cs" />
     <Compile Include="FacebookUtils\IsUsingRestApi\GivenDomainMapsAsNull\AndRequestUriIsApiReadThen.cs" />
     <Compile Include="FacebookUtils\IsUsingRestApi\GivenDomainMapsAsNull\AndRequestUriIsApiUrlThen.cs" />
     <Compile Include="FacebookUtils\IsUsingRestApi\GivenDomainMapsAsNull\AndRequestUriIsApiVideoThen.cs" />
