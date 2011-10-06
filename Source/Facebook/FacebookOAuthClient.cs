@@ -11,11 +11,10 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
+    using System.ComponentModel;
     using System.IO;
     using System.Net;
     using FluentHttp;
-    using System.ComponentModel;
 
     /// <summary>
     /// Represents the Facebook OAuth Client.
@@ -86,14 +85,12 @@ namespace Facebook
         {
             get
             {
-                Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
-
                 // return IsBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
                 return FacebookUtils.DomainMaps;
             }
         }
 
-        #region Login/Logout url helpers
+        #region Login url helpers
 
         /// <summary>
         /// Gets the login url.
@@ -127,8 +124,6 @@ namespace Facebook
         /// </remarks>
         public virtual Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
             var defaultParameters = new Dictionary<string, object>();
             defaultParameters["client_id"] = AppId;
             defaultParameters["redirect_uri"] = RedirectUri ?? new Uri("http://www.facebook.com/connect/login_success.html");
@@ -223,8 +218,8 @@ namespace Facebook
         /// </returns>
         public static Uri GetLoginUrl(string appId, Uri redirectUri, string[] extendedPermissions, IDictionary<string, object> loginParameters)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Ensures(Contract.Result<Uri>() != null);
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
 
             var oauth = new FacebookOAuthClient { AppId = appId, RedirectUri = redirectUri };
 
@@ -528,7 +523,8 @@ namespace Facebook
 
         internal protected virtual string OAuthRequest(string name, string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!string.IsNullOrEmpty(name));
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
 
             parameters = parameters ?? new Dictionary<string, object>();
 
@@ -570,8 +566,10 @@ namespace Facebook
 
         internal protected virtual void OAuthRequestAsync(string name, string path, IDictionary<string, object> parameters, object userToken, Func<string, string> processResponseString, Action<object, FacebookApiEventArgs> onDownloadComplete)
         {
-            Contract.Requires(!String.IsNullOrEmpty(name));
-            Contract.Requires(onDownloadComplete != null);
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+            if (onDownloadComplete == null)
+                throw new ArgumentNullException("onDownloadComplete");
 
             parameters = parameters ?? new Dictionary<string, object>();
 
@@ -846,8 +844,8 @@ namespace Facebook
         /// </returns>
         internal protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!String.IsNullOrEmpty(name));
-            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
 
             return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
         }
@@ -857,11 +855,11 @@ namespace Facebook
         /// </summary>
         /// <param name="url">The url of the http web request.</param>
         /// <returns>The http helper.</returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected virtual HttpWebRequestWrapper CreateHttpWebRequest(Uri url)
         {
-            Contract.Requires(url != null);
-            Contract.Ensures(Contract.Result<HttpWebRequestWrapper>() != null);
+            if (url == null)
+                throw new ArgumentNullException("url");
 
             return new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(url));
         }
