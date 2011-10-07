@@ -10,7 +10,6 @@
 namespace Facebook.Web
 {
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Web;
 
     /// <summary>
@@ -43,7 +42,6 @@ namespace Facebook.Web
     ///     ProcessSubscription is called when the subscription is received.
     ///     result contains the JsonObject.
     /// </remarks>
-    [ContractClass(typeof(FacebookSubscriptionsHttpHandlerCodeContacts))]
     public abstract class FacebookSubscriptionsHttpHandler : IHttpHandler
     {
         /// <summary>
@@ -63,11 +61,6 @@ namespace Facebook.Web
         /// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
         public void ProcessRequest(HttpContext context)
         {
-            Contract.Requires(context != null);
-            Contract.Requires(context.Request != null);
-            Contract.Requires(context.Request.Params != null);
-            Contract.Requires(context.Response != null);
-
             var subContext = new FacebookSubscriptionContext
                                  {
                                      HttpContext = new HttpContextWrapper(context),
@@ -92,13 +85,6 @@ namespace Facebook.Web
         /// <param name="context">An <see cref="T:System.Web.HttpContextWrapper"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
         public virtual void VerifyCore(FacebookSubscriptionContext context)
         {
-            Contract.Requires(context != null);
-            Contract.Requires(context.HttpContext != null);
-            Contract.Requires(context.HttpContext.Request != null);
-            Contract.Requires(context.HttpContext.Request.Params != null);
-            Contract.Requires(context.HttpContext.Response != null);
-            Contract.Requires(context.FacebookApplication != null);
-
             context.HttpContext.Response.ContentType = "text/plain";
             var request = context.HttpContext.Request;
 
@@ -160,9 +146,6 @@ namespace Facebook.Web
         /// </param>
         public virtual void HandleUnauthorizedRequest(FacebookSubscriptionContext context)
         {
-            Contract.Requires(context != null);
-            Contract.Requires(context.HttpContext != null);
-            Contract.Requires(context.HttpContext.Response != null);
             context.HttpContext.Response.StatusCode = 401;
         }
     }
@@ -188,28 +171,5 @@ namespace Facebook.Web
         /// Gets or sets the HttpContext.
         /// </summary>
         public HttpContextBase HttpContext { get; set; }
-    }
-
-    [ContractClassFor(typeof(FacebookSubscriptionsHttpHandler))]
-    [SuppressMessage("Microsoft.StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass",
-        Justification = "Reviewed. Suppression is OK here."),
-     SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
-         Justification = "Reviewed. Suppression is OK here.")]
-    internal abstract class FacebookSubscriptionsHttpHandlerCodeContacts : FacebookSubscriptionsHttpHandler
-    {
-        public override void OnVerifying(FacebookSubscriptionContext context)
-        {
-            Contract.Requires(context != null);
-            Contract.Requires(context.HttpContext != null);
-            Contract.Requires(context.FacebookApplication != null);
-        }
-
-        public override void ProcessSubscription(FacebookSubscriptionContext context, object result)
-        {
-            Contract.Requires(context != null);
-            Contract.Requires(context.HttpContext.Request != null);
-            Contract.Requires(context.HttpContext.Request.Params != null);
-            Contract.Requires(context.HttpContext.Response != null);
-        }
     }
 }
