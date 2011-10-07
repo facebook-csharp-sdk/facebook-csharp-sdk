@@ -11,7 +11,6 @@ namespace Facebook.Web
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the Facebook Web Client.
@@ -39,7 +38,8 @@ namespace Facebook.Web
         public FacebookWebClient(string accessToken)
             : base(accessToken)
         {
-            Contract.Requires(!string.IsNullOrEmpty(accessToken));
+            if (string.IsNullOrEmpty(accessToken))
+                throw new ArgumentNullException("accessToken");
 
             Initialize(FacebookWebContext.Current);
         }
@@ -56,8 +56,10 @@ namespace Facebook.Web
         public FacebookWebClient(string appId, string appSecret)
             : base(appId, appSecret)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
+            if (string.IsNullOrEmpty(appSecret))
+                throw new ArgumentNullException("appSecret");
 
             Initialize(FacebookWebContext.Current);
         }
@@ -82,8 +84,6 @@ namespace Facebook.Web
         /// </param>
         public FacebookWebClient(FacebookWebContext request)
         {
-            Contract.Requires(request != null);
-
             Initialize(request);
             AccessToken = request.AccessToken;
         }
@@ -96,7 +96,8 @@ namespace Facebook.Web
         /// </param>
         private void Initialize(FacebookWebContext request)
         {
-            Contract.Requires(request != null);
+            if (request == null)
+                throw new ArgumentNullException("request");
 
             _request = request;
             _isSecureConnection = request.IsSecureConnection;
@@ -142,8 +143,6 @@ namespace Facebook.Web
 
         internal static IDictionary<string, object> AddReturnSslResourceIfRequired(IDictionary<string, object> parameters, bool isSecuredConnection)
         {
-            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
-
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
             if (isSecuredConnection && !mergedParameters.ContainsKey(Facebook.Web.Properties.Resources.return_ssl_resources))
