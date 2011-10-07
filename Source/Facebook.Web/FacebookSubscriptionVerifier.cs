@@ -9,7 +9,7 @@
 
 namespace Facebook.Web
 {
-    using System.Diagnostics.Contracts;
+    using System;
     using System.Text;
     using System.Web;
 
@@ -22,9 +22,10 @@ namespace Facebook.Web
 
         internal static byte[] ComputeHmacSha1Hash(byte[] data, byte[] key)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(key != null);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
+            if (data == null)
+                throw new ArgumentNullException("data");
+            if (key == null)
+                throw new ArgumentNullException("key");
 
             using (var crypto = new System.Security.Cryptography.HMACSHA1(key))
             {
@@ -49,7 +50,8 @@ namespace Facebook.Web
         /// </returns>
         internal static bool VerifyHttpXHubSignature(string secret, string httpXHubSignature, string jsonString)
         {
-            Contract.Requires(!string.IsNullOrEmpty(secret));
+            if (string.IsNullOrEmpty(secret))
+                throw new ArgumentNullException("secret");
 
             if (!string.IsNullOrEmpty(httpXHubSignature) && httpXHubSignature.StartsWith("sha1=") && httpXHubSignature.Length > 5 && !string.IsNullOrEmpty(jsonString))
             {
@@ -90,10 +92,10 @@ namespace Facebook.Web
         /// </returns>
         internal static bool VerifyGetSubscription(HttpRequestBase request, string verifyToken, out string errorMessage)
         {
-            Contract.Requires(request != null);
-            Contract.Requires(request.HttpMethod == "GET");
-            Contract.Requires(request.Params != null);
-            Contract.Requires(!string.IsNullOrEmpty(verifyToken));
+            if (!request.HttpMethod.Equals("GET", StringComparison.OrdinalIgnoreCase))
+                throw new Exception("Invalid HttpRequest method");
+            if (string.IsNullOrEmpty(verifyToken))
+                throw new ArgumentNullException("verifyToken");
 
             errorMessage = null;
 
@@ -143,10 +145,10 @@ namespace Facebook.Web
         /// </returns>
         internal static bool VerifyPostSubscription(HttpRequestBase request, string secret, string jsonString, out string errorMessage)
         {
-            Contract.Requires(request != null);
-            Contract.Requires(request.HttpMethod == "POST");
-            Contract.Requires(request.Params != null);
-            Contract.Requires(!string.IsNullOrEmpty(secret));
+            if (!request.HttpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase))
+                throw new Exception("Invalid HttpRequest method");
+            if (string.IsNullOrEmpty(secret))
+                throw new ArgumentNullException("secret");
 
             errorMessage = null;
 
