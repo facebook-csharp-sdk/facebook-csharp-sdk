@@ -11,7 +11,6 @@ namespace Facebook.Web
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -37,7 +36,8 @@ namespace Facebook.Web
         /// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
         public void ProcessRequest(HttpContext context)
         {
-            Contract.Requires(context != null);
+            if (context == null)
+                throw new ArgumentNullException("context");
 
             var html = "<html><head><meta http-equiv=\"refresh\" content=\"0;url="
                        + GetUrl(new HttpContextWrapper(context)).AbsoluteUri + "\"></head></html>";
@@ -47,9 +47,10 @@ namespace Facebook.Web
 
         protected Uri GetUrl(HttpContextBase context)
         {
-            Contract.Requires(context != null);
-            Contract.Requires(context.Request != null);
-            Contract.Ensures(Contract.Result<Uri>() != null);
+            if (context == null)
+                throw new ArgumentNullException("context");
+            if (context.Request == null)
+                throw new Exception("context.Request is null");
 
             // TODO: need unit tests for this method, might as well need to refactor this method.
             UriBuilder redirectUriBuilder;
