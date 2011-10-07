@@ -12,7 +12,6 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -51,7 +50,8 @@ namespace Facebook
         public FacebookClient(string accessToken)
             : this()
         {
-            Contract.Requires(!string.IsNullOrEmpty(accessToken));
+            if (string.IsNullOrEmpty(accessToken))
+                throw new ArgumentNullException("accessToken");
             _accessToken = accessToken;
         }
 
@@ -67,8 +67,10 @@ namespace Facebook
         public FacebookClient(string appId, string appSecret)
             : this(string.Concat(appId, "|", appSecret))
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(!string.IsNullOrEmpty(appSecret));
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
+            if (string.IsNullOrEmpty(appSecret))
+                throw new ArgumentNullException("appSecret");
         }
 
         /// <summary>
@@ -141,12 +143,7 @@ namespace Facebook
         /// </summary>
         protected virtual Dictionary<string, Uri> DomainMaps
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
-
-                return UseFacebookBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps;
-            }
+            get { return UseFacebookBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps; }
         }
 
         #region Api Calls
@@ -167,7 +164,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException"/>
         public virtual object Get(string path)
         {
-            Contract.Requires(!string.IsNullOrEmpty(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
             return Api(path, null, HttpMethod.Get, null);
         }
@@ -184,7 +182,8 @@ namespace Facebook
         /// </returns>
         public virtual object Get(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             return Api(null, parameters, HttpMethod.Get, null);
         }
@@ -204,7 +203,8 @@ namespace Facebook
         /// </returns>
         public virtual object Get(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             return Api(path, parameters, HttpMethod.Get, null);
         }
@@ -224,7 +224,8 @@ namespace Facebook
         /// </returns>
         public virtual T Get<T>(string path)
         {
-            Contract.Requires(!String.IsNullOrEmpty(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
             return Api<T>(path, null, HttpMethod.Get);
         }
@@ -247,7 +248,8 @@ namespace Facebook
         /// </returns>
         public virtual T Get<T>(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             return Api<T>(path, parameters, HttpMethod.Get);
         }
@@ -267,7 +269,8 @@ namespace Facebook
         /// </returns>
         public virtual T Get<T>(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             return Api<T>(null, parameters, HttpMethod.Get);
         }
@@ -288,7 +291,8 @@ namespace Facebook
         /// </returns>
         public virtual object Post(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             return Api(null, parameters, HttpMethod.Post, null);
         }
@@ -308,7 +312,8 @@ namespace Facebook
         /// </returns>
         public virtual object Post(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             return Api(path, parameters, HttpMethod.Post, null);
         }
@@ -325,7 +330,8 @@ namespace Facebook
         /// </returns>
         public virtual object Post(object parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             if (parameters is IDictionary<string, object>)
                 return Post((IDictionary<string, object>)parameters);
@@ -351,7 +357,8 @@ namespace Facebook
         /// </returns>
         public virtual object Post(string path, object parameters)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             if (parameters is IDictionary<string, object>)
                 return Post(path, (IDictionary<string, object>)parameters);
@@ -375,7 +382,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public virtual object Delete(string path)
         {
-            Contract.Requires(!string.IsNullOrEmpty(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
             return Api(path, null, HttpMethod.Delete, null);
         }
@@ -477,7 +485,8 @@ namespace Facebook
         /// </param>
         public virtual void GetAsync(string path)
         {
-            Contract.Requires(!string.IsNullOrEmpty(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
             GetAsync(path, null);
         }
@@ -493,7 +502,8 @@ namespace Facebook
         /// </param>
         public virtual void GetAsync(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             GetAsync(path, parameters, null);
         }
@@ -512,7 +522,8 @@ namespace Facebook
         /// </param>
         public virtual void GetAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             ApiAsync(path, parameters, HttpMethod.Get, userToken);
         }
@@ -525,7 +536,8 @@ namespace Facebook
         /// </param>
         public virtual void GetAsync(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             GetAsync(null, parameters);
         }
@@ -545,7 +557,8 @@ namespace Facebook
         /// </param>
         public virtual void PostAsync(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             PostAsync(path, parameters, null);
         }
@@ -564,7 +577,8 @@ namespace Facebook
         /// </param>
         public virtual void PostAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             ApiAsync(path, parameters, HttpMethod.Post, userToken);
         }
@@ -577,7 +591,8 @@ namespace Facebook
         /// </param>
         public virtual void PostAsync(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             PostAsync(null, parameters);
         }
@@ -593,7 +608,8 @@ namespace Facebook
         /// </param>
         public virtual void PostAsync(string path, object parameters)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             if (parameters is IDictionary<string, object>)
             {
@@ -619,7 +635,8 @@ namespace Facebook
         /// </param>
         public virtual void PostAsync(string path, object parameters, object userToken)
         {
-            Contract.Requires(!(String.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             if (parameters is IDictionary<string, object>)
             {
@@ -639,7 +656,8 @@ namespace Facebook
         /// </param>
         public virtual void PostAsync(object parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             if (parameters is IDictionary<string, object>)
             {
@@ -667,7 +685,8 @@ namespace Facebook
         /// </param>
         public virtual void DeleteAsync(string path)
         {
-            Contract.Requires(!string.IsNullOrEmpty(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
             DeleteAsync(path, null);
         }
@@ -683,7 +702,8 @@ namespace Facebook
         /// </param>
         public virtual void DeleteAsync(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             DeleteAsync(path, parameters, null);
         }
@@ -702,7 +722,8 @@ namespace Facebook
         /// </param>
         public virtual void DeleteAsync(string path, IDictionary<string, object> parameters, object userToken)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             ApiAsync(path, parameters, HttpMethod.Delete, userToken);
         }
@@ -865,7 +886,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException"/>
         public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path)
         {
-            Contract.Requires(!string.IsNullOrEmpty(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
             return GetTaskAsync(path, null);
         }
@@ -882,7 +904,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> GetTaskAsync(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             return GetTaskAsync(null, parameters);
         }
@@ -902,7 +925,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             return GetTaskAsync(path, parameters, System.Threading.CancellationToken.None);
         }
@@ -925,7 +949,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             return ApiTaskAsync(path, parameters, HttpMethod.Get, null, cancellationToken);
         }
@@ -946,7 +971,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> PostTaskAsync(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");;
 
             return PostTaskAsync(null, parameters, System.Threading.CancellationToken.None);
         }
@@ -966,7 +992,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             return PostTaskAsync(path, parameters, System.Threading.CancellationToken.None);
         }
@@ -989,7 +1016,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
         {
-            Contract.Requires(!(string.IsNullOrEmpty(path) && parameters == null));
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
 
             return ApiTaskAsync(path, parameters, HttpMethod.Post, null, cancellationToken);
         }
@@ -1010,7 +1038,8 @@ namespace Facebook
         /// <exception cref="Facebook.FacebookApiException" />
         public virtual System.Threading.Tasks.Task<object> DeleteTaskAsync(string path)
         {
-            Contract.Requires(!string.IsNullOrEmpty(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
             return DeleteTaskAsync(path, null);
         }
@@ -1156,7 +1185,8 @@ namespace Facebook
         /// </returns>
         public virtual object Query(string fql)
         {
-            Contract.Requires(!String.IsNullOrEmpty(fql));
+            if (string.IsNullOrEmpty(fql))
+                throw new ArgumentNullException("fql");
 
             var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
@@ -1177,7 +1207,10 @@ namespace Facebook
         /// </returns>
         public virtual object Query(params string[] fql)
         {
-            Contract.Requires(fql != null);
+            if (fql == null)
+                throw new ArgumentNullException("fql");
+            if (fql.Length == 0)
+                throw new ArgumentException("At least one fql query required.", "fql");
 
             var queryDict = new Dictionary<string, object>();
 
@@ -1203,7 +1236,8 @@ namespace Facebook
         /// </param>
         public virtual void QueryAsync(string fql)
         {
-            Contract.Requires(!String.IsNullOrEmpty(fql));
+            if (string.IsNullOrEmpty(fql))
+                throw new ArgumentNullException("fql");
 
             QueryAsync(fql, null);
         }
@@ -1219,7 +1253,8 @@ namespace Facebook
         /// </param>
         public virtual void QueryAsync(string fql, object userToken)
         {
-            Contract.Requires(!String.IsNullOrEmpty(fql));
+            if (string.IsNullOrEmpty(fql))
+                throw new ArgumentNullException("fql");
 
             var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
@@ -1236,8 +1271,10 @@ namespace Facebook
         /// </param>
         public virtual void QueryAsync(string[] fql)
         {
-            Contract.Requires(fql != null);
-            Contract.Requires(fql.Length > 0);
+            if (fql == null)
+                throw new ArgumentNullException("fql");
+            if (fql.Length == 0)
+                throw new ArgumentException("At least one fql query required.", "fql");
 
             QueryAsync(fql, null);
         }
@@ -1253,8 +1290,10 @@ namespace Facebook
         /// </param>
         public virtual void QueryAsync(string[] fql, object userToken)
         {
-            Contract.Requires(fql != null);
-            Contract.Requires(fql.Length > 0);
+            if (fql == null)
+                throw new ArgumentNullException("fql");
+            if (fql.Length == 0)
+                throw new ArgumentException("At least one fql query required.", "fql");
 
             var queryDict = new Dictionary<string, object>();
             for (int i = 0; i < fql.Length; i++)
@@ -1284,7 +1323,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string fql)
         {
-            Contract.Requires(!string.IsNullOrEmpty(fql));
+            if (string.IsNullOrEmpty(fql))
+                throw new ArgumentNullException("fql");
 
             return QueryTaskAsync(fql, System.Threading.CancellationToken.None);
         }
@@ -1304,7 +1344,8 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string fql, System.Threading.CancellationToken cancellationToken)
         {
-            Contract.Requires(!string.IsNullOrEmpty(fql));
+            if (string.IsNullOrEmpty(fql))
+                throw new ArgumentNullException("fql");
 
             var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
@@ -1325,8 +1366,10 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(params string[] fql)
         {
-            Contract.Requires(fql != null);
-            Contract.Requires(fql.Length > 0);
+            if (fql == null)
+                throw new ArgumentNullException("fql");
+            if (fql.Length == 0)
+                throw new ArgumentException("At least one fql query required.", "fql");
 
             return QueryTaskAsync(fql, System.Threading.CancellationToken.None);
         }
@@ -1346,8 +1389,10 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string[] fql, System.Threading.CancellationToken cancellationToken)
         {
-            Contract.Requires(fql != null);
-            Contract.Requires(fql.Length > 0);
+            if (fql == null)
+                throw new ArgumentNullException("fql");
+            if (fql.Length == 0)
+                throw new ArgumentException("At least one fql query required.", "fql");
 
             var queryDict = new Dictionary<string, object>();
 
@@ -1382,8 +1427,10 @@ namespace Facebook
         /// </returns>
         public virtual object Batch(params FacebookBatchParameter[] batchParameters)
         {
-            Contract.Requires(batchParameters != null);
-            Contract.Requires(batchParameters.Length > 0);
+            if (batchParameters == null)
+                throw new ArgumentNullException("batchParameters");
+            if (batchParameters.Length == 0)
+                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
 
             return ProcessBatchResult(Post(PrepareBatchParameter(batchParameters)));
         }
@@ -1401,8 +1448,10 @@ namespace Facebook
         /// </param>
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
         {
-            Contract.Requires(batchParameters != null);
-            Contract.Requires(batchParameters.Length > 0);
+            if (batchParameters == null)
+                throw new ArgumentNullException("batchParameters");
+            if (batchParameters.Length == 0)
+                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
 
             PostAsync(null, PrepareBatchParameter(batchParameters), userToken);
         }
@@ -1415,8 +1464,10 @@ namespace Facebook
         /// </param>
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters)
         {
-            Contract.Requires(batchParameters != null);
-            Contract.Requires(batchParameters.Length > 0);
+            if (batchParameters == null)
+                throw new ArgumentNullException("batchParameters");
+            if (batchParameters.Length == 0)
+                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
 
             BatchAsync(batchParameters, null);
         }
@@ -1435,8 +1486,10 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(params FacebookBatchParameter[] batchParameters)
         {
-            Contract.Requires(batchParameters != null);
-            Contract.Requires(batchParameters.Length > 0);
+            if (batchParameters == null)
+                throw new ArgumentNullException("batchParameters");
+            if (batchParameters.Length == 0)
+                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
 
             return BatchTaskAsync(batchParameters, System.Threading.CancellationToken.None);
         }
@@ -1455,8 +1508,10 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, System.Threading.CancellationToken cancellationToken)
         {
-            Contract.Requires(batchParameters != null);
-            Contract.Requires(batchParameters.Length > 0);
+            if (batchParameters == null)
+                throw new ArgumentNullException("batchParameters");
+            if (batchParameters.Length == 0)
+                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
 
             var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
             if (cancellationToken.IsCancellationRequested)
@@ -1507,8 +1562,10 @@ namespace Facebook
 
         internal IDictionary<string, object> PrepareBatchParameter(FacebookBatchParameter[] batchParameters)
         {
-            Contract.Requires(batchParameters != null);
-            Contract.Requires(batchParameters.Length > 0);
+            if (batchParameters == null)
+                throw new ArgumentNullException("batchParameters");
+            if (batchParameters.Length == 0)
+                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
 
             var actualParameters = new Dictionary<string, object>();
             var parameters = new List<object>();
@@ -1543,8 +1600,8 @@ namespace Facebook
         /// </returns>
         protected IDictionary<string, object> ToParameters(FacebookBatchParameter batchParameter, out IDictionary<string, FacebookMediaObject> mediaObjects)
         {
-            Contract.Requires(batchParameter != null);
-            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
+            if (batchParameter == null)
+                throw new ArgumentNullException("batchParameter");
 
             mediaObjects = null;
             IDictionary<string, object> returnResult;
@@ -1623,8 +1680,8 @@ namespace Facebook
         /// </returns>
         internal static object ProcessBatchResult(object result)
         {
-            Contract.Requires(result != null);
-            Contract.Ensures(Contract.Result<object>() != null);
+            if (result == null)
+                throw new ArgumentNullException("result");
 
             IList<object> list = new JsonArray();
 
@@ -1784,8 +1841,8 @@ namespace Facebook
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         protected virtual HttpWebRequestWrapper CreateHttpWebRequest(Uri url)
         {
-            Contract.Requires(url != null);
-            Contract.Ensures(Contract.Result<HttpWebRequestWrapper>() != null);
+            if (url == null)
+                throw new ArgumentNullException("url");
 
             return new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(url));
         }
@@ -1794,7 +1851,8 @@ namespace Facebook
 
         private Uri BuildRootUrl(HttpMethod httpMethod, string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             path = FacebookUtils.ParseQueryParametersToDictionary(path, parameters);
 
@@ -1836,10 +1894,14 @@ namespace Facebook
 
         internal Stream BuildMediaObjectRequestBody(IDictionary<string, object> parameters, IDictionary<string, FacebookMediaObject> mediaObjects, string boundary)
         {
-            Contract.Requires(parameters != null);
-            Contract.Requires(mediaObjects != null);
-            Contract.Requires(mediaObjects.Count > 0);
-            Contract.Requires(!string.IsNullOrEmpty(boundary));
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
+            if (mediaObjects == null)
+                throw new ArgumentNullException("mediaObjects");
+            if (mediaObjects.Count == 0)
+                throw new ArgumentException("MediaObjects empty.", "mediaObjects");
+            if (string.IsNullOrEmpty(boundary))
+                throw new ArgumentNullException("boundary");
 
             var streams = new List<Stream>();
 
@@ -1893,16 +1955,16 @@ namespace Facebook
 
         protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
         {
-            Contract.Requires(!string.IsNullOrEmpty(name));
-            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
 
             return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
         }
 
         protected virtual Uri GetApiUrl(string method)
         {
-            Contract.Requires(!string.IsNullOrEmpty(method));
-            Contract.Ensures(Contract.Result<Uri>() != default(Uri));
+            if (string.IsNullOrEmpty(method))
+                throw new ArgumentNullException("method");
 
             method = method.ToLowerInvariant();
 
