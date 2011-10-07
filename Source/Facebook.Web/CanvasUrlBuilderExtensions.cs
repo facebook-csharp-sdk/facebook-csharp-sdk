@@ -9,7 +9,6 @@
 
 namespace Facebook.Web
 {
-    using System.Diagnostics.Contracts;
     using System.Web;
     using System.Web.UI;
 
@@ -70,8 +69,6 @@ namespace Facebook.Web
 
         internal static CanvasUrlBuilder GetCanvasUrlBuilder(HttpContextWrapper httpContext)
         {
-            Contract.Ensures(Contract.Result<CanvasUrlBuilder>() != null);
-
             var items = httpContext.Items;
             var httpRequest = httpContext.Request;
             CanvasUrlBuilder canvasUrlBuilder;
