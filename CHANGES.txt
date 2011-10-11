@@ -14,6 +14,9 @@ vNEXT (Beta)
 3. added sample demonstrating the new OpenGraph (CS-AspNetMvc3-JsSdk-OpenGraph.sln)
 4. updated FluentHttp.Core to v0.4 (UrlEncode now uses Uri.EscapeDataString instead
    of Mono's UrlEncode)
+5. delete authentication cookie if FacebookOAuthException is thrown for Async
+   method calls in FacebookWebClient
+6. FacebookWebClient.IsSecureConnection is virtual.
 
 =========================================================================
 v5.2.1 (RTW)
