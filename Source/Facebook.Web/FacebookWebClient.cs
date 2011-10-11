@@ -135,7 +135,7 @@ namespace Facebook.Web
         /// <summary>
         /// Gets or sets a value indicating whether the scheme is secure.
         /// </summary>
-        public bool IsSecureConnection
+        public virtual bool IsSecureConnection
         {
             get { return _isSecureConnection; }
             set { _isSecureConnection = value; }
