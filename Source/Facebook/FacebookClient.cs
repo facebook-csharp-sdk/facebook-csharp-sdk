@@ -1980,19 +1980,19 @@ namespace Facebook
             return GetUrl(name, "restserver.php", null);
         }
 
-        protected void OnGetCompleted(FacebookApiEventArgs args)
+        protected virtual void OnGetCompleted(FacebookApiEventArgs args)
         {
             if (GetCompleted != null)
                 GetCompleted(this, args);
         }
 
-        protected void OnPostCompleted(FacebookApiEventArgs args)
+        protected virtual void OnPostCompleted(FacebookApiEventArgs args)
         {
             if (PostCompleted != null)
                 PostCompleted(this, args);
         }
 
-        protected void OnDeleteCompleted(FacebookApiEventArgs args)
+        protected virtual void OnDeleteCompleted(FacebookApiEventArgs args)
         {
             if (DeleteCompleted != null)
                 DeleteCompleted(this, args);

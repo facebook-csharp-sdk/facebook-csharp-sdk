@@ -152,5 +152,35 @@ namespace Facebook.Web
 
             return mergedParameters;
         }
+
+        protected override void OnGetCompleted(FacebookApiEventArgs args)
+        {
+            DeleteAuthCookieIfOAuthException(args);
+            base.OnGetCompleted(args);
+        }
+
+        protected override void OnPostCompleted(FacebookApiEventArgs args)
+        {
+            DeleteAuthCookieIfOAuthException(args);
+            base.OnPostCompleted(args);
+        }
+
+        protected override void OnDeleteCompleted(FacebookApiEventArgs args)
+        {
+            DeleteAuthCookieIfOAuthException(args);
+            base.OnDeleteCompleted(args);
+        }
+
+        private void DeleteAuthCookieIfOAuthException(FacebookApiEventArgs args)
+        {
+            if (args.Error != null && args.Error is FacebookOAuthException)
+            {
+                try
+                {
+                    _request.DeleteAuthCookie();
+                }
+                catch { }
+            }
+        }
     }
 }
