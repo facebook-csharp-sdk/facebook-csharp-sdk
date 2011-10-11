@@ -4,6 +4,17 @@ FACEBOOK C# SDK CHANGE LIST
 SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
+
+=========================================================================
+vNEXT (Beta)
+=========================================================================
+1. fixed issue #5902. correctly set AppId and AppSecret when passing as
+   constructor parameter in FacebookWebContext.
+2. removed dependency on Code Contracts
+3. added sample demonstrating the new OpenGraph (CS-AspNetMvc3-JsSdk-OpenGraph.sln)
+4. updated FluentHttp.Core to v0.4 (UrlEncode now uses Uri.EscapeDataString instead
+   of Mono's UrlEncode)
+
 =========================================================================
 v5.2.1 (RTW)
 =========================================================================
