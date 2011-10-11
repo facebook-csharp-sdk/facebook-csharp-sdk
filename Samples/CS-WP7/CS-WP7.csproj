@@ -51,9 +51,6 @@
     <Reference Include="Facebook">
       <HintPath>..\..\Bin\Release\sl3-wp\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Contracts">
-      <HintPath>..\..\Source\packages\CodeContracts.Unofficial.1.0.0.2\lib\sl3-wp\Microsoft.Contracts.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="System.Windows" />
