@@ -141,7 +141,6 @@
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>
-    <None Include="packages.config" />
     <None Include="_ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
