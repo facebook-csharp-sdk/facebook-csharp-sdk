@@ -11,7 +11,7 @@ Login using Facebook Login Button plugin:<br />
     window.fbAsyncInit = function () {
         FB.init({
             appId: '@Facebook.FacebookApplication.Current.AppId',
-            channelURL: '@(Url.Action("Index", "Home", null, Request.Url.Scheme) + Url.Content("~/channel.html").Substring(1))', // Channel File
+            channelURL: '@Request.Url.Scheme://@Request.Url.Authority@Url.Content("~/fbchannel.ashx")', // Channel File
             cookie: true,
             xfbml: true,
             oauth: true

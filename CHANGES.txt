@@ -23,6 +23,7 @@ vNEXT (Beta)
 9. added Facebook.channel nuget package containing fbchannel.ashx file.
 10. fixed ParseUserIdFromAccessToken. Incase the access token is encrypted it automatically
    makes a request to /me?fields=id
+11. added Facebook.channel as dependency for Facebook.JavascriptMvcWebsite nuget package
 
 =========================================================================
 v5.2.1 (RTW)

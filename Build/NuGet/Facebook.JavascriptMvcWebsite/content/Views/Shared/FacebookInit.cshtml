@@ -2,7 +2,7 @@
 @* <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" perms="user_about_me"></div> *@
 <script type="text/javascript">
     window.fbAsyncInit = function () {
-        FB.init({ appId: '@Facebook.FacebookApplication.Current.AppId', cookie: true, xfbml: true, oauth: true });
+        FB.init({ appId: '@Facebook.FacebookApplication.Current.AppId', channelURL: '@Request.Url.Scheme://@Request.Url.Authority@Url.Content("~/fbchannel.ashx")', cookie: true, xfbml: true, oauth: true });
         FB.Event.subscribe('auth.login', function (response) { window.location.reload(); });
         FB.Event.subscribe('auth.logout', function (response) { window.location.reload(); });
     };
