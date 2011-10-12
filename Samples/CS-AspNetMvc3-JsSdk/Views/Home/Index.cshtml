@@ -8,7 +8,7 @@
 <h3>Configuration before running this sample correctly.</h3>
 <ol>
     <li>Create a Facebook application if you haven't at <a href="http://www.facebook.com/developers/createapp.php" target="_blank">http://www.facebook.com/developers/createapp.php</a></li>
-    <li>Make sure to set the <strong>Site Url</strong> of the application correctly. (for this sample set it to: <strong><em>http://localhost:17303/</em></strong>). Remember to add the trailing slash at the end of the site url.</li>
+    <li>Make sure to set the <strong>Site Url</strong> of the application correctly. (for this sample set it to: <strong><em>@Url.Action("Index", "Home", null, Request.Url.Scheme)</em></strong>). Remember to add the trailing slash at the end of the site url.</li>
     <li>
         Get the AppId and AppSecret and set the appropriate values in web.config file.
         <pre>&lt;facebookSettings appId = "{app_id}" appSecret = "{app_secret}"/&gt;</pre>
