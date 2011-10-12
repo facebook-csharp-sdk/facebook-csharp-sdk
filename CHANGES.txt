@@ -19,6 +19,7 @@ vNEXT (Beta)
 6. FacebookWebClient.IsSecureConnection is virtual.
 7. Facebook.JavascriptMvcWebsite FacebookInit uses async loading of the Facebook
    Javascript SDK and oauth:true
+8. removed Facebook.xd_receiver nuget package
 
 =========================================================================
 v5.2.1 (RTW)
