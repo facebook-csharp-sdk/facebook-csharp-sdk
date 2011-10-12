@@ -20,7 +20,8 @@ vNEXT (Beta)
 7. Facebook.JavascriptMvcWebsite FacebookInit uses async loading of the Facebook
    Javascript SDK and oauth:true
 8. removed Facebook.xd_receiver nuget package
-9. fixed ParseUserIdFromAccessToken. Incase the access token is encrypted it automatically
+9. added Facebook.channel nuget package containing fbchannel.ashx file.
+10. fixed ParseUserIdFromAccessToken. Incase the access token is encrypted it automatically
    makes a request to /me?fields=id
 
 =========================================================================
