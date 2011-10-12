@@ -248,6 +248,20 @@ namespace Facebook
                     }
                 }
             }
+            else
+            {
+                // we have an encrypted access token
+                try
+                {
+                    var fb = new FacebookClient(accessToken);
+                    var result = (IDictionary<string, object>)fb.Get("/me?fields=id");
+                    return (string)result["id"];
+                }
+                catch (FacebookOAuthException)
+                {
+                    return null;
+                }
+            }
 
             return null;
         }
