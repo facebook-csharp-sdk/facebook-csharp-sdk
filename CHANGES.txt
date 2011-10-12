@@ -17,6 +17,8 @@ vNEXT (Beta)
 5. delete authentication cookie if FacebookOAuthException is thrown for Async
    method calls in FacebookWebClient
 6. FacebookWebClient.IsSecureConnection is virtual.
+7. Facebook.JavascriptMvcWebsite FacebookInit uses async loading of the Facebook
+   Javascript SDK and oauth:true
 
 =========================================================================
 v5.2.1 (RTW)
