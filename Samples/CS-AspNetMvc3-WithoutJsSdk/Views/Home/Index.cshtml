@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Facebook C# SDK ASP.NET MVC3 without Facebook JavaScript SDK";
+}
+
+<h2>Facebook C# SDK ASP.NET MVC3 without Facebook JavaScript SDK</h2>
+<p>This sample demonstrates the use of Facebook C# SDK along with the Facebook OAuth 2.0 and Forms Authentication feature without Facebook Javascript SDK.</p>
+<p>This sample also includes prevention methods for Cross Site Request Forgery (CSRF) attacks during oauth 2.0 authentication.</p>
+
+<h3>Configuration before running this sample correctly.</h3>
+<ol>
+    <li>Create a Facebook application if you haven't at <a href="http://www.facebook.com/developers/createapp.php" target="_blank">http://www.facebook.com/developers/createapp.php</a></li>
+    <li>Make sure to set the <strong>Site Url</strong> of the application correctly. (for this sample set it to: <strong><em>@Url.Action("Index", "Home", null, Request.Url.Scheme)</em></strong>). Remember to add the trailing slash at the end of the site url.</li>
+    <li>
+        Get the AppId and AppSecret and set the appropriate values in web.config file.
+        <pre>&lt;facebookSettings appId = "{app_id}" appSecret = "{app_secret}"/&gt;</pre>
+    </li>
+    <li>Now that you have finished configuring the application, navigate to @Html.ActionLink(Url.Action("Index","Facebook"), "Index", "Facebook")</li>
+</ol>

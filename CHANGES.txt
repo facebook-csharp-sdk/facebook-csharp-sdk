@@ -24,6 +24,9 @@ vNEXT (Beta)
 10. fixed ParseUserIdFromAccessToken. Incase the access token is encrypted it automatically
    makes a request to /me?fields=id
 11. added Facebook.channel as dependency for Facebook.JavascriptMvcWebsite nuget package
+12. added CS-AspNetMvc3-WithoutJsSdk.sln sample demonstrating the use of oauth authorization,
+	with FormsAuthentication and without using the Facebook JS SDK. 
+	(also includes prevention of Cross Site Request Forgery - CSRF attacks.)
 
 =========================================================================
 v5.2.1 (RTW)
