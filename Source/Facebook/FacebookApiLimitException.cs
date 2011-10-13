@@ -38,6 +38,11 @@ namespace Facebook
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApiLimitException"/> class. 
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="errorType">The error type.</param>
         public FacebookApiLimitException(string message, string errorType)
             : base(message, errorType)
         {
