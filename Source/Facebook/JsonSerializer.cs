@@ -49,16 +49,27 @@ namespace Facebook
 
         private IJsonSerializer _current = new SimpleJsonSerializer();
 
+        /// <summary>
+        /// The inner current json serializer.
+        /// </summary>
         public IJsonSerializer InnerCurrent
         {
             get { return _current; }
         }
 
+        /// <summary>
+        /// Sets the inner application.
+        /// </summary>
+        /// <param name="jsonSerializer">The json serializer.</param>
         public void InnerSetApplication(IJsonSerializer jsonSerializer)
         {
             _current = jsonSerializer ?? new SimpleJsonSerializer();
         }
 
+        /// <summary>
+        /// Sets the inner application.
+        /// </summary>
+        /// <param name="getJsonSerializer">The json serializer.</param>
         public void InnerSetApplication(Func<IJsonSerializer> getJsonSerializer)
         {
             if (getJsonSerializer == null)
