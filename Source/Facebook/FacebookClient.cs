@@ -1021,6 +1021,40 @@ namespace Facebook
             return ApiTaskAsync(path, parameters, HttpMethod.Post, null, cancellationToken);
         }
 
+#if ASYNC_AWAIT
+
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="userToken">
+        /// The user token.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <param name="uploadProgress">
+        /// The upload progress.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters, object userToken, System.Threading.CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
+        {
+            if (string.IsNullOrEmpty(path) && parameters == null)
+                throw new ArgumentException("At least path or parameters must be defined.");
+
+            return ApiTaskAsync(path, parameters, HttpMethod.Post, userToken, cancellationToken, uploadProgress);
+        }
+
+#endif
+
         #endregion
 
         #region Delete
