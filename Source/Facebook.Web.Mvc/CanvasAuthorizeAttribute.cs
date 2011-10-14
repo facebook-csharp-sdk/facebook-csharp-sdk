@@ -11,7 +11,6 @@ namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Web;
     using System.Web.Mvc;
     using Facebook;
@@ -65,8 +64,10 @@ namespace Facebook.Web.Mvc
         /// <param name="settings">The Facebook application settings.</param>
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            Contract.Requires(filterContext != null);
-            Contract.Requires(settings != null);
+            if (filterContext == null)
+                throw new ArgumentNullException("filterContext");
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
             var loginUri = this.GetLoginUrl(settings, filterContext.HttpContext, null);
             filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
@@ -81,8 +82,10 @@ namespace Facebook.Web.Mvc
         /// <returns>The login url.</returns>
         internal virtual protected Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(httpContext != null);
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+            if (httpContext == null)
+                throw new ArgumentNullException("httpContext");
 
             var authorizer = new CanvasAuthorizer(settings, httpContext)
             {

@@ -18,7 +18,7 @@
 
             var loginUrl = oauth.GetLoginUrl(loginParameters);
 
-            Assert.Equal("http://www.facebook.com/dialog/oauth/?client_id=appid&client_secret=clientsecret&response_type=code%20token&redirect_uri=http%3a%2f%2fwww.facebook.com%2fconnect%2flogin_success.html",
+            Assert.Equal("http://www.facebook.com/dialog/oauth/?client_id=appid&client_secret=clientsecret&response_type=code%20token&redirect_uri=http%3A%2F%2Fwww.facebook.com%2Fconnect%2Flogin_success.html",
                 loginUrl.AbsoluteUri);
         }
     }

@@ -1,11 +1,12 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
-using System.IO;
-using System.Security.Cryptography;
+﻿
 
 namespace Facebook.Web
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Security.Cryptography;
+
     internal class FacebookWebUtils
     {
         #region Base64 Url Decoding/Encoding
@@ -21,8 +22,8 @@ namespace Facebook.Web
         /// </returns>
         public static byte[] Base64UrlDecode(string base64UrlSafeString)
         {
-            Contract.Requires(!string.IsNullOrEmpty(base64UrlSafeString));
-            Contract.Ensures(Contract.Result<byte[]>() != null);
+            if (string.IsNullOrEmpty(base64UrlSafeString))
+                throw new ArgumentNullException("base64UrlSafeString");
 
             base64UrlSafeString =
                 base64UrlSafeString.PadRight(base64UrlSafeString.Length + (4 - base64UrlSafeString.Length % 4) % 4, '=');
@@ -41,8 +42,8 @@ namespace Facebook.Web
         /// </returns>
         public static string Base64UrlEncode(byte[] input)
         {
-            Contract.Requires(input != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            if (input == null)
+                throw new ArgumentNullException("input");
 
             return Convert.ToBase64String(input).Replace("=", String.Empty).Replace('+', '-').Replace('/', '_');
         }
@@ -62,15 +63,15 @@ namespace Facebook.Web
         /// </returns>
         public static byte[] ComputerMd5Hash(byte[] data)
         {
-            Contract.Requires(data != null);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
             using (var md5 = new MD5CryptoServiceProvider())
             {
                 return md5.ComputeHash(data);
             }
         }
-        
+
         /// <summary>
         /// Computes the Hmac Sha 256 Hash.
         /// </summary>
@@ -85,9 +86,10 @@ namespace Facebook.Web
         /// </returns>
         public static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
         {
-            Contract.Requires(data != null);
-            Contract.Requires(key != null);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
+            if (data == null)
+                throw new ArgumentNullException("data");
+            if (key == null)
+                throw new ArgumentNullException("key");
 
             using (var crypto = new HMACSHA256(key))
             {
@@ -115,10 +117,12 @@ namespace Facebook.Web
             Justification = "Reviewed. Suppression is OK here.")]
         internal static string DecryptAes256CBCNoPadding(byte[] encryptedData, byte[] key, byte[] iv)
         {
-            Contract.Requires(encryptedData != null);
-            Contract.Requires(key != null);
-            Contract.Requires(iv != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            if (encryptedData == null)
+                throw new ArgumentNullException("encryptedData");
+            if (key == null)
+                throw new ArgumentNullException("key");
+            if (iv == null)
+                throw new ArgumentNullException("iv");
 
             string result;
 
@@ -164,8 +168,6 @@ namespace Facebook.Web
 
         public static string RemoveStartingSlash(string input)
         {
-            Contract.Ensures(Contract.Result<string>() != null);
-
             if (string.IsNullOrEmpty(input))
             {
                 return string.Empty;
@@ -192,8 +194,9 @@ namespace Facebook.Web
         /// </returns>
         internal static Uri RemoveTrailingSlash(Uri url)
         {
-            Contract.Requires(url != null);
-            Contract.Ensures(Contract.Result<Uri>() != null);
+            if (url == null)
+                throw new ArgumentNullException("url");
+
             var urlString = RemoveTrailingSlash(url.ToString());
             return new Uri(urlString);
         }
@@ -209,8 +212,6 @@ namespace Facebook.Web
         /// </returns>
         internal static string RemoveTrailingSlash(string input)
         {
-            Contract.Ensures(Contract.Result<string>() != null);
-
             if (string.IsNullOrEmpty(input))
             {
                 return string.Empty;

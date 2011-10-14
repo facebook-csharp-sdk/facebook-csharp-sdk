@@ -4,6 +4,30 @@ FACEBOOK C# SDK CHANGE LIST
 SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
+
+=========================================================================
+vNEXT (Beta)
+=========================================================================
+1. fixed issue #5902. correctly set AppId and AppSecret when passing as
+   constructor parameter in FacebookWebContext.
+2. removed dependency on Code Contracts
+3. added sample demonstrating the new OpenGraph (CS-AspNetMvc3-JsSdk-OpenGraph.sln)
+4. updated FluentHttp.Core to v0.4 (UrlEncode now uses Uri.EscapeDataString instead
+   of Mono's UrlEncode)
+5. delete authentication cookie if FacebookOAuthException is thrown for Async
+   method calls in FacebookWebClient
+6. FacebookWebClient.IsSecureConnection is virtual.
+7. Facebook.JavascriptMvcWebsite FacebookInit uses async loading of the Facebook
+   Javascript SDK and oauth:true
+8. removed Facebook.xd_receiver nuget package
+9. added Facebook.channel nuget package containing fbchannel.ashx file.
+10. fixed ParseUserIdFromAccessToken. Incase the access token is encrypted it automatically
+   makes a request to /me?fields=id
+11. added Facebook.channel as dependency for Facebook.JavascriptMvcWebsite nuget package
+12. added CS-AspNetMvc3-WithoutJsSdk.sln sample demonstrating the use of oauth authorization,
+	with FormsAuthentication and without using the Facebook JS SDK. 
+	(also includes prevention of Cross Site Request Forgery - CSRF attacks.)
+
 =========================================================================
 v5.2.1 (RTW)
 =========================================================================

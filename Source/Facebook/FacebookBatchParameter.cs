@@ -9,8 +9,8 @@
 
 namespace Facebook
 {
+    using System;
     using System.ComponentModel;
-    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents a batch parameter for the creating batch requests.
@@ -139,7 +139,8 @@ namespace Facebook
         /// </returns>
         public FacebookBatchParameter Query(string fql)
         {
-            Contract.Requires(!string.IsNullOrEmpty(fql));
+            if (string.IsNullOrEmpty(fql))
+                throw new ArgumentNullException(fql);
 
             HttpMethod = HttpMethod.Get;
             Path = "/method/fql.query";
@@ -159,7 +160,10 @@ namespace Facebook
         /// </returns>
         public FacebookBatchParameter Query(params string[] fql)
         {
-            Contract.Requires(fql != null);
+            if (fql == null)
+                throw new ArgumentNullException("fql");
+            if (fql.Length == 0)
+                throw new ArgumentOutOfRangeException("fql", "At least one query required.");
 
             var queryDict = new JsonObject();
 

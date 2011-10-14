@@ -9,8 +9,8 @@
 
 namespace Facebook.Web.Mvc
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Web.Mvc;
     using System.Web.Routing;
 
@@ -30,11 +30,12 @@ namespace Facebook.Web.Mvc
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "0#",
             Justification = "Response.Redirect() takes its URI as a string parameter.")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "1#")]
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "controller", 
-            Justification="Extension method")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "controller",
+            Justification = "Extension method")]
         public static RedirectResult CanvasRedirect(this Controller controller, string url)
         {
-            Contract.Requires(url != null);
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentNullException("url");
 
             return new CanvasRedirectResult(url);
         }

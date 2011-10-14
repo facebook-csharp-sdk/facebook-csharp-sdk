@@ -10,7 +10,6 @@
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Globalization;
 
     /// <summary>
@@ -76,7 +75,6 @@ namespace Facebook
         /// <returns>The unix date time.</returns>
         public static double ToUnixTime(DateTime dateTime)
         {
-            Contract.Requires(dateTime >= Epoch);
             return (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
@@ -87,7 +85,6 @@ namespace Facebook
         /// <returns>The unix date time.</returns>
         public static double ToUnixTime(DateTimeOffset dateTime)
         {
-            Contract.Requires(dateTime >= Epoch);
             return (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
         }
 
@@ -116,7 +113,9 @@ namespace Facebook
         /// </returns>
         public static DateTime FromIso8601FormattedDateTime(string iso8601DateTime)
         {
-            Contract.Requires(!string.IsNullOrEmpty(iso8601DateTime));
+            if(string.IsNullOrEmpty(iso8601DateTime))
+                throw new ArgumentNullException("iso8601DateTime");
+            
             return DateTime.ParseExact(iso8601DateTime, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
         }
     }

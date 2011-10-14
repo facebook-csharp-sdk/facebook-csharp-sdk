@@ -11,7 +11,6 @@ namespace Facebook.Web
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Web;
 
     /// <summary>
@@ -66,8 +65,6 @@ namespace Facebook.Web
         /// </returns>
         public Uri GetLoginUrl(IDictionary<string, object> parameters)
         {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
             var defaultParameters = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(LoginDisplayMode))

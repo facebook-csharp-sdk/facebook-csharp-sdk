@@ -65,6 +65,7 @@ namespace CS_AspNetMvc3_JsSdk.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            ViewBag.ExtendedPermissions = ExtendedPermissions;
             return View();
         }
 

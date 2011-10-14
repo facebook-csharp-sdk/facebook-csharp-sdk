@@ -11,10 +11,7 @@ namespace Facebook.Web
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
-    using System.Globalization;
     using System.Linq;
-    using System.Text;
     using System.Web;
 
     /// <summary>
@@ -72,14 +69,14 @@ namespace Facebook.Web
         /// </param>
         public FacebookWebContext(IFacebookApplication settings, HttpContextBase httpContext)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
-            Contract.Requires(!string.IsNullOrEmpty(settings.AppSecret));
-            Contract.Requires(httpContext != null);
-            Contract.Requires(httpContext.Request != null);
-            Contract.Requires(httpContext.Request.Url != null);
-            Contract.Requires(httpContext.Request.Params != null);
-            Contract.Requires(httpContext.Response != null);
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+            if (string.IsNullOrEmpty(settings.AppId))
+                throw new Exception("settings.AppId is null.");
+            if (string.IsNullOrEmpty(settings.AppSecret))
+                throw new Exception("settings.AppSecret is null.");
+            if (httpContext == null)
+                throw new ArgumentNullException("httpContext");
 
             _facebookApplication = settings;
             _httpContext = httpContext;
@@ -92,7 +89,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(Contract.Result<FacebookWebContext>() != null);
                 return new FacebookWebContext();
             }
         }
@@ -104,7 +100,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
                 return _facebookApplication;
             }
         }
@@ -138,7 +133,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Requires(Settings != null);
                 return _session ??
                        (_session = FacebookSession.GetSession(Settings, HttpContext));
             }
@@ -163,7 +157,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(Contract.Result<HttpContextBase>() != null);
                 return _httpContext;
             }
         }
@@ -187,8 +180,8 @@ namespace Facebook.Web
         /// </returns>
         public virtual string[] HasPermissions(params string[] permissions)
         {
-            Contract.Requires(permissions != null);
-            Contract.Ensures(Contract.Result<string[]>() != null);
+            if (permissions == null)
+                throw new ArgumentNullException("permissions");
 
             if (Session == null || Session.UserId == 0)
             {
@@ -209,7 +202,8 @@ namespace Facebook.Web
         /// </returns>
         public virtual bool HasPermission(string permission)
         {
-            Contract.Requires(!string.IsNullOrEmpty(permission));
+            if (string.IsNullOrEmpty(permission))
+                throw new ArgumentNullException("permission");
 
             var result = HasPermissions(new[] { permission });
             return result != null && result.Length == 1;
@@ -284,8 +278,10 @@ namespace Facebook.Web
         /// </returns>
         internal static string[] HasPermissions(string accessToken, string appId, long userId, string[] permissions)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(userId >= 0);
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
+            if (userId < 0)
+                throw new ArgumentOutOfRangeException("userId", "userId must be equal or greater than 0");
 
             if (userId != 0 && !string.IsNullOrEmpty(accessToken))
             {
@@ -345,21 +341,6 @@ namespace Facebook.Web
                     HttpContext.Response.Cookies.Set(cookie);
                 }
             }
-        }
-
-        /// <summary>
-        /// The code contracts invariant object method.
-        /// </summary>
-        [ContractInvariantMethod]
-        private void InvarientObject()
-        {
-            Contract.Invariant(_facebookApplication != null);
-            Contract.Invariant(_httpContext != null);
-            Contract.Invariant(_httpContext.Request != null);
-            Contract.Invariant(_httpContext.Request.Params != null);
-            Contract.Invariant(HttpContext.Response != null);
-            Contract.Invariant(HttpContext.Request != null);
-            Contract.Invariant(HttpContext.Request.Params != null);
         }
     }
 }

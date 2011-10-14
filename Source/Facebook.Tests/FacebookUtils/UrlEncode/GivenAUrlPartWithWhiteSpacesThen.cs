@@ -12,7 +12,7 @@ namespace Facebook.Tests.FacebookUtils.UrlEncode
 
             var result = FluentHttp.HttpHelper.UrlEncode(urlPart);
 
-            Assert.Equal("hello+world", result);
+            Assert.Equal("hello%20world", result);
         }
     }
 }

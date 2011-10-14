@@ -11,7 +11,6 @@ namespace Facebook.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -62,12 +61,8 @@ namespace Facebook.Web.Mvc
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            Contract.Requires(filterContext != null);
-            Contract.Requires(filterContext.HttpContext != null);
-            Contract.Requires(filterContext.HttpContext.Request != null);
-            Contract.Requires(filterContext.RouteData != null);
-            Contract.Requires(filterContext.Controller != null);
-            Contract.Requires(settings != null);
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
             var model = new FacebookAuthorizeInfo(
                 GetLoginUrl(settings, filterContext.HttpContext, null),

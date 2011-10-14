@@ -11,7 +11,6 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -45,13 +44,16 @@ namespace Facebook
         public FacebookSession(string accessToken)
             : this(new JsonObject { { "access_token", accessToken } })
         {
-            Contract.Requires(!string.IsNullOrEmpty(accessToken));
+            if (string.IsNullOrEmpty(accessToken))
+                throw new ArgumentNullException("accessToken");
         }
 
         public FacebookSession(IDictionary<string, object> dictionary, IFacebookApplication settings)
         {
-            Contract.Requires(dictionary != null);
-            Contract.Requires(settings != null);
+            if (dictionary == null)
+                throw new ArgumentNullException("dictionary");
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
             _settings = settings;
             var data = dictionary is JsonObject ? dictionary : FacebookUtils.ToDictionary(dictionary);
@@ -218,7 +220,8 @@ namespace Facebook
         /// </returns>
         internal static string ParseUserIdFromAccessToken(string accessToken)
         {
-            Contract.Requires(!string.IsNullOrEmpty(accessToken));
+            if (string.IsNullOrEmpty(accessToken))
+                throw new ArgumentNullException("accessToken");
 
             /*
              * access_token:
@@ -245,6 +248,20 @@ namespace Facebook
                     }
                 }
             }
+            else
+            {
+                // we have an encrypted access token
+                try
+                {
+                    var fb = new FacebookClient(accessToken);
+                    var result = (IDictionary<string, object>)fb.Get("/me?fields=id");
+                    return (string)result["id"];
+                }
+                catch (FacebookOAuthException)
+                {
+                    return null;
+                }
+            }
 
             return null;
         }
@@ -260,9 +277,8 @@ namespace Facebook
         /// </returns>
         internal static string GetCookieName(string appId)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
             return string.Concat("fbs_", appId);
         }
 
@@ -280,9 +296,10 @@ namespace Facebook
         /// </returns>
         internal static string GetSessionCookieValue(string appId, HttpRequestBase httpRequet)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(httpRequet != null);
-            Contract.Requires(httpRequet.Params != null);
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
+            if (httpRequet == null)
+                throw new ArgumentNullException("httpRequet");
 
             var cookieName = GetCookieName(appId);
 
@@ -292,11 +309,8 @@ namespace Facebook
         /// <summary>
         ///  Gets the Facebook session from the http request.
         /// </summary>
-        /// <param name="appId">
-        /// The app id.
-        /// </param>
-        /// <param name="appSecret">
-        /// The app secret.
+        /// <param name="settings">
+        /// The app settings.
         /// </param>
         /// <param name="httpContext">
         /// The http context.
@@ -306,9 +320,8 @@ namespace Facebook
         /// </returns>
         internal static FacebookSession GetSession(IFacebookApplication settings, HttpContextBase httpContext)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
-            Contract.Requires(!string.IsNullOrEmpty(settings.AppSecret));
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
             return GetSession(settings, httpContext, null);
         }
@@ -330,13 +343,14 @@ namespace Facebook
         /// </returns>
         internal static FacebookSession GetSession(IFacebookApplication settings, HttpContextBase httpContext, FacebookSignedRequest signedRequest)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(!string.IsNullOrEmpty(settings.AppId));
-            Contract.Requires(!string.IsNullOrEmpty(settings.AppSecret));
-            Contract.Requires(httpContext != null);
-            Contract.Requires(httpContext.Items != null);
-            Contract.Requires(httpContext.Request != null);
-            Contract.Requires(httpContext.Request.Params != null);
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+            if (string.IsNullOrEmpty(settings.AppId))
+                throw new Exception("settings.AppId is null.");
+            if (string.IsNullOrEmpty(settings.AppSecret))
+                throw new Exception("settings.AppSecret is null.");
+            if (httpContext == null)
+                throw new ArgumentNullException("httpContext");
 
             // If the session is not null, we explicitly DO NOT want to 
             // read from the cookie. Cookies in iFrames == BAD
@@ -395,7 +409,8 @@ namespace Facebook
         /// </returns>
         internal static FacebookSession Create(IFacebookApplication settings, FacebookSignedRequest signedRequest)
         {
-            Contract.Requires(settings != null);
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
             if (signedRequest == null)
             {
@@ -464,10 +479,10 @@ namespace Facebook
         /// </returns>
         internal static FacebookSession ParseCookieValue(IFacebookApplication settings, string cookieValue)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(!String.IsNullOrEmpty(settings.AppSecret));
-            Contract.Requires(!String.IsNullOrEmpty(cookieValue));
-            Contract.Requires(!cookieValue.Contains(","), "Session value must not contain a comma.");
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+            if (string.IsNullOrEmpty(settings.AppSecret))
+                throw new Exception("settings.AppSecret is null.");
 
             // var cookieValue = "\"access_token=124973200873702%7C2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026%7Cvz4H9xjlRZPfg2quCv0XOM5g9_o&expires=1295118000&secret=lddpssZCuPoEtjcDFcWtoA__&session_key=2.OAaqICOCk_B4sZNv59q8Yg__.3600.1295118000-100001327642026&sig=1d95fa4b3dfa5b26c01c8ac8676d80b8&uid=100001327642026\"";
             // var result = FacebookSession.Parse("3b4a872617be2ae1932baa1d4d240272", cookieValue);
@@ -514,9 +529,10 @@ namespace Facebook
         /// </remarks>
         internal static string GenerateSessionSignature(string secret, IDictionary<string, object> dictionary)
         {
-            Contract.Requires(!string.IsNullOrEmpty(secret));
-            Contract.Requires(dictionary != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            if (string.IsNullOrEmpty(secret))
+                throw new ArgumentNullException("secret");
+            if (dictionary == null)
+                throw new ArgumentNullException("dictionary");
 
             var payload = new StringBuilder();
 

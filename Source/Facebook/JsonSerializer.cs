@@ -10,7 +10,6 @@
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the json serializer class.
@@ -27,11 +26,7 @@ namespace Facebook
         /// </summary>
         public static IJsonSerializer Current
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
-                return Instance.InnerCurrent;
-            }
+            get { return Instance.InnerCurrent; }
         }
 
         /// <summary>
@@ -49,29 +44,37 @@ namespace Facebook
         /// <param name="getJsonSerializer"></param>
         public static void SetJsonSerializer(Func<IJsonSerializer> getJsonSerializer)
         {
-            Contract.Requires(getJsonSerializer != null);
             Instance.InnerSetApplication(getJsonSerializer);
         }
 
         private IJsonSerializer _current = new SimpleJsonSerializer();
 
+        /// <summary>
+        /// The inner current json serializer.
+        /// </summary>
         public IJsonSerializer InnerCurrent
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
-                return _current;
-            }
+            get { return _current; }
         }
 
+        /// <summary>
+        /// Sets the inner application.
+        /// </summary>
+        /// <param name="jsonSerializer">The json serializer.</param>
         public void InnerSetApplication(IJsonSerializer jsonSerializer)
         {
             _current = jsonSerializer ?? new SimpleJsonSerializer();
         }
 
+        /// <summary>
+        /// Sets the inner application.
+        /// </summary>
+        /// <param name="getJsonSerializer">The json serializer.</param>
         public void InnerSetApplication(Func<IJsonSerializer> getJsonSerializer)
         {
-            Contract.Requires(getJsonSerializer != null);
+            if (getJsonSerializer == null)
+                throw new ArgumentNullException("getJsonSerializer");
+
             InnerSetApplication(getJsonSerializer());
         }
 

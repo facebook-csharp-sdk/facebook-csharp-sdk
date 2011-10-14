@@ -11,8 +11,6 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Text;
@@ -69,7 +67,8 @@ namespace Facebook
         /// </param>
         public FacebookSignedRequest(IDictionary<string, object> data)
         {
-            Contract.Requires(data != null);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
             Data = data;
         }
@@ -81,13 +80,13 @@ namespace Facebook
         {
             get
             {
-                Contract.Ensures(Contract.Result<object>() != null);
                 return _data;
             }
 
             private set
             {
-                Contract.Requires(value != null);
+                if (value == null)
+                    throw new ArgumentNullException("value");
 
                 var data = (IDictionary<string, object>)(value is JsonObject ? value : FacebookUtils.ToDictionary(value));
 
@@ -204,9 +203,10 @@ namespace Facebook
         /// </returns>
         public static bool TryParse(string secret, string signedRequestValue, out FacebookSignedRequest signedRequest)
         {
-            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(!String.IsNullOrEmpty(secret));
-            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
+            if (string.IsNullOrEmpty(signedRequestValue))
+                throw new ArgumentNullException("signedRequestValue");
+            if (string.IsNullOrEmpty(secret))
+                throw new ArgumentNullException("secret");
 
             var result = TryParse(secret, signedRequestValue, 0, DateTimeConvertor.ToUnixTime(DateTime.UtcNow), false);
             signedRequest = result == null ? null : new FacebookSignedRequest(result);
@@ -230,10 +230,8 @@ namespace Facebook
         /// </returns>
         public static bool TryParse(IFacebookApplication facebookApplication, string signedRequestValue, out FacebookSignedRequest signedRequest)
         {
-            Contract.Requires(facebookApplication != null);
-            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
-            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
+            if (facebookApplication == null)
+                throw new ArgumentNullException("facebookApplication");
 
             return TryParse(facebookApplication.AppSecret, signedRequestValue, out signedRequest);
         }
@@ -252,10 +250,6 @@ namespace Facebook
         /// </returns>
         public static FacebookSignedRequest Parse(string secret, string signedRequestValue)
         {
-            Contract.Requires(!string.IsNullOrEmpty(secret));
-            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
-
             var result = TryParse(secret, signedRequestValue, 0, DateTimeConvertor.ToUnixTime(DateTime.UtcNow), true);
             return result == null ? null : new FacebookSignedRequest(result);
         }
@@ -274,10 +268,8 @@ namespace Facebook
         /// </returns>
         public static FacebookSignedRequest Parse(IFacebookApplication facebookApplication, string signedRequestValue)
         {
-            Contract.Requires(facebookApplication != null);
-            Contract.Requires(!string.IsNullOrEmpty(facebookApplication.AppSecret));
-            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
+            if (facebookApplication == null)
+                throw new ArgumentNullException("facebookApplication");
 
             return Parse(facebookApplication.AppSecret, signedRequestValue);
         }
@@ -354,9 +346,8 @@ namespace Facebook
         /// </returns>
         internal static FacebookSignedRequest GetSignedRequest(string appId, string appSecret, HttpContextBase httpContext)
         {
-            Contract.Requires(httpContext != null);
-            Contract.Requires(httpContext.Request != null);
-            Contract.Requires(httpContext.Request.Params != null);
+            if (httpContext == null)
+                throw new ArgumentNullException("httpContext");
 
             var items = httpContext.Items;
             var httpRequest = httpContext.Request;
@@ -405,11 +396,14 @@ namespace Facebook
         /// </returns>
         internal static IDictionary<string, object> TryParse(string secret, string signedRequestValue, int maxAge, double currentTime, bool throws)
         {
-            Contract.Requires(!String.IsNullOrEmpty(signedRequestValue));
-            Contract.Requires(!String.IsNullOrEmpty(secret));
-            Contract.Requires(maxAge >= 0);
-            Contract.Requires(currentTime >= 0);
-            Contract.Requires(signedRequestValue.Contains("."), Properties.Resources.InvalidSignedRequest);
+            if (string.IsNullOrEmpty(secret))
+                throw new ArgumentNullException("secret");
+            if (string.IsNullOrEmpty(signedRequestValue))
+                throw new ArgumentNullException("signedRequestValue");
+            if (maxAge < 0)
+                throw new ArgumentOutOfRangeException("maxAge", "maxAge must be greater than 0");
+            if (currentTime < 0)
+                throw new ArgumentOutOfRangeException("currentTime", "currentTime must be greater than 0");
 
             try
             {
@@ -503,29 +497,20 @@ namespace Facebook
         /// <returns>The name of the cookie that would house the signed request.</returns>
         internal static string GetSignedRequestCookieName(string appId)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
 
             return string.Concat("fbsr_", appId);
         }
 
         internal static string GetSignedRequestCookieValue(string appId, HttpRequestBase httpRequest)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(httpRequest != null);
-            Contract.Requires(httpRequest.Params != null);
+            if (httpRequest == null)
+                throw new ArgumentNullException("httpRequest");
 
             var cookieName = GetSignedRequestCookieName(appId);
 
             return httpRequest.Params.AllKeys.Contains(cookieName) ? httpRequest.Params[cookieName] : null;
-        }
-
-        [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
-            Justification = "Reviewed. Suppression is OK here.")]
-        [ContractInvariantMethod]
-        private void InvariantObject()
-        {
-            Contract.Invariant(_data != null);
         }
     }
 }

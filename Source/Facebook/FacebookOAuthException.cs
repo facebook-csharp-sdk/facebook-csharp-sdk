@@ -36,6 +36,11 @@ namespace Facebook
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookOAuthException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="errorType">The error type.</param>
         public FacebookOAuthException(string message, string errorType)
             : base(message, errorType)
         {

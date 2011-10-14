@@ -11,7 +11,6 @@ namespace Facebook.Web
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -57,9 +56,12 @@ namespace Facebook.Web
         /// </param>
         public CanvasUrlBuilder(IFacebookApplication settings, HttpRequestBase httpRequest)
         {
-            Contract.Requires(settings != null);
-            Contract.Requires(httpRequest != null);
-            Contract.Requires(httpRequest.Url != null);
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+            if (httpRequest == null)
+                throw new ArgumentNullException("httpRequest");
+            if (httpRequest.Url == null)
+                throw new ArgumentNullException("httpRequest.Url");
 
             _settings = settings;
             _httpRequest = httpRequest;
@@ -75,10 +77,10 @@ namespace Facebook.Web
         public CanvasUrlBuilder()
             : this(FacebookApplication.Current, new HttpRequestWrapper(HttpContext.Current.Request))
         {
-            Contract.Requires(FacebookApplication.Current != null);
-            Contract.Requires(HttpContext.Current != null);
-            Contract.Requires(HttpContext.Current.Request != null);
-            Contract.Requires(HttpContext.Current.Request.Url != null);
+            if (FacebookApplication.Current == null)
+                throw new Exception("FacebookApplication.Current is null.");
+            if (HttpContext.Current == null)
+                throw new Exception("HttpContext.Current is null.");
         }
 
         /// <summary>
@@ -88,8 +90,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(Contract.Result<Dictionary<string, Uri>>() != null);
-
                 return IsSecureConnection
                            ? (UseFacebookBeta ? FacebookUtils.DomainMapsBetaSecure : FacebookUtils.DomainMapsSecure)
                            : (UseFacebookBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps);
@@ -103,8 +103,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(Contract.Result<Uri>() != null);
-
                 return new Uri(DomainMaps[FacebookUtils.DOMAIN_MAP_APPS] + CanvasPageApplicationPath.Substring(1));
             }
         }
@@ -116,8 +114,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
-
                 return FacebookWebUtils.RemoveTrailingSlash(new Uri(_settings.CanvasPage)).AbsolutePath;
             }
         }
@@ -215,8 +211,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(Contract.Result<string>() != null);
-
                 var pathAndQuery = _httpRequest.Url.PathAndQuery;
                 var i = pathAndQuery.IndexOf("/");
                 if (i > 0)
@@ -234,8 +228,6 @@ namespace Facebook.Web
         {
             get
             {
-                Contract.Ensures(Contract.Result<Uri>() != null);
-
                 return BuildCanvasPageUrl(CurrentCanvasPathAndQuery);
             }
         }
@@ -267,8 +259,8 @@ namespace Facebook.Web
         /// </returns>
         public Uri BuildCanvasPageUrl(string pathAndQuery)
         {
-            Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
-            Contract.Ensures(Contract.Result<Uri>() != null);
+            if (string.IsNullOrEmpty(pathAndQuery))
+                throw new ArgumentNullException("pathAndQuery");
 
             if (!pathAndQuery.StartsWith("/", StringComparison.Ordinal))
             {
@@ -295,8 +287,8 @@ namespace Facebook.Web
         /// </returns>
         public Uri BuildCanvasUrl(string pathAndQuery)
         {
-            Contract.Requires(!String.IsNullOrEmpty(pathAndQuery));
-            Contract.Ensures(Contract.Result<Uri>() != null);
+            if (string.IsNullOrEmpty(pathAndQuery))
+                throw new ArgumentNullException("pathAndQuery");
 
             pathAndQuery = FacebookWebUtils.RemoveStartingSlash(pathAndQuery);
 
@@ -331,8 +323,6 @@ namespace Facebook.Web
         /// </returns>
         public Uri GetLoginUrl(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> loginParameters)
         {
-            Contract.Ensures(Contract.Result<Uri>() != null);
-
             var oauth = new FacebookOAuthClient
             {
                 AppId = _settings.AppId
@@ -366,8 +356,6 @@ namespace Facebook.Web
 
         internal IDictionary<string, object> PrepareCanvasLoginUrlOAuthState(string returnUrlPath, string cancelUrlPath, string state, IDictionary<string, object> loginParameters)
         {
-            Contract.Ensures(Contract.Result<IDictionary<string, object>>() != null);
-
             var oauthJsonState = new JsonObject();
 
             // make it one letter character so more info can fit in.
@@ -434,13 +422,8 @@ namespace Facebook.Web
         /// </returns>
         public static string GetCanvasRedirectHtml(Uri url)
         {
-            Contract.Requires(url != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
             if (url == null)
-            {
                 throw new ArgumentNullException("url");
-            }
 
             return string.Concat("<html><head><script type=\"text/javascript\">\ntop.location = \"", url, "\";\n", "</script></head><body></body></html>");
         }
@@ -476,7 +459,9 @@ namespace Facebook.Web
         /// </returns>
         internal static bool IsSecureUrl(Uri url)
         {
-            Contract.Requires(url != null);
+            if (url == null)
+                throw new ArgumentNullException("url");
+
             return url.Scheme == "https";
         }
 
@@ -497,14 +482,6 @@ namespace Facebook.Web
             }
 
             return uri.Host == "apps.beta.facebook.com";
-        }
-
-        [ContractInvariantMethod]
-        private void InvariantObject()
-        {
-            Contract.Invariant(_settings != null);
-            Contract.Invariant(_httpRequest != null);
-            Contract.Invariant(_httpRequest.Url != null);
         }
     }
 }

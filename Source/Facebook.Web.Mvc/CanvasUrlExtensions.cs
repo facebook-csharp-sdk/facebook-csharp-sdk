@@ -10,7 +10,6 @@
 namespace Facebook.Web.Mvc
 {
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Web.Mvc;
     using System.Web.Routing;
 
@@ -27,9 +26,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, null, (RouteValueDictionary)null /* routeValues */);
         }
 
@@ -42,9 +38,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName, object routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, null /* controllerName */, new RouteValueDictionary(routeValues));
         }
 
@@ -57,9 +50,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName, RouteValueDictionary routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, null /* controllerName */, routeValues);
         }
 
@@ -72,9 +62,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName, string controllerName)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, controllerName, (RouteValueDictionary)null /* routeValues */);
         }
 
@@ -88,9 +75,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName, string controllerName, object routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, controllerName, new RouteValueDictionary(routeValues));
         }
 
@@ -104,9 +88,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, controllerName, routeValues);
         }
 
@@ -121,9 +102,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName, string controllerName, object routeValues, string protocol)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, controllerName, protocol, null /* hostName */, null /* fragment */, new RouteValueDictionary(routeValues), urlHelper.RouteCollection, urlHelper.RequestContext, true /* includeImplicitMvcValues */);
         }
 
@@ -139,9 +117,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         public static string CanvasAction(this UrlHelper urlHelper, string actionName, string controllerName, RouteValueDictionary routeValues, string protocol, string hostName)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, null /* routeName */, actionName, controllerName, protocol, hostName, null /* fragment */, routeValues, urlHelper.RouteCollection, urlHelper.RequestContext, true /* includeImplicitMvcValues */);
         }
 
@@ -156,9 +131,6 @@ namespace Facebook.Web.Mvc
         /// <returns></returns>
         private static string GenerateCanvasUrl(UrlHelper urlHelper, string routeName, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, routeName, actionName, controllerName, routeValues, urlHelper.RouteCollection, urlHelper.RequestContext, true /* includeImplicitMvcValues */);
         }
 
@@ -181,9 +153,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string GenerateCanvasUrl(UrlHelper urlHelper, string routeName, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, RouteCollection routeCollection, RequestContext requestContext, bool includeImplicitMvcValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, requestContext.HttpContext.Request);
             return urlBuilder.BuildCanvasPageUrl(url).ToString();
@@ -205,9 +174,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string GenerateCanvasUrl(UrlHelper urlHelper, string routeName, string actionName, string controllerName, RouteValueDictionary routeValues, RouteCollection routeCollection, RequestContext requestContext, bool includeImplicitMvcValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             string url = UrlHelper.GenerateUrl(routeName, actionName, controllerName, routeValues, routeCollection, requestContext, includeImplicitMvcValues);
             CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(FacebookApplication.Current, urlHelper.RequestContext.HttpContext.Request);
             return urlBuilder.BuildCanvasPageUrl(url).ToString();
@@ -223,9 +189,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string CanvasRouteUrl(this UrlHelper urlHelper, object routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return CanvasRouteUrl(urlHelper, null /* routeName */, routeValues);
         }
 
@@ -239,9 +202,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string CanvasRouteUrl(this UrlHelper urlHelper, RouteValueDictionary routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return CanvasRouteUrl(urlHelper, null /* routeName */, routeValues);
         }
 
@@ -255,9 +215,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string CanvasRouteUrl(this UrlHelper urlHelper, string routeName)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return CanvasRouteUrl(urlHelper, routeName, (object)null /* routeValues */);
         }
 
@@ -272,9 +229,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string CanvasRouteUrl(this UrlHelper urlHelper, string routeName, object routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return CanvasRouteUrl(urlHelper, routeName, routeValues, null /* protocol */);
         }
 
@@ -289,9 +243,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string CanvasRouteUrl(this UrlHelper urlHelper, string routeName, RouteValueDictionary routeValues)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return CanvasRouteUrl(urlHelper, routeName, routeValues, null /* protocol */, null /* hostName */);
         }
 
@@ -307,9 +258,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string CanvasRouteUrl(this UrlHelper urlHelper, string routeName, object routeValues, string protocol)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, routeName, null /* actionName */, null /* controllerName */, protocol, null /* hostName */, null /* fragment */, new RouteValueDictionary(routeValues), urlHelper.RouteCollection, urlHelper.RequestContext, false /* includeImplicitMvcValues */);
         }
 
@@ -326,9 +274,6 @@ namespace Facebook.Web.Mvc
             Justification = "As the return value will used only for rendering, string return value is more appropriate.")]
         public static string CanvasRouteUrl(this UrlHelper urlHelper, string routeName, RouteValueDictionary routeValues, string protocol, string hostName)
         {
-            Contract.Requires(urlHelper != null && urlHelper.RequestContext != null && urlHelper.RequestContext.HttpContext != null && urlHelper.RequestContext.HttpContext.Request != null &&
-                urlHelper.RequestContext.HttpContext.Request.Url != null && urlHelper.RequestContext.HttpContext.Request.Headers != null && urlHelper.RouteCollection != null);
-
             return GenerateCanvasUrl(urlHelper, routeName, null /* actionName */, null /* controllerName */, protocol, hostName, null /* fragment */, routeValues, urlHelper.RouteCollection, urlHelper.RequestContext, false /* includeImplicitMvcValues */);
         }
     }

@@ -10,7 +10,6 @@
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the Facebook Context class.
@@ -42,11 +41,7 @@ namespace Facebook
         /// </summary>
         public static IFacebookApplication Current
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
-                return Instance.InnerCurrent;
-            }
+            get { return Instance.InnerCurrent; }
         }
 
         /// <summary>
@@ -57,7 +52,6 @@ namespace Facebook
         /// </param>
         public static void SetApplication(IFacebookApplication facebookApplication)
         {
-            Contract.Requires(facebookApplication != null);
             Instance.InnerSetApplication(facebookApplication);
         }
 
@@ -69,8 +63,6 @@ namespace Facebook
         /// </param>
         public static void SetApplication(Func<IFacebookApplication> getFacebookApplication)
         {
-            Contract.Requires(getFacebookApplication != null);
-
             Instance.InnerSetApplication(getFacebookApplication);
         }
 
@@ -79,11 +71,7 @@ namespace Facebook
         /// </summary>
         public IFacebookApplication InnerCurrent
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<IFacebookApplication>() != null);
-                return _current ?? new DefaultFacebookApplication();
-            }
+            get { return _current ?? new DefaultFacebookApplication(); }
         }
 
         /// <summary>
@@ -94,7 +82,8 @@ namespace Facebook
         /// </param>
         public void InnerSetApplication(IFacebookApplication facebookApplication)
         {
-            Contract.Requires(facebookApplication != null);
+            if (facebookApplication == null)
+                throw new ArgumentNullException("facebookApplication");
 
             _current = facebookApplication;
         }
@@ -107,7 +96,8 @@ namespace Facebook
         /// </param>
         public void InnerSetApplication(Func<IFacebookApplication> getFacebookApplication)
         {
-            Contract.Requires(getFacebookApplication != null);
+            if (getFacebookApplication == null)
+                throw new ArgumentNullException("getFacebookApplication");
 
             _current = getFacebookApplication();
         }

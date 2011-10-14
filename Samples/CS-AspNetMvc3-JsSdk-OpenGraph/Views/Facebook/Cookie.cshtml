@@ -1,0 +1,52 @@
+﻿@using System.Configuration
+@{
+    ViewBag.Title = "Facebook C# SDK - Open Graph Sample";
+    string fbAppNamespace = ConfigurationManager.AppSettings["FBAppNamespace"];    
+}
+@section head
+{
+    <meta property="fb:app_id" content="@Facebook.FacebookApplication.Current.AppId" /> 
+    <meta property="og:type" content="@fbAppNamespace:recipe" /> 
+    <meta property="og:title" content="Stuffed Cookies" /> 
+    <meta property="og:image" content="http://developers.facebook.com/attachment/cookies.jpg" /> 
+    <meta property="og:description" content="The Turducken of Cookies" /> 
+    <meta property="og:url" content="@Url.Action("Cookie", "Facebook", null, Request.Url.Scheme)"> 
+}
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+    FB.init({
+        appId: '@Facebook.FacebookApplication.Current.AppId', cookie: true,
+        status: true, xfbml: true, oauth: true
+    });
+    FB.Event.subscribe('auth.login', function (response) {
+        window.location.reload();
+    });
+</script>
+
+@if (ViewBag.IsAuthorized)
+{
+<fb:add-to-timeline></fb:add-to-timeline>
+}
+else
+{
+    <fb:login-button>Login with Facebook</fb:login-button>
+}
+<h3>
+    <font size="30" face="verdana" color="grey">
+        Stuffed Cookies
+    </font> 
+</h3> 
+<p>
+    <img title="Stuffed Cookies" 
+            src="http://developers.facebook.com/attachment/cookies.jpg" 
+            width="550"/>
+</p> 
+
+@if (ViewBag.IsAuthorized)
+{
+    using (Html.BeginForm("PostCook", "Facebook"))
+    {
+        <input type="submit" value="Cook" />
+    }
+}

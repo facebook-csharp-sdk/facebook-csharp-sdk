@@ -11,7 +11,6 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the authentication result of Facebook.
@@ -66,7 +65,8 @@ namespace Facebook
         /// </remarks>
         internal FacebookOAuthResult(IDictionary<string, object> parameters)
         {
-            Contract.Requires(parameters != null);
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
 
             if (parameters.ContainsKey("error_reason"))
             {
