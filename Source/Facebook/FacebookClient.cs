@@ -763,7 +763,6 @@ namespace Facebook
                         string responseString;
                         bool cancelled;
                         ProcessResponse(httpHelper, e.Result, null, out responseString, out ex, out cancelled);
-
                         args = new FacebookApiEventArgs(ex, cancelled, userToken, responseString, isBatchRequest);
                     }
                     else
@@ -972,7 +971,7 @@ namespace Facebook
         public virtual System.Threading.Tasks.Task<object> PostTaskAsync(IDictionary<string, object> parameters)
         {
             if (parameters == null)
-                throw new ArgumentNullException("parameters");;
+                throw new ArgumentNullException("parameters"); ;
 
             return PostTaskAsync(null, parameters, System.Threading.CancellationToken.None);
         }
@@ -1085,7 +1084,19 @@ namespace Facebook
 
         #endregion
 
+#if ASYNC_AWAIT
+
         protected virtual System.Threading.Tasks.Task<object> ApiTaskAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken, System.Threading.CancellationToken cancellationToken)
+        {
+            return ApiTaskAsync(path, parameters, httpMethod, userToken, cancellationToken, null);
+        }
+#endif
+
+        protected virtual System.Threading.Tasks.Task<object> ApiTaskAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken, System.Threading.CancellationToken cancellationToken
+#if ASYNC_AWAIT
+, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgres
+#endif
+)
         {
             var tcs = new System.Threading.Tasks.TaskCompletionSource<object>(userToken);
             if (cancellationToken.IsCancellationRequested)
@@ -1105,6 +1116,22 @@ namespace Facebook
 
                 var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
 
+#if ASYNC_AWAIT
+                EventHandler<FacebookUploadProgressChangedEventArgs> uploadProgressHandler = null;
+                if (uploadProgres != null)
+                {
+
+                    uploadProgressHandler = (sender, e) =>
+                                            {
+                                                if (e.UserState != tcs)
+                                                    return;
+                                                uploadProgres.Report(new FacebookUploadProgressChangedEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.BytesSent, e.TotalBytesToSend, e.ProgressPercentage, userToken));
+                                            };
+
+                    UploadProgressChanged += uploadProgressHandler;
+                }
+#endif
+
                 EventHandler<FacebookApiEventArgs> handler = null;
                 handler = (sender, e) =>
                         {
@@ -1113,6 +1140,9 @@ namespace Facebook
                                                                                                     if (ctr != null) ctr.Dispose();
                                                                                                     RemoveTaskAsyncHandlers(httpMethod, handler);
                                                                                                     HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+#if ASYNC_AWAIT
+                                                                                                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+#endif
                                                                                                 });
                         };
 
@@ -1136,6 +1166,9 @@ namespace Facebook
                 {
                     RemoveTaskAsyncHandlers(httpMethod, handler);
                     HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+#if ASYNC_AWAIT
+                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+#endif
                     throw;
                 }
             }
@@ -1486,11 +1519,6 @@ namespace Facebook
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(params FacebookBatchParameter[] batchParameters)
         {
-            if (batchParameters == null)
-                throw new ArgumentNullException("batchParameters");
-            if (batchParameters.Length == 0)
-                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
-
             return BatchTaskAsync(batchParameters, System.Threading.CancellationToken.None);
         }
 
@@ -1507,6 +1535,55 @@ namespace Facebook
         /// The json result.
         /// </returns>
         public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, System.Threading.CancellationToken cancellationToken)
+        {
+            if (batchParameters == null)
+                throw new ArgumentNullException("batchParameters");
+            if (batchParameters.Length == 0)
+                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
+
+            return BatchTaskAsync(batchParameters, null, System.Threading.CancellationToken.None);
+        }
+
+#if ASYNC_AWAIT
+
+        /// <summary>
+        /// Executes a batch request.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// The batch parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, System.Threading.CancellationToken cancellationToken)
+        {
+            return BatchTaskAsync(batchParameters, userToken, cancellationToken, null);
+        }
+#endif
+
+        /// <summary>
+        /// Executes a batch request.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// The batch parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <param name="uploadProgres">
+        /// The upload progress.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, System.Threading.CancellationToken cancellationToken
+#if ASYNC_AWAIT
+, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgres
+#endif
+)
         {
             if (batchParameters == null)
                 throw new ArgumentNullException("batchParameters");
@@ -1531,13 +1608,31 @@ namespace Facebook
 
                 var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
 
-                EventHandler<FacebookApiEventArgs> handler = null;
+#if ASYNC_AWAIT
+                EventHandler<FacebookUploadProgressChangedEventArgs> uploadProgressHandler = null;
+                if (uploadProgres != null)
+                {
 
+                    uploadProgressHandler = (sender, e) =>
+                    {
+                        if (e.UserState != tcs)
+                            return;
+                        uploadProgres.Report(new FacebookUploadProgressChangedEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.BytesSent, e.TotalBytesToSend, e.ProgressPercentage, userToken));
+                    };
+
+                    UploadProgressChanged += uploadProgressHandler;
+                }
+#endif
+
+                EventHandler<FacebookApiEventArgs> handler = null;
                 handler = (sender, e) => FacebookUtils.TransferCompletionToTask(tcs, e, e.GetResultData, () =>
                                                                                         {
                                                                                             if (ctr != null) ctr.Dispose();
                                                                                             PostCompleted -= handler;
                                                                                             HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+#if ASYNC_AWAIT
+                                                                                            if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+#endif
                                                                                         });
                 PostCompleted += handler;
                 HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
@@ -1551,6 +1646,9 @@ namespace Facebook
                 {
                     PostCompleted -= handler;
                     HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+#if ASYNC_AWAIT
+                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+#endif
                     throw;
                 }
             }

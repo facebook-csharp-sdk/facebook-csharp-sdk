@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web-Net45", "Facebook.Web\Facebook.Web-Net45.csproj", "{73333465-710D-4143-BA9B-201D90EE2BAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc-Net45", "Facebook.Web.Mvc\Facebook.Web.Mvc-Net45.csproj", "{7DC5C10F-E871-4202-9014-0F958358389E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-Net45", "Facebook\Facebook-Net45.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73EF7C1F-BE73-43D5-8F77-D2909DAA54A2}"
+	ProjectSection(SolutionItems) = preProject
+		..\Build\rakefile.rb = ..\Build\rakefile.rb
+		..\CHANGES.txt = ..\CHANGES.txt
+		..\VERSION = ..\VERSION
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

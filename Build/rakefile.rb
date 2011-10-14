@@ -75,6 +75,13 @@ directory "#{config['path']['dist']}NuGet/"
 directory "#{config['path']['dist']}SymbolSource/"
 
 namespace :build do
+
+	desc "Build .NET 4.5 binaries"
+	msbuild :net45 => ['clean:net45','assemblyinfo:facebook','assemblyinfo:facebookweb','assemblyinfo:facebookwebmvc'] do |msb|
+	   msb.properties :configuration => config['version']['configuration']
+	   msb.solution = config['path']['sln']['net45']
+	   msb.targets :Build
+	end
 	
 	desc "Build .NET 4 binaries"
 	msbuild :net40 => ['clean:net40','assemblyinfo:facebook','assemblyinfo:facebookweb','assemblyinfo:facebookwebmvc'] do |msb|
@@ -155,6 +162,12 @@ desc "Build All"
 task :build => ['build:all']
 
 namespace :clean do
+
+	msbuild :net45 do |msb|
+	   msb.properties :configuration => config["version"]["configuration"]
+	   msb.solution = config["path"]["sln"]["net45"]
+	   msb.targets :Clean
+	end
 
 	msbuild :net40 do |msb|
 	   msb.properties :configuration => config["version"]["configuration"]

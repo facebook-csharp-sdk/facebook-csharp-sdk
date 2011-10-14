@@ -28,6 +28,13 @@ vNEXT (Beta)
 	with FormsAuthentication and without using the Facebook JS SDK. 
 	(also includes prevention of Cross Site Request Forgery - CSRF attacks.)
 
+Experimental
+------------
+1. enabled Task Parallel Support in .NET 4.0+ by default
+2. added support for early preview for .NET 4.5 (will need to manually build the dll files)
+   (Facebook.Web.Mvc.dll uses Mvc3)
+3. added additional method overloads for .NET 4.5 to support IProgress<T> for upload progress.
+
 =========================================================================
 v5.2.1 (RTW)
 =========================================================================
