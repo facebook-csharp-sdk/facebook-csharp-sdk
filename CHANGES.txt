@@ -34,6 +34,8 @@ Experimental
 2. added support for early preview for .NET 4.5 (will need to manually build the dll files)
    (Facebook.Web.Mvc.dll uses Mvc3)
 3. added additional method overloads for .NET 4.5 to support IProgress<T> for upload progress.
+4. added new CS-WinForms-AsyncAwait.sln sample demonstrating the use of async/await, upload progress
+   report using IProgress<T> and cancellation support.
 
 =========================================================================
 v5.2.1 (RTW)

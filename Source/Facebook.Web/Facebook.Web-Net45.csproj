@@ -159,6 +159,7 @@
     <ProjectReference Include="..\Facebook\Facebook-Net45.csproj">
       <Project>{857e540c-0092-4590-a279-f98a6b77ac0a}</Project>
       <Name>Facebook-Net45</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
