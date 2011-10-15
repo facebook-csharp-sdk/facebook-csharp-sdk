@@ -736,6 +736,14 @@ namespace Facebook
         {
             Stream input;
 
+            bool isBatchRequest = httpMethod == HttpMethod.Post && path == null && parameters.ContainsKey("batch");
+            bool isQuery = !isBatchRequest && httpMethod == HttpMethod.Get && path == "fql" && parameters != null && parameters.ContainsKey("__internal");
+
+            if (isQuery)
+            {
+                parameters.Remove("__internal");
+            }
+
             IDictionary<string, FacebookMediaObject> mediaObjects;
             var httpHelper = new HttpHelper(PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects));
             _httpWebRequest = httpHelper.HttpWebRequest;
@@ -745,8 +753,6 @@ namespace Facebook
                 HttpWebRequestWrapperCreated(this, new HttpWebRequestCreatedEventArgs(userToken, httpHelper.HttpWebRequest));
 #endif
 
-            bool isBatchRequest = httpMethod == HttpMethod.Post && path == null && parameters.ContainsKey("batch");
-
             bool notifyUploadProgressChanged = httpMethod == HttpMethod.Post && UploadProgressChanged != null && mediaObjects != null && mediaObjects.Count > 0;
 
             httpHelper.OpenReadCompleted +=
@@ -755,7 +761,7 @@ namespace Facebook
                     FacebookApiEventArgs args = null;
                     if (e.Cancelled)
                     {
-                        args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest);
+                        args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest, isQuery);
                     }
                     else if (e.Error == null)
                     {
@@ -763,7 +769,7 @@ namespace Facebook
                         string responseString;
                         bool cancelled;
                         ProcessResponse(httpHelper, e.Result, null, out responseString, out ex, out cancelled);
-                        args = new FacebookApiEventArgs(ex, cancelled, userToken, responseString, isBatchRequest);
+                        args = new FacebookApiEventArgs(ex, cancelled, userToken, responseString, isBatchRequest, isQuery);
                     }
                     else
                     {
@@ -772,7 +778,7 @@ namespace Facebook
                             var webEx = (WebExceptionWrapper)e.Error;
                             if (webEx.GetResponse() == null)
                             {
-                                args = new FacebookApiEventArgs(webEx, false, userToken, null, isBatchRequest);
+                                args = new FacebookApiEventArgs(webEx, false, userToken, null, isBatchRequest, isQuery);
                             }
                             else
                             {
@@ -800,7 +806,7 @@ namespace Facebook
                         {
                             // input might still be open, so dispose it.
                             DisposeInputRequestStream(input);
-                            args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest);
+                            args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest, isQuery);
                         }
                         else if (e.Error == null)
                         {
@@ -832,15 +838,15 @@ namespace Facebook
                             }
                             catch (WebException ex)
                             {
-                                args = new FacebookApiEventArgs(new WebExceptionWrapper(ex), ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest);
+                                args = new FacebookApiEventArgs(new WebExceptionWrapper(ex), ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest, isQuery);
                             }
                             catch (WebExceptionWrapper ex)
                             {
-                                args = new FacebookApiEventArgs(ex, ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest);
+                                args = new FacebookApiEventArgs(ex, ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest, isQuery);
                             }
                             catch (Exception ex)
                             {
-                                args = new FacebookApiEventArgs(ex, false, userToken, null, isBatchRequest);
+                                args = new FacebookApiEventArgs(ex, false, userToken, null, isBatchRequest, isQuery);
                             }
                             finally
                             {
@@ -859,7 +865,7 @@ namespace Facebook
                                     return;
                                 }
                             }
-                            args = new FacebookApiEventArgs(e.Error, false, userToken, null, isBatchRequest);
+                            args = new FacebookApiEventArgs(e.Error, false, userToken, null, isBatchRequest, isQuery);
                         }
 
                         OnCompleted(httpMethod, args);
@@ -1256,10 +1262,18 @@ namespace Facebook
                 throw new ArgumentNullException("fql");
 
             var parameters = new Dictionary<string, object>();
+            parameters["q"] = fql;
+
+            var result = (IDictionary<string, object>)Get("fql", parameters);
+            return result["data"];
+
+            /*
+            var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
             parameters["method"] = "fql.query";
 
             return Get(parameters);
+            */
         }
 
         /// <summary>
@@ -1287,10 +1301,18 @@ namespace Facebook
             }
 
             var parameters = new Dictionary<string, object>();
+            parameters["q"] = queryDict;
+
+            var result = (IDictionary<string, object>)Get("fql", parameters);
+            return result["data"];
+
+            /*
+            var parameters = new Dictionary<string, object>();
             parameters["queries"] = queryDict;
             parameters["method"] = "fql.multiquery";
 
             return Get(parameters);
+            */
         }
 
 #endif
@@ -1324,10 +1346,18 @@ namespace Facebook
                 throw new ArgumentNullException("fql");
 
             var parameters = new Dictionary<string, object>();
+            parameters["q"] = fql;
+            parameters["__internal"] = true;
+
+            GetAsync("fql", parameters, userToken);
+
+            /*            
+            var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
             parameters["method"] = "fql.query";
 
             GetAsync(null, parameters, userToken);
+            */
         }
 
         /// <summary>
@@ -1363,16 +1393,25 @@ namespace Facebook
                 throw new ArgumentException("At least one fql query required.", "fql");
 
             var queryDict = new Dictionary<string, object>();
+
             for (int i = 0; i < fql.Length; i++)
             {
                 queryDict.Add(string.Concat("query", i), fql[i]);
             }
 
             var parameters = new Dictionary<string, object>();
+            parameters["q"] = queryDict;
+            parameters["__internal"] = true;
+
+            GetAsync("fql", parameters, userToken);
+
+            /*
+            var parameters = new Dictionary<string, object>();
             parameters["queries"] = queryDict;
             parameters["method"] = "fql.multiquery";
 
             GetAsync(null, parameters, userToken);
+            */
         }
 
 
@@ -1415,10 +1454,18 @@ namespace Facebook
                 throw new ArgumentNullException("fql");
 
             var parameters = new Dictionary<string, object>();
+            parameters["q"] = fql;
+            parameters["__internal"] = true;
+
+            return GetTaskAsync("fql", parameters, cancellationToken);
+
+            /*
+            var parameters = new Dictionary<string, object>();
             parameters["query"] = fql;
             parameters["method"] = "fql.query";
 
             return GetTaskAsync(null, parameters, cancellationToken);
+            */
         }
 
         /// <summary>
@@ -1469,10 +1516,10 @@ namespace Facebook
             }
 
             var parameters = new Dictionary<string, object>();
-            parameters["queries"] = queryDict;
-            parameters["method"] = "fql.multiquery";
+            parameters["q"] = queryDict;
+            parameters["__internal"] = true;
 
-            return GetTaskAsync(null, parameters, cancellationToken);
+            return GetTaskAsync("fql", parameters, cancellationToken);
         }
 
 #endif

@@ -11,6 +11,7 @@ namespace Facebook
 {
     using System;
     using System.ComponentModel;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents the Facebook api event args.
@@ -21,6 +22,11 @@ namespace Facebook
         /// Indicates whether the result is a batch result.
         /// </summary>
         private readonly bool _isBatchResult;
+
+        /// <summary>
+        /// Indicates whether the result is a fql query.
+        /// </summary>
+        private readonly bool _isQuery;
 
         /// <summary>
         /// The json string.
@@ -45,14 +51,43 @@ namespace Facebook
         /// <param name="isBatchResult">
         /// Indicates whether the result is a batch result.
         /// </param>
-        public FacebookApiEventArgs(Exception error, bool cancelled, object userState, string json, bool isBatchResult)
+        /// <param name="isQuery">
+        /// Indicates whether the result is a query
+        /// </param>
+        public FacebookApiEventArgs(Exception error, bool cancelled, object userState, string json, bool isBatchResult, bool isQuery)
             : base(error, cancelled, userState)
         {
             _isBatchResult = isBatchResult;
+            _isQuery = isQuery;
 
             // check for error coz if its is rest api, json is not null
             if (error == null)
                 _json = json;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApiEventArgs"/> class.
+        /// </summary>
+        /// <param name="error">
+        /// The error.
+        /// </param>
+        /// <param name="cancelled">
+        /// The cancelled.
+        /// </param>
+        /// <param name="userState">
+        /// The user state.
+        /// </param>
+        /// <param name="json">
+        /// The json string.
+        /// </param>
+        /// <param name="isBatchResult">
+        /// Indicates whether the result is a batch result.
+        /// </param>
+        [Obsolete]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public FacebookApiEventArgs(Exception error, bool cancelled, object userState, string json, bool isBatchResult)
+            : this(error, cancelled, userState, json, isBatchResult, false)
+        {
         }
 
         /// <summary>
@@ -65,7 +100,17 @@ namespace Facebook
         {
             var json = JsonSerializer.Current.DeserializeObject(_json);
 
-            return _isBatchResult ? FacebookClient.ProcessBatchResult(json) : json;
+            if (_isBatchResult)
+            {
+                return FacebookClient.ProcessBatchResult(json);
+            }
+            if (_isQuery)
+            {
+                // required for compatibility with v5.2.1
+                var result = (IDictionary<string, object>)json;
+                return result["data"];
+            }
+            return json;
         }
 
         /// <summary>
@@ -81,6 +126,13 @@ namespace Facebook
         {
             if (_isBatchResult)
                 throw new InvalidOperationException(Properties.Resources.GetResultDataGenericNotSupportedForBatchRequests);
+            
+            if (_isQuery && !string.IsNullOrEmpty(_json) && _json.StartsWith("{\"data\":") && _json.Length > 9)
+            {
+                // required for compatibility with v5.2.1
+                var queryData = _json.Substring(8, _json.Length - 9);
+                return JsonSerializer.Current.DeserializeObject<T>(queryData);
+            }
 
             return JsonSerializer.Current.DeserializeObject<T>(_json);
         }

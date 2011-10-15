@@ -598,7 +598,7 @@ namespace Facebook
                     {
                         Exception ex;
                         string responseString = ProcessResponse(httpHelper, e.Result, out ex);
-                        args = new FacebookApiEventArgs(ex, e.Cancelled, userToken, processResponseString(responseString), false);
+                        args = new FacebookApiEventArgs(ex, e.Cancelled, userToken, processResponseString(responseString), false, false);
                     }
                     else
                     {
@@ -607,7 +607,7 @@ namespace Facebook
                             var webEx = (WebExceptionWrapper)e.Error;
                             if (webEx.GetResponse() == null)
                             {
-                                args = new FacebookApiEventArgs(webEx, false, userToken, null, false);
+                                args = new FacebookApiEventArgs(webEx, false, userToken, null, false, false);
                             }
                             else
                             {

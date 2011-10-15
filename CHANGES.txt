@@ -36,6 +36,13 @@ Experimental
 3. added additional method overloads for .NET 4.5 to support IProgress<T> for upload progress.
 4. added new CS-WinForms-AsyncAwait.sln sample demonstrating the use of async/await, upload progress
    report using IProgress<T> and cancellation support.
+5. *breaking changes*
+   Query/QueryAsync methods uses graph api instead of legacy rest api.
+   Note: Maintains the old compatibility with rest api by returning result.data instead of result.
+   but need to be extra careful with especially with the id.
+     For example: 
+		dynamic result = fb.Query("SELECT name, uid FROM user WHERE uid = me()");
+	Using old rest api typeof uid is string, while using the graph api it is long.
 
 =========================================================================
 v5.2.1 (RTW)
