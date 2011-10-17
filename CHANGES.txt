@@ -10,19 +10,19 @@ vNEXT (Beta)
 =========================================================================
 1. fixed issue #5902. correctly set AppId and AppSecret when passing as
    constructor parameter in FacebookWebContext.
-2. removed dependency on Code Contracts
+2. removed dependency on Code Contracts. (issue #5909)
 3. added sample demonstrating the new OpenGraph (CS-AspNetMvc3-JsSdk-OpenGraph.sln)
 4. updated FluentHttp.Core to v0.4 (UrlEncode now uses Uri.EscapeDataString instead
    of Mono's UrlEncode)
 5. delete authentication cookie if FacebookOAuthException is thrown for Async
-   method calls in FacebookWebClient
+   method calls in FacebookWebClient (issue #5910)
 6. FacebookWebClient.IsSecureConnection is virtual.
 7. Facebook.JavascriptMvcWebsite FacebookInit uses async loading of the Facebook
    Javascript SDK and oauth:true
 8. removed Facebook.xd_receiver nuget package
 9. added Facebook.channel nuget package containing fbchannel.ashx file.
 10. fixed ParseUserIdFromAccessToken. Incase the access token is encrypted it automatically
-   makes a request to /me?fields=id
+   makes a request to /me?fields=id (issue #5911)
 11. added Facebook.channel as dependency for Facebook.JavascriptMvcWebsite nuget package
 12. added CS-AspNetMvc3-WithoutJsSdk.sln sample demonstrating the use of oauth authorization,
 	with FormsAuthentication and without using the Facebook JS SDK. 
@@ -30,14 +30,14 @@ vNEXT (Beta)
 
 Experimental
 ------------
-1. enabled Task Parallel Support in .NET 4.0+ by default
+1. enabled Task Parallel Support in .NET 4.0+ by default (issue #5912)
 2. added support for early preview for .NET 4.5 (will need to manually build the dll files)
    (Facebook.Web.Mvc.dll uses Mvc3)
 3. added additional method overloads for .NET 4.5 to support IProgress<T> for upload progress.
 4. added new CS-WinForms-AsyncAwait.sln sample demonstrating the use of async/await, upload progress
    report using IProgress<T> and cancellation support.
 5. *breaking changes*
-   Query/QueryAsync methods uses graph api instead of legacy rest api.
+   Query/QueryAsync methods uses graph api instead of legacy rest api. (issue #5913)
    Note: Maintains the old compatibility with rest api by returning result.data instead of result.
    but need to be extra careful with especially with the id.
      For example: 
