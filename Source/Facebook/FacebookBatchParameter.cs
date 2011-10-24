@@ -143,8 +143,8 @@ namespace Facebook
                 throw new ArgumentNullException(fql);
 
             HttpMethod = HttpMethod.Get;
-            Path = "/method/fql.query";
-            Parameters = new JsonObject { { "query", fql } };
+            Path = "fql";
+            Parameters = new JsonObject { { "q", fql } };
 
             return this;
         }
@@ -163,7 +163,7 @@ namespace Facebook
             if (fql == null)
                 throw new ArgumentNullException("fql");
             if (fql.Length == 0)
-                throw new ArgumentOutOfRangeException("fql", "At least one query required.");
+                throw new ArgumentException("At least one fql query required.", "fql");
 
             var queryDict = new JsonObject();
 
@@ -171,8 +171,8 @@ namespace Facebook
                 queryDict.Add(string.Concat("query", i), fql[i]);
 
             HttpMethod = HttpMethod.Get;
-            Path = "/method/fql.multiquery";
-            Parameters = new JsonObject { { "queries", queryDict } };
+            Path = "fql";
+            Parameters = new JsonObject { { "q", queryDict } };
 
             return this;
         }

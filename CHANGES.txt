@@ -4,7 +4,14 @@ FACEBOOK C# SDK CHANGE LIST
 SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
-
+=========================================================================
+vNEXT
+=========================================================================
+1. FacebookBatchParameter.Query uses graph api instead of legacy rest api
+   (Note: unlike FacebookClient.Query FacebookBatchParameter.Query gives
+   exactly the same result as the graph thus doesn't maintain backwards
+   compatibility with v5.3. Make sure to be careful when updating.)
+   
 =========================================================================
 v5.3 (Beta)
 =========================================================================
