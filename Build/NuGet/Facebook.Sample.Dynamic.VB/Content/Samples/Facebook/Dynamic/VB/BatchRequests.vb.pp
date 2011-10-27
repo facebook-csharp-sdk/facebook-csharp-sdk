@@ -87,7 +87,7 @@ Namespace $rootnamespace$.Samples.Facebook.Dynamic.VB
                     ' Note: make sure to handle this exception.
                     Throw ex
                 Else
-                    Dim fqlResult = result1
+                    Dim fqlResult = result1.data
 
                     Dim fqlResult1 = fqlResult(0)
                     Console.WriteLine("Hi {0}", fqlResult1.name)
@@ -126,7 +126,7 @@ Namespace $rootnamespace$.Samples.Facebook.Dynamic.VB
                     ' Note: make sure to handle this exception.
                     Throw ex
                 Else
-                    Dim fqlResult = result1
+                    Dim fqlResult = result1.data
 
                     Dim fqlResultSet0 = fqlResult(0).fql_result_set
                     Console.Write(fqlResultSet0)
