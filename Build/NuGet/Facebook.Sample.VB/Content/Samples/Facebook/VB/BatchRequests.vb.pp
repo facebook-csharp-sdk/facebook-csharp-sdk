@@ -88,7 +88,7 @@ Namespace $rootnamespace$.Samples.Facebook.VB
                     ' Note: make sure to handle this exception.
                     Throw ex
                 Else
-                    Dim fqlResult = DirectCast(result1, IList(Of Object))
+                    Dim fqlResult = DirectCast((DirectCast(result1, IDictionary(Of String, Object)))("data"), IList(Of Object))
 
                     Dim fqlResult1 = DirectCast(fqlResult(0), IDictionary(Of String, Object))
                     Console.WriteLine("Hi {0}", fqlResult1("name"))
@@ -127,7 +127,7 @@ Namespace $rootnamespace$.Samples.Facebook.VB
                     ' Note: make sure to handle this exception.
                     Throw ex
                 Else
-                    Dim fqlResult = DirectCast(result1, IList(Of Object))
+                    Dim fqlResult = DirectCast((DirectCast(result1, IDictionary(Of String, Object)))("data"), IList(Of Object))
 
                     Dim fqlResultSet0 = DirectCast(fqlResult(0), IDictionary(Of String, Object))("fql_result_set")
                     Console.Write(fqlResultSet0)
