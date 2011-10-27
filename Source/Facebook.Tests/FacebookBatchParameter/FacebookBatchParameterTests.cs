@@ -31,11 +31,11 @@
         }
 
         [Fact]
-        public virtual void GivenEmptyFqlInMultiQueryThrowsArgumentNullException()
+        public virtual void GivenEmptyFqlInMultiQueryThrowsArgumentException()
         {
             var bp = new FacebookBatchParameter();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => bp.Query(new string[] { }));
+            Assert.Throws<ArgumentException>(() => bp.Query(new string[] { }));
         }
     }
 }
