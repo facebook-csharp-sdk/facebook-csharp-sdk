@@ -105,7 +105,7 @@ namespace $rootnamespace$.Samples.Facebook
                 }
                 else
                 {
-                    var fqlResult = (IList<object>)result1;
+                    var fqlResult = (IList<object>)(((IDictionary<string,object>)result1)["data"]);
 
                     var fqlResult1 = (IDictionary<string, object>) fqlResult[0];
                     Console.WriteLine("Hi {0}", fqlResult1["name"]);
@@ -156,7 +156,7 @@ namespace $rootnamespace$.Samples.Facebook
                 }
                 else
                 {
-                    var fqlResult = (IList<object>)result1;
+                    var fqlResult = (IList<object>)(((IDictionary<string,object>)result1)["data"]);
 
                     var fqlResultSet0 = ((IDictionary<string, object>)fqlResult[0])["fql_result_set"];
                     Console.Write(fqlResultSet0);
