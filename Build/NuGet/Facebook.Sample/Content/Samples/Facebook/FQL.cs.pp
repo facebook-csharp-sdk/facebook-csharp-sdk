@@ -28,7 +28,7 @@ namespace $rootnamespace$.Samples.Facebook
                 foreach (var row in result)
                 {
                     var r = (IDictionary<string, object>)row;
-                    var uid = (string)r["uid"];
+                    var uid = (long)r["uid"];
                     var picSquare = (string)r["pic_square"];
 
                     Console.WriteLine("User Id: {0}", uid);
