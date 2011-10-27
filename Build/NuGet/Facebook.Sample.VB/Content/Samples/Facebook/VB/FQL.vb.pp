@@ -27,7 +27,7 @@ Namespace $rootnamespace$.Samples.Facebook.VB
 
                 For Each row In result
                     Dim r = DirectCast(row, IDictionary(Of String, Object))
-                    Dim uid = DirectCast(r("uid"), String)
+                    Dim uid = DirectCast(r("uid"), Long)
                     Dim picSquare = DirectCast(r("pic_square"), String)
 
                     Console.WriteLine("User Id: {0}", uid)
