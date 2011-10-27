@@ -104,7 +104,7 @@ namespace $rootnamespace$.Samples.Facebook.Dynamic
                 }
                 else
                 {
-                    dynamic fqlResult = result1;
+                    dynamic fqlResult = result1.data;
 
                     dynamic fqlResult1 = fqlResult[0];
                     Console.WriteLine("Hi {0}", fqlResult1.name);
@@ -155,7 +155,7 @@ namespace $rootnamespace$.Samples.Facebook.Dynamic
                 }
                 else
                 {
-                    dynamic fqlResult = result1;
+                    dynamic fqlResult = result1.data;
 
                     dynamic fqlResultSet0 = fqlResult[0].fql_result_set;
                     Console.Write(fqlResultSet0);
