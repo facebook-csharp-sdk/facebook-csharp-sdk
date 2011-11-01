@@ -107,6 +107,16 @@ namespace :build do
 	   msb.properties :configuration => config['version']['configuration']
 	   msb.solution = config['path']['sln']['sl4']
 	   msb.targets :Build
+	end	
+    
+    desc "Build Silverlight 5 binaries"
+	msbuild :sl5 => ['clean:sl5','assemblyinfo:facebook'] do |msb|
+	   # temporary hack for bug caused by code contracts
+	   FileUtils.rm_rf "#{config["path"]["working"]}obj/Facebook/sl5/"
+	   
+	   msb.properties :configuration => config['version']['configuration']
+	   msb.solution = config['path']['sln']['sl5']
+	   msb.targets :Build
 	end
 	
 	desc "Build Windows Phone 7 binaries"
@@ -187,6 +197,12 @@ namespace :clean do
 	msbuild :sl4 do |msb|
 	   msb.properties :configuration => config['version']['configuration']
 	   msb.solution = config['path']['sln']['sl4']
+	   msb.targets :Clean    
+	end
+    
+    msbuild :sl5 do |msb|
+	   msb.properties :configuration => config['version']['configuration']
+	   msb.solution = config['path']['sln']['sl5']
 	   msb.targets :Clean    
 	end
 	
