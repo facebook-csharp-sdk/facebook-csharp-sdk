@@ -5,6 +5,11 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+v5.3.2 (RTW)
+=========================================================================
+(no changes. version update only)
+
+=========================================================================
 v5.3.1 (Beta)
 =========================================================================
 1. FacebookBatchParameter.Query uses graph api instead of legacy rest api
