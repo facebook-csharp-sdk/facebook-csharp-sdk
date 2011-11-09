@@ -1191,7 +1191,7 @@ namespace Facebook
             {
                 var facebookClient = GetFacebookClient();
 
-                return facebookClient.Api(path, FacebookWebClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, resultType);
+                return facebookClient.Api(path, FacebookClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, resultType);
             }
             catch (FacebookOAuthException)
             {
@@ -1369,7 +1369,7 @@ namespace Facebook
                 }
             }
 
-            facebookClient.ApiAsync(path, FacebookWebClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, userToken);
+            facebookClient.ApiAsync(path, FacebookClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, userToken);
         }
 
         /// <summary>
@@ -1518,7 +1518,7 @@ namespace Facebook
         {
             ApiAsync(
                 path,
-                FacebookWebClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection),
+                FacebookClient.AddReturnSslResourceIfRequired(parameters, IsSecureConnection),
                 httpMethod,
                 ar =>
                 {

@@ -129,4 +129,7 @@
   <data name="ParameterMethodValueRequired" xml:space="preserve">
     <value>You must specify a value for the method parameter.</value>
   </data>
+  <data name="return_ssl_resources" xml:space="preserve">
+    <value>return_ssl_resources</value>
+  </data>
 </root>

@@ -95,5 +95,14 @@ namespace Facebook.Properties {
                 return ResourceManager.GetString("ParameterMethodValueRequired", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to return_ssl_resources.
+        /// </summary>
+        internal static string return_ssl_resources {
+            get {
+                return ResourceManager.GetString("return_ssl_resources", resourceCulture);
+            }
+        }
     }
 }

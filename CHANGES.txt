@@ -7,11 +7,16 @@ SDK developers: developers writing this SDK.
 =========================================================================
 vNEXT(Beta)
 =========================================================================
+(for SDK consumers)
 1. Added Facebook-SL5.sln project (based on Silverlight 5 RC)
 2. enabled support for Task Parallel Library methods for Silverlight 5 builds
    with GetTaskAsync(), PostTaskAsync() and DeleteTaskAsync() methods in FacebookClient
    and ExchangeCodeForAccessTokenTaskAsync() and GetApplicationAccessTokenTaskAsync() in
    FacebookOAuthClient.
+3. moved FacebookWebClient.IsSecureConnection to FacebookClient.IsSecureConnection
+
+(for SDK developers)
+1. internal FacebookWebClient.AddReturnSslResourceIfRequired moved to FacebookClient
 
 =========================================================================
 v5.3.2 (RTW)

@@ -139,6 +139,11 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the scheme is secure.
+        /// </summary>
+        public virtual bool IsSecureConnection { get; set; }
+
+        /// <summary>
         /// Gets the aliases to Facebook domains.
         /// </summary>
         protected virtual Dictionary<string, Uri> DomainMaps
@@ -1892,7 +1897,7 @@ namespace Facebook
 
         private HttpWebRequestWrapper PrepareRequest(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, out Stream input, out IDictionary<string, FacebookMediaObject> mediaObjects)
         {
-            parameters = parameters ?? new Dictionary<string, object>();
+            parameters = AddReturnSslResourceIfRequired(parameters, IsSecureConnection);
             mediaObjects = null;
 
             // Authenticate request
@@ -2024,6 +2029,18 @@ namespace Facebook
                 throw new ArgumentNullException("url");
 
             return new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(url));
+        }
+
+        internal static IDictionary<string, object> AddReturnSslResourceIfRequired(IDictionary<string, object> parameters, bool isSecuredConnection)
+        {
+            var mergedParameters = FacebookUtils.Merge(null, parameters);
+
+            if (isSecuredConnection && !mergedParameters.ContainsKey(Facebook.Properties.Resources.return_ssl_resources))
+            {
+                mergedParameters[Facebook.Properties.Resources.return_ssl_resources] = true;
+            }
+
+            return mergedParameters;
         }
 
         #endregion

@@ -19,8 +19,6 @@ namespace Facebook.Web
     {
         private FacebookWebContext _request;
 
-        private bool _isSecureConnection;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookWebClient"/> class.
         /// </summary>
@@ -100,7 +98,7 @@ namespace Facebook.Web
                 throw new ArgumentNullException("request");
 
             _request = request;
-            _isSecureConnection = request.IsSecureConnection;
+            IsSecureConnection = _request.IsSecureConnection;
 
             UseFacebookBeta = _request.Settings.UseFacebookBeta;
 
@@ -114,7 +112,7 @@ namespace Facebook.Web
         {
             try
             {
-                return base.Api(path, AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, resultType);
+                return base.Api(path, parameters, httpMethod, resultType);
             }
             catch (FacebookOAuthException)
             {
@@ -125,32 +123,6 @@ namespace Facebook.Web
                 catch { }
                 throw;
             }
-        }
-
-        protected internal override void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
-        {
-            base.ApiAsync(path, AddReturnSslResourceIfRequired(parameters, IsSecureConnection), httpMethod, userToken);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the scheme is secure.
-        /// </summary>
-        public virtual bool IsSecureConnection
-        {
-            get { return _isSecureConnection; }
-            set { _isSecureConnection = value; }
-        }
-
-        internal static IDictionary<string, object> AddReturnSslResourceIfRequired(IDictionary<string, object> parameters, bool isSecuredConnection)
-        {
-            var mergedParameters = FacebookUtils.Merge(null, parameters);
-
-            if (isSecuredConnection && !mergedParameters.ContainsKey(Facebook.Web.Properties.Resources.return_ssl_resources))
-            {
-                mergedParameters[Facebook.Web.Properties.Resources.return_ssl_resources] = true;
-            }
-
-            return mergedParameters;
         }
 
         protected override void OnGetCompleted(FacebookApiEventArgs args)

@@ -141,7 +141,4 @@
   <data name="OldSignedRequest" xml:space="preserve">
     <value>Invalid signed request. (Too old.)</value>
   </data>
-  <data name="return_ssl_resources" xml:space="preserve">
-    <value>return_ssl_resources</value>
-  </data>
 </root>
