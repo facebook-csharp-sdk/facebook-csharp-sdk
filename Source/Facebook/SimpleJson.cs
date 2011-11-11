@@ -576,6 +576,11 @@ namespace SimpleJson
                             sb.Append('\\');
                             ++i;
                         }
+                        else if (lookahead == '"')
+                        {
+                            sb.Append("\"");
+                            ++i;
+                        }
                         else if (lookahead == 't')
                         {
                             sb.Append('\t');
