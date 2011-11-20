@@ -139,7 +139,6 @@
     <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
     <Compile Include="IFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
-    <Compile Include="IFacebookSettings.cs" />
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

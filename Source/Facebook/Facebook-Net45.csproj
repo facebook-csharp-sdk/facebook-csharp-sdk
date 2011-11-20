@@ -132,7 +132,6 @@
     <Compile Include="HttpMethod.cs" />
     <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
     <Compile Include="IFacebookApplication.cs" />
-    <Compile Include="IFacebookSettings.cs" />
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
