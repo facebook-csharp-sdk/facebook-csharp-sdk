@@ -122,6 +122,7 @@
     <Compile Include="FacebookSubscriptionsHttpHandler.cs" />
     <Compile Include="FacebookWebAuthorizer.cs" />
     <Compile Include="FacebookWebClient.cs" />
+    <Compile Include="FacebookWebHelper.cs" />
     <Compile Include="FacebookWebUtils.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <SubType>Code</SubType>
