@@ -54,5 +54,10 @@ namespace Facebook
         /// Gets or sets a value indicating whether to use Facebook beta.
         /// </summary>
         public bool UseFacebookBeta { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the scheme is secure.
+        /// </summary>
+        public bool IsSecureConnection { get; set; }
     }
 }

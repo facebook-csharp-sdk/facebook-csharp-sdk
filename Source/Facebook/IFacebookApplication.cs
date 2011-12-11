@@ -53,5 +53,10 @@ namespace Facebook
         /// Gets a value indicating whether it is beta.
         /// </summary>
         bool UseFacebookBeta { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the scheme is secure.
+        /// </summary>
+        bool IsSecureConnection { get; }
     }
 }

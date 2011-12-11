@@ -30,6 +30,11 @@ namespace Facebook
         private bool _useFacebookBeta = FacebookApplication.Current.UseFacebookBeta;
 
         /// <summary>
+        /// Gets a value indicating whether the scheme is secure.
+        /// </summary>
+        private bool _isSecureConnection = FacebookApplication.Current.IsSecureConnection;
+
+        /// <summary>
         /// The Facebook access token.
         /// </summary>
         private string _accessToken;
@@ -141,7 +146,11 @@ namespace Facebook
         /// <summary>
         /// Gets or sets a value indicating whether the scheme is secure.
         /// </summary>
-        public virtual bool IsSecureConnection { get; set; }
+        public virtual bool IsSecureConnection
+        {
+            get { return _isSecureConnection; }
+            set { _isSecureConnection = value; }
+        }
 
         /// <summary>
         /// Gets the aliases to Facebook domains.
