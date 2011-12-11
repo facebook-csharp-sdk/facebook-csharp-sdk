@@ -103,6 +103,13 @@ namespace Facebook
             set { this["useFacebookBeta"] = value; }
         }
 
+        [ConfigurationProperty("isSecureConnection", IsRequired = false, DefaultValue = false)]
+        public bool IsSecureConnection
+        {
+            get { return (bool)this["isSecureConnection"]; }
+            set { this["isSecureConnection"] = value; }
+        }
+
         /// <summary>
         /// Gets the Facebook settings stored in the configuration file.
         /// </summary>

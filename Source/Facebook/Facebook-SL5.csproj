@@ -121,16 +121,12 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Facebook.Web\FacebookAsyncResult.cs">
-      <Link>FacebookAsyncResult.cs</Link>
-    </Compile>
     <Compile Include="CombinationStream.cs" />
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
-    <Compile Include="FacebookApp.cs" />
     <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookBatchParameter.cs" />
     <Compile Include="FacebookClient.cs" />
