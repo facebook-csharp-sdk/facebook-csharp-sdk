@@ -8,7 +8,7 @@ SDK developers: developers writing this SDK.
 vNEXT(Beta)
 =========================================================================
 (for SDK consumers)
-1. Added Facebook-SL5.sln project (based on Silverlight 5 RC)
+1. Added Facebook-SL5.sln project (based on Silverlight 5 RTW)
 2. enabled support for Task Parallel Library methods for Silverlight 5 builds
    with GetTaskAsync(), PostTaskAsync() and DeleteTaskAsync() methods in FacebookClient
    and ExchangeCodeForAccessTokenTaskAsync() and GetApplicationAccessTokenTaskAsync() in
@@ -16,6 +16,8 @@ vNEXT(Beta)
 3. moved FacebookWebClient.IsSecureConnection to FacebookClient.IsSecureConnection
 4. fixed issue #5915 (SimpleJson.EscapeToJavascriptString for double quotes)
 5. updated SimpleJson to v0.9
+6. build Silverlight 5 binaries in rakefile by default.
+7. added Silverlight 5 Facebook binaries in nuget packages.
 
 (for SDK developers)
 1. internal FacebookWebClient.AddReturnSslResourceIfRequired moved to FacebookClient
