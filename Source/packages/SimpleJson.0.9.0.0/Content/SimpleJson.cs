@@ -15,7 +15,11 @@
 //#define SIMPLE_JSON_DATACONTRACT
 
 // NOTE: uncomment the following line to use Reflection.Emit (better performance) instead of method.invoke().
+// don't enable ReflectionEmit for WinRT, Silverlight and WP7.
 //#define SIMPLE_JSON_REFLECTIONEMIT
+
+// NOTE: uncomment the following line if you are compiling under Window Metro style application/library.
+//#define SIMPLE_JSON_WINRT;
 
 // original json parsing code from http://techblog.procurios.nl/k/618/news/view/14605/14863/How-do-I-write-my-own-parser-for-JSON.html
 
@@ -41,9 +45,9 @@ namespace SimpleJson
 {
     #region JsonArray
 
-   /// <summary>
-   /// Represents the json array.
-   /// </summary>
+    /// <summary>
+    /// Represents the json array.
+    /// </summary>
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -76,9 +80,9 @@ namespace SimpleJson
 
     #region JsonObject
 
-   /// <summary>
-   /// Represents the json object.
-   /// </summary>
+    /// <summary>
+    /// Represents the json object.
+    /// </summary>
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -317,7 +321,12 @@ namespace SimpleJson
             if ((targetType == typeof(IEnumerable)) ||
                 (targetType == typeof(IEnumerable<KeyValuePair<string, object>>)) ||
                 (targetType == typeof(IDictionary<string, object>)) ||
-                (targetType == typeof(IDictionary)))
+#if SIMPLE_JSON_WINRT
+ (targetType == typeof(IDictionary<,>))
+#else
+                (targetType == typeof(IDictionary))
+#endif
+)
             {
                 result = this;
                 return true;
@@ -514,8 +523,13 @@ namespace SimpleJson
         {
             object jsonObject = DeserializeObject(json);
 
-            return type == null || jsonObject != null && jsonObject.GetType().IsAssignableFrom(type)
-                       ? jsonObject
+            return type == null || jsonObject != null &&
+#if SIMPLE_JSON_WINRT
+ jsonObject.GetType().GetTypeInfo().IsAssignableFrom(type.GetTypeInfo())
+#else
+            jsonObject.GetType().IsAssignableFrom(type)
+#endif
+ ? jsonObject
                        : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
         }
 
@@ -574,6 +588,11 @@ namespace SimpleJson
                         if (lookahead == '\\')
                         {
                             sb.Append('\\');
+                            ++i;
+                        }
+                        else if (lookahead == '"')
+                        {
+                            sb.Append("\"");
                             ++i;
                         }
                         else if (lookahead == 't')
@@ -1207,10 +1226,23 @@ namespace SimpleJson
 
         protected virtual void BuildMap(Type type, SafeDictionary<string, CacheResolver.MemberMap> memberMaps)
         {
-            foreach (PropertyInfo info in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+#if SIMPLE_JSON_WINRT
+            foreach (PropertyInfo info in type.GetTypeInfo().DeclaredProperties) {
+                var getMethod = info.GetMethod;
+                if(getMethod==null || !getMethod.IsPublic || getMethod.IsStatic) continue;
+#else
+            foreach (PropertyInfo info in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)) {
+#endif                
                 memberMaps.Add(info.Name, new CacheResolver.MemberMap(info));
-            foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            }
+#if SIMPLE_JSON_WINRT
+            foreach (FieldInfo info in type.GetTypeInfo().DeclaredFields) {
+                if(!info.IsPublic || info.IsStatic) continue;
+#else
+            foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.Instance)) {
+#endif
                 memberMaps.Add(info.Name, new CacheResolver.MemberMap(info));
+            }
         }
 
         public virtual bool SerializeNonPrimitiveObject(object input, out object output)
@@ -1226,9 +1258,15 @@ namespace SimpleJson
                 return null;
             else if ((value is long && type == typeof(long)) || (value is double && type == typeof(double)))
                 return value;
-            else if ((value is double && type != typeof(double)) || (value is long && type != typeof(long)))
-                return typeof(IConvertible).IsAssignableFrom(type) ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture) : value;
-
+            else if ((value is double && type != typeof(double)) || (value is long && type != typeof(long))) {
+                return 
+                #if SIMPLE_JSON_WINRT
+                    type == typeof(int) || type == typeof(long) || type == typeof(double) ||type == typeof(float) || type == typeof(bool) || type == typeof(decimal) ||type == typeof(byte) || type == typeof(short)
+                #else
+                    typeof(IConvertible).IsAssignableFrom(type) 
+                #endif
+                    ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture) : value;
+            }
             object obj = null;
 
             if (value is IDictionary<string, object>)
@@ -1238,11 +1276,21 @@ namespace SimpleJson
                 if (ReflectionUtils.IsTypeDictionary(type))
                 {
                     // if dictionary then
+#if SIMPLE_JSON_WINRT
+                    Type keyType = type.GetTypeInfo().GenericTypeArguments[0];
+                    Type valueType = type.GetTypeInfo().GenericTypeArguments[1];
+#else
                     Type keyType = type.GetGenericArguments()[0];
                     Type valueType = type.GetGenericArguments()[1];
-                    Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
-                    IDictionary dict = (IDictionary)CacheResolver.GetNewInstance(genericType);
+#endif
 
+                    Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+
+#if SIMPLE_JSON_WINRT
+                    dynamic dict = CacheResolver.GetNewInstance(genericType);
+#else
+                    IDictionary dict = (IDictionary)CacheResolver.GetNewInstance(genericType);
+#endif
                     foreach (KeyValuePair<string, object> kvp in jsonObject)
                     {
                         dict.Add(kvp.Key, DeserializeObject(kvp.Value, valueType));
@@ -1282,9 +1330,19 @@ namespace SimpleJson
                     foreach (object o in jsonObject)
                         list[i++] = DeserializeObject(o, type.GetElementType());
                 }
-                else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || typeof(IList).IsAssignableFrom(type))
+                else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) ||
+#if SIMPLE_JSON_WINRT
+ typeof(IList).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo())
+#else
+                 typeof(IList).IsAssignableFrom(type)
+#endif
+)
                 {
+#if SIMPLE_JSON_WINRT
+                    Type innerType = type.GetTypeInfo().GenericTypeArguments[0];
+#else
                     Type innerType = type.GetGenericArguments()[0];
+#endif
                     Type genericType = typeof(List<>).MakeGenericType(innerType);
                     list = (IList)CacheResolver.GetNewInstance(genericType);
                     foreach (object o in jsonObject)
@@ -1370,14 +1428,21 @@ namespace SimpleJson
             }
 
             string jsonKey;
-
+#if SIMPLE_JSON_WINRT
+            foreach (PropertyInfo info in type.GetTypeInfo().DeclaredProperties)
+#else
             foreach (PropertyInfo info in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+#endif
             {
                 if (CanAdd(info, out jsonKey))
                     map.Add(jsonKey, new CacheResolver.MemberMap(info));
             }
 
+#if SIMPLE_JSON_WINRT
+            foreach (FieldInfo info in type.GetTypeInfo().DeclaredFields)
+#else
             foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+#endif
             {
                 if (CanAdd(info, out jsonKey))
                     map.Add(jsonKey, new CacheResolver.MemberMap(info));
@@ -1419,18 +1484,29 @@ namespace SimpleJson
         {
             public static Attribute GetAttribute(MemberInfo info, Type type)
             {
+#if SIMPLE_JSON_WINRT
+                if (info == null || type == null || !info.IsDefined(type))
+                    return null;
+                return info.GetCustomAttribute(type);
+#else
                 if (info == null || type == null || !Attribute.IsDefined(info, type))
                     return null;
-
                 return Attribute.GetCustomAttribute(info, type);
+#endif
             }
 
             public static Attribute GetAttribute(Type objectType, Type attributeType)
             {
+
+#if SIMPLE_JSON_WINRT
+                if (objectType == null || attributeType == null || !objectType.GetTypeInfo().IsDefined(attributeType))
+                    return null;
+                return objectType.GetTypeInfo().GetCustomAttribute(attributeType);
+#else
                 if (objectType == null || attributeType == null || !Attribute.IsDefined(objectType, attributeType))
                     return null;
-
                 return Attribute.GetCustomAttribute(objectType, attributeType);
+#endif
             }
 
             public static bool IsTypeGenericeCollectionInterface(Type type)
@@ -1445,8 +1521,13 @@ namespace SimpleJson
 
             public static bool IsTypeDictionary(Type type)
             {
+#if SIMPLE_JSON_WINRT
+                if (typeof(IDictionary<,>).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                    return true;
+#else
                 if (typeof(IDictionary).IsAssignableFrom(type))
                     return true;
+#endif
 
                 if (!type.IsGenericType)
                     return false;
@@ -1456,7 +1537,6 @@ namespace SimpleJson
             }
         }
 
-        /*********************/
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1523,7 +1603,20 @@ namespace SimpleJson
                 ConstructorCache.Add(type, c);
                 return c();
 #else
+#if SIMPLE_JSON_WINRT
+                IEnumerable<ConstructorInfo> constructorInfos = type.GetTypeInfo().DeclaredConstructors;
+                ConstructorInfo constructorInfo = null;
+                foreach (ConstructorInfo item in constructorInfos) // FirstOrDefault()
+                {
+                    if (item.GetParameters().Length == 0) // Default ctor - make sure it doesn't contain any parameters
+                    {
+                        constructorInfo = item;
+                        break;
+                    }
+                }
+#else
                 ConstructorInfo constructorInfo = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+#endif
                 c = delegate { return constructorInfo.Invoke(null); };
                 ConstructorCache.Add(type, c);
                 return c();
@@ -1597,7 +1690,11 @@ namespace SimpleJson
 
             static GetHandler CreateGetHandler(PropertyInfo propertyInfo)
             {
+#if SIMPLE_JSON_WINRT
+                MethodInfo getMethodInfo = propertyInfo.GetMethod;
+#else
                 MethodInfo getMethodInfo = propertyInfo.GetGetMethod(true);
+#endif
                 if (getMethodInfo == null)
                     return null;
 #if SIMPLE_JSON_REFLECTIONEMIT
@@ -1613,13 +1710,21 @@ namespace SimpleJson
 
                 return (GetHandler)dynamicGet.CreateDelegate(typeof(GetHandler));
 #else
+#if SIMPLE_JSON_WINRT
+                return delegate(object instance) { return getMethodInfo.Invoke(instance, new Type[] { }); };
+#else
                 return delegate(object instance) { return getMethodInfo.Invoke(instance, Type.EmptyTypes); };
+#endif
 #endif
             }
 
             static SetHandler CreateSetHandler(PropertyInfo propertyInfo)
             {
+#if SIMPLE_JSON_WINRT
+                MethodInfo setMethodInfo = propertyInfo.SetMethod;
+#else
                 MethodInfo setMethodInfo = propertyInfo.GetSetMethod(true);
+#endif
                 if (setMethodInfo == null)
                     return null;
 #if SIMPLE_JSON_REFLECTIONEMIT

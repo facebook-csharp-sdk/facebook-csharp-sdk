@@ -15,6 +15,7 @@ vNEXT(Beta)
    FacebookOAuthClient.
 3. moved FacebookWebClient.IsSecureConnection to FacebookClient.IsSecureConnection
 4. fixed issue #5915 (SimpleJson.EscapeToJavascriptString for double quotes)
+5. updated SimpleJson to v0.9
 
 (for SDK developers)
 1. internal FacebookWebClient.AddReturnSslResourceIfRequired moved to FacebookClient
