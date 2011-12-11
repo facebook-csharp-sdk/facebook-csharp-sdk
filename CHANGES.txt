@@ -18,6 +18,7 @@ vNEXT(Beta)
 5. updated SimpleJson to v0.9
 6. build Silverlight 5 binaries in rakefile by default.
 7. added Silverlight 5 Facebook binaries in nuget packages.
+8. Silverlight 5 Facebook doesn't contain obsolete FacebookApp and FacebookAsyncResult.
 
 (for SDK developers)
 1. internal FacebookWebClient.AddReturnSslResourceIfRequired moved to FacebookClient
