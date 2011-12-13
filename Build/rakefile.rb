@@ -14,8 +14,11 @@ task :configure do
 	b = binding
 	# read VERSION from file
 	base_version = nil
+	tag_version = nil
 	File.open("#{root_path}VERSION",'r') do |f|
-	   base_version = f.gets.chomp
+		version = f.gets.split('-')
+		base_version = version[0]
+		tag_version = version[1] if version.length == 2
 	end
 
 	build_number = ENV['BUILD_NUMBER'] || "0"
@@ -42,15 +45,15 @@ task :configure do
 	end
 	
     if(config["version"]["is_nightly"])
-        config["version"]["long"] = "#{config["version"]["full"]}-nightly-#{config["vcs"]["short_rev_id"]}"
+        config["version"]["long"] = "#{config["version"]["tag_full"]}-nightly-#{config["vcs"]["short_rev_id"]}"
     else
-	config["version"]["long"] = "#{config["version"]["full"]}-#{config["vcs"]["short_rev_id"]}"
+	config["version"]["long"] = "#{config["version"]["tag_full"]}-#{config["vcs"]["short_rev_id"]}"
     end
 	
     puts
     puts  "     Project Name: #{config["project"]["name"]}"
     puts  "Safe Project Name: #{config["project"]["safe_name"]}"
-	puts  "          Version: #{config["version"]["full"]} (#{config["version"]["long"]})"
+	puts  "          Version: #{config["version"]["tag_full"]} (#{config["version"]["long"]})"
 	puts  "     Base Version: #{config["version"]["base"]}"
 	print "  CI Build Number: #{config["version"]["build_number"]}"
 	print " (not running under CI mode)" if config["version"]["build_number"] == "0"
@@ -327,7 +330,7 @@ namespace :nuget do
 				 File.basename(path)
 			File.open("#{outfile}","w") do |f|
 				b = binding
-				version_full = config['version']['full']
+				version_full = config['version']['tag_full']
 				f.write(ERB.new(File.read(path)).result(b))
 				f.close()
 				puts "Created #{outfile}"
@@ -354,7 +357,7 @@ namespace :nuget do
 		FileList.new("#{config["path"]["build"]}SymbolSource/*").each do |path|
 			nugetpush ['nuget:push_source'] do |nuget|
 				nuget.command = "#{config['path']['nuget']}"
-				nuget.package = "#{config['path']['dist']}SymbolSource/#{File.basename(path)}.#{config['version']['full']}.nupkg"
+				nuget.package = "#{config['path']['dist']}SymbolSource/#{File.basename(path)}.#{config['version']['tag_full']}.nupkg"
 				nuget.apikey = ENV['nuget_api_key']
 				nuget.source = "http://nuget.gw.symbolsource.org/Public/NuGet"
 			end
@@ -366,7 +369,7 @@ namespace :nuget do
 		FileList.new("#{config["path"]["build"]}NuGet/*").each do |path|
 			nugetpush ['nuget:push'] do |nuget|
 				nuget.command = "#{config['path']['nuget']}"
-				nuget.package = "#{config['path']['dist']}NuGet/#{File.basename(path)}.#{config['version']['full']}.nupkg"
+				nuget.package = "#{config['path']['dist']}NuGet/#{File.basename(path)}.#{config['version']['tag_full']}.nupkg"
 				nuget.apikey = ENV['nuget_api_key']
 				nuget.create_only = true
 			end
@@ -379,7 +382,7 @@ namespace :nuget do
 			nugetpublish ['nuget:publish'] do |nuget|
 				nuget.command = "#{config['path']['nuget']}"
 				nuget.id = "#{File.basename(path)}"
-				nuget.version = "#{config['version']['full']}"
+				nuget.version = "#{config['version']['tag_full']}"
 				nuget.apikey = ENV['nuget_api_key']
 			end
 		end
