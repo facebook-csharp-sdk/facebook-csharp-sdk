@@ -4,7 +4,9 @@ project:
 version:
  base: <%= base_version %>
  build_number: "<%= build_number %>"
+ tag: <%= tag_version %>
  full: <%= version_full %>
+ tag_full: <%= tag_version == nil ? version_full : (base_version + '-' + tag_version) %>
  is_nightly: <%= ENV['nightly'].nil? ? true : ENV['nightly'].match(/(true|1)$/i) != nil %>
  configuration: :Release
 vcs:
