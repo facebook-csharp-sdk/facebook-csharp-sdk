@@ -1303,17 +1303,24 @@ namespace SimpleJson
                     obj = CacheResolver.GetNewInstance(type);
                     SafeDictionary<string, CacheResolver.MemberMap> maps = CacheResolver.LoadMaps(type);
 
-                    foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
+                    if (maps == null)
                     {
-                        CacheResolver.MemberMap v = keyValuePair.Value;
-                        if (v.Setter == null)
-                            continue;
-
-                        string jsonKey = keyValuePair.Key;
-                        if (jsonObject.ContainsKey(jsonKey))
+                        obj = value;
+                    }
+                    else
+                    {
+                        foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
                         {
-                            object jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
-                            v.Setter(obj, jsonValue);
+                            CacheResolver.MemberMap v = keyValuePair.Value;
+                            if (v.Setter == null)
+                                continue;
+
+                            string jsonKey = keyValuePair.Key;
+                            if (jsonObject.ContainsKey(jsonKey))
+                            {
+                                object jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
+                                v.Setter(obj, jsonValue);
+                            }
                         }
                     }
                 }

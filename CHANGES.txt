@@ -15,7 +15,7 @@ vNEXT(Beta)
    FacebookOAuthClient.
 3. moved FacebookWebClient.IsSecureConnection to FacebookClient.IsSecureConnection
 4. fixed issue #5915 (SimpleJson.EscapeToJavascriptString for double quotes)
-5. updated SimpleJson to v0.9
+5. updated SimpleJson to v0.10
 6. build Silverlight 5 binaries in rakefile by default.
 7. added Silverlight 5 Facebook binaries in nuget packages.
 8. Silverlight 5 Facebook doesn't contain obsolete FacebookApp and FacebookAsyncResult.
