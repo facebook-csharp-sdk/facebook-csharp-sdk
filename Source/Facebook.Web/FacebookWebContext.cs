@@ -188,7 +188,7 @@ namespace Facebook.Web
                 return new string[0];
             }
 
-            return HasPermissions(Session.AccessToken, Settings.AppId, Session.UserId, permissions) ?? new string[0];
+            return HasPermissions(this, Session.AccessToken, Settings.AppId, Session.UserId, permissions) ?? new string[0];
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace Facebook.Web
 
             if (isAuthorized)
             {
-                var currentPerms = HasPermissions(AccessToken, Settings.AppId, UserId, permissions);
+                var currentPerms = HasPermissions(this, AccessToken, Settings.AppId, UserId, permissions);
                 if (currentPerms == null)
                     return false;
 
@@ -261,6 +261,9 @@ namespace Facebook.Web
         /// <summary>
         /// Check if the Facebook App has permissions from the specified user.
         /// </summary>
+        /// <param name="context">
+        /// The Facebook web context.
+        /// </param>
         /// <param name="accessToken">
         /// The access token.
         /// </param>
@@ -276,8 +279,10 @@ namespace Facebook.Web
         /// <returns>
         /// The list of permissions that are allowed from the specified permissions.
         /// </returns>
-        internal static string[] HasPermissions(string accessToken, string appId, long userId, string[] permissions)
+        internal static string[] HasPermissions(FacebookWebContext context, string accessToken, string appId, long userId, string[] permissions)
         {
+            if (context == null)
+                throw new ArgumentNullException("context");
             if (string.IsNullOrEmpty(appId))
                 throw new ArgumentNullException("appId");
             if (userId < 0)
@@ -287,7 +292,7 @@ namespace Facebook.Web
             {
                 try
                 {
-                    var fb = new FacebookWebClient(accessToken);
+                    var fb = new FacebookWebClient(context) { AccessToken = accessToken };
                     var remoteResult = ((IDictionary<string, object>)fb.Get("me/permissions"));
                     if (remoteResult != null && remoteResult.ContainsKey("data"))
                     {
