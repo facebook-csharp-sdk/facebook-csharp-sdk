@@ -28,6 +28,11 @@ namespace Facebook
         private readonly DateTime _expires;
 
         /// <summary>
+        /// Error that happens when using OAuth2 protocol.
+        /// </summary>
+        private readonly string _error;
+
+        /// <summary>
         /// Short error reason for failed authentication if there was an error.
         /// </summary>
         private readonly string _errorReason;
@@ -68,9 +73,19 @@ namespace Facebook
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
 
-            if (parameters.ContainsKey("error_reason"))
+            if (parameters.ContainsKey("state"))
             {
-                _errorReason = parameters["error_reason"].ToString();
+                _state = parameters["state"].ToString();
+            }
+
+            if (parameters.ContainsKey("error"))
+            {
+                _error = parameters["error"].ToString();
+
+                if (parameters.ContainsKey("error_reason"))
+                {
+                    _errorReason = parameters["error_reason"].ToString();
+                }
 
                 if (parameters.ContainsKey("error_description"))
                 {
@@ -85,11 +100,6 @@ namespace Facebook
                 _code = parameters["code"].ToString();
             }
 
-            if (parameters.ContainsKey("state"))
-            {
-                _state = parameters["state"].ToString();
-            }
-
             if (parameters.ContainsKey("access_token"))
             {
                 _accessToken = parameters["access_token"].ToString();
@@ -100,6 +110,17 @@ namespace Facebook
                 var expiresIn = Convert.ToDouble(parameters["expires_in"]);
                 _expires = expiresIn == 0 ? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(expiresIn);
             }
+        }
+
+        /// <summary>
+        /// Error that happens when using OAuth2 protocol.
+        /// </summary>
+        /// <remarks>
+        /// https://developers.facebook.com/docs/oauth/errors/
+        /// </remarks>
+        public virtual string Error
+        {
+            get { return _error; }
         }
 
         /// <summary>
@@ -141,7 +162,7 @@ namespace Facebook
         {
             get
             {
-                return string.IsNullOrEmpty(ErrorReason) &&
+                return string.IsNullOrEmpty(Error) &&
                        (!string.IsNullOrEmpty(AccessToken) || !string.IsNullOrEmpty(Code));
             }
         }

@@ -5,7 +5,14 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNEXT(Beta)
+vNEXT (Beta)
+=========================================================================
+1. fixed settings.App is null exception with FacebookWebContext.IsAuthorized (fix #5917)
+2. fixed FacebookOAuthResult(IDictionary<string, object> parameters) ignores the error 
+   query string parameter (fix #5918)
+
+=========================================================================
+v5.4.0-beta (Beta)
 =========================================================================
 (for SDK consumers)
 1. Added Facebook-SL5.sln project (based on Silverlight 5 RTW)
@@ -21,6 +28,7 @@ vNEXT(Beta)
 8. Silverlight 5 Facebook doesn't contain obsolete FacebookApp and FacebookAsyncResult.
 9. added IsSecureConnection is IFacebookApplication
    bool IsSecureConnection { get; }
+10. added new Silverlight 5 sample (CS-SL5-OutOfBrowser.sln)
 
 (for SDK developers)
 1. internal FacebookWebClient.AddReturnSslResourceIfRequired moved to FacebookClient
