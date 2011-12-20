@@ -26,6 +26,7 @@ IF NOT EXIST "%MSBuild%" (
 
 "%MSBuild%" "%~dp0Source/Facebook-Net40.sln" /target:rebuild /property:TargetFrameworkVersion=v4.0;Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-Net35.sln" /target:rebuild /property:TargetFrameworkVersion=v3.5;Configuration=Release
+"%MSBuild%" "%~dp0Source/Facebook-SL5.sln" /target:rebuild /property:Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-SL4.sln" /target:rebuild /property:Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-WP7.sln" /target:rebuild /property:Configuration=Release
 

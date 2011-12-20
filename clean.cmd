@@ -13,6 +13,7 @@ IF NOT EXIST "%MSBuild%" (
 
 "%MSBuild%" "%~dp0Source/Facebook-Net40.sln" /target:Clean /property:TargetFrameworkVersion=v4.0;Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-Net35.sln" /target:Clean /property:TargetFrameworkVersion=v3.5;Configuration=Release
+"%MSBuild%" "%~dp0Source/Facebook-SL5.sln" /target:Clean /property:Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-SL4.sln" /target:Clean /property:Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-WP7.sln" /target:Clean /property:Configuration=Release
 RMDIR bin /s /q
