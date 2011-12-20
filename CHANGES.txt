@@ -5,11 +5,12 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNEXT (Beta)
+v5.4.1 (RTW)
 =========================================================================
 1. fixed settings.App is null exception with FacebookWebContext.IsAuthorized (fix #5917)
 2. fixed FacebookOAuthResult(IDictionary<string, object> parameters) ignores the error 
    query string parameter (fix #5918)
+3. added Silverlight 5 in build.cmd and clean.cmd
 
 =========================================================================
 v5.4.0-beta (Beta)

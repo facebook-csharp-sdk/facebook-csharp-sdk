@@ -17,7 +17,7 @@ task :configure do
 	tag_version = nil
 	File.open("#{root_path}VERSION",'r') do |f|
 		version = f.gets.split('-')
-		base_version = version[0]
+		base_version = version[0].chomp
 		tag_version = version[1] if version.length == 2
 	end
 
