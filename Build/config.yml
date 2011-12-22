@@ -35,5 +35,6 @@ path:
   sl5	: <%= "#{path_src}Facebook-SL5.sln" %>
   net40	: <%= "#{path_src}Facebook-Net40.sln" %>
   net45	: <%= "#{path_src}Facebook-Net45.sln" %>
+  winrt	: <%= "#{path_src}Facebook-WinRT.sln" %>
   net35	: <%= "#{path_src}Facebook-Net35.sln" %>
   shfb	: <%= "#{path_doc}doc.shfbproj" %>

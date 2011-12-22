@@ -125,7 +125,7 @@ namespace Facebook
         public T GetResultData<T>()
         {
             if (_isBatchResult)
-                throw new InvalidOperationException(Properties.Resources.GetResultDataGenericNotSupportedForBatchRequests);
+                throw new InvalidOperationException(FacebookUtils.Resources.GetResultDataGenericNotSupportedForBatchRequests);
             
             if (_isQuery && !string.IsNullOrEmpty(_json) && _json.StartsWith("{\"data\":") && _json.Length > 9)
             {

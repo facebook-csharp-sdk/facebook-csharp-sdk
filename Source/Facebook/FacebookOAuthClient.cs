@@ -248,7 +248,7 @@ namespace Facebook
 
         #region Application Access Token
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || WINRT)
         /// <summary>
         /// Gets the application access token.
         /// </summary>
@@ -364,7 +364,7 @@ namespace Facebook
 
         #region ExchangeCodeForAccessToken
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || WINRT)
 
         /// <summary>
         /// Exchange code for access token.
@@ -519,7 +519,7 @@ namespace Facebook
 
         #endregion
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || WINRT)
 
         internal protected virtual string OAuthRequest(string name, string path, IDictionary<string, object> parameters)
         {

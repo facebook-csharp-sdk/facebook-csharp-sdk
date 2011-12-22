@@ -162,7 +162,7 @@ namespace Facebook
 
         #region Api Calls
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || WINRT)
 
         #region Get
 
@@ -1258,7 +1258,7 @@ namespace Facebook
 
         #region Query (FQL)
 
-#if (!SILVERLIGHT)
+#if !(SILVERLIGHT || WINRT)
 
         /// <summary>
         /// Executes a FQL query.
@@ -1542,7 +1542,7 @@ namespace Facebook
 
         #region Batch Requests
 
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || WINRT)
 
         /// <summary>
         /// Executes a batch request.
@@ -1962,7 +1962,7 @@ namespace Facebook
             httpWebRequest.Method = FacebookUtils.ConvertToString(httpMethod);
             httpWebRequest.ContentType = contentType;
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || WINRT)
             if (input != null)
                 httpWebRequest.ContentLength = input.Length;
 #endif
@@ -2044,9 +2044,9 @@ namespace Facebook
         {
             var mergedParameters = FacebookUtils.Merge(null, parameters);
 
-            if (isSecuredConnection && !mergedParameters.ContainsKey(Facebook.Properties.Resources.return_ssl_resources))
+            if (isSecuredConnection && !mergedParameters.ContainsKey(FacebookUtils.Resources.return_ssl_resources))
             {
-                mergedParameters[Facebook.Properties.Resources.return_ssl_resources] = true;
+                mergedParameters[FacebookUtils.Resources.return_ssl_resources] = true;
             }
 
             return mergedParameters;
@@ -2065,7 +2065,7 @@ namespace Facebook
             {
                 // legacy rest api
                 if (string.IsNullOrEmpty((string)parameters["method"]))
-                    throw new ArgumentException(Properties.Resources.ParameterMethodValueRequired);
+                    throw new ArgumentException(FacebookUtils.Resources.ParameterMethodValueRequired);
 
                 // Set the format to json
                 parameters["format"] = "json-strings";
@@ -2136,7 +2136,7 @@ namespace Facebook
 
                 if (mediaObject.ContentType == null || mediaObject.GetValue() == null || string.IsNullOrEmpty(mediaObject.FileName))
                 {
-                    throw new InvalidOperationException(Properties.Resources.MediaObjectMustHavePropertiesSetError);
+                    throw new InvalidOperationException(FacebookUtils.Resources.MediaObjectMustHavePropertiesSetError);
                 }
 
                 sbMediaObject.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);

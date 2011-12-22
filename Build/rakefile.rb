@@ -79,6 +79,13 @@ directory "#{config['path']['dist']}SymbolSource/"
 
 namespace :build do
 
+	desc "Build Windows RT binaries"
+	msbuild :winrt => ['clean:winrt','assemblyinfo:facebook'] do |msb|
+	   msb.properties :configuration => config['version']['configuration']
+	   msb.solution = config['path']['sln']['winrt']
+	   msb.targets :Build
+	end
+
 	desc "Build .NET 4.5 binaries"
 	msbuild :net45 => ['clean:net45','assemblyinfo:facebook','assemblyinfo:facebookweb','assemblyinfo:facebookwebmvc'] do |msb|
 	   msb.properties :configuration => config['version']['configuration']
@@ -175,6 +182,12 @@ desc "Build All"
 task :build => ['build:all']
 
 namespace :clean do
+
+	msbuild :winrt do |msb|
+	   msb.properties :configuration => config["version"]["configuration"]
+	   msb.solution = config["path"]["sln"]["winrt"]
+	   msb.targets :Clean
+	end
 
 	msbuild :net45 do |msb|
 	   msb.properties :configuration => config["version"]["configuration"]

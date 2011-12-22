@@ -412,7 +412,7 @@ namespace Facebook
                 if (split.Length != 2)
                 {
                     // need to have exactly 2 parts
-                    throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+                    throw new InvalidOperationException(FacebookUtils.Resources.InvalidSignedRequest);
                 }
 
                 string encodedSignature = split[0];
@@ -420,12 +420,12 @@ namespace Facebook
 
                 if (string.IsNullOrEmpty(encodedSignature))
                 {
-                    throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+                    throw new InvalidOperationException(FacebookUtils.Resources.InvalidSignedRequest);
                 }
 
                 if (string.IsNullOrEmpty(encodedEnvelope))
                 {
-                    throw new InvalidOperationException(Properties.Resources.InvalidSignedRequest);
+                    throw new InvalidOperationException(FacebookUtils.Resources.InvalidSignedRequest);
                 }
 
                 var envelope = (IDictionary<string, object>)JsonSerializer.Current.DeserializeObject(Encoding.UTF8.GetString(FacebookWebUtils.Base64UrlDecode(encodedEnvelope)));
