@@ -14,6 +14,7 @@ vNEXT (Beta)
 (for SDK developers)
 1. removed Resource files from Facebook.dll to FacebookUtils instead as
    WinRT does not support Resource files.
+2. updated FluentHttp.Core to v0.5.0.0
 
 =========================================================================
 v5.4.1 (RTW)

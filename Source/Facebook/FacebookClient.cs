@@ -1962,10 +1962,8 @@ namespace Facebook
             httpWebRequest.Method = FacebookUtils.ConvertToString(httpMethod);
             httpWebRequest.ContentType = contentType;
 
-#if !(WINDOWS_PHONE || WINRT)
             if (input != null)
-                httpWebRequest.ContentLength = input.Length;
-#endif
+                httpWebRequest.TrySetContentLength(input.Length);
 
             return httpWebRequest;
         }
