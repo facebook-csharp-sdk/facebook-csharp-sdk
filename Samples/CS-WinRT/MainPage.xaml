@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="CS_WinRT.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="768" d:DesignWidth="1366">
+    
+    <Grid x:Name="LayoutRoot" Background="#FF0C0C0C">
+        <Frame x:Name="RootFrame" Source="CS_WinRT.Views.HomeView">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="200" />
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+    </Grid>
+    
+</UserControl>
