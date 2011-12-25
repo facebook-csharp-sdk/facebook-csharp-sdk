@@ -22,6 +22,15 @@ namespace Facebook
     {
         #region Constants
 
+        public static class Resources
+        {
+            public const string GetResultDataGenericNotSupportedForBatchRequests = "GetResultData<T> not supported for batch results.";
+            public const string InvalidSignedRequest = "Invalid signed request.";
+            public const string MediaObjectMustHavePropertiesSetError = "The media object must have a content type, file name, and value set.";
+            public const string ParameterMethodValueRequired = "You must specify a value for the method parameter.";
+            public const string return_ssl_resources = "return_ssl_resources";
+        }
+
         /// <summary>
         /// The multi-part form prefix characters.
         /// </summary>

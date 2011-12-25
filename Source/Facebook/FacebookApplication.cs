@@ -31,7 +31,7 @@ namespace Facebook
         /// </summary>
         public FacebookApplication()
         {
-#if !SILVERLIGHT
+#if !(SILVERLIGHT || WINRT)
             _current = FacebookConfigurationSection.Current;
 #endif
         }

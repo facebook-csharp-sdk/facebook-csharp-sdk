@@ -235,6 +235,24 @@ namespace FluentHttp
         }
 
 #endif
+        /// <summary>
+        /// Try to set the value of the content length header.
+        /// </summary>
+        /// <param name="contentLength">
+        /// The Content-Length value.
+        /// </param>
+        /// <returns>
+        /// Returns true if ContentLength set, otherwise false.
+        /// </returns>
+        public virtual bool TrySetContentLength(long contentLength)
+        {
+#if !(WINDOWS_PHONE || FLUENTHTTP_CORE_WINRT)
+            ContentLength = contentLength;
+            return true;
+#else
+            return false;
+#endif
+        }
 
         /// <summary>
         /// Begins the get response.

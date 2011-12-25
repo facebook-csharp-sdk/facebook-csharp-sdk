@@ -1,0 +1,12 @@
+﻿<Page x:Class="CS_WinRT.Views.FacebookLoginView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Facebook C# SDK Windows 8 Style Sample - Login" FontSize="50"/>
+        <WebView Name="WebView1" Grid.Row="1" Loaded="WebView1_Loaded" />
+    </Grid>
+</Page>

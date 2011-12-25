@@ -15,7 +15,7 @@ namespace Facebook
     /// <summary>
     /// Represents errors that occur as a result of problems with the OAuth access token.
     /// </summary>
-#if (!SILVERLIGHT)
+#if !(SILVERLIGHT || WINRT)
     [Serializable]
 #endif
     public class FacebookApiLimitException : FacebookApiException
@@ -63,7 +63,7 @@ namespace Facebook
         {
         }
 
-#if (!SILVERLIGHT)
+#if !(SILVERLIGHT || WINRT)
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookApiLimitException"/> class. 
         /// </summary>

@@ -5,6 +5,19 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+vNEXT (Beta)
+=========================================================================
+(for SDK consumers)
+1. added preview support for Windows Metro Style apps. (Facebook-WinRT).
+2. added build:winrt and clean:winrt in rakefile (but not enabled by default).
+3. added CS-WinRT.sln sample file
+
+(for SDK developers)
+1. removed Resource files from Facebook.dll to FacebookUtils instead as
+   WinRT does not support Resource files.
+2. updated FluentHttp.Core to v0.5.0.0
+
+=========================================================================
 v5.4.1 (RTW)
 =========================================================================
 1. fixed settings.App is null exception with FacebookWebContext.IsAuthorized (fix #5917)
