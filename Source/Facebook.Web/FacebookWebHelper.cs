@@ -40,7 +40,7 @@ namespace Facebook.Web
                 string encodedignature = split[0];
                 string encodedEnvelope = split[1];
 
-                if (string.IsNullOrWhiteSpace(encodedignature) || string.IsNullOrWhiteSpace(encodedEnvelope))
+                if (string.IsNullOrEmpty(encodedignature) || string.IsNullOrEmpty(encodedEnvelope))
                     throw new InvalidOperationException(InvalidSignedRequest);
 
                 var envelope = (IDictionary<string, object>)deserializeObject(Encoding.UTF8.GetString(Base64UrlDecode(encodedEnvelope)));
