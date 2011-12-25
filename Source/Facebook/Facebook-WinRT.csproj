@@ -12,7 +12,7 @@
     <AssemblyName>Facebook</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
-   <BaseIntermediateOutputPath>..\..\Working\obj\Facebook\WinRT\</BaseIntermediateOutputPath> 
+    <BaseIntermediateOutputPath>..\..\Working\obj\Facebook\WinRT\</BaseIntermediateOutputPath>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -59,7 +59,6 @@
     <Compile Include="HttpMethod.cs" />
     <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
     <Compile Include="IFacebookApplication.cs" />
-    <Compile Include="IFacebookSettings.cs" />
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
