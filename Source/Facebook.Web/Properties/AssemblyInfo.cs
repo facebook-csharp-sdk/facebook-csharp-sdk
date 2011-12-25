@@ -7,4 +7,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyVersion("5.4.1.0")]
+[assembly: AssemblyFileVersion("5.4.1.0")]
 

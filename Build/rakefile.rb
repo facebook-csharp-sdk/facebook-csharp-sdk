@@ -297,6 +297,7 @@ namespace :assemblyinfo do
 	assemblyinfo :facebook do |asm|
 		asm.output_file = "#{config["path"]["src"]}Facebook/Properties/AssemblyInfo.cs"
 		asm.version = config["version"]["full"]
+        asm.file_version= config["version"]["tag_full"]
 		asm.title = "Facebook"
 		asm.description = "Facebook C\# SDK"
 		asm.product_name = "Facebook C\# SDK"
@@ -308,6 +309,7 @@ namespace :assemblyinfo do
 	assemblyinfo :facebookweb do |asm|
 		asm.output_file = "#{config["path"]["src"]}Facebook.Web/Properties/AssemblyInfo.cs"
 		asm.version = config["version"]["full"]
+        asm.file_version= config["version"]["tag_full"]
 		asm.title = "Facebook.Web"
 		asm.description = "Facebook C\# SDK"
 		asm.product_name = "Facebook C\# SDK"
@@ -319,6 +321,7 @@ namespace :assemblyinfo do
 	assemblyinfo :facebookwebmvc do |asm|
 		asm.output_file = "#{config["path"]["src"]}Facebook.Web.Mvc/Properties/AssemblyInfo.cs"
 		asm.version = config["version"]["full"]
+        asm.file_version= config["version"]["tag_full"]
 		asm.title = "Facebook.Web.Mvc"
 		asm.description = "Facebook C\# SDK"
 		asm.product_name = "Facebook C\# SDK"
