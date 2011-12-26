@@ -506,7 +506,11 @@ namespace Facebook
             // access_token=string&expires=long or access_token=string
             // Convert to JsonObject to support dynamic and be consistent with the rest of the library.
             var jsonObject = new JsonObject();
-            jsonObject["access_token"] = returnParameter["access_token"];
+            
+            if (jsonObject.ContainsKey("access_token"))
+            {
+                jsonObject["access_token"] = returnParameter["access_token"];
+            }
 
             // check if expires exist coz for offline_access it is not present.
             if (returnParameter.ContainsKey("expires"))
