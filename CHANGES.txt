@@ -11,6 +11,7 @@ v5.4.1 (RTW)
 2. fixed FacebookOAuthResult(IDictionary<string, object> parameters) ignores the error 
    query string parameter (fix #5918)
 3. added Silverlight 5 in build.cmd and clean.cmd
+4. KeyNotFoundException in FacebookOAuthClient.BuildExchangeCodeForAccessTokenResult (fix #5925)
 
 =========================================================================
 v5.4.0-beta (Beta)
