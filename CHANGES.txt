@@ -5,12 +5,13 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
-vNEXT (Beta)
+v5.5.0 (Beta)
 =========================================================================
 (for SDK consumers)
 1. added preview support for Windows Metro Style apps. (Facebook-WinRT).
 2. added build:winrt and clean:winrt in rakefile (but not enabled by default).
 3. added CS-WinRT.sln sample file
+4. fixed KeyNotFoundException in ExchangeCodeForAccessTokenAsync (fix #5925)
 
 (for SDK developers)
 1. removed Resource files from Facebook.dll to FacebookUtils instead as
