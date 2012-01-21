@@ -701,7 +701,7 @@ namespace Facebook
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
-
+            
             DeleteAsync(path, null);
         }
 
@@ -1341,7 +1341,7 @@ namespace Facebook
         {
             if (string.IsNullOrEmpty(fql))
                 throw new ArgumentNullException("fql");
-
+            
             QueryAsync(fql, null);
         }
 
@@ -1955,7 +1955,7 @@ namespace Facebook
                     input = BuildMediaObjectRequestBody(parameters, mediaObjects, boundary);
                 }
             }
-
+            
             urlBuilder.Query = queryString.ToString();
 
             var httpWebRequest = CreateHttpWebRequest(urlBuilder.Uri);

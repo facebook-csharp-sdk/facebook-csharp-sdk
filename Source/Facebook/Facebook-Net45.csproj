@@ -29,7 +29,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\net45-client\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CODE_ANALYSIS;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;TPL;ASYNC_AWAIT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CODE_ANALYSIS;CODE_ANALYSIS;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;TPL;ASYNC_AWAIT;FLUENTHTTP_CORE_TPL;FLUENTHTTP_CORE_STREAM;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -65,7 +65,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\net45-client\</OutputPath>
-    <DefineConstants>TRACE;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;TPL;ASYNC_AWAIT</DefineConstants>
+    <DefineConstants>TRACE;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;TPL;ASYNC_AWAIT;FLUENTHTTP_CORE_TPL;FLUENTHTTP_CORE_STREAM;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
@@ -114,6 +114,7 @@
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
     <Compile Include="ExceptionFactory.cs" />
+    <Compile Include="FacebookApi.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookConfigurationSection.cs" />
     <Compile Include="FacebookMediaObject.cs" />
+    <Compile Include="FacebookMediaStream.cs" />
     <Compile Include="FacebookOAuthClient.cs" />
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookOAuthResult.cs" />

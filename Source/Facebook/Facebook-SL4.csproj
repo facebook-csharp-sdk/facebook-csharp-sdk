@@ -126,6 +126,7 @@
     <Compile Include="CombinationStream.cs" />
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
+    <Compile Include="FacebookApi.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="FacebookBatchParameter.cs" />
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookMediaObject.cs" />
+    <Compile Include="FacebookMediaStream.cs" />
     <Compile Include="FacebookOAuthClient.cs" />
     <Compile Include="FacebookOAuthException.cs" />
     <Compile Include="FacebookOAuthResult.cs" />

@@ -121,10 +121,12 @@
     <Compile Include="CombinationStream.cs" />
     <Compile Include="DateTimeConvertor.cs" />
     <Compile Include="DefaultFacebookApplication.cs" />
+    <Compile Include="FacebookApi.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs" />
     <Compile Include="FacebookApiException.cs" />
     <Compile Include="FacebookApp.cs" />
+    <Compile Include="FacebookMediaStream.cs" />
     <Compile Include="FacebookUploadProgressChangedEventArgs.cs" />
     <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookBatchParameter.cs" />
