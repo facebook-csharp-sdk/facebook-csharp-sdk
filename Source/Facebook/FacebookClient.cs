@@ -267,12 +267,9 @@ namespace Facebook
             if (parametersWithoutMediaObjects.ContainsKey("method"))
             {
                 restMethod = (string)parametersWithoutMediaObjects["method"];
+                if (restMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+                    throw new ArgumentException("Parameter cannot contain method=delete. Use Delete or DeleteAsync or DeleteTaskAsync methods instead.", "parameters");
                 isLegacyRestApi = true;
-            }
-            else
-            {
-                if (isLegacyRestApi)
-                    throw new InvalidOperationException("Legacy rest api 'method' required in parameters.");
             }
 
             UriBuilder uriBuilder;
