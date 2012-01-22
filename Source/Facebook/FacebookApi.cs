@@ -7,7 +7,13 @@
     using System.IO;
     using System.Globalization;
     using System.Linq;
+    using System.Net;
+#if TYPEINFO
+    using System.Reflection;
+#endif
+#if !WINRT
     using System.Security.Cryptography;
+#endif
     using System.Text;
 #if FLUENTHTTP_CORE_TPL
     using System.Threading;
@@ -22,8 +28,9 @@
     {
         private const int BufferSize = 1024 * 4; // 4kb
         private const string InvalidSignedRequest = "Invalid signed_request";
-        private const string MediaObjectMustHavePropertiesSetError = "The media object must have a content type, file name, and value set.";
-        private const string MediaObjectValueIsNull = "The value of media object is null.";
+        private const string AttachmentMustHavePropertiesSetError = "Attachment (FacebookMediaObject/FacebookMediaStream) must have a content type, file name, and value set.";
+        private const string AttachmentValueIsNull = "The value of attachment (FacebookMediaObject/FacebookMediaStream) is null.";
+        private const string UnknownResponse = "Unknown facebook response.";
         private const string MultiPartFormPrefix = "--";
         private const string MultiPartNewLine = "\r\n";
 
@@ -100,10 +107,19 @@
         private Func<string, Type, object> _deserializeJson;
         private static Func<string, Type, object> _defaultJsonDeserializer;
 
+        private Func<Uri, HttpWebRequestWrapper> _httpWebRequestFactory;
+        private static Func<Uri, HttpWebRequestWrapper> _defaultHttpWebRequestFactory;
+
+        private static IFacebookApplication _defaultFacebookApplication;
+
         /// <summary>
         /// Gets or sets the default facebook application.
         /// </summary>
-        public static IFacebookApplication DefaultFacebookApplication { get; set; }
+        public static IFacebookApplication DefaultFacebookApplication
+        {
+            get { return _defaultFacebookApplication; }
+            set { _defaultFacebookApplication = value ?? (_defaultFacebookApplication ?? new DefaultFacebookApplication()); }
+        }
 
         /// <remarks>For unit testing</remarks>
         internal Func<string> Boundary { get; set; }
@@ -149,27 +165,35 @@
         /// </summary>
         public virtual Func<string, Type, object> DeserializeJson
         {
-            get { return _deserializeJson ?? (_deserializeJson = _defaultJsonDeserializer); }
-            set { _deserializeJson = value; }
+            get { return _deserializeJson; }
+            set { _deserializeJson = value ?? (_deserializeJson = _defaultJsonDeserializer); ; }
         }
 
         /// <summary>
         /// Http web request factory.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory { get; set; }
+        public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
+        {
+            get { return _httpWebRequestFactory; }
+            set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
+        }
 
         static FacebookApi()
         {
             SetDefaultJsonSerializers(null, null);
+            DefaultFacebookApplication = null;
+            SetDefaultHttpWebRequestFactory(null);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// Initializes a new instance of the <see cref="FacebookApi"/> class.
         /// </summary>
         public FacebookApi()
         {
             _deserializeJson = _defaultJsonDeserializer;
+            _httpWebRequestFactory = _defaultHttpWebRequestFactory;
+
             if (DefaultFacebookApplication != null)
             {
                 _useFacebookBeta = DefaultFacebookApplication.IsSecureConnection;
@@ -178,7 +202,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// Initializes a new instance of the <see cref="FacebookApi"/> class.
         /// </summary>
         /// <param name="accessToken">The facebook access_token.</param>
         /// <exception cref="ArgumentNullException">Access token in null or empty.</exception>
@@ -192,7 +216,24 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// Initializes a new instance of the <see cref="FacebookApi"/> class.
+        /// </summary>
+        /// <param name="appId"></param>
+        /// <param name="appSecret"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public FacebookApi(string appId, string appSecret)
+            : this()
+        {
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
+            if (string.IsNullOrEmpty(appSecret))
+                throw new ArgumentNullException("appSecret");
+
+            _accessToken = string.Concat(appId, "|", appSecret);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApi"/> class.
         /// </summary>
         /// <param name="facebookApplication">The facebook application.</param>
         public FacebookApi(IFacebookApplication facebookApplication)
@@ -219,6 +260,16 @@
             _defaultJsonDeserializer = jsonDeserializer ?? SimpleJson.SimpleJson.DeserializeObject;
         }
 
+        /// <summary>
+        /// Sets the default http web request factory.
+        /// </summary>
+        /// <param name="httpWebRequestFactory"></param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void SetDefaultHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
+        {
+            _defaultHttpWebRequestFactory = httpWebRequestFactory;
+        }
+
 #if !(SILVERLIGHT || WINDOWS_PHONE || WINRT)
 
         /// <summary>
@@ -232,7 +283,8 @@
         public virtual object Api(string httpMethod, string path, object parameters, Type resultType)
         {
             Stream input;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input);
+            bool isLegacyRestApi;
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out isLegacyRestApi);
 
             if (input != null)
             {
@@ -286,7 +338,7 @@
                         }
                     }
 
-                    result = ProcessResponse(httpHelper, responseString, resultType);
+                    result = ProcessResponse(httpHelper, responseString, resultType, isLegacyRestApi);
                 }
             }
 
@@ -333,7 +385,9 @@
         /// <param name="resultType">The type of deserialize object into.</param>
         /// <param name="userState">The user state.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+#if ASYNC_AWAIT
         /// <param name="uploadProgress">The upload progress</param>
+#endif
         /// <returns>The task of json result with headers.</returns>
         public virtual Task<object> ApiTaskAsync(string httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken
 #if ASYNC_AWAIT
@@ -365,15 +419,15 @@
 
 #endif
 
-        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input)
+        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input, out bool isLegacyRestApi)
         {
             if (string.IsNullOrEmpty(httpMethod))
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("httpMethod");
             if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("path");
 
-            httpMethod = httpMethod.ToUpperInvariant();
             input = null;
+            httpMethod = httpMethod.ToUpperInvariant();
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
             IDictionary<string, FacebookMediaStream> mediaStreams;
@@ -384,7 +438,7 @@
             if (!parametersWithoutMediaObjects.ContainsKey("return_ssl_resources") && IsSecureConnection)
                 parametersWithoutMediaObjects["return_ssl_resources"] = true;
 
-            bool legacyRestApi = false;
+            isLegacyRestApi = false;
             Uri uri;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
@@ -409,7 +463,7 @@
                         // If the host is graph.facebook.com the user has passed in the full url.
                         // We remove the host part and continue with the parsing.
                         path = string.Concat(uri.AbsolutePath, uri.Query);
-                        legacyRestApi = true;
+                        isLegacyRestApi = true;
                         break;
                     default:
                         // If the url is a valid absolute url we are passing the full url as the 'id'
@@ -466,11 +520,11 @@
             if (parametersWithoutMediaObjects.ContainsKey("method"))
             {
                 restMethod = (string)parametersWithoutMediaObjects["method"];
-                legacyRestApi = true;
+                isLegacyRestApi = true;
             }
             else
             {
-                if (legacyRestApi)
+                if (isLegacyRestApi)
                     throw new InvalidOperationException("Legacy rest api 'method' required in parameters.");
             }
 
@@ -479,7 +533,7 @@
             {
                 uriBuilder = new UriBuilder { Scheme = "https" };
 
-                if (legacyRestApi)
+                if (isLegacyRestApi)
                 {
                     if (string.IsNullOrEmpty(restMethod))
                         throw new InvalidOperationException("Legacy rest api 'method' in parameters is null or empty.");
@@ -511,8 +565,10 @@
             if (parametersWithoutMediaObjects.ContainsKey("access_token"))
             {
                 var accessToken = parametersWithoutMediaObjects["access_token"];
-                if (accessToken == null)
+                if (accessToken == null || (accessToken is string && (string.IsNullOrEmpty((string)accessToken))))
                     parametersWithoutMediaObjects.Remove("access_token");
+                else
+                    queryString.AppendFormat("access_token={0}&", accessToken);
             }
 
             if (!httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase))
@@ -527,30 +583,21 @@
 #endif
                 foreach (var kvp in parametersWithoutMediaObjects)
                     queryString.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
-
-                if (queryString.Length > 0)
-                    queryString.Length--;
             }
             else
             {
-                if (parametersWithoutMediaObjects.ContainsKey("access_token"))
-                {
-                    var accessToken = parametersWithoutMediaObjects["acess_token"];
-                    queryString.AppendFormat("access_token={0}", parametersWithoutMediaObjects["access_token"]);
-                    parametersWithoutMediaObjects.Remove("access_token");
-                }
-
                 if (mediaObjects.Count == 0 && mediaStreams.Count == 0)
                 {
                     contentType = "application/x-www-form-urlencoded";
-                    //var data = Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters));
-                    //input = data.Length == 0 ? null : new MemoryStream(data);
-                    throw new NotImplementedException();
+                    var sb = new StringBuilder();
+                    foreach (var kvp in parametersWithoutMediaObjects)
+                        sb.AppendFormat("{0}={1}", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+                    input = sb.Length == 0 ? null : new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString()));
                 }
                 else
                 {
                     string boundary = Boundary == null
-                                          ? DateTime.UtcNow.Ticks.ToString("x", CultureInfo.InvariantCulture)
+                                          ? DateTime.UtcNow.Ticks.ToString("x", CultureInfo.InvariantCulture) // for unit testing
                                           : Boundary();
 
                     contentType = string.Concat("multipart/form-data; boundary=", boundary);
@@ -564,24 +611,20 @@
                     {
                         sb.Append(MultiPartFormPrefix).Append(boundary).Append(MultiPartNewLine);
                         sb.Append("Content-Disposition: form-data; name=\"").Append(kvp.Key).Append("\"");
-                        sb.Append(MultiPartNewLine);
-                        sb.Append(MultiPartNewLine);
-
-                        // format object As json And Remove leading and trailing parenthesis
-                        //string jsonValue = FacebookUtils.ToJsonString(kvp.Value);
-
-                        //sb.Append(jsonValue);
+                        sb.Append(MultiPartNewLine).Append(MultiPartNewLine);
+                        sb.Append(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode));
                         sb.Append(FacebookUtils.MultiPartNewLine);
                     }
 
                     streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString())));
+
                     foreach (var facebookMediaObject in mediaObjects)
                     {
                         var sbMediaObject = new StringBuilder();
                         var mediaObject = facebookMediaObject.Value;
 
                         if (mediaObject.ContentType == null || mediaObject.GetValue() == null || string.IsNullOrEmpty(mediaObject.FileName))
-                            throw new InvalidOperationException(MediaObjectMustHavePropertiesSetError);
+                            throw new InvalidOperationException(AttachmentMustHavePropertiesSetError);
 
                         sbMediaObject.Append(MultiPartFormPrefix).Append(boundary).Append(MultiPartNewLine);
                         sbMediaObject.Append("Content-Disposition: form-data; name=\"").Append(facebookMediaObject.Key).Append("\"; filename=\"").Append(mediaObject.FileName).Append("\"").Append(MultiPartNewLine);
@@ -592,7 +635,7 @@
                         byte[] fileData = mediaObject.GetValue();
 
                         if (fileData == null)
-                            throw new InvalidOperationException(MediaObjectValueIsNull);
+                            throw new InvalidOperationException(AttachmentValueIsNull);
 
                         streams.Add(new MemoryStream(fileData));
                         streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
@@ -600,13 +643,34 @@
 
                     foreach (var facebookMediaStream in mediaStreams)
                     {
-                        throw new NotImplementedException();
+                        var sbMediaStream = new StringBuilder();
+                        var mediaStream = facebookMediaStream.Value;
+
+                        if (mediaStream.ContentType == null || mediaStream.GetValue() == null || string.IsNullOrEmpty(mediaStream.FileName))
+                            throw new InvalidOperationException(AttachmentMustHavePropertiesSetError);
+
+                        sbMediaStream.Append(MultiPartFormPrefix).Append(boundary).Append(MultiPartNewLine);
+                        sbMediaStream.Append("Content-Disposition: form-data; name=\"").Append(facebookMediaStream.Key).Append("\"; filename=\"").Append(mediaStream.FileName).Append("\"").Append(MultiPartNewLine);
+                        sbMediaStream.Append("Content-Type: ").Append(mediaStream.ContentType).Append(MultiPartNewLine).Append(MultiPartNewLine);
+
+                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sbMediaStream.ToString())));
+
+                        var stream = mediaStream.GetValue();
+
+                        if (stream == null)
+                            throw new InvalidOperationException(AttachmentValueIsNull);
+
+                        streams.Add(stream);
+                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
                     }
 
                     streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(String.Concat(FacebookUtils.MultiPartNewLine, FacebookUtils.MultiPartFormPrefix, boundary, FacebookUtils.MultiPartFormPrefix, FacebookUtils.MultiPartNewLine))));
                     input = new CombinationStream.CombinationStream(streams);
                 }
             }
+
+            if (queryString.Length > 0)
+                queryString.Length--;
 
             uriBuilder.Query = queryString.ToString();
 
@@ -618,7 +682,7 @@
             // request.AllowAutoRedirect = false;
 
 #if !(SILVERLIGHT || WINRT)
-            request.AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 #endif
 
             if (input != null)
@@ -627,10 +691,78 @@
             return new HttpHelper(request);
         }
 
-        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType)
+        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType, bool isLegacyRestApi)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = httpHelper.HttpWebResponse;
+                var json = new JsonObject();
+                if (response == null)
+                    throw new InvalidOperationException(UnknownResponse);
+
+                var headers = new JsonObject();
+                foreach (var headerName in response.Headers.AllKeys)
+                    headers[headerName] = response.Headers[headerName];
+
+                json["headers"] = headers;
+                json["content"] = responseString;
+
+                if (response.ContentType.Contains("application/json"))
+                {
+                    json["body"] = DeserializeJson(responseString, resultType);
+                }
+                else if (!isLegacyRestApi && response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
+                {
+                    if (response.ResponseUri.AbsolutePath == "/oauth/access_token")
+                    {
+                        var body = new JsonObject();
+                        foreach (var kvp in responseString.Split('&'))
+                        {
+                            var split = kvp.Split('=');
+                            if (split.Length == 2)
+                                body[split[0]] = split[1];
+                        }
+
+                        if (body.ContainsKey("expires"))
+                            body["expires"] = Convert.ToInt64(body["expires"]);
+
+                        json["body"] = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
+
+                        return json;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(UnknownResponse);
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException(UnknownResponse);
+                }
+
+                #region Check for exceptions
+
+                if (isLegacyRestApi)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                #endregion
+
+            }
+            catch (Exception)
+            {
+                if (httpHelper.InnerException != null)
+                    throw httpHelper.InnerException;
+                throw;
+            }
         }
+
+#if !WINRT
 
         /// <summary>
         /// Tries parsing the facebook signed_request.
@@ -734,6 +866,7 @@
                 return crypto.ComputeHash(data);
             }
         }
+#endif
 
         protected virtual IDictionary<string, object> ToDictionary(object parameters, out IDictionary<string, FacebookMediaObject> mediaObjects, out IDictionary<string, FacebookMediaStream> mediaStreams)
         {
@@ -751,11 +884,18 @@
 
                 // convert anonymous objects / unknown objects to IDictionary<string, object>
                 dictionary = new Dictionary<string, object>();
+#if TYPEINFO
+                foreach (var propertyInfo in parameters.GetType().GetTypeInfo().DeclaredProperties.Where(p => p.CanRead))
+                {
+                    dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
+                }
+#else
                 foreach (var propertyInfo in parameters.GetType().GetProperties())
                 {
                     if (!propertyInfo.CanRead) continue;
                     dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
                 }
+#endif
                 return dictionary;
             }
 

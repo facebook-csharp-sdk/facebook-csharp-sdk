@@ -79,6 +79,7 @@
     <Compile Include="ExceptionFactory\GetRestException\GivenANonEmptyDictionaryOfStringObjectThatDoesNotContainErrorCodeKeyThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenInputAsNullThen.cs" />
     <Compile Include="ExceptionFactory\GetRestException\GivenNonNullInputNotOfTypeIDictionaryStringObjectThen.cs" />
+    <Compile Include="FacebookApi\FacebookApiTests.cs" />
     <Compile Include="FacebookApplication\FacebookApplicationTests.cs" />
     <Compile Include="FacebookBatchParameter\FacebookBatchParameterTests.cs" />
     <Compile Include="FacebookClient\ctor\CtorAccessTokenTests.cs" />
