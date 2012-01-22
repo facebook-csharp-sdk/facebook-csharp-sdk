@@ -1,14 +1,16 @@
-﻿// Fluent HTTP CORE
-// Copyright 2011. Prabir Shrestha (www.prabir.me)
+﻿// Install-Package FluentHttp.Core
+// https://github.com/prabirshrestha/FluentHttp
+// Copyright 2011-2012. Prabir Shrestha (www.prabir.me)
 // Apache License, Version 2.0
 
-//#define FLUENTHTTP_CORE_UTILS
+//#define FLUENTHTTP_STRING_HELPERS
 //#define FLUENTHTTP_CORE_TPL
 //#define FLUENTHTTP_CORE_WINRT
 //#define FLUENTHTTP_CORE_STREAM
 //#define FLUENTHTTP_URLENCODING
 //#define FLUENTHTTP_HTMLENCODING
 //#define FLUENTHTTP_HTTPBASIC_AUTHENTICATION
+//#define FLUENTHTTP_HTTPHELPER_PUBLIC
 
 using System;
 using System.Collections;
@@ -21,9 +23,8 @@ using System.Threading;
 #if FLUENTHTTP_CORE_TPL
 using System.Threading.Tasks;
 #endif
-using Facebook;
 
-namespace Facebook
+namespace FluentHttp
 {
     /// <summary>
     /// Represents the http web request wrapper.
@@ -146,6 +147,9 @@ namespace Facebook
 
 #if !FLUENTHTTP_CORE_WINRT
 
+        /// <summary>
+        /// Gets the service point to use for the request.
+        /// </summary>
         public virtual ServicePoint ServicePoint
         {
             get { return _httpWebRequest.ServicePoint; }
@@ -235,14 +239,15 @@ namespace Facebook
         }
 
 #endif
+
         /// <summary>
         /// Try to set the value of the content length header.
         /// </summary>
         /// <param name="contentLength">
-        /// The Content-Length value.
+        /// The Content-Length header value.
         /// </param>
         /// <returns>
-        /// Returns true if ContentLength set, otherwise false.
+        /// True if ContentLength set, otherwise false.
         /// </returns>
         public virtual bool TrySetContentLength(long contentLength)
         {
@@ -320,11 +325,19 @@ namespace Facebook
 
 #if FLUENTHTTP_CORE_TPL
 
+        /// <summary>
+        /// Asynchronously gets the response.
+        /// </summary>
+        /// <returns></returns>
         public virtual Task<HttpWebResponseWrapper> GetResponseAsync()
         {
             return Task<HttpWebResponseWrapper>.Factory.FromAsync(BeginGetResponse, EndGetResponse, null);
         }
 
+        /// <summary>
+        /// Asynchronously gets the request stream.
+        /// </summary>
+        /// <returns></returns>
         public virtual Task<Stream> GetRequestStreamAsync()
         {
             return Task<Stream>.Factory.FromAsync(BeginGetRequestStream, EndGetRequestStream, null);
@@ -334,17 +347,28 @@ namespace Facebook
 
 #if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
 
+        /// <summary>
+        /// Gets the response.
+        /// </summary>
+        /// <returns></returns>
         public virtual HttpWebResponseWrapper GetResponse()
         {
             return new HttpWebResponseWrapper((HttpWebResponse)_httpWebRequest.GetResponse());
         }
 
+        /// <summary>
+        /// Gets the request stream.
+        /// </summary>
+        /// <returns></returns>
         public virtual Stream GetRequestStream()
         {
             return _httpWebRequest.GetRequestStream();
         }
 
 #endif
+        /// <summary>
+        /// Aborts the http web request.
+        /// </summary>
         public virtual void Abort()
         {
             _httpWebRequest.Abort();
@@ -352,6 +376,9 @@ namespace Facebook
 
     }
 
+    /// <summary>
+    /// Wrapper for http web response.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class HttpWebResponseWrapper
     {
@@ -429,8 +456,6 @@ namespace Facebook
             get { return _httpWebResponse.StatusDescription; }
         }
 
-#if !SILVERLIGHT
-
         /// <summary>
         /// Gets the http cookies.
         /// </summary>
@@ -447,6 +472,7 @@ namespace Facebook
             get { return _httpWebResponse.Headers; }
         }
 
+#if !SILVERLIGHT
 #if !FLUENTHTTP_CORE_WINRT
 
         /// <summary>
@@ -512,6 +538,9 @@ namespace Facebook
         }
     }
 
+    /// <summary>
+    /// Wrapper for web exceptions.
+    /// </summary>
 #if !(FLUENTHTTP_CORE_WINRT || SILVERLIGHT)
     [Serializable]
 #endif
@@ -521,8 +550,14 @@ namespace Facebook
         private readonly WebException _webException;
         private readonly WebExceptionStatus _status = WebExceptionStatus.UnknownError;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
+        /// </summary>
         protected WebExceptionWrapper() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
+        /// </summary>
         public WebExceptionWrapper(WebException webException)
             : base(webException == null ? null : webException.Message, webException == null ? null : webException.InnerException)
         {
@@ -544,6 +579,12 @@ namespace Facebook
         }
 #endif
 
+        /// <summary>
+        /// Gets the response of the web exception.
+        /// </summary>
+        /// <returns>
+        /// Returns the response of the web exception if it has a response, otherwise null.
+        /// </returns>
         public virtual HttpWebResponseWrapper GetResponse()
         {
             return _webException.Response == null
@@ -551,35 +592,78 @@ namespace Facebook
                        : new HttpWebResponseWrapper((HttpWebResponse)_webException.Response);
         }
 
+        /// <summary>
+        /// Returns the actual web exception.
+        /// </summary>
         public virtual WebException ActualWebException
         {
             get { return _webException; }
         }
 
+        /// <summary>
+        /// Returns the web exception status.
+        /// </summary>
         public virtual WebExceptionStatus Status
         {
             get { return _status; }
         }
     }
-
 }
 
 namespace FluentHttp
 {
-    internal delegate void OpenReadCompletedEventHandler(object sender, OpenReadCompletedEventArgs e);
+    /// <summary>
+    /// Event handler for open read complete.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+#if FLUENTHTTP_HTTPHELPER_PUBLIC
+    public
+#else
+    internal
+#endif
+ delegate void OpenReadCompletedEventHandler(object sender, OpenReadCompletedEventArgs e);
 
-    internal delegate void OpenWriteCompletedEventHandler(object sender, OpenWriteCompletedEventArgs e);
+    /// <summary>
+    /// Event handler for open write complete.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+#if FLUENTHTTP_HTTPHELPER_PUBLIC
+    public
+#else
+    internal
+#endif
+ delegate void OpenWriteCompletedEventHandler(object sender, OpenWriteCompletedEventArgs e);
 
-    internal class OpenReadCompletedEventArgs : AsyncCompletedEventArgs
+    /// <summary>
+    /// Open read completed event args.
+    /// </summary>
+#if FLUENTHTTP_HTTPHELPER_PUBLIC
+    public
+#else
+    internal
+#endif
+ class OpenReadCompletedEventArgs : AsyncCompletedEventArgs
     {
         private readonly Stream _result;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenReadCompletedEventArgs"/> class.
+        /// </summary>
+        /// <param name="result">The response stream.</param>
+        /// <param name="error">The exception.</param>
+        /// <param name="cancelled"></param>
+        /// <param name="userState"></param>
         public OpenReadCompletedEventArgs(Stream result, Exception error, bool cancelled, object userState)
             : base(error, cancelled, userState)
         {
             _result = result;
         }
 
+        /// <summary>
+        /// The response stream.
+        /// </summary>
         public Stream Result
         {
             get
@@ -590,16 +674,34 @@ namespace FluentHttp
         }
     }
 
-    internal class OpenWriteCompletedEventArgs : AsyncCompletedEventArgs
+    /// <summary>
+    /// Open write completed event args.
+    /// </summary>
+#if FLUENTHTTP_HTTPHELPER_PUBLIC
+    public
+#else
+    internal
+#endif
+ class OpenWriteCompletedEventArgs : AsyncCompletedEventArgs
     {
         private readonly Stream _result;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenWriteCompletedEventArgs"/> class.
+        /// </summary>
+        /// <param name="result">The request stream.</param>
+        /// <param name="error"></param>
+        /// <param name="cancelled"></param>
+        /// <param name="userState"></param>
         public OpenWriteCompletedEventArgs(Stream result, Exception error, bool cancelled, object userState)
             : base(error, cancelled, userState)
         {
             _result = result;
         }
 
+        /// <summary>
+        /// The request stream.
+        /// </summary>
         public Stream Result
         {
             get
@@ -610,7 +712,15 @@ namespace FluentHttp
         }
     }
 
-    internal class HttpHelper
+    /// <summary>
+    /// Http helper.
+    /// </summary>
+#if FLUENTHTTP_HTTPHELPER_PUBLIC
+    public
+#else
+    internal
+#endif
+ class HttpHelper
     {
         /// <summary>
         /// Gets the inner exception.
@@ -620,35 +730,64 @@ namespace FluentHttp
             get { return _innerException; }
         }
 
+        /// <summary>
+        /// Gets or sets the timeout.
+        /// </summary>
         public int Timeout { get; set; }
 
+        /// <summary>
+        /// Open read completed event handler.
+        /// </summary>
         public event OpenReadCompletedEventHandler OpenReadCompleted;
+
+        /// <summary>
+        /// Open write completed event handler.
+        /// </summary>
         public event OpenWriteCompletedEventHandler OpenWriteCompleted;
 
         private readonly HttpWebRequestWrapper _httpWebRequest;
         private HttpWebResponseWrapper _httpWebResponse;
         private Exception _innerException;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpHelper"/> class.
+        /// </summary>
+        /// <param name="url"></param>
         public HttpHelper(Uri url)
             : this(new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(url)))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpHelper"/> class.
+        /// </summary>
+        /// <param name="url"></param>
         public HttpHelper(string url)
             : this(new Uri(url))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpHelper"/> class.
+        /// </summary>
+        /// <param name="httpWebRequest"></param>
         public HttpHelper(HttpWebRequestWrapper httpWebRequest)
         {
             _httpWebRequest = httpWebRequest;
         }
 
+
+        /// <summary>
+        /// Gets the http web request.
+        /// </summary>
         public HttpWebRequestWrapper HttpWebRequest
         {
             get { return _httpWebRequest; }
         }
 
+        /// <summary>
+        /// Gets the http web response.
+        /// </summary>
         public HttpWebResponseWrapper HttpWebResponse
         {
             get { return _httpWebResponse; }
@@ -656,6 +795,12 @@ namespace FluentHttp
 
 #if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
 
+        /// <summary>
+        /// Opens the request stream synchronously for write.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="WebExceptionWrapper"></exception>
+        /// <exception cref="Exception"></exception>
         public virtual Stream OpenWrite()
         {
             try
@@ -682,6 +827,11 @@ namespace FluentHttp
             }
         }
 
+        /// <summary>
+        /// Opens the response stream synchronously for read.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public virtual Stream OpenRead()
         {
             try
@@ -712,6 +862,10 @@ namespace FluentHttp
 
 #endif
 
+        /// <summary>
+        /// Asynchronously opens the response stream for read.
+        /// </summary>
+        /// <param name="userToken"></param>
         public virtual void OpenReadAsync(object userToken)
         {
             if (_httpWebResponse == null)
@@ -762,11 +916,18 @@ namespace FluentHttp
                 ResponseCallback(null, userToken);
         }
 
+        /// <summary>
+        /// Asynchronously opens the response stream for read.
+        /// </summary>
         public virtual void OpenReadAsync()
         {
             OpenReadAsync(null);
         }
 
+        /// <summary>
+        /// Asynchronously opens the request stream for write.
+        /// </summary>
+        /// <param name="userToken"></param>
         public virtual void OpenWriteAsync(object userToken)
         {
             WebExceptionWrapper webExceptionWrapper = null;
@@ -827,6 +988,9 @@ namespace FluentHttp
             }
         }
 
+        /// <summary>
+        /// Asynchronously opens the request stream for write.
+        /// </summary>
         public virtual void OpenWriteAsync()
         {
             OpenWriteAsync(null);
@@ -889,6 +1053,11 @@ namespace FluentHttp
             }
         }
 
+        /// <summary>
+        /// Asynchronously open the response stream for read.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public virtual Task<Stream> OpenReadTaskAsync(CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<Stream>(this);
@@ -911,16 +1080,29 @@ namespace FluentHttp
             return tcs.Task;
         }
 
+        /// <summary>
+        /// Asynchronously opens the response stream for read.
+        /// </summary>
+        /// <returns></returns>
         public virtual Task<Stream> OpenReadTaskAsync()
         {
             return OpenReadTaskAsync(CancellationToken.None);
         }
 
+        /// <summary>
+        /// Asynchronously opens the request stream for write.
+        /// </summary>
+        /// <returns></returns>
         public virtual Task<Stream> OpenWriteTaskAsync()
         {
             return OpenWriteTaskAsync(CancellationToken.None);
         }
 
+        /// <summary>
+        /// Asynchronously opens the request stream for write.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public virtual Task<Stream> OpenWriteTaskAsync(CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<Stream>(this);
@@ -945,17 +1127,28 @@ namespace FluentHttp
 
 #endif
 
+        /// <summary>
+        /// Cancels the http web request.
+        /// </summary>
         public void CancelAsync()
         {
             HttpWebRequest.Abort();
         }
 
+        /// <summary>
+        /// On open read completed.
+        /// </summary>
+        /// <param name="args"></param>
         protected virtual void OnOpenReadCompleted(OpenReadCompletedEventArgs args)
         {
             if (OpenReadCompleted != null)
                 OpenReadCompleted(this, args);
         }
 
+        /// <summary>
+        /// On open write completed.
+        /// </summary>
+        /// <param name="args"></param>
         protected virtual void OnOpenWriteCompleted(OpenWriteCompletedEventArgs args)
         {
             if (OpenWriteCompleted != null)
@@ -966,11 +1159,21 @@ namespace FluentHttp
 
 #if FLUENTHTTP_URLENCODING
 
+        /// <summary>
+        /// Url encodes the specified string.
+        /// </summary>
+        /// <param name="s">The string to url encode.</param>
+        /// <returns>The url encoded string.</returns>
         public static string UrlEncode(string s)
         {
             return Uri.EscapeDataString(s);
         }
 
+        /// <summary>
+        /// Url decodes the specified string.
+        /// </summary>
+        /// <param name="s">The string to url decode.</param>
+        /// <returns>The url decoded string.</returns>
         public static string UrlDecode(string s)
         {
 #if WINDOWS_PHONE
@@ -1096,7 +1299,7 @@ namespace FluentHttp
 
 #if !(SILVERLIGHT || WINDOWS_PHONE)
 
-        public static readonly System.Globalization.CultureInfo InvariantCulture =
+        private static readonly System.Globalization.CultureInfo InvariantCulture =
             System.Globalization.CultureInfo.InvariantCulture;
 
         private static object entitiesLock = new object();
@@ -1378,6 +1581,11 @@ namespace FluentHttp
 
 #endif
 
+        /// <summary>
+        /// Html decode the speficied string.
+        /// </summary>
+        /// <param name="s">The string to html decode.</param>
+        /// <returns>The html decoded string.</returns>
         public static string HtmlDecode(string s)
         {
 #if WINDOWS_PHONE
@@ -1600,8 +1808,43 @@ namespace FluentHttp
 
         #region Utils
 
-#if FLUENTHTTP_CORE_UTILS
+#if FLUENTHTTP_HELPERS
 
+        /// <summary>
+        /// Add starting slash if not present.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string AddStartingSlashIfNotPresent(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return "/";
+            }
+
+            // if not null or empty
+            if (input[0] != '/')
+            {
+                // if doesn't start with / then add /
+                return "/" + input;
+            }
+            else
+            {
+                // else return the original input.
+                return input;
+            }
+        }
+
+        /// <summary>
+        /// Builds the request url.
+        /// </summary>
+        /// <param name="baseUrl"></param>
+        /// <param name="resourcePath"></param>
+        /// <param name="queryStrings"></param>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static string BuildRequestUrl<TKey, TValue>(string baseUrl, string resourcePath, IEnumerable<KeyValuePair<TKey, TValue>> queryStrings)
         {
             var sb = new StringBuilder();
@@ -1629,26 +1872,7 @@ namespace FluentHttp
             return sb.ToString();
         }
 
-        public static string AddStartingSlashIfNotPresent(string input)
-        {
-            if (string.IsNullOrEmpty(input))
-            {
-                return "/";
-            }
-
-            // if not null or empty
-            if (input[0] != '/')
-            {
-                // if doesn't start with / then add /
-                return "/" + input;
-            }
-            else
-            {
-                // else return the original input.
-                return input;
-            }
-        }
-
+        /*
         public virtual void SetHeaders<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> requestHeaders)
             where TKey : class
             where TValue : class
@@ -1690,28 +1914,49 @@ namespace FluentHttp
                 }
             }
         }
+        
+        */
 
 #endif
 
 #if FLUENTHTTP_CORE_STREAM
 
-        public void CopyStream(Stream input, Stream output, int? bufferSize, bool flushInput, bool flushOutput)
+        /// <summary>
+        /// Action delegate.
+        /// </summary>
+        private delegate void Action();
+
+        /// <summary>
+        /// Copy stream.
+        /// </summary>
+        /// <param name="source">The source stream.</param>
+        /// <param name="destination">The destination stream.</param>
+        /// <param name="bufferSize">The buffer size.</param>
+        /// <param name="flushInput">Indicates whether to flush the input after every buffer read.</param>
+        /// <param name="flushOutput">Indicates whether to flush the output after every buffer write.</param>
+        public void CopyStream(Stream source, Stream destination, int? bufferSize, bool flushInput, bool flushOutput)
         {
             byte[] buffer = new byte[bufferSize ?? 1024 * 4]; // 4 kb
+            Action inputFlushAction = flushInput ? (Action)(source.Flush) : () => { };
+            Action outputFlushAction = flushOutput ? (Action)(destination.Flush) : () => { };
             while (true)
             {
-                int read = input.Read(buffer, 0, buffer.Length);
-                if (flushInput)
-                    input.Flush();
+                int read = source.Read(buffer, 0, buffer.Length);
+                inputFlushAction();
                 if (read <= 0)
                     return;
-                output.Write(buffer, 0, read);
-                if (flushOutput)
-                    output.Flush();
+                destination.Write(buffer, 0, read);
+                outputFlushAction();
             }
         }
 
-        public void ReadStream(Stream input, int? bufferSize, bool flushInput)
+        /// <summary>
+        /// Reads the stream to end.
+        /// </summary>
+        /// <param name="input">The input stream.</param>
+        /// <param name="bufferSize">The buffer size.</param>
+        /// <param name="flushInput">Indicates whether to flush the input after every buffer read.</param>
+        public void ReadStreamToEnd(Stream input, int? bufferSize, bool flushInput)
         {
             byte[] buffer = new byte[bufferSize ?? 1024 * 4]; // 4 kb
             while (true)
@@ -1726,14 +1971,30 @@ namespace FluentHttp
 
 #if FLUENTHTTP_CORE_TPL
 
-        public static System.Threading.Tasks.Task<int> ReadTask(Stream stream, byte[] buffer, int offset, int count)
+        /// <summary>
+        /// Asynchronously reads the stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static Task<int> ReadTask(Stream stream, byte[] buffer, int offset, int count)
         {
-            return System.Threading.Tasks.Task<int>.Factory.FromAsync(stream.BeginRead, stream.EndRead, buffer, offset, count, null, System.Threading.Tasks.TaskCreationOptions.None);
+            return Task<int>.Factory.FromAsync(stream.BeginRead, stream.EndRead, buffer, offset, count, null, TaskCreationOptions.None);
         }
 
-        public static System.Threading.Tasks.Task WriteTask(Stream stream, byte[] buffer, int offset, int count)
+        /// <summary>
+        /// Asynchronously writes to the stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static Task WriteTask(Stream stream, byte[] buffer, int offset, int count)
         {
-            return System.Threading.Tasks.Task.Factory.FromAsync(stream.BeginWrite, stream.EndWrite, buffer, offset, count, null, System.Threading.Tasks.TaskCreationOptions.None);
+            return Task.Factory.FromAsync(stream.BeginWrite, stream.EndWrite, buffer, offset, count, null, TaskCreationOptions.None);
         }
 
 #endif
@@ -1746,6 +2007,11 @@ namespace FluentHttp
 
 #if FLUENTHTTP_HTTPBASIC_AUTHENTICATION
 
+        /// <summary>
+        /// Sets the http basic authorization header on the http web request.
+        /// </summary>
+        /// <param name="username">The username</param>
+        /// <param name="password">the password</param>
         public void AuthenticateUsingHttpBasicAuthentication(string username, string password)
         {
             _httpWebRequest.Headers["Authorization"] = string.Concat("Basic ", Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password))));
@@ -1753,6 +2019,5 @@ namespace FluentHttp
 
 #endif
         #endregion
-
     }
 }
