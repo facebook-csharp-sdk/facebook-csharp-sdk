@@ -10,120 +10,120 @@
 namespace Facebook
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
+    using System.ComponentModel;
     using System.IO;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
+#if TYPEINFO
+    using System.Reflection;
+#endif
     using System.Text;
     using FluentHttp;
 
     /// <summary>
-    /// Provides access to the Facebook Platform.
+    /// Provides access to the Facbook Platform.
     /// </summary>
-    public class FacebookClient
+    public partial class FacebookClient
     {
-        /// <summary>
-        /// The value indicating whether to use Facebook beta.
-        /// </summary>
-        private bool _useFacebookBeta = FacebookApplication.Current.UseFacebookBeta;
+        private const int BufferSize = 1024 * 4; // 4kb
+        private const string AttachmentMustHavePropertiesSetError = "Attachment (FacebookMediaObject/FacebookMediaStream) must have a content type, file name, and value set.";
+        private const string AttachmentValueIsNull = "The value of attachment (FacebookMediaObject/FacebookMediaStream) is null.";
+        private const string UnknownResponse = "Unknown facebook response.";
+        private const string MultiPartFormPrefix = "--";
+        private const string MultiPartNewLine = "\r\n";
 
-        /// <summary>
-        /// Gets a value indicating whether the scheme is secure.
-        /// </summary>
-        private bool _isSecureConnection = FacebookApplication.Current.IsSecureConnection;
+        private static readonly string[] LegacyRestApiReadOnlyCalls = new[] {
+            "admin.getallocation",
+            "admin.getappproperties",
+            "admin.getbannedusers",
+            "admin.getlivestreamvialink",
+            "admin.getmetrics",
+            "admin.getrestrictioninfo",
+            "application.getpublicinfo",
+            "auth.getapppublickey",
+            "auth.getsession",
+            "auth.getsignedpublicsessiondata",
+            "comments.get",
+            "connect.getunconnectedfriendscount",
+            "dashboard.getactivity",
+            "dashboard.getcount",
+            "dashboard.getglobalnews",
+            "dashboard.getnews",
+            "dashboard.multigetcount",
+            "dashboard.multigetnews",
+            "data.getcookies",
+            "events.get",
+            "events.getmembers",
+            "fbml.getcustomtags",
+            "feed.getappfriendstories",
+            "feed.getregisteredtemplatebundlebyid",
+            "feed.getregisteredtemplatebundles",
+            "fql.multiquery",
+            "fql.query",
+            "friends.arefriends",
+            "friends.get",
+            "friends.getappusers",
+            "friends.getlists",
+            "friends.getmutualfriends",
+            "gifts.get",
+            "groups.get",
+            "groups.getmembers",
+            "intl.gettranslations",
+            "links.get",
+            "notes.get",
+            "notifications.get",
+            "pages.getinfo",
+            "pages.isadmin",
+            "pages.isappadded",
+            "pages.isfan",
+            "permissions.checkavailableapiaccess",
+            "permissions.checkgrantedapiaccess",
+            "photos.get",
+            "photos.getalbums",
+            "photos.gettags",
+            "profile.getinfo",
+            "profile.getinfooptions",
+            "stream.get",
+            "stream.getcomments",
+            "stream.getfilters",
+            "users.getinfo",
+            "users.getloggedinuser",
+            "users.getstandardinfo",
+            "users.hasapppermission",
+            "users.isappuser",
+            "users.isverified",
+            "video.getuploadlimits" 
+        };
 
-        /// <summary>
-        /// The Facebook access token.
-        /// </summary>
         private string _accessToken;
+        private bool _isSecureConnection;
+        private bool _useFacebookBeta;
+
+        private Func<object, string> _serializeJson;
+        private static Func<object, string> _defaultJsonSerializer;
+
+        private Func<string, Type, object> _deserializeJson;
+        private static Func<string, Type, object> _defaultJsonDeserializer;
+
+        private Func<Uri, HttpWebRequestWrapper> _httpWebRequestFactory;
+        private static Func<Uri, HttpWebRequestWrapper> _defaultHttpWebRequestFactory;
+
+        private static IFacebookApplication _defaultFacebookApplication;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
+        /// Gets or sets the default facebook application.
         /// </summary>
-        public FacebookClient()
+        public static IFacebookApplication DefaultFacebookApplication
         {
+            get { return _defaultFacebookApplication; }
+            set { _defaultFacebookApplication = value ?? (_defaultFacebookApplication ?? new FacebookApplication()); }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class. 
-        /// </summary>
-        /// <param name="accessToken">
-        /// The Facebook access token.
-        /// </param>
-        public FacebookClient(string accessToken)
-            : this()
-        {
-            if (string.IsNullOrEmpty(accessToken))
-                throw new ArgumentNullException("accessToken");
-            _accessToken = accessToken;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
-        /// </summary>
-        /// <param name="appId">
-        /// The app id.
-        /// </param>
-        /// <param name="appSecret">
-        /// The app secret.
-        /// </param>
-        public FacebookClient(string appId, string appSecret)
-            : this(string.Concat(appId, "|", appSecret))
-        {
-            if (string.IsNullOrEmpty(appId))
-                throw new ArgumentNullException("appId");
-            if (string.IsNullOrEmpty(appSecret))
-                throw new ArgumentNullException("appSecret");
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
-        /// </summary>
-        /// <param name="facebookApplication">
-        /// The Facebook application.
-        /// </param>
-        public FacebookClient(IFacebookApplication facebookApplication)
-        {
-            if (facebookApplication != null)
-            {
-                if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
-                {
-                    _accessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Event handler for get completion.
-        /// </summary>
-        public event EventHandler<FacebookApiEventArgs> GetCompleted;
-
-        /// <summary>
-        /// Event handler for post completion.
-        /// </summary>
-        public event EventHandler<FacebookApiEventArgs> PostCompleted;
-
-        /// <summary>
-        /// Event handler for delete completion.
-        /// </summary>
-        public event EventHandler<FacebookApiEventArgs> DeleteCompleted;
-
-        /// <summary>
-        /// Event handler for upload progress changed.
-        /// </summary>
-        public event EventHandler<FacebookUploadProgressChangedEventArgs> UploadProgressChanged;
-
-#if TPL
-
-        /// <summary>
-        /// Event handler when http web request wrapper is created for async api only.
-        /// (used internally by TPL for cancellation support)
-        /// </summary>
-        private event EventHandler<HttpWebRequestCreatedEventArgs> HttpWebRequestWrapperCreated;
-
-#endif
+        /// <remarks>For unit testing</remarks>
+        internal Func<string> Boundary { get; set; }
 
         /// <summary>
         /// Gets or sets the access token.
@@ -135,16 +135,7 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use Facebook beta.
-        /// </summary>
-        public virtual bool UseFacebookBeta
-        {
-            get { return _useFacebookBeta; }
-            set { _useFacebookBeta = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the scheme is secure.
+        /// Gets or sets the value indicating whether to add return_ssl_resource as default parameter in every request.
         /// </summary>
         public virtual bool IsSecureConnection
         {
@@ -153,2076 +144,611 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the aliases to Facebook domains.
+        /// Gets or sets the value indicating whether to use Facebook beta.
         /// </summary>
-        protected virtual Dictionary<string, Uri> DomainMaps
+        public virtual bool UseFacebookBeta
         {
-            get { return UseFacebookBeta ? FacebookUtils.DomainMapsBeta : FacebookUtils.DomainMaps; }
+            get { return _useFacebookBeta; }
+            set { _useFacebookBeta = value; }
         }
 
-        #region Api Calls
-
-#if !(SILVERLIGHT || WINRT)
-
-        #region Get
+        /// <summary>
+        /// Serialize object to json.
+        /// </summary>
+        public virtual Func<object, string> SerializeJson
+        {
+            get { return _serializeJson ?? (_serializeJson = _defaultJsonSerializer); }
+            set { _serializeJson = value; }
+        }
 
         /// <summary>
-        /// Makes a GET request to the Facebook server.
+        /// Deserialize json to object.
         /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        public virtual object Get(string path)
+        public virtual Func<string, Type, object> DeserializeJson
         {
+            get { return _deserializeJson; }
+            set { _deserializeJson = value ?? (_deserializeJson = _defaultJsonDeserializer); ; }
+        }
+
+        /// <summary>
+        /// Http web request factory.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
+        {
+            get { return _httpWebRequestFactory; }
+            set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
+        }
+
+        static FacebookClient()
+        {
+            SetDefaultJsonSerializers(null, null);
+            DefaultFacebookApplication = null;
+            SetDefaultHttpWebRequestFactory(null);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
+        public FacebookClient()
+        {
+            _deserializeJson = _defaultJsonDeserializer;
+            _httpWebRequestFactory = _defaultHttpWebRequestFactory;
+
+            if (DefaultFacebookApplication != null)
+            {
+                _useFacebookBeta = DefaultFacebookApplication.IsSecureConnection;
+                _isSecureConnection = DefaultFacebookApplication.IsSecureConnection;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
+        /// <param name="accessToken">The facebook access_token.</param>
+        /// <exception cref="ArgumentNullException">Access token in null or empty.</exception>
+        public FacebookClient(string accessToken)
+            : this()
+        {
+            if (string.IsNullOrEmpty(accessToken))
+                throw new ArgumentNullException("accessToken");
+
+            _accessToken = accessToken;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
+        /// <param name="appId"></param>
+        /// <param name="appSecret"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public FacebookClient(string appId, string appSecret)
+            : this()
+        {
+            if (string.IsNullOrEmpty(appId))
+                throw new ArgumentNullException("appId");
+            if (string.IsNullOrEmpty(appSecret))
+                throw new ArgumentNullException("appSecret");
+
+            _accessToken = string.Concat(appId, "|", appSecret);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
+        /// <param name="facebookApplication">The facebook application.</param>
+        public FacebookClient(IFacebookApplication facebookApplication)
+            : this()
+        {
+            if (facebookApplication == null)
+                return;
+
+            if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
+                _accessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
+
+            _useFacebookBeta = facebookApplication.UseFacebookBeta;
+            _isSecureConnection = facebookApplication.IsSecureConnection;
+        }
+
+        /// <summary>
+        /// Sets the default json seriazliers and deserializers.
+        /// </summary>
+        /// <param name="jsonSerializer">Json serializer</param>
+        /// <param name="jsonDeserializer">Jsonn deserializer</param>
+        public static void SetDefaultJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
+        {
+            _defaultJsonSerializer = jsonSerializer ?? SimpleJson.SimpleJson.SerializeObject;
+            _defaultJsonDeserializer = jsonDeserializer ?? SimpleJson.SimpleJson.DeserializeObject;
+        }
+
+        /// <summary>
+        /// Sets the default http web request factory.
+        /// </summary>
+        /// <param name="httpWebRequestFactory"></param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void SetDefaultHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
+        {
+            _defaultHttpWebRequestFactory = httpWebRequestFactory;
+        }
+
+        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input, out bool isLegacyRestApi)
+        {
+            if (string.IsNullOrEmpty(httpMethod))
+                throw new ArgumentNullException("httpMethod");
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            return Api(path, null, HttpMethod.Get, null);
-        }
-
-        /// <summary>
-        /// Makes a GET request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual object Get(IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            return Api(null, parameters, HttpMethod.Get, null);
-        }
-
-        /// <summary>
-        /// Makes a GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual object Get(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return Api(path, parameters, HttpMethod.Get, null);
-        }
-
-        /// <summary>
-        /// Makes a GET request to the Facebook server.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The result of the API call.
-        /// </typeparam>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual T Get<T>(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            return Api<T>(path, null, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Makes a GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <typeparam name="T">
-        /// The result of the API call.
-        /// </typeparam>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual T Get<T>(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return Api<T>(path, parameters, HttpMethod.Get);
-        }
-
-        /// <summary>
-        /// Makes a GET request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <typeparam name="T">
-        /// The result of the API call.
-        /// </typeparam>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual T Get<T>(IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            return Api<T>(null, parameters, HttpMethod.Get);
-        }
-
-        #endregion
-
-        #region Post
-
-        /// <summary>
-        /// Makes a POST request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual object Post(IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            return Api(null, parameters, HttpMethod.Post, null);
-        }
-
-        /// <summary>
-        /// Makes a POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual object Post(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return Api(path, parameters, HttpMethod.Post, null);
-        }
-
-        /// <summary>
-        /// Makes a POST request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual object Post(object parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            if (parameters is IDictionary<string, object>)
-                return Post((IDictionary<string, object>)parameters);
-
-            if (parameters is string)
-                return Post((string)parameters, null);
-
-            return Post(FacebookUtils.ToDictionary(parameters));
-        }
-
-        /// <summary>
-        /// Makes a POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual object Post(string path, object parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            if (parameters is IDictionary<string, object>)
-                return Post(path, (IDictionary<string, object>)parameters);
-
-            return Post(path, FacebookUtils.ToDictionary(parameters));
-        }
-
-        #endregion
-
-        #region Delete
-
-        /// <summary>
-        /// Makes a DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        public virtual object Delete(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            return Api(path, null, HttpMethod.Delete, null);
-        }
-
-        /// <summary>
-        /// Makes a DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        public virtual object Delete(string path, IDictionary<string, object> parameters)
-        {
-            return Api(path, parameters, HttpMethod.Delete, null);
-        }
-
-        #endregion
-
-        internal protected virtual object Api(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, Type resultType)
-        {
-            Stream input;
+            input = null;
+            httpMethod = httpMethod.ToUpperInvariant();
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
-            var httpHelper = new HttpHelper(PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects));
+            IDictionary<string, FacebookMediaStream> mediaStreams;
+            IDictionary<string, object> parametersWithoutMediaObjects = ToDictionary(parameters, out mediaObjects, out mediaStreams) ?? new Dictionary<string, object>();
 
-            if (input != null)
+            if (!parametersWithoutMediaObjects.ContainsKey("access_token") && !string.IsNullOrEmpty(AccessToken))
+                parametersWithoutMediaObjects["access_token"] = AccessToken;
+            if (!parametersWithoutMediaObjects.ContainsKey("return_ssl_resources") && IsSecureConnection)
+                parametersWithoutMediaObjects["return_ssl_resources"] = true;
+
+            isLegacyRestApi = false;
+            Uri uri;
+            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
-                // we have a request body, so write it.
-                try
+                switch (uri.Host)
                 {
-                    using (Stream requestStream = httpHelper.OpenWrite())
-                    {
-                        FacebookUtils.CopyStream(input, requestStream, null);
-                    }
-                }
-                catch (WebExceptionWrapper ex)
-                {
-                    if (ex.GetResponse() == null)
-                        throw;
-                }
-                finally
-                {
-                    DisposeInputRequestStream(input);
+                    // graph api
+                    case "graph.facebook.com":
+                    case "graph-video.facebook.com":
+                    case "graph.beta.facebook.com":
+                    case "graph-video.beta.facebook.com":
+                        // If the host is graph.facebook.com the user has passed in the full url.
+                        // We remove the host part and continue with the parsing.
+                        path = string.Concat(uri.AbsolutePath, uri.Query);
+                        break;
+                    // legacy rest api
+                    case "api.facebook.com":
+                    case "api-read.facebook.com":
+                    case "api-video.facebook.com":
+                    case "api.beta.facebook.com":
+                    case "api-read.beta.facebook.com":
+                    case "api-video.beta.facebook.com":
+                        // If the host is graph.facebook.com the user has passed in the full url.
+                        // We remove the host part and continue with the parsing.
+                        path = string.Concat(uri.AbsolutePath, uri.Query);
+                        isLegacyRestApi = true;
+                        break;
+                    default:
+                        // If the url is a valid absolute url we are passing the full url as the 'id'
+                        // parameter of the query. For example, if path is something like
+                        // http://www.microsoft.com/page.aspx?id=23 it means that we are trying
+                        // to make the request https://graph.facebook.com/http://www.microsoft.com/page.aspx%3Fid%3D23
+                        // So we are just going to return the path
+                        uri = null;
+                        break;
                 }
             }
 
-            Stream responseStream;
+            path = ParseUrlQueryString(path, parametersWithoutMediaObjects);
 
-            try
+            if (parametersWithoutMediaObjects.ContainsKey("format"))
             {
-                // responseStream is disposed by ProcessReponse method
-                responseStream = httpHelper.OpenRead();
-            }
-            catch (WebExceptionWrapper ex)
-            {
-                if (ex.GetResponse() == null)
-                    throw;
-
-                responseStream = httpHelper.OpenRead();
+                if (isLegacyRestApi)
+                    parametersWithoutMediaObjects["format"] = "json-strings";
+                else
+                    parametersWithoutMediaObjects.Remove("format");
             }
 
-            Exception exception;
-            string responseString;
-            bool cancelled;
-
-            var result = ProcessResponse(httpHelper, responseStream, resultType, out responseString, out exception, out cancelled);
-
-            // unlike async versions, we don't need to check responseStream.CanRead
-            // as we don't allow synchronous methods to be cancelled.
-            if (exception == null)
-                return result;
-
-            throw exception;
-
-        }
-
-        protected T Api<T>(string path, IDictionary<string, object> parameters, HttpMethod httpMethod)
-        {
-            return (T)Api(path, parameters, httpMethod, typeof(T));
-        }
-
-#endif
-
-        #region Async Api Calls
-
-        #region Get
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        public virtual void GetAsync(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            GetAsync(path, null);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public virtual void GetAsync(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            GetAsync(path, parameters, null);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="userToken">
-        /// The user token.
-        /// </param>
-        public virtual void GetAsync(string path, IDictionary<string, object> parameters, object userToken)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            ApiAsync(path, parameters, HttpMethod.Get, userToken);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public virtual void GetAsync(IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            GetAsync(null, parameters);
-        }
-
-        #endregion
-
-        #region Post
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public virtual void PostAsync(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            PostAsync(path, parameters, null);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="userToken">
-        /// The user token.
-        /// </param>
-        public virtual void PostAsync(string path, IDictionary<string, object> parameters, object userToken)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            ApiAsync(path, parameters, HttpMethod.Post, userToken);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public virtual void PostAsync(IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            PostAsync(null, parameters);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public virtual void PostAsync(string path, object parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            if (parameters is IDictionary<string, object>)
+            string restMethod = null;
+            if (parametersWithoutMediaObjects.ContainsKey("method"))
             {
-                PostAsync(path, (IDictionary<string, object>)parameters);
+                restMethod = (string)parametersWithoutMediaObjects["method"];
+                isLegacyRestApi = true;
             }
             else
             {
-                PostAsync(path, FacebookUtils.ToDictionary(parameters));
+                if (isLegacyRestApi)
+                    throw new InvalidOperationException("Legacy rest api 'method' required in parameters.");
             }
-        }
 
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="userToken">
-        /// The user token.
-        /// </param>
-        public virtual void PostAsync(string path, object parameters, object userToken)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            if (parameters is IDictionary<string, object>)
+            UriBuilder uriBuilder;
+            if (uri == null)
             {
-                PostAsync(path, (IDictionary<string, object>)parameters, userToken);
-            }
-            else
-            {
-                PostAsync(path, FacebookUtils.ToDictionary(parameters), userToken);
-            }
-        }
+                uriBuilder = new UriBuilder { Scheme = "https" };
 
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public virtual void PostAsync(object parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            if (parameters is IDictionary<string, object>)
-            {
-                PostAsync((IDictionary<string, object>)parameters);
-            }
-            else if (parameters is string)
-            {
-                PostAsync((string)parameters, null);
-            }
-            else
-            {
-                PostAsync(FacebookUtils.ToDictionary(parameters));
-            }
-        }
-
-        #endregion
-
-        #region Delete
-
-        /// <summary>
-        /// Makes an asynchronous DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        public virtual void DeleteAsync(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-            
-            DeleteAsync(path, null);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        public virtual void DeleteAsync(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            DeleteAsync(path, parameters, null);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="userToken">
-        /// The user token.
-        /// </param>
-        public virtual void DeleteAsync(string path, IDictionary<string, object> parameters, object userToken)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            ApiAsync(path, parameters, HttpMethod.Delete, userToken);
-        }
-
-        #endregion
-
-        private HttpWebRequestWrapper _httpWebRequest;
-
-        internal protected virtual void ApiAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken)
-        {
-            Stream input;
-
-            bool isBatchRequest = httpMethod == HttpMethod.Post && path == null && parameters.ContainsKey("batch");
-            bool isQuery = !isBatchRequest && httpMethod == HttpMethod.Get && path == "fql" && parameters != null && parameters.ContainsKey("__internal");
-
-            if (isQuery)
-            {
-                parameters.Remove("__internal");
-            }
-
-            IDictionary<string, FacebookMediaObject> mediaObjects;
-            var httpHelper = new HttpHelper(PrepareRequest(path, parameters, httpMethod, out input, out mediaObjects));
-            _httpWebRequest = httpHelper.HttpWebRequest;
-
-#if TPL
-            if (HttpWebRequestWrapperCreated != null)
-                HttpWebRequestWrapperCreated(this, new HttpWebRequestCreatedEventArgs(userToken, httpHelper.HttpWebRequest));
-#endif
-
-            bool notifyUploadProgressChanged = httpMethod == HttpMethod.Post && UploadProgressChanged != null && mediaObjects != null && mediaObjects.Count > 0;
-
-            httpHelper.OpenReadCompleted +=
-                (o, e) =>
+                if (isLegacyRestApi)
                 {
-                    FacebookApiEventArgs args = null;
-                    if (e.Cancelled)
-                    {
-                        args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest, isQuery);
-                    }
-                    else if (e.Error == null)
-                    {
-                        Exception ex;
-                        string responseString;
-                        bool cancelled;
-                        ProcessResponse(httpHelper, e.Result, null, out responseString, out ex, out cancelled);
-                        args = new FacebookApiEventArgs(ex, cancelled, userToken, responseString, isBatchRequest, isQuery);
-                    }
+                    if (string.IsNullOrEmpty(restMethod))
+                        throw new InvalidOperationException("Legacy rest api 'method' in parameters is null or empty.");
+                    if (restMethod.Equals("video.upload"))
+                        uriBuilder.Host = UseFacebookBeta ? "api-video.beta.facebook.com" : "api-video.facebook.com";
+                    else if (LegacyRestApiReadOnlyCalls.Contains(restMethod))
+                        uriBuilder.Host = UseFacebookBeta ? "api-read.beta.facebook.com" : "api-read.facebook.com";
                     else
-                    {
-                        if (e.Error is WebExceptionWrapper)
-                        {
-                            var webEx = (WebExceptionWrapper)e.Error;
-                            if (webEx.GetResponse() == null)
-                            {
-                                args = new FacebookApiEventArgs(webEx, false, userToken, null, isBatchRequest, isQuery);
-                            }
-                            else
-                            {
-                                httpHelper.OpenReadAsync();
-                                return;
-                            }
-                        }
-                    }
-
-                    OnCompleted(httpMethod, args);
-                };
-
-            if (input == null)
-            {
-                httpHelper.OpenReadAsync();
-            }
-            else
-            {
-                // we have a request body, so write it.
-                httpHelper.OpenWriteCompleted +=
-                    (o, e) =>
-                    {
-                        FacebookApiEventArgs args;
-                        if (e.Cancelled)
-                        {
-                            // input might still be open, so dispose it.
-                            DisposeInputRequestStream(input);
-                            args = new FacebookApiEventArgs(e.Error, true, userToken, null, isBatchRequest, isQuery);
-                        }
-                        else if (e.Error == null)
-                        {
-                            try
-                            {
-                                using (var output = e.Result)
-                                {
-                                    byte[] buffer = new byte[1024 * 4]; // 4 kb
-
-                                    int nread;
-                                    long totalBytesToSend = input.Length;
-                                    long bytesSent = 0;
-
-                                    while ((nread = input.Read(buffer, 0, buffer.Length)) != 0)
-                                    {
-                                        output.Write(buffer, 0, nread);
-
-                                        // notify upload progress changed if required.
-                                        if (notifyUploadProgressChanged)
-                                        {
-                                            bytesSent += nread;
-                                            OnUploadProgressChanged(new FacebookUploadProgressChangedEventArgs(0, 0, bytesSent, totalBytesToSend, ((int)(bytesSent * 100 / totalBytesToSend)), userToken));
-                                        }
-                                    }
-                                }
-
-                                httpHelper.OpenReadAsync();
-                                return;
-                            }
-                            catch (WebException ex)
-                            {
-                                args = new FacebookApiEventArgs(new WebExceptionWrapper(ex), ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest, isQuery);
-                            }
-                            catch (WebExceptionWrapper ex)
-                            {
-                                args = new FacebookApiEventArgs(ex, ex.Status == WebExceptionStatus.RequestCanceled, userToken, null, isBatchRequest, isQuery);
-                            }
-                            catch (Exception ex)
-                            {
-                                args = new FacebookApiEventArgs(ex, false, userToken, null, isBatchRequest, isQuery);
-                            }
-                            finally
-                            {
-                                DisposeInputRequestStream(input);
-                            }
-                        }
-                        else
-                        {
-                            DisposeInputRequestStream(input);
-                            if (e.Error is WebExceptionWrapper)
-                            {
-                                var ex = (WebExceptionWrapper)e.Error;
-                                if (ex.GetResponse() != null)
-                                {
-                                    httpHelper.OpenReadAsync();
-                                    return;
-                                }
-                            }
-                            args = new FacebookApiEventArgs(e.Error, false, userToken, null, isBatchRequest, isQuery);
-                        }
-
-                        OnCompleted(httpMethod, args);
-                    };
-
-                httpHelper.OpenWriteAsync();
-            }
-        }
-
-#if TPL
-
-        #region Get
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            return GetTaskAsync(path, null);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            return GetTaskAsync(null, parameters);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return GetTaskAsync(path, parameters, System.Threading.CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous GET request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException"/>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> GetTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return ApiTaskAsync(path, parameters, HttpMethod.Get, null, cancellationToken);
-        }
-
-        #endregion
-
-        #region Post
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters"); ;
-
-            return PostTaskAsync(null, parameters, System.Threading.CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return PostTaskAsync(path, parameters, System.Threading.CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return ApiTaskAsync(path, parameters, HttpMethod.Post, null, cancellationToken);
-        }
-
-#if ASYNC_AWAIT
-
-        /// <summary>
-        /// Makes an asynchronous POST request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="userToken">
-        /// The user token.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <param name="uploadProgress">
-        /// The upload progress.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> PostTaskAsync(string path, IDictionary<string, object> parameters, object userToken, System.Threading.CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
-        {
-            if (string.IsNullOrEmpty(path) && parameters == null)
-                throw new ArgumentException("At least path or parameters must be defined.");
-
-            return ApiTaskAsync(path, parameters, HttpMethod.Post, userToken, cancellationToken, uploadProgress);
-        }
-
-#endif
-
-        #endregion
-
-        #region Delete
-
-        /// <summary>
-        /// Makes an asynchronous DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        public virtual System.Threading.Tasks.Task<object> DeleteTaskAsync(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            return DeleteTaskAsync(path, null);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        public virtual System.Threading.Tasks.Task<object> DeleteTaskAsync(string path, IDictionary<string, object> parameters)
-        {
-            return DeleteTaskAsync(path, parameters, System.Threading.CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous DELETE request to the Facebook server.
-        /// </summary>
-        /// <param name="path">
-        /// The resource path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        /// <exception cref="Facebook.FacebookApiException" />
-        public virtual System.Threading.Tasks.Task<object> DeleteTaskAsync(string path, IDictionary<string, object> parameters, System.Threading.CancellationToken cancellationToken)
-        {
-            return ApiTaskAsync(path, parameters, HttpMethod.Delete, null, cancellationToken);
-        }
-
-        #endregion
-
-#if ASYNC_AWAIT
-
-        protected virtual System.Threading.Tasks.Task<object> ApiTaskAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken, System.Threading.CancellationToken cancellationToken)
-        {
-            return ApiTaskAsync(path, parameters, httpMethod, userToken, cancellationToken, null);
-        }
-#endif
-
-        protected virtual System.Threading.Tasks.Task<object> ApiTaskAsync(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, object userToken, System.Threading.CancellationToken cancellationToken
-#if ASYNC_AWAIT
-, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgres
-#endif
-)
-        {
-            var tcs = new System.Threading.Tasks.TaskCompletionSource<object>(userToken);
-            if (cancellationToken.IsCancellationRequested)
-            {
-                tcs.TrySetCanceled();
-            }
-            else
-            {
-                HttpWebRequestWrapper httpWebRequest = null;
-                EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
-                httpWebRequestCreatedHandler += (o, e) =>
-                                                    {
-                                                        if (e.UserState != tcs)
-                                                            return;
-                                                        httpWebRequest = e.HttpWebRequest;
-                                                    };
-
-                var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
-
-#if ASYNC_AWAIT
-                EventHandler<FacebookUploadProgressChangedEventArgs> uploadProgressHandler = null;
-                if (uploadProgres != null)
-                {
-
-                    uploadProgressHandler = (sender, e) =>
-                                            {
-                                                if (e.UserState != tcs)
-                                                    return;
-                                                uploadProgres.Report(new FacebookUploadProgressChangedEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.BytesSent, e.TotalBytesToSend, e.ProgressPercentage, userToken));
-                                            };
-
-                    UploadProgressChanged += uploadProgressHandler;
-                }
-#endif
-
-                EventHandler<FacebookApiEventArgs> handler = null;
-                handler = (sender, e) =>
-                        {
-                            FacebookUtils.TransferCompletionToTask(tcs, e, e.GetResultData, () =>
-                                                                                                {
-                                                                                                    if (ctr != null) ctr.Dispose();
-                                                                                                    RemoveTaskAsyncHandlers(httpMethod, handler);
-                                                                                                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
-#if ASYNC_AWAIT
-                                                                                                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
-#endif
-                                                                                                });
-                        };
-
-                if (httpMethod == HttpMethod.Get)
-                    GetCompleted += handler;
-                else if (httpMethod == HttpMethod.Post)
-                    PostCompleted += handler;
-                else if (httpMethod == HttpMethod.Delete)
-                    DeleteCompleted += handler;
-                else
-                    throw new ArgumentOutOfRangeException("httpMethod");
-
-                HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
-
-                try
-                {
-                    ApiAsync(path, parameters, httpMethod, tcs);
-                    if (cancellationToken.IsCancellationRequested && httpWebRequest != null) httpWebRequest.Abort();
-                }
-                catch
-                {
-                    RemoveTaskAsyncHandlers(httpMethod, handler);
-                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
-#if ASYNC_AWAIT
-                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
-#endif
-                    throw;
-                }
-            }
-
-            return tcs.Task;
-        }
-
-        private void RemoveTaskAsyncHandlers(HttpMethod httpMethod, EventHandler<FacebookApiEventArgs> handler)
-        {
-            if (httpMethod == HttpMethod.Get)
-                GetCompleted -= handler;
-            else if (httpMethod == HttpMethod.Post)
-                PostCompleted -= handler;
-            else if (httpMethod == HttpMethod.Delete)
-                DeleteCompleted -= handler;
-        }
-
-#endif
-
-        /// <summary>
-        /// Cancels the asynchronous request.
-        /// </summary>
-        public void CancelAsync()
-        {
-            lock (this)
-            {
-                if (_httpWebRequest != null)
-                    _httpWebRequest.Abort();
-            }
-        }
-
-        #endregion
-
-        #region Query (FQL)
-
-#if !(SILVERLIGHT || WINRT)
-
-        /// <summary>
-        /// Executes a FQL query.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL query.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The FQL query result.
-        /// </returns>
-        public virtual object Query(string fql)
-        {
-            if (string.IsNullOrEmpty(fql))
-                throw new ArgumentNullException("fql");
-
-            var parameters = new Dictionary<string, object>();
-            parameters["q"] = fql;
-
-            var result = (IDictionary<string, object>)Get("fql", parameters);
-            return result["data"];
-
-            /*
-            var parameters = new Dictionary<string, object>();
-            parameters["query"] = fql;
-            parameters["method"] = "fql.query";
-
-            return Get(parameters);
-            */
-        }
-
-        /// <summary>
-        /// Executes a FQL multiquery.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL queries.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// A collection of the FQL query results.
-        /// </returns>
-        public virtual object Query(params string[] fql)
-        {
-            if (fql == null)
-                throw new ArgumentNullException("fql");
-            if (fql.Length == 0)
-                throw new ArgumentException("At least one fql query required.", "fql");
-
-            var queryDict = new Dictionary<string, object>();
-
-            for (int i = 0; i < fql.Length; i++)
-            {
-                queryDict.Add(string.Concat("query", i), fql[i]);
-            }
-
-            var parameters = new Dictionary<string, object>();
-            parameters["q"] = queryDict;
-
-            var result = (IDictionary<string, object>)Get("fql", parameters);
-            return result["data"];
-
-            /*
-            var parameters = new Dictionary<string, object>();
-            parameters["queries"] = queryDict;
-            parameters["method"] = "fql.multiquery";
-
-            return Get(parameters);
-            */
-        }
-
-#endif
-
-        /// <summary>
-        /// Executes a FQL query asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL query.
-        /// </param>
-        public virtual void QueryAsync(string fql)
-        {
-            if (string.IsNullOrEmpty(fql))
-                throw new ArgumentNullException("fql");
-            
-            QueryAsync(fql, null);
-        }
-
-        /// <summary>
-        /// Executes a FQL query asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL query.
-        /// </param>
-        /// <param name="userToken">
-        /// The user token.
-        /// </param>
-        public virtual void QueryAsync(string fql, object userToken)
-        {
-            if (string.IsNullOrEmpty(fql))
-                throw new ArgumentNullException("fql");
-
-            var parameters = new Dictionary<string, object>();
-            parameters["q"] = fql;
-            parameters["__internal"] = true;
-
-            GetAsync("fql", parameters, userToken);
-
-            /*            
-            var parameters = new Dictionary<string, object>();
-            parameters["query"] = fql;
-            parameters["method"] = "fql.query";
-
-            GetAsync(null, parameters, userToken);
-            */
-        }
-
-        /// <summary>
-        /// Executes a FQL multiquery asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL queries.
-        /// </param>
-        public virtual void QueryAsync(string[] fql)
-        {
-            if (fql == null)
-                throw new ArgumentNullException("fql");
-            if (fql.Length == 0)
-                throw new ArgumentException("At least one fql query required.", "fql");
-
-            QueryAsync(fql, null);
-        }
-
-        /// <summary>
-        /// Executes a FQL multiquery asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL queries.
-        /// </param>
-        /// <param name="userToken">
-        /// The user Token.
-        /// </param>
-        public virtual void QueryAsync(string[] fql, object userToken)
-        {
-            if (fql == null)
-                throw new ArgumentNullException("fql");
-            if (fql.Length == 0)
-                throw new ArgumentException("At least one fql query required.", "fql");
-
-            var queryDict = new Dictionary<string, object>();
-
-            for (int i = 0; i < fql.Length; i++)
-            {
-                queryDict.Add(string.Concat("query", i), fql[i]);
-            }
-
-            var parameters = new Dictionary<string, object>();
-            parameters["q"] = queryDict;
-            parameters["__internal"] = true;
-
-            GetAsync("fql", parameters, userToken);
-
-            /*
-            var parameters = new Dictionary<string, object>();
-            parameters["queries"] = queryDict;
-            parameters["method"] = "fql.multiquery";
-
-            GetAsync(null, parameters, userToken);
-            */
-        }
-
-
-#if TPL
-
-        /// <summary>
-        /// Executes a FQL query asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL query.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The FQL query result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string fql)
-        {
-            if (string.IsNullOrEmpty(fql))
-                throw new ArgumentNullException("fql");
-
-            return QueryTaskAsync(fql, System.Threading.CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Executes a FQL query asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL query.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// The FQL query result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string fql, System.Threading.CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrEmpty(fql))
-                throw new ArgumentNullException("fql");
-
-            var parameters = new Dictionary<string, object>();
-            parameters["q"] = fql;
-            parameters["__internal"] = true;
-
-            return GetTaskAsync("fql", parameters, cancellationToken);
-
-            /*
-            var parameters = new Dictionary<string, object>();
-            parameters["query"] = fql;
-            parameters["method"] = "fql.query";
-
-            return GetTaskAsync(null, parameters, cancellationToken);
-            */
-        }
-
-        /// <summary>
-        /// Executes a FQL multiquery asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL queries.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// A collection of the FQL query results.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(params string[] fql)
-        {
-            if (fql == null)
-                throw new ArgumentNullException("fql");
-            if (fql.Length == 0)
-                throw new ArgumentException("At least one fql query required.", "fql");
-
-            return QueryTaskAsync(fql, System.Threading.CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Executes a FQL multiquery asynchronously.
-        /// </summary>
-        /// <param name="fql">
-        /// The FQL queries.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Facebook.FacebookApiException" />
-        /// <returns>
-        /// A collection of the FQL query results.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> QueryTaskAsync(string[] fql, System.Threading.CancellationToken cancellationToken)
-        {
-            if (fql == null)
-                throw new ArgumentNullException("fql");
-            if (fql.Length == 0)
-                throw new ArgumentException("At least one fql query required.", "fql");
-
-            var queryDict = new Dictionary<string, object>();
-
-            for (int i = 0; i < fql.Length; i++)
-            {
-                queryDict.Add(string.Concat("query", i), fql[i]);
-            }
-
-            var parameters = new Dictionary<string, object>();
-            parameters["q"] = queryDict;
-            parameters["__internal"] = true;
-
-            return GetTaskAsync("fql", parameters, cancellationToken);
-        }
-
-#endif
-
-        #endregion
-
-        #region Batch Requests
-
-#if !(SILVERLIGHT || WINRT)
-
-        /// <summary>
-        /// Executes a batch request.
-        /// </summary>
-        /// <param name="batchParameters">
-        /// The batch parameters.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual object Batch(params FacebookBatchParameter[] batchParameters)
-        {
-            if (batchParameters == null)
-                throw new ArgumentNullException("batchParameters");
-            if (batchParameters.Length == 0)
-                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
-
-            return ProcessBatchResult(Post(PrepareBatchParameter(batchParameters)));
-        }
-
-#endif
-
-        /// <summary>
-        /// Executes a batch request asynchronously.
-        /// </summary>
-        /// <param name="batchParameters">
-        /// The batch parameters.
-        /// </param>
-        /// <param name="userToken">
-        /// The user token.
-        /// </param>
-        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
-        {
-            if (batchParameters == null)
-                throw new ArgumentNullException("batchParameters");
-            if (batchParameters.Length == 0)
-                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
-
-            PostAsync(null, PrepareBatchParameter(batchParameters), userToken);
-        }
-
-        /// <summary>
-        /// Executes a batch request asynchronously.
-        /// </summary>
-        /// <param name="batchParameters">
-        /// The batch parameters.
-        /// </param>
-        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters)
-        {
-            if (batchParameters == null)
-                throw new ArgumentNullException("batchParameters");
-            if (batchParameters.Length == 0)
-                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
-
-            BatchAsync(batchParameters, null);
-        }
-
-
-#if TPL
-
-        /// <summary>
-        /// Executes a batch request.
-        /// </summary>
-        /// <param name="batchParameters">
-        /// The batch parameters.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(params FacebookBatchParameter[] batchParameters)
-        {
-            return BatchTaskAsync(batchParameters, System.Threading.CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Executes a batch request.
-        /// </summary>
-        /// <param name="batchParameters">
-        /// The batch parameters.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, System.Threading.CancellationToken cancellationToken)
-        {
-            if (batchParameters == null)
-                throw new ArgumentNullException("batchParameters");
-            if (batchParameters.Length == 0)
-                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
-
-            return BatchTaskAsync(batchParameters, null, System.Threading.CancellationToken.None);
-        }
-
-#if ASYNC_AWAIT
-
-        /// <summary>
-        /// Executes a batch request.
-        /// </summary>
-        /// <param name="batchParameters">
-        /// The batch parameters.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, System.Threading.CancellationToken cancellationToken)
-        {
-            return BatchTaskAsync(batchParameters, userToken, cancellationToken, null);
-        }
-#endif
-
-        /// <summary>
-        /// Executes a batch request.
-        /// </summary>
-        /// <param name="batchParameters">
-        /// The batch parameters.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// The cancellation token.
-        /// </param>
-        /// <param name="uploadProgres">
-        /// The upload progress.
-        /// </param>
-        /// <returns>
-        /// The json result.
-        /// </returns>
-        public virtual System.Threading.Tasks.Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, System.Threading.CancellationToken cancellationToken
-#if ASYNC_AWAIT
-, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgres
-#endif
-)
-        {
-            if (batchParameters == null)
-                throw new ArgumentNullException("batchParameters");
-            if (batchParameters.Length == 0)
-                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
-
-            var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
-            if (cancellationToken.IsCancellationRequested)
-            {
-                tcs.TrySetCanceled();
-            }
-            else
-            {
-                HttpWebRequestWrapper httpWebRequest = null;
-                EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
-                httpWebRequestCreatedHandler += (o, e) =>
-                                                        {
-                                                            if (e.UserState != tcs)
-                                                                return;
-                                                            httpWebRequest = e.HttpWebRequest;
-                                                        };
-
-                var ctr = cancellationToken.Register(() => { if (httpWebRequest != null) httpWebRequest.Abort(); });
-
-#if ASYNC_AWAIT
-                EventHandler<FacebookUploadProgressChangedEventArgs> uploadProgressHandler = null;
-                if (uploadProgres != null)
-                {
-
-                    uploadProgressHandler = (sender, e) =>
-                    {
-                        if (e.UserState != tcs)
-                            return;
-                        uploadProgres.Report(new FacebookUploadProgressChangedEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.BytesSent, e.TotalBytesToSend, e.ProgressPercentage, userToken));
-                    };
-
-                    UploadProgressChanged += uploadProgressHandler;
-                }
-#endif
-
-                EventHandler<FacebookApiEventArgs> handler = null;
-                handler = (sender, e) => FacebookUtils.TransferCompletionToTask(tcs, e, e.GetResultData, () =>
-                                                                                        {
-                                                                                            if (ctr != null) ctr.Dispose();
-                                                                                            PostCompleted -= handler;
-                                                                                            HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
-#if ASYNC_AWAIT
-                                                                                            if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
-#endif
-                                                                                        });
-                PostCompleted += handler;
-                HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
-
-                try
-                {
-                    BatchAsync(batchParameters, tcs);
-                    if (cancellationToken.IsCancellationRequested && httpWebRequest != null) httpWebRequest.Abort();
-                }
-                catch
-                {
-                    PostCompleted -= handler;
-                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
-#if ASYNC_AWAIT
-                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
-#endif
-                    throw;
-                }
-            }
-
-            return tcs.Task;
-        }
-
-#endif
-
-        internal IDictionary<string, object> PrepareBatchParameter(FacebookBatchParameter[] batchParameters)
-        {
-            if (batchParameters == null)
-                throw new ArgumentNullException("batchParameters");
-            if (batchParameters.Length == 0)
-                throw new ArgumentException("At least one batchParameter required.", "batchParameters");
-
-            var actualParameters = new Dictionary<string, object>();
-            var parameters = new List<object>();
-
-            foreach (var parameter in batchParameters)
-            {
-                IDictionary<string, FacebookMediaObject> mediaObjects;
-                parameters.Add(ToParameters(parameter, out mediaObjects));
-
-                if (mediaObjects != null)
-                {
-                    foreach (var facebookMediaObject in mediaObjects)
-                    {
-                        actualParameters.Add(facebookMediaObject.Key, facebookMediaObject.Value);
-                    }
-                }
-            }
-
-            actualParameters["batch"] = JsonSerializer.Current.SerializeObject(parameters);
-
-            return actualParameters;
-        }
-
-        /// <summary>
-        /// Converts the facebook batch to POST parameters.
-        /// </summary>
-        /// <param name="batchParameter">
-        /// The batch parameter.
-        /// </param>
-        /// <returns>
-        /// The post parameters.
-        /// </returns>
-        protected IDictionary<string, object> ToParameters(FacebookBatchParameter batchParameter, out IDictionary<string, FacebookMediaObject> mediaObjects)
-        {
-            if (batchParameter == null)
-                throw new ArgumentNullException("batchParameter");
-
-            mediaObjects = null;
-            IDictionary<string, object> returnResult;
-
-            var defaultParameters = new Dictionary<string, object>();
-
-            defaultParameters["method"] = FacebookUtils.ConvertToStringForce(batchParameter.HttpMethod);
-
-            IDictionary<string, object> parameters;
-            if (batchParameter.Parameters == null)
-            {
-                parameters = new Dictionary<string, object>();
-            }
-            else
-            {
-                if (batchParameter.Parameters is IDictionary<string, object>)
-                {
-                    parameters = (IDictionary<string, object>)batchParameter.Parameters;
-                    mediaObjects = ExtractMediaObjects(parameters);
-                    if (mediaObjects.Count == 1)
-                    {
-                        defaultParameters["attached_files"] = mediaObjects.ElementAt(0).Key;
-                    }
+                        uriBuilder.Host = UseFacebookBeta ? "api.beta.facebook.com" : "api.facebook.com";
                 }
                 else
                 {
-                    parameters = FacebookUtils.ToDictionary(batchParameter.Parameters);
+                    if (httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase) && path.EndsWith("/videos"))
+                        uriBuilder.Host = UseFacebookBeta ? "graph-video.beta.facebook.com" : "graph-video.facebook.com";
+                    else
+                        uriBuilder.Host = UseFacebookBeta ? "graph.beta.facebook.com" : "graph.facebook.com";
                 }
-            }
-
-            var path = FacebookUtils.ParseQueryParametersToDictionary(batchParameter.Path, parameters);
-            string queryString = string.Empty;
-            if (batchParameter.HttpMethod == HttpMethod.Get)
-            {
-                queryString = FacebookUtils.ToJsonQueryString(parameters);
             }
             else
             {
-                defaultParameters["body"] = FacebookUtils.ToJsonQueryString(parameters);
+                uriBuilder = new UriBuilder(uri.Host, uri.Scheme);
             }
 
-            var relativeUrl = new StringBuilder(path);
-            if (!string.IsNullOrEmpty(queryString))
-            {
-                relativeUrl.AppendFormat("?{0}", queryString);
-            }
-
-            defaultParameters["relative_url"] = relativeUrl.ToString();
-
-            var data = batchParameter.Data;
-            if (data == null)
-            {
-                returnResult = defaultParameters;
-            }
-            else
-            {
-                if (!(data is IDictionary<string, object>))
-                {
-                    data = FacebookUtils.ToDictionary(batchParameter.Data);
-                }
-
-                returnResult = FacebookUtils.Merge(defaultParameters, (IDictionary<string, object>)data);
-            }
-
-            return returnResult;
-        }
-
-        /// <summary>
-        /// Processes the batch result.
-        /// </summary>
-        /// <param name="result">
-        /// The json result.
-        /// </param>
-        /// <returns>
-        /// Batch result.
-        /// </returns>
-        internal static object ProcessBatchResult(object result)
-        {
-            if (result == null)
-                throw new ArgumentNullException("result");
-
-            IList<object> list = new JsonArray();
-
-            var resultList = (IList<object>)result;
-
-            foreach (var row in resultList)
-            {
-                if (row == null)
-                {
-                    // row is null when omit_response_on_success = true
-                    list.Add(null);
-                }
-                else
-                {
-                    var body = (string)((IDictionary<string, object>)row)["body"];
-                    object jsonObject;
-
-                    var exception = ExceptionFactory.GetGraphException(body, out jsonObject) ??
-                                    ExceptionFactory.GetRestException(jsonObject);
-
-                    list.Add(exception ?? jsonObject);
-                }
-            }
-
-            return list;
-        }
-
-        #endregion
-
-        private HttpWebRequestWrapper PrepareRequest(string path, IDictionary<string, object> parameters, HttpMethod httpMethod, out Stream input, out IDictionary<string, FacebookMediaObject> mediaObjects)
-        {
-            parameters = AddReturnSslResourceIfRequired(parameters, IsSecureConnection);
-            mediaObjects = null;
-
-            // Authenticate request
-            if (!parameters.ContainsKey("access_token") && !string.IsNullOrEmpty(AccessToken))
-                parameters["access_token"] = AccessToken;
-
-            var urlBuilder = new UriBuilder(BuildRootUrl(httpMethod, path, parameters));
+            uriBuilder.Path = path;
 
             string contentType = null;
             var queryString = new StringBuilder();
 
-            if (httpMethod == HttpMethod.Get)
+            if (parametersWithoutMediaObjects.ContainsKey("access_token"))
             {
-                // for GET, all parameters goes as querystrings
-                input = null;
-                queryString.Append(FacebookUtils.ToJsonQueryString(parameters));
+                var accessToken = parametersWithoutMediaObjects["access_token"];
+                if (accessToken == null || (accessToken is string && (string.IsNullOrEmpty((string)accessToken))))
+                    parametersWithoutMediaObjects.Remove("access_token");
+                else
+                    queryString.AppendFormat("access_token={0}&", accessToken);
+            }
+
+            if (!httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase))
+            {
+                // for GET,DELETE
+                if (mediaObjects.Count > 0 && mediaStreams.Count > 0)
+                    throw new InvalidOperationException("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.");
+
+#if SILVERLIGHT
+                if (httpMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+                    queryString.Append("method=delete&");
+#endif
+                foreach (var kvp in parametersWithoutMediaObjects)
+                    queryString.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
             }
             else
             {
-                if (parameters.ContainsKey("access_token"))
-                {
-                    queryString.AppendFormat("access_token={0}", parameters["access_token"]);
-                    parameters.Remove("access_token");
-                }
-
-#if SILVERLIGHT
-                if (httpMethod == HttpMethod.Delete)
-                {
-                    if (queryString.Length > 0)
-                        queryString.Append("&");
-                    queryString.Append("method=delete");
-                }
-#endif
-
-                mediaObjects = ExtractMediaObjects(parameters);
-                if (mediaObjects.Count == 0)
+                if (mediaObjects.Count == 0 && mediaStreams.Count == 0)
                 {
                     contentType = "application/x-www-form-urlencoded";
-                    var data = Encoding.UTF8.GetBytes(FacebookUtils.ToJsonQueryString(parameters));
-                    input = data.Length == 0 ? null : new MemoryStream(data);
+                    var sb = new StringBuilder();
+                    foreach (var kvp in parametersWithoutMediaObjects)
+                        sb.AppendFormat("{0}={1}", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+                    input = sb.Length == 0 ? null : new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString()));
                 }
                 else
                 {
-                    string boundary = DateTime.Now.Ticks.ToString("x", CultureInfo.InvariantCulture);
+                    string boundary = Boundary == null
+                                          ? DateTime.UtcNow.Ticks.ToString("x", CultureInfo.InvariantCulture) // for unit testing
+                                          : Boundary();
+
                     contentType = string.Concat("multipart/form-data; boundary=", boundary);
-                    input = BuildMediaObjectRequestBody(parameters, mediaObjects, boundary);
+
+                    var streams = new List<Stream>();
+
+                    // Build up the post message header
+                    var sb = new StringBuilder();
+
+                    foreach (var kvp in parametersWithoutMediaObjects)
+                    {
+                        sb.Append(MultiPartFormPrefix).Append(boundary).Append(MultiPartNewLine);
+                        sb.Append("Content-Disposition: form-data; name=\"").Append(kvp.Key).Append("\"");
+                        sb.Append(MultiPartNewLine).Append(MultiPartNewLine);
+                        sb.Append(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode));
+                        sb.Append(MultiPartNewLine);
+                    }
+
+                    streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString())));
+
+                    foreach (var facebookMediaObject in mediaObjects)
+                    {
+                        var sbMediaObject = new StringBuilder();
+                        var mediaObject = facebookMediaObject.Value;
+
+                        if (mediaObject.ContentType == null || mediaObject.GetValue() == null || string.IsNullOrEmpty(mediaObject.FileName))
+                            throw new InvalidOperationException(AttachmentMustHavePropertiesSetError);
+
+                        sbMediaObject.Append(MultiPartFormPrefix).Append(boundary).Append(MultiPartNewLine);
+                        sbMediaObject.Append("Content-Disposition: form-data; name=\"").Append(facebookMediaObject.Key).Append("\"; filename=\"").Append(mediaObject.FileName).Append("\"").Append(MultiPartNewLine);
+                        sbMediaObject.Append("Content-Type: ").Append(mediaObject.ContentType).Append(MultiPartNewLine).Append(MultiPartNewLine);
+
+                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sbMediaObject.ToString())));
+
+                        byte[] fileData = mediaObject.GetValue();
+
+                        if (fileData == null)
+                            throw new InvalidOperationException(AttachmentValueIsNull);
+
+                        streams.Add(new MemoryStream(fileData));
+                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
+                    }
+
+                    foreach (var facebookMediaStream in mediaStreams)
+                    {
+                        var sbMediaStream = new StringBuilder();
+                        var mediaStream = facebookMediaStream.Value;
+
+                        if (mediaStream.ContentType == null || mediaStream.GetValue() == null || string.IsNullOrEmpty(mediaStream.FileName))
+                            throw new InvalidOperationException(AttachmentMustHavePropertiesSetError);
+
+                        sbMediaStream.Append(MultiPartFormPrefix).Append(boundary).Append(MultiPartNewLine);
+                        sbMediaStream.Append("Content-Disposition: form-data; name=\"").Append(facebookMediaStream.Key).Append("\"; filename=\"").Append(mediaStream.FileName).Append("\"").Append(MultiPartNewLine);
+                        sbMediaStream.Append("Content-Type: ").Append(mediaStream.ContentType).Append(MultiPartNewLine).Append(MultiPartNewLine);
+
+                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sbMediaStream.ToString())));
+
+                        var stream = mediaStream.GetValue();
+
+                        if (stream == null)
+                            throw new InvalidOperationException(AttachmentValueIsNull);
+
+                        streams.Add(stream);
+                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
+                    }
+
+                    streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(String.Concat(MultiPartNewLine, MultiPartFormPrefix, boundary, MultiPartFormPrefix, MultiPartNewLine))));
+                    input = new CombinationStream.CombinationStream(streams);
                 }
             }
-            
-            urlBuilder.Query = queryString.ToString();
 
-            var httpWebRequest = CreateHttpWebRequest(urlBuilder.Uri);
-            httpWebRequest.Method = FacebookUtils.ConvertToString(httpMethod);
-            httpWebRequest.ContentType = contentType;
+            if (queryString.Length > 0)
+                queryString.Length--;
+
+            uriBuilder.Query = queryString.ToString();
+
+            var request = HttpWebRequestFactory == null
+                             ? new HttpWebRequestWrapper((System.Net.HttpWebRequest)System.Net.WebRequest.Create(uriBuilder.Uri))
+                             : HttpWebRequestFactory(uriBuilder.Uri);
+            request.Method = httpMethod;
+            request.ContentType = contentType;
+            // request.AllowAutoRedirect = false;
+
+#if !(SILVERLIGHT || WINRT)
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+#endif
 
             if (input != null)
-                httpWebRequest.TrySetContentLength(input.Length);
+                request.TrySetContentLength(input.Length);
 
-            return httpWebRequest;
+            return new HttpHelper(request);
         }
 
-        private object ProcessResponse(HttpHelper httpHelper, Stream responseStream, Type resultType, out string responseStr, out Exception exception, out bool cancelled)
+        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType, bool isLegacyRestApi)
         {
-            responseStr = null;
-            cancelled = true;
-
             try
             {
-                using (var stream = responseStream)
+                var response = httpHelper.HttpWebResponse;
+                var json = new JsonObject();
+                if (response == null)
+                    throw new InvalidOperationException(UnknownResponse);
+
+                var headers = new JsonObject();
+                foreach (var headerName in response.Headers.AllKeys)
+                    headers[headerName] = response.Headers[headerName];
+
+                json["headers"] = headers;
+                json["content"] = responseString;
+
+                if (response.ContentType.Contains("application/json"))
                 {
-                    using (var reader = new StreamReader(stream))
+                    json["body"] = DeserializeJson(responseString, resultType);
+                }
+                else if (!isLegacyRestApi && response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
+                {
+                    if (response.ResponseUri.AbsolutePath == "/oauth/access_token")
                     {
-                        responseStr = reader.ReadToEnd();
+                        var body = new JsonObject();
+                        foreach (var kvp in responseString.Split('&'))
+                        {
+                            var split = kvp.Split('=');
+                            if (split.Length == 2)
+                                body[split[0]] = split[1];
+                        }
+
+                        if (body.ContainsKey("expires"))
+                            body["expires"] = Convert.ToInt64(body["expires"]);
+
+                        json["body"] = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
+
+                        return json;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(UnknownResponse);
                     }
                 }
+                else
+                {
+                    throw new InvalidOperationException(UnknownResponse);
+                }
 
-                cancelled = false;
+                #region Check for exceptions
 
-                object json;
-                exception = ExceptionFactory.GetException(DomainMaps, httpHelper.HttpWebRequest.RequestUri, responseStr, httpHelper.InnerException, out json);
+                if (isLegacyRestApi)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
 
-                if (exception != null)
-                    return null;
+                #endregion
 
-                // ExceptionFactory already deserialized json, so use that instead incase resultType is null
-                if (resultType != null)
-                    json = JsonSerializer.Current.DeserializeObject(responseStr, resultType);
-
-                return json;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                exception = ex;
-                return null;
-            }
-        }
-
-        private void DisposeInputRequestStream(Stream input)
-        {
-            if (input == null)
-            {
-                return;
-            }
-
-            if (input is CombinationStream.CombinationStream)
-            {
-                var cs = (CombinationStream.CombinationStream)input;
-                foreach (var stream in cs.InternalStreams)
-                    stream.Dispose();
-                cs.Dispose();
-            }
-            else
-            {
-                input.Dispose();
+                if (httpHelper.InnerException != null)
+                    throw httpHelper.InnerException;
+                throw;
             }
         }
 
         /// <summary>
-        /// Creates the http web request.
+        /// Converts the parameters to IDictionary&lt;string,object&gt;
         /// </summary>
-        /// <param name="url">The url of the http web request.</param>
-        /// <returns>The http helper.</returns>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        protected virtual HttpWebRequestWrapper CreateHttpWebRequest(Uri url)
+        /// <param name="parameters">The parameter to convert.</param>
+        /// <param name="mediaObjects">The extracted Facebook media objects.</param>
+        /// <param name="mediaStreams">The extracted Facebook media streams.</param>
+        /// <returns>The converted dictionary.</returns>
+        protected virtual IDictionary<string, object> ToDictionary(object parameters, out IDictionary<string, FacebookMediaObject> mediaObjects, out IDictionary<string, FacebookMediaStream> mediaStreams)
         {
-            if (url == null)
-                throw new ArgumentNullException("url");
+            mediaObjects = new Dictionary<string, FacebookMediaObject>();
+            mediaStreams = new Dictionary<string, FacebookMediaStream>();
 
-            return new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(url));
-        }
+            var dictionary = parameters as IDictionary<string, object>;
 
-        internal static IDictionary<string, object> AddReturnSslResourceIfRequired(IDictionary<string, object> parameters, bool isSecuredConnection)
-        {
-            var mergedParameters = FacebookUtils.Merge(null, parameters);
+            // todo: IEnumerable<KeyValuePair<T1,T2>> and IEnumerable<Tuple<T1, T2>>
 
-            if (isSecuredConnection && !mergedParameters.ContainsKey(FacebookUtils.Resources.return_ssl_resources))
+            if (dictionary == null)
             {
-                mergedParameters[FacebookUtils.Resources.return_ssl_resources] = true;
+                if (parameters == null)
+                    return null;
+
+                // convert anonymous objects / unknown objects to IDictionary<string, object>
+                dictionary = new Dictionary<string, object>();
+#if TYPEINFO
+                foreach (var propertyInfo in parameters.GetType().GetTypeInfo().DeclaredProperties.Where(p => p.CanRead))
+                {
+                    dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
+                }
+#else
+                foreach (var propertyInfo in parameters.GetType().GetProperties())
+                {
+                    if (!propertyInfo.CanRead) continue;
+                    dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
+                }
+#endif
+                return dictionary;
             }
 
-            return mergedParameters;
-        }
-
-        #endregion
-
-        private Uri BuildRootUrl(HttpMethod httpMethod, string path, IDictionary<string, object> parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            path = FacebookUtils.ParseQueryParametersToDictionary(path, parameters);
-
-            if (parameters.ContainsKey("method"))
-            {
-                // legacy rest api
-                if (string.IsNullOrEmpty((string)parameters["method"]))
-                    throw new ArgumentException(FacebookUtils.Resources.ParameterMethodValueRequired);
-
-                // Set the format to json
-                parameters["format"] = "json-strings";
-                return GetApiUrl(parameters["method"].ToString());
-            }
-
-            // graph api
-            return !string.IsNullOrEmpty(path) && httpMethod == HttpMethod.Post && path.EndsWith("/videos")
-                       ? GetUrl(FacebookUtils.DOMAIN_MAP_GRAPH_VIDEO, path, null)
-                       : GetUrl(FacebookUtils.DOMAIN_MAP_GRAPH, path, null);
-        }
-
-        internal static IDictionary<string, FacebookMediaObject> ExtractMediaObjects(IDictionary<string, object> parameters)
-        {
-            var mediaObjects = new Dictionary<string, FacebookMediaObject>();
-
-            if (parameters == null)
-                return mediaObjects;
-
-            foreach (var parameter in parameters)
+            foreach (var parameter in dictionary)
             {
                 if (parameter.Value is FacebookMediaObject)
                     mediaObjects.Add(parameter.Key, (FacebookMediaObject)parameter.Value);
+                else if (parameter.Value is FacebookMediaStream)
+                    mediaStreams.Add(parameter.Key, (FacebookMediaStream)parameter.Value);
             }
 
             foreach (var mediaObject in mediaObjects)
-                parameters.Remove(mediaObject.Key);
+                dictionary.Remove(mediaObject.Key);
 
-            return mediaObjects;
+            foreach (var mediaStream in mediaStreams)
+                dictionary.Remove(mediaStream.Key);
+
+            return dictionary;
         }
 
-        internal Stream BuildMediaObjectRequestBody(IDictionary<string, object> parameters, IDictionary<string, FacebookMediaObject> mediaObjects, string boundary)
+        /// <summary>
+        /// Converts the parameters to http query.
+        /// </summary>
+        /// <param name="parameter">The parameter to convert.</param>
+        /// <param name="encode">Url encoder function.</param>
+        /// <returns>The http query.</returns>
+        /// <remarks>
+        /// The result is not url encoded. The caller needs to take care of url encoding the result.
+        /// </remarks>
+        protected virtual string BuildHttpQuery(object parameter, Func<string, string> encode)
+        {
+            if (parameter == null)
+                return "null";
+            if (parameter is string)
+                return (string)parameter;
+            if (parameter is bool)
+                return (bool)parameter ? "true" : "false";
+
+            if (parameter is int || parameter is long ||
+                parameter is float || parameter is double || parameter is decimal ||
+                parameter is byte || parameter is sbyte ||
+                parameter is short || parameter is ushort ||
+                parameter is uint || parameter is ulong)
+                return parameter.ToString();
+
+            // todo: IEnumerable<KeyValuePair<T1,T2>> and IEnumerable<Tuple<T1, T2>>
+
+            var sb = new StringBuilder();
+            if (parameter is IEnumerable<KeyValuePair<string, object>>)
+            {
+                foreach (var kvp in (IEnumerable<KeyValuePair<string, object>>)parameter)
+                    sb.AppendFormat("{0}={1}&", encode(kvp.Key), encode(BuildHttpQuery(kvp.Value, encode)));
+            }
+            else if (parameter is IEnumerable<KeyValuePair<string, string>>)
+            {
+                foreach (var kvp in (IEnumerable<KeyValuePair<string, string>>)parameter)
+                    sb.AppendFormat("{0}={1}&", encode(kvp.Key), encode(kvp.Value));
+            }
+            else if (parameter is IEnumerable)
+            {
+                foreach (var obj in (IEnumerable)parameter)
+                    sb.AppendFormat("{0},", encode(BuildHttpQuery(obj, encode)));
+            }
+            else if (parameter is DateTime)
+            {
+                return DateTimeConvertor.ToIso8601FormattedDateTime((DateTime)parameter);
+            }
+            else
+            {
+                IDictionary<string, FacebookMediaObject> mediaObjects;
+                IDictionary<string, FacebookMediaStream> mediaStreams;
+                var dict = ToDictionary(parameter, out mediaObjects, out mediaStreams);
+                if (mediaObjects.Count > 0 || mediaStreams.Count > 0)
+                    throw new InvalidOperationException("Parameter can contain attachements (FacebookMediaObject/FacebookMediaStream) only in the top most level.");
+                return BuildHttpQuery(dict, encode);
+            }
+
+            if (sb.Length > 0)
+                sb.Length--;
+
+            return sb.ToString();
+        }
+
+        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
-            if (mediaObjects == null)
-                throw new ArgumentNullException("mediaObjects");
-            if (mediaObjects.Count == 0)
-                throw new ArgumentException("MediaObjects empty.", "mediaObjects");
-            if (string.IsNullOrEmpty(boundary))
-                throw new ArgumentNullException("boundary");
 
-            var streams = new List<Stream>();
+            if (string.IsNullOrEmpty(path))
+                return string.Empty;
 
-            // Build up the post message header
-            var sb = new StringBuilder();
+            // Clean the path, remove leading '/'.
+            if (path.Length > 0 && path[0] == '/')
+                path = path.Substring(1);
 
-            foreach (var kvp in parameters)
+            // If the url does not have a host it means we are using a url
+            // like /me or /me?fields=first_name,last_name so we want to
+            // remove the querystring info and add it to parameters
+            var parts = path.Split(new[] { '?' });
+            path = parts[0]; // Set the path to only the path portion of the url
+
+            if (parts.Length == 2 && parts[1] != null)
             {
-                sb.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
-                sb.Append("Content-Disposition: form-data; name=\"").Append(kvp.Key).Append("\"");
-                sb.Append(FacebookUtils.MultiPartNewLine);
-                sb.Append(FacebookUtils.MultiPartNewLine);
+                // Add the query string values to the parameters dictionary
+                var qs = parts[1];
+                var qsItems = qs.Split('&');
 
-                // format object As json And Remove leading and trailing parenthesis
-                string jsonValue = FacebookUtils.ToJsonString(kvp.Value);
-
-                sb.Append(jsonValue);
-                sb.Append(FacebookUtils.MultiPartNewLine);
-            }
-
-            streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString())));
-
-            foreach (var facebookMediaObject in mediaObjects)
-            {
-                var sbMediaObject = new StringBuilder();
-                var mediaObject = facebookMediaObject.Value;
-
-                if (mediaObject.ContentType == null || mediaObject.GetValue() == null || string.IsNullOrEmpty(mediaObject.FileName))
+                foreach (var kvp in qsItems)
                 {
-                    throw new InvalidOperationException(FacebookUtils.Resources.MediaObjectMustHavePropertiesSetError);
+                    if (!string.IsNullOrEmpty(kvp))
+                    {
+                        var qsPart = kvp.Split('=');
+                        if (qsPart.Length == 2 && !string.IsNullOrEmpty(qsPart[0]))
+                        {
+                            var key = HttpHelper.UrlDecode(qsPart[0]);
+                            if (!parameters.ContainsKey(key))
+                                parameters[key] = HttpHelper.UrlDecode(qsPart[1]);
+                        }
+                        else
+                            throw new ArgumentException("Invalid path", "path");
+                    }
                 }
-
-                sbMediaObject.Append(FacebookUtils.MultiPartFormPrefix).Append(boundary).Append(FacebookUtils.MultiPartNewLine);
-                sbMediaObject.Append("Content-Disposition: form-data; name=\"").Append(facebookMediaObject.Key).Append("\"; filename=\"").Append(mediaObject.FileName).Append("\"").Append(FacebookUtils.MultiPartNewLine);
-                sbMediaObject.Append("Content-Type: ").Append(mediaObject.ContentType).Append(FacebookUtils.MultiPartNewLine).Append(FacebookUtils.MultiPartNewLine);
-
-                streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sbMediaObject.ToString())));
-
-                byte[] fileData = mediaObject.GetValue();
-
-                Debug.Assert(fileData != null, "The value of FacebookMediaObject is null.");
-
-                streams.Add(new MemoryStream(fileData));
-                streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(FacebookUtils.MultiPartNewLine)));
             }
-
-            streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(String.Concat(FacebookUtils.MultiPartNewLine, FacebookUtils.MultiPartFormPrefix, boundary, FacebookUtils.MultiPartFormPrefix, FacebookUtils.MultiPartNewLine))));
-
-            return new CombinationStream.CombinationStream(streams);
-        }
-
-        protected virtual Uri GetUrl(string name, string path, IDictionary<string, object> parameters)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-
-            return FacebookUtils.GetUrl(DomainMaps, name, path, parameters);
-        }
-
-        protected virtual Uri GetApiUrl(string method)
-        {
-            if (string.IsNullOrEmpty(method))
-                throw new ArgumentNullException("method");
-
-            method = method.ToLowerInvariant();
-
-            string name;
-
-            if (method.Equals("video.upload"))
-                name = "api_video";
-            else if (FacebookUtils.ReadOnlyCalls.Contains(method))
-                name = "api_read";
-            else
-                name = "api";
-
-            return GetUrl(name, "restserver.php", null);
-        }
-
-        protected virtual void OnGetCompleted(FacebookApiEventArgs args)
-        {
-            if (GetCompleted != null)
-                GetCompleted(this, args);
-        }
-
-        protected virtual void OnPostCompleted(FacebookApiEventArgs args)
-        {
-            if (PostCompleted != null)
-                PostCompleted(this, args);
-        }
-
-        protected virtual void OnDeleteCompleted(FacebookApiEventArgs args)
-        {
-            if (DeleteCompleted != null)
-                DeleteCompleted(this, args);
-        }
-
-        protected void OnUploadProgressChanged(FacebookUploadProgressChangedEventArgs args)
-        {
-            if (UploadProgressChanged != null)
-                UploadProgressChanged(this, args);
-        }
-
-        private void OnCompleted(HttpMethod httpMethod, FacebookApiEventArgs args)
-        {
-            switch (httpMethod)
+            else if (parts.Length > 2)
             {
-                case HttpMethod.Get:
-                    OnGetCompleted(args);
-                    break;
-                case HttpMethod.Post:
-                    OnPostCompleted(args);
-                    break;
-                case HttpMethod.Delete:
-                    OnDeleteCompleted(args);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("httpMethod");
+                throw new ArgumentException("Invalid path", "path");
             }
+
+            return path;
         }
+
     }
 }

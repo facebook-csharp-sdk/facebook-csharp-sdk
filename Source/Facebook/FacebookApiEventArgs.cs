@@ -65,6 +65,11 @@ namespace Facebook
                 _json = json;
         }
 
+        public FacebookApiEventArgs(Exception error, bool cancelled, object userState, object result)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookApiEventArgs"/> class.
         /// </summary>
@@ -98,19 +103,20 @@ namespace Facebook
         /// </returns>
         public object GetResultData()
         {
-            var json = JsonSerializer.Current.DeserializeObject(_json);
+            throw new NotImplementedException();
+            //var json = JsonSerializer.Current.DeserializeObject(_json);
 
-            if (_isBatchResult)
-            {
-                return FacebookClient.ProcessBatchResult(json);
-            }
-            if (_isQuery)
-            {
-                // required for compatibility with v5.2.1
-                var result = (IDictionary<string, object>)json;
-                return result["data"];
-            }
-            return json;
+            //if (_isBatchResult)
+            //{
+            //    return FacebookClientOld.ProcessBatchResult(json);
+            //}
+            //if (_isQuery)
+            //{
+            //    // required for compatibility with v5.2.1
+            //    var result = (IDictionary<string, object>)json;
+            //    return result["data"];
+            //}
+            //return json;
         }
 
         /// <summary>
@@ -124,17 +130,18 @@ namespace Facebook
         /// </returns>
         public T GetResultData<T>()
         {
-            if (_isBatchResult)
-                throw new InvalidOperationException(FacebookUtils.Resources.GetResultDataGenericNotSupportedForBatchRequests);
-            
-            if (_isQuery && !string.IsNullOrEmpty(_json) && _json.StartsWith("{\"data\":") && _json.Length > 9)
-            {
-                // required for compatibility with v5.2.1
-                var queryData = _json.Substring(8, _json.Length - 9);
-                return JsonSerializer.Current.DeserializeObject<T>(queryData);
-            }
+            throw new NotImplementedException();
+            //if (_isBatchResult)
+            //    throw new InvalidOperationException(FacebookUtils.Resources.GetResultDataGenericNotSupportedForBatchRequests);
 
-            return JsonSerializer.Current.DeserializeObject<T>(_json);
+            //if (_isQuery && !string.IsNullOrEmpty(_json) && _json.StartsWith("{\"data\":") && _json.Length > 9)
+            //{
+            //    // required for compatibility with v5.2.1
+            //    var queryData = _json.Substring(8, _json.Length - 9);
+            //    return JsonSerializer.Current.DeserializeObject<T>(queryData);
+            //}
+
+            //return JsonSerializer.Current.DeserializeObject<T>(_json);
         }
     }
 }

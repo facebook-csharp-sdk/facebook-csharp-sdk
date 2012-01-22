@@ -183,6 +183,7 @@ namespace Facebook
             get { return _state; }
         }
 
+        /*
         /// <summary>
         /// Parse the url to <see cref="FacebookOAuthResult"/>.
         /// </summary>
@@ -316,5 +317,6 @@ namespace Facebook
 
             return null;
         }
+        */
     }
 }

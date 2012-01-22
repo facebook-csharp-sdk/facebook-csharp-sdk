@@ -9,97 +9,54 @@
 
 namespace Facebook
 {
-    using System;
-
     /// <summary>
-    /// Represents the Facebook Context class.
+    /// Represents the default Facebook application.
     /// </summary>
-    public class FacebookApplication
+    public class FacebookApplication : IFacebookApplication
     {
         /// <summary>
-        /// Current Facebook application.
+        /// Gets or sets the application id.
         /// </summary>
-        private static readonly FacebookApplication Instance = new FacebookApplication();
+        public string AppId { get; set; }
 
         /// <summary>
-        /// The current Facebook application.
+        /// Gets or sets the application secret.
         /// </summary>
-        private IFacebookApplication _current;
+        public string AppSecret { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApplication"/> class. 
+        /// Gets or sets the site url.
         /// </summary>
-        public FacebookApplication()
-        {
-#if !(SILVERLIGHT || WINRT)
-            _current = FacebookConfigurationSection.Current;
-#endif
-        }
+        public string SiteUrl { get; set; }
 
         /// <summary>
-        /// Gets the current Facebook application.
+        /// Gets or sets the canvas page.
         /// </summary>
-        public static IFacebookApplication Current
-        {
-            get { return Instance.InnerCurrent; }
-        }
+        public string CanvasPage { get; set; }
 
         /// <summary>
-        /// Set the current Facebook application.
+        /// Gets or sets the canvas url.
         /// </summary>
-        /// <param name="facebookApplication">
-        /// The Facebook application.
-        /// </param>
-        public static void SetApplication(IFacebookApplication facebookApplication)
-        {
-            Instance.InnerSetApplication(facebookApplication);
-        }
+        public string CanvasUrl { get; set; }
 
         /// <summary>
-        /// Set the current Facebook application.
+        /// Gets or sets the secure canvas url.
         /// </summary>
-        /// <param name="getFacebookApplication">
-        /// The get Facebook application.
-        /// </param>
-        public static void SetApplication(Func<IFacebookApplication> getFacebookApplication)
-        {
-            Instance.InnerSetApplication(getFacebookApplication);
-        }
+        public string SecureCanvasUrl { get; set; }
 
         /// <summary>
-        /// Gets InnerCurrent.
+        /// Gets or sets the url to return the user after they cancel authorization.
         /// </summary>
-        public IFacebookApplication InnerCurrent
-        {
-            get { return _current ?? new DefaultFacebookApplication(); }
-        }
+        public string CancelUrlPath { get; set; }
 
         /// <summary>
-        /// Set the inner application.
+        /// Gets or sets a value indicating whether to use Facebook beta.
         /// </summary>
-        /// <param name="facebookApplication">
-        /// The Facebook application.
-        /// </param>
-        public void InnerSetApplication(IFacebookApplication facebookApplication)
-        {
-            if (facebookApplication == null)
-                throw new ArgumentNullException("facebookApplication");
-
-            _current = facebookApplication;
-        }
+        public bool UseFacebookBeta { get; set; }
 
         /// <summary>
-        /// Set the inner application.
+        /// Gets a value indicating whether the scheme is secure.
         /// </summary>
-        /// <param name="getFacebookApplication">
-        /// The get Facebook application.
-        /// </param>
-        public void InnerSetApplication(Func<IFacebookApplication> getFacebookApplication)
-        {
-            if (getFacebookApplication == null)
-                throw new ArgumentNullException("getFacebookApplication");
-
-            _current = getFacebookApplication();
-        }
+        public bool IsSecureConnection { get; set; }
     }
 }

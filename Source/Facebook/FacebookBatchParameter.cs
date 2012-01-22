@@ -46,7 +46,7 @@ namespace Facebook
         /// </summary>
         public FacebookBatchParameter()
         {
-            HttpMethod = HttpMethod.Get;
+            HttpMethod = "GET";
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Facebook
         /// The resource path.
         /// </param>
         public FacebookBatchParameter(string path)
-            : this(HttpMethod.Get, path)
+            : this("GET", path)
         {
         }
 
@@ -69,7 +69,7 @@ namespace Facebook
         /// <param name="path">
         /// The resource path.
         /// </param>
-        public FacebookBatchParameter(HttpMethod httpMethod, string path)
+        public FacebookBatchParameter(string httpMethod, string path)
             : this(httpMethod, path, null)
         {
         }
@@ -84,7 +84,7 @@ namespace Facebook
         /// The parameters.
         /// </param>
         public FacebookBatchParameter(string path, object parameters)
-            : this(HttpMethod.Get, path, parameters)
+            : this("GET", path, parameters)
         {
         }
 
@@ -100,7 +100,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public FacebookBatchParameter(HttpMethod httpMethod, string path, object parameters)
+        public FacebookBatchParameter(string httpMethod, string path, object parameters)
         {
             HttpMethod = httpMethod;
             Path = path;
@@ -110,7 +110,7 @@ namespace Facebook
         /// <summary>
         /// Gets or sets the http method.
         /// </summary>
-        public HttpMethod HttpMethod { get; set; }
+        public string HttpMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the resource path.
@@ -128,6 +128,7 @@ namespace Facebook
         [EditorBrowsable(EditorBrowsableState.Never)]
         public object Data { get; set; }
 
+        /*
         /// <summary>
         /// Returns a <see cref="FacebookBatchParameter"/> representing FQL query.
         /// </summary>
@@ -142,7 +143,7 @@ namespace Facebook
             if (string.IsNullOrEmpty(fql))
                 throw new ArgumentNullException(fql);
 
-            HttpMethod = HttpMethod.Get;
+            HttpMethod = "GET";
             Path = "fql";
             Parameters = new JsonObject { { "q", fql } };
 
@@ -170,11 +171,12 @@ namespace Facebook
             for (int i = 0; i < fql.Length; i++)
                 queryDict.Add(string.Concat("query", i), fql[i]);
 
-            HttpMethod = HttpMethod.Get;
+            HttpMethod = "GET";
             Path = "fql";
             Parameters = new JsonObject { { "q", queryDict } };
 
             return this;
         }
+        */
     }
 }
