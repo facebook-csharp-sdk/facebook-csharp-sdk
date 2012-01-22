@@ -4,7 +4,7 @@
 // </copyright>
 // <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
-// <website>http://facebooksdk.codeplex.com</website>
+// <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 // ---------------------------------
 
 // This file is used by Code Analysis to maintain SuppressMessage 

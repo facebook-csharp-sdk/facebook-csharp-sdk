@@ -4,7 +4,7 @@
 // </copyright>
 // <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
-// <website>http://facebooksdk.codeplex.com</website>
+// <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 // ---------------------------------
 
 namespace Facebook
@@ -108,7 +108,7 @@ namespace Facebook
             if (parameters.ContainsKey("expires_in"))
             {
                 var expiresIn = Convert.ToDouble(parameters["expires_in"]);
-                _expires = expiresIn == 0 ? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(expiresIn);
+                _expires = expiresIn > 0 ? DateTime.UtcNow.AddSeconds(expiresIn) : DateTime.MaxValue;
             }
         }
 
@@ -182,141 +182,5 @@ namespace Facebook
         {
             get { return _state; }
         }
-
-        /*
-        /// <summary>
-        /// Parse the url to <see cref="FacebookOAuthResult"/>.
-        /// </summary>
-        /// <param name="uriString">
-        /// The url to parse.
-        /// </param>
-        /// <returns>
-        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
-        /// </returns>
-        public static FacebookOAuthResult Parse(string uriString)
-        {
-            return Parse(new Uri(uriString));
-        }
-
-        /// <summary>
-        /// Parse the url to <see cref="FacebookOAuthResult"/>.
-        /// </summary>
-        /// <param name="uri">
-        /// The url to parse.
-        /// </param>
-        /// <returns>
-        /// Returns an instance of <see cref="FacebookOAuthResult"/>.
-        /// </returns>
-        public static FacebookOAuthResult Parse(Uri uri)
-        {
-            return Parse(uri, true);
-        }
-
-        /// <summary>
-        /// Try parsing the url to <see cref="FacebookOAuthResult"/>.
-        /// </summary>
-        /// <param name="uriString">
-        /// The url to parse.
-        /// </param>
-        /// <param name="result">
-        /// An instance of <see cref="FacebookOAuthResult"/>.
-        /// </param>
-        /// <returns>
-        /// Returns true if parsing was successful otherwise false.
-        /// </returns>
-        public static bool TryParse(string uriString, out FacebookOAuthResult result)
-        {
-            if (Uri.IsWellFormedUriString(uriString, UriKind.RelativeOrAbsolute))
-            {
-                return TryParse(new Uri(uriString), out result);
-            }
-
-            result = null;
-            return false;
-        }
-
-        /// <summary>
-        /// Try parsing the url to <see cref="FacebookOAuthResult"/>.
-        /// </summary>
-        /// <param name="uri">
-        /// The url to parse.
-        /// </param>
-        /// <param name="result">
-        /// An instance of <see cref="FacebookOAuthResult"/>.
-        /// </param>
-        /// <returns>
-        /// Returns true if parsing was successful otherwise false.
-        /// </returns>
-        public static bool TryParse(Uri uri, out FacebookOAuthResult result)
-        {
-            result = Parse(uri, false);
-            return result != null;
-        }
-
-        /// <summary>
-        /// Internal method for parsing the Facebook OAuth url.
-        /// </summary>
-        /// <param name="uri">
-        /// The url to parse.
-        /// </param>
-        /// <param name="throws">
-        /// Whether to throw the exception or not incase an error occurs.
-        /// </param>
-        /// <returns>
-        /// The <see cref="FacebookOAuthResult"/>.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// Throws if cannot parse the specified url.
-        /// </exception>
-        private static FacebookOAuthResult Parse(Uri uri, bool throws)
-        {
-            IDictionary<string, object> parameters = null;
-
-            try
-            {
-                bool found = false;
-                if (!string.IsNullOrEmpty(uri.Fragment))
-                {
-                    // #access_token and expires_in are in fragment
-                    var fragment = uri.Fragment.Substring(1);
-                    parameters = FacebookUtils.ParseUrlQueryString(fragment);
-                    if (parameters.ContainsKey("access_token"))
-                    {
-                        found = true;
-                    }
-                }
-
-                // code, state, error_reason, error and error_description are in query
-                // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
-                var queryPart = FacebookUtils.ParseUrlQueryString(uri.Query);
-                if (queryPart.ContainsKey("code") || (queryPart.ContainsKey("error") && queryPart.ContainsKey("error_description")))
-                {
-                    found = true;
-                }
-
-                if (found)
-                {
-                    parameters = FacebookUtils.Merge(parameters, queryPart);
-                    return new FacebookOAuthResult(parameters);
-                }
-            }
-            catch
-            {
-                if (throws)
-                {
-                    throw;
-                }
-
-                return null;
-            }
-
-            if (throws)
-            {
-                throw new InvalidOperationException("Could not parse authentication url.");
-            }
-
-            return null;
-        }
-        */
     }
 }

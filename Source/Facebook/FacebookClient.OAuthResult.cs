@@ -50,7 +50,7 @@ namespace Facebook
             {
                 // #access_token and expries_in are in fragment
                 var fragment = uri.Fragment.Substring(1);
-                ParseUrlQueryString("?" + fragment, parameters);
+                ParseUrlQueryString("?" + fragment, parameters, true);
 
                 if (parameters.ContainsKey("access_token"))
                     found = true;
@@ -59,7 +59,7 @@ namespace Facebook
             // code, state, error_reason, error and error_description are in query
             // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
             var queryPart = new Dictionary<string, object>();
-            ParseUrlQueryString("?" + uri.Query, queryPart);
+            ParseUrlQueryString("?" + uri.Query, queryPart, true);
 
             if (queryPart.ContainsKey("code") || (queryPart.ContainsKey("error") && queryPart.ContainsKey("error_description")))
                 found = true;

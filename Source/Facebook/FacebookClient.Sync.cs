@@ -1,6 +1,7 @@
 ﻿namespace Facebook
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     public partial class FacebookClient
@@ -16,8 +17,7 @@
         public virtual object Api(string httpMethod, string path, object parameters, Type resultType)
         {
             Stream input;
-            bool isLegacyRestApi;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out isLegacyRestApi);
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input);
 
             if (input != null)
             {
@@ -71,7 +71,7 @@
                         }
                     }
 
-                    result = ProcessResponse(httpHelper, responseString, resultType, isLegacyRestApi);
+                    result = ProcessResponse(httpHelper, responseString, resultType);
                 }
             }
 
@@ -80,32 +80,35 @@
 
         public virtual object Get(string path)
         {
-            throw new NotImplementedException();
+            return Get(path, null);
         }
 
         public virtual object Get(object parameters)
         {
-            throw new NotImplementedException();
+            return Get(null, parameters);
         }
 
         public virtual object Get(string path, object parameters)
         {
-            throw new NotImplementedException();
+            var result = (IDictionary<string, object>)Api("GET", path, parameters, null);
+            return result["body"];
         }
 
-        public virtual bool Post(object parameters)
+        public virtual object Post(object parameters)
         {
-            throw new NotImplementedException();
+            return Post(null, parameters);
         }
 
         public virtual object Post(string path, object parameters)
         {
-            throw new NotImplementedException();
+            var result = (IDictionary<string, object>)Api("POST", path, parameters, null);
+            return result["body"];
         }
 
         public virtual object Delete(string path)
         {
-            throw new NotImplementedException();
+            var result = (IDictionary<string, object>)Api("DELETE", path, null, null);
+            return result["body"];
         }
     }
 }

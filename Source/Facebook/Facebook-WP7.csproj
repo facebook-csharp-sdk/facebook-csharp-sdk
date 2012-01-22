@@ -117,10 +117,13 @@
   <ItemGroup>
     <Compile Include="CombinationStream.cs" />
     <Compile Include="DateTimeConvertor.cs" />
-    <Compile Include="FacebookApplication.cs">
-        <DependentUpon>IFacebookApplication.cs</DependentUpon>
-    </Compile>
     <Compile Include="FacebookClient.Async.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Batch.Async.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Subscriptions.cs">
       <DependentUpon>FacebookClient.cs</DependentUpon>
     </Compile>
     <Compile Include="FacebookClient.cs" />
@@ -144,7 +147,6 @@
     <Compile Include="FacebookOAuthResult.cs" />
     <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IFacebookApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

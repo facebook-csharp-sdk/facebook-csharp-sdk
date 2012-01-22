@@ -10,6 +10,9 @@
 namespace Facebook
 {
     using System;
+#if FLUENTHTTP_CORE_TPL
+    using System.ComponentModel;
+#endif
     using System.IO;
 
     public partial class FacebookClient
@@ -67,8 +70,7 @@ namespace Facebook
         public virtual void ApiAsync(string httpMethod, string path, object parameters, Type resultType, object userState)
         {
             Stream input;
-            bool isLegacyRestApi;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out isLegacyRestApi);
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input);
 
             var uploadProgressChanged = UploadProgressChanged;
             bool notifyUploadProgressChanged = uploadProgressChanged != null && httpHelper.HttpWebRequest.Method == "POST";
@@ -228,7 +230,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]        
+        [Obsolete]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void GetAsync(string path)

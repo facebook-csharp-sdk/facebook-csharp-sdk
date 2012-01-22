@@ -1,20 +1,28 @@
-﻿namespace Facebook.Tests.FacebookApi
+﻿namespace Facebook.Tests.FacebookClient
 {
     using System;
     using Xunit;
     using Facebook;
 
-    public class FacebookApiTests
+    public class FacebookClientTests
     {
+        [Fact]
+        public void A()
+        {
+            var fb = new FacebookClient();
+            dynamic result = fb.Batch(
+                new FacebookBatchParameter("me", new { fields = new[] { "id", "name" }, pic = new FacebookMediaObject() }) { Data = new { method = "POST", return_ssl_resources = "true" } });
+
+        }
         public class ConsutructorTests
         {
             public class DefaultConstructorTests
             {
-                private FacebookApi _fb;
+                private FacebookClient _fb;
 
                 public DefaultConstructorTests()
                 {
-                    _fb = new FacebookApi();
+                    _fb = new FacebookClient();
                 }
 
                 [Fact]
@@ -62,11 +70,11 @@
 
             public class ConstructorAccessTokenTests
             {
-                private FacebookApi _fb;
+                private FacebookClient _fb;
 
                 public ConstructorAccessTokenTests()
                 {
-                    _fb = new FacebookApi("dummy_access_token");
+                    _fb = new FacebookClient("dummy_access_token");
                 }
 
                 [Fact]
@@ -116,7 +124,7 @@
                     [Fact]
                     public void ThrowsArgumentNullException()
                     {
-                        Assert.Throws<ArgumentNullException>(() => new FacebookApi((string)null));
+                        Assert.Throws<ArgumentNullException>(() => new FacebookClient((string)null));
                     }
                 }
 
@@ -125,7 +133,7 @@
                     [Fact]
                     public void ThrowsArgumentNullException()
                     {
-                        Assert.Throws<ArgumentNullException>(() => new FacebookApi(string.Empty));
+                        Assert.Throws<ArgumentNullException>(() => new FacebookClient(string.Empty));
                     }
                 }
             }
@@ -135,31 +143,31 @@
                 [Fact]
                 public void ThrowsArgumentNullExceptionIfAppIdIsEmpty()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookApi(null, "appsecret"));
+                    Assert.Throws<ArgumentNullException>(() => new FacebookClient(null, "appsecret"));
                 }
 
                 [Fact]
                 public void ThrowsArgumentNullExceptionIfAppIdIsNull()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookApi(null, "appsecret"));
+                    Assert.Throws<ArgumentNullException>(() => new FacebookClient(null, "appsecret"));
                 }
 
                 [Fact]
                 public void ThrowsArgumentNullExceptionIfAppSecretIsEmpty()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookApi("appid", string.Empty));
+                    Assert.Throws<ArgumentNullException>(() => new FacebookClient("appid", string.Empty));
                 }
 
                 [Fact]
                 public void ThrowsArgumentNullExceptionIfAppSecretIsNull()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookApi("appid", null));
+                    Assert.Throws<ArgumentNullException>(() => new FacebookClient("appid", null));
                 }
 
                 [Fact]
                 public void CorrectlySetsAccessTokenIfAppIdAndAppSecretAreBothNotNullOrEmpty()
                 {
-                    var fb = new FacebookApi("appid", "appsecret");
+                    var fb = new FacebookClient("appid", "appsecret");
                     Assert.Equal("appid|appsecret", fb.AccessToken);
                 }
 

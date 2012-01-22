@@ -4,7 +4,7 @@
 // </copyright>
 // <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
-// <website>http://facebooksdk.codeplex.com</website>
+// <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 // ---------------------------------
 
 namespace Facebook
@@ -111,17 +111,6 @@ namespace Facebook
         private Func<Uri, HttpWebRequestWrapper> _httpWebRequestFactory;
         private static Func<Uri, HttpWebRequestWrapper> _defaultHttpWebRequestFactory;
 
-        private static IFacebookApplication _defaultFacebookApplication;
-
-        /// <summary>
-        /// Gets or sets the default facebook application.
-        /// </summary>
-        public static IFacebookApplication DefaultFacebookApplication
-        {
-            get { return _defaultFacebookApplication; }
-            set { _defaultFacebookApplication = value ?? (_defaultFacebookApplication ?? new FacebookApplication()); }
-        }
-
         /// <remarks>For unit testing</remarks>
         internal Func<string> Boundary { get; set; }
 
@@ -183,8 +172,6 @@ namespace Facebook
         static FacebookClient()
         {
             SetDefaultJsonSerializers(null, null);
-            DefaultFacebookApplication = null;
-            SetDefaultHttpWebRequestFactory(null);
         }
 
         /// <summary>
@@ -194,12 +181,6 @@ namespace Facebook
         {
             _deserializeJson = _defaultJsonDeserializer;
             _httpWebRequestFactory = _defaultHttpWebRequestFactory;
-
-            if (DefaultFacebookApplication != null)
-            {
-                _useFacebookBeta = DefaultFacebookApplication.IsSecureConnection;
-                _isSecureConnection = DefaultFacebookApplication.IsSecureConnection;
-            }
         }
 
         /// <summary>
@@ -234,23 +215,6 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
-        /// </summary>
-        /// <param name="facebookApplication">The facebook application.</param>
-        public FacebookClient(IFacebookApplication facebookApplication)
-            : this()
-        {
-            if (facebookApplication == null)
-                return;
-
-            if (!string.IsNullOrEmpty(facebookApplication.AppId) && !string.IsNullOrEmpty(facebookApplication.AppSecret))
-                _accessToken = string.Concat(facebookApplication.AppId, "|", facebookApplication.AppSecret);
-
-            _useFacebookBeta = facebookApplication.UseFacebookBeta;
-            _isSecureConnection = facebookApplication.IsSecureConnection;
-        }
-
-        /// <summary>
         /// Sets the default json seriazliers and deserializers.
         /// </summary>
         /// <param name="jsonSerializer">Json serializer</param>
@@ -271,7 +235,7 @@ namespace Facebook
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
         }
 
-        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input, out bool isLegacyRestApi)
+        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input)
         {
             if (string.IsNullOrEmpty(httpMethod))
                 throw new ArgumentNullException("httpMethod");
@@ -290,54 +254,15 @@ namespace Facebook
             if (!parametersWithoutMediaObjects.ContainsKey("return_ssl_resources") && IsSecureConnection)
                 parametersWithoutMediaObjects["return_ssl_resources"] = true;
 
-            isLegacyRestApi = false;
             Uri uri;
-            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
-            {
-                switch (uri.Host)
-                {
-                    // graph api
-                    case "graph.facebook.com":
-                    case "graph-video.facebook.com":
-                    case "graph.beta.facebook.com":
-                    case "graph-video.beta.facebook.com":
-                        // If the host is graph.facebook.com the user has passed in the full url.
-                        // We remove the host part and continue with the parsing.
-                        path = string.Concat(uri.AbsolutePath, uri.Query);
-                        break;
-                    // legacy rest api
-                    case "api.facebook.com":
-                    case "api-read.facebook.com":
-                    case "api-video.facebook.com":
-                    case "api.beta.facebook.com":
-                    case "api-read.beta.facebook.com":
-                    case "api-video.beta.facebook.com":
-                        // If the host is graph.facebook.com the user has passed in the full url.
-                        // We remove the host part and continue with the parsing.
-                        path = string.Concat(uri.AbsolutePath, uri.Query);
-                        isLegacyRestApi = true;
-                        break;
-                    default:
-                        // If the url is a valid absolute url we are passing the full url as the 'id'
-                        // parameter of the query. For example, if path is something like
-                        // http://www.microsoft.com/page.aspx?id=23 it means that we are trying
-                        // to make the request https://graph.facebook.com/http://www.microsoft.com/page.aspx%3Fid%3D23
-                        // So we are just going to return the path
-                        uri = null;
-                        break;
-                }
-            }
-
-            path = ParseUrlQueryString(path, parametersWithoutMediaObjects);
+            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri);
 
             if (parametersWithoutMediaObjects.ContainsKey("format"))
             {
-                if (isLegacyRestApi)
-                    parametersWithoutMediaObjects["format"] = "json-strings";
-                else
-                    parametersWithoutMediaObjects.Remove("format");
+                parametersWithoutMediaObjects["format"] = "json-strings";
             }
 
+            bool isLegacyRestApi = false;
             string restMethod = null;
             if (parametersWithoutMediaObjects.ContainsKey("method"))
             {
@@ -497,7 +422,7 @@ namespace Facebook
             uriBuilder.Query = queryString.ToString();
 
             var request = HttpWebRequestFactory == null
-                             ? new HttpWebRequestWrapper((System.Net.HttpWebRequest)System.Net.WebRequest.Create(uriBuilder.Uri))
+                             ? new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(uriBuilder.Uri))
                              : HttpWebRequestFactory(uriBuilder.Uri);
             request.Method = httpMethod;
             request.ContentType = contentType;
@@ -513,7 +438,7 @@ namespace Facebook
             return new HttpHelper(request);
         }
 
-        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType, bool isLegacyRestApi)
+        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType)
         {
             try
             {
@@ -533,7 +458,7 @@ namespace Facebook
                 {
                     json["body"] = DeserializeJson(responseString, resultType);
                 }
-                else if (!isLegacyRestApi && response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
+                else if (response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
                 {
                     if (response.ResponseUri.AbsolutePath == "/oauth/access_token")
                     {
@@ -564,14 +489,15 @@ namespace Facebook
 
                 #region Check for exceptions
 
-                if (isLegacyRestApi)
-                {
-                    throw new NotImplementedException();
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                //if (isLegacyRestApi)
+                //{
+                //    throw new NotImplementedException();
+                //}
+                //else
+                //{
+                //    throw new NotImplementedException();
+                //}
+                throw new NotImplementedException();
 
                 #endregion
 
@@ -591,7 +517,7 @@ namespace Facebook
         /// <param name="mediaObjects">The extracted Facebook media objects.</param>
         /// <param name="mediaStreams">The extracted Facebook media streams.</param>
         /// <returns>The converted dictionary.</returns>
-        protected virtual IDictionary<string, object> ToDictionary(object parameters, out IDictionary<string, FacebookMediaObject> mediaObjects, out IDictionary<string, FacebookMediaStream> mediaStreams)
+        private static IDictionary<string, object> ToDictionary(object parameters, out IDictionary<string, FacebookMediaObject> mediaObjects, out IDictionary<string, FacebookMediaStream> mediaStreams)
         {
             mediaObjects = new Dictionary<string, FacebookMediaObject>();
             mediaStreams = new Dictionary<string, FacebookMediaStream>();
@@ -619,7 +545,6 @@ namespace Facebook
                     dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
                 }
 #endif
-                return dictionary;
             }
 
             foreach (var parameter in dictionary)
@@ -648,7 +573,7 @@ namespace Facebook
         /// <remarks>
         /// The result is not url encoded. The caller needs to take care of url encoding the result.
         /// </remarks>
-        protected virtual string BuildHttpQuery(object parameter, Func<string, string> encode)
+        private static string BuildHttpQuery(object parameter, Func<string, string> encode)
         {
             if (parameter == null)
                 return "null";
@@ -702,10 +627,49 @@ namespace Facebook
             return sb.ToString();
         }
 
-        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters)
+        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
+
+            uri = null;
+            if (!forceParseAllUrls)
+            {
+                if (Uri.TryCreate(path, UriKind.Absolute, out uri))
+                {
+                    switch (uri.Host)
+                    {
+                        // graph api
+                        case "graph.facebook.com":
+                        case "graph-video.facebook.com":
+                        case "graph.beta.facebook.com":
+                        case "graph-video.beta.facebook.com":
+                            // If the host is graph.facebook.com the user has passed in the full url.
+                            // We remove the host part and continue with the parsing.
+                            path = string.Concat(uri.AbsolutePath, uri.Query);
+                            break;
+                        // legacy rest api
+                        case "api.facebook.com":
+                        case "api-read.facebook.com":
+                        case "api-video.facebook.com":
+                        case "api.beta.facebook.com":
+                        case "api-read.beta.facebook.com":
+                        case "api-video.beta.facebook.com":
+                            // If the host is graph.facebook.com the user has passed in the full url.
+                            // We remove the host part and continue with the parsing.
+                            path = string.Concat(uri.AbsolutePath, uri.Query);
+                            break;
+                        default:
+                            // If the url is a valid absolute url we are passing the full url as the 'id'
+                            // parameter of the query. For example, if path is something like
+                            // http://www.microsoft.com/page.aspx?id=23 it means that we are trying
+                            // to make the request https://graph.facebook.com/http://www.microsoft.com/page.aspx%3Fid%3D23
+                            // So we are just going to return the path
+                            uri = null;
+                            break;
+                    }
+                }
+            }
 
             if (string.IsNullOrEmpty(path))
                 return string.Empty;
@@ -750,5 +714,10 @@ namespace Facebook
             return path;
         }
 
+        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls)
+        {
+            Uri uri;
+            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri);
+        }
     }
 }
