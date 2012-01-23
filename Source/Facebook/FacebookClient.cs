@@ -255,14 +255,14 @@ namespace Facebook
                 parametersWithoutMediaObjects["return_ssl_resources"] = true;
 
             Uri uri;
-            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri);
+            bool isLegacyRestApi = false;
+            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri, out isLegacyRestApi);
 
             if (parametersWithoutMediaObjects.ContainsKey("format"))
             {
                 parametersWithoutMediaObjects["format"] = "json-strings";
             }
 
-            bool isLegacyRestApi = false;
             string restMethod = null;
             if (parametersWithoutMediaObjects.ContainsKey("method"))
             {
@@ -270,6 +270,10 @@ namespace Facebook
                 if (restMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
                     throw new ArgumentException("Parameter cannot contain method=delete. Use Delete or DeleteAsync or DeleteTaskAsync methods instead.", "parameters");
                 isLegacyRestApi = true;
+            }
+            else if (isLegacyRestApi)
+            {
+                throw new ArgumentException("Parameters should contain rest 'method' name", "parameters");
             }
 
             UriBuilder uriBuilder;
@@ -624,15 +628,20 @@ namespace Facebook
             return sb.ToString();
         }
 
-        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri)
+        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri, out bool isLegacyRestApi)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
 
+            isLegacyRestApi = false;
             uri = null;
-            if (!forceParseAllUrls)
+            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
-                if (Uri.TryCreate(path, UriKind.Absolute, out uri))
+                if (forceParseAllUrls)
+                {
+                    path = string.Concat(uri.AbsolutePath, uri.Query);
+                }
+                else
                 {
                     switch (uri.Host)
                     {
@@ -654,6 +663,7 @@ namespace Facebook
                         case "api-video.beta.facebook.com":
                             // If the host is graph.facebook.com the user has passed in the full url.
                             // We remove the host part and continue with the parsing.
+                            isLegacyRestApi = true;
                             path = string.Concat(uri.AbsolutePath, uri.Query);
                             break;
                         default:
@@ -711,10 +721,11 @@ namespace Facebook
             return path;
         }
 
-        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls)
+        internal static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls)
         {
             Uri uri;
-            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri);
+            bool isLegacyRestApi;
+            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri, out isLegacyRestApi);
         }
     }
 }

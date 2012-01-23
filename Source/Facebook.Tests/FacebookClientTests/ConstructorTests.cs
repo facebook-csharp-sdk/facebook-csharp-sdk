@@ -6,14 +6,6 @@
 
     public class FacebookClientTests
     {
-        [Fact]
-        public void A()
-        {
-            var fb = new FacebookClient();
-            dynamic result = fb.Batch(
-                new FacebookBatchParameter("me", new { fields = new[] { "id", "name" }, pic = new FacebookMediaObject() }) { Data = new { method = "POST", return_ssl_resources = "true" } });
-
-        }
         public class ConsutructorTests
         {
             public class DefaultConstructorTests

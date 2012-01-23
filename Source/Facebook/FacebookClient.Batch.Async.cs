@@ -11,6 +11,7 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using FluentHttp;
 
@@ -29,7 +30,7 @@ namespace Facebook
             throw new NotImplementedException();
         }
 
-        private object PrepareBatchRequest(FacebookBatchParameter[] batchParameters)
+        internal object PrepareBatchRequest(FacebookBatchParameter[] batchParameters)
         {
             if (batchParameters == null)
                 throw new ArgumentNullException("batchParameters");
@@ -85,7 +86,7 @@ namespace Facebook
                 }
 
                 if (attachedFiles.Count > 0 && !data.ContainsKey("attached_files"))
-                    data["attached_files"] = string.Join(",", attachedFiles);
+                    data["attached_files"] = string.Join(",", attachedFiles.ToArray());
 
                 string path;
                 if (!data["method"].ToString().Equals("POST", StringComparison.OrdinalIgnoreCase))
@@ -116,9 +117,13 @@ namespace Facebook
                     {
                         var sb = new StringBuilder();
                         foreach (var kvp in parameters)
-                            sb.AppendFormat("{0}={1}", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+                            sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+
                         if (sb.Length > 0)
+                        {
+                            sb.Length--;
                             data["body"] = sb.ToString();
+                        }
                     }
                 }
 
@@ -126,6 +131,11 @@ namespace Facebook
             }
 
             return actualBatchParameter;
+        }
+
+        private object ProcessBatchResponse(object result)
+        {
+            throw new NotImplementedException();
         }
     }
 }
