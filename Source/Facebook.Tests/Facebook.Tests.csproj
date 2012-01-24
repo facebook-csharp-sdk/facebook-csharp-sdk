@@ -65,6 +65,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DummyIntegrationTests.cs" />
     <Compile Include="FacebookClientTests\ConstructorTests.cs" />
     <Compile Include="FacebookClientTests\ParseUrlQueryStringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

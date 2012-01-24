@@ -57,18 +57,21 @@ namespace Facebook
 
             Stream responseStream = null;
             object result = null;
+            bool read = false;
             try
             {
                 responseStream = httpHelper.OpenRead();
+                read = true;
             }
             catch (WebExceptionWrapper ex)
             {
                 if (ex.GetResponse() == null) throw;
                 responseStream = httpHelper.OpenRead();
+                read = true;
             }
             finally
             {
-                if (responseStream != null)
+                if (read)
                 {
                     string responseString;
                     using (var stream = responseStream)
