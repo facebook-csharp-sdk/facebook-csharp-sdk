@@ -67,7 +67,7 @@ namespace Facebook
         [Obsolete]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
-        public virtual void ApiAsync(string httpMethod, string path, object parameters, Type resultType, object userState)
+        protected virtual void ApiAsync(string httpMethod, string path, object parameters, Type resultType, object userState)
         {
             Stream input;
             bool containsEtag;
@@ -282,7 +282,7 @@ namespace Facebook
         [Obsolete]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
-        public virtual void ApiAsync<T>(string httpMethod, string path, object parameters, object userState)
+        protected virtual void ApiAsync<T>(string httpMethod, string path, object parameters, object userState)
         {
             ApiAsync(httpMethod, path, parameters, typeof(T), userState);
         }
