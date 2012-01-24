@@ -12,6 +12,7 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Net;
 
     public partial class FacebookClient
     {
@@ -26,7 +27,8 @@ namespace Facebook
         public virtual object Api(string httpMethod, string path, object parameters, Type resultType)
         {
             Stream input;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input);
+            bool containsEtag;
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag);
 
             if (input != null)
             {
@@ -65,9 +67,24 @@ namespace Facebook
             }
             catch (WebExceptionWrapper ex)
             {
-                if (ex.GetResponse() == null) throw;
-                responseStream = httpHelper.OpenRead();
-                read = true;
+                var response = ex.GetResponse();
+                if (response == null) throw;
+                if (response.StatusCode == HttpStatusCode.NotModified)
+                {
+                    var jsonObject = new JsonObject();
+                    var headers = new JsonObject();
+
+                    foreach (var headerName in response.Headers.AllKeys)
+                        headers[headerName] = response.Headers[headerName];
+
+                    jsonObject["headers"] = headers;
+                    result = jsonObject;
+                }
+                else
+                {
+                    responseStream = httpHelper.OpenRead();
+                    read = true;
+                }
             }
             finally
             {
@@ -83,7 +100,7 @@ namespace Facebook
                         }
                     }
 
-                    result = ProcessResponse(httpHelper, responseString, resultType);
+                    result = ProcessResponse(httpHelper, responseString, resultType, containsEtag);
                 }
             }
 
@@ -102,8 +119,7 @@ namespace Facebook
 
         public virtual object Get(string path, object parameters)
         {
-            var result = (IDictionary<string, object>)Api("GET", path, parameters, null);
-            return result["body"];
+            return Api("GET", path, parameters, null);
         }
 
         public virtual object Post(object parameters)

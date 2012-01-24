@@ -70,7 +70,8 @@ namespace Facebook
         public virtual void ApiAsync(string httpMethod, string path, object parameters, Type resultType, object userState)
         {
             Stream input;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input);
+            bool containsEtag;
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag);
 
             var uploadProgressChanged = UploadProgressChanged;
             bool notifyUploadProgressChanged = uploadProgressChanged != null && httpHelper.HttpWebRequest.Method == "POST";

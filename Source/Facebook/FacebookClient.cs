@@ -34,6 +34,7 @@ namespace Facebook
         private const string UnknownResponse = "Unknown facebook response.";
         private const string MultiPartFormPrefix = "--";
         private const string MultiPartNewLine = "\r\n";
+        private const string ETagKey = "_etag_";
 
         private static readonly string[] LegacyRestApiReadOnlyCalls = new[] {
             "admin.getallocation",
@@ -235,7 +236,7 @@ namespace Facebook
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
         }
 
-        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input)
+        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input, out bool containsEtag)
         {
             if (string.IsNullOrEmpty(httpMethod))
                 throw new ArgumentNullException("httpMethod");
@@ -243,6 +244,7 @@ namespace Facebook
                 throw new ArgumentNullException("path");
 
             input = null;
+            containsEtag = false;
             httpMethod = httpMethod.ToUpperInvariant();
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
@@ -253,6 +255,14 @@ namespace Facebook
                 parametersWithoutMediaObjects["access_token"] = AccessToken;
             if (!parametersWithoutMediaObjects.ContainsKey("return_ssl_resources") && IsSecureConnection)
                 parametersWithoutMediaObjects["return_ssl_resources"] = true;
+
+            string etag = null;
+            if (parametersWithoutMediaObjects.ContainsKey(ETagKey))
+            {
+                etag = (string)parametersWithoutMediaObjects[ETagKey];
+                parametersWithoutMediaObjects.Remove(ETagKey);
+                containsEtag = true;
+            }
 
             Uri uri;
             bool isLegacyRestApi = false;
@@ -426,6 +436,8 @@ namespace Facebook
             request.Method = httpMethod;
             request.ContentType = contentType;
             // request.AllowAutoRedirect = false;
+            if (!string.IsNullOrEmpty(etag))
+                request.Headers[HttpRequestHeader.IfNoneMatch] = string.Concat('"', etag, '"');
 
 #if !(SILVERLIGHT || WINRT)
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
@@ -437,25 +449,19 @@ namespace Facebook
             return new HttpHelper(request);
         }
 
-        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType)
+        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType, bool containsEtag)
         {
             try
             {
                 var response = httpHelper.HttpWebResponse;
-                var json = new JsonObject();
+                object result = null;
+
                 if (response == null)
                     throw new InvalidOperationException(UnknownResponse);
 
-                var headers = new JsonObject();
-                foreach (var headerName in response.Headers.AllKeys)
-                    headers[headerName] = response.Headers[headerName];
-
-                json["headers"] = headers;
-                json["content"] = responseString;
-
                 if (response.ContentType.Contains("text/javascript"))
                 {
-                    json["body"] = DeserializeJson(responseString, resultType);
+                    result = DeserializeJson(responseString, resultType);
                 }
                 else if (response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
                 {
@@ -472,9 +478,9 @@ namespace Facebook
                         if (body.ContainsKey("expires"))
                             body["expires"] = Convert.ToInt64(body["expires"]);
 
-                        json["body"] = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
+                        result = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
 
-                        return json;
+                        return result;
                     }
                     else
                     {
@@ -486,9 +492,25 @@ namespace Facebook
                     throw new InvalidOperationException(UnknownResponse);
                 }
 
-                var exception = GetException(httpHelper, json);
+                var exception = GetException(httpHelper, result);
                 if (exception == null)
-                    return json;
+                {
+                    if (containsEtag)
+                    {
+                        var json = new JsonObject();
+
+                        var headers = new JsonObject();
+                        foreach (var headerName in response.Headers.AllKeys)
+                            headers[headerName] = response.Headers[headerName];
+
+                        json["headers"] = headers;
+                        json["body"] = result;
+
+                        return json;
+                    }
+
+                    return result;
+                }
 
                 throw exception;
 
@@ -505,14 +527,16 @@ namespace Facebook
             }
         }
 
-        internal static Exception GetException(HttpHelper httpHelper, IDictionary<string, object> json)
+        internal static Exception GetException(HttpHelper httpHelper, object result)
         {
             var response = httpHelper.HttpWebResponse;
             var responseUri = response.ResponseUri;
 
-            var result = json["body"];
-
             if (result == null)
+                return null;
+
+            var responseDict = result as IDictionary<string, object>;
+            if (responseDict == null)
                 return null;
 
             FacebookApiException resultException = null;
@@ -524,69 +548,61 @@ namespace Facebook
                 responseUri.Host == "api-read.beta.facebook.com" ||
                 responseUri.Host == "api-video.facebook.com")
             {
-                var resultDict = result as IDictionary<string, object>;
-                if (resultDict != null)
+                if (responseDict.ContainsKey("error_code"))
                 {
-                    if (resultDict.ContainsKey("error_code"))
-                    {
-                        string errorCode = resultDict["error_code"].ToString();
-                        string errorMsg = null;
-                        if (resultDict.ContainsKey("error_msg"))
-                            errorMsg = resultDict["error_msg"] as string;
+                    string errorCode = responseDict["error_code"].ToString();
+                    string errorMsg = null;
+                    if (responseDict.ContainsKey("error_msg"))
+                        errorMsg = responseDict["error_msg"] as string;
 
-                        // Error Details: http://wiki.developers.facebook.com/index.php/Error_codes
-                        if (errorCode == "190")
-                            resultException = new FacebookOAuthException(errorMsg, errorCode);
-                        else if (errorCode == "4" || errorCode == "API_EC_TOO_MANY_CALLS" || (errorMsg != null && errorMsg.Contains("request limit reached")))
-                            resultException = new FacebookApiLimitException(errorMsg, errorCode);
-                        else
-                            resultException = new FacebookApiException(errorMsg, errorCode);
-                    }
+                    // Error Details: http://wiki.developers.facebook.com/index.php/Error_codes
+                    if (errorCode == "190")
+                        resultException = new FacebookOAuthException(errorMsg, errorCode);
+                    else if (errorCode == "4" || errorCode == "API_EC_TOO_MANY_CALLS" || (errorMsg != null && errorMsg.Contains("request limit reached")))
+                        resultException = new FacebookApiLimitException(errorMsg, errorCode);
+                    else
+                        resultException = new FacebookApiException(errorMsg, errorCode);
                 }
             }
             else
             {
-                var responseDict = result as IDictionary<string, object>;
-                if (responseDict != null)
+                if (responseDict.ContainsKey("error"))
                 {
-                    if (responseDict.ContainsKey("error"))
+                    var error = responseDict["error"] as IDictionary<string, object>;
+                    if (error != null)
                     {
-                        var error = responseDict["error"] as IDictionary<string, object>;
-                        if (error != null)
-                        {
-                            var errorType = error["type"] as string;
-                            var errorMessage = error["message"] as string;
+                        var errorType = error["type"] as string;
+                        var errorMessage = error["message"] as string;
 
-                            // Check to make sure the correct data is in the response
-                            if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
-                            {
-                                // We don't include the inner exception because it is not needed and is always a WebException.
-                                // It is easier to understand the error if we use Facebook's error message.
-                                if (errorType == "OAuthException")
-                                    resultException = new FacebookOAuthException(errorMessage, errorType);
-                                else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage.Contains("request limit reached")))
-                                    resultException = new FacebookApiLimitException(errorMessage, errorType);
-                                else
-                                    resultException = new FacebookApiException(errorMessage, errorType);
-                            }
-                        }
-                        else
+                        // Check to make sure the correct data is in the response
+                        if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
                         {
-                            long? errorNumber = null;
-                            if (responseDict["error"] is long)
-                                errorNumber = (long)responseDict["error"];
-                            if (errorNumber == null && responseDict["error"] is int)
-                                errorNumber = (int)responseDict["error"];
-                            string errorDescription = null;
-                            if (responseDict.ContainsKey("error_description"))
-                                errorDescription = responseDict["error_description"] as string;
-                            if (errorNumber != null && !string.IsNullOrEmpty(errorDescription))
-                            {
-                                if (errorNumber == 190)
-                                    resultException = new FacebookOAuthException(errorDescription, "API_EC_PARAM_ACCESS_TOKEN");
-                                else
-                                    resultException = new FacebookApiException(errorDescription, errorNumber.Value.ToString());
-                            }
+                            // We don't include the inner exception because it is not needed and is always a WebException.
+                            // It is easier to understand the error if we use Facebook's error message.
+                            if (errorType == "OAuthException")
+                                resultException = new FacebookOAuthException(errorMessage, errorType);
+                            else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage.Contains("request limit reached")))
+                                resultException = new FacebookApiLimitException(errorMessage, errorType);
+                            else
+                                resultException = new FacebookApiException(errorMessage, errorType);
+                        }
+                    }
+                    else
+                    {
+                        long? errorNumber = null;
+                        if (responseDict["error"] is long)
+                            errorNumber = (long)responseDict["error"];
+                        if (errorNumber == null && responseDict["error"] is int)
+                            errorNumber = (int)responseDict["error"];
+                        string errorDescription = null;
+                        if (responseDict.ContainsKey("error_description"))
+                            errorDescription = responseDict["error_description"] as string;
+                        if (errorNumber != null && !string.IsNullOrEmpty(errorDescription))
+                        {
+                            if (errorNumber == 190)
+                                resultException = new FacebookOAuthException(errorDescription, "API_EC_PARAM_ACCESS_TOKEN");
+                            else
+                                resultException = new FacebookApiException(errorDescription, errorNumber.Value.ToString(CultureInfo.InvariantCulture));
                         }
                     }
                 }
