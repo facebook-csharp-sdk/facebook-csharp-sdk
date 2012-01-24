@@ -321,10 +321,10 @@ namespace Facebook
             if (parametersWithoutMediaObjects.ContainsKey("access_token"))
             {
                 var accessToken = parametersWithoutMediaObjects["access_token"];
-                if (accessToken == null || (accessToken is string && (string.IsNullOrEmpty((string)accessToken))))
-                    parametersWithoutMediaObjects.Remove("access_token");
-                else
+                if (accessToken != null && (!(accessToken is string) || (!string.IsNullOrEmpty((string)accessToken))))
                     queryString.AppendFormat("access_token={0}&", accessToken);
+
+                parametersWithoutMediaObjects.Remove("access_token");
             }
 
             if (!httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase))
