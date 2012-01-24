@@ -300,7 +300,7 @@ namespace Facebook
             }
             else
             {
-                uriBuilder = new UriBuilder(uri.Host, uri.Scheme);
+                uriBuilder = new UriBuilder { Host = uri.Host, Scheme = uri.Scheme };
             }
 
             uriBuilder.Path = path;
