@@ -318,6 +318,16 @@ namespace Facebook
             string contentType = null;
             var queryString = new StringBuilder();
 
+            IList<string> keysThatAreNotString = new List<string>();
+            foreach (var key in parametersWithoutMediaObjects.Keys)
+            {
+                if (!(parametersWithoutMediaObjects[key] is string))
+                    keysThatAreNotString.Add(key);
+            }
+
+            foreach (var key in keysThatAreNotString)
+                parametersWithoutMediaObjects[key] = SerializeJson(parametersWithoutMediaObjects[key]);
+
             if (parametersWithoutMediaObjects.ContainsKey("access_token"))
             {
                 var accessToken = parametersWithoutMediaObjects["access_token"];
