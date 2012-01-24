@@ -11,6 +11,8 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
+    using FluentHttp;
 
     public partial class FacebookClient
     {
@@ -59,7 +61,7 @@ namespace Facebook
             // code, state, error_reason, error and error_description are in query
             // ?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
             var queryPart = new Dictionary<string, object>();
-            ParseUrlQueryString("?" + uri.Query, queryPart, true);
+            ParseUrlQueryString(uri.Query, queryPart, true);
 
             if (queryPart.ContainsKey("code") || (queryPart.ContainsKey("error") && queryPart.ContainsKey("error_description")))
                 found = true;
@@ -71,6 +73,29 @@ namespace Facebook
                 return new FacebookOAuthResult(parameters);
 
             throw new InvalidOperationException("Could not parse Facebook OAuth url.");
+        }
+
+        public virtual Uri GetLoginUrl(object parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
+
+            IDictionary<string, FacebookMediaObject> mediaObjects;
+            IDictionary<string, FacebookMediaStream> mediaStreams;
+            var dictionary = ToDictionary(parameters, out mediaObjects, out mediaStreams);
+
+            var sb = new StringBuilder();
+            sb.Append("https://www.facebook.com/dialog/oauth?");
+
+            if (dictionary != null)
+            {
+                foreach (var kvp in dictionary)
+                    sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+            }
+
+            sb.Length--;
+
+            return new Uri(sb.ToString());
         }
     }
 }
