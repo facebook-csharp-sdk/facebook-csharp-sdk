@@ -189,13 +189,13 @@ namespace Facebook
                                         }
                                     }
                                 }
+
                                 httpHelper.OpenReadAsync();
                                 return;
                             }
                             catch (Exception ex)
                             {
-                                // if canncelled
-                                throw new NotImplementedException();
+                                args = new FacebookApiEventArgs(ex, httpHelper.HttpWebRequest.IsCancelled, userState, null);
                             }
                             finally
                             {
@@ -205,17 +205,18 @@ namespace Facebook
                         else
                         {
                             input.Dispose();
-                            if (e.Error is WebExceptionWrapper)
+                            var webExceptionWrapper = e.Error as WebExceptionWrapper;
+                            if (webExceptionWrapper != null)
                             {
-                                var ex = (WebExceptionWrapper)e.Error;
+                                var ex = webExceptionWrapper;
                                 if (ex.GetResponse() != null)
                                 {
-                                    httpHelper.OpenReadAsync(); // todo: can it be cancelled here?
+                                    httpHelper.OpenReadAsync();
                                     return;
                                 }
                             }
 
-                            args = new FacebookApiEventArgs(e.Error, false, userState, null);  // todo: could had been cancelled
+                            args = new FacebookApiEventArgs(e.Error, false, userState, null);
                         }
 
                         OnCompleted(httpMethod, args);
