@@ -357,7 +357,9 @@ namespace Facebook
                     contentType = "application/x-www-form-urlencoded";
                     var sb = new StringBuilder();
                     foreach (var kvp in parametersWithoutMediaObjects)
-                        sb.AppendFormat("{0}={1}", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+                        sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+                    if (sb.Length > 0)
+                        sb.Length--;
                     input = sb.Length == 0 ? null : new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString()));
                 }
                 else

@@ -129,14 +129,12 @@ namespace Facebook
 
         public virtual object Post(string path, object parameters)
         {
-            var result = (IDictionary<string, object>)Api("POST", path, parameters, null);
-            return result["body"];
+            return Api("POST", path, parameters, null);
         }
 
         public virtual object Delete(string path)
         {
-            var result = (IDictionary<string, object>)Api("DELETE", path, null, null);
-            return result["body"];
+            return Api("DELETE", path, null, null);
         }
     }
 }
