@@ -11,13 +11,14 @@ namespace Facebook
 {
     using System;
     using System.ComponentModel;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Represents the Facebook api event args.
     /// </summary>
     public class FacebookApiEventArgs : AsyncCompletedEventArgs
     {
+        private readonly object _result;
+
         /// <summary>
         /// Indicates whether the result is a batch result.
         /// </summary>
@@ -68,7 +69,7 @@ namespace Facebook
         public FacebookApiEventArgs(Exception error, bool cancelled, object userState, object result)
             : base(error, cancelled, userState)
         {
-            throw new NotImplementedException();
+            _result = result;
         }
 
         /// <summary>
@@ -104,7 +105,8 @@ namespace Facebook
         /// </returns>
         public object GetResultData()
         {
-            throw new NotImplementedException();
+            RaiseExceptionIfNecessary();
+            return _result;
             //var json = JsonSerializer.Current.DeserializeObject(_json);
 
             //if (_isBatchResult)
@@ -131,7 +133,7 @@ namespace Facebook
         /// </returns>
         public T GetResultData<T>()
         {
-            throw new NotImplementedException();
+            return (T)_result;
             //if (_isBatchResult)
             //    throw new InvalidOperationException(FacebookUtils.Resources.GetResultDataGenericNotSupportedForBatchRequests);
 

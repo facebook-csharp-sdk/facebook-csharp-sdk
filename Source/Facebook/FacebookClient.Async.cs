@@ -72,6 +72,7 @@ namespace Facebook
             Stream input;
             bool containsEtag;
             var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag);
+            _httpWebRequest = httpHelper.HttpWebRequest;
 
             var uploadProgressChanged = UploadProgressChanged;
             bool notifyUploadProgressChanged = uploadProgressChanged != null && httpHelper.HttpWebRequest.Method == "POST";
@@ -79,7 +80,63 @@ namespace Facebook
             httpHelper.OpenReadCompleted +=
                 (o, e) =>
                 {
-                    throw new NotImplementedException();
+                    FacebookApiEventArgs args;
+                    if (e.Cancelled)
+                    {
+                        args = new FacebookApiEventArgs(e.Error, true, userState, null);
+                    }
+                    else if (e.Error == null)
+                    {
+                        string responseString;
+
+                        try
+                        {
+                            using (var stream = e.Result)
+                            {
+                                using (var reader = new StreamReader(stream))
+                                {
+                                    responseString = reader.ReadToEnd();
+                                }
+                            }
+
+                            try
+                            {
+                                object result = ProcessResponse(httpHelper, responseString, resultType, containsEtag);
+                                args = new FacebookApiEventArgs(null, false, userState, result);
+                            }
+                            catch (Exception ex)
+                            {
+                                args = new FacebookApiEventArgs(ex, false, userState, null);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            args = httpHelper.HttpWebRequest.IsCancelled ? new FacebookApiEventArgs(ex, true, userState, null) : new FacebookApiEventArgs(ex, false, userState, null);
+                        }
+                    }
+                    else
+                    {
+                        var webEx = e.Error as WebExceptionWrapper;
+                        if (webEx == null)
+                        {
+                            args = new FacebookApiEventArgs(e.Error, httpHelper.HttpWebRequest.IsCancelled, userState, null);
+                        }
+                        else
+                        {
+                            args = null;
+                            if (webEx.GetResponse() == null)
+                            {
+                                args = new FacebookApiEventArgs(webEx, false, userState, null);
+                            }
+                            else
+                            {
+                                httpHelper.OpenReadAsync();
+                                return;
+                            }
+                        }
+                    }
+
+                    OnCompleted(httpMethod, args);
                 };
 
             if (input == null)

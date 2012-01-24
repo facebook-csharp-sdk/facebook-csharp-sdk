@@ -92,7 +92,6 @@ namespace Facebook
                     string responseString;
                     using (var stream = responseStream)
                     {
-                        var response = httpHelper.HttpWebResponse;
                         using (var reader = new StreamReader(stream))
                         {
                             responseString = reader.ReadToEnd();
