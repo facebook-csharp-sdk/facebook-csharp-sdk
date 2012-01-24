@@ -10,7 +10,6 @@
 namespace Facebook
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Net;
 
@@ -24,7 +23,7 @@ namespace Facebook
         /// <param name="parameters">The parameters</param>
         /// <param name="resultType">The type of deserialize object into.</param>
         /// <returns>The json result with headers.</returns>
-        public virtual object Api(string httpMethod, string path, object parameters, Type resultType)
+        protected virtual object Api(string httpMethod, string path, object parameters, Type resultType)
         {
             Stream input;
             bool containsEtag;
