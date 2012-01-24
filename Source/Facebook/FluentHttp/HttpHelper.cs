@@ -86,6 +86,15 @@ namespace Facebook
             set { _httpWebRequest.Headers = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates whether the request should follow redirection responses.
+        /// </summary>
+        public virtual bool AllowAutoRedirect
+        {
+            get { return _httpWebRequest.AllowAutoRedirect; }
+            set { _httpWebRequest.AllowAutoRedirect = value; }
+        }
+
 #if !(WINDOWS_PHONE || FLUENTHTTP_CORE_WINRT)
 
         /// <summary>
@@ -367,13 +376,35 @@ namespace Facebook
         }
 
 #endif
+
+        private object _cancelledLock = new object();
+
         /// <summary>
         /// Aborts the http web request.
         /// </summary>
         public virtual void Abort()
         {
-            _httpWebRequest.Abort();
+            lock (_cancelledLock)
+            {
+                try
+                {
+                    _httpWebRequest.Abort();
+                }
+                catch (WebException ex)
+                {
+                    throw new WebExceptionWrapper(ex);
+                }
+                finally
+                {
+                    IsCancelled = true;
+                }
+            }
         }
+
+        /// <summary>
+        /// Gets or sets if the request to an Internet resource was cancelled.
+        /// </summary>
+        public virtual bool IsCancelled { get; set; }
 
     }
 
@@ -723,6 +754,8 @@ namespace FluentHttp
 #endif
  class HttpHelper
     {
+        private const string ErrorPerformingHttpRequest = "An error occurred performing a http web request.";
+
         /// <summary>
         /// Gets the inner exception.
         /// </summary>
@@ -777,7 +810,6 @@ namespace FluentHttp
             _httpWebRequest = httpWebRequest;
         }
 
-
         /// <summary>
         /// Gets the http web request.
         /// </summary>
@@ -823,7 +855,7 @@ namespace FluentHttp
             }
             catch (Exception ex)
             {
-                _innerException = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                _innerException = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
                 throw _innerException;
             }
         }
@@ -856,7 +888,7 @@ namespace FluentHttp
             }
             catch (Exception ex)
             {
-                _innerException = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                _innerException = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
                 throw _innerException;
             }
         }
@@ -904,7 +936,7 @@ namespace FluentHttp
                 }
                 catch (Exception ex)
                 {
-                    webExceptionWrapper = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                    webExceptionWrapper = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
                     _innerException = webExceptionWrapper;
                 }
                 finally
@@ -960,7 +992,7 @@ namespace FluentHttp
                         }
                         catch (Exception ex)
                         {
-                            exception = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                            exception = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
                             _innerException = exception;
                         }
 
@@ -1022,7 +1054,7 @@ namespace FluentHttp
             }
             catch (Exception ex)
             {
-                webExceptionWrapper = new WebExceptionWrapper(new WebException("An error occurred performing a http web request.", ex));
+                webExceptionWrapper = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
                 _innerException = webExceptionWrapper;
             }
 
@@ -1063,14 +1095,35 @@ namespace FluentHttp
         {
             var tcs = new TaskCompletionSource<Stream>(this);
 
-            var ctr = cancellationToken.Register(CancelAsync);
+            CancellationTokenRegistration ctr = cancellationToken.Register(
+                () =>
+                {
+                    try
+                    {
+                        CancelAsync();
+                    }
+                    catch (WebExceptionWrapper ex)
+                    {
+                        if (ex.Status != WebExceptionStatus.RequestCanceled)
+                            throw;
+                    }
+                });
             OpenReadCompletedEventHandler handler = null;
             handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenReadCompleted -= handler; });
             OpenReadCompleted += handler;
 
             try
             {
-                OpenReadAsync(tcs);
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    tcs.TrySetCanceled();
+                }
+                else
+                {
+                    OpenReadAsync(tcs);
+                    if (cancellationToken.IsCancellationRequested)
+                        tcs.TrySetCanceled();
+                }
             }
             catch
             {
@@ -1108,14 +1161,35 @@ namespace FluentHttp
         {
             var tcs = new TaskCompletionSource<Stream>(this);
 
-            var ctr = cancellationToken.Register(CancelAsync);
+            CancellationTokenRegistration ctr = cancellationToken.Register(
+                () =>
+                {
+                    try
+                    {
+                        CancelAsync();
+                    }
+                    catch (WebExceptionWrapper ex)
+                    {
+                        if (ex.Status != WebExceptionStatus.RequestCanceled)
+                            throw;
+                    }
+                });
             OpenWriteCompletedEventHandler handler = null;
             handler = (sender, e) => TransferCompletionToTask(tcs, e, () => e.Result, () => { ctr.Dispose(); OpenWriteCompleted -= handler; });
             OpenWriteCompleted += handler;
 
             try
             {
-                OpenWriteAsync(tcs);
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    tcs.TrySetCanceled();
+                }
+                else
+                {
+                    OpenWriteAsync(tcs);
+                    if (cancellationToken.IsCancellationRequested)
+                        tcs.TrySetCanceled();
+                }
             }
             catch
             {
@@ -1133,7 +1207,22 @@ namespace FluentHttp
         /// </summary>
         public void CancelAsync()
         {
-            HttpWebRequest.Abort();
+            try
+            {
+                HttpWebRequest.Abort();
+            }
+            catch (WebExceptionWrapper)
+            {
+                throw;
+            }
+            catch (WebException ex)
+            {
+                throw new WebExceptionWrapper(ex);
+            }
+            catch (Exception ex)
+            {
+                throw new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
+            }
         }
 
         /// <summary>
