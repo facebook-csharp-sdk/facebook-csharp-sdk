@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-SL4", "Facebook\Facebook-SL4.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Tests-SL4", "Facebook.Tests\Facebook.Tests-SL4.csproj", "{DA43E372-3ED5-4A49-9DC6-AB8BD0211A34}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Facebook.vsmdi
@@ -18,10 +16,6 @@ Global
 		{857E540C-0092-4590-A279-F98A6B77AC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{857E540C-0092-4590-A279-F98A6B77AC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{857E540C-0092-4590-A279-F98A6B77AC0A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DA43E372-3ED5-4A49-9DC6-AB8BD0211A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA43E372-3ED5-4A49-9DC6-AB8BD0211A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA43E372-3ED5-4A49-9DC6-AB8BD0211A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA43E372-3ED5-4A49-9DC6-AB8BD0211A34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
