@@ -1,5 +1,23 @@
+/*
+ * Install-Package CombinationStream
+ * 
+ * https://github.com/prabirshrestha/CombinationStream
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *    
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ */
 
-namespace CombinationStream
+namespace Facebook
 {
     using System;
     using System.Collections.Generic;
@@ -9,17 +27,24 @@ namespace CombinationStream
     internal class CombinationStream : Stream
     {
         private readonly IList<Stream> _streams;
+        private readonly IList<int> _streamsToDispose;
         private int _currentStreamIndex;
         private Stream _currentStream;
         private long _length = -1;
         private long _postion;
 
         public CombinationStream(IList<Stream> streams)
+            : this(streams, null)
+        {
+        }
+
+        public CombinationStream(IList<Stream> streams, IList<int> streamsToDispose)
         {
             if (streams == null)
                 throw new ArgumentNullException("streams");
 
             _streams = streams;
+            _streamsToDispose = streamsToDispose;
             if (streams.Count > 0)
                 _currentStream = streams[_currentStreamIndex++];
         }
@@ -32,7 +57,7 @@ namespace CombinationStream
                 _currentStream.Flush();
         }
 
-        public override long Seek(long offset, System.IO.SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
             throw new InvalidOperationException("Stream is not seekable.");
         }
@@ -154,6 +179,22 @@ namespace CombinationStream
         public override void Write(byte[] buffer, int offset, int count)
         {
             throw new InvalidOperationException("Stream is not writable");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (_streamsToDispose == null)
+            {
+                foreach (var stream in InternalStreams)
+                    stream.Dispose();
+            }
+            else
+            {
+                int i;
+                for (i = 0; i < InternalStreams.Count; i++)
+                    InternalStreams[i].Dispose();
+            }
         }
 
         public override bool CanRead

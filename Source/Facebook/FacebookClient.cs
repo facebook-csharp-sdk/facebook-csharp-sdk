@@ -433,7 +433,7 @@ namespace Facebook
                     }
 
                     streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(String.Concat(MultiPartNewLine, MultiPartFormPrefix, boundary, MultiPartFormPrefix, MultiPartNewLine))));
-                    input = new CombinationStream.CombinationStream(streams);
+                    input = new CombinationStream(streams);
                 }
             }
 
