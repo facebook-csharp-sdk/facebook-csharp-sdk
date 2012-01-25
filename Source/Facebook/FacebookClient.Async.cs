@@ -40,6 +40,16 @@ namespace Facebook
         /// </summary>
         public event EventHandler<FacebookUploadProgressChangedEventArgs> UploadProgressChanged;
 
+#if FLUENTHTTP_CORE_TPL
+
+        /// <summary>
+        /// Event handler when http web request wrapper is created for async api only.
+        /// (used internally by TPL for cancellation support)
+        /// </summary>
+        private event EventHandler<HttpWebRequestCreatedEventArgs> HttpWebRequestWrapperCreated;
+
+#endif
+
         /// <summary>
         /// Cancels asynchronous requests.
         /// </summary>
@@ -73,6 +83,11 @@ namespace Facebook
             bool containsEtag;
             var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag);
             _httpWebRequest = httpHelper.HttpWebRequest;
+
+#if FLUENTHTTP_CORE_TPL
+            if (HttpWebRequestWrapperCreated != null)
+                HttpWebRequestWrapperCreated(this, new HttpWebRequestCreatedEventArgs(userState, httpHelper.HttpWebRequest));
+#endif
 
             var uploadProgressChanged = UploadProgressChanged;
             bool notifyUploadProgressChanged = uploadProgressChanged != null && httpHelper.HttpWebRequest.Method == "POST";

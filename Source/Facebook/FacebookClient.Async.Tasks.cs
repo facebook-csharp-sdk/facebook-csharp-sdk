@@ -34,7 +34,75 @@ namespace Facebook
 #endif
 )
         {
-            throw new NotImplementedException();
+            var tcs = new TaskCompletionSource<object>(userState);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                tcs.TrySetCanceled();
+                return tcs.Task;
+            }
+           
+            httpMethod = httpMethod.ToUpperInvariant();
+
+            HttpWebRequestWrapper httpWebRequest = null;
+            EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
+            httpWebRequestCreatedHandler += (o, e) =>
+                                                {
+                                                    if (e.UserState != tcs)
+                                                        return;
+                                                    httpWebRequest = e.HttpWebRequest;
+                                                };
+
+            var ctr = cancellationToken.Register(() =>
+                                                     {
+                                                         try
+                                                         {
+                                                             if (httpWebRequest != null) httpWebRequest.Abort();
+                                                         }
+                                                         catch
+                                                         {
+                                                         }
+                                                     });
+
+            EventHandler<FacebookApiEventArgs> handler = null;
+            handler = (sender, e) =>
+            {
+                TransferCompletionToTask(tcs, e, e.GetResultData, () =>
+                {
+                    if (ctr != null) ctr.Dispose();
+                    RemoveTaskAsyncHandlers(httpMethod, handler);
+                    HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+#if ASYNC_AWAIT
+                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+#endif
+                });
+            };
+
+            if (httpMethod == "GET")
+                GetCompleted += handler;
+            else if (httpMethod == "POST")
+                PostCompleted += handler;
+            else if (httpMethod == "DELETE")
+                DeleteCompleted += handler;
+            else
+                throw new ArgumentOutOfRangeException("httpMethod");
+
+            HttpWebRequestWrapperCreated += httpWebRequestCreatedHandler;
+
+            try
+            {
+                ApiAsync(httpMethod, path, parameters, resultType, tcs);
+            }
+            catch
+            {
+                RemoveTaskAsyncHandlers(httpMethod, handler);
+                HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
+#if ASYNC_AWAIT
+                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+#endif
+                throw;
+            }
+
+            return tcs.Task;
         }
 
 #if ASYNC_AWAIT
@@ -56,5 +124,31 @@ namespace Facebook
 
 #endif
 
+        private static void TransferCompletionToTask<T>(System.Threading.Tasks.TaskCompletionSource<T> tcs, System.ComponentModel.AsyncCompletedEventArgs e, Func<T> getResult, Action unregisterHandler)
+        {
+            if (e.UserState != tcs)
+                return;
+
+            try
+            {
+                unregisterHandler();
+            }
+            finally
+            {
+                if (e.Cancelled) tcs.TrySetCanceled();
+                else if (e.Error != null) tcs.TrySetException(e.Error);
+                else tcs.TrySetResult(getResult());
+            }
+        }
+
+        private void RemoveTaskAsyncHandlers(string httpMethod, EventHandler<FacebookApiEventArgs> handler)
+        {
+            if (httpMethod == "GET")
+                GetCompleted -= handler;
+            else if (httpMethod == "POST")
+                PostCompleted -= handler;
+            else if (httpMethod == "DELETE")
+                DeleteCompleted -= handler;
+        }
     }
 }
