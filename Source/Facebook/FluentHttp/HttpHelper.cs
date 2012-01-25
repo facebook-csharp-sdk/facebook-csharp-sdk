@@ -86,6 +86,7 @@ namespace Facebook
             set { _httpWebRequest.Headers = value; }
         }
 
+#if !FLUENTHTTP_CORE_WINRT
         /// <summary>
         /// Gets or sets a value that indicates whether the request should follow redirection responses.
         /// </summary>
@@ -94,6 +95,7 @@ namespace Facebook
             get { return _httpWebRequest.AllowAutoRedirect; }
             set { _httpWebRequest.AllowAutoRedirect = value; }
         }
+#endif
 
 #if !(WINDOWS_PHONE || FLUENTHTTP_CORE_WINRT)
 
