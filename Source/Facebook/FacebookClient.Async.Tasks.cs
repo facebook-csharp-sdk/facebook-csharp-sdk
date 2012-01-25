@@ -28,7 +28,7 @@ namespace Facebook
         /// <param name="uploadProgress">The upload progress</param>
 #endif
         /// <returns>The task of json result with headers.</returns>
-        public virtual Task<object> ApiTaskAsync(string httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken
+        protected virtual Task<object> ApiTaskAsync(string httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken
 #if ASYNC_AWAIT
 , IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress
 #endif
