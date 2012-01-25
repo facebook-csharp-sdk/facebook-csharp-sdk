@@ -40,6 +40,7 @@ namespace Facebook
                         while (true)
                         {
                             int bytesRead = input.Read(buffer, 0, buffer.Length);
+                            input.Flush();
                             if (bytesRead <= 0) break;
                             stream.Write(buffer, 0, bytesRead);
                             stream.Flush();
