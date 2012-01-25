@@ -371,6 +371,7 @@ namespace Facebook
                     contentType = string.Concat("multipart/form-data; boundary=", boundary);
 
                     var streams = new List<Stream>();
+                    var indexOfDisposableStreams = new List<int>();
 
                     // Build up the post message header
                     var sb = new StringBuilder();
@@ -384,6 +385,7 @@ namespace Facebook
                         sb.Append(MultiPartNewLine);
                     }
 
+                    indexOfDisposableStreams.Add(streams.Count);
                     streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString())));
 
                     foreach (var facebookMediaObject in mediaObjects)
@@ -398,6 +400,7 @@ namespace Facebook
                         sbMediaObject.Append("Content-Disposition: form-data; name=\"").Append(facebookMediaObject.Key).Append("\"; filename=\"").Append(mediaObject.FileName).Append("\"").Append(MultiPartNewLine);
                         sbMediaObject.Append("Content-Type: ").Append(mediaObject.ContentType).Append(MultiPartNewLine).Append(MultiPartNewLine);
 
+                        indexOfDisposableStreams.Add(streams.Count);
                         streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sbMediaObject.ToString())));
 
                         byte[] fileData = mediaObject.GetValue();
@@ -405,7 +408,9 @@ namespace Facebook
                         if (fileData == null)
                             throw new InvalidOperationException(AttachmentValueIsNull);
 
+                        indexOfDisposableStreams.Add(streams.Count);
                         streams.Add(new MemoryStream(fileData));
+                        indexOfDisposableStreams.Add(streams.Count);
                         streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
                     }
 
@@ -421,6 +426,7 @@ namespace Facebook
                         sbMediaStream.Append("Content-Disposition: form-data; name=\"").Append(facebookMediaStream.Key).Append("\"; filename=\"").Append(mediaStream.FileName).Append("\"").Append(MultiPartNewLine);
                         sbMediaStream.Append("Content-Type: ").Append(mediaStream.ContentType).Append(MultiPartNewLine).Append(MultiPartNewLine);
 
+                        indexOfDisposableStreams.Add(streams.Count);
                         streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(sbMediaStream.ToString())));
 
                         var stream = mediaStream.GetValue();
@@ -429,11 +435,14 @@ namespace Facebook
                             throw new InvalidOperationException(AttachmentValueIsNull);
 
                         streams.Add(stream);
+
+                        indexOfDisposableStreams.Add(streams.Count);
                         streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
                     }
 
-                    streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(String.Concat(MultiPartNewLine, MultiPartFormPrefix, boundary, MultiPartFormPrefix, MultiPartNewLine))));
-                    input = new CombinationStream(streams);
+                    indexOfDisposableStreams.Add(streams.Count);
+                    streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(MultiPartNewLine, MultiPartFormPrefix, boundary, MultiPartFormPrefix, MultiPartNewLine))));
+                    input = new CombinationStream(streams, indexOfDisposableStreams);
                 }
             }
 
@@ -447,7 +456,7 @@ namespace Facebook
                              : HttpWebRequestFactory(uriBuilder.Uri);
             request.Method = httpMethod;
             request.ContentType = contentType;
-            // request.AllowAutoRedirect = false;
+
             if (!string.IsNullOrEmpty(etag))
                 request.Headers[HttpRequestHeader.IfNoneMatch] = string.Concat('"', etag, '"');
 
