@@ -40,7 +40,7 @@ namespace Facebook
                 tcs.TrySetCanceled();
                 return tcs.Task;
             }
-           
+
             httpMethod = httpMethod.ToUpperInvariant();
 
             HttpWebRequestWrapper httpWebRequest = null;
@@ -62,6 +62,22 @@ namespace Facebook
                                                          {
                                                          }
                                                      });
+
+#if ASYNC_AWAIT
+                EventHandler<FacebookUploadProgressChangedEventArgs> uploadProgressHandler = null;
+                if (uploadProgres != null)
+                {
+
+                    uploadProgressHandler = (sender, e) =>
+                                            {
+                                                if (e.UserState != tcs)
+                                                    return;
+                                                uploadProgres.Report(new FacebookUploadProgressChangedEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.BytesSent, e.TotalBytesToSend, e.ProgressPercentage, userToken));
+                                            };
+
+                    UploadProgressChanged += uploadProgressHandler;
+                }
+#endif
 
             EventHandler<FacebookApiEventArgs> handler = null;
             handler = (sender, e) =>
@@ -149,6 +165,63 @@ namespace Facebook
                 PostCompleted -= handler;
             else if (httpMethod == "DELETE")
                 DeleteCompleted -= handler;
+        }
+
+        public virtual Task<object> GetTaskAsync(string path)
+        {
+            return GetTaskAsync(path, null, CancellationToken.None);
+        }
+
+        public virtual Task<object> GetTaskAsync(object parameters)
+        {
+            return GetTaskAsync(null, parameters, CancellationToken.None);
+        }
+
+        public virtual Task<object> GetTaskAsync(string path, object parameters)
+        {
+            return GetTaskAsync(path, parameters, CancellationToken.None);
+        }
+
+        public virtual Task<object> GetTaskAsync(string path, object parameters, CancellationToken cancellationToken)
+        {
+            return ApiTaskAsync("GET", path, parameters, null, null, cancellationToken);
+        }
+
+        public virtual Task<object> PostTaskAsync(object parameters)
+        {
+            return PostTaskAsync(null, parameters, CancellationToken.None);
+        }
+
+        public virtual Task<object> PostTaskAsync(string path, object parameters)
+        {
+            return PostTaskAsync(path, parameters, CancellationToken.None);
+        }
+
+        public virtual Task<object> PostTaskAsync(string path, object parameters, CancellationToken cancellationToken)
+        {
+            return ApiTaskAsync("POST", path, parameters, null, null, cancellationToken);
+        }
+
+#if ASYNC_AWAIT
+        public virtual Task<object> PostTaskAsync(string path, object parameters, object userToken, CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
+        {
+            return ApiTaskAsync("POST", path, parameters, null, userToken, cancellationToken, uploadProgress);
+        }
+#endif
+
+        public virtual Task<object> DeleteTaskAsync(string path)
+        {
+            return DeleteTaskAsync(path, null, CancellationToken.None);
+        }
+
+        public virtual Task<object> DeleteTaskAsync(string path, object parameters)
+        {
+            return DeleteTaskAsync(path, parameters, CancellationToken.None);
+        }
+
+        public virtual Task<object> DeleteTaskAsync(string path, object parameters, CancellationToken cancellationToken)
+        {
+            return ApiTaskAsync("DELETE", path, parameters, null, null, cancellationToken);
         }
     }
 }
