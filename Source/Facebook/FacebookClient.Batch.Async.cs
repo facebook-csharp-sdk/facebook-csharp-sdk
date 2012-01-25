@@ -102,7 +102,6 @@ namespace Facebook
                             relativeUrl.Length--;
                         data["relative_url"] = relativeUrl;
                     }
-
                 }
                 else
                 {
