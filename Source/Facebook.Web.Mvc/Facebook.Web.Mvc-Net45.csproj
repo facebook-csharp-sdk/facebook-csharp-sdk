@@ -138,11 +138,6 @@
     <Compile Include="FacebookSubscriptionVerifyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook.Web\Facebook.Web-Net45.csproj">
-      <Project>{73333465-710d-4143-ba9b-201d90ee2baf}</Project>
-      <Name>Facebook.Web-Net45</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Facebook\Facebook-Net45.csproj">
       <Project>{857e540c-0092-4590-a279-f98a6b77ac0a}</Project>
       <Name>Facebook-Net45</Name>

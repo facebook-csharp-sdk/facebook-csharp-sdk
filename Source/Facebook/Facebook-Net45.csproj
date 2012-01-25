@@ -104,7 +104,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Runtime.Serialization" />
@@ -112,30 +111,52 @@
   <ItemGroup>
     <Compile Include="CombinationStream.cs" />
     <Compile Include="DateTimeConvertor.cs" />
-    <Compile Include="DefaultFacebookApplication.cs" />
-    <Compile Include="ExceptionFactory.cs" />
-    <Compile Include="FacebookApi.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiException.cs" />
-    <Compile Include="FacebookApiLimitException.cs" />
-    <Compile Include="FacebookApplication.cs" />
     <Compile Include="FacebookBatchParameter.cs" />
     <Compile Include="FacebookClient.cs" />
-    <Compile Include="FacebookConfigurationSection.cs" />
+    <Compile Include="FacebookClient.Async.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Async.Tasks.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Batch.Sync.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Batch.Async.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Batch.Async.Tasks.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Sync.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.SignedRequest.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.OAuthResult.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookClient.Subscriptions.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookMediaStream.cs" />
-    <Compile Include="FacebookOAuthClient.cs" />
-    <Compile Include="FacebookOAuthException.cs" />
+    <Compile Include="FacebookOAuthException.cs">
+      <DependentUpon>FacebookApiException.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookApiLimitException.cs">
+      <DependentUpon>FacebookApiException.cs</DependentUpon>
+    </Compile>
     <Compile Include="FacebookOAuthResult.cs" />
-    <Compile Include="FacebookUploadProgressChangedEventArgs.cs" />
-    <Compile Include="FacebookUtils.cs" />
+    <Compile Include="FacebookUploadProgressChangedEventArgs.cs">
+      <DependentUpon>FacebookApiEventArgs.cs</DependentUpon>
+    </Compile>
     <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HttpMethod.cs" />
     <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
-    <Compile Include="IFacebookApplication.cs" />
-    <Compile Include="IJsonSerializer.cs" />
-    <Compile Include="JsonSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

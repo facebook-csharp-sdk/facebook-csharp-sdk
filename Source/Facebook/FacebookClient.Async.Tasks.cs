@@ -65,14 +65,13 @@ namespace Facebook
 
 #if ASYNC_AWAIT
                 EventHandler<FacebookUploadProgressChangedEventArgs> uploadProgressHandler = null;
-                if (uploadProgres != null)
+                if (uploadProgress != null)
                 {
-
                     uploadProgressHandler = (sender, e) =>
                                             {
                                                 if (e.UserState != tcs)
                                                     return;
-                                                uploadProgres.Report(new FacebookUploadProgressChangedEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.BytesSent, e.TotalBytesToSend, e.ProgressPercentage, userToken));
+                                                uploadProgress.Report(new FacebookUploadProgressChangedEventArgs(e.BytesReceived, e.TotalBytesToReceive, e.BytesSent, e.TotalBytesToSend, e.ProgressPercentage, userState));
                                             };
 
                     UploadProgressChanged += uploadProgressHandler;
