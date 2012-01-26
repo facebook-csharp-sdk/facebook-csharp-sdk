@@ -11,6 +11,7 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Text;
     using FluentHttp;
@@ -20,11 +21,19 @@ namespace Facebook
         private const string AtLeastOneBatchParameterRequried = "At least one batch parameter is required";
         private const string OnlyOneAttachmentAllowedPerBatchRequest = "Only one attachement (FacebookMediaObject/FacebookMediaStream) allowed per FacebookBatchParamter.";
 
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete("Use BatchTaskAsync instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+#endif
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
         {
             throw new NotImplementedException();
         }
 
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete("Use BatchTaskAsync instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+#endif
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters)
         {
             throw new NotImplementedException();

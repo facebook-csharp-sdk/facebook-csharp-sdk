@@ -75,7 +75,7 @@ namespace Facebook
         /// <param name="resultType">The type of deserialize object into.</param>
         /// <param name="userState">The user state.</param>
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use ApiTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         protected virtual void ApiAsync(string httpMethod, string path, object parameters, Type resultType, object userState)
@@ -258,30 +258,45 @@ namespace Facebook
 
         #region Events
 
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete]
+#endif
         protected virtual void OnGetCompleted(FacebookApiEventArgs args)
         {
             if (GetCompleted != null)
                 GetCompleted(this, args);
         }
 
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete]
+#endif
         protected virtual void OnPostCompleted(FacebookApiEventArgs args)
         {
             if (PostCompleted != null)
                 PostCompleted(this, args);
         }
 
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete]
+#endif
         protected virtual void OnDeleteCompleted(FacebookApiEventArgs args)
         {
             if (DeleteCompleted != null)
                 DeleteCompleted(this, args);
         }
 
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete]
+#endif
         protected void OnUploadProgressChanged(FacebookUploadProgressChangedEventArgs args)
         {
             if (UploadProgressChanged != null)
                 UploadProgressChanged(this, args);
         }
 
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete]
+#endif
         private void OnCompleted(string httpMethod, FacebookApiEventArgs args)
         {
             switch (httpMethod)
@@ -299,6 +314,7 @@ namespace Facebook
                     throw new ArgumentOutOfRangeException("httpMethod");
             }
         }
+
         #endregion
 
         /// <summary>
@@ -310,7 +326,7 @@ namespace Facebook
         /// <param name="userState">The user state.</param>
         /// <typeparam name="T">The type of deserialize object into.</typeparam>
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use ApiTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         protected virtual void ApiAsync<T>(string httpMethod, string path, object parameters, object userState)
@@ -319,7 +335,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void GetAsync(string path)
@@ -328,7 +344,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void GetAsync(object parameters)
@@ -337,7 +353,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void GetAsync(string path, object parameters)
@@ -346,7 +362,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void GetAsync(string path, object parameters, object userState)
@@ -355,7 +371,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use PostTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void PostAsync(object parameters)
@@ -364,7 +380,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use PostTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void PostAsync(string path, object parameters)
@@ -373,7 +389,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use PostTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void PostAsync(string path, object parameters, object userState)
@@ -382,7 +398,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use DeleteTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void DeleteAsync(string path)
@@ -391,7 +407,7 @@ namespace Facebook
         }
 
 #if FLUENTHTTP_CORE_TPL
-        [Obsolete]
+        [Obsolete("Use DeleteTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
         public virtual void DeleteAsync(string path, object parameters, object userState)
