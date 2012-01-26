@@ -14,6 +14,7 @@ namespace Facebook
     using System.ComponentModel;
 #endif
     using System.IO;
+    using System.Net;
 
     public partial class FacebookClient
     {
@@ -138,15 +139,29 @@ namespace Facebook
                         }
                         else
                         {
-                            args = null;
                             if (webEx.GetResponse() == null)
                             {
                                 args = new FacebookApiEventArgs(webEx, false, userState, null);
                             }
                             else
                             {
-                                httpHelper.OpenReadAsync();
-                                return;
+                                var response = httpHelper.HttpWebResponse;
+                                if (response.StatusCode == HttpStatusCode.NotModified)
+                                {
+                                    var jsonObject = new JsonObject();
+                                    var headers = new JsonObject();
+
+                                    foreach (var headerName in response.Headers.AllKeys)
+                                        headers[headerName] = response.Headers[headerName];
+
+                                    jsonObject["headers"] = headers;
+                                    args = new FacebookApiEventArgs(null, false, userState, jsonObject);
+                                }
+                                else
+                                {
+                                    httpHelper.OpenReadAsync();
+                                    return;
+                                }
                             }
                         }
                     }
