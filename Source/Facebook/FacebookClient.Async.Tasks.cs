@@ -213,11 +213,6 @@ namespace Facebook
             return DeleteTaskAsync(path, null, CancellationToken.None);
         }
 
-        public virtual Task<object> DeleteTaskAsync(string path, object parameters)
-        {
-            return DeleteTaskAsync(path, parameters, CancellationToken.None);
-        }
-
         public virtual Task<object> DeleteTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
             return ApiTaskAsync("DELETE", path, parameters, null, null, cancellationToken);

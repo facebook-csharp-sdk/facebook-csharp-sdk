@@ -135,5 +135,10 @@ namespace Facebook
         {
             return Api("DELETE", path, null, null);
         }
+
+        public virtual object Delete(string path, object parameters)
+        {
+            return Api("DELETE", path, parameters, null);
+        }
     }
 }
