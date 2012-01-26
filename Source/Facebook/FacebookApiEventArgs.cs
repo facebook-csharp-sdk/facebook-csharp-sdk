@@ -121,30 +121,5 @@ namespace Facebook
             //}
             //return json;
         }
-
-        /// <summary>
-        /// Gets the result.
-        /// </summary>
-        /// <typeparam name="T">
-        /// Type of object to deserialize to.
-        /// </typeparam>
-        /// <returns>
-        /// The result.
-        /// </returns>
-        public T GetResultData<T>()
-        {
-            return (T)_result;
-            //if (_isBatchResult)
-            //    throw new InvalidOperationException(FacebookUtils.Resources.GetResultDataGenericNotSupportedForBatchRequests);
-
-            //if (_isQuery && !string.IsNullOrEmpty(_json) && _json.StartsWith("{\"data\":") && _json.Length > 9)
-            //{
-            //    // required for compatibility with v5.2.1
-            //    var queryData = _json.Substring(8, _json.Length - 9);
-            //    return JsonSerializer.Current.DeserializeObject<T>(queryData);
-            //}
-
-            //return JsonSerializer.Current.DeserializeObject<T>(_json);
-        }
     }
 }
