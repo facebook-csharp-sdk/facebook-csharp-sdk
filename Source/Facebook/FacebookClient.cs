@@ -240,8 +240,6 @@ namespace Facebook
         {
             if (string.IsNullOrEmpty(httpMethod))
                 throw new ArgumentNullException("httpMethod");
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
 
             input = null;
             containsEtag = false;
@@ -277,6 +275,7 @@ namespace Facebook
                 restMethod = (string)parametersWithoutMediaObjects["method"];
                 if (restMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
                     throw new ArgumentException("Parameter cannot contain method=delete. Use Delete or DeleteAsync or DeleteTaskAsync methods instead.", "parameters");
+                parametersWithoutMediaObjects.Remove("method");
                 isLegacyRestApi = true;
             }
             else if (isLegacyRestApi)
@@ -293,6 +292,8 @@ namespace Facebook
                 {
                     if (string.IsNullOrEmpty(restMethod))
                         throw new InvalidOperationException("Legacy rest api 'method' in parameters is null or empty.");
+                    path = string.Concat("method/", restMethod);
+                    parametersWithoutMediaObjects["format"] = "json-strings";
                     if (restMethod.Equals("video.upload"))
                         uriBuilder.Host = UseFacebookBeta ? "api-video.beta.facebook.com" : "api-video.facebook.com";
                     else if (LegacyRestApiReadOnlyCalls.Contains(restMethod))
@@ -302,6 +303,8 @@ namespace Facebook
                 }
                 else
                 {
+                    if (string.IsNullOrEmpty(path))
+                        throw new ArgumentNullException("path");
                     if (httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase) && path.EndsWith("/videos"))
                         uriBuilder.Host = UseFacebookBeta ? "graph-video.beta.facebook.com" : "graph-video.facebook.com";
                     else
@@ -480,7 +483,7 @@ namespace Facebook
                 if (response == null)
                     throw new InvalidOperationException(UnknownResponse);
 
-                if (response.ContentType.Contains("text/javascript"))
+                if (response.ContentType.Contains("text/javascript") || response.ContentType.Contains("application/json"))
                 {
                     result = DeserializeJson(responseString, resultType);
                 }
