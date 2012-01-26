@@ -97,5 +97,28 @@ namespace Facebook
 
             return new Uri(sb.ToString());
         }
+
+        public virtual Uri GetLogoutUrl(object parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
+
+            IDictionary<string, FacebookMediaObject> mediaObjects;
+            IDictionary<string, FacebookMediaStream> mediaStreams;
+            var dictionary = ToDictionary(parameters, out mediaObjects, out mediaStreams);
+
+            var sb = new StringBuilder();
+            sb.Append("https://www.facebook.com/logout.php?");
+
+            if (dictionary != null)
+            {
+                foreach (var kvp in dictionary)
+                    sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+            }
+
+            sb.Length--;
+
+            return new Uri(sb.ToString());
+        }
     }
 }
