@@ -236,15 +236,11 @@ namespace Facebook
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
         }
 
-        private HttpHelper PrepareRequest(string httpMethod, string path, object parameters, Type resultType, out Stream input, out bool containsEtag, out bool processBatchResponse)
+        private HttpHelper PrepareRequest(HttpMethod httpMethod, string path, object parameters, Type resultType, out Stream input, out bool containsEtag, out bool processBatchResponse)
         {
-            if (string.IsNullOrEmpty(httpMethod))
-                throw new ArgumentNullException("httpMethod");
-
             input = null;
             containsEtag = false;
             processBatchResponse = false;
-            httpMethod = httpMethod.ToUpperInvariant();
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
             IDictionary<string, FacebookMediaStream> mediaStreams;
@@ -314,7 +310,7 @@ namespace Facebook
                         throw new ArgumentNullException("path");
                     }
 
-                    if (httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase) && path.EndsWith("/videos"))
+                    if (httpMethod == HttpMethod.Post && path.EndsWith("/videos"))
                         uriBuilder.Host = UseFacebookBeta ? "graph-video.beta.facebook.com" : "graph-video.facebook.com";
                     else
                         uriBuilder.Host = UseFacebookBeta ? "graph.beta.facebook.com" : "graph.facebook.com";
@@ -349,9 +345,9 @@ namespace Facebook
                 parametersWithoutMediaObjects.Remove("access_token");
             }
 
-            if (!httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase))
+            if (httpMethod != HttpMethod.Post)
             {
-                if (containsEtag && !httpMethod.Equals("GET", StringComparison.OrdinalIgnoreCase))
+                if (containsEtag && httpMethod != HttpMethod.Get)
                     throw new ArgumentException(string.Format("{0} is only supported for http get method.", ETagKey), "httpMethod");
 
                 // for GET,DELETE
@@ -359,7 +355,7 @@ namespace Facebook
                     throw new InvalidOperationException("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.");
 
 #if SILVERLIGHT
-                if (httpMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+                if (httpMethod == HttpMethod.Delete)
                     queryString.Append("method=delete&");
 #endif
                 foreach (var kvp in parametersWithoutMediaObjects)
@@ -469,7 +465,24 @@ namespace Facebook
             var request = HttpWebRequestFactory == null
                              ? new HttpWebRequestWrapper((HttpWebRequest)WebRequest.Create(uriBuilder.Uri))
                              : HttpWebRequestFactory(uriBuilder.Uri);
-            request.Method = httpMethod;
+
+            switch (httpMethod)
+            {
+                case HttpMethod.Get:
+                    request.Method = "GET";
+                    break;
+                case HttpMethod.Delete:
+#if !SILVERLIGHT
+                    request.Method = "DELETE";
+                    break;
+#endif
+                case HttpMethod.Post:
+                    request.Method = "POST";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("httpMethod");
+
+            }
             request.ContentType = contentType;
 
             if (!string.IsNullOrEmpty(etag))

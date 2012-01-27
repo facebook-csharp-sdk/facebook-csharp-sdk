@@ -23,7 +23,7 @@ namespace Facebook
         /// <param name="parameters">The parameters</param>
         /// <param name="resultType">The type of deserialize object into.</param>
         /// <returns>The json result with headers.</returns>
-        protected virtual object Api(string httpMethod, string path, object parameters, Type resultType)
+        protected virtual object Api(HttpMethod httpMethod, string path, object parameters, Type resultType)
         {
             Stream input;
             bool containsEtag;
@@ -119,7 +119,7 @@ namespace Facebook
 
         public virtual object Get(string path, object parameters)
         {
-            return Api("GET", path, parameters, null);
+            return Api(HttpMethod.Get, path, parameters, null);
         }
 
         public virtual object Post(object parameters)
@@ -129,17 +129,17 @@ namespace Facebook
 
         public virtual object Post(string path, object parameters)
         {
-            return Api("POST", path, parameters, null);
+            return Api(HttpMethod.Post, path, parameters, null);
         }
 
         public virtual object Delete(string path)
         {
-            return Api("DELETE", path, null, null);
+            return Delete(path, null);
         }
 
         public virtual object Delete(string path, object parameters)
         {
-            return Api("DELETE", path, parameters, null);
+            return Api(HttpMethod.Delete, path, parameters, null);
         }
     }
 }

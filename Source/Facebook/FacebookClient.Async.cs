@@ -78,7 +78,7 @@ namespace Facebook
         [Obsolete("Use ApiTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
-        protected virtual void ApiAsync(string httpMethod, string path, object parameters, Type resultType, object userState)
+        protected virtual void ApiAsync(HttpMethod httpMethod, string path, object parameters, Type resultType, object userState)
         {
             Stream input;
             bool containsEtag;
@@ -298,17 +298,17 @@ namespace Facebook
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
 #endif
-        private void OnCompleted(string httpMethod, FacebookApiEventArgs args)
+        private void OnCompleted(HttpMethod httpMethod, FacebookApiEventArgs args)
         {
             switch (httpMethod)
             {
-                case "GET":
+                case HttpMethod.Get:
                     OnGetCompleted(args);
                     break;
-                case "POST":
+                case HttpMethod.Post:
                     OnPostCompleted(args);
                     break;
-                case "DELETE":
+                case HttpMethod.Delete:
                     OnDeleteCompleted(args);
                     break;
                 default:
@@ -330,7 +330,7 @@ namespace Facebook
         [Obsolete("Use ApiTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
-        protected virtual void ApiAsync<T>(string httpMethod, string path, object parameters, object userState)
+        protected virtual void ApiAsync<T>(HttpMethod httpMethod, string path, object parameters, object userState)
         {
             ApiAsync(httpMethod, path, parameters, typeof(T), userState);
         }
@@ -368,7 +368,7 @@ namespace Facebook
 #endif
         public virtual void GetAsync(string path, object parameters, object userState)
         {
-            ApiAsync("GET", path, parameters, null, userState);
+            ApiAsync(HttpMethod.Get, path, parameters, null, userState);
         }
 
 #if FLUENTHTTP_CORE_TPL
@@ -395,7 +395,7 @@ namespace Facebook
 #endif
         public virtual void PostAsync(string path, object parameters, object userState)
         {
-            ApiAsync("POST", path, parameters, null, userState);
+            ApiAsync(HttpMethod.Post, path, parameters, null, userState);
         }
 
 #if FLUENTHTTP_CORE_TPL
@@ -413,7 +413,7 @@ namespace Facebook
 #endif
         public virtual void DeleteAsync(string path, object parameters, object userState)
         {
-            ApiAsync("DELETE", path, parameters, null, userState);
+            ApiAsync(HttpMethod.Delete, path, parameters, null, userState);
         }
     }
 }

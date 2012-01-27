@@ -46,7 +46,7 @@ namespace Facebook
         /// </summary>
         public FacebookBatchParameter()
         {
-            HttpMethod = "GET";
+            HttpMethod = HttpMethod.Get;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Facebook
         /// The resource path.
         /// </param>
         public FacebookBatchParameter(string path)
-            : this("GET", path)
+            : this(HttpMethod.Get, path)
         {
         }
 
@@ -69,7 +69,7 @@ namespace Facebook
         /// <param name="path">
         /// The resource path.
         /// </param>
-        public FacebookBatchParameter(string httpMethod, string path)
+        public FacebookBatchParameter(HttpMethod httpMethod, string path)
             : this(httpMethod, path, null)
         {
         }
@@ -84,7 +84,7 @@ namespace Facebook
         /// The parameters.
         /// </param>
         public FacebookBatchParameter(string path, object parameters)
-            : this("GET", path, parameters)
+            : this(HttpMethod.Get, path, parameters)
         {
         }
 
@@ -100,7 +100,7 @@ namespace Facebook
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public FacebookBatchParameter(string httpMethod, string path, object parameters)
+        public FacebookBatchParameter(HttpMethod httpMethod, string path, object parameters)
         {
             HttpMethod = httpMethod;
             Path = path;
@@ -110,7 +110,7 @@ namespace Facebook
         /// <summary>
         /// Gets or sets the http method.
         /// </summary>
-        public string HttpMethod { get; set; }
+        public HttpMethod HttpMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the resource path.

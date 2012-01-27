@@ -28,7 +28,7 @@ namespace Facebook
         /// <param name="uploadProgress">The upload progress</param>
 #endif
         /// <returns>The task of json result with headers.</returns>
-        protected virtual Task<object> ApiTaskAsync(string httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken
+        protected virtual Task<object> ApiTaskAsync(HttpMethod httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken
 #if ASYNC_AWAIT
 , IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress
 #endif
@@ -40,8 +40,6 @@ namespace Facebook
                 tcs.TrySetCanceled();
                 return tcs.Task;
             }
-
-            httpMethod = httpMethod.ToUpperInvariant();
 
             HttpWebRequestWrapper httpWebRequest = null;
             EventHandler<HttpWebRequestCreatedEventArgs> httpWebRequestCreatedHandler = null;
@@ -92,11 +90,11 @@ namespace Facebook
                 });
             };
 
-            if (httpMethod == "GET")
+            if (httpMethod == HttpMethod.Get)
                 GetCompleted += handler;
-            else if (httpMethod == "POST")
+            else if (httpMethod == HttpMethod.Post)
                 PostCompleted += handler;
-            else if (httpMethod == "DELETE")
+            else if (httpMethod == HttpMethod.Delete)
                 DeleteCompleted += handler;
             else
                 throw new ArgumentOutOfRangeException("httpMethod");
@@ -132,7 +130,7 @@ namespace Facebook
         /// <param name="userState">The user state.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task of json result with headers.</returns>
-        public virtual Task<object> ApiTaskAsync(string httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken)
+        public virtual Task<object> ApiTaskAsync(HttpMethod httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken)
         {
             return ApiTaskAsync(httpMethod, path, parameters, resultType, userState, cancellationToken, null);
         }
@@ -156,14 +154,20 @@ namespace Facebook
             }
         }
 
-        private void RemoveTaskAsyncHandlers(string httpMethod, EventHandler<FacebookApiEventArgs> handler)
+        private void RemoveTaskAsyncHandlers(HttpMethod httpMethod, EventHandler<FacebookApiEventArgs> handler)
         {
-            if (httpMethod == "GET")
-                GetCompleted -= handler;
-            else if (httpMethod == "POST")
-                PostCompleted -= handler;
-            else if (httpMethod == "DELETE")
-                DeleteCompleted -= handler;
+            switch (httpMethod)
+            {
+                case HttpMethod.Get:
+                    GetCompleted -= handler;
+                    break;
+                case HttpMethod.Post:
+                    PostCompleted -= handler;
+                    break;
+                case HttpMethod.Delete:
+                    DeleteCompleted -= handler;
+                    break;
+            }
         }
 
         public virtual Task<object> GetTaskAsync(string path)
@@ -183,7 +187,7 @@ namespace Facebook
 
         public virtual Task<object> GetTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
-            return ApiTaskAsync("GET", path, parameters, null, null, cancellationToken);
+            return ApiTaskAsync(HttpMethod.Get, path, parameters, null, null, cancellationToken);
         }
 
         public virtual Task<object> PostTaskAsync(object parameters)
@@ -198,13 +202,13 @@ namespace Facebook
 
         public virtual Task<object> PostTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
-            return ApiTaskAsync("POST", path, parameters, null, null, cancellationToken);
+            return ApiTaskAsync(HttpMethod.Post, path, parameters, null, null, cancellationToken);
         }
 
 #if ASYNC_AWAIT
         public virtual Task<object> PostTaskAsync(string path, object parameters, object userToken, CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
         {
-            return ApiTaskAsync("POST", path, parameters, null, userToken, cancellationToken, uploadProgress);
+            return ApiTaskAsync(HttpMethod.Post, path, parameters, null, userToken, cancellationToken, uploadProgress);
         }
 #endif
 
@@ -215,7 +219,7 @@ namespace Facebook
 
         public virtual Task<object> DeleteTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
-            return ApiTaskAsync("DELETE", path, parameters, null, null, cancellationToken);
+            return ApiTaskAsync(HttpMethod.Delete, path, parameters, null, null, cancellationToken);
         }
     }
 }
