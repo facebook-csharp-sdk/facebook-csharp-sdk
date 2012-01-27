@@ -75,6 +75,18 @@ namespace Facebook
             throw new InvalidOperationException("Could not parse Facebook OAuth url.");
         }
 
+        /// <summary>
+        /// Gets the Facebook OAuth login url.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The login url.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// If parameters is null.
+        /// </exception>
         public virtual Uri GetLoginUrl(object parameters)
         {
             if (parameters == null)
@@ -82,16 +94,21 @@ namespace Facebook
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
             IDictionary<string, FacebookMediaStream> mediaStreams;
-            var dictionary = ToDictionary(parameters, out mediaObjects, out mediaStreams);
+            var dictionary = ToDictionary(parameters, out mediaObjects, out mediaStreams) ?? new Dictionary<string, object>();
+
+            bool isMobile = false;
+            if (dictionary.ContainsKey("mobile"))
+            {
+                isMobile = (bool)dictionary["mobile"];
+                dictionary.Remove("mobile");
+            }
 
             var sb = new StringBuilder();
-            sb.Append("https://www.facebook.com/dialog/oauth?");
+            sb.Append(isMobile ? "https://m.facebook.com/dialog/oauth?" : "https://www.facebook.com/dialog/oauth?");
 
-            if (dictionary != null)
-            {
-                foreach (var kvp in dictionary)
-                    sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
-            }
+            foreach (var kvp in dictionary)
+                sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key),
+                                HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
 
             sb.Length--;
 
