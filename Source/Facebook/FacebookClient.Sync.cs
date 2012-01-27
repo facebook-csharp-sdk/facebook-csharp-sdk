@@ -27,7 +27,8 @@ namespace Facebook
         {
             Stream input;
             bool containsEtag;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag);
+            bool processBatchResponse;
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag, out  processBatchResponse);
 
             if (input != null)
             {
@@ -99,7 +100,7 @@ namespace Facebook
                         }
                     }
 
-                    result = ProcessResponse(httpHelper, responseString, resultType, containsEtag);
+                    result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, processBatchResponse);
                 }
             }
 

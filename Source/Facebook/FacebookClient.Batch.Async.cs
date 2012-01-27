@@ -27,7 +27,8 @@ namespace Facebook
 #endif
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
         {
-            throw new NotImplementedException();
+            var parameters = PrepareBatchRequest(batchParameters);
+            PostAsync(null, parameters, userToken);
         }
 
 #if FLUENTHTTP_CORE_TPL
@@ -36,7 +37,7 @@ namespace Facebook
 #endif
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters)
         {
-            throw new NotImplementedException();
+            BatchAsync(batchParameters, null);
         }
 
         internal object PrepareBatchRequest(FacebookBatchParameter[] batchParameters)
@@ -68,7 +69,7 @@ namespace Facebook
 
                 IList<string> attachedFiles = new List<string>();
 
-                var parameters = ToDictionary(batchParameter.Parameters, out mediaObjects, out mediaStreams);
+                var parameters = ToDictionary(batchParameter.Parameters, out mediaObjects, out mediaStreams) ?? new Dictionary<string, object>();
 
                 bool hasAttachmentInBatchParameter = false;
 
@@ -109,7 +110,7 @@ namespace Facebook
                             relativeUrl.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
                         if (relativeUrl.Length > 0)
                             relativeUrl.Length--;
-                        data["relative_url"] = relativeUrl;
+                        data["relative_url"] = relativeUrl.ToString();
                     }
                 }
                 else
@@ -141,9 +142,37 @@ namespace Facebook
             return actualBatchParameter;
         }
 
-        private object ProcessBatchResponse(object result)
+        internal object ProcessBatchResponse(object result)
         {
-            throw new NotImplementedException();
+            if (result == null)
+                return null;
+
+            var list = new JsonArray();
+            var resultList = (IList<object>)result;
+
+            foreach (var row in resultList)
+            {
+                if (row == null)
+                {
+                    // row is null when omit_response_on_success = true
+                    list.Add(null);
+                }
+                else
+                {
+                    var body = (string)((IDictionary<string, object>)row)["body"];
+                    try
+                    {
+                        var bodyAsJsonObject = ProcessResponse(null, body, null, false, false);
+                        list.Add(bodyAsJsonObject);
+                    }
+                    catch (Exception ex)
+                    {
+                        list.Add(ex);
+                    }
+                }
+            }
+
+            return list;
         }
     }
 }

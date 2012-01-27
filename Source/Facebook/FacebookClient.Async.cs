@@ -82,7 +82,8 @@ namespace Facebook
         {
             Stream input;
             bool containsEtag;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag);
+            bool processBatchResponse = false;
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag, out processBatchResponse);
             _httpWebRequest = httpHelper.HttpWebRequest;
 
 #if FLUENTHTTP_CORE_TPL
@@ -117,7 +118,7 @@ namespace Facebook
 
                             try
                             {
-                                object result = ProcessResponse(httpHelper, responseString, resultType, containsEtag);
+                                object result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, processBatchResponse);
                                 args = new FacebookApiEventArgs(null, false, userState, result);
                             }
                             catch (Exception ex)
