@@ -326,15 +326,7 @@ namespace Facebook
             string contentType = null;
             var queryString = new StringBuilder();
 
-            IList<string> keysThatAreNotString = new List<string>();
-            foreach (var key in parametersWithoutMediaObjects.Keys)
-            {
-                if (!(parametersWithoutMediaObjects[key] is string))
-                    keysThatAreNotString.Add(key);
-            }
-
-            foreach (var key in keysThatAreNotString)
-                parametersWithoutMediaObjects[key] = SerializeJson(parametersWithoutMediaObjects[key]);
+            SerializeParameters(parametersWithoutMediaObjects);
 
             if (parametersWithoutMediaObjects.ContainsKey("access_token"))
             {
@@ -584,6 +576,19 @@ namespace Facebook
 
                 throw;
             }
+        }
+
+        private void SerializeParameters(IDictionary<string, object> parameters)
+        {
+            var keysThatAreNotString = new List<string>();
+            foreach (var key in parameters.Keys)
+            {
+                if (!(parameters[key] is string))
+                    keysThatAreNotString.Add(key);
+            }
+
+            foreach (var key in keysThatAreNotString)
+                parameters[key] = SerializeJson(parameters[key]);
         }
 
         internal static Exception GetException(HttpHelper httpHelper, object result)

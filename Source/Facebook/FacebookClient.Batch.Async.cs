@@ -65,7 +65,22 @@ namespace Facebook
                     data = new Dictionary<string, object>();
 
                 if (!data.ContainsKey("method"))
-                    data["method"] = batchParameter.HttpMethod;
+                {
+                    switch (batchParameter.HttpMethod)
+                    {
+                        case HttpMethod.Get:
+                            data["method"] = "GET";
+                            break;
+                        case HttpMethod.Post:
+                            data["method"] = "POST";
+                            break;
+                        case HttpMethod.Delete:
+                            data["method"] = "DELETE";
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
 
                 IList<string> attachedFiles = new List<string>();
 
@@ -104,6 +119,8 @@ namespace Facebook
                     if (!data.ContainsKey("relative_url"))
                     {
                         path = ParseUrlQueryString(batchParameter.Path, parameters, false);
+                        SerializeParameters(parameters);
+
                         var relativeUrl = new StringBuilder();
                         relativeUrl.Append(path).Append("?");
                         foreach (var kvp in parameters)
@@ -116,6 +133,8 @@ namespace Facebook
                 else
                 {
                     path = ParseUrlQueryString(batchParameter.Path, parameters, false);
+                    SerializeParameters(parameters);
+
                     if (!data.ContainsKey("relative_url"))
                     {
                         if (path.Length > 0)
