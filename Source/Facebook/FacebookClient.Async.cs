@@ -318,23 +318,6 @@ namespace Facebook
 
         #endregion
 
-        /// <summary>
-        /// Makes an asynchronous request to the Facebook server.
-        /// </summary>
-        /// <param name="httpMethod">Http method. (GET/POST/DELETE)</param>
-        /// <param name="path">The resource path or the resource url.</param>
-        /// <param name="parameters">The parameters</param>
-        /// <param name="userState">The user state.</param>
-        /// <typeparam name="T">The type of deserialize object into.</typeparam>
-#if FLUENTHTTP_CORE_TPL
-        [Obsolete("Use ApiTaskAsync instead.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        protected virtual void ApiAsync<T>(HttpMethod httpMethod, string path, object parameters, object userState)
-        {
-            ApiAsync(httpMethod, path, parameters, typeof(T), userState);
-        }
-
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]

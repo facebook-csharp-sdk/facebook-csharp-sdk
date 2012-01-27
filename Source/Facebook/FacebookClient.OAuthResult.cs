@@ -107,8 +107,7 @@ namespace Facebook
             sb.Append(isMobile ? "https://m.facebook.com/dialog/oauth?" : "https://www.facebook.com/dialog/oauth?");
 
             foreach (var kvp in dictionary)
-                sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key),
-                                HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
+                sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
 
             sb.Length--;
 
