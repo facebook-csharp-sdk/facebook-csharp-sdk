@@ -9,12 +9,13 @@
 
 namespace Facebook
 {
+    using System;
     using System.IO;
 
     /// <summary>
     /// Represents a media stream such as a photo or a video.
     /// </summary>
-    public class FacebookMediaStream
+    public class FacebookMediaStream : IDisposable
     {
         /// <summary>
         /// The value of the media stream.
@@ -51,6 +52,13 @@ namespace Facebook
         public Stream GetValue()
         {
             return _value;
+        }
+
+        public void Dispose()
+        {
+            var stream = GetValue();
+            if (stream != null)
+                stream.Dispose();
         }
     }
 }
