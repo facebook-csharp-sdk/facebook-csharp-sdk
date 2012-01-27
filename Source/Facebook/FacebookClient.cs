@@ -487,6 +487,10 @@ namespace Facebook
             if (input != null)
                 request.TrySetContentLength(input.Length);
 
+#if (!(SILVERLIGHT || WINRT) || WINDOWS_PHONE)
+            request.UserAgent = "Facebook C# SDK";
+#endif
+
             return new HttpHelper(request);
         }
 
