@@ -483,6 +483,9 @@ namespace Facebook
 #if !(SILVERLIGHT || WINRT)
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 #endif
+#if WINRT
+            request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
+#endif
 
             if (input != null)
                 request.TrySetContentLength(input.Length);
