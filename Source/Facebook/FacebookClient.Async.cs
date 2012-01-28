@@ -104,16 +104,56 @@ namespace Facebook
                     }
                     else if (e.Error == null)
                     {
-                        string responseString;
+                        string responseString = null;
 
                         try
                         {
                             using (var stream = e.Result)
                             {
+#if WINRT
+                                bool compressed = false;
+                                var contentEncoding = httpHelper.HttpWebResponse.Headers[HttpRequestHeader.ContentEncoding];
+                                if (contentEncoding != null)
+                                {
+                                    if (contentEncoding.IndexOf("gzip") != -1)
+                                    {
+                                        using (var uncompressedStream = new System.IO.Compression.GZipStream(stream, System.IO.Compression.CompressionMode.Decompress))
+                                        {
+                                            using (var reader = new StreamReader(uncompressedStream))
+                                            {
+                                                responseString = reader.ReadToEnd();
+                                            }
+                                        }
+
+                                        compressed = true;
+                                    }
+                                    else if (contentEncoding.IndexOf("deflate") != -1)
+                                    {
+                                        using (var uncompressedStream = new System.IO.Compression.DeflateStream(stream, System.IO.Compression.CompressionMode.Decompress))
+                                        {
+                                            using (var reader = new StreamReader(uncompressedStream))
+                                            {
+                                                responseString = reader.ReadToEnd();
+                                            }
+                                        }
+
+                                        compressed = true;
+                                    }
+                                }
+
+                                if (!compressed)
+                                {
+                                    using (var reader = new StreamReader(stream))
+                                    {
+                                        responseString = reader.ReadToEnd();
+                                    }
+                                }
+#else
                                 using (var reader = new StreamReader(stream))
                                 {
                                     responseString = reader.ReadToEnd();
                                 }
+#endif
                             }
 
                             try
