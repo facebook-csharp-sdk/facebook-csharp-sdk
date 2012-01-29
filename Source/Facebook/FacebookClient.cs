@@ -346,7 +346,7 @@ namespace Facebook
                 if (mediaObjects.Count > 0 && mediaStreams.Count > 0)
                     throw new InvalidOperationException("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.");
 
-#if SILVERLIGHT
+#if SILVERLIGHT && !WINDOWS_PHONE
                 if (httpMethod == HttpMethod.Delete)
                     queryString.Append("method=delete&");
 #endif
@@ -464,7 +464,7 @@ namespace Facebook
                     request.Method = "GET";
                     break;
                 case HttpMethod.Delete:
-#if !SILVERLIGHT
+#if !(SILVERLIGHT && !WINDOWS_PHONE)
                     request.Method = "DELETE";
                     break;
 #endif
@@ -475,6 +475,7 @@ namespace Facebook
                     throw new ArgumentOutOfRangeException("httpMethod");
 
             }
+
             request.ContentType = contentType;
 
             if (!string.IsNullOrEmpty(etag))
