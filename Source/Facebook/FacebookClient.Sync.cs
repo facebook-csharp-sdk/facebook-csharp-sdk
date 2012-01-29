@@ -10,6 +10,7 @@
 namespace Facebook
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
 
@@ -27,8 +28,8 @@ namespace Facebook
         {
             Stream input;
             bool containsEtag;
-            bool processBatchResponse;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag, out  processBatchResponse);
+            IList<int> batchEtags;
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag, out  batchEtags);
 
             if (input != null)
             {
@@ -100,7 +101,7 @@ namespace Facebook
                         }
                     }
 
-                    result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, processBatchResponse);
+                    result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, batchEtags);
                 }
             }
 

@@ -236,11 +236,11 @@ namespace Facebook
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
         }
 
-        private HttpHelper PrepareRequest(HttpMethod httpMethod, string path, object parameters, Type resultType, out Stream input, out bool containsEtag, out bool processBatchResponse)
+        private HttpHelper PrepareRequest(HttpMethod httpMethod, string path, object parameters, Type resultType, out Stream input, out bool containsEtag, out IList<int> batchEtags)
         {
             input = null;
             containsEtag = false;
-            processBatchResponse = false;
+            batchEtags = null;
 
             IDictionary<string, FacebookMediaObject> mediaObjects;
             IDictionary<string, FacebookMediaStream> mediaStreams;
@@ -302,8 +302,57 @@ namespace Facebook
                 {
                     if (parametersWithoutMediaObjects.ContainsKey("batch"))
                     {
-                        processBatchResponse = !parametersWithoutMediaObjects.ContainsKey("_process_batch_response_") ||
+                        var processBatchResponse = !parametersWithoutMediaObjects.ContainsKey("_process_batch_response_") ||
                                                (bool)parametersWithoutMediaObjects["_process_batch_response_"];
+
+                        if (processBatchResponse)
+                        {
+                            batchEtags = new List<int>();
+                            var batch = parametersWithoutMediaObjects["batch"] as IList<object>;
+                            if (batch != null)
+                            {
+                                int i;
+                                for (i = 0; i < batch.Count; i++)
+                                {
+                                    var batchParameter = batch[i] as IDictionary<string, object>;
+                                    if (batchParameter != null)
+                                    {
+                                        IDictionary<string, object> headers = null;
+                                        if (batchParameter.ContainsKey("headers"))
+                                            headers = (IDictionary<string, object>)batchParameter["headers"];
+
+                                        bool containsBatchEtag = batchParameter.ContainsKey(ETagKey);
+                                        if (containsBatchEtag)
+                                        {
+                                            if (string.IsNullOrEmpty((string)batchParameter[ETagKey]))
+                                            {
+                                                batchEtags.Add(i);
+                                                batchParameter.Remove(ETagKey);
+                                                continue;
+                                            }
+                                            else if (headers == null)
+                                            {
+                                                headers = new Dictionary<string, object>();
+                                                batchParameter["headers"] = headers;
+                                            }
+                                        }
+
+                                        if (containsBatchEtag)
+                                        {
+                                            if (!headers.ContainsKey("If-None-Match"))
+                                                headers["If-None-Match"] = string.Concat('"', batchParameter[ETagKey], '"');
+                                            batchParameter.Remove(ETagKey);
+                                            batchEtags.Add(i);
+                                        }
+                                        else
+                                        {
+                                            if (headers != null && headers.ContainsKey("If-None-Match"))
+                                                batchEtags.Add(i);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                     else if (string.IsNullOrEmpty(path))
                     {
@@ -498,7 +547,7 @@ namespace Facebook
             return new HttpHelper(request);
         }
 
-        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType, bool containsEtag, bool processBatchResponse)
+        private object ProcessResponse(HttpHelper httpHelper, string responseString, Type resultType, bool containsEtag, IList<int> batchEtags)
         {
             try
             {
@@ -569,7 +618,7 @@ namespace Facebook
                         return json;
                     }
 
-                    return processBatchResponse ? ProcessBatchResponse(result) : result;
+                    return batchEtags == null ? result : ProcessBatchResponse(result, batchEtags);
                 }
 
                 throw exception;

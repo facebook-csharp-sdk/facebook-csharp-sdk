@@ -85,6 +85,14 @@ namespace Facebook
                 IList<string> attachedFiles = new List<string>();
 
                 var parameters = ToDictionary(batchParameter.Parameters, out mediaObjects, out mediaStreams) ?? new Dictionary<string, object>();
+                bool containsEtag = false;
+                string etag = null;
+                if (parameters.ContainsKey(ETagKey))
+                {
+                    etag = (string)parameters[ETagKey];
+                    containsEtag = true;
+                    parameters.Remove(ETagKey);
+                }
 
                 bool hasAttachmentInBatchParameter = false;
 
@@ -155,13 +163,16 @@ namespace Facebook
                     }
                 }
 
+                if (containsEtag)
+                    data[ETagKey] = etag;
+
                 flatnedBatchParameters.Add(data);
             }
 
             return actualBatchParameter;
         }
 
-        internal object ProcessBatchResponse(object result)
+        internal object ProcessBatchResponse(object result, IList<int> batchEtags)
         {
             if (result == null)
                 return null;
@@ -169,6 +180,7 @@ namespace Facebook
             var list = new JsonArray();
             var resultList = (IList<object>)result;
 
+            int i = 0;
             foreach (var row in resultList)
             {
                 if (row == null)
@@ -178,10 +190,39 @@ namespace Facebook
                 }
                 else
                 {
-                    var body = (string)((IDictionary<string, object>)row)["body"];
+                    var batchResult = (IDictionary<string, object>)row;
+                    var code = Convert.ToInt64(batchResult["code"]);
+
+                    object bodyAsJsonObject = null;
+
                     try
                     {
-                        var bodyAsJsonObject = ProcessResponse(null, body, null, false, false);
+                        if (batchEtags != null && batchEtags.Contains(i))
+                        {
+                            var jsonObject = new JsonObject();
+                            var originalHeaders = (IList<object>)batchResult["headers"];
+                            var headers = new JsonObject();
+                            foreach (var originalHeader in originalHeaders)
+                            {
+                                var dict = (IDictionary<string, object>)originalHeader;
+                                headers[(string)dict["name"]] = dict["value"];
+                            }
+                            jsonObject["headers"] = headers;
+
+                            if (code != 304)
+                            {
+                                var body = (string)batchResult["body"];
+                                jsonObject["body"] = bodyAsJsonObject = ProcessResponse(null, body, null, true, null);
+                            }
+
+                            bodyAsJsonObject = jsonObject;
+                        }
+                        else
+                        {
+                            var body = (string)batchResult["body"];
+                            bodyAsJsonObject = ProcessResponse(null, body, null, false, null);
+                        }
+
                         list.Add(bodyAsJsonObject);
                     }
                     catch (Exception ex)
@@ -189,6 +230,8 @@ namespace Facebook
                         list.Add(ex);
                     }
                 }
+
+                i++;
             }
 
             return list;

@@ -10,6 +10,7 @@
 namespace Facebook
 {
     using System;
+    using System.Collections.Generic;
 #if FLUENTHTTP_CORE_TPL
     using System.ComponentModel;
 #endif
@@ -82,8 +83,8 @@ namespace Facebook
         {
             Stream input;
             bool containsEtag;
-            bool processBatchResponse = false;
-            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag, out processBatchResponse);
+            IList<int> batchEtags = null;
+            var httpHelper = PrepareRequest(httpMethod, path, parameters, resultType, out input, out containsEtag, out batchEtags);
             _httpWebRequest = httpHelper.HttpWebRequest;
 
 #if FLUENTHTTP_CORE_TPL
@@ -173,7 +174,7 @@ namespace Facebook
 
                             try
                             {
-                                object result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, processBatchResponse);
+                                object result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, batchEtags);
                                 args = new FacebookApiEventArgs(null, false, userState, result);
                             }
                             catch (Exception ex)
