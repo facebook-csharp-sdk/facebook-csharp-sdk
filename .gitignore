@@ -41,3 +41,4 @@ Thumbs.db
 #FacebookSDK ignores
 Working/
 Dist/
+packages/
