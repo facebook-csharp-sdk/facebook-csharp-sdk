@@ -53,19 +53,6 @@ namespace Facebook
         {
             RaiseExceptionIfNecessary();
             return _result;
-            //var json = JsonSerializer.Current.DeserializeObject(_json);
-
-            //if (_isBatchResult)
-            //{
-            //    return FacebookClientOld.ProcessBatchResult(json);
-            //}
-            //if (_isQuery)
-            //{
-            //    // required for compatibility with v5.2.1
-            //    var result = (IDictionary<string, object>)json;
-            //    return result["data"];
-            //}
-            //return json;
         }
     }
 }
