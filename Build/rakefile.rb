@@ -87,21 +87,21 @@ namespace :build do
 	end
 
 	desc "Build .NET 4.5 binaries"
-	msbuild :net45 => ['clean:net45','assemblyinfo:facebook','assemblyinfo:facebookweb','assemblyinfo:facebookwebmvc'] do |msb|
+	msbuild :net45 => ['clean:net45','assemblyinfo:facebook'] do |msb|
 	   msb.properties :configuration => config['version']['configuration']
 	   msb.solution = config['path']['sln']['net45']
 	   msb.targets :Build
 	end
 	
 	desc "Build .NET 4 binaries"
-	msbuild :net40 => ['clean:net40','assemblyinfo:facebook','assemblyinfo:facebookweb','assemblyinfo:facebookwebmvc'] do |msb|
+	msbuild :net40 => ['clean:net40'] do |msb|
 	   msb.properties :configuration => config['version']['configuration']
 	   msb.solution = config['path']['sln']['net40']
 	   msb.targets :Build
 	end
 	
 	desc "Build .NET 3.5 binaries"
-	msbuild :net35 => ['clean:net35','assemblyinfo:facebook','assemblyinfo:facebookweb','assemblyinfo:facebookwebmvc'] do |msb|
+	msbuild :net35 => ['clean:net35','assemblyinfo:facebook'] do |msb|
 	   msb.properties :configuration => config['version']['configuration']
 	   msb.solution = config['path']['sln']['net35']
 	   msb.targets :Build
@@ -253,16 +253,8 @@ namespace :tests do
 			xunit.html_output = "#{output_path}"
 			xunit.options = '/nunit ' + output_path + 'Facebook.Tests.nUnit.xml', '/xml ' + output_path + 'Facebook.Tests.xUnit.xml'
 		end
-		
-		xunit :facebookweb => ['build:net40'] do |xunit|
-			output_path = "#{config["path"]["output"]}Tests/Release/"
-			xunit.command = config["path"]["xunit"]["console"]["x86"]
-			xunit.assembly = "#{output_path}Facebook.Web.Tests.dll"
-			xunit.html_output = "#{output_path}"
-			xunit.options = '/nunit ' + output_path + 'Facebook.Web.Tests.nUnit.xml', '/xml ' + output_path + 'Facebook.Web.Tests.xUnit.xml'
-		end
-		
-		multitask :all => ['tests:net40:facebook','tests:net40:facebookweb']
+
+		task :all => ['tests:net40:facebook']
 	
 	end
 
@@ -306,31 +298,7 @@ namespace :assemblyinfo do
 		asm.com_visible = false
 	end
 	
-	assemblyinfo :facebookweb do |asm|
-		asm.output_file = "#{config["path"]["src"]}Facebook.Web/Properties/AssemblyInfo.cs"
-		asm.version = config["version"]["full"]
-        asm.file_version= config["version"]["tag_full"]
-		asm.title = "Facebook.Web"
-		asm.description = "Facebook C\# SDK"
-		asm.product_name = "Facebook C\# SDK"
-		asm.company_name = "Thuzi"
-		asm.copyright = "Microsoft Public License (Ms-PL)"
-		asm.com_visible = false
-	end
-	
-	assemblyinfo :facebookwebmvc do |asm|
-		asm.output_file = "#{config["path"]["src"]}Facebook.Web.Mvc/Properties/AssemblyInfo.cs"
-		asm.version = config["version"]["full"]
-        asm.file_version= config["version"]["tag_full"]
-		asm.title = "Facebook.Web.Mvc"
-		asm.description = "Facebook C\# SDK"
-		asm.product_name = "Facebook C\# SDK"
-		asm.company_name = "Thuzi"
-		asm.copyright = "Microsoft Public License (Ms-PL)"
-		asm.com_visible = false
-	end
-	
-	multitask :all => ["assemblyinfo:facebook","assemblyinfo:facebookweb","assemblyinfo:facebookwebmvc"]
+	task :all => ["assemblyinfo:facebook"]
 	
 end
 

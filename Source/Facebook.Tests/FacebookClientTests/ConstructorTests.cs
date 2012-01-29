@@ -1,8 +1,8 @@
 ﻿namespace Facebook.Tests.FacebookClient
 {
     using System;
-    using Xunit;
     using Facebook;
+    using Xunit;
 
     public class FacebookClientTests
     {
