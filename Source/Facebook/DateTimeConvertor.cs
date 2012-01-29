@@ -44,17 +44,6 @@ namespace Facebook
         /// <summary>
         /// Converts a unix time string to a DateTime object.
         /// </summary>
-        /// <param name="unixTime">The unix time.</param>
-        /// <returns>The DateTime object.</returns>
-        [Obsolete("Use double overload instead.")]
-        public static DateTime FromUnixTime(long unixTime)
-        {
-            return Epoch.AddSeconds(unixTime);
-        }
-
-        /// <summary>
-        /// Converts a unix time string to a DateTime object.
-        /// </summary>
         /// <param name="unixTime">The string representation of the unix time.</param>
         /// <returns>The DateTime object.</returns>
         public static DateTime FromUnixTime(string unixTime)
