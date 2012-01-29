@@ -84,9 +84,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="monkey.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Facebook\Facebook-Net40.csproj">
       <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
       <Name>Facebook</Name>
