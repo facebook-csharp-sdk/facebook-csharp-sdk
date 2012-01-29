@@ -149,6 +149,21 @@ namespace Facebook
                                     }
                                 }
 #else
+                                var response = httpHelper.HttpWebResponse;
+                                if (response != null && response.StatusCode == HttpStatusCode.NotModified)
+                                {
+                                    var jsonObject = new JsonObject();
+                                    var headers = new JsonObject();
+
+                                    foreach (var headerName in response.Headers.AllKeys)
+                                        headers[headerName] = response.Headers[headerName];
+
+                                    jsonObject["headers"] = headers;
+                                    args = new FacebookApiEventArgs(null, false, userState, jsonObject);
+                                    OnCompleted(httpMethod, args);
+                                    return;
+                                }
+
                                 using (var reader = new StreamReader(stream))
                                 {
                                     responseString = reader.ReadToEnd();
