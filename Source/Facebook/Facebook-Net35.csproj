@@ -133,9 +133,6 @@
     <Compile Include="FacebookClient.OAuthResult.cs">
       <DependentUpon>FacebookClient.cs</DependentUpon>
     </Compile>
-    <Compile Include="FacebookClient.Subscriptions.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookMediaStream.cs" />
     <Compile Include="FacebookOAuthException.cs">

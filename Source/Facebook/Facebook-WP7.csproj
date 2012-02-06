@@ -125,9 +125,6 @@
     <Compile Include="FacebookClient.Batch.Async.cs">
       <DependentUpon>FacebookClient.cs</DependentUpon>
     </Compile>
-    <Compile Include="FacebookClient.Subscriptions.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
     <Compile Include="FacebookClient.cs" />
     <Compile Include="FacebookApiEventArgs.cs" />
     <Compile Include="FacebookApiLimitException.cs">
