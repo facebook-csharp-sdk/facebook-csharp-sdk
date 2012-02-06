@@ -1,12 +1,13 @@
 # Facebook C# SDK #
 The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, and Windows Phone applications that integrate with Facebook.
 
-[Like us on Facebook at our official page](http://facebook.com/csharpsdk)or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
+[Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
 ## Help and Support ##
 Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and support. We answer questions there regularly. Use the tags '[facebook-c#-sdk](http://stackoverflow.com/questions/tagged/facebook-c%23-sdk)' and '[facebook](http://stackoverflow.com/questions/tagged/facebook)' plus any other tags that are relevant. If you have a feature request or bug create an issue.
 
 [Facebook Platform Status](https://developers.facebook.com/live_status)
+
 [Facebook Change Log](https://developers.facebook.com/docs/changelog/)
 
 ## Features ##
