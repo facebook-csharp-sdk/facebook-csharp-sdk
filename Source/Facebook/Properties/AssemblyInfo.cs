@@ -6,6 +6,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Facebook C# SDK")]
 [assembly: AssemblyCopyright("Microsoft Public License (Ms-PL)")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("5.5.0.0")]
-[assembly: AssemblyFileVersion("5.5.0-beta")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0-alpha")]
 
