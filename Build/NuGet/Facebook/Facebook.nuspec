@@ -14,7 +14,6 @@
                 <tags>Facebook</tags>
         </metadata>
         <files>
-        	<file src="..\..\Build\NuGet\Facebook\content\*" target = "content" />
         	<file src="..\..\Build\NuGet\Facebook\serializers\*" target = "serializers" />
         	<file src="..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
         	<file src="..\..\Bin\Release\net40-client\*.xml" target = "lib\net40-client" />

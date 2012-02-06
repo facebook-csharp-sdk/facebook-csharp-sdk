@@ -1,9 +1,0 @@
-<configuration>
-	<configSections>
-		<section name="facebookSettings" type="Facebook.FacebookConfigurationSection"/>
-	</configSections>
-
-	<facebookSettings
-		appId="{app id}"
-		appSecret="{app secret}" />
-</configuration>
