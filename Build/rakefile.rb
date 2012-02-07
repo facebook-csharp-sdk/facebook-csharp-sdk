@@ -294,7 +294,7 @@ namespace :assemblyinfo do
 		asm.description = "Facebook C\# SDK"
 		asm.product_name = "Facebook C\# SDK"
 		asm.company_name = "Thuzi"
-		asm.copyright = "Microsoft Public License (Ms-PL)"
+		asm.copyright = "Copyright 2011"
 		asm.com_visible = false
 	end
 	
