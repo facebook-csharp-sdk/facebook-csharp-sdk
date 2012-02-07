@@ -623,12 +623,13 @@ namespace Facebook
 
                 throw exception;
             }
-            catch (Exception ex)
+            catch (FacebookApiException)
             {
-                if (ex is FacebookApiException)
-                    throw;
-
-                if (httpHelper.InnerException != null)
+                throw;
+            }
+            catch (Exception)
+            {
+                if (httpHelper != null && httpHelper.InnerException != null)
                     throw httpHelper.InnerException;
 
                 throw;
