@@ -34,6 +34,13 @@ Copyright: N/A
 License: Microsoft Public License (Ms-PL)
 
 
+SimpleJson
+-----------------
+Website: https://github.com/facebook-csharp-sdk/simple-json
+Copyright: N/A
+License: MIT License
+
+
 Additional Notices:
 The software was originally conceived and created by Nathan Totten,
 Prabir Shersha, and Jim Zimmerman.
