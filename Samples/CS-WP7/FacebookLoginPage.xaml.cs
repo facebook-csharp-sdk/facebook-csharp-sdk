@@ -19,7 +19,9 @@ namespace CS_WP7
         /// For extensive list of available extended permissions refer to 
         /// https://developers.facebook.com/docs/reference/api/permissions/
         /// </remarks>
-        private const string ExtendedPermissions = "user_about_me,publish_stream,offline_access";
+        private const string ExtendedPermissions = "user_about_me,publish_stream";
+
+        private const string RedirectUri = "https://www.facebook.com/connect/login_success.html";
 
         private readonly Uri _loginUrl;
 
@@ -28,10 +30,12 @@ namespace CS_WP7
             // NOTE: make sure to enable scripting for the web browser control.
             // <phone:WebBrowser x:Name="webBrowser1" IsScriptEnabled="True" />
 
-            // Make sure to set the app id.
-            var oauthClient = new FacebookOAuthClient { AppId = AppId };
+            var fb = new FacebookClient();
 
             var loginParameters = new Dictionary<string, object>();
+
+            loginParameters["client_id"] = AppId;
+            loginParameters["redirect_uri"] = RedirectUri;
 
             // The requested response: an access token (token), an authorization code (code), or both (code token).
             // note: there is a bug in wpf browser control which ignores the fragment part (#) of the url
@@ -47,7 +51,7 @@ namespace CS_WP7
             }
 
             // when the Form is loaded navigate to the login url.
-            _loginUrl = oauthClient.GetLoginUrl(loginParameters);
+            _loginUrl = fb.GetLoginUrl(loginParameters);
 
             InitializeComponent();
         }
@@ -63,16 +67,16 @@ namespace CS_WP7
             // the url may be the result of OAuth 2.0 authentication.
             FacebookOAuthResult oauthResult;
 
-            if (FacebookOAuthResult.TryParse(e.Uri, out oauthResult))
+            var fb = new FacebookClient();
+            if (fb.TryParseOAuthCallbackUrl(e.Uri, out oauthResult))
             {
                 // The url is the result of OAuth 2.0 authentication.
                 if (oauthResult.IsSuccess)
                 {
-                    var oauthClient = new FacebookOAuthClient { AppId = AppId, AppSecret = AppSecret };
 
                     // we got the code here
-                    var code = oauthResult.Code;
-                    oauthClient.ExchangeCodeForAccessTokenCompleted +=
+
+                    fb.PostCompleted+=
                         (o, args) =>
                         {
                             // make sure to check that no error has occurred.
@@ -96,7 +100,13 @@ namespace CS_WP7
                             }
                         };
 
-                    oauthClient.ExchangeCodeForAccessTokenAsync(code);
+                    fb.PostAsync("oauth/access_token",new
+                                                          {
+                                                              client_id = AppId,
+                                                              client_secret = AppSecret,
+                                                              redirect_uri = RedirectUri,
+                                                              code = oauthResult.Code
+                                                          });
                 }
                 else
                 {

@@ -107,8 +107,7 @@ namespace CS_WP7
             // query to get all the friends
             var query = string.Format("SELECT uid,pic_square FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1={0})", "me()");
 
-            // call the Query or QueryAsync method to execute a single fql query.
-            fb.QueryAsync(query);
+            fb.GetAsync("fql", new { q = query });
         }
 
         private void FqlMultiQuerySample()
@@ -161,7 +160,7 @@ namespace CS_WP7
             // call the Query or QueryAsync method to execute a single fql query.
             // if there is more than one query Query/QueryAsync method will automatically
             // treat it as multi-query.
-            fb.QueryAsync(new[] { query1, query2 });
+            fb.GetAsync("fql", new { q = new[] { query1, query2 } });
         }
 
         private string _lastMessageId;
