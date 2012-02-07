@@ -23,10 +23,12 @@ namespace CS_WinForms
             if (string.IsNullOrEmpty(appId))
                 throw new ArgumentNullException("appId");
 
-            // Make sure to set the app id.
-            var oauthClient = new FacebookOAuthClient { AppId = appId };
+            var fb = new FacebookClient();
 
             IDictionary<string, object> loginParameters = new Dictionary<string, object>();
+
+            loginParameters["client_id"] = appId;
+            loginParameters["redirect_uri"] = "https://www.facebook.com/connect/login_success.html";
 
             // The requested response: an access token (token), an authorization code (code), or both (code token).
             loginParameters["response_type"] = "token";
@@ -42,7 +44,7 @@ namespace CS_WinForms
             }
 
             // when the Form is loaded navigate to the login url.
-            _loginUrl = oauthClient.GetLoginUrl(loginParameters);
+            _loginUrl = fb.GetLoginUrl(loginParameters);
 
             InitializeComponent();
         }
@@ -58,8 +60,9 @@ namespace CS_WinForms
             // whenever the browser navigates to a new url, try parsing the url
             // the url may be the result of OAuth 2.0 authentication.
 
+            var fb = new FacebookClient();
             FacebookOAuthResult oauthResult;
-            if (FacebookOAuthResult.TryParse(e.Url, out oauthResult))
+            if (fb.TryParseOAuthCallbackUrl(e.Url, out oauthResult))
             {
                 // The url is the result of OAuth 2.0 authentication.
                 this.FacebookOAuthResult = oauthResult;

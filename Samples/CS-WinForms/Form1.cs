@@ -11,7 +11,7 @@ namespace CS_WinForms
 {
     public partial class Form1 : Form
     {
-        private const string AppId = "{enter your app_id here}"
+       private const string AppId = "{enter your app_id here}"
 
         /// <summary>
         /// Extended permissions is a comma separated list of permissions to ask the user.
@@ -20,7 +20,7 @@ namespace CS_WinForms
         /// For extensive list of available extended permissions refer to 
         /// https://developers.facebook.com/docs/reference/api/permissions/
         /// </remarks>
-        private const string ExtendedPermissions = "user_about_me,publish_stream,offline_access";
+        private const string ExtendedPermissions = "user_about_me,publish_stream";
 
         public Form1()
         {

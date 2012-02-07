@@ -313,7 +313,7 @@ namespace CS_WinForms
                     dynamic result = e.GetResultData();
 
                     // or you could also use the generic version;
-                    bool isFan = e.GetResultData<bool>();
+                    bool isFan = (bool)e.GetResultData();
 
                     // since this is an async callback, make sure to be on the right thread
                     // when working with the UI.
@@ -368,9 +368,10 @@ namespace CS_WinForms
 
                     // now we can either cast it to IDictionary<string, object> or IList<object>
                     // depending on the type. or we could use dynamic.
-                    var result = (IList<object>)e.GetResultData();
+                    var result = (IDictionary<string, object>) e.GetResultData();
+                    var data = (IList<object>) result["data"];
 
-                    var count = result.Count;
+                    var count = data.Count;
 
                     // since this is an async callback, make sure to be on the right thread
                     // when working with the UI.
@@ -386,7 +387,7 @@ namespace CS_WinForms
             var query = string.Format("SELECT uid,pic_square FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1={0})", "me()");
 
             // call the Query or QueryAsync method to execute a single fql query.
-            fb.QueryAsync(query);
+            fb.GetAsync("fql", new { q = query });
         }
 
         private void FqlMultiQueryAsyncExample()
@@ -424,8 +425,8 @@ namespace CS_WinForms
                     // depending on the type. or we could use dynamic.
                     dynamic result = e.GetResultData();
 
-                    dynamic resultForQuery1 = result[0].fql_result_set;
-                    dynamic resultForQuery2 = result[1].fql_result_set;
+                    dynamic resultForQuery1 = result.data[0].fql_result_set;
+                    dynamic resultForQuery2 = result.data[1].fql_result_set;
 
                     var uid = resultForQuery1[0].uid;
 
@@ -443,7 +444,7 @@ namespace CS_WinForms
             // call the Query or QueryAsync method to execute a single fql query.
             // if there is more than one query Query/QueryAsync method will automatically
             // treat it as multi-query.
-            fb.QueryAsync(new[] { query1, query2 });
+            fb.GetAsync("fql", new { q = new[] { query1, query2 } });
         }
 
         private void BatchRequestExample()
@@ -457,8 +458,8 @@ namespace CS_WinForms
                     new FacebookBatchParameter("/me/friends", new { limit = 1 }) { Data = new { name = "one-friend", omit_response_on_success = false } }, // use Data to add additional parameters that doesn't exist
                     new FacebookBatchParameter { Parameters = new { ids = "{result=one-friend:$.data.0.id}" } },
                     new FacebookBatchParameter("{result=one-friend:$.data.0.id}/feed", new { limit = 5 }),
-                    new FacebookBatchParameter().Query("SELECT name FROM user WHERE uid="), // fql
-                    new FacebookBatchParameter().Query("SELECT first_name FROM user WHERE uid=me()", "SELECT last_name FROM user WHERE uid=me()") // fql multi-query
+                    new FacebookBatchParameter("fql" , new{ q="SELECT name FROM user WHERE uid=" }), // fql
+                    new FacebookBatchParameter("fql",new{q=new[]{"SELECT first_name FROM user WHERE uid=me()", "SELECT last_name FROM user WHERE uid=me()"}}) // fql multi-query
                     //,new FacebookBatchParameter(HttpMethod.Post, "/me/feed", new { message = "test status update" })
                     );
 
@@ -560,16 +561,16 @@ namespace CS_WinForms
                 }
             };
 
-            fb.BatchAsync(new[]{
-                new FacebookBatchParameter { HttpMethod = HttpMethod.Get, Path = "/4" },
-                new FacebookBatchParameter(HttpMethod.Get, "/me/friend", new Dictionary<string, object> { { "limit", 10 } }), // this should throw error
-                new FacebookBatchParameter("/me/friends", new { limit = 1 }) { Data = new { name = "one-friend", omit_response_on_success = false } }, // use Data to add additional parameters that doesn't exist
-                new FacebookBatchParameter { Parameters = new { ids = "{result=one-friend:$.data.0.id}" } },
-                new FacebookBatchParameter("{result=one-friend:$.data.0.id}/feed", new { limit = 5 }),
-                new FacebookBatchParameter().Query("SELECT name FROM user WHERE uid="), // fql
-                new FacebookBatchParameter().Query("SELECT first_name FROM user WHERE uid=me()", "SELECT last_name FROM user WHERE uid=me()") // fql multi-query
-                //,new FacebookBatchParameter(HttpMethod.Post, "/me/feed", new { message = "test status update" })
-            });
+            //fb.BatchAsync(new[]{
+            //    new FacebookBatchParameter { HttpMethod = HttpMethod.Get, Path = "/4" },
+            //    new FacebookBatchParameter(HttpMethod.Get, "/me/friend", new Dictionary<string, object> { { "limit", 10 } }), // this should throw error
+            //    new FacebookBatchParameter("/me/friends", new { limit = 1 }) { Data = new { name = "one-friend", omit_response_on_success = false } }, // use Data to add additional parameters that doesn't exist
+            //    new FacebookBatchParameter { Parameters = new { ids = "{result=one-friend:$.data.0.id}" } },
+            //    new FacebookBatchParameter("{result=one-friend:$.data.0.id}/feed", new { limit = 5 }),
+            //    new FacebookBatchParameter().Query("SELECT name FROM user WHERE uid="), // fql
+            //    new FacebookBatchParameter().Query("SELECT first_name FROM user WHERE uid=me()", "SELECT last_name FROM user WHERE uid=me()") // fql multi-query
+            //    //,new FacebookBatchParameter(HttpMethod.Post, "/me/feed", new { message = "test status update" })
+            //});
         }
 
         private string _lastMessageId;
