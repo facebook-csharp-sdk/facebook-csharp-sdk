@@ -11,7 +11,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 [Facebook Change Log](https://developers.facebook.com/docs/changelog/)
 
 ## Features ##
-* NuGet Packages Available (Facebook, FacebookWeb, FacebookWebMvc)
+* NuGet Packages Available (Facebook)
 * Compatible with all Facebook Graph and REST API methods.
 * Supports Facebook’s most current authentication systems.
 * Sample applications and documentation are provided to get you started quickly.
