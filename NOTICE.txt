@@ -1,0 +1,42 @@
+Copyright (c) 2011
+This software is released under the Apache License 2.0 (the "License"); 
+you may not use the software except in compliance with the License. You 
+can find a copy of the License in the file LICENSE.TXT accompanying this 
+file. 
+
+Additional Libraries:
+This software includes or is derivative of works distributed under the 
+licenses listed below. The full text for most of the licenses listed below 
+can be found in the LICENSE.txt file accompanying each work. The original 
+copyright notices have been preserved within the respective files and or 
+packages. Please refer to the specific files and/or packages for more 
+detailed information about the authors, copyright notices, and licenses. 
+
+
+Albacore
+-----------------
+Website: http://albacorebuild.net
+Copyright: Copyright (c) 2010 Derick Bailey. All Rights Reserved.
+License: MIT License
+
+
+xUnit.net
+-----------------
+Website: http://xunit.codeplex.com
+Copyright: N/A
+License: Microsoft Public License (Ms-PL)
+
+
+xUnit.net Contrib
+-----------------
+Website: http://xunitcontrib.codeplex.com
+Copyright: N/A
+License: Microsoft Public License (Ms-PL)
+
+
+Additional Notices:
+The software was originally conceived and created by Nathan Totten,
+Prabir Shersha, and Jim Zimmerman.
+
+Other contributors to the project include:
+N/A
