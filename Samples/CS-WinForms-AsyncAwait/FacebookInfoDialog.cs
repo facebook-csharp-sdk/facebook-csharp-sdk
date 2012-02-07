@@ -48,7 +48,7 @@ namespace CS_WinForms
             FqlAsyncExample();
             FqlMultiQueryAsyncExample();
 
-            BatchRequestExample();
+            //BatchRequestExample();
         }
 
         private async void GetUserProfilePicture()
@@ -190,10 +190,9 @@ namespace CS_WinForms
                 // query to get all the friends
                 var query = string.Format("SELECT uid,pic_square FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1={0})", "me()");
 
-                // call the Query or QueryAsync method to execute a single fql query.
-                dynamic result = await _fb.QueryTaskAsync(query);
+                dynamic result = await _fb.GetTaskAsync("fql", new { q = query });
 
-                lblTotalFriends.Text = string.Format("You have {0} friend(s).", result.Count);
+                lblTotalFriends.Text = string.Format("You have {0} friend(s).", result.data.Count);
             }
             catch (FacebookApiException ex)
             {
@@ -212,10 +211,10 @@ namespace CS_WinForms
                 // call the Query/QueryAsync/QueryTaskAsync method to execute a single fql query.
                 // if there is more than one query, Query/QueryAsync/QueryTaskAsync method will automatically
                 // treat it as multi-query.
-                dynamic result = await _fb.QueryTaskAsync(new[] { query1, query2 });
+                dynamic result = await _fb.GetTaskAsync("fql", new { q = new[] { query1, query2 } });
 
-                dynamic resultForQuery1 = result[0].fql_result_set;
-                dynamic resultForQuery2 = result[1].fql_result_set;
+                dynamic resultForQuery1 = result.data[0].fql_result_set;
+                dynamic resultForQuery2 = result.data[1].fql_result_set;
 
                 var uid = resultForQuery1[0].uid;
 
@@ -226,6 +225,7 @@ namespace CS_WinForms
             }
         }
 
+        /*
         private async void BatchRequestExample()
         {
             try
@@ -270,7 +270,7 @@ namespace CS_WinForms
                 MessageBox.Show(ex.Message);
             }
         }
-
+        */
         private string _lastMessageId;
 
         private async void btnPostToWall_Click(object sender, EventArgs e)
