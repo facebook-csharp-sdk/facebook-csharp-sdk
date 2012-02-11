@@ -19,8 +19,38 @@
 
 namespace Facebook
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public partial class FacebookClient
     {
-         
+        public virtual Task<object> BatchTaskAsync(params FacebookBatchParameter[] batchParameters)
+        {
+            return BatchTaskAsync(batchParameters, null, CancellationToken.None);
+        }
+
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, CancellationToken cancellationToken
+#if ASYNC_AWAIT
+, System.IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress
+#endif
+)
+        {
+            var parameters = PrepareBatchRequest(batchParameters);
+            return PostTaskAsync(null, parameters, userToken, cancellationToken
+#if ASYNC_AWAIT
+, null
+#endif
+                );
+        }
+
+#if ASYNC_AWAIT
+
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, CancellationToken cancellationToken)
+        {
+            return BatchTaskAsync(batchParameters, userToken, cancellationToken, null);
+        }
+
+#endif
+
     }
 }

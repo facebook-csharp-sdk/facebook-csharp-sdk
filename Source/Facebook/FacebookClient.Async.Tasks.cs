@@ -215,6 +215,11 @@ namespace Facebook
             return ApiTaskAsync(HttpMethod.Post, path, parameters, null, null, cancellationToken);
         }
 
+        public virtual Task<object> PostTaskAsync(string path, object parameters, object userToken, CancellationToken cancellationToken)
+        {
+            return ApiTaskAsync(HttpMethod.Post, path, parameters, null, userToken, cancellationToken);
+        }
+
 #if ASYNC_AWAIT
         public virtual Task<object> PostTaskAsync(string path, object parameters, object userToken, CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
         {
