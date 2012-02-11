@@ -828,6 +828,9 @@ namespace Facebook
                 parameter is uint || parameter is ulong)
                 return parameter.ToString();
 
+            if(parameter is Uri)
+                return parameter.ToString();
+
             // todo: IEnumerable<KeyValuePair<T1,T2>> and IEnumerable<Tuple<T1, T2>>
 
             var sb = new StringBuilder();
