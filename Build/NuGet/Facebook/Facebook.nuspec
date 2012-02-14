@@ -7,7 +7,7 @@
                 <authors>Jim Zimmerman, Nathan Totten, Prabir Shrestha</authors>
                 <description>The Facebook C# SDK core.</description>
                 <language>en-US</language>
-                <licenseUrl>http://facebooksdk.codeplex.com/license</licenseUrl>
+                <licenseUrl>https://raw.github.com/facebook-csharp-sdk/facebook-csharp-sdk/master/LICENSE.txt</licenseUrl>
                 <projectUrl>http://facebooksdk.codeplex.com</projectUrl>
                 <iconUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/raw/master/Source/logo32x32.png</iconUrl>
                 <requireLicenseAcceptance>false</requireLicenseAcceptance>
