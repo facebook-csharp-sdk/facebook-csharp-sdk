@@ -20,6 +20,3 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * Sample applications and documentation are provided to get you started quickly.
 * Compatible with the official Facebook JavaScript SDK.
 * Updated regularly with new releases about every month.
-
-## License
-Apache License 2.0. (Refer to NOTICE.txt for more details.)
