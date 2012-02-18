@@ -1,6 +1,21 @@
-// SimpleJson http://simplejson.codeplex.com/
-// http://bit.ly/simplejson
-// License: Apache License 2.0 (Apache)
+//-----------------------------------------------------------------------
+// <copyright file="SimpleJson.cs" company="">
+//    Copyright 2011
+//
+//    Licensed under the MIT License (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//      http://www.opensource.org/licenses/mit-license.php
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+// </copyright>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
+// <website>https://github.com/facebook-csharp-sdk/simple-json</website>
+//-----------------------------------------------------------------------
 
 // NOTE: uncomment the following line to make SimpleJson class internal.
 //#define SIMPLE_JSON_INTERNAL
@@ -26,6 +41,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 #if SIMPLE_JSON_DYNAMIC
 using System.Dynamic;
 #endif
@@ -38,13 +54,13 @@ using System.Reflection.Emit;
 using System.Runtime.Serialization;
 #endif
 using System.Text;
-using SimpleJson.Reflection;
-using Facebook;
+using Facebook.Reflection;
 
 namespace Facebook
 {
     #region JsonArray
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     /// <summary>
     /// Represents the json array.
     /// </summary>
@@ -72,7 +88,7 @@ namespace Facebook
         /// <returns>The json representation of the array.</returns>
         public override string ToString()
         {
-            return global::SimpleJson.SimpleJson.SerializeObject(this) ?? string.Empty;
+            return SimpleJson.SerializeObject(this) ?? string.Empty;
         }
     }
 
@@ -80,6 +96,7 @@ namespace Facebook
 
     #region JsonObject
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     /// <summary>
     /// Represents the json object.
     /// </summary>
@@ -298,7 +315,7 @@ namespace Facebook
         /// </returns>
         public override string ToString()
         {
-            return global::SimpleJson.SimpleJson.SerializeObject(this);
+            return SimpleJson.SerializeObject(this);
         }
 
 #if SIMPLE_JSON_DYNAMIC
@@ -446,7 +463,7 @@ namespace Facebook
     #endregion
 }
 
-namespace SimpleJson
+namespace Facebook
 {
     #region JsonParser
 

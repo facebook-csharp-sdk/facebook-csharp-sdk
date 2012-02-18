@@ -232,8 +232,8 @@ namespace Facebook
         /// <param name="jsonDeserializer">Jsonn deserializer</param>
         public static void SetDefaultJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
         {
-            _defaultJsonSerializer = jsonSerializer ?? SimpleJson.SimpleJson.SerializeObject;
-            _defaultJsonDeserializer = jsonDeserializer ?? SimpleJson.SimpleJson.DeserializeObject;
+            _defaultJsonSerializer = jsonSerializer ?? SimpleJson.SerializeObject;
+            _defaultJsonDeserializer = jsonDeserializer ?? SimpleJson.DeserializeObject;
         }
 
         /// <summary>
