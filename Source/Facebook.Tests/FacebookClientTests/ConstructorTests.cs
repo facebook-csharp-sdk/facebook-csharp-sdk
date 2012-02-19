@@ -189,6 +189,12 @@ namespace Facebook.Tests.FacebookClient
                     Assert.Equal("appid", fb.AppId);
                 }
 
+                [Fact]
+                public void CorrectlySetsTheAppSecretProperty()
+                {
+                    var fb = new FacebookClient("appid", "appsecret");
+                    Assert.Equal("appsecret", fb.AppSecret);
+                }
             }
         }
     }

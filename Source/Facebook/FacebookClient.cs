@@ -111,6 +111,7 @@ namespace Facebook
 
         private string _accessToken;
         private string _appId;
+        private string _appSecret;
         private bool _isSecureConnection;
         private bool _useFacebookBeta;
 
@@ -142,6 +143,15 @@ namespace Facebook
         {
             get { return _appId; }
             set { _appId = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the app secret.
+        /// </summary>
+        public virtual string AppSecret
+        {
+            get { return _appSecret; }
+            set { _appSecret = value; }
         }
 
         /// <summary>
@@ -234,6 +244,7 @@ namespace Facebook
 
             _accessToken = string.Concat(appId, "|", appSecret);
             _appId = appId;
+            _appSecret = appSecret;
         }
 
         /// <summary>
