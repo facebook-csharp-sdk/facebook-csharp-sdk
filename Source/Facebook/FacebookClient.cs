@@ -110,6 +110,7 @@ namespace Facebook
         };
 
         private string _accessToken;
+        private string _appId;
         private bool _isSecureConnection;
         private bool _useFacebookBeta;
 
@@ -132,6 +133,15 @@ namespace Facebook
         {
             get { return _accessToken; }
             set { _accessToken = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the app id.
+        /// </summary>
+        public virtual string AppId
+        {
+            get { return _appId; }
+            set { _appId = value; }
         }
 
         /// <summary>
@@ -223,6 +233,7 @@ namespace Facebook
                 throw new ArgumentNullException("appSecret");
 
             _accessToken = string.Concat(appId, "|", appSecret);
+            _appId = appId;
         }
 
         /// <summary>
