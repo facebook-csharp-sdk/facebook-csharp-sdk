@@ -5,6 +5,11 @@ SDK consumers : developers using this SDK.
 SDK developers: developers writing this SDK.
 
 =========================================================================
+v6.0.1 (6.0.3-alpha)
+=========================================================================
+1. https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/issues?milestone=3&state=closed
+
+=========================================================================
 v6.0.1 (6.0.2-alpha)
 =========================================================================
 1. https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/issues?milestone=2&state=closed
