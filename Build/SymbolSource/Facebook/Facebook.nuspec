@@ -9,7 +9,7 @@
         <language>en-US</language>
         <licenseUrl>http://facebooksdk.codeplex.com/license</licenseUrl>
         <projectUrl>http://facebooksdk.codeplex.com</projectUrl>
-        <iconUrl>http://bit.ly/facebooksdkicon</iconUrl>
+        <iconUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/raw/master/Source/logo400x400.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>Facebook</tags>
     </metadata>
