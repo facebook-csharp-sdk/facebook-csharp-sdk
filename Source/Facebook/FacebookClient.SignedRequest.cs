@@ -51,6 +51,17 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Tries parsing the facebook signed_request.
+        /// </summary>
+        /// <param name="signedRequestValue">The signed_request value.</param>
+        /// <param name="signedRequest">The parsed signed request.</param>
+        /// <returns>True if signed request parsed successfully otherwise false.</returns>
+        public virtual bool TryParseSignedRequest(string signedRequestValue, out object signedRequest)
+        {
+            return TryParseSignedRequest(AppSecret, signedRequestValue, out signedRequest);
+        }
+
+        /// <summary>
         /// Parse the facebook signed_request.
         /// </summary>
         /// <param name="appSecret">The appsecret.</param>
@@ -90,6 +101,18 @@ namespace Facebook
             if (!digest.SequenceEqual(Base64UrlDecode(encodedignature)))
                 throw new InvalidOperationException(InvalidSignedRequest);
             return envelope;
+        }
+
+        /// <summary>
+        /// Parse the facebook signed_request.
+        /// </summary>
+        /// <param name="signedRequestValue">The signed_request value.</param>
+        /// <returns>The parse signed_request value.</returns>
+        /// <exception cref="ArgumentNullException">Throws if appSecret or signedRequestValue is null or empty.</exception>
+        /// <exception cref="InvalidOperationException">If the signedRequestValue is an invalid signed_request.</exception>
+        public virtual object ParseSignedRequest(string signedRequestValue)
+        {
+            return ParseSignedRequest(AppSecret, signedRequestValue);
         }
 
         /// <summary>
