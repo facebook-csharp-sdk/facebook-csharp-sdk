@@ -1138,7 +1138,7 @@ namespace Facebook
 
         protected static bool SerializeNumber(double number, StringBuilder builder)
         {
-            builder.Append(Convert.ToString(number, CultureInfo.InvariantCulture));
+            builder.Append(number.ToString("r", CultureInfo.InvariantCulture));
             return true;
         }
 
