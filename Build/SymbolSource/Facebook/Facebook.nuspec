@@ -9,7 +9,7 @@
         <language>en-US</language>
         <licenseUrl>https://raw.github.com/facebook-csharp-sdk/facebook-csharp-sdk/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk</projectUrl>
-        <iconUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/raw/master/Source/logo400x400.png</iconUrl>
+        <iconUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/raw/06fda01cdc924c02b1cd244fee16dfa572f087c6/Source/logo500x500.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>Facebook</tags>
     </metadata>
