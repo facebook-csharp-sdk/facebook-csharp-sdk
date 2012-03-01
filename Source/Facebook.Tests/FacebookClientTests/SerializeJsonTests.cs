@@ -19,7 +19,7 @@
 
 namespace Facebook.Tests.FacebookClient
 {
-    using System;
+    using System.Collections.Generic;
     using Facebook;
     using Xunit;
 
@@ -28,8 +28,11 @@ namespace Facebook.Tests.FacebookClient
         [Fact]
         public void SerializeBigNumbersCorrectly()
         {
+            var parameters = new Dictionary<string, object>();
+            parameters["object_id"] = 10150098461530576;
+
             var fb = new FacebookClient();
-            string json = fb.SerializeJson(new { object_id = 10150098461530576 });
+            string json = fb.SerializeJson(parameters);
 
             Assert.Equal("{\"object_id\":10150098461530576}", json);
         }
