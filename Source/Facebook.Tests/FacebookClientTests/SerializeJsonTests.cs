@@ -28,7 +28,8 @@ namespace Facebook.Tests.FacebookClient
         [Fact]
         public void SerializeBigNumbersCorrectly()
         {
-            string json = SimpleJson.SerializeObject(new { object_id = 10150098461530576 });
+            var fb = new FacebookClient();
+            string json = fb.SerializeJson(new { object_id = 10150098461530576 });
 
             Assert.Equal("{\"object_id\":10150098461530576}", json);
         }
