@@ -547,6 +547,9 @@ namespace Facebook
                 case HttpMethod.Delete:
 #if !(SILVERLIGHT && !WINDOWS_PHONE)
                     request.Method = "DELETE";
+#if !WINDOWS_PHONE
+                    request.ContentLength = 0;
+#endif
                     break;
 #endif
                 case HttpMethod.Post:
@@ -554,7 +557,6 @@ namespace Facebook
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("httpMethod");
-
             }
 
             request.ContentType = contentType;
