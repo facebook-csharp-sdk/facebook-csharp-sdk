@@ -159,8 +159,7 @@ namespace :zip do
 		zip.output_path = "#{config['path']['dist']}"
 		zip.additional_files = [ 
 									"#{config['path']['root']}LICENSE.txt",
-									"#{config['path']['root']}VERSION",
-									"#{config['path']['root']}CHANGES.txt"
+									"#{config['path']['root']}VERSION"
 							   ]
 	end
 	
