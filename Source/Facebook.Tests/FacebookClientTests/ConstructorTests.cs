@@ -148,54 +148,6 @@ namespace Facebook.Tests.FacebookClient
                     }
                 }
             }
-
-            public class ConstructorAppIdAppSecret
-            {
-                [Fact]
-                public void ThrowsArgumentNullExceptionIfAppIdIsEmpty()
-                {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookClient(null, "appsecret"));
-                }
-
-                [Fact]
-                public void ThrowsArgumentNullExceptionIfAppIdIsNull()
-                {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookClient(null, "appsecret"));
-                }
-
-                [Fact]
-                public void ThrowsArgumentNullExceptionIfAppSecretIsEmpty()
-                {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookClient("appid", string.Empty));
-                }
-
-                [Fact]
-                public void ThrowsArgumentNullExceptionIfAppSecretIsNull()
-                {
-                    Assert.Throws<ArgumentNullException>(() => new FacebookClient("appid", null));
-                }
-
-                [Fact]
-                public void CorrectlySetsAccessTokenIfAppIdAndAppSecretAreBothNotNullOrEmpty()
-                {
-                    var fb = new FacebookClient("appid", "appsecret");
-                    Assert.Equal("appid|appsecret", fb.AccessToken);
-                }
-
-                [Fact]
-                public void CorrectlySetsTheAppIdProperty()
-                {
-                    var fb = new FacebookClient("appid", "appsecret");
-                    Assert.Equal("appid", fb.AppId);
-                }
-
-                [Fact]
-                public void CorrectlySetsTheAppSecretProperty()
-                {
-                    var fb = new FacebookClient("appid", "appsecret");
-                    Assert.Equal("appsecret", fb.AppSecret);
-                }
-            }
         }
     }
 }

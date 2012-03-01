@@ -229,25 +229,6 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="appSecret"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public FacebookClient(string appId, string appSecret)
-            : this()
-        {
-            if (string.IsNullOrEmpty(appId))
-                throw new ArgumentNullException("appId");
-            if (string.IsNullOrEmpty(appSecret))
-                throw new ArgumentNullException("appSecret");
-
-            _accessToken = string.Concat(appId, "|", appSecret);
-            _appId = appId;
-            _appSecret = appSecret;
-        }
-
-        /// <summary>
         /// Sets the default json seriazliers and deserializers.
         /// </summary>
         /// <param name="jsonSerializer">Json serializer</param>
