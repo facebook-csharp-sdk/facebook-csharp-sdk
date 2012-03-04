@@ -34,7 +34,7 @@
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;CODE_ANALYSIS;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_REFLECTIONEMIT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;TPL;FLUENTHTTP_CORE_TPL;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
@@ -59,8 +59,9 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
-    <DocumentationFile>..\..\Bin\Debug\net40-client\Facebook.xml</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Debug\net40-client\Facebook.XML</DocumentationFile>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <NoWarn>1591,1587</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
