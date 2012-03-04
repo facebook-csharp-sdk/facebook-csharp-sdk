@@ -528,7 +528,7 @@ namespace Facebook
                 case HttpMethod.Delete:
 #if !(SILVERLIGHT && !WINDOWS_PHONE)
                     request.Method = "DELETE";
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || NETFX_CORE)
                     request.ContentLength = 0;
 #endif
                     break;
@@ -545,17 +545,17 @@ namespace Facebook
             if (!string.IsNullOrEmpty(etag))
                 request.Headers[HttpRequestHeader.IfNoneMatch] = string.Concat('"', etag, '"');
 
-#if !(SILVERLIGHT || WINRT)
+#if !(SILVERLIGHT || NETFX_CORE)
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 #endif
-#if WINRT
+#if NETFX_CORE
             request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
 #endif
 
             if (input != null)
                 request.TrySetContentLength(input.Length);
 
-#if (!(SILVERLIGHT || WINRT) || WINDOWS_PHONE)
+#if (!(SILVERLIGHT || NETFX_CORE) || WINDOWS_PHONE)
             request.UserAgent = "Facebook C# SDK";
 #endif
 

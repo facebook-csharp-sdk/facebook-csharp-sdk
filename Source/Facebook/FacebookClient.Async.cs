@@ -121,7 +121,7 @@ namespace Facebook
                         {
                             using (var stream = e.Result)
                             {
-#if WINRT
+#if NETFX_CORE
                                 bool compressed = false;
                                 var contentEncoding = httpHelper.HttpWebResponse.Headers[HttpRequestHeader.ContentEncoding];
                                 if (contentEncoding != null)

@@ -26,7 +26,7 @@ namespace Facebook
     /// <summary>
     /// Represent errors that occur while calling a Facebook API.
     /// </summary>
-#if !(SILVERLIGHT || WINRT)
+#if !(SILVERLIGHT || NETFX_CORE)
     [Serializable]
 #endif
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly",
@@ -70,7 +70,7 @@ namespace Facebook
         {
         }
 
-#if !(SILVERLIGHT || WINRT)
+#if !(SILVERLIGHT || NETFX_CORE)
         /// <summary>
         /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
         /// </summary>
