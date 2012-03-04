@@ -99,6 +99,9 @@ namespace Facebook
             return result;
         }
 
+#if NETFX_CORE
+
+#else
         public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
             CombinationStreamAsyncResult asyncResult = new CombinationStreamAsyncResult(state);
@@ -181,6 +184,43 @@ namespace Facebook
             return ar.BytesRead;
         }
 
+        internal class CombinationStreamAsyncResult : IAsyncResult
+        {
+            private readonly object _asyncState;
+
+            public CombinationStreamAsyncResult(object asyncState)
+            {
+                _asyncState = asyncState;
+                _manualResetEvent = new ManualResetEvent(false);
+            }
+
+            public bool IsCompleted { get; internal set; }
+
+            public WaitHandle AsyncWaitHandle
+            {
+                get { return _manualResetEvent; }
+            }
+
+            public object AsyncState
+            {
+                get { return _asyncState; }
+            }
+
+            public bool CompletedSynchronously { get; internal set; }
+
+            public Exception Exception { get; internal set; }
+
+            internal void SetAsyncWaitHandle()
+            {
+                _manualResetEvent.Set();
+            }
+
+            private readonly ManualResetEvent _manualResetEvent;
+            public int BytesRead;
+        }
+
+#endif
+
         public override void Write(byte[] buffer, int offset, int count)
         {
             throw new InvalidOperationException("Stream is not writable");
@@ -236,41 +276,6 @@ namespace Facebook
         {
             get { return _postion; }
             set { throw new NotImplementedException(); }
-        }
-
-        internal class CombinationStreamAsyncResult : IAsyncResult
-        {
-            private readonly object _asyncState;
-
-            public CombinationStreamAsyncResult(object asyncState)
-            {
-                _asyncState = asyncState;
-                _manualResetEvent = new ManualResetEvent(false);
-            }
-
-            public bool IsCompleted { get; internal set; }
-
-            public WaitHandle AsyncWaitHandle
-            {
-                get { return _manualResetEvent; }
-            }
-
-            public object AsyncState
-            {
-                get { return _asyncState; }
-            }
-
-            public bool CompletedSynchronously { get; internal set; }
-
-            public Exception Exception { get; internal set; }
-
-            internal void SetAsyncWaitHandle()
-            {
-                _manualResetEvent.Set();
-            }
-
-            private readonly ManualResetEvent _manualResetEvent;
-            public int BytesRead;
         }
     }
 }
