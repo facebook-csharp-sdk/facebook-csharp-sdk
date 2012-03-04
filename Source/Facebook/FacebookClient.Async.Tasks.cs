@@ -16,6 +16,8 @@
 // <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 //-----------------------------------------------------------------------
+// TODO: Renable obsolete messages (disable because of warning noise - the ApiAsync doesn't actually seem that obsolete)
+#pragma warning disable 612, 618
 
 namespace Facebook
 {

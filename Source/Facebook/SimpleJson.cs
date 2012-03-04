@@ -569,6 +569,7 @@ namespace Facebook
         /// Converts a IDictionary&lt;string,object> / IList&lt;object> object into a JSON string
         /// </summary>
         /// <param name="json">A IDictionary&lt;string,object> / IList&lt;object></param>
+        /// <param name="jsonSerializerStrategy">Serializer strategy to use</param>
         /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
         public static string SerializeObject(object json, IJsonSerializerStrategy jsonSerializerStrategy)
         {
