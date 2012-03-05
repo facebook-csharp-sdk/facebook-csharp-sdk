@@ -342,7 +342,7 @@ namespace Facebook
 #if NETFX_CORE
  (targetType == typeof(IDictionary<,>))
 #else
-                (targetType == typeof(IDictionary))
+ (targetType == typeof(IDictionary))
 #endif
 )
             {
@@ -545,7 +545,7 @@ namespace Facebook
 #if NETFX_CORE
  jsonObject.GetType().GetTypeInfo().IsAssignableFrom(type.GetTypeInfo())
 #else
-            jsonObject.GetType().IsAssignableFrom(type)
+ jsonObject.GetType().IsAssignableFrom(type)
 #endif
  ? jsonObject
                        : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
@@ -1040,7 +1040,7 @@ namespace Facebook
             else if (value is IEnumerable)
                 success = SerializeArray(jsonSerializerStrategy, (IEnumerable)value, builder);
             else if (IsNumeric(value))
-                success = SerializeNumber(Convert.ToDouble(value), builder);
+                success = SerializeNumber(value, builder);
             else if (value is Boolean)
                 builder.Append((bool)value ? "true" : "false");
             else if (value == null)
@@ -1138,9 +1138,37 @@ namespace Facebook
             return true;
         }
 
-        protected static bool SerializeNumber(double number, StringBuilder builder)
+        protected static bool SerializeNumber(object number, StringBuilder builder)
         {
-            builder.Append(number.ToString("r", CultureInfo.InvariantCulture));
+            if (number is long)
+            {
+                builder.Append(((long)number).ToString(CultureInfo.InvariantCulture));
+            }
+            else if (number is ulong)
+            {
+                builder.Append(((ulong)number).ToString(CultureInfo.InvariantCulture));
+            }
+            else if (number is int)
+            {
+                builder.Append(((int)number).ToString(CultureInfo.InvariantCulture));
+            }
+            else if (number is uint)
+            {
+                builder.Append(((uint)number).ToString(CultureInfo.InvariantCulture));
+            }
+            else if (number is decimal)
+            {
+                builder.Append(((decimal)number).ToString(CultureInfo.InvariantCulture));
+            }
+            else if (number is float)
+            {
+                builder.Append(((float)number).ToString(CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                builder.Append(Convert.ToDouble(number).ToString("r", CultureInfo.InvariantCulture));
+            }
+
             return true;
         }
 
@@ -1250,15 +1278,17 @@ namespace Facebook
                 var getMethod = info.GetMethod;
                 if(getMethod==null || !getMethod.IsPublic || getMethod.IsStatic) continue;
 #else
-            foreach (PropertyInfo info in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)) {
-#endif                
+            foreach (PropertyInfo info in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+#endif
                 memberMaps.Add(info.Name, new CacheResolver.MemberMap(info));
             }
 #if NETFX_CORE
             foreach (FieldInfo info in type.GetTypeInfo().DeclaredFields) {
                 if(!info.IsPublic || info.IsStatic) continue;
 #else
-            foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.Instance)) {
+            foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            {
 #endif
                 memberMaps.Add(info.Name, new CacheResolver.MemberMap(info));
             }
@@ -1277,14 +1307,15 @@ namespace Facebook
                 return null;
             else if ((value is long && type == typeof(long)) || (value is double && type == typeof(double)))
                 return value;
-            else if ((value is double && type != typeof(double)) || (value is long && type != typeof(long))) {
-                return 
-                #if NETFX_CORE
+            else if ((value is double && type != typeof(double)) || (value is long && type != typeof(long)))
+            {
+                return
+#if NETFX_CORE
                     type == typeof(int) || type == typeof(long) || type == typeof(double) ||type == typeof(float) || type == typeof(bool) || type == typeof(decimal) ||type == typeof(byte) || type == typeof(short)
-                #else
-                    typeof(IConvertible).IsAssignableFrom(type) 
-                #endif
-                    ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture) : value;
+#else
+ typeof(IConvertible).IsAssignableFrom(type)
+#endif
+ ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture) : value;
             }
             object obj = null;
 
@@ -1360,7 +1391,7 @@ namespace Facebook
 #if NETFX_CORE
  typeof(IList).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo())
 #else
-                 typeof(IList).IsAssignableFrom(type)
+ typeof(IList).IsAssignableFrom(type)
 #endif
 )
                 {
