@@ -5,7 +5,6 @@
 
 //#define FLUENTHTTP_STRING_HELPERS
 //#define FLUENTHTTP_CORE_TPL
-//#define FLUENTHTTP_CORE_WINRT
 //#define FLUENTHTTP_CORE_STREAM
 //#define FLUENTHTTP_URLENCODING
 //#define FLUENTHTTP_HTMLENCODING
@@ -86,7 +85,7 @@ namespace Facebook
 			set { _httpWebRequest.Headers = value; }
 		}
 
-#if !FLUENTHTTP_CORE_WINRT
+#if !NETFX_CORE
 		/// <summary>
 		/// Gets or sets a value that indicates whether the request should follow redirection responses.
 		/// </summary>
@@ -97,7 +96,7 @@ namespace Facebook
 		}
 #endif
 
-#if !(WINDOWS_PHONE || FLUENTHTTP_CORE_WINRT)
+#if !(WINDOWS_PHONE || NETFX_CORE)
 
 		/// <summary>
 		/// Gets or sets the content length.
@@ -107,9 +106,18 @@ namespace Facebook
 			get { return _httpWebRequest.ContentLength; }
 			set { _httpWebRequest.ContentLength = value; }
 		}
+
+        /// <summary>
+        /// True to enable buffering of the data sent to the Internet resource; false to disable buffering. The default is true.
+        /// </summary>
+        public virtual bool AllowWriteStreamBuffering
+        {
+            get { return _httpWebRequest.AllowWriteStreamBuffering; }
+            set { _httpWebRequest.AllowWriteStreamBuffering = value; }
+        }
 #endif
 
-#if !FLUENTHTTP_CORE_WINRT
+#if !NETFX_CORE
 		/// <summary>
 		/// Gets or sets the user agent.
 		/// </summary>
@@ -120,7 +128,7 @@ namespace Facebook
 		}
 #endif
 
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the cookie container.
 		/// </summary>
 		public virtual CookieContainer CookieContainer
@@ -157,7 +165,7 @@ namespace Facebook
 
 #if !SILVERLIGHT
 
-#if !FLUENTHTTP_CORE_WINRT
+#if !NETFX_CORE
 
 		/// <summary>
 		/// Gets the service point to use for the request.
@@ -241,7 +249,7 @@ namespace Facebook
 
 #endif
 
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the proxy.
 		/// </summary>
 		public virtual IWebProxy Proxy
@@ -262,12 +270,12 @@ namespace Facebook
 		/// True if ContentLength set, otherwise false.
 		/// </returns>
 		public virtual bool TrySetContentLength(long contentLength)
-		{
-#if !(WINDOWS_PHONE || FLUENTHTTP_CORE_WINRT)
+        {
+#if !(WINDOWS_PHONE || NETFX_CORE)
 			ContentLength = contentLength;
 			return true;
 #else
-			return false;
+            return false;
 #endif
 		}
 
@@ -357,7 +365,7 @@ namespace Facebook
 
 #endif
 
-#if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
+#if !(SILVERLIGHT || NETFX_CORE)
 
 		/// <summary>
 		/// Gets the response.
@@ -379,7 +387,7 @@ namespace Facebook
 
 #endif
 
-		private object _cancelledLock = new object();
+        private object _cancelledLock = new object();
 
 		/// <summary>
 		/// Aborts the http web request.
@@ -507,7 +515,7 @@ namespace Facebook
 		}
 
 #if !SILVERLIGHT
-#if !FLUENTHTTP_CORE_WINRT
+#if !NETFX_CORE
 
 		/// <summary>
 		/// Gets the content encoding.
@@ -560,7 +568,7 @@ namespace Facebook
 #endif
 
 #endif
-		/// <summary>
+        /// <summary>
 		/// Gets the response stream.
 		/// </summary>
 		/// <returns>
@@ -574,11 +582,11 @@ namespace Facebook
 
 	/// <summary>
 	/// Wrapper for web exceptions.
-	/// </summary>
-#if !(FLUENTHTTP_CORE_WINRT || SILVERLIGHT)
+    /// </summary>
+#if !(NETFX_CORE || SILVERLIGHT)
 	[Serializable]
 #endif
-	[EditorBrowsable(EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
 	public class WebExceptionWrapper : Exception
 	{
 		private readonly WebException _webException;
@@ -599,7 +607,7 @@ namespace Facebook
 			_status = webException == null ? WebExceptionStatus.UnknownError : webException.Status;
 		}
 
-#if !(FLUENTHTTP_CORE_WINRT || SILVERLIGHT)
+#if !(NETFX_CORE || SILVERLIGHT)
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
 		/// </summary>
@@ -613,7 +621,7 @@ namespace Facebook
 		}
 #endif
 
-		/// <summary>
+        /// <summary>
 		/// Gets the response of the web exception.
 		/// </summary>
 		/// <returns>
@@ -828,7 +836,7 @@ namespace FluentHttp
 			get { return _httpWebResponse; }
 		}
 
-#if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
+#if !(SILVERLIGHT || NETFX_CORE)
 
 		/// <summary>
 		/// Opens the request stream synchronously for write.
@@ -897,7 +905,7 @@ namespace FluentHttp
 
 #endif
 
-		/// <summary>
+        /// <summary>
 		/// Asynchronously opens the response stream for read.
 		/// </summary>
 		/// <param name="userToken"></param>
@@ -912,16 +920,22 @@ namespace FluentHttp
 
 					int timeout = 0;
 
-#if !(SILVERLIGHT || FLUENTHTTP_CORE_WINRT)
+#if !(SILVERLIGHT || NETFX_CORE)
 					if (HttpWebRequest.Timeout > 0)
 						timeout = HttpWebRequest.Timeout;
 #endif
 
-					if (Timeout > 0)
+                    if (Timeout > 0)
 						timeout = Timeout;
 
-					if (timeout > 0)
-						ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, ScanTimoutCallback, userToken, timeout, true);
+                    if (timeout > 0)
+                    {
+#if NETFX_CORE
+                        // todo
+#else
+                        ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, ScanTimoutCallback, userToken, timeout, true);
+#endif
+                    }
 				}
 				catch (WebException webException)
 				{
@@ -1812,15 +1826,15 @@ namespace FluentHttp
 						rawEntity.Length = 0;
 #endif
 						have_trailing_digits = false;
-					}
-#if FLUENTHTTP_CORE_WINRT
-					else if (is_hex_value && IsHexDigit(c))
+                    }
+#if NETFX_CORE
+                    else if (is_hex_value && IsHexDigit(c))
 #else
 					else if (is_hex_value && Uri.IsHexDigit(c))
 #endif
-					{
-#if FLUENTHTTP_CORE_WINRT
-						number = number * 16 + FromHex(c);
+                    {
+#if NETFX_CORE
+                        number = number * 16 + FromHex(c);
 #else
 						number = number * 16 + Uri.FromHex(c);
 #endif
@@ -1869,8 +1883,8 @@ namespace FluentHttp
 #endif
 		}
 
-#if FLUENTHTTP_CORE_WINRT
-		private static bool IsHexDigit(char digit)
+#if NETFX_CORE
+        private static bool IsHexDigit(char digit)
 		{
 			return (('0' <= digit && digit <= '9') ||
 					('a' <= digit && digit <= 'f') ||
@@ -1986,7 +2000,7 @@ namespace FluentHttp
 				}
 				else if (name.Equals("content-length", StringComparison.OrdinalIgnoreCase))
 				{
-#if (WINDOWS_PHONE ||FLUENTHTTP_CORE_WINRT)
+#if (WINDOWS_PHONE || NETFX_CORE)
 					throw new Exception("Cannot set content-length.");
 #else
 					_httpWebRequest.ContentLength = Convert.ToInt64(value);
@@ -1994,7 +2008,7 @@ namespace FluentHttp
 				}
 				else if (name.Equals("user-agent", StringComparison.OrdinalIgnoreCase))
 				{
-#if FLUENTHTTP_CORE_WINRT
+#if NETFX_CORE
 					throw new Exception("Cannot set user-agent.");
 #else
 					_httpWebRequest.UserAgent = value;
@@ -2093,9 +2107,9 @@ namespace FluentHttp
 
 #endif
 
-		#endregion
+        #endregion
 
-		#region Authentication
+        #region Authentication
 
 #if FLUENTHTTP_HTTPBASIC_AUTHENTICATION
 
@@ -2110,6 +2124,6 @@ namespace FluentHttp
 		}
 
 #endif
-		#endregion
-	}
+        #endregion
+    }
 }
