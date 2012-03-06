@@ -22,7 +22,6 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using FluentHttp;
 
     public partial class FacebookClient
     {

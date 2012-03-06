@@ -31,7 +31,6 @@ namespace Facebook
     using System.Reflection;
 #endif
     using System.Text;
-    using FluentHttp;
 
     /// <summary>
     /// Provides access to the Facbook Platform.
@@ -528,9 +527,7 @@ namespace Facebook
                 case HttpMethod.Delete:
 #if !(SILVERLIGHT && !WINDOWS_PHONE)
                     request.Method = "DELETE";
-#if !(WINDOWS_PHONE || NETFX_CORE)
-                    request.ContentLength = 0;
-#endif
+                    request.TrySetContentLength(0);
                     break;
 #endif
                 case HttpMethod.Post:
@@ -555,9 +552,7 @@ namespace Facebook
             if (input != null)
                 request.TrySetContentLength(input.Length);
 
-#if (!(SILVERLIGHT || NETFX_CORE) || WINDOWS_PHONE)
-            request.UserAgent = "Facebook C# SDK";
-#endif
+            request.TrySetUserAgent("Facebook C# SDK");
 
             return new HttpHelper(request);
         }
