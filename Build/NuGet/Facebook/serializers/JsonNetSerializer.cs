@@ -26,7 +26,13 @@ namespace Facebook.Serializers
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
 
-    public class JsonNetSerializer : IJsonSerializer
+    /// <remarks>
+    /// Install-Package Newtonsoft.Json
+    /// It is recommended to set the the default json serializers during application startup.
+    /// var jsonNetSerializer = new JsonNetSerializer();
+    /// FacebookClient.SetDefaultJsonSerializers(jsonNetSerializer.SerializeObject, jsonNetSerializer.DeserializeObject);
+    /// </remarks>
+    public class JsonNetSerializer
     {
         private JsonSerializerSettings _serializerSettings;
 
