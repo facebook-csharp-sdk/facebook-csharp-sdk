@@ -544,6 +544,7 @@ namespace Facebook
 
 #if !(SILVERLIGHT || NETFX_CORE)
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.AllowWriteStreamBuffering = false;
 #endif
 #if NETFX_CORE
             request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
