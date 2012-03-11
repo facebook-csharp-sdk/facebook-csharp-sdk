@@ -5,7 +5,7 @@
                 <version><%= version_full %></version>
                 <title/>
                 <authors>Jim Zimmerman, Nathan Totten, Prabir Shrestha</authors>
-                <description>The Facebook C# SDK core.</description>
+                <description>The Facebook C# SDK helps .Net developers build web, desktop, phone and metro style applications that integrate with Facebook.</description>
                 <language>en-US</language>
                 <licenseUrl>https://raw.github.com/facebook-csharp-sdk/facebook-csharp-sdk/master/LICENSE.txt</licenseUrl>
                 <projectUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk</projectUrl>
