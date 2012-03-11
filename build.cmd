@@ -4,13 +4,10 @@ PUSHD "%~dp0"
 
 echo WARNING!!!
 echo.
-echo This build.cmd is only meant for making the samples easier to run.
+echo This build.cmd is only meant for building Facebook.dll without installing rake.
 echo build.cmd does not run any tests, so do not use the output of the compiled
 echo libraries in production using this method.
 echo.
-echo.
-echo For more information on how to build this Facebook C# SDK correctly, refer to
-echo http://facebooksdk.codeplex.com/wikipage?title=Building%20Facebook%20C%23%20SDK
 echo.
 
 pause
@@ -27,7 +24,6 @@ IF NOT EXIST "%MSBuild%" (
 "%MSBuild%" "%~dp0Source/Facebook-Net40.sln" /target:rebuild /property:TargetFrameworkVersion=v4.0;Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-Net35.sln" /target:rebuild /property:TargetFrameworkVersion=v3.5;Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-SL5.sln" /target:rebuild /property:Configuration=Release
-"%MSBuild%" "%~dp0Source/Facebook-SL4.sln" /target:rebuild /property:Configuration=Release
 "%MSBuild%" "%~dp0Source/Facebook-WP7.sln" /target:rebuild /property:Configuration=Release
 
 :END
