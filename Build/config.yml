@@ -30,7 +30,6 @@ path:
    x86: <%= "#{tools_path}xunit-1.8/xunit.console.clr4.x86.exe" %>
  sln:
   wp7	: <%= "#{path_src}Facebook-WP7.sln" %>
-  sl4	: <%= "#{path_src}Facebook-SL4.sln" %>
   sl5	: <%= "#{path_src}Facebook-SL5.sln" %>
   net40	: <%= "#{path_src}Facebook-Net40.sln" %>
   net45	: <%= "#{path_src}Facebook-Net45.sln" %>
