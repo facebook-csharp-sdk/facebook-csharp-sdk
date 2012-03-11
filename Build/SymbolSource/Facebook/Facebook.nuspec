@@ -14,6 +14,7 @@
         <tags>Facebook fb</tags>
     </metadata>
 	<files>
+		<file src="..\..\LICENSE.txt" target = "LICENSE.txt" />
 		<file src="..\..\Source\Facebook\**\*.cs" target = "src\Facebook" />
 		<file src="..\..\Source\Facebook\**\*.resx" target = "src\Facebook" />
 		<file src="..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
