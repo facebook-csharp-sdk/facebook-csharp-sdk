@@ -1,5 +1,5 @@
 # Facebook C# SDK
-The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, and Windows Phone applications that integrate with Facebook.
+The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windows Phone and Windows Metro Style applications that integrate with Facebook.
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
