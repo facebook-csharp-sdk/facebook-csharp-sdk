@@ -28,8 +28,8 @@
 	    <file src="..\..\Bin\Release\sl5\*.dll" target = "lib\sl5" />
 		<file src="..\..\Bin\Release\sl5\*.xml" target = "lib\sl5" />
 		<file src="..\..\Bin\Release\sl5\*.pdb" target = "lib\sl5" />
-		<file src="..\..\Bin\Release\sl3-wp\*.dll" target = "lib\sl3-wp" />
-		<file src="..\..\Bin\Release\sl3-wp\*.xml" target = "lib\sl3-wp" />
-		<file src="..\..\Bin\Release\sl3-wp\*.pdb" target = "lib\sl3-wp" />
+		<file src="..\..\Bin\Release\sl4-windowsphone71\*.dll" target = "lib\sl4-windowsphone71" />
+		<file src="..\..\Bin\Release\sl4-windowsphone71\*.xml" target = "lib\sl4-windowsphone71" />
+		<file src="..\..\Bin\Release\sl4-windowsphone71\*.pdb" target = "lib\sl4-windowsphone71" />
 	</files>
 </package>
