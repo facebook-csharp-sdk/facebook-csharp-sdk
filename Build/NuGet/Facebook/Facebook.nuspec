@@ -15,6 +15,7 @@
         </metadata>
         <files>
                 <file src="..\..\LICENSE.txt" target = "LICENSE.txt" />
+                <file src="..\..\README.md" target = "README.md" />
         	<file src="..\..\Build\NuGet\Facebook\serializers\*" target = "serializers" />
         	<file src="..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
         	<file src="..\..\Bin\Release\net40-client\*.xml" target = "lib\net40-client" />
