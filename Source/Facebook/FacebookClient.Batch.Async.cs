@@ -36,7 +36,7 @@ namespace Facebook
 #endif
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
         {
-            var parameters = PrepareBatchRequest(batchParameters);
+            var parameters = PrepareBatchRequest(batchParameters, null);
             PostAsync(null, parameters, userToken);
         }
 
@@ -49,7 +49,7 @@ namespace Facebook
             BatchAsync(batchParameters, null);
         }
 
-        internal object PrepareBatchRequest(FacebookBatchParameter[] batchParameters)
+        internal object PrepareBatchRequest(FacebookBatchParameter[] batchParameters, object parameters)
         {
             if (batchParameters == null)
                 throw new ArgumentNullException("batchParameters");
@@ -60,11 +60,11 @@ namespace Facebook
             IList<object> flatnedBatchParameters = new List<object>();
             actualBatchParameter["batch"] = flatnedBatchParameters;
 
+            IDictionary<string, FacebookMediaObject> mediaObjects;
+            IDictionary<string, FacebookMediaStream> mediaStreams;
+
             foreach (var batchParameter in batchParameters)
             {
-                IDictionary<string, FacebookMediaObject> mediaObjects;
-                IDictionary<string, FacebookMediaStream> mediaStreams;
-
                 var data = ToDictionary(batchParameter.Data, out mediaObjects, out mediaStreams);
 
                 if (mediaObjects.Count + mediaStreams.Count > 0)
@@ -93,14 +93,14 @@ namespace Facebook
 
                 IList<string> attachedFiles = new List<string>();
 
-                var parameters = ToDictionary(batchParameter.Parameters, out mediaObjects, out mediaStreams) ?? new Dictionary<string, object>();
+                var pars = ToDictionary(batchParameter.Parameters, out mediaObjects, out mediaStreams) ?? new Dictionary<string, object>();
                 bool containsEtag = false;
                 string etag = null;
-                if (parameters.ContainsKey(ETagKey))
+                if (pars.ContainsKey(ETagKey))
                 {
-                    etag = (string)parameters[ETagKey];
+                    etag = (string)pars[ETagKey];
                     containsEtag = true;
-                    parameters.Remove(ETagKey);
+                    pars.Remove(ETagKey);
                 }
 
                 bool hasAttachmentInBatchParameter = false;
@@ -135,12 +135,12 @@ namespace Facebook
                 {
                     if (!data.ContainsKey("relative_url"))
                     {
-                        path = ParseUrlQueryString(batchParameter.Path, parameters, false);
-                        SerializeParameters(parameters);
+                        path = ParseUrlQueryString(batchParameter.Path, pars, false);
+                        SerializeParameters(pars);
 
                         var relativeUrl = new StringBuilder();
                         relativeUrl.Append(path).Append("?");
-                        foreach (var kvp in parameters)
+                        foreach (var kvp in pars)
                             relativeUrl.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
                         if (relativeUrl.Length > 0)
                             relativeUrl.Length--;
@@ -149,8 +149,8 @@ namespace Facebook
                 }
                 else
                 {
-                    path = ParseUrlQueryString(batchParameter.Path, parameters, false);
-                    SerializeParameters(parameters);
+                    path = ParseUrlQueryString(batchParameter.Path, pars, false);
+                    SerializeParameters(pars);
 
                     if (!data.ContainsKey("relative_url"))
                     {
@@ -161,7 +161,7 @@ namespace Facebook
                     if (!data.ContainsKey("body"))
                     {
                         var sb = new StringBuilder();
-                        foreach (var kvp in parameters)
+                        foreach (var kvp in pars)
                             sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
 
                         if (sb.Length > 0)
@@ -176,6 +176,25 @@ namespace Facebook
                     data[ETagKey] = etag;
 
                 flatnedBatchParameters.Add(data);
+            }
+
+            var parametersAsDictionary = ToDictionary(parameters, out mediaObjects, out mediaStreams);
+            if (parametersAsDictionary != null)
+            {
+                foreach (var parameter in parametersAsDictionary)
+                {
+                    actualBatchParameter[parameter.Key] = parameter.Value;
+                }
+            }
+
+            foreach (var mediaObject in mediaObjects)
+            {
+                actualBatchParameter[mediaObject.Key] = mediaObject.Value;
+            }
+
+            foreach (var mediaStream in mediaStreams)
+            {
+                actualBatchParameter[mediaStream.Key] = mediaStream.Value;
             }
 
             return actualBatchParameter;

@@ -23,8 +23,13 @@ namespace Facebook
     {
         public virtual object Batch(params FacebookBatchParameter[] batchParameters)
         {
-            var parameters = PrepareBatchRequest(batchParameters);
-            return Post(parameters);
+            return Batch(batchParameters, null);
+        }
+
+        public virtual object Batch(FacebookBatchParameter[] batchParameters, object parameters)
+        {
+            var actualParameter = PrepareBatchRequest(batchParameters, parameters);
+            return Post(actualParameter);
         }
     }
 }

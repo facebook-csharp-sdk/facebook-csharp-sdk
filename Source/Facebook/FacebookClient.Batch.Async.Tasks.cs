@@ -35,7 +35,7 @@ namespace Facebook
 #endif
 )
         {
-            var parameters = PrepareBatchRequest(batchParameters);
+            var parameters = PrepareBatchRequest(batchParameters, null);
             return PostTaskAsync(null, parameters, userToken, cancellationToken
 #if ASYNC_AWAIT
 , null
