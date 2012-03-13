@@ -4,12 +4,13 @@
         <id>Facebook</id>
         <version><%= version_full %></version>
         <title/>
-        <authors>Jim Zimmerman, Nathan Totten, Prabir Shrestha</authors>
+        <authors>Outercurve Foundation</authors>
+    	<owners>Nathan Totten, Prabir Shrestha, Jim Zimmerman</owners>
         <description>The Facebook C# SDK helps .Net developers build web, desktop, phone and metro style applications that integrate with Facebook.</description>
         <language>en-US</language>
         <licenseUrl>https://raw.github.com/facebook-csharp-sdk/facebook-csharp-sdk/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk</projectUrl>
-        <iconUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/raw/06fda01cdc924c02b1cd244fee16dfa572f087c6/Source/logo500x500.png</iconUrl>
+        <iconUrl>http://csharpsdk.org/assets/img/logo75x75.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>Facebook fb</tags>
     </metadata>

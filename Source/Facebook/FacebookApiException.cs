@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FacebookApiException.cs" company="Thuzi LLC (www.thuzi.com)">
-//    Copyright 2011
+// <copyright file="FacebookApiException.cs" company="The Outercurve Foundation">
+//    Copyright (c) 2011, The Outercurve Foundation. 
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
