@@ -34,10 +34,19 @@ namespace Facebook
         [Obsolete("Use BatchTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
+        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters)
+        {
+            var actualParameter = PrepareBatchRequest(batchParameters, parameters);
+            PostAsync(null, actualParameter, userToken);
+        }
+
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete("Use BatchTaskAsync instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+#endif
         public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
         {
-            var parameters = PrepareBatchRequest(batchParameters, null);
-            PostAsync(null, parameters, userToken);
+            BatchAsync(batchParameters, userToken, null);
         }
 
 #if FLUENTHTTP_CORE_TPL
