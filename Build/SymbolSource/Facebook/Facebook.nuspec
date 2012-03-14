@@ -19,6 +19,9 @@
 		<file src="..\..\README.md" target = "README.md" />
 		<file src="..\..\Source\Facebook\**\*.cs" target = "src\Facebook" />
 		<file src="..\..\Source\Facebook\**\*.resx" target = "src\Facebook" />
+		<file src="..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
+        <file src="..\..\Bin\Release\net45\*.xml" target = "lib\net45" />
+        <file src="..\..\Bin\Release\net45\*.pdb" target = "lib\net45" />
 		<file src="..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
 		<file src="..\..\Bin\Release\net40-client\*.xml" target = "lib\net40-client" />
 		<file src="..\..\Bin\Release\net40-client\*.pdb" target = "lib\net40-client" />
