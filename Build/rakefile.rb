@@ -134,7 +134,7 @@ namespace :build do
 		msb.properties
 	end
 	
-	multitask :all => ['build:net35', 'build:net40', 'build:net45', 'build:sl5', 'build:wp7']
+	multitask :all => ['build:net35', 'build:net40', 'build:net45', 'build:sl5', 'build:wp7', 'build:winrt']
 	
 end
 
@@ -210,7 +210,7 @@ namespace :clean do
 		msb.targets :Clean
 	end
 	
-	multitask :libs => ['clean:net35', 'clean:net40', 'clean:net45', 'clean:sl5', 'clean:wp7']
+	multitask :libs => ['clean:net35', 'clean:net40', 'clean:net45', 'clean:sl5', 'clean:wp7', 'clean:winrt']
 	
 	multitask :all => ['clean:libs'] do
 		FileUtils.rm_rf config["path"]["output"]

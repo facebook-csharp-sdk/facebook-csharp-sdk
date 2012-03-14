@@ -22,6 +22,9 @@
 		<file src="..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
         <file src="..\..\Bin\Release\net45\*.xml" target = "lib\net45" />
         <file src="..\..\Bin\Release\net45\*.pdb" target = "lib\net45" />
+        <file src="..\..\Bin\Release\WinRT\*.dll" target = "lib\WinRT" />
+        <file src="..\..\Bin\Release\WinRT\*.xml" target = "lib\WinRT" />
+        <file src="..\..\Bin\Release\WinRT\*.pdb" target = "lib\WinRT" />
 		<file src="..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
 		<file src="..\..\Bin\Release\net40-client\*.xml" target = "lib\net40-client" />
 		<file src="..\..\Bin\Release\net40-client\*.pdb" target = "lib\net40-client" />
