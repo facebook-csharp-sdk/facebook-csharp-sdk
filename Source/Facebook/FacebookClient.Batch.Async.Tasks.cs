@@ -35,19 +35,37 @@ namespace Facebook
 #endif
 )
         {
-            var parameters = PrepareBatchRequest(batchParameters);
-            return PostTaskAsync(null, parameters, userToken, cancellationToken
+            return BatchTaskAsync(batchParameters, userToken, null, cancellationToken
 #if ASYNC_AWAIT
-, null
+, uploadProgress
 #endif
                 );
+        }
+
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters, CancellationToken cancellationToken
+#if ASYNC_AWAIT
+, System.IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress
+#endif
+)
+        {
+            var actualParameter = PrepareBatchRequest(batchParameters, parameters);
+            return PostTaskAsync(null, actualParameter, userToken, cancellationToken
+#if ASYNC_AWAIT
+, uploadProgress
+#endif
+            );
         }
 
 #if ASYNC_AWAIT
 
         public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, CancellationToken cancellationToken)
         {
-            return BatchTaskAsync(batchParameters, userToken, cancellationToken, null);
+            return BatchTaskAsync(batchParameters, userToken, null, cancellationToken);
+        }
+
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters, CancellationToken cancellationToken)
+        {
+            return BatchTaskAsync(batchParameters, userToken, parameters, cancellationToken, null);
         }
 
 #endif
