@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FacebookClient.Batch.Async.Tasks.cs" company="Thuzi LLC (www.thuzi.com)">
-//    Copyright 2011
+// <copyright file="FacebookClient.Batch.Async.Tasks.cs" company="The Outercurve Foundation">
+//    Copyright (c) 2011, The Outercurve Foundation. 
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,19 +35,37 @@ namespace Facebook
 #endif
 )
         {
-            var parameters = PrepareBatchRequest(batchParameters);
-            return PostTaskAsync(null, parameters, userToken, cancellationToken
+            return BatchTaskAsync(batchParameters, userToken, null, cancellationToken
 #if ASYNC_AWAIT
-, null
+, uploadProgress
 #endif
                 );
+        }
+
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters, CancellationToken cancellationToken
+#if ASYNC_AWAIT
+, System.IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress
+#endif
+)
+        {
+            var actualParameter = PrepareBatchRequest(batchParameters, parameters);
+            return PostTaskAsync(null, actualParameter, userToken, cancellationToken
+#if ASYNC_AWAIT
+, uploadProgress
+#endif
+            );
         }
 
 #if ASYNC_AWAIT
 
         public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, CancellationToken cancellationToken)
         {
-            return BatchTaskAsync(batchParameters, userToken, cancellationToken, null);
+            return BatchTaskAsync(batchParameters, userToken, null, cancellationToken);
+        }
+
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters, CancellationToken cancellationToken)
+        {
+            return BatchTaskAsync(batchParameters, userToken, parameters, cancellationToken, null);
         }
 
 #endif

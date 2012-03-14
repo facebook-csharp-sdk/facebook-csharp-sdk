@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FacebookClient.Batch.Sync.cs" company="Thuzi LLC (www.thuzi.com)">
-//    Copyright 2011
+// <copyright file="FacebookClient.Batch.Sync.cs" company="The Outercurve Foundation">
+//    Copyright (c) 2011, The Outercurve Foundation. 
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,8 +23,13 @@ namespace Facebook
     {
         public virtual object Batch(params FacebookBatchParameter[] batchParameters)
         {
-            var parameters = PrepareBatchRequest(batchParameters);
-            return Post(parameters);
+            return Batch(batchParameters, null);
+        }
+
+        public virtual object Batch(FacebookBatchParameter[] batchParameters, object parameters)
+        {
+            var actualParameter = PrepareBatchRequest(batchParameters, parameters);
+            return Post(actualParameter);
         }
     }
 }

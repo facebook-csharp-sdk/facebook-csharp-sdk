@@ -4,16 +4,19 @@
         <id>Facebook</id>
         <version><%= version_full %></version>
         <title/>
-        <authors>Jim Zimmerman, Nathan Totten, Prabir Shrestha</authors>
-        <description>The Facebook C# SDK core.</description>
+        <authors>Outercurve Foundation</authors>
+    	<owners>Nathan Totten, Prabir Shrestha, Jim Zimmerman</owners>
+        <description>The Facebook C# SDK helps .Net developers build web, desktop, phone and metro style applications that integrate with Facebook.</description>
         <language>en-US</language>
         <licenseUrl>https://raw.github.com/facebook-csharp-sdk/facebook-csharp-sdk/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk</projectUrl>
-        <iconUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk/raw/06fda01cdc924c02b1cd244fee16dfa572f087c6/Source/logo500x500.png</iconUrl>
+        <iconUrl>http://csharpsdk.org/assets/img/logo75x75.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>Facebook fb</tags>
     </metadata>
 	<files>
+		<file src="..\..\LICENSE.txt" target = "LICENSE.txt" />
+		<file src="..\..\README.md" target = "README.md" />
 		<file src="..\..\Source\Facebook\**\*.cs" target = "src\Facebook" />
 		<file src="..\..\Source\Facebook\**\*.resx" target = "src\Facebook" />
 		<file src="..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
@@ -22,14 +25,11 @@
 		<file src="..\..\Bin\Release\net35-client\*.dll" target = "lib\net35-client" />
 		<file src="..\..\Bin\Release\net35-client\*.xml" target = "lib\net35-client" />
 		<file src="..\..\Bin\Release\net35-client\*.pdb" target = "lib\net35-client" />
-		<file src="..\..\Bin\Release\sl4\*.dll" target = "lib\sl4" />
-		<file src="..\..\Bin\Release\sl4\*.xml" target = "lib\sl4" />
-		<file src="..\..\Bin\Release\sl4\*.pdb" target = "lib\sl4" />
 	    <file src="..\..\Bin\Release\sl5\*.dll" target = "lib\sl5" />
 		<file src="..\..\Bin\Release\sl5\*.xml" target = "lib\sl5" />
 		<file src="..\..\Bin\Release\sl5\*.pdb" target = "lib\sl5" />
-		<file src="..\..\Bin\Release\sl3-wp\*.dll" target = "lib\sl3-wp" />
-		<file src="..\..\Bin\Release\sl3-wp\*.xml" target = "lib\sl3-wp" />
-		<file src="..\..\Bin\Release\sl3-wp\*.pdb" target = "lib\sl3-wp" />
+		<file src="..\..\Bin\Release\sl4-windowsphone71\*.dll" target = "lib\sl4-windowsphone71" />
+		<file src="..\..\Bin\Release\sl4-windowsphone71\*.xml" target = "lib\sl4-windowsphone71" />
+		<file src="..\..\Bin\Release\sl4-windowsphone71\*.pdb" target = "lib\sl4-windowsphone71" />
 	</files>
 </package>

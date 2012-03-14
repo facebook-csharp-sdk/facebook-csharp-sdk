@@ -107,17 +107,6 @@ namespace :build do
 	   msb.targets :Build
 	   #msb.use :net35
 	end
-	
-	desc "Build Silverlight 4 binaries"
-	msbuild :sl4 => ['clean:sl4','assemblyinfo:facebook'] do |msb|
-	   # temporary hack for bug caused by code contracts
-	   FileUtils.rm_rf "#{config["path"]["working"]}obj/Facebook/sl4/"
-	   FileUtils.rm_rf "#{config["path"]["working"]}obj/Facebook.Tests/sl4/"
-	   
-	   msb.properties :configuration => config['version']['configuration']
-	   msb.solution = config['path']['sln']['sl4']
-	   msb.targets :Build
-	end	
     
     desc "Build Silverlight 5 binaries"
 	msbuild :sl5 => ['clean:sl5','assemblyinfo:facebook'] do |msb|
@@ -145,8 +134,7 @@ namespace :build do
 		msb.properties
 	end
 	
-	multitask :all => ['build:net40','build:net35','build:sl4', 'build:sl5', 'build:wp7']
-	#task :all => ['build:parallel','build:sl4']
+	multitask :all => ['build:net40','build:net35', 'build:sl5', 'build:wp7']
 	
 end
 
@@ -208,12 +196,6 @@ namespace :clean do
 	   msb.targets :Clean
 	   #msb.use :net35
 	end
-	
-	msbuild :sl4 do |msb|
-	   msb.properties :configuration => config['version']['configuration']
-	   msb.solution = config['path']['sln']['sl4']
-	   msb.targets :Clean    
-	end
     
     msbuild :sl5 do |msb|
 	   msb.properties :configuration => config['version']['configuration']
@@ -228,7 +210,7 @@ namespace :clean do
 		msb.targets :Clean
 	end
 	
-	multitask :libs => ['clean:net35','clean:net40','clean:sl4','clean:sl5', 'clean:wp7']
+	multitask :libs => ['clean:net35', 'clean:net40', 'clean:sl5', 'clean:wp7']
 	
 	multitask :all => ['clean:libs'] do
 		FileUtils.rm_rf config["path"]["output"]
@@ -257,22 +239,23 @@ namespace :tests do
 	
 	end
 
-	namespace :sl4 do
+	
+	namespace :sl5 do
 
-		exec :facebook => ['build:sl4'] do |cmd|
+		exec :facebook => ['build:sl5'] do |cmd|
 			cmd.command = config["path"]["stat_light"]
-			cmd.parameters = "-x\"#{config["path"]["output"]}Tests/sl4/Release/Facebook.Tests-SL4.xap\""
+			cmd.parameters = "-x\"#{config["path"]["output"]}Tests/sl5/Release/Facebook.Tests-SL5.xap\""
 		end
 
-		multitask :all => ['tests:sl4:facebook']
+		multitask :all => ['tests:sl5:facebook']
 
 	end
 	
 	multitask :net40 => ['tests:net40:all']
 
-	multitask :sl4 => ['tests:sl4:all']
+	#multitask :sl5 => ['tests:sl5:all']
 	
-	multitask :all => ['tests:net40', 'tests:sl4']
+	multitask :all => ['tests:net40']
 end
 
 desc "Run tests"
@@ -292,8 +275,8 @@ namespace :assemblyinfo do
 		asm.title = "Facebook"
 		asm.description = "Facebook C\# SDK"
 		asm.product_name = "Facebook C\# SDK"
-		asm.company_name = "Thuzi"
-		asm.copyright = "Copyright 2011"
+		asm.company_name = "The Outercurve Foundation"
+		asm.copyright = "Copyright (c) 2011, The Outercurve Foundation."
 		asm.com_visible = false
 	end
 	
