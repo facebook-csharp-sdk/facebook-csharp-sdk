@@ -24,6 +24,9 @@ namespace Facebook
 #if FLUENTHTTP_CORE_TPL
     using System.ComponentModel;
 #endif
+#if NETFX_CORE
+    using System.Linq;
+#endif
     using System.IO;
     using System.Net;
 
@@ -123,7 +126,8 @@ namespace Facebook
                             {
 #if NETFX_CORE
                                 bool compressed = false;
-                                var contentEncoding = httpHelper.HttpWebResponse.Headers[HttpRequestHeader.ContentEncoding];
+                                
+                                var contentEncoding = httpHelper.HttpWebResponse.Headers.AllKeys.Contains("Content-Encoding") ? httpHelper.HttpWebResponse.Headers["Content-Encoding"] : null;
                                 if (contentEncoding != null)
                                 {
                                     if (contentEncoding.IndexOf("gzip") != -1)
