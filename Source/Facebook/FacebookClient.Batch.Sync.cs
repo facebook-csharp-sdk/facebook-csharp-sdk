@@ -21,11 +21,26 @@ namespace Facebook
 {
     public partial class FacebookClient
     {
+        /// <summary>
+        /// Makes a batch request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// List of batch parameters.
+        /// </param>
+        /// <returns>
+        /// The json result.
+        /// </returns>
         public virtual object Batch(params FacebookBatchParameter[] batchParameters)
         {
             return Batch(batchParameters, null);
         }
 
+        /// <summary>
+        /// Makes a batch request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">List of batch parameters.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result.</returns>
         public virtual object Batch(FacebookBatchParameter[] batchParameters, object parameters)
         {
             var actualParameter = PrepareBatchRequest(batchParameters, parameters);

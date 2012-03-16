@@ -64,6 +64,9 @@ namespace Facebook
             return _value;
         }
 
+        /// <summary>
+        /// Releases all resources used by the <see cref="T:System.IO.Stream"/>.
+        /// </summary>
         public void Dispose()
         {
             var stream = GetValue();

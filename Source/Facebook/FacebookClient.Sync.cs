@@ -31,9 +31,9 @@ namespace Facebook
         /// </summary>
         /// <param name="httpMethod">Http method. (GET/POST/DELETE)</param>
         /// <param name="path">The resource path or the resource url.</param>
-        /// <param name="parameters">The parameters</param>
+        /// <param name="parameters">The parameters.</param>
         /// <param name="resultType">The type of deserialize object into.</param>
-        /// <returns>The json result with headers.</returns>
+        /// <returns>The json result.</returns>
         protected virtual object Api(HttpMethod httpMethod, string path, object parameters, Type resultType)
         {
             Stream input;
@@ -118,36 +118,74 @@ namespace Facebook
             return result;
         }
 
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <returns>The json result.</returns>
         public virtual object Get(string path)
         {
             return Get(path, null);
         }
 
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The json result.</returns>
         public virtual object Get(object parameters)
         {
             return Get(null, parameters);
         }
 
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The json result.</returns>
         public virtual object Get(string path, object parameters)
         {
             return Api(HttpMethod.Get, path, parameters, null);
         }
 
+        /// <summary>
+        /// Makes a POST request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The json result.</returns>
         public virtual object Post(object parameters)
         {
             return Post(null, parameters);
         }
 
+        /// <summary>
+        /// Makes a POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The json result.</returns>
         public virtual object Post(string path, object parameters)
         {
             return Api(HttpMethod.Post, path, parameters, null);
         }
 
+        /// <summary>
+        /// Makes a DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <returns>The json result.</returns>
         public virtual object Delete(string path)
         {
             return Delete(path, null);
         }
 
+        /// <summary>
+        /// Makes a DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The json result.</returns>
         public virtual object Delete(string path, object parameters)
         {
             return Api(HttpMethod.Delete, path, parameters, null);

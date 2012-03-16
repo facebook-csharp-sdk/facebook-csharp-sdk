@@ -56,7 +56,6 @@ namespace Facebook
         public FacebookApiLimitException(string message, string errorType)
             : base(message, errorType)
         {
-
         }
 
         /// <summary>

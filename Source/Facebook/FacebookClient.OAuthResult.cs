@@ -123,6 +123,15 @@ namespace Facebook
             return new Uri(sb.ToString());
         }
 
+        /// <summary>
+        /// Gets the Facebook OAuth logout url.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The logout url.
+        /// </returns>
         public virtual Uri GetLogoutUrl(object parameters)
         {
             if (parameters == null)

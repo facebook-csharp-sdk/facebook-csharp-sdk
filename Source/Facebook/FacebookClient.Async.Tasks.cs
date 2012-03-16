@@ -180,58 +180,130 @@ namespace Facebook
             }
         }
 
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> GetTaskAsync(string path)
         {
             return GetTaskAsync(path, null, CancellationToken.None);
         }
 
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> GetTaskAsync(object parameters)
         {
             return GetTaskAsync(null, parameters, CancellationToken.None);
         }
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result task.</returns>
 
         public virtual Task<object> GetTaskAsync(string path, object parameters)
         {
             return GetTaskAsync(path, parameters, CancellationToken.None);
         }
 
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> GetTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
             return ApiTaskAsync(HttpMethod.Get, path, parameters, null, null, cancellationToken);
         }
 
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> PostTaskAsync(object parameters)
         {
             return PostTaskAsync(null, parameters, CancellationToken.None);
         }
 
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> PostTaskAsync(string path, object parameters)
         {
             return PostTaskAsync(path, parameters, CancellationToken.None);
         }
 
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> PostTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
             return ApiTaskAsync(HttpMethod.Post, path, parameters, null, null, cancellationToken);
         }
 
-        public virtual Task<object> PostTaskAsync(string path, object parameters, object userToken, CancellationToken cancellationToken)
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="userState">The user state.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The json result task.</returns>
+        public virtual Task<object> PostTaskAsync(string path, object parameters, object userState, CancellationToken cancellationToken)
         {
-            return ApiTaskAsync(HttpMethod.Post, path, parameters, null, userToken, cancellationToken);
+            return ApiTaskAsync(HttpMethod.Post, path, parameters, null, userState, cancellationToken);
         }
 
 #if ASYNC_AWAIT
-        public virtual Task<object> PostTaskAsync(string path, object parameters, object userToken, CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="userState">The user state.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+#if ASYNC_AWAIT
+        /// <param name="uploadProgress">The upload progress</param>
+#endif
+        /// <returns>The json result task.</returns>
+        public virtual Task<object> PostTaskAsync(string path, object parameters, object userState, CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
         {
-            return ApiTaskAsync(HttpMethod.Post, path, parameters, null, userToken, cancellationToken, uploadProgress);
+            return ApiTaskAsync(HttpMethod.Post, path, parameters, null, userState, cancellationToken, uploadProgress);
         }
 #endif
 
+        /// <summary>
+        /// Makes an asynchronous DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> DeleteTaskAsync(string path)
         {
             return DeleteTaskAsync(path, null, CancellationToken.None);
         }
 
+        /// <summary>
+        /// Makes an asynchronous DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The json result task.</returns>
         public virtual Task<object> DeleteTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
             return ApiTaskAsync(HttpMethod.Delete, path, parameters, null, null, cancellationToken);

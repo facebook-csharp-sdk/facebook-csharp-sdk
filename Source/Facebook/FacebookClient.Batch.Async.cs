@@ -30,25 +30,40 @@ namespace Facebook
         private const string AtLeastOneBatchParameterRequried = "At least one batch parameter is required";
         private const string OnlyOneAttachmentAllowedPerBatchRequest = "Only one attachement (FacebookMediaObject/FacebookMediaStream) allowed per FacebookBatchParamter.";
 
+        /// <summary>
+        /// Makes an asynchronous request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">The list of batch parameters.</param>
+        /// <param name="userState">The user state.</param>
+        /// <param name="parameters">The parameters.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use BatchTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
-        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters)
+        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userState, object parameters)
         {
             var actualParameter = PrepareBatchRequest(batchParameters, parameters);
-            PostAsync(null, actualParameter, userToken);
+            PostAsync(null, actualParameter, userState);
         }
 
+        /// <summary>
+        /// Makes an asynchronous request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">The list of batch parameters.</param>
+        /// <param name="userState">The user state.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use BatchTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #endif
-        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userToken)
+        public virtual void BatchAsync(FacebookBatchParameter[] batchParameters, object userState)
         {
-            BatchAsync(batchParameters, userToken, null);
+            BatchAsync(batchParameters, userState, null);
         }
 
+        /// <summary>
+        /// Makes an asynchronous request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">The list of batch parameters.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use BatchTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]

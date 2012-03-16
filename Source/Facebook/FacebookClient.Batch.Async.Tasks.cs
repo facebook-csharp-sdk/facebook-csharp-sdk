@@ -24,32 +24,74 @@ namespace Facebook
 
     public partial class FacebookClient
     {
+        /// <summary>
+        /// Makes an asynchronous batch request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// List of batch parameters.
+        /// </param>
+        /// <returns>
+        /// The json result task.
+        /// </returns>
         public virtual Task<object> BatchTaskAsync(params FacebookBatchParameter[] batchParameters)
         {
             return BatchTaskAsync(batchParameters, null, CancellationToken.None);
         }
 
-        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, CancellationToken cancellationToken
+        /// <summary>
+        /// Makes an asynchronous batch request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// List of batch parameters.
+        /// </param>
+        /// <param name="userState">
+        /// The user state.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>
+        /// The json result task.
+        /// </returns>
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userState, CancellationToken cancellationToken
 #if ASYNC_AWAIT
 , System.IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress
 #endif
 )
         {
-            return BatchTaskAsync(batchParameters, userToken, null, cancellationToken
+            return BatchTaskAsync(batchParameters, userState, null, cancellationToken
 #if ASYNC_AWAIT
 , uploadProgress
 #endif
                 );
         }
 
-        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters, CancellationToken cancellationToken
+        /// <summary>
+        /// Makes an asynchronous batch request to the Facebook server.
+        /// </summary>
+        /// <param name="batchParameters">
+        /// List of batch parameters.
+        /// </param>
+        /// <param name="userState">
+        /// The user state.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>
+        /// The json result task.
+        /// </returns>
+        public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userState, object parameters, CancellationToken cancellationToken
 #if ASYNC_AWAIT
 , System.IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress
 #endif
 )
         {
             var actualParameter = PrepareBatchRequest(batchParameters, parameters);
-            return PostTaskAsync(null, actualParameter, userToken, cancellationToken
+            return PostTaskAsync(null, actualParameter, userState, cancellationToken
 #if ASYNC_AWAIT
 , uploadProgress
 #endif

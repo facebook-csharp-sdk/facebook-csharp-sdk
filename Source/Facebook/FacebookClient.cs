@@ -199,6 +199,9 @@ namespace Facebook
             set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookClient"/> class.
+        /// </summary>
         static FacebookClient()
         {
             SetDefaultJsonSerializers(null, null);

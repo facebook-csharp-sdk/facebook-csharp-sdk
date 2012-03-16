@@ -329,6 +329,10 @@ namespace Facebook
 
         #region Events
 
+        /// <summary>
+        /// Raise OnGetCompleted event handler.
+        /// </summary>
+        /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
 #endif
@@ -338,6 +342,10 @@ namespace Facebook
                 GetCompleted(this, args);
         }
 
+        /// <summary>
+        /// Raise OnPostCompleted event handler.
+        /// </summary>
+        /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
 #endif
@@ -347,6 +355,10 @@ namespace Facebook
                 PostCompleted(this, args);
         }
 
+        /// <summary>
+        /// Raise OnDeletedCompleted event handler.
+        /// </summary>
+        /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
 #endif
@@ -356,6 +368,10 @@ namespace Facebook
                 DeleteCompleted(this, args);
         }
 
+        /// <summary>
+        /// Raise OnUploadProgressCompleted event handler.
+        /// </summary>
+        /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
 #endif
@@ -388,6 +404,11 @@ namespace Facebook
 
         #endregion
 
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -397,6 +418,11 @@ namespace Facebook
             GetAsync(path, null, null);
         }
 
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -405,7 +431,12 @@ namespace Facebook
         {
             GetAsync(null, parameters, null);
         }
-
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -415,6 +446,13 @@ namespace Facebook
             GetAsync(path, parameters, null);
         }
 
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="userState">The user state.</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use GetTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -424,6 +462,11 @@ namespace Facebook
             ApiAsync(HttpMethod.Get, path, parameters, null, userState);
         }
 
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use PostTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -433,6 +476,12 @@ namespace Facebook
             PostAsync(null, parameters, null);
         }
 
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use PostTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -442,6 +491,13 @@ namespace Facebook
             PostAsync(path, parameters, null);
         }
 
+        /// <summary>
+        /// Makes an asynchronous POST request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="userState">The user state.</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use PostTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -451,6 +507,11 @@ namespace Facebook
             ApiAsync(HttpMethod.Post, path, parameters, null, userState);
         }
 
+        /// <summary>
+        /// Makes an asynchronous DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use DeleteTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -460,6 +521,13 @@ namespace Facebook
             DeleteAsync(path, null, null);
         }
 
+        /// <summary>
+        /// Makes an asynchronous DELETE request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="userState">The user state.</param>
+        /// <returns>The json result.</returns>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use DeleteTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
