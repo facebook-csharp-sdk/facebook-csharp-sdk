@@ -24,6 +24,7 @@ namespace Facebook
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Diagnostics.CodeAnalysis;
 
     public partial class FacebookClient
     {
@@ -36,6 +37,8 @@ namespace Facebook
         /// <param name="signedRequestValue">The signed_request value.</param>
         /// <param name="signedRequest">The parsed signed request.</param>
         /// <returns>True if signed request parsed successfully otherwise false.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]           
         public virtual bool TryParseSignedRequest(string appSecret, string signedRequestValue, out object signedRequest)
         {
             signedRequest = null;
@@ -56,6 +59,7 @@ namespace Facebook
         /// <param name="signedRequestValue">The signed_request value.</param>
         /// <param name="signedRequest">The parsed signed request.</param>
         /// <returns>True if signed request parsed successfully otherwise false.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
         public virtual bool TryParseSignedRequest(string signedRequestValue, out object signedRequest)
         {
             return TryParseSignedRequest(AppSecret, signedRequestValue, out signedRequest);
@@ -69,6 +73,7 @@ namespace Facebook
         /// <returns>The parse signed_request value.</returns>
         /// <exception cref="ArgumentNullException">Throws if appSecret or signedRequestValue is null or empty.</exception>
         /// <exception cref="InvalidOperationException">If the signedRequestValue is an invalid signed_request.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
         public virtual object ParseSignedRequest(string appSecret, string signedRequestValue)
         {
             if (string.IsNullOrEmpty(appSecret))

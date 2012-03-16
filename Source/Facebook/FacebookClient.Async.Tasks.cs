@@ -20,6 +20,7 @@
 namespace Facebook
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -38,6 +39,7 @@ namespace Facebook
         /// <param name="uploadProgress">The upload progress</param>
 #endif
         /// <returns>The task of json result with headers.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         protected virtual Task<object> ApiTaskAsync(HttpMethod httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken
 #if ASYNC_AWAIT
 , IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress

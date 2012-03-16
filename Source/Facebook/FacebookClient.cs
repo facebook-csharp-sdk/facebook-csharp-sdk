@@ -23,6 +23,7 @@ namespace Facebook
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Globalization;
     using System.Linq;
@@ -235,6 +236,7 @@ namespace Facebook
         /// </summary>
         /// <param name="jsonSerializer">Json serializer</param>
         /// <param name="jsonDeserializer">Jsonn deserializer</param>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
         public static void SetDefaultJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
         {
             _defaultJsonSerializer = jsonSerializer ?? SimpleJson.SerializeObject;
@@ -251,6 +253,10 @@ namespace Facebook
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmantainableCode")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters")]
         private HttpHelper PrepareRequest(HttpMethod httpMethod, string path, object parameters, Type resultType, out Stream input, out bool containsEtag, out IList<int> batchEtags)
         {
             input = null;
@@ -374,7 +380,7 @@ namespace Facebook
                         throw new ArgumentNullException("path");
                     }
 
-                    if (httpMethod == HttpMethod.Post && path.EndsWith("/videos"))
+                    if (httpMethod == HttpMethod.Post && path.EndsWith("/videos", StringComparison.OrdinalIgnoreCase))
                         uriBuilder.Host = UseFacebookBeta ? "graph-video.beta.facebook.com" : "graph-video.facebook.com";
                     else
                         uriBuilder.Host = UseFacebookBeta ? "graph.beta.facebook.com" : "graph.facebook.com";
@@ -404,7 +410,7 @@ namespace Facebook
             if (httpMethod != HttpMethod.Post)
             {
                 if (containsEtag && httpMethod != HttpMethod.Get)
-                    throw new ArgumentException(string.Format("{0} is only supported for http get method.", ETagKey), "httpMethod");
+                    throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "{0} is only supported for http get method.", ETagKey), "httpMethod");
 
                 // for GET,DELETE
                 if (mediaObjects.Count > 0 && mediaStreams.Count > 0)
@@ -597,7 +603,7 @@ namespace Facebook
                             }
 
                             if (body.ContainsKey("expires"))
-                                body["expires"] = Convert.ToInt64(body["expires"]);
+                                body["expires"] = Convert.ToInt64(body["expires"], CultureInfo.InvariantCulture);
 
                             result = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
 
@@ -663,6 +669,7 @@ namespace Facebook
                 parameters[key] = SerializeJson(parameters[key]);
         }
 
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         internal static Exception GetException(HttpHelper httpHelper, object result)
         {
             if (result == null)
@@ -819,6 +826,8 @@ namespace Facebook
         /// <remarks>
         /// The result is not url encoded. The caller needs to take care of url encoding the result.
         /// </remarks>
+        [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         private static string BuildHttpQuery(object parameter, Func<string, string> encode)
         {
             if (parameter == null)

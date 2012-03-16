@@ -21,6 +21,7 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Net;
 
@@ -123,6 +124,7 @@ namespace Facebook
         /// </summary>
         /// <param name="path">The resource path or the resource url.</param>
         /// <returns>The json result.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
         public virtual object Get(string path)
         {
             return Get(path, null);
@@ -133,6 +135,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The json result.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]        
         public virtual object Get(object parameters)
         {
             return Get(null, parameters);
@@ -144,6 +147,7 @@ namespace Facebook
         /// <param name="path">The resource path or the resource url.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The json result.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
         public virtual object Get(string path, object parameters)
         {
             return Api(HttpMethod.Get, path, parameters, null);

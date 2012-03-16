@@ -22,6 +22,8 @@ namespace Facebook
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
 
@@ -73,6 +75,8 @@ namespace Facebook
             BatchAsync(batchParameters, null);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         internal object PrepareBatchRequest(FacebookBatchParameter[] batchParameters, object parameters)
         {
             if (batchParameters == null)
@@ -134,7 +138,7 @@ namespace Facebook
                     if (hasAttachmentInBatchParameter)
                         throw new ArgumentException(OnlyOneAttachmentAllowedPerBatchRequest, "batchParameters");
                     if (actualBatchParameter.ContainsKey(attachment.Key))
-                        throw new ArgumentException(string.Format("Attachment (FacebookMediaObject/FacebookMediaStream) with key '{0}' already exists", attachment.Key));
+                        throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Attachment (FacebookMediaObject/FacebookMediaStream) with key '{0}' already exists", attachment.Key));
                     attachedFiles.Add(HttpHelper.UrlEncode(attachment.Key));
                     actualBatchParameter.Add(attachment.Key, attachment.Value);
                     hasAttachmentInBatchParameter = true;
@@ -145,7 +149,7 @@ namespace Facebook
                     if (hasAttachmentInBatchParameter)
                         throw new ArgumentException(OnlyOneAttachmentAllowedPerBatchRequest, "batchParameters");
                     if (actualBatchParameter.ContainsKey(attachment.Key))
-                        throw new ArgumentException(string.Format("Attachment (FacebookMediaObject/FacebookMediaStream) with key '{0}' already exists", attachment.Key));
+                        throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Attachment (FacebookMediaObject/FacebookMediaStream) with key '{0}' already exists", attachment.Key));
                     attachedFiles.Add(HttpHelper.UrlEncode(attachment.Key));
                     actualBatchParameter.Add(attachment.Key, attachment.Value);
                     hasAttachmentInBatchParameter = true;
@@ -224,6 +228,7 @@ namespace Facebook
             return actualBatchParameter;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         internal object ProcessBatchResponse(object result, IList<int> batchEtags)
         {
             if (result == null)
@@ -243,7 +248,7 @@ namespace Facebook
                 else
                 {
                     var batchResult = (IDictionary<string, object>)row;
-                    var code = Convert.ToInt64(batchResult["code"]);
+                    var code = Convert.ToInt64(batchResult["code"], CultureInfo.InvariantCulture);
 
                     object bodyAsJsonObject = null;
 

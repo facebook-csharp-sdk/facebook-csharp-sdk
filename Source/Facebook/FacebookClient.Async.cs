@@ -24,12 +24,14 @@ namespace Facebook
 #if FLUENTHTTP_CORE_TPL
     using System.ComponentModel;
 #endif
+    using System.Diagnostics.CodeAnalysis;
 #if NETFX_CORE
     using System.Linq;
 #endif
     using System.IO;
     using System.Net;
 
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
     public partial class FacebookClient
     {
         private HttpWebRequestWrapper _httpWebRequest;
@@ -88,6 +90,7 @@ namespace Facebook
         /// <param name="parameters">The parameters</param>
         /// <param name="resultType">The type of deserialize object into.</param>
         /// <param name="userState">The user state.</param>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 #if FLUENTHTTP_CORE_TPL
         [Obsolete("Use ApiTaskAsync instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -335,6 +338,7 @@ namespace Facebook
         /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
+        [SuppressMessage("Microsoft.Design", "CA1041:ProvideObsoleteAttributeMessage")]
 #endif
         protected virtual void OnGetCompleted(FacebookApiEventArgs args)
         {
@@ -348,6 +352,7 @@ namespace Facebook
         /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
+        [SuppressMessage("Microsoft.Design", "CA1041:ProvideObsoleteAttributeMessage")]
 #endif
         protected virtual void OnPostCompleted(FacebookApiEventArgs args)
         {
@@ -361,6 +366,7 @@ namespace Facebook
         /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
+        [SuppressMessage("Microsoft.Design", "CA1041:ProvideObsoleteAttributeMessage")]
 #endif
         protected virtual void OnDeleteCompleted(FacebookApiEventArgs args)
         {
@@ -374,6 +380,7 @@ namespace Facebook
         /// <param name="args">The <see cref="FacebookApiEventArgs"/>.</param>
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
+        [SuppressMessage("Microsoft.Design", "CA1041:ProvideObsoleteAttributeMessage")]
 #endif
         protected void OnUploadProgressChanged(FacebookUploadProgressChangedEventArgs args)
         {
@@ -383,6 +390,7 @@ namespace Facebook
 
 #if FLUENTHTTP_CORE_TPL
         [Obsolete]
+        [SuppressMessage("Microsoft.Design", "CA1041:ProvideObsoleteAttributeMessage")]
 #endif
         private void OnCompleted(HttpMethod httpMethod, FacebookApiEventArgs args)
         {

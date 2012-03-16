@@ -21,6 +21,7 @@ namespace Facebook
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents the Facebook api event args.
@@ -59,6 +60,7 @@ namespace Facebook
         /// <returns>
         /// The json result.
         /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public object GetResultData()
         {
             RaiseExceptionIfNecessary();

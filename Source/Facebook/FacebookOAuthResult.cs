@@ -21,6 +21,8 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
 
     /// <summary>
     /// Represents the authentication result of Facebook.
@@ -117,7 +119,7 @@ namespace Facebook
 
             if (parameters.ContainsKey("expires_in"))
             {
-                var expiresIn = Convert.ToDouble(parameters["expires_in"]);
+                var expiresIn = Convert.ToDouble(parameters["expires_in"], CultureInfo.InvariantCulture);
                 _expires = expiresIn > 0 ? DateTime.UtcNow.AddSeconds(expiresIn) : DateTime.MaxValue;
             }
         }
@@ -128,6 +130,7 @@ namespace Facebook
         /// <remarks>
         /// https://developers.facebook.com/docs/oauth/errors/
         /// </remarks>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
         public virtual string Error
         {
             get { return _error; }

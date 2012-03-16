@@ -21,6 +21,7 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
     public partial class FacebookClient
@@ -31,6 +32,7 @@ namespace Facebook
         /// <param name="url">The url to parse</param>
         /// <param name="facebookOAuthResult">The facebook oauth result.</param>
         /// <returns>True if parse successful, otherwise false.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]        
         public virtual bool TryParseOAuthCallbackUrl(Uri url, out FacebookOAuthResult facebookOAuthResult)
         {
             facebookOAuthResult = null;
@@ -52,6 +54,7 @@ namespace Facebook
         /// <param name="uri"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
+        [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
         public virtual FacebookOAuthResult ParseOAuthCallbackUrl(Uri uri)
         {
             var parameters = new Dictionary<string, object>();
