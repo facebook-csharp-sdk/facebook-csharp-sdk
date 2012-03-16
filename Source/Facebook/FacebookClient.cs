@@ -701,6 +701,7 @@ namespace Facebook
                             resultException = new FacebookApiException(errorMsg, errorCode);
                         return resultException;
                     }
+
                     return null;
                 }
             }
@@ -713,6 +714,8 @@ namespace Facebook
                 {
                     var errorType = error["type"] as string;
                     var errorMessage = error["message"] as string;
+                    int errorCode;
+                    int.TryParse(error["code"].ToString(), out errorCode);
 
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
@@ -720,11 +723,11 @@ namespace Facebook
                         // We don't include the inner exception because it is not needed and is always a WebException.
                         // It is easier to understand the error if we use Facebook's error message.
                         if (errorType == "OAuthException")
-                            resultException = new FacebookOAuthException(errorMessage, errorType);
+                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode);
                         else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage.Contains("request limit reached")))
                             resultException = new FacebookApiLimitException(errorMessage, errorType);
                         else
-                            resultException = new FacebookApiException(errorMessage, errorType);
+                            resultException = new FacebookApiException(errorMessage, errorType, errorCode);
                     }
                 }
                 else
@@ -829,7 +832,7 @@ namespace Facebook
                 parameter is uint || parameter is ulong)
                 return parameter.ToString();
 
-            if(parameter is Uri)
+            if (parameter is Uri)
                 return parameter.ToString();
 
             // todo: IEnumerable<KeyValuePair<T1,T2>> and IEnumerable<Tuple<T1, T2>>
