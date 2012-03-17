@@ -32,5 +32,13 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * Compatible with all Facebook Graph and REST API methods.
 * Supports Facebook’s most current authentication systems.
 * Sample applications and documentation are provided to get you started quickly.
-* Compatible with the official Facebook JavaScript SDK.
-* Updated regularly with new releases about every month.
+
+## Supported Platforms
+* .NET 3.5 Client Profile
+* .NET 4.0 Client Profile
+* .NET 4.5 (Visual Studio 11 Beta)
+* Windows 8 Metro Style Applications - WinRT (Windows 8 CTP)
+* Silverlight 5
+* Windows Phone 7.1 (Mango)
+ 
+
