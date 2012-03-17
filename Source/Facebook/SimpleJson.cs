@@ -43,6 +43,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 #if SIMPLE_JSON_DYNAMIC
 using System.Dynamic;
 #endif
@@ -61,10 +62,11 @@ namespace Facebook
 {
     #region JsonArray
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     /// <summary>
     /// Represents the json array.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -97,10 +99,11 @@ namespace Facebook
 
     #region JsonObject
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     /// <summary>
     /// Represents the json object.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -936,6 +939,7 @@ namespace Facebook
             return NextToken(json, ref saveIndex);
         }
 
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected static int NextToken(char[] json, ref int index)
         {
             EatWhitespace(json, ref index);
@@ -1166,7 +1170,7 @@ namespace Facebook
             }
             else
             {
-                builder.Append(Convert.ToDouble(number).ToString("r", CultureInfo.InvariantCulture));
+                builder.Append(Convert.ToDouble(number, CultureInfo.InvariantCulture).ToString("r", CultureInfo.InvariantCulture));
             }
 
             return true;
@@ -1266,6 +1270,13 @@ namespace Facebook
     {
         internal CacheResolver CacheResolver;
 
+        private static readonly string[] Iso8601Format = new string[]
+                                                             {
+                                                                 @"yyyy-MM-dd\THH:mm:ss.FFFFFFF\Z",
+                                                                 @"yyyy-MM-dd\THH:mm:ss\Z",
+                                                                 @"yyyy-MM-dd\THH:mm:ssK"
+                                                             };
+
         public PocoJsonSerializerStrategy()
         {
             CacheResolver = new CacheResolver(BuildMap);
@@ -1299,17 +1310,27 @@ namespace Facebook
             return TrySerializeKnownTypes(input, out output) || TrySerializeUnknownTypes(input, out output);
         }
 
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public virtual object DeserializeObject(object value, Type type)
         {
-            if (value is string || value is bool)
-                return value;
+            object obj = null;
+            if (value is string)
+            {
+                string str = value as string;
+                if(!string.IsNullOrEmpty(str) && (type == typeof(DateTime) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(DateTime)) ))
+                     obj = DateTime.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                else
+                    obj = str;
+            }
+            else if (value is bool)
+                obj = value;
             else if (value == null)
-                return null;
+                obj = null;
             else if ((value is long && type == typeof(long)) || (value is double && type == typeof(double)))
-                return value;
+                obj = value;
             else if ((value is double && type != typeof(double)) || (value is long && type != typeof(long)))
             {
-                return
+                obj =
 #if NETFX_CORE
                     type == typeof(int) || type == typeof(long) || type == typeof(double) ||type == typeof(float) || type == typeof(bool) || type == typeof(decimal) ||type == typeof(byte) || type == typeof(short)
 #else
@@ -1317,111 +1338,117 @@ namespace Facebook
 #endif
  ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture) : value;
             }
-            object obj = null;
-
-            if (value is IDictionary<string, object>)
+            else
             {
-                IDictionary<string, object> jsonObject = (IDictionary<string, object>)value;
-
-                if (ReflectionUtils.IsTypeDictionary(type))
+                if (value is IDictionary<string, object>)
                 {
-                    // if dictionary then
+                    IDictionary<string, object> jsonObject = (IDictionary<string, object>) value;
+
+                    if (ReflectionUtils.IsTypeDictionary(type))
+                    {
+                        // if dictionary then
 #if NETFX_CORE
                     Type keyType = type.GetTypeInfo().GenericTypeArguments[0];
                     Type valueType = type.GetTypeInfo().GenericTypeArguments[1];
 #else
-                    Type keyType = type.GetGenericArguments()[0];
-                    Type valueType = type.GetGenericArguments()[1];
+                        Type keyType = type.GetGenericArguments()[0];
+                        Type valueType = type.GetGenericArguments()[1];
 #endif
 
-                    Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+                        Type genericType = typeof (Dictionary<,>).MakeGenericType(keyType, valueType);
 
 #if NETFX_CORE
                     dynamic dict = CacheResolver.GetNewInstance(genericType);
 #else
-                    IDictionary dict = (IDictionary)CacheResolver.GetNewInstance(genericType);
+                        IDictionary dict = (IDictionary) CacheResolver.GetNewInstance(genericType);
 #endif
-                    foreach (KeyValuePair<string, object> kvp in jsonObject)
-                    {
-                        dict.Add(kvp.Key, DeserializeObject(kvp.Value, valueType));
-                    }
+                        foreach (KeyValuePair<string, object> kvp in jsonObject)
+                        {
+                            dict.Add(kvp.Key, DeserializeObject(kvp.Value, valueType));
+                        }
 
-                    obj = dict;
-                }
-                else
-                {
-                    obj = CacheResolver.GetNewInstance(type);
-                    SafeDictionary<string, CacheResolver.MemberMap> maps = CacheResolver.LoadMaps(type);
-
-                    if (maps == null)
-                    {
-                        obj = value;
+                        obj = dict;
                     }
                     else
                     {
-                        foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
-                        {
-                            CacheResolver.MemberMap v = keyValuePair.Value;
-                            if (v.Setter == null)
-                                continue;
+                        obj = CacheResolver.GetNewInstance(type);
+                        SafeDictionary<string, CacheResolver.MemberMap> maps = CacheResolver.LoadMaps(type);
 
-                            string jsonKey = keyValuePair.Key;
-                            if (jsonObject.ContainsKey(jsonKey))
+                        if (maps == null)
+                        {
+                            obj = value;
+                        }
+                        else
+                        {
+                            foreach (KeyValuePair<string, CacheResolver.MemberMap> keyValuePair in maps)
                             {
-                                object jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
-                                v.Setter(obj, jsonValue);
+                                CacheResolver.MemberMap v = keyValuePair.Value;
+                                if (v.Setter == null)
+                                    continue;
+
+                                string jsonKey = keyValuePair.Key;
+                                if (jsonObject.ContainsKey(jsonKey))
+                                {
+                                    object jsonValue = DeserializeObject(jsonObject[jsonKey], v.Type);
+                                    v.Setter(obj, jsonValue);
+                                }
                             }
                         }
                     }
                 }
-            }
-            else if (value is IList<object>)
-            {
-                IList<object> jsonObject = (IList<object>)value;
-                IList list = null;
-
-                if (type.IsArray)
+                else if (value is IList<object>)
                 {
-                    list = (IList)Activator.CreateInstance(type, jsonObject.Count);
-                    int i = 0;
-                    foreach (object o in jsonObject)
-                        list[i++] = DeserializeObject(o, type.GetElementType());
-                }
-                else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) ||
+                    IList<object> jsonObject = (IList<object>) value;
+                    IList list = null;
+
+                    if (type.IsArray)
+                    {
+                        list = (IList) Activator.CreateInstance(type, jsonObject.Count);
+                        int i = 0;
+                        foreach (object o in jsonObject)
+                            list[i++] = DeserializeObject(o, type.GetElementType());
+                    }
+                    else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) ||
 #if NETFX_CORE
  typeof(IList).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo())
 #else
- typeof(IList).IsAssignableFrom(type)
+                             typeof (IList).IsAssignableFrom(type)
 #endif
-)
-                {
+                        )
+                    {
 #if NETFX_CORE
                     Type innerType = type.GetTypeInfo().GenericTypeArguments[0];
 #else
-                    Type innerType = type.GetGenericArguments()[0];
+                        Type innerType = type.GetGenericArguments()[0];
 #endif
-                    Type genericType = typeof(List<>).MakeGenericType(innerType);
-                    list = (IList)CacheResolver.GetNewInstance(genericType);
-                    foreach (object o in jsonObject)
-                        list.Add(DeserializeObject(o, innerType));
+                        Type genericType = typeof (List<>).MakeGenericType(innerType);
+                        list = (IList) CacheResolver.GetNewInstance(genericType);
+                        foreach (object o in jsonObject)
+                            list.Add(DeserializeObject(o, innerType));
+                    }
+
+                    obj = list;
                 }
 
-                obj = list;
+                return obj;
             }
+
+            if (ReflectionUtils.IsNullableType(type))
+                return ReflectionUtils.ToNullableType(obj, type);
 
             return obj;
         }
 
         protected virtual object SerializeEnum(Enum p)
         {
-            return Convert.ToDouble(p);
+            return Convert.ToDouble(p, CultureInfo.InvariantCulture);
         }
 
         protected virtual bool TrySerializeKnownTypes(object input, out object output)
         {
             bool returnValue = true;
             if (input is DateTime)
-                output = ((DateTime)input).ToString("o");
+                output = ((DateTime)input).ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
             else if (input is Guid)
                 output = ((Guid)input).ToString("D");
             else if (input is Uri)
@@ -1598,6 +1625,22 @@ namespace Facebook
                 Type genericDefinition = type.GetGenericTypeDefinition();
                 return genericDefinition == typeof(IDictionary<,>);
             }
+
+            public static bool IsNullableType(Type type)
+            {
+                return
+#if NETFX_CORE
+                    type.GetTypeInfo().IsGenericType
+#else
+                    type.IsGenericType
+#endif
+                && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            }
+
+            public static object ToNullableType(object obj, Type nullableType)
+            {
+                return obj == null ? null : Convert.ChangeType(obj, Nullable.GetUnderlyingType(nullableType), CultureInfo.InvariantCulture);
+            }
         }
 
 #if SIMPLE_JSON_INTERNAL
@@ -1639,6 +1682,7 @@ namespace Facebook
                 _memberMapLoader = memberMapLoader;
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
             public static object GetNewInstance(Type type)
             {
                 CtorDelegate c;
@@ -1658,7 +1702,7 @@ namespace Facebook
                 {
                     ConstructorInfo constructorInfo = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
                     if (constructorInfo == null)
-                        throw new Exception(string.Format("Could not get constructor for {0}.", type));
+                        throw new Exception(string.Format(CultureInfo.InvariantCulture, "Could not get constructor for {0}.", type));
                     generator.Emit(OpCodes.Newobj, constructorInfo);
                 }
                 generator.Emit(OpCodes.Ret);
