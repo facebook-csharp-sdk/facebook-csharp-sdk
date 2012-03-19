@@ -13,7 +13,7 @@ command.*
 
     nuget install facebook
     
-If you would like to get an older for the the binaries please use the following command.
+If you would like to get an older version of the the binaries please use the following command.
 
     nuget install facebook -v 5.4.1
     
