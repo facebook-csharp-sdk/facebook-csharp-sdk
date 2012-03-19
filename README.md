@@ -34,10 +34,10 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * Sample applications and documentation are provided to get you started quickly.
 
 ## Supported Platforms
-* .NET 3.5 Client Profile
-* .NET 4.0 Client Profile
-* .NET 4.5 (Visual Studio 11 Beta)
-* Windows 8 Metro Style Applications - WinRT (Windows 8 CTP)
+* .NET 3.5 (Client Profile and Full Profile)
+* .NET 4.0 (Client Profile and Full Profile)
+* .NET 4.5 Beta (Visual Studio 11 Beta)
+* Windows 8 Metro Style Applications - WinRT (Windows 8 Consumer Preview)
 * Silverlight 5
 * Windows Phone 7.1 (Mango)
  
