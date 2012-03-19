@@ -154,8 +154,8 @@
     <Compile Include="FacebookUploadProgressChangedEventArgs.cs">
       <DependentUpon>FacebookApiEventArgs.cs</DependentUpon>
     </Compile>
-    <Compile Include="FluentHttp\HttpHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HttpHelper.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
