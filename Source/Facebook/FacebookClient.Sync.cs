@@ -182,7 +182,7 @@ namespace Facebook
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
         public virtual T Get<T>(string path)
         {
-            return Api<T>(HttpMethod.Get, path, null);
+            return Get<T>(path, null);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace Facebook
         /// The json result.
         /// </returns>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        public virtual T Get<T>(string path, IDictionary<string, object> parameters)
+        public virtual T Get<T>(string path, object parameters)
         {
             return Api<T>(HttpMethod.Get, path, parameters);
         }
@@ -221,9 +221,9 @@ namespace Facebook
         /// The json result.
         /// </returns>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        public virtual T Get<T>(IDictionary<string, object> parameters)
+        public virtual T Get<T>(object parameters)
         {
-            return Api<T>(HttpMethod.Get, null, parameters);
+            return Get<T>(null, parameters);
         }
 
         /// <summary>
