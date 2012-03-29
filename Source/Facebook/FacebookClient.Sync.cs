@@ -120,6 +120,19 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Makes a request to the Facebook server.
+        /// </summary>
+        /// <typeparam name="T">The type of deserialize object into</typeparam>
+        /// <param name="httpMethod">Http method. (GET/POST/DELETE)</param>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The result desialized into proper type</returns>
+        protected T Api<T>(HttpMethod httpMethod, string path, object parameters)
+        {
+            return (T)Api(httpMethod, path, parameters, typeof(T));
+        }
+
+        /// <summary>
         /// Makes a GET request to the Facebook server.
         /// </summary>
         /// <param name="path">The resource path or the resource url.</param>
@@ -151,6 +164,66 @@ namespace Facebook
         public virtual object Get(string path, object parameters)
         {
             return Api(HttpMethod.Get, path, parameters, null);
+        }
+
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The result of the API call.
+        /// </typeparam>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        public virtual T Get<T>(string path)
+        {
+            return Api<T>(HttpMethod.Get, path, null);
+        }
+
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">
+        /// The resource path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <typeparam name="T">
+        /// The result of the API call.
+        /// </typeparam>
+        /// <exception cref="Facebook.FacebookApiException"/>
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        public virtual T Get<T>(string path, IDictionary<string, object> parameters)
+        {
+            return Api<T>(HttpMethod.Get, path, parameters);
+        }
+
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <typeparam name="T">
+        /// The result of the API call.
+        /// </typeparam>
+        /// <exception cref="Facebook.FacebookApiException" />
+        /// <returns>
+        /// The json result.
+        /// </returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        public virtual T Get<T>(IDictionary<string, object> parameters)
+        {
+            return Api<T>(HttpMethod.Get, null, parameters);
         }
 
         /// <summary>

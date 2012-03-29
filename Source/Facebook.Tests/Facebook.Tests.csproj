@@ -72,6 +72,8 @@
     <Compile Include="FacebookClientTests\ConstructorTests.cs" />
     <Compile Include="FacebookClientTests\ParseUrlQueryStringTests.cs" />
     <Compile Include="FacebookClientTests\SerializeJsonTests.cs" />
+    <Compile Include="FacebookClientTests\TypedObjectTests.cs" />
+    <Compile Include="FacebookClientTests\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
