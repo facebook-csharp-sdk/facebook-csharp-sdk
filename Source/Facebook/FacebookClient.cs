@@ -36,7 +36,7 @@ namespace Facebook
     /// <summary>
     /// Provides access to the Facbook Platform.
     /// </summary>
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         private const int BufferSize = 1024 * 4; // 4kb
         private const string AttachmentMustHavePropertiesSetError = "Attachment (FacebookMediaObject/FacebookMediaStream) must have a content type, file name, and value set.";

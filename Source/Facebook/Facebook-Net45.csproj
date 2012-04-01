@@ -158,6 +158,14 @@
     <Compile Include="HttpHelper.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="HttpWebRequestCreatedEventArgs.cs" />
+    <Compile Include="IFacebookClient.Async.cs" />
+    <Compile Include="IFacebookClient.Async.Tasks.cs" />
+    <Compile Include="IFacebookClient.Batch.Async.cs" />
+    <Compile Include="IFacebookClient.Batch.Async.Tasks.cs" />
+    <Compile Include="IFacebookClient.Batch.Sync.cs" />
+    <Compile Include="IFacebookClient.cs" />
+    <Compile Include="IFacebookClient.OAuthResult.cs" />
+    <Compile Include="IFacebookClient.SignedRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

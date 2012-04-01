@@ -19,7 +19,7 @@
 
 namespace Facebook
 {
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         /// <summary>
         /// Makes a batch request to the Facebook server.

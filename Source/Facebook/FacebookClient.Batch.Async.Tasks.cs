@@ -22,7 +22,7 @@ namespace Facebook
     using System.Threading;
     using System.Threading.Tasks;
 
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         /// <summary>
         /// Makes an asynchronous batch request to the Facebook server.
