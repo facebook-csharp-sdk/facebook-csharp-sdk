@@ -25,7 +25,7 @@ namespace Facebook
     using System.IO;
     using System.Net;
 
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         /// <summary>
         /// Makes a request to the Facebook server.

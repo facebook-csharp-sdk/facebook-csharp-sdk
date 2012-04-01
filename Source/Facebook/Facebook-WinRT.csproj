@@ -73,6 +73,12 @@
     <Compile Include="FacebookUploadProgressChangedEventArgs.cs">
       <DependentUpon>FacebookApiEventArgs.cs</DependentUpon>
     </Compile>
+    <Compile Include="IFacebookClient.Async.cs" />
+    <Compile Include="IFacebookClient.Async.Tasks.cs" />
+    <Compile Include="IFacebookClient.Batch.Async.cs" />
+    <Compile Include="IFacebookClient.Batch.Async.Tasks.cs" />
+    <Compile Include="IFacebookClient.cs" />
+    <Compile Include="IFacebookClient.OAuthResult.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="HttpMethod.cs" />

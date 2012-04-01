@@ -26,7 +26,7 @@ namespace Facebook
     using System.Text;
     using System.Diagnostics.CodeAnalysis;
 
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         private const string InvalidSignedRequest = "Invalid signed_request";
 

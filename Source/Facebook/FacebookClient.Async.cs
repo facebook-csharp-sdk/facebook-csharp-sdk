@@ -32,7 +32,7 @@ namespace Facebook
     using System.Net;
 
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         private HttpWebRequestWrapper _httpWebRequest;
         private object _httpWebRequestLocker = new object();

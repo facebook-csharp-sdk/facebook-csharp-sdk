@@ -24,7 +24,7 @@ namespace Facebook
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         /// <summary>
         /// Try parsing the url to <see cref="FacebookOAuthResult"/>.

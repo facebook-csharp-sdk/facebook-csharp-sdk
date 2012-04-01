@@ -27,7 +27,7 @@ namespace Facebook
     using System.Linq;
     using System.Text;
 
-    public partial class FacebookClient
+    public partial class FacebookClient : IFacebookClient
     {
         private const string AtLeastOneBatchParameterRequried = "At least one batch parameter is required";
         private const string OnlyOneAttachmentAllowedPerBatchRequest = "Only one attachement (FacebookMediaObject/FacebookMediaStream) allowed per FacebookBatchParamter.";
