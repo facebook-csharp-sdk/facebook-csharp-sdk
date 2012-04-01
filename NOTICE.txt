@@ -13,11 +13,11 @@ packages. Please refer to the specific files and/or packages for more
 detailed information about the authors, copyright notices, and licenses. 
 
 
-Albacore
+njake
 -----------------
-Website: http://albacorebuild.net
-Copyright: Copyright (c) 2010 Derick Bailey. All Rights Reserved.
-License: MIT License
+Website: https://github.com/prabirshrestha/njake
+Copyright: N/A
+License: Apache 2.0 License
 
 
 xUnit.net
