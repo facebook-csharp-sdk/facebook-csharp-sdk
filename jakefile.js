@@ -17,7 +17,7 @@ msbuild.setDefaults({
 })
 
 xunit.setDefaults({
-    _exe: 'Tools/xunit-1.8/xunit.console.clr4.x86'
+    _exe: 'Tools/xunit-1.9/xunit.console.clr4.x86'
 })
 
 nuget.setDefaults({
