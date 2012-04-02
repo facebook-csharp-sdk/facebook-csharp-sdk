@@ -1,12 +1,12 @@
 var fs = require('fs'),
-	njake = require('./Build/njake'),
-	msbuild = njake.msbuild,
+    njake = require('./Build/njake'),
+    msbuild = njake.msbuild,
     xunit = njake.xunit,
-	nuget = njake.nuget,
-	assemblyinfo = njake.assemblyinfo,
-	config = {
-	    version: fs.readFileSync('VERSION')
-	};
+    nuget = njake.nuget,
+    assemblyinfo = njake.assemblyinfo,
+    config = {
+        version: fs.readFileSync('VERSION')
+    };
 
 console.log('Facebook C# SDK v' + config.version)
 
