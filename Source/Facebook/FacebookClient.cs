@@ -46,7 +46,7 @@ namespace Facebook
         private const string MultiPartNewLine = "\r\n";
         private const string ETagKey = "_etag_";
 
-        private static readonly string[] LegacyRestApiReadOnlyCalls = new[] {
+        internal static readonly string[] LegacyRestApiReadOnlyCalls = new[] {
             "admin.getallocation",
             "admin.getappproperties",
             "admin.getbannedusers",

@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="<file>.cs" company="The Outercurve Foundation">
+﻿//-----------------------------------------------------------------------
+// <copyright file="LegacyRestApiReadOnlyCallsTest.cs" company="The Outercurve Foundation">
 //    Copyright (c) 2011, The Outercurve Foundation. 
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,18 +17,18 @@
 // <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 //-----------------------------------------------------------------------
 
-namespace Facebook.Tests.FacebookUtils
+namespace Facebook.Tests.FacebookClient
 {
     using System.Linq;
     using Facebook;
     using Xunit;
 
-    public class ReadOnlyCallsTests
+    public class LegacyRestApiReadOnlyCallsTest
     {
         [Fact]
         public void LengthIs60()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Length;
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Length;
 
             Assert.Equal(60, result);
         }
@@ -36,7 +36,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAdminGetAllocation()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("admin.getallocation");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("admin.getallocation");
 
             Assert.True(result);
         }
@@ -44,7 +44,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAdminGetAppProperties()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("admin.getappproperties");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("admin.getappproperties");
 
             Assert.True(result);
         }
@@ -52,7 +52,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAdminGetBannedUsers()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("admin.getbannedusers");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("admin.getbannedusers");
 
             Assert.True(result);
         }
@@ -60,7 +60,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAdminGetLiveStreamViaLink()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("admin.getlivestreamvialink");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("admin.getlivestreamvialink");
 
             Assert.True(result);
         }
@@ -68,7 +68,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAdminGetMetrics()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("admin.getmetrics");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("admin.getmetrics");
 
             Assert.True(result);
         }
@@ -76,7 +76,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAdminGetRestrictionInfo()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("admin.getrestrictioninfo");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("admin.getrestrictioninfo");
 
             Assert.True(result);
         }
@@ -84,7 +84,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsApplicationGetPublicInfo()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("application.getpublicinfo");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("application.getpublicinfo");
 
             Assert.True(result);
         }
@@ -92,7 +92,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAuthGetPublicKey()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("auth.getapppublickey");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("auth.getapppublickey");
 
             Assert.True(result);
         }
@@ -100,7 +100,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAuthGetSession()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("auth.getsession");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("auth.getsession");
 
             Assert.True(result);
         }
@@ -108,7 +108,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsAuthGetSignedPublicSessionData()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("auth.getsignedpublicsessiondata");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("auth.getsignedpublicsessiondata");
 
             Assert.True(result);
         }
@@ -116,7 +116,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsCommentsGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("comments.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("comments.get");
 
             Assert.True(result);
         }
@@ -124,7 +124,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsGetUnconnectedFriendsCount()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("connect.getunconnectedfriendscount");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("connect.getunconnectedfriendscount");
 
             Assert.True(result);
         }
@@ -132,7 +132,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsDashboardGetActivity()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("dashboard.getactivity");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("dashboard.getactivity");
 
             Assert.True(result);
         }
@@ -140,7 +140,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsDashboardGetCount()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("dashboard.getcount");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("dashboard.getcount");
 
             Assert.True(result);
         }
@@ -148,7 +148,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsDashboardGetGlobalNews()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("dashboard.getglobalnews");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("dashboard.getglobalnews");
 
             Assert.True(result);
         }
@@ -156,7 +156,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsDashboardGetNews()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("dashboard.getnews");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("dashboard.getnews");
 
             Assert.True(result);
         }
@@ -164,7 +164,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsDashboardMultiGetCount()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("dashboard.multigetcount");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("dashboard.multigetcount");
 
             Assert.True(result);
         }
@@ -172,7 +172,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsDashboardMultiGetNews()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("dashboard.multigetnews");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("dashboard.multigetnews");
 
             Assert.True(result);
         }
@@ -180,7 +180,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsDataGetCookies()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("data.getcookies");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("data.getcookies");
 
             Assert.True(result);
         }
@@ -188,7 +188,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsEventsGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("events.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("events.get");
 
             Assert.True(result);
         }
@@ -196,7 +196,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsEventsGetMembers()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("events.getmembers");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("events.getmembers");
 
             Assert.True(result);
         }
@@ -204,7 +204,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFbmlGetCustomTags()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("fbml.getcustomtags");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("fbml.getcustomtags");
 
             Assert.True(result);
         }
@@ -212,7 +212,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFeedGetAppFirendStories()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("feed.getappfriendstories");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("feed.getappfriendstories");
 
             Assert.True(result);
         }
@@ -220,7 +220,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFeedGetrEgisteredTemplateBundleById()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("feed.getregisteredtemplatebundlebyid");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("feed.getregisteredtemplatebundlebyid");
 
             Assert.True(result);
         }
@@ -228,7 +228,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFeedGetrEgisteredTemplateBundles()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("feed.getregisteredtemplatebundles");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("feed.getregisteredtemplatebundles");
 
             Assert.True(result);
         }
@@ -236,7 +236,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFqlMultiQuery()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("fql.multiquery");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("fql.multiquery");
 
             Assert.True(result);
         }
@@ -244,7 +244,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFqlQuery()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("fql.query");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("fql.query");
 
             Assert.True(result);
         }
@@ -252,7 +252,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFriendsAreFriends()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("friends.arefriends");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("friends.arefriends");
 
             Assert.True(result);
         }
@@ -260,7 +260,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFriendsGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("friends.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("friends.get");
 
             Assert.True(result);
         }
@@ -268,7 +268,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFriendsGetApUsers()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("friends.getappusers");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("friends.getappusers");
 
             Assert.True(result);
         }
@@ -276,7 +276,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFriendsGetLists()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("friends.getlists");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("friends.getlists");
 
             Assert.True(result);
         }
@@ -284,7 +284,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsFriendsGetMultualFriends()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("friends.getmutualfriends");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("friends.getmutualfriends");
 
             Assert.True(result);
         }
@@ -292,7 +292,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsGiftsGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("gifts.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("gifts.get");
 
             Assert.True(result);
         }
@@ -300,7 +300,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsGroupsGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("groups.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("groups.get");
 
             Assert.True(result);
         }
@@ -308,7 +308,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsGroupsGetMembers()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("groups.getmembers");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("groups.getmembers");
 
             Assert.True(result);
         }
@@ -316,7 +316,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsIntlGetTranslations()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("intl.gettranslations");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("intl.gettranslations");
 
             Assert.True(result);
         }
@@ -324,7 +324,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsLinksGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("links.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("links.get");
 
             Assert.True(result);
         }
@@ -332,7 +332,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsNotesGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("notes.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("notes.get");
 
             Assert.True(result);
         }
@@ -340,7 +340,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsNotificationsGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("notifications.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("notifications.get");
 
             Assert.True(result);
         }
@@ -348,7 +348,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPagesGetInfo()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("pages.getinfo");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("pages.getinfo");
 
             Assert.True(result);
         }
@@ -356,7 +356,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPagesIsAdmin()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("pages.isadmin");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("pages.isadmin");
 
             Assert.True(result);
         }
@@ -364,7 +364,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPagesIsAppAdded()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("pages.isappadded");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("pages.isappadded");
 
             Assert.True(result);
         }
@@ -372,7 +372,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPagesIsFan()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("pages.isfan");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("pages.isfan");
 
             Assert.True(result);
         }
@@ -380,7 +380,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPermissionsCheckAvailableApiAccess()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("permissions.checkavailableapiaccess");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("permissions.checkavailableapiaccess");
 
             Assert.True(result);
         }
@@ -388,7 +388,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPermissionsCheckGrantedApiAccess()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("permissions.checkgrantedapiaccess");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("permissions.checkgrantedapiaccess");
 
             Assert.True(result);
         }
@@ -396,7 +396,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPhotosGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("photos.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("photos.get");
 
             Assert.True(result);
         }
@@ -404,7 +404,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPhotosGetAlbums()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("photos.getalbums");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("photos.getalbums");
 
             Assert.True(result);
         }
@@ -412,7 +412,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsPhotosGetTags()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("photos.gettags");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("photos.gettags");
 
             Assert.True(result);
         }
@@ -420,7 +420,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsProfileGetInfo()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("profile.getinfo");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("profile.getinfo");
 
             Assert.True(result);
         }
@@ -428,7 +428,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsProfileGetInfoOptions()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("profile.getinfooptions");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("profile.getinfooptions");
 
             Assert.True(result);
         }
@@ -436,7 +436,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsStreamGet()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("stream.get");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("stream.get");
 
             Assert.True(result);
         }
@@ -444,7 +444,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsStreamGetComments()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("stream.getcomments");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("stream.getcomments");
 
             Assert.True(result);
         }
@@ -452,7 +452,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsStreamGetFilters()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("stream.getfilters");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("stream.getfilters");
 
             Assert.True(result);
         }
@@ -460,7 +460,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsUsersGetInfo()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("users.getinfo");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("users.getinfo");
 
             Assert.True(result);
         }
@@ -468,7 +468,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsUsersGetLoggedInUser()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("users.getloggedinuser");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("users.getloggedinuser");
 
             Assert.True(result);
         }
@@ -476,7 +476,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsUsersGetStandardInfo()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("users.getstandardinfo");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("users.getstandardinfo");
 
             Assert.True(result);
         }
@@ -484,7 +484,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsUsersHasAppPermission()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("users.hasapppermission");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("users.hasapppermission");
 
             Assert.True(result);
         }
@@ -492,7 +492,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsUsersIsAppUser()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("users.isappuser");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("users.isappuser");
 
             Assert.True(result);
         }
@@ -500,7 +500,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsUsersIsVerified()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("users.isverified");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("users.isverified");
 
             Assert.True(result);
         }
@@ -508,7 +508,7 @@ namespace Facebook.Tests.FacebookUtils
         [Fact]
         public void ContainsVideGetUploadLimits()
         {
-            var result = FacebookUtils.ReadOnlyCalls.Contains("video.getuploadlimits");
+            var result = FacebookClient.LegacyRestApiReadOnlyCalls.Contains("video.getuploadlimits");
 
             Assert.True(result);
         }

@@ -70,6 +70,7 @@
     <Compile Include="DateTimeConverterTests.cs" />
     <Compile Include="DummyIntegrationTests.cs" />
     <Compile Include="FacebookClientTests\ConstructorTests.cs" />
+    <Compile Include="FacebookClientTests\LegacyRestApiReadOnlyCallsTest.cs" />
     <Compile Include="FacebookClientTests\ParseUrlQueryStringTests.cs" />
     <Compile Include="FacebookClientTests\SerializeJsonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

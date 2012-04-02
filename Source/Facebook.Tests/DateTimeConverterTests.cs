@@ -19,10 +19,9 @@
 
 namespace Facebook.Tests
 {
-    using System.Diagnostics;
+    using System;
     using Facebook;
     using Xunit;
-    using System;
 
     public class DateTimeConverterTests
     {
