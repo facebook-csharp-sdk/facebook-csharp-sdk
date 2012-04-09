@@ -5,10 +5,11 @@ var fs = require('fs'),
     nuget = njake.nuget,
     assemblyinfo = njake.assemblyinfo,
     config = {
-        version: fs.readFileSync('VERSION')
+        version: fs.readFileSync('VERSION', 'utf-8').split('\r\n')[0],
+        fileVersion: fs.readFileSync('VERSION', 'utf-8').split('\r\n')[1]
     };
 
-console.log('Facebook C# SDK v' + config.version)
+console.log('Facebook C# SDK v' + config.version + ' (' + config.fileVersion + ')')
 
 msbuild.setDefaults({
     properties: { Configuration: 'Release' },
@@ -213,7 +214,7 @@ namespace('assemblyinfo', function () {
                 AssemblyCopyright: 'Copyright (c) 2011, The Outercurve Foundation.',
                 ComVisible: false,
                 AssemblyVersion: config.version,
-                AssemblyFileVersion: config.version
+                AssemblyFileVersion: config.fileVersion
             }
         })
     }, { async: true })
