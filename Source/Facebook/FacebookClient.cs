@@ -724,8 +724,10 @@ namespace Facebook
                 {
                     var errorType = error["type"] as string;
                     var errorMessage = error["message"] as string;
-                    int errorCode;
-                    int.TryParse(error["code"].ToString(), out errorCode);
+                    int errorCode = 0;
+
+                    if (error.ContainsKey("code"))
+                        int.TryParse(error["code"].ToString(), out errorCode);
 
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
