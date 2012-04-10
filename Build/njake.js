@@ -200,7 +200,7 @@
             return defaults;
         };
 
-        task.urls = {
+        task.sources = {
             symbolsource: 'http://nuget.gw.symbolsource.org/Public/NuGet'
         };
 

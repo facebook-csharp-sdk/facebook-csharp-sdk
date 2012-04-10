@@ -209,7 +209,7 @@ namespace('nuget', function () {
             nuget.push({
                 apiKey: apiKey,
                 package: 'Dist/SymbolSource/Facebook.' + config.fileVersion + '.nupkg',
-                source: nuget.source.symbolSource
+                source: nuget.sources.symbolSource
             })
         }, { async: true })
 
