@@ -196,6 +196,25 @@ namespace('nuget', function () {
 
     })
 
+    namespace('push', function () {
+
+        task('nuget', function(apiKey) {
+            nuget.push({
+                apiKey: apiKey,
+                package: 'Dist/NuGet/Facebook.' + config.fileVersion + '.nupkg'
+            })
+        }, { async: true })
+
+        task('symbolsource', function(apiKey) {
+            nuget.push({
+                apiKey: apiKey,
+                package: 'Dist/SymbolSource/Facebook.' + config.fileVersion + '.nupkg'
+                source: nuget.source.symbolSource
+            })
+        }, { async: true })
+
+    })
+
     desc('Create NuGet and SymbolSource pacakges')
     task('pack', ['nuget:pack:all'])
 
