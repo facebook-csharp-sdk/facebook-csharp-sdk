@@ -201,7 +201,7 @@
         };
 
         task.sources = {
-            symbolsource: 'http://nuget.gw.symbolsource.org/Public/NuGet'
+            symbolSource: 'http://nuget.gw.symbolsource.org/Public/NuGet'
         };
 
         return task;
