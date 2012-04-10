@@ -148,7 +148,10 @@ namespace('clean', function () {
 
 })
 
-task('clean', ['clean:all'])
+task('clean', ['clean:all'], function () {
+    jake.rmRf('Working/')
+    jake.rmRf('Dist/')
+})
 
 namespace('tests', function () {
 
