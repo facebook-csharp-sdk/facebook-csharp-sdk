@@ -175,7 +175,7 @@ namespace('nuget', function () {
         task('nuget', ['Dist/NuGet', 'build'], function () {
             nuget.pack({
                 nuspec: 'Build/NuGet/Facebook/Facebook.nuspec',
-                version: config.version,
+                version: config.fileVersion,
                 outputDirectory: 'Dist/NuGet'
             })
         }, { async: true })
@@ -184,7 +184,7 @@ namespace('nuget', function () {
         task('symbolsource', ['Dist/SymbolSource', 'build'], function () {
             nuget.pack({
                 nuspec: 'Build/SymbolSource/Facebook/Facebook.nuspec',
-                version: config.version,
+                version: config.fileVersion,
                 outputDirectory: 'Dist/SymbolSource'
             })
         }, { async: true })
