@@ -375,10 +375,8 @@ namespace Facebook
                             }
                         }
                     }
-                    else if (string.IsNullOrEmpty(path))
-                    {
-                        throw new ArgumentNullException("path");
-                    }
+
+                    path = path ?? string.Empty;
 
                     if (httpMethod == HttpMethod.Post && path.EndsWith("/videos", StringComparison.OrdinalIgnoreCase))
                         uriBuilder.Host = UseFacebookBeta ? "graph-video.beta.facebook.com" : "graph-video.facebook.com";
