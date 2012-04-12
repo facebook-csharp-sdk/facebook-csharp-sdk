@@ -198,6 +198,7 @@ namespace('nuget', function () {
 
     namespace('push', function () {
 
+        desc('Push nuget package to nuget.org')
         task('nuget', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
@@ -205,6 +206,7 @@ namespace('nuget', function () {
             })
         }, { async: true })
 
+        desc('Push nuget package to symbolsource')
         task('symbolsource', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
