@@ -231,6 +231,33 @@ namespace Facebook
             _accessToken = accessToken;
         }
 
+
+        public string getAccessTokenFromCode(string code, string redirect_uri) { 
+        
+        }
+
+        public string getAccessTokenFromCode(Uri uri)
+        {
+            FacebookOAuthResult oauthResult;
+            if (this.TryParseOAuthCallbackUrl(uri, out oauthResult))
+            {
+                // The url is the result of OAuth 2.0 authentication
+                if (oauthResult.IsSuccess)
+                {
+                    dynamic result = this.Get("/oauth/access_token", new
+                    {
+                        client_id = "369427636414937",
+                        redirect_uri = "",
+                        code = oauthResult.Code,
+                        client_secret = "6ccddd805af4ca4e2eaa19a5a150d91f"
+                    });
+
+                    _accessToken = result.access_token;
+                }
+            }
+            return _accessToken;
+        }
+
         /// <summary>
         /// Sets the default json seriazliers and deserializers.
         /// </summary>
