@@ -392,6 +392,7 @@ namespace Facebook
             uriBuilder.Path = path;
 
             string contentType = null;
+            long? contentLength = null;
             var queryString = new StringBuilder();
 
             SerializeParameters(parametersWithoutMediaObjects);
@@ -515,6 +516,8 @@ namespace Facebook
                     streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(MultiPartNewLine, MultiPartFormPrefix, boundary, MultiPartFormPrefix, MultiPartNewLine))));
                     input = new CombinationStream(streams, indexOfDisposableStreams);
                 }
+
+                contentLength = input == null ? 0 : input.Length;
             }
 
             if (queryString.Length > 0)
@@ -551,15 +554,14 @@ namespace Facebook
 
 #if !(SILVERLIGHT || NETFX_CORE)
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            if (input != null && input.Length > 0)
-                request.AllowWriteStreamBuffering = false;
+            request.AllowWriteStreamBuffering = false;
 #endif
 #if NETFX_CORE
             request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
 #endif
 
-            if (input != null)
-                request.TrySetContentLength(input.Length);
+            if (contentLength.HasValue)
+                request.TrySetContentLength(contentLength.Value);
 
             request.TrySetUserAgent("Facebook C# SDK");
 
