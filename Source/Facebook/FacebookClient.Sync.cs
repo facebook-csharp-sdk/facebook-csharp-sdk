@@ -120,6 +120,33 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Get accesstoken from Code,after redirect Facebook authorizetion using response_type = code
+        /// </summary>
+        /// <param name="uri">uri</param>
+        /// <param name="redirectUri">redirectUri</param>
+        public string getAccessTokenFromCode(Uri uri, string redirectUri)
+        {
+            FacebookOAuthResult oauthResult;
+            if (this.TryParseOAuthCallbackUrl(uri, out oauthResult))
+            {
+                // The url is the result of OAuth 2.0 authentication
+                if (oauthResult.IsSuccess)
+                {
+                    dynamic result = Get("/oauth/access_token", new
+                    {
+                        client_id = this._appId,
+                        redirect_uri = redirectUri,
+                        code = oauthResult.Code,
+                        client_secret = this._appSecret
+                    });
+
+                    _accessToken = result.access_token;
+                }
+            }
+            return _accessToken;
+        }
+
+        /// <summary>
         /// Makes a GET request to the Facebook server.
         /// </summary>
         /// <param name="path">The resource path or the resource url.</param>

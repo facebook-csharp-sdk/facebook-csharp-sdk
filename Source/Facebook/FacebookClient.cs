@@ -232,11 +232,13 @@ namespace Facebook
         }
 
 
-        public string getAccessTokenFromCode(string code, string redirect_uri) { 
-        
-        }
 
-        public string getAccessTokenFromCode(Uri uri)
+        /// <summary>
+        /// Get accesstoken from Code,after redirect Facebook authorizetion using response_type = code
+        /// </summary>
+        /// <param name="uri">uri</param>
+        /// <param name="redirectUri">redirectUri</param>
+        public string getAccessTokenFromCode(Uri uri, string redirectUri)
         {
             FacebookOAuthResult oauthResult;
             if (this.TryParseOAuthCallbackUrl(uri, out oauthResult))
@@ -244,12 +246,12 @@ namespace Facebook
                 // The url is the result of OAuth 2.0 authentication
                 if (oauthResult.IsSuccess)
                 {
-                    dynamic result = this.Get("/oauth/access_token", new
+                    dynamic result = Get("/oauth/access_token", new
                     {
-                        client_id = "369427636414937",
-                        redirect_uri = "",
+                        client_id = this._appId,
+                        redirect_uri = redirectUri,
                         code = oauthResult.Code,
-                        client_secret = "6ccddd805af4ca4e2eaa19a5a150d91f"
+                        client_secret = this._appSecret
                     });
 
                     _accessToken = result.access_token;
