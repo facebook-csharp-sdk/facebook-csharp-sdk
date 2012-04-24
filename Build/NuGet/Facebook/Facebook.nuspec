@@ -16,7 +16,7 @@
     </metadata>
     <files>
         <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
-        <file src="..\..\..\README.md" target = "readme.txt" />
+        <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
         <file src="..\..\..\Build\NuGet\Facebook\serializers\*" target = "serializers" />
         <file src="..\..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
         <file src="..\..\..\Bin\Release\net45\*.xml" target = "lib\net45" />

@@ -16,7 +16,7 @@
     </metadata>
     <files>
         <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
-        <file src="..\..\..\README.md" target = "README.md" />
+        <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
         <file src="..\..\..\Source\Facebook\**\*.cs" target = "src\Facebook" />
         <file src="..\..\..\Source\Facebook\**\*.resx" target = "src\Facebook" />
         <file src="..\..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
