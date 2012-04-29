@@ -419,7 +419,7 @@ namespace Facebook
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "{0} is only supported for http get method.", ETagKey), "httpMethod");
 
                 // for GET,DELETE
-                if (mediaObjects.Count > 0 && mediaStreams.Count > 0)
+                if (mediaObjects.Count > 0 || mediaStreams.Count > 0)
                     throw new InvalidOperationException("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.");
 
 #if SILVERLIGHT && !WINDOWS_PHONE

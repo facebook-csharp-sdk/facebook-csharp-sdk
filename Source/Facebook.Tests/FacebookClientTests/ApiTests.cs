@@ -309,5 +309,138 @@
                 Assert.Throws<ArgumentException>(() => fb.Get("4", parameters));
             }
         }
+
+        public class Attachments
+
+        {
+            [Fact]
+            public void FacebookMediaObjectInGet()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .FakeResponse()
+                               .GetFakeHttpWebRequestWrapper();
+
+                var parameters = new Dictionary<string, object>();
+                parameters["file"] = new FacebookMediaObject();
+
+                Exception exception = null;
+                try
+                {
+                    fb.Get("me/feed", parameters);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+
+                Assert.NotNull(exception);
+                Assert.IsType<InvalidOperationException>(exception);
+                Assert.Equal("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.", exception.Message);
+            }
+
+            [Fact]
+            public void FacebookMediaStreamInGet()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .FakeResponse()
+                               .GetFakeHttpWebRequestWrapper();
+
+                var parameters = new Dictionary<string, object>();
+                parameters["file"] = new FacebookMediaStream();
+
+                Exception exception = null;
+                try
+                {
+                    fb.Get("me/feed", parameters);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+
+                Assert.NotNull(exception);
+                Assert.IsType<InvalidOperationException>(exception);
+                Assert.Equal("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.", exception.Message);
+            }
+
+            [Fact]
+            public void FacebookMediaObjectInDelete()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .FakeResponse()
+                               .GetFakeHttpWebRequestWrapper();
+
+                var parameters = new Dictionary<string, object>();
+                parameters["file"] = new FacebookMediaObject();
+
+                Exception exception = null;
+                try
+                {
+                    fb.Delete("id", parameters);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+
+                Assert.NotNull(exception);
+                Assert.IsType<InvalidOperationException>(exception);
+                Assert.Equal("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.", exception.Message);
+            }
+
+            [Fact]
+            public void FacebookMediaStreamInDelete()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .FakeResponse()
+                               .GetFakeHttpWebRequestWrapper();
+
+                var parameters = new Dictionary<string, object>();
+                parameters["file"] = new FacebookMediaStream();
+
+                Exception exception = null;
+                try
+                {
+                    fb.Delete("id", parameters);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+
+                Assert.NotNull(exception);
+                Assert.IsType<InvalidOperationException>(exception);
+                Assert.Equal("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.", exception.Message);
+            }
+        }
+
     }
 }
