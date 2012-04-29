@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using global::Facebook;
     using Xunit;
@@ -465,9 +466,11 @@
                                );
 
                 var parameters = new Dictionary<string, object>();
-                parameters["_etag_"] = string.Empty;
+                parameters["_etag_"] = "\"539feb8aee5c3d20a2ebacd02db380b27243b255\"";
 
                 dynamic result = fb.Get("4", parameters);
+
+                Assert.Equal("\"\"539feb8aee5c3d20a2ebacd02db380b27243b255\"\"", fakeRequest.Headers["If-None-Match"]);
 
                 Assert.Equal(HttpStatusCode.NotModified, fakeResponse.StatusCode);
 
@@ -480,8 +483,60 @@
                 Assert.Equal("text/javascript; charset=UTF-8", headers["Content-Type"]);
                 Assert.Equal("548768", headers["X-FB-Rev"]);
                 Assert.Equal("nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=", headers["X-FB-Debug"]);
-            }
-        }
 
+            }
+
+            [Fact]
+            public void EmptyETag()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .WithRequestUri(uri)
+                               .FakeResponse(out fakeResponse)
+                               .WithResponseStreamAs(
+                                   "{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}")
+                               .WithContentType("text/javascript; charset=UTF-8")
+                               .WithStatusCode(200)
+                               .WithHeader("X-FB-Rev", "548768")
+                               .WithHeader("X-FB-Debug", "nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=")
+                               .GetFakeHttpWebRequestWrapper();
+
+                var parameters = new Dictionary<string, object>();
+                parameters["_etag_"] = "";
+
+                dynamic result = fb.Get("4", parameters);
+
+                Assert.Equal("GET", fakeRequest.Method);
+                Assert.Equal("https://graph.facebook.com/4", fakeRequest.RequestUri.AbsoluteUri);
+                Assert.True(fakeRequest.ContentLength == 0);
+
+                Assert.False(fakeRequest.Headers.AllKeys.Contains("If-None-Match"));
+                Assert.Equal(HttpStatusCode.OK, fakeResponse.StatusCode);
+
+                Assert.IsAssignableFrom<IDictionary<string, object>>(result);
+                Assert.True(result.Count == 2);
+                Assert.True(result.ContainsKey("headers"));
+                Assert.True(result.ContainsKey("body"));
+
+                var headers = result.headers;
+                Assert.Equal("text/javascript; charset=UTF-8", headers["Content-Type"]);
+                Assert.Equal("548768", headers["X-FB-Rev"]);
+                Assert.Equal("nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=", headers["X-FB-Debug"]);
+
+                var body = result.body;
+
+                Assert.IsAssignableFrom<IDictionary<string, object>>(body);
+                Assert.Equal("4", body.id);
+                Assert.Equal("Mark Zuckerberg", body.name);
+            }
+
+
+        }
     }
 }

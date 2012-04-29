@@ -10,10 +10,16 @@
         private Uri _uri;
         private Func<HttpWebResponseWrapper> _getResponse;
         private Func<Stream> _getRequestStream;
+        private WebHeaderCollection _headers;
 
         public override Uri RequestUri { get { return _uri; } }
         public override string Method { get; set; }
         public override string ContentType { get; set; }
+        public override WebHeaderCollection Headers
+        {
+            get { return _headers; }
+            set { _headers = value; }
+        }
 
 #if !(WINDOWS_PHONE || NETFX_CORE)
         public override long ContentLength { get; set; }
@@ -27,6 +33,11 @@
 #if !(NETFX_CORE)
         public override string UserAgent { get; set; }
 #endif
+
+        public FakeHttpWebRequestWrapper()
+        {
+            Headers = new WebHeaderCollection();
+        }
 
         public override HttpWebResponseWrapper GetResponse()
         {
@@ -55,6 +66,11 @@
         {
             _getResponse = onGetResponse;
             return this;
+        }
+
+        public FakeHttpWebResponseWrapper FakeResponse(out FakeHttpWebResponseWrapper fakeResponse)
+        {
+            return fakeResponse = FakeResponse();
         }
     }
 
