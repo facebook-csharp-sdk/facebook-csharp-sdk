@@ -664,6 +664,19 @@ namespace Facebook
             }
         }
 
+        [System.Diagnostics.DebuggerStepThrough]
+        private static object NotModifiedResponse(HttpWebResponseWrapper response)
+        {
+            var jsonObject = new JsonObject();
+            var headers = new JsonObject();
+
+            foreach (var headerName in response.Headers.AllKeys)
+                headers[headerName] = response.Headers[headerName];
+
+            jsonObject["headers"] = headers;
+            return jsonObject;
+        }
+
         private void SerializeParameters(IDictionary<string, object> parameters)
         {
             var keysThatAreNotString = new List<string>();

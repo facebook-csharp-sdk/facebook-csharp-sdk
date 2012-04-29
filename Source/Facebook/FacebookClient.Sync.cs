@@ -75,16 +75,7 @@ namespace Facebook
             {
                 var response = httpHelper.HttpWebResponse;
                 if (response.StatusCode == HttpStatusCode.NotModified)
-                {
-                    var jsonObject = new JsonObject();
-                    var headers = new JsonObject();
-
-                    foreach (var headerName in response.Headers.AllKeys)
-                        headers[headerName] = response.Headers[headerName];
-
-                    jsonObject["headers"] = headers;
-                    return jsonObject;
-                }
+                    return NotModifiedResponse(response);
 
                 using (var reader = new StreamReader(stream))
                 {
