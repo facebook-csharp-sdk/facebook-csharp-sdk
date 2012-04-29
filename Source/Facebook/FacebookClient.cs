@@ -633,14 +633,7 @@ namespace Facebook
                 {
                     if (containsEtag && httpHelper != null)
                     {
-                        var json = new JsonObject();
-                        var response = httpHelper.HttpWebResponse;
-
-                        var headers = new JsonObject();
-                        foreach (var headerName in response.Headers.AllKeys)
-                            headers[headerName] = response.Headers[headerName];
-
-                        json["headers"] = headers;
+                        var json = NotModifiedResponse(httpHelper.HttpWebResponse);
                         json["body"] = result;
 
                         return json;
@@ -665,7 +658,7 @@ namespace Facebook
         }
 
         [System.Diagnostics.DebuggerStepThrough]
-        private static object NotModifiedResponse(HttpWebResponseWrapper response)
+        private static IDictionary<string, object> NotModifiedResponse(HttpWebResponseWrapper response)
         {
             var jsonObject = new JsonObject();
             var headers = new JsonObject();

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using global::Facebook;
     using Xunit;
 
@@ -311,7 +312,6 @@
         }
 
         public class Attachments
-
         {
             [Fact]
             public void FacebookMediaObjectInGet()
@@ -439,6 +439,47 @@
                 Assert.NotNull(exception);
                 Assert.IsType<InvalidOperationException>(exception);
                 Assert.Equal("Attachments (FacebookMediaObject/FacebookMediaStream) are valid only in POST requests.", exception.Message);
+            }
+        }
+
+        public class ETag
+        {
+            [Fact]
+            public void NotModifedRespnse()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .WithRequestUri(uri)
+                               .FakeResponse()
+                               .As304NotModified(
+                                   res => fakeResponse = res
+                                              .WithContentType("text/javascript; charset=UTF-8")
+                                              .WithHeader("X-FB-Rev", "548768")
+                                              .WithHeader("X-FB-Debug", "nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=")
+                               );
+
+                var parameters = new Dictionary<string, object>();
+                parameters["_etag_"] = string.Empty;
+
+                dynamic result = fb.Get("4", parameters);
+
+                Assert.Equal(HttpStatusCode.NotModified, fakeResponse.StatusCode);
+
+                Assert.IsAssignableFrom<IDictionary<string, object>>(result);
+                Assert.True(result.Count == 1);
+                Assert.True(result.ContainsKey("headers"));
+                Assert.False(result.ContainsKey("body"));
+
+                var headers = result.headers;
+                Assert.Equal("text/javascript; charset=UTF-8", headers["Content-Type"]);
+                Assert.Equal("548768", headers["X-FB-Rev"]);
+                Assert.Equal("nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=", headers["X-FB-Debug"]);
             }
         }
 
