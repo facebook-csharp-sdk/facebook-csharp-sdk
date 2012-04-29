@@ -70,18 +70,10 @@ namespace Facebook
                 }
             }
 
-            Stream responseStream = null;
-            object result = null;
-            bool read = false;
-            try
+            string responseString;
+            using (var stream = httpHelper.OpenRead())
             {
-                responseStream = httpHelper.OpenRead();
-                read = true;
-            }
-            catch (WebExceptionWrapper ex)
-            {
-                var response = ex.GetResponse();
-                if (response == null) throw;
+                var response = httpHelper.HttpWebResponse;
                 if (response.StatusCode == HttpStatusCode.NotModified)
                 {
                     var jsonObject = new JsonObject();
@@ -91,32 +83,16 @@ namespace Facebook
                         headers[headerName] = response.Headers[headerName];
 
                     jsonObject["headers"] = headers;
-                    result = jsonObject;
+                    return jsonObject;
                 }
-                else
-                {
-                    responseStream = httpHelper.OpenRead();
-                    read = true;
-                }
-            }
-            finally
-            {
-                if (read)
-                {
-                    string responseString;
-                    using (var stream = responseStream)
-                    {
-                        using (var reader = new StreamReader(stream))
-                        {
-                            responseString = reader.ReadToEnd();
-                        }
-                    }
 
-                    result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, batchEtags);
+                using (var reader = new StreamReader(stream))
+                {
+                    responseString = reader.ReadToEnd();
                 }
             }
 
-            return result;
+            return ProcessResponse(httpHelper, responseString, resultType, containsEtag, batchEtags);
         }
 
         /// <summary>
@@ -135,7 +111,7 @@ namespace Facebook
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The json result.</returns>
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]        
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
         public virtual object Get(object parameters)
         {
             return Get(null, parameters);
