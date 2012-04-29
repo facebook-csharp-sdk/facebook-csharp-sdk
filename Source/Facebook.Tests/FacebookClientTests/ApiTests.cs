@@ -1,5 +1,6 @@
 ﻿namespace Facebook.Tests.FacebookClientTests
 {
+    using System;
     using System.Collections.Generic;
     using global::Facebook;
     using Xunit;
@@ -231,7 +232,7 @@
             }
         }
 
-        public class WhenPropertyContainsFormat
+        public class WhenParameterContainsFormat
         {
             [Fact]
             public void OverrideFormatWithJsonString()
@@ -263,6 +264,49 @@
                 Assert.IsAssignableFrom<IDictionary<string, object>>(result);
                 Assert.Equal("4", result.id);
                 Assert.Equal("Mark Zuckerberg", result.name);
+            }
+        }
+
+        public class WhenParameterContainsMethodAsDelete
+        {
+            [Fact]
+            public void ShouldThrowError()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .FakeResponse()
+                               .GetFakeHttpWebRequestWrapper();
+
+                var parameters = new Dictionary<string, object>();
+                parameters["method"] = "delete";
+
+                Assert.Throws<ArgumentException>(() => fb.Get("4", parameters));
+            }
+
+            [Fact]
+            public void ShouldThrowErrorCaptialLetters()
+            {
+                var fb = new FacebookClient();
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .FakeResponse()
+                               .GetFakeHttpWebRequestWrapper();
+
+                var parameters = new Dictionary<string, object>();
+                parameters["method"] = "DELETE";
+
+                Assert.Throws<ArgumentException>(() => fb.Get("4", parameters));
             }
         }
     }
