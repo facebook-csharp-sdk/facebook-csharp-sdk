@@ -134,5 +134,38 @@
                 Assert.Equal("Mark Zuckerberg", result.name);
             }
         }
+
+        public class UseBeta
+        {
+            [Fact]
+            public void UseBetaUrlWhenSetToTrue()
+            {
+                var fb = new FacebookClient { UseFacebookBeta = true };
+
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .WithRequestUri(uri)
+                               .FakeResponse()
+                               .WithResponseStreamAs(
+                                   "{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}")
+                               .WithContentType("text/javascript; charset=UTF-8")
+                               .WithStatusCode(200)
+                               .GetFakeHttpWebRequestWrapper();
+
+                dynamic result = fb.Get("4");
+
+                Assert.Equal("GET", fakeRequest.Method);
+                Assert.Equal("https://graph.beta.facebook.com/4", fakeRequest.RequestUri.AbsoluteUri);
+                Assert.True(fakeRequest.ContentLength == 0);
+
+                Assert.IsAssignableFrom<IDictionary<string, object>>(result);
+                Assert.Equal("4", result.id);
+                Assert.Equal("Mark Zuckerberg", result.name);
+            }
+        }
     }
 }
