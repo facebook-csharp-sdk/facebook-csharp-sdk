@@ -272,6 +272,13 @@ namespace Facebook
             if (!parametersWithoutMediaObjects.ContainsKey("return_ssl_resources") && IsSecureConnection)
                 parametersWithoutMediaObjects["return_ssl_resources"] = true;
 
+            object accessTokenObj;
+            if (parametersWithoutMediaObjects.TryGetValue("access_token", out accessTokenObj))
+            {
+                if (string.IsNullOrEmpty(accessTokenObj as string))
+                    parametersWithoutMediaObjects.Remove("access_token");
+            }
+
             string etag = null;
             if (parametersWithoutMediaObjects.ContainsKey(ETagKey))
             {
