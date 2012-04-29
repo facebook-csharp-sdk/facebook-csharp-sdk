@@ -19,16 +19,16 @@
 
 namespace Facebookx.Tests
 {
-    using Xunit;
+    using System.Collections.Generic;
+    using Facebook.Tests;
     using global::Facebook;
-    using System;
+    using Xunit;
 
     public class DummyIntegrationTests
     {
         [Fact]
         public void Test()
         {
-           
         }
     }
 }
