@@ -139,6 +139,21 @@
         public FakeHttpWebResponseWrapper WithStatusCode(HttpStatusCode statusCode)
         {
             _statusCode = statusCode;
+            if (statusCode != HttpStatusCode.OK)
+            {
+                GetFakeHttpWebRequestWrapper()
+                    .OnGeResponse(() =>
+                                  {
+                                      var ex = new FakeWebExceptionWrapper()
+                                          .WithResponse(() => this)
+                                          .WithStatus(WebExceptionStatus.ProtocolError);
+
+                                      if (statusCode == HttpStatusCode.NotModified)
+                                          WithResponseStreamAs(() => new MemoryStream());
+
+                                      throw ex;
+                                  });
+            }
             return this;
         }
 
@@ -162,22 +177,6 @@
         public FakeHttpWebRequestWrapper GetFakeHttpWebRequestWrapper()
         {
             return _httpWebRequestWrapper;
-        }
-
-        public FakeHttpWebRequestWrapper As304NotModified(Action<FakeHttpWebResponseWrapper> responseCallback)
-        {
-            return GetFakeHttpWebRequestWrapper().OnGeResponse(() =>
-                                                                {
-                                                                    var res = new FakeHttpWebResponseWrapper(GetFakeHttpWebRequestWrapper())
-                                                                        .WithStatusCode(HttpStatusCode.NotModified)
-                                                                        .WithResponseStreamAs(() => new MemoryStream());
-
-                                                                    responseCallback(res);
-
-                                                                    throw new FakeWebExceptionWrapper()
-                                                                        .WithResponse(() => res)
-                                                                        .WithStatus(WebExceptionStatus.ProtocolError);
-                                                                });
         }
     }
 

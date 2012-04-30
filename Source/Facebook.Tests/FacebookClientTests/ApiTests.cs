@@ -9,33 +9,75 @@
 
     public class ApiHttpWebRequestTests
     {
-        [Fact]
-        public void GetTest()
+        public class Get
         {
-            var fb = new FacebookClient();
-            FakeHttpWebRequestWrapper fakeRequest = null;
-            FakeHttpWebResponseWrapper fakeResponse = null;
+            [Fact]
+            public void GetTest()
+            {
+                var fb = new FacebookClient();
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
 
-            fb.HttpWebRequestFactory =
-                uri => fakeRequest =
-                       new FakeHttpWebRequestWrapper()
-                           .WithRequestUri(uri)
-                           .FakeResponse()
-                           .WithResponseStreamAs(
-                               "{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}")
-                           .WithContentType("text/javascript; charset=UTF-8")
-                           .WithStatusCode(200)
-                           .GetFakeHttpWebRequestWrapper();
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .WithRequestUri(uri)
+                               .FakeResponse()
+                               .WithResponseStreamAs(
+                                   "{\"id\":\"4\",\"name\":\"Mark Zuckerberg\",\"first_name\":\"Mark\",\"last_name\":\"Zuckerberg\",\"link\":\"http:\\/\\/www.facebook.com\\/zuck\",\"username\":\"zuck\",\"gender\":\"male\",\"locale\":\"en_US\"}")
+                               .WithContentType("text/javascript; charset=UTF-8")
+                               .WithStatusCode(200)
+                               .GetFakeHttpWebRequestWrapper();
 
-            dynamic result = fb.Get("4");
+                dynamic result = fb.Get("4");
 
-            Assert.Equal("GET", fakeRequest.Method);
-            Assert.Equal("https://graph.facebook.com/4", fakeRequest.RequestUri.AbsoluteUri);
-            Assert.True(fakeRequest.ContentLength == 0);
+                Assert.Equal("GET", fakeRequest.Method);
+                Assert.Equal("https://graph.facebook.com/4", fakeRequest.RequestUri.AbsoluteUri);
+                Assert.True(fakeRequest.ContentLength == 0);
 
-            Assert.IsAssignableFrom<IDictionary<string, object>>(result);
-            Assert.Equal("4", result.id);
-            Assert.Equal("Mark Zuckerberg", result.name);
+                Assert.IsAssignableFrom<IDictionary<string, object>>(result);
+                Assert.Equal("4", result.id);
+                Assert.Equal("Mark Zuckerberg", result.name);
+            }
+
+            [Fact]
+            public void UnAuthorizedGet()
+            {
+                var fb = new FacebookClient();
+                FakeHttpWebRequestWrapper fakeRequest = null;
+                FakeHttpWebResponseWrapper fakeResponse = null;
+
+                fb.HttpWebRequestFactory =
+                    uri => fakeRequest =
+                           new FakeHttpWebRequestWrapper()
+                               .WithRequestUri(uri)
+                               .FakeResponse(out fakeResponse)
+                               .WithResponseStreamAs(
+                                   "{\"error\":{\"message\":\"An active access token must be used to query information about the current user.\",\"type\":\"OAuthException\",\"code\":2500}}")
+                               .WithContentType("text/javascript; charset=UTF-8")
+                               .WithStatusCode(400)
+                               .GetFakeHttpWebRequestWrapper();
+
+                FacebookOAuthException exception = null;
+                try
+                {
+                    dynamic result = fb.Get("me");
+                }
+                catch (FacebookOAuthException ex)
+                {
+                    exception = ex;
+                }
+
+                Assert.Equal("GET", fakeRequest.Method);
+                Assert.Equal("https://graph.facebook.com/me", fakeRequest.RequestUri.AbsoluteUri);
+                Assert.True(fakeRequest.ContentLength == 0);
+
+                Assert.Equal(HttpStatusCode.BadRequest, fakeResponse.StatusCode);
+
+                Assert.NotNull(exception);
+                Assert.Equal(2500, exception.ErrorCode);
+                Assert.Equal("OAuthException", exception.ErrorType);
+            }
         }
 
         public class WhenAccessTokenPropertyIsSet
@@ -457,13 +499,12 @@
                     uri => fakeRequest =
                            new FakeHttpWebRequestWrapper()
                                .WithRequestUri(uri)
-                               .FakeResponse()
-                               .As304NotModified(
-                                   res => fakeResponse = res
-                                              .WithContentType("text/javascript; charset=UTF-8")
-                                              .WithHeader("X-FB-Rev", "548768")
-                                              .WithHeader("X-FB-Debug", "nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=")
-                               );
+                               .FakeResponse(out fakeResponse)
+                               .WithContentType("text/javascript; charset=UTF-8")
+                               .WithHeader("X-FB-Rev", "548768")
+                               .WithHeader("X-FB-Debug", "nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=")
+                               .WithStatusCode(304)
+                               .GetFakeHttpWebRequestWrapper();
 
                 var parameters = new Dictionary<string, object>();
                 parameters["_etag_"] = "\"539feb8aee5c3d20a2ebacd02db380b27243b255\"";
@@ -483,7 +524,6 @@
                 Assert.Equal("text/javascript; charset=UTF-8", headers["Content-Type"]);
                 Assert.Equal("548768", headers["X-FB-Rev"]);
                 Assert.Equal("nHnIdW5fAtGdBkL+q1UqYFrtbWMxcb3zufUOMIWmC1w=", headers["X-FB-Debug"]);
-
             }
 
             [Fact]
