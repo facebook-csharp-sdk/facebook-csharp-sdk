@@ -399,8 +399,8 @@ namespace Facebook
 
             if (parametersWithoutMediaObjects.ContainsKey("access_token"))
             {
-                var accessToken = parametersWithoutMediaObjects["access_token"];
-                if (accessToken != null && (!(accessToken is string) || (!string.IsNullOrEmpty((string)accessToken))))
+                var accessToken = parametersWithoutMediaObjects["access_token"] as string;
+                if (!string.IsNullOrEmpty(accessToken) && accessToken != "null")
                     queryString.AppendFormat("access_token={0}&", accessToken);
 
                 parametersWithoutMediaObjects.Remove("access_token");
