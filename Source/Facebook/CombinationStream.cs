@@ -14,7 +14,7 @@
 //    limitations under the License.
 // </copyright>
 // <author>Prabir Shrestha (prabir.me)</author>
-// <website>https://github.com/facebook-csharp-sdk/CombinationStream</website>
+// <website>https://github.com/facebook-csharp-sdk/combination-stream</website>
 //-----------------------------------------------------------------------
 
 /*
