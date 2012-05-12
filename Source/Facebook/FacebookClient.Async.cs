@@ -114,153 +114,74 @@ namespace Facebook
             httpHelper.OpenReadCompleted +=
                 (o, e) =>
                 {
-                    FacebookApiEventArgs args;
                     if (e.Cancelled)
                     {
-                        args = new FacebookApiEventArgs(e.Error, true, userState, null);
+                        OnCompleted(httpMethod, new FacebookApiEventArgs(null, true, userState, null));
                     }
-                    else if (e.Error == null)
+                    else if (e.Error != null)
                     {
-                        string responseString = null;
-
+                        OnCompleted(httpMethod, new FacebookApiEventArgs(e.Error, false, userState, null));
+                    }
+                    else
+                    {
+                        string responseString;
                         try
                         {
                             using (var stream = e.Result)
                             {
-#if NETFX_CORE
-                                bool compressed = false;
-                                
-                                var contentEncoding = httpHelper.HttpWebResponse.Headers.AllKeys.Contains("Content-Encoding") ? httpHelper.HttpWebResponse.Headers["Content-Encoding"] : null;
-                                if (contentEncoding != null)
+                                var response = httpHelper.HttpWebResponse;
+                                if (response.StatusCode == HttpStatusCode.NotModified)
                                 {
-                                    if (contentEncoding.IndexOf("gzip") != -1)
-                                    {
-                                        using (var uncompressedStream = new System.IO.Compression.GZipStream(stream, System.IO.Compression.CompressionMode.Decompress))
-                                        {
-                                            using (var reader = new StreamReader(uncompressedStream))
-                                            {
-                                                responseString = reader.ReadToEnd();
-                                            }
-                                        }
-
-                                        compressed = true;
-                                    }
-                                    else if (contentEncoding.IndexOf("deflate") != -1)
-                                    {
-                                        using (var uncompressedStream = new System.IO.Compression.DeflateStream(stream, System.IO.Compression.CompressionMode.Decompress))
-                                        {
-                                            using (var reader = new StreamReader(uncompressedStream))
-                                            {
-                                                responseString = reader.ReadToEnd();
-                                            }
-                                        }
-
-                                        compressed = true;
-                                    }
+                                    OnCompleted(httpMethod, new FacebookApiEventArgs(null, false, userState, NotModifiedResponse(response)));
+                                    return;
                                 }
-
-                                if (!compressed)
+                                else
                                 {
                                     using (var reader = new StreamReader(stream))
                                     {
                                         responseString = reader.ReadToEnd();
                                     }
                                 }
-#else
-                                var response = httpHelper.HttpWebResponse;
-                                if (response != null && response.StatusCode == HttpStatusCode.NotModified)
-                                {
-                                    var jsonObject = new JsonObject();
-                                    var headers = new JsonObject();
-
-                                    foreach (var headerName in response.Headers.AllKeys)
-                                        headers[headerName] = response.Headers[headerName];
-
-                                    jsonObject["headers"] = headers;
-                                    args = new FacebookApiEventArgs(null, false, userState, jsonObject);
-                                    OnCompleted(httpMethod, args);
-                                    return;
-                                }
-
-                                using (var reader = new StreamReader(stream))
-                                {
-                                    responseString = reader.ReadToEnd();
-                                }
-#endif
-                            }
-
-                            try
-                            {
-                                object result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, batchEtags);
-                                args = new FacebookApiEventArgs(null, false, userState, result);
-                            }
-                            catch (Exception ex)
-                            {
-                                args = new FacebookApiEventArgs(ex, false, userState, null);
                             }
                         }
                         catch (Exception ex)
                         {
-                            args = httpHelper.HttpWebRequest.IsCancelled ? new FacebookApiEventArgs(ex, true, userState, null) : new FacebookApiEventArgs(ex, false, userState, null);
+                            OnCompleted(httpMethod, httpHelper.HttpWebRequest.IsCancelled
+                                                        ? new FacebookApiEventArgs(null, true, userState, null)
+                                                        : new FacebookApiEventArgs(ex, false, userState, null));
+                            return;
+                        }
+
+                        try
+                        {
+                            var result = ProcessResponse(httpHelper, responseString, resultType, containsEtag, batchEtags);
+                            OnCompleted(httpMethod, new FacebookApiEventArgs(null, false, userState, result));
+                        }
+                        catch (Exception ex)
+                        {
+                            OnCompleted(httpMethod, new FacebookApiEventArgs(ex, false, userState, null));
                         }
                     }
-                    else
-                    {
-                        var webEx = e.Error as WebExceptionWrapper;
-                        if (webEx == null)
-                        {
-                            args = new FacebookApiEventArgs(e.Error, httpHelper.HttpWebRequest.IsCancelled, userState, null);
-                        }
-                        else
-                        {
-                            if (webEx.GetResponse() == null)
-                            {
-                                args = new FacebookApiEventArgs(webEx, false, userState, null);
-                            }
-                            else
-                            {
-                                var response = httpHelper.HttpWebResponse;
-                                if (response.StatusCode == HttpStatusCode.NotModified)
-                                {
-                                    var jsonObject = new JsonObject();
-                                    var headers = new JsonObject();
-
-                                    foreach (var headerName in response.Headers.AllKeys)
-                                        headers[headerName] = response.Headers[headerName];
-
-                                    jsonObject["headers"] = headers;
-                                    args = new FacebookApiEventArgs(null, false, userState, jsonObject);
-                                }
-                                else
-                                {
-                                    httpHelper.OpenReadAsync();
-                                    return;
-                                }
-                            }
-                        }
-                    }
-
-                    OnCompleted(httpMethod, args);
                 };
 
-            if (input == null)
+            if (input != null)
             {
-                httpHelper.OpenReadAsync();
-            }
-            else
-            {
-                // we have a request body so write
                 httpHelper.OpenWriteCompleted +=
                     (o, e) =>
                     {
-                        FacebookApiEventArgs args;
                         if (e.Cancelled)
                         {
-                            input.Dispose();
-                            args = new FacebookApiEventArgs(e.Error, true, userState, null);
+                            var args = new FacebookApiEventArgs(null, true, userState, null);
+                            OnCompleted(httpMethod, args);
                         }
-                        else if (e.Error == null)
+                        else if (e.Error != null)
                         {
+                            var args = new FacebookApiEventArgs(e.Error, false, userState, null);
+                            OnCompleted(httpMethod, args);
+                        }
+                        else
+                        {
+                            bool finallyError = false;
                             try
                             {
                                 using (var stream = e.Result)
@@ -293,40 +214,46 @@ namespace Facebook
                                         }
                                     }
                                 }
-
-                                httpHelper.OpenReadAsync();
+                            }
+                            catch (WebExceptionWrapper ex)
+                            {
+                                if (httpHelper.HttpWebRequest.IsCancelled)
+                                    OnCompleted(httpMethod, new FacebookApiEventArgs(null, true, userState, null));
+                                else if (ex.GetResponse() == null)
+                                    OnCompleted(httpMethod, new FacebookApiEventArgs(ex, false, userState, null));
                                 return;
                             }
                             catch (Exception ex)
                             {
-                                args = new FacebookApiEventArgs(ex, httpHelper.HttpWebRequest.IsCancelled, userState, null);
+                                OnCompleted(httpMethod,
+                                            httpHelper.HttpWebRequest.IsCancelled
+                                                ? new FacebookApiEventArgs(null, true, userState, null)
+                                                : new FacebookApiEventArgs(ex, false, userState, null));
+                                return;
                             }
                             finally
                             {
-                                input.Dispose();
-                            }
-                        }
-                        else
-                        {
-                            input.Dispose();
-                            var webExceptionWrapper = e.Error as WebExceptionWrapper;
-                            if (webExceptionWrapper != null)
-                            {
-                                var ex = webExceptionWrapper;
-                                if (ex.GetResponse() != null)
+                                try
                                 {
-                                    httpHelper.OpenReadAsync();
-                                    return;
+                                    input.Dispose();
+                                }
+                                catch (Exception ex)
+                                {
+                                    finallyError = true;
+                                    OnCompleted(httpMethod, new FacebookApiEventArgs(ex, false, userState, null));
                                 }
                             }
 
-                            args = new FacebookApiEventArgs(e.Error, false, userState, null);
+                            if (!finallyError)
+                                httpHelper.OpenReadAsync();
                         }
-
-                        OnCompleted(httpMethod, args);
                     };
 
                 httpHelper.OpenWriteAsync();
+            }
+            else
+            {
+                httpHelper.OpenReadAsync();
             }
         }
 

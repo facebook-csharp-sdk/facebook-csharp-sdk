@@ -563,9 +563,6 @@ namespace Facebook
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.AllowWriteStreamBuffering = false;
 #endif
-#if NETFX_CORE
-            request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
-#endif
 
             if (contentLength.HasValue)
                 request.TrySetContentLength(contentLength.Value);

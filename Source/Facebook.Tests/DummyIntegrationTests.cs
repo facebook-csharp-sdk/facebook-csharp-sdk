@@ -23,6 +23,8 @@ namespace Facebookx.Tests
     using Facebook.Tests;
     using global::Facebook;
     using Xunit;
+    using System;
+    using System.Threading;
 
     public class DummyIntegrationTests
     {
