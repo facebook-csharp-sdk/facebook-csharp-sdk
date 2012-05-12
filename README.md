@@ -11,11 +11,11 @@ The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windo
 does not support NuGet Package Manager, please download the command line version of NuGet.exe and run the following
 command.*
 
-    nuget install facebook
+    nuget install Facebook
     
 If you would like to get an older version of the the binaries please use the following command.
 
-    nuget install facebook -v 5.4.1
+    nuget install Facebook -v 5.4.1
     
 ## Documentation
 You can find the documentation for this project at [http://csharpsdk.org](http://csharpsdk.org).
