@@ -72,6 +72,7 @@
     <Compile Include="DateTimeConverterTests.cs" />
     <Compile Include="DummyIntegrationTests.cs" />
     <Compile Include="FacebookClientTests\ConstructorTests.cs" />
+    <Compile Include="FacebookClientTests\ParseSignedRequestTests.cs" />
     <Compile Include="FacebookClientTests\GetLoginUrlTests.cs" />
     <Compile Include="FacebookClientTests\LegacyRestApiReadOnlyCallsTest.cs" />
     <Compile Include="FacebookClientTests\ParseOAuthCallbackUrlTests.cs" />
