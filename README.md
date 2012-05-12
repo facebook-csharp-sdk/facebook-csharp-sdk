@@ -30,7 +30,9 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 ## Features
 * NuGet Packages Available ([Facebook](http://nuget.org/packages/Facebook) and [Facebook.channel](http://nuget.org/packages/Facebook.channel))
 * Compatible with all Facebook Graph and REST API methods.
-* Supports Facebook’s most current authentication systems.
+* Supports photo/video uploads
+* Supports batch requests and etags
+* Supports Facebook's most current authentication systems.
 * Sample applications and documentation are provided to get you started quickly.
 
 ## Supported Platforms
