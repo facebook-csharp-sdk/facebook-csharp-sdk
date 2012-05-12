@@ -43,4 +43,6 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * Silverlight 5
 * Windows Phone 7.1 (Mango)
  
+## Contribute
 
+Please refer to our official docs on [Contributing to Facebook C# SDK](http://csharpsdk.org/docs/contribute) for more details.
