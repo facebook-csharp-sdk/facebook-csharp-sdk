@@ -1302,7 +1302,17 @@ namespace Facebook
         protected virtual void OnOpenReadCompleted(OpenReadCompletedEventArgs args)
         {
             if (OpenReadCompleted != null)
-                OpenReadCompleted(this, args);
+            {
+                try
+                {
+                    OpenReadCompleted(this, args);
+                }
+                catch
+                {
+                    // user is supposed to handle their own exception.
+                    // this also prevents OnOpenReadCompleted being called multiple times.
+                }
+            }
         }
 
         /// <summary>
@@ -1312,7 +1322,17 @@ namespace Facebook
         protected virtual void OnOpenWriteCompleted(OpenWriteCompletedEventArgs args)
         {
             if (OpenWriteCompleted != null)
-                OpenWriteCompleted(this, args);
+            {
+                try
+                {
+                    OpenWriteCompleted(this, args);
+                }
+                catch
+                {
+                    // user is supposed to handle their own exception.
+                    // this also prevents OnOpenWriteCompleted being called multiple times.
+                }
+            }
         }
 
         #region UrlEncoding/UrlDecoding
