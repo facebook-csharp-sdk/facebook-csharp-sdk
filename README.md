@@ -28,7 +28,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 [Facebook Change Log](https://developers.facebook.com/docs/changelog/)
 
 ## Features
-* NuGet Packages Available (Facebook)
+* NuGet Packages Available ([Facebook](http://nuget.org/packages/Facebook) and [Facebook.channel](http://nuget.org/packages/Facebook.channel))
 * Compatible with all Facebook Graph and REST API methods.
 * Supports Facebook’s most current authentication systems.
 * Sample applications and documentation are provided to get you started quickly.
