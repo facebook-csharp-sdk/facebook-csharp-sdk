@@ -8,7 +8,7 @@ The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windo
     Install-Package Facebook
 
 *Binaries for Facebook C# SDK are only distributed via nuget. For those using older versions of Visual Studio that
-does not support NuGet Package Manager, please download the command line version of NuGet.exe and run the following
+does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
 command.*
 
     nuget install Facebook
