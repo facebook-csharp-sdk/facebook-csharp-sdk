@@ -20,6 +20,7 @@
 namespace Facebook.Tests
 {
     using System;
+    using System.Globalization;
     using Facebook;
     using Xunit;
 
@@ -89,6 +90,18 @@ namespace Facebook.Tests
                     Assert.Equal(1327774473, result);
                 }
             }
+
+            [Fact]
+            public void ShouldNotContainDecimal()
+            {
+                var dateTime = new DateTime(2012, 1, 28, 18, 14, 33, 18, DateTimeKind.Utc);
+
+                var result = DateTimeConvertor.ToUnixTime(dateTime);
+
+                Assert.DoesNotContain(".", result.ToString(CultureInfo.InvariantCulture));
+                Assert.Equal("1327774473", result.ToString(CultureInfo.InvariantCulture));
+            }
+
         }
 
         public class Iso8601FormattedDateTime

@@ -75,7 +75,7 @@ namespace Facebook
         /// <returns>The unix date time.</returns>
         public static double ToUnixTime(DateTime dateTime)
         {
-            return (dateTime.ToUniversalTime() - Epoch).TotalSeconds;
+            return Math.Round((dateTime.ToUniversalTime() - Epoch).TotalSeconds);
         }
 
         /// <summary>
