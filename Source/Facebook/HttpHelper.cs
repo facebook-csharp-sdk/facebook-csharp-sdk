@@ -19,12 +19,14 @@
 
 // Install-Package HttpHelper
 
+//#define HTTPHELPER_PORTABLE_LIBRARY
 //#define HTTPHELPER_TPL
 //#define HTTPHELPER_HELPERS
 //#define HTTPHELPER_STREAM
-//#define HTTPHELPER_NOURLENCODING
+//#define HTTPHELPER_NO_URLENCODING
 //#define HTTPHELPER_HTMLENCODING
-//#define HTTPHELPER_HTTPBASIC_AUTHENTICATION
+//#define HTTPHELPER_NO_HTTPBASIC_AUTHENTICATION
+//#define HTTPHELPER_NO_OAUTH
 //#define HTTPHELPER_PUBLIC
 
 #if NETFX_CORE
@@ -35,6 +37,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -104,7 +107,7 @@ namespace Facebook
             set { _httpWebRequest.Headers = value; }
         }
 
-#if !NETFX_CORE
+#if !(NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
         /// <summary>
         /// Gets or sets a value that indicates whether the request should follow redirection responses.
         /// </summary>
@@ -115,7 +118,7 @@ namespace Facebook
         }
 #endif
 
-#if !(WINDOWS_PHONE || NETFX_CORE)
+#if !(WINDOWS_PHONE || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
         /// <summary>
         /// Gets or sets the content length.
@@ -136,7 +139,7 @@ namespace Facebook
         }
 #endif
 
-#if !NETFX_CORE
+#if !(NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
         /// <summary>
         /// Gets or sets the user agent.
         /// </summary>
@@ -185,6 +188,16 @@ namespace Facebook
 #if !SILVERLIGHT
 
 #if !NETFX_CORE
+
+#if !HTTPHELPER_PORTABLE_LIBRARY
+        /// <summary>
+        /// Gets or sets the proxy.
+        /// </summary>
+        public virtual IWebProxy Proxy
+        {
+            get { return _httpWebRequest.Proxy; }
+            set { _httpWebRequest.Proxy = value; }
+        }
 
         /// <summary>
         /// Gets the service point to use for the request.
@@ -265,17 +278,9 @@ namespace Facebook
                 get { return _httpWebRequest.TransferEncoding; }
                 set { _httpWebRequest.TransferEncoding = value; }
         }
-
 #endif
 
-        /// <summary>
-        /// Gets or sets the proxy.
-        /// </summary>
-        public virtual IWebProxy Proxy
-        {
-            get { return _httpWebRequest.Proxy; }
-            set { _httpWebRequest.Proxy = value; }
-        }
+#endif
 
 #endif
 
@@ -290,7 +295,7 @@ namespace Facebook
         /// </returns>
         public virtual bool TrySetContentLength(long contentLength)
         {
-#if !(WINDOWS_PHONE || NETFX_CORE)
+#if !(WINDOWS_PHONE || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
             ContentLength = contentLength;
             return true;
 #else
@@ -309,7 +314,7 @@ namespace Facebook
         /// </returns>
         public virtual bool TrySetUserAgent(string userAgent)
         {
-#if (!(SILVERLIGHT || NETFX_CORE) || WINDOWS_PHONE)
+#if (!(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY) || WINDOWS_PHONE)
             UserAgent = userAgent;
             return true;
 #else
@@ -403,7 +408,7 @@ namespace Facebook
 
 #endif
 
-#if !(SILVERLIGHT || NETFX_CORE)
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
         /// <summary>
         /// Gets the response.
@@ -553,7 +558,7 @@ namespace Facebook
         }
 
 #if !SILVERLIGHT
-#if !NETFX_CORE
+#if !(NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
         /// <summary>
         /// Gets the content encoding.
@@ -621,7 +626,7 @@ namespace Facebook
     /// <summary>
     /// Wrapper for web exceptions.
     /// </summary>
-#if !(NETFX_CORE || SILVERLIGHT)
+#if !(NETFX_CORE || SILVERLIGHT || HTTPHELPER_PORTABLE_LIBRARY)
         [Serializable]
 #endif
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -638,6 +643,16 @@ namespace Facebook
         /// <summary>
         /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
         /// </summary>
+        /// <param name="message">Error message.</param>
+        /// <param name="innerException">The inner exception.</param>
+        protected WebExceptionWrapper(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
+        /// </summary>
         public WebExceptionWrapper(WebException webException)
             : base(webException == null ? null : webException.Message, webException == null ? null : webException.InnerException)
         {
@@ -645,7 +660,7 @@ namespace Facebook
             _status = webException == null ? WebExceptionStatus.UnknownError : webException.Status;
         }
 
-#if !(NETFX_CORE || SILVERLIGHT)
+#if !(NETFX_CORE || SILVERLIGHT || HTTPHELPER_PORTABLE_LIBRARY)
         /// <summary>
         /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
         /// </summary>
@@ -805,6 +820,28 @@ namespace Facebook
         private const string ErrorPerformingHttpRequest = "An error occurred performing a http web request.";
 
         /// <summary>
+        /// application/form-url-encoded content type
+        /// </summary>
+        public const string ApplicationFormUrlEncodedContentType = "application/form-url-encoded";
+
+        /// <summary>
+        /// application/x-www-form-urlencoded content type
+        /// </summary>
+        public const string ApplicationXWWWFormUrlEncodedContentType = "application/x-www-form-urlencoded";
+
+        /// <summary>
+        /// Returns multipart/form-data; boundary=.....
+        /// </summary>
+        /// <param name="boundary">The multipart boundary</param>
+        /// <returns>
+        /// multipart/form-data; boundary=... content type
+        /// </returns>
+        public static string GetMultipartFormDataBoundaryContentType(string boundary)
+        {
+            return string.Concat("multipart/form-data; boundary=", boundary);
+        }
+
+        /// <summary>
         /// Gets the inner exception.
         /// </summary>
         public Exception InnerException
@@ -874,7 +911,7 @@ namespace Facebook
             get { return _httpWebResponse; }
         }
 
-#if !(SILVERLIGHT || NETFX_CORE)
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
         /// <summary>
         /// Opens the request stream synchronously for write.
@@ -969,7 +1006,7 @@ namespace Facebook
 
                     int timeout = 0;
 
-#if !(SILVERLIGHT || NETFX_CORE)
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
                     if (HttpWebRequest.Timeout > 0)
                             timeout = HttpWebRequest.Timeout;
 #endif
@@ -979,7 +1016,7 @@ namespace Facebook
 
                     if (timeout > 0)
                     {
-#if NETFX_CORE
+#if NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY
                         // todo
 #else
                         ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, ScanTimoutCallback, userToken, timeout, true);
@@ -1337,7 +1374,7 @@ namespace Facebook
 
         #region UrlEncoding/UrlDecoding
 
-#if !HTTPHELPER_NOURLENCODING
+#if !HTTPHELPER_NO_URLENCODING
 
         /// <summary>
         /// Url encodes the specified string.
@@ -2196,7 +2233,7 @@ namespace Facebook
 
         #region Authentication
 
-#if HTTPHELPER_HTTPBASIC_AUTHENTICATION
+#if !HTTPHELPER_NO_HTTPBASIC_AUTHENTICATION
 
         /// <summary>
         /// Sets the http basic authorization header on the http web request.
@@ -2209,6 +2246,168 @@ namespace Facebook
         }
 
 #endif
+
+#if !HTTPHELPER_NO_OAUTH
+
+        /// <summary>
+        /// Generate OAuth Nonce
+        /// </summary>
+        public static string GenerateOAuthNonce()
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture)));
+        }
+
+        /// <summary>
+        /// Generate OAuth time stamp
+        /// </summary>
+        public static string GenerateOAuthTimestamp()
+        {
+            return Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds).ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static string GenerateOAuthAuthenticationHeader(string httpMethod, Uri urlWithoutQuery, IEnumerable<KeyValuePair<string, string>> parameters, string consumerKey, string consumerSecret, string token, string tokenSecret, string oauthSignatureMethod, string oauthNonce, string oauthTimestamp, string oauthVersion, HmacSha1Delegate hmacSha1)
+        {
+            if (string.IsNullOrEmpty(oauthNonce))
+                oauthNonce = GenerateOAuthNonce();
+            if (string.IsNullOrEmpty(oauthTimestamp))
+                oauthTimestamp = GenerateOAuthTimestamp();
+            if (string.IsNullOrEmpty(oauthVersion))
+                oauthVersion = "1.0";
+
+            string oauthSignature = GenerateOAuthSignature(httpMethod, urlWithoutQuery, parameters, consumerKey, consumerSecret, token, tokenSecret, oauthSignatureMethod, oauthNonce, oauthTimestamp, oauthVersion, hmacSha1);
+
+            var sb = new StringBuilder();
+            sb.AppendFormat("OAuth oauth_consumer_key=\"{0}\",oauth_nonce=\"{1}\",oauth_signature_method=\"{2}\",oauth_timestamp=\"{3}\",oauth_version=\"{4}\",oauth_signature=\"{5}\"",
+               UrlEncodeRfc3986(consumerKey), UrlEncodeRfc3986(oauthNonce), UrlEncodeRfc3986(oauthSignatureMethod), UrlEncodeRfc3986(oauthTimestamp), UrlEncodeRfc3986(oauthVersion), UrlEncodeRfc3986(oauthSignature));
+
+            if (!string.IsNullOrEmpty(token))
+                sb.AppendFormat(",oauth_token=\"{0}\"", UrlEncodeRfc3986(token));
+
+            if (parameters != null)
+            {
+                foreach (var kvp in parameters)
+                {
+                    if (kvp.Key.StartsWith("oauth_"))
+                        sb.AppendFormat(",{0}=\"{1}\"", UrlEncodeRfc3986(kvp.Key), UrlEncodeRfc3986(kvp.Value));
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public static string GenerateOAuthSignature(string httpMethod, Uri uriWithoutQuery, IEnumerable<KeyValuePair<string, string>> parameters, string consumerKey, string consumerSecret, string token, string tokenSecret, string oauthSignatureMethod, string oauthNonce, string oauthTimestamp, string oauthVersion, HmacSha1Delegate hmacSha1)
+        {
+            if (string.IsNullOrEmpty(httpMethod))
+                throw new ArgumentNullException("httpMethod");
+            if (uriWithoutQuery == null)
+                throw new ArgumentNullException("uriWithoutQuery");
+            if (string.IsNullOrEmpty(consumerKey))
+                throw new ArgumentNullException("consumerKey");
+            if (string.IsNullOrEmpty(oauthSignatureMethod))
+                throw new ArgumentNullException("oauthSignatureMethod");
+            if (string.IsNullOrEmpty(oauthNonce))
+                oauthNonce = GenerateOAuthNonce();
+            if (string.IsNullOrEmpty(oauthTimestamp))
+                oauthTimestamp = GenerateOAuthTimestamp();
+
+            if (string.IsNullOrEmpty(oauthVersion))
+                oauthVersion = "1.0";
+
+            var sortedParameters = new List<KeyValuePair<string, string>>
+                                    {
+                                        new KeyValuePair<string, string>("oauth_consumer_key", consumerKey),
+                                        new KeyValuePair<string, string>("oauth_nonce", oauthNonce),
+                                        new KeyValuePair<string, string>("oauth_signature_method", oauthSignatureMethod),
+                                        new KeyValuePair<string, string>("oauth_timestamp", oauthTimestamp),
+                                        new KeyValuePair<string, string>("oauth_version", oauthVersion)
+                                    };
+
+            if (!string.IsNullOrEmpty(token))
+                sortedParameters.Add(new KeyValuePair<string, string>("oauth_token", token));
+
+            if (parameters != null)
+                sortedParameters.AddRange(parameters);
+
+            sortedParameters.Sort(new OAuthQueryParameterComparer());
+
+            var normalizedUrl = new StringBuilder();
+            normalizedUrl.AppendFormat("{0}://{1}", uriWithoutQuery.Scheme, uriWithoutQuery.Host);
+            if (!((uriWithoutQuery.Scheme == "http" && uriWithoutQuery.Port == 80) || (uriWithoutQuery.Scheme == "https" && uriWithoutQuery.Port == 443)))
+                normalizedUrl.AppendFormat(":{0}", uriWithoutQuery.Port);
+            normalizedUrl.Append(uriWithoutQuery.AbsolutePath);
+
+            var normalizedRequestParameters = new StringBuilder();
+            foreach (var kvp in sortedParameters)
+                normalizedRequestParameters.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
+
+            if (normalizedRequestParameters.Length > 0)
+                normalizedRequestParameters.Length--;
+
+            var signatureBase = new StringBuilder();
+            signatureBase.AppendFormat("{0}&", httpMethod);
+            signatureBase.AppendFormat("{0}&", UrlEncodeRfc3986(normalizedUrl.ToString()));
+            signatureBase.AppendFormat("{0}", UrlEncodeRfc3986(normalizedRequestParameters.ToString()));
+
+            if (oauthSignatureMethod.Equals("HMAC-SHA1"))
+            {
+                if (string.IsNullOrEmpty(consumerSecret))
+                    throw new ArgumentNullException("consumerSecret");
+
+#if !HTTPHELPER_PORTABLE_LIBRARY
+                // HMACSHA1 for portable library can be found in the contrib project at http://pclcontrib.codeplex.com
+                if (hmacSha1 == null)
+                    hmacSha1 = HmacSha1;
+#endif
+
+                byte[] key = Encoding.UTF8.GetBytes(string.Format("{0}&{1}", UrlEncodeRfc3986(consumerSecret), string.IsNullOrEmpty(tokenSecret) ? string.Empty : UrlEncodeRfc3986(tokenSecret)));
+                return Convert.ToBase64String(hmacSha1(key, Encoding.UTF8.GetBytes(signatureBase.ToString())));
+            }
+
+            throw new NotSupportedException("Only HMAC-SHA1 supported.");
+        }
+
+        private class OAuthQueryParameterComparer : IComparer<KeyValuePair<string, string>>
+        {
+            public int Compare(KeyValuePair<string, string> x, KeyValuePair<string, string> y)
+            {
+                return x.Key == y.Key ? string.CompareOrdinal(x.Value, y.Value) : string.CompareOrdinal(x.Key, y.Key);
+            }
+        }
+
+#endif
+
+        public delegate byte[] HmacSha1Delegate(byte[] key, byte[] data);
+
+#if NETFX_CORE
+
+        public static byte[] HmacSha1(byte[] key, byte[] data)
+        {
+            var crypt = Windows.Security.Cryptography.Core.MacAlgorithmProvider.OpenAlgorithm("HMAC_SHA1");
+            var keyBuffer = Windows.Security.Cryptography.CryptographicBuffer.CreateFromByteArray(key);
+            var cryptKey = crypt.CreateKey(keyBuffer);
+
+            var dataBuffer = Windows.Security.Cryptography.CryptographicBuffer.CreateFromByteArray(data);
+            var signBuffer = Windows.Security.Cryptography.Core.CryptographicEngine.Sign(cryptKey, dataBuffer);
+
+            byte[] result;
+            Windows.Security.Cryptography.CryptographicBuffer.CopyToByteArray(signBuffer, out result);
+
+            return result;
+        }
+
+#elif !HTTPHELPER_PORTABLE_LIBRARY
+
+        /// <remarks>HMACSHA1 for portable library can be found in the contrib project at http://pclcontrib.codeplex.com</remarks>
+        public static byte[] HmacSha1(byte[] key, byte[] data)
+        {
+            using (var hmacSha1 = new System.Security.Cryptography.HMACSHA1(key))
+            {
+                return hmacSha1.ComputeHash(data);
+            }
+        }
+        
+#endif
+
         #endregion
     }
 }
