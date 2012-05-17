@@ -1,10 +1,12 @@
 var fs = require('fs'),
+    path = require('path'),
     njake = require('./Build/njake'),
     msbuild = njake.msbuild,
     xunit = njake.xunit,
     nuget = njake.nuget,
     assemblyinfo = njake.assemblyinfo,
     config = {
+        rootPath: __dirname,
         version: fs.readFileSync('VERSION', 'utf-8').split('\r\n')[0],
         fileVersion: fs.readFileSync('VERSION', 'utf-8').split('\r\n')[1]
     };
@@ -202,7 +204,7 @@ namespace('nuget', function () {
         task('nuget', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
-                package: 'Dist/NuGet/Facebook.' + config.fileVersion + '.nupkg'
+                package: path.join(config.rootPath, 'Dist/NuGet/Facebook.' + config.fileVersion + '.nupkg')
             })
         }, { async: true })
 
@@ -210,7 +212,7 @@ namespace('nuget', function () {
         task('symbolsource', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
-                package: 'Dist/SymbolSource/Facebook.' + config.fileVersion + '.nupkg',
+                package: path.join(config.rootPath, 'Dist/SymbolSource/Facebook.' + config.fileVersion + '.nupkg'),
                 source: nuget.sources.symbolSource
             })
         }, { async: true })
