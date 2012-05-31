@@ -39,7 +39,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * .NET 3.5 (Client Profile and Full Profile)
 * .NET 4.0 (Client Profile and Full Profile)
 * .NET 4.5 Beta (Visual Studio 11 Beta)
-* Windows 8 Metro Style Applications - WinRT (Windows 8 Consumer Preview)
+* Windows 8 Metro Style Applications - WinRT (Windows 8 Release Preview)
 * Silverlight 5
 * Windows Phone 7.1 (Mango)
  
