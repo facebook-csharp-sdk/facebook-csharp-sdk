@@ -47,3 +47,10 @@
 *.fsproj -text merge=union 
 *.dbproj -text merge=union 
 *.sln -text eol=crlf merge=union 
+
+.gitattributes -text
+*.cmd -text
+*.config -text
+*.xml -text
+Settings.StyleCop -text
+VERSION -text
