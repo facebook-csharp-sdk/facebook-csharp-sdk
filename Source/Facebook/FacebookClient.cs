@@ -244,6 +244,32 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or sets the default json serializer.
+        /// </summary>
+        /// <returns>
+        /// The default json serializer.
+        /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Func<object,string> DefaultJsonSerializer
+        {
+            get { return _defaultJsonSerializer; }
+            set { _defaultJsonSerializer = value ?? SimpleJson.SerializeObject; }
+        }
+
+        /// <summary>
+        /// Gets or sets the default json deserializer.
+        /// </summary>
+        /// <returns>
+        /// The default json deserializer.
+        /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Func<string, Type, object> DefaultJsonDeserializer
+        {
+            get { return _defaultJsonDeserializer; }
+            set { _defaultJsonDeserializer = value ?? SimpleJson.DeserializeObject; }
+        }
+
+        /// <summary>
         /// Sets the default http web request factory.
         /// </summary>
         /// <param name="httpWebRequestFactory"></param>
