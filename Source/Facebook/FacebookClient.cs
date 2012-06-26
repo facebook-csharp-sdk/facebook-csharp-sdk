@@ -244,6 +244,19 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets the default json serializer.
+        /// </summary>
+        /// <returns>
+        /// The default json serializer.
+        /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Func<object,string> DefaultJsonSerializer
+        {
+            get { return _defaultJsonSerializer; }
+            set { _defaultJsonSerializer = value ?? SimpleJson.SerializeObject; }
+        }
+
+            /// <summary>
         /// Sets the default http web request factory.
         /// </summary>
         /// <param name="httpWebRequestFactory"></param>
