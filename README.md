@@ -38,7 +38,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 ## Supported Platforms
 * .NET 3.5 (Client Profile and Full Profile)
 * .NET 4.0 (Client Profile and Full Profile)
-* .NET 4.5 Beta (Visual Studio 11 Beta)
+* .NET 4.5
 * Windows 8 Metro Style Applications - WinRT (Windows 8)
 * Silverlight 5
 * Windows Phone 7.1 (Mango)
