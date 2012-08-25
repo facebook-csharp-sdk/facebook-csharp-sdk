@@ -150,6 +150,7 @@ namespace('clean', function () {
 
 })
 
+desc('Clean all')
 task('clean', ['clean:all'], function () {
     jake.rmRf('Working/')
     jake.rmRf('Dist/')
