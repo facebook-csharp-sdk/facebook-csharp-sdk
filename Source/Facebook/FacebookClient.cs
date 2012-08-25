@@ -250,7 +250,7 @@ namespace Facebook
         /// The default json serializer.
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static Func<object,string> DefaultJsonSerializer
+        public static Func<object, string> DefaultJsonSerializer
         {
             get { return _defaultJsonSerializer; }
             set { _defaultJsonSerializer = value ?? SimpleJson.SerializeObject; }

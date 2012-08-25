@@ -8,14 +8,14 @@ The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windo
     Install-Package Facebook
 
 *Binaries for Facebook C# SDK are only distributed via nuget. For those using older versions of Visual Studio that
-does not support NuGet Package Manager, please download the command line version of NuGet.exe and run the following
+does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
 command.*
 
-    nuget install facebook
+    nuget install Facebook
     
 If you would like to get an older version of the the binaries please use the following command.
 
-    nuget install facebook -v 5.4.1
+    nuget install Facebook -v 5.4.1
     
 ## Documentation
 You can find the documentation for this project at [http://csharpsdk.org](http://csharpsdk.org).
@@ -28,17 +28,21 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 [Facebook Change Log](https://developers.facebook.com/docs/changelog/)
 
 ## Features
-* NuGet Packages Available (Facebook)
+* NuGet Packages Available ([Facebook](http://nuget.org/packages/Facebook) and [Facebook.channel](http://nuget.org/packages/Facebook.channel))
 * Compatible with all Facebook Graph and REST API methods.
-* Supports Facebook’s most current authentication systems.
+* Supports photo/video uploads
+* Supports batch requests and etags
+* Supports Facebook's most current authentication systems.
 * Sample applications and documentation are provided to get you started quickly.
 
 ## Supported Platforms
 * .NET 3.5 (Client Profile and Full Profile)
 * .NET 4.0 (Client Profile and Full Profile)
-* .NET 4.5 Beta (Visual Studio 11 Beta)
-* Windows 8 Metro Style Applications - WinRT (Windows 8 Consumer Preview)
+* .NET 4.5
+* Windows 8 Metro Style Applications - WinRT (Windows 8)
 * Silverlight 5
 * Windows Phone 7.1 (Mango)
  
+## Contribute
 
+Please refer to our official docs on [Contributing to Facebook C# SDK](http://csharpsdk.org/docs/contribute) for more details.
