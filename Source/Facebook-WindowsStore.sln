@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-WinRT", "Facebook\Facebook-WinRT.csproj", "{4D5581CB-93C2-4925-A3A5-E17E5DEF09D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook-WindowsStore", "Facebook\Facebook-WindowsStore.csproj", "{4D5581CB-93C2-4925-A3A5-E17E5DEF09D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

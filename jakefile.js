@@ -63,10 +63,10 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    desc('Build WinRT(Metro) binaries')
-    task('winrt', ['assemblyinfo:facebook'], function () {
+    desc('Build Windows Store binaries')
+    task('winstore', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook-WinRT.sln',
+            file: 'Source/Facebook-WindowsStore.sln',
             targets: ['Build']
         })
     }, { async: true })
@@ -87,7 +87,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:sl5', 'build:winrt'])
+    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:sl5', 'build:winstore'])
 
     task('mono', function (xbuildPath) {
         msbuild({
@@ -125,9 +125,9 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('winrt', function () {
+    task('winstore', function () {
         msbuild({
-            file: 'Source/Facebook-WinRT.sln',
+            file: 'Source/Facebook-WindowsStore.sln',
             targets: ['Clean']
         })
     }, { async: true })
@@ -146,7 +146,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:sl5', 'clean:winrt'])
+    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:sl5', 'clean:winstore'])
 
 })
 
