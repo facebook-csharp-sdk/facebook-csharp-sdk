@@ -66,12 +66,23 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="errorType">Type of the error.</param>
         /// <param name="errorCode">Code of the error.</param>
-        /// <param name="errorSubcode">Subcode of the error.</param>
-        public FacebookApiException(string message, string errorType, int errorCode, int errorSubcode)
+        public FacebookApiException(string message, string errorType, int errorCode)
             : this(String.Format(CultureInfo.InvariantCulture, "({0} - #{1}) {2}", errorType ?? "Unknown", errorCode, message))
         {
             ErrorType = errorType;
             ErrorCode = errorCode;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="errorType">Type of the error.</param>
+        /// <param name="errorCode">Code of the error.</param>
+        /// <param name="errorSubcode">Subcode of the error.</param>
+        public FacebookApiException(string message, string errorType, int errorCode, int errorSubcode)
+            : this(message, errorType, errorCode)
+        {
             ErrorSubcode = errorSubcode;
         }
 
