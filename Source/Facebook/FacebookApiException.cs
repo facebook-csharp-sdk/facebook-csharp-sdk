@@ -66,11 +66,13 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="errorType">Type of the error.</param>
         /// <param name="errorCode">Code of the error.</param>
-        public FacebookApiException(string message, string errorType, int errorCode)
+        /// <param name="errorSubcode">Subcode of the error.</param>
+        public FacebookApiException(string message, string errorType, int errorCode, int errorSubcode)
             : this(String.Format(CultureInfo.InvariantCulture, "({0} - #{1}) {2}", errorType ?? "Unknown", errorCode, message))
         {
             ErrorType = errorType;
             ErrorCode = errorCode;
+            ErrorSubcode = errorSubcode;
         }
 
         /// <summary>
@@ -108,5 +110,11 @@ namespace Facebook
         /// </summary>
         /// <value>The code of the error.</value>
         public int ErrorCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the error subcode.
+        /// </summary>
+        /// <value>The code of the error subcode.</value>
+        public int ErrorSubcode { get; set; }
     }
 }
