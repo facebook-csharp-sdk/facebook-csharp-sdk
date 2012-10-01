@@ -150,7 +150,19 @@ namespace Facebook
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
         public virtual object Get(string path, object parameters)
         {
-            return Api(HttpMethod.Get, path, parameters, null);
+            return Get(path, parameters, null);
+        }
+
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="resultType">The result type.</param>
+        /// <returns>The json result.</returns>
+        public virtual object Get(string path, object parameters, Type resultType)
+        {
+            return Api(HttpMethod.Get, path, parameters, resultType);
         }
 
         /// <summary>
