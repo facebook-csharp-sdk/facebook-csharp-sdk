@@ -166,6 +166,18 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result.</returns>
+        public virtual TResult Get<TResult>(string path, object parameters)
+        {
+            return (TResult) Get(path, parameters, typeof (TResult));
+        }
+
+        /// <summary>
         /// Makes a POST request to the Facebook server.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
