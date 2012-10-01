@@ -488,6 +488,22 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="userState">The user state.</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete("Use GetTaskAsync instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+#endif
+        public virtual void GetAsync<TResult>(string path, object parameters, object userState)
+        {
+            ApiAsync(HttpMethod.Get, path, parameters, typeof(TResult), userState);
+        }
+
+        /// <summary>
         /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
         /// <param name="parameters">The parameters</param>
