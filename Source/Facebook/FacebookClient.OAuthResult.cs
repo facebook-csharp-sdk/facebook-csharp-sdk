@@ -116,7 +116,7 @@ namespace Facebook
             }
 
             // Automatically add client_id if not present in the parameters
-            if (!dictionary.ContainsKey("client_id") && string.IsNullOrEmpty(this.AppId)) {
+            if (!dictionary.ContainsKey("client_id") && !string.IsNullOrEmpty(this.AppId)) {
                 dictionary.Add("client_id", this.AppId);
             }
 
