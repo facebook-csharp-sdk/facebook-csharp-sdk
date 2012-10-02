@@ -115,6 +115,11 @@ namespace Facebook
                 dictionary.Remove("mobile");
             }
 
+            // Automatically add client_id if not present in the parameters
+            if (!dictionary.ContainsKey("client_id") && String.IsNullOrEmpty(this.AppId)) {
+                dictionary.Add("client_id", this.AppId);
+            }
+
             var sb = new StringBuilder();
             sb.Append(isMobile ? "https://m.facebook.com/dialog/oauth?" : "https://www.facebook.com/dialog/oauth?");
 
