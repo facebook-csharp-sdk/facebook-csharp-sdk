@@ -179,6 +179,17 @@ namespace Facebook
         /// <summary>
         /// Makes a GET request to the Facebook server.
         /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result.</returns>
+        public virtual TResult Get<TResult>(object parameters)
+        {
+            return Get<TResult>(null, parameters);
+        }
+
+        /// <summary>
+        /// Makes a GET request to the Facebook server.
+        /// </summary>
         /// <param name="path">The resource path or the resource url.</param>
         /// <param name="parameters">The parameters.</param>
         /// <typeparam name="TResult">The result type.</typeparam>
