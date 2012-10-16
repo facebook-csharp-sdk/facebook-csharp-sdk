@@ -533,6 +533,20 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+#if FLUENTHTTP_CORE_TPL
+        [Obsolete("Use GetTaskAsync instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+#endif
+        public virtual void GetAsync<TResult>(object parameters)
+        {
+            GetAsync<TResult>(null, parameters);
+        }
+
+        /// <summary>
         /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
         /// <param name="parameters">The parameters</param>
