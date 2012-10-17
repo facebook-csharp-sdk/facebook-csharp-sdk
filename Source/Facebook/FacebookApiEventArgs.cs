@@ -66,5 +66,16 @@ namespace Facebook
             RaiseExceptionIfNecessary();
             return _result;
         }
+
+        /// <summary>
+        /// Get the json result.
+        /// </summary>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result.</returns>
+        public TResult GetResultData<TResult>()
+        {
+            RaiseExceptionIfNecessary();
+            return (TResult)_result;
+        } 
     }
 }
