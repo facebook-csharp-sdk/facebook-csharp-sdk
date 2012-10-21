@@ -233,9 +233,9 @@ namespace Facebook
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <param name="resultType">The result type.</param>
         /// <returns>The json result task.</returns>
-        public virtual Task<object> GetTaskAsync(string path, object parameters, CancellationToken cancellationToken, object resultType)
+        public virtual Task<object> GetTaskAsync(string path, object parameters, CancellationToken cancellationToken, Type resultType)
         {
-            return ApiTaskAsync(HttpMethod.Get, path, parameters, null, null, cancellationToken);
+            return ApiTaskAsync(HttpMethod.Get, path, parameters, resultType, null, cancellationToken);
         }
 
         /// <summary>
