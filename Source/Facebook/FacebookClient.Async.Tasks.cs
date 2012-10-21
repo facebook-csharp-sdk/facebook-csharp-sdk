@@ -265,6 +265,17 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result task.</returns>
+        public virtual Task<TResult> GetTaskAsync<TResult>( object parameters)
+        {
+            return GetTaskAsync<TResult>(null, parameters);
+        }
+
+        /// <summary>
         /// Makes an asynchronous POST request to the Facebook server.
         /// </summary>
         /// <param name="parameters">The parameters</param>
