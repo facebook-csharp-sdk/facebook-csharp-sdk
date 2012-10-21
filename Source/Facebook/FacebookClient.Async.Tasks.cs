@@ -222,7 +222,68 @@ namespace Facebook
         /// <returns>The json result task.</returns>
         public virtual Task<object> GetTaskAsync(string path, object parameters, CancellationToken cancellationToken)
         {
-            return ApiTaskAsync(HttpMethod.Get, path, parameters, null, null, cancellationToken);
+            return GetTaskAsync(path, parameters, cancellationToken, null);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="resultType">The result type.</param>
+        /// <returns>The json result task.</returns>
+        public virtual Task<object> GetTaskAsync(string path, object parameters, CancellationToken cancellationToken, Type resultType)
+        {
+            return ApiTaskAsync(HttpMethod.Get, path, parameters, resultType, null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result task.</returns>
+        public virtual Task<TResult> GetTaskAsync<TResult>(string path, object parameters, CancellationToken cancellationToken)
+        {
+            return GetTaskAsync(path, parameters, cancellationToken, typeof (TResult))
+                .Then(result => (TResult) result);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <param name="parameters">The parameters</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result task.</returns>
+        public virtual Task<TResult> GetTaskAsync<TResult>(string path, object parameters)
+        {
+            return GetTaskAsync<TResult>(path, parameters, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="parameters">The parameters</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result task.</returns>
+        public virtual Task<TResult> GetTaskAsync<TResult>( object parameters)
+        {
+            return GetTaskAsync<TResult>(null, parameters);
+        }
+
+        /// <summary>
+        /// Makes an asynchronous GET request to the Facebook server.
+        /// </summary>
+        /// <param name="path">The resource path or the resource url.</param>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <returns>The json result task.</returns>
+        public virtual Task<TResult> GetTaskAsync<TResult>(string path)
+        {
+            return GetTaskAsync<TResult>(path, null);
         }
 
         /// <summary>
