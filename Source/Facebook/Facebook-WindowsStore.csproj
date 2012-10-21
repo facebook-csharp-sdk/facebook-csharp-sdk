@@ -21,20 +21,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\Debug\WinRT\</OutputPath>
+    <OutputPath>..\..\Bin\Debug\win8\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;FLUENTHTTP_CORE_TPL;ASYNC_AWAIT;TYPEINFO;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Bin\Debug\WinRT\Facebook.xml</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Debug\win8\Facebook.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\Release\WinRT\</OutputPath>
+    <OutputPath>..\..\Bin\Release\Win8\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;FLUENTHTTP_CORE_TPL;ASYNC_AWAIT;TYPEINFO;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Bin\Release\WinRT\Facebook.xml</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Release\Win8\Facebook.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->

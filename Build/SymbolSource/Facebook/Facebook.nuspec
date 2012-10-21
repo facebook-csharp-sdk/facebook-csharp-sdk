@@ -22,9 +22,9 @@
         <file src="..\..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
         <file src="..\..\..\Bin\Release\net45\*.xml" target = "lib\net45" />
         <file src="..\..\..\Bin\Release\net45\*.pdb" target = "lib\net45" />
-        <file src="..\..\..\Bin\Release\WinRT\*.dll" target = "lib\WinRT" />
-        <file src="..\..\..\Bin\Release\WinRT\*.xml" target = "lib\WinRT" />
-        <file src="..\..\..\Bin\Release\WinRT\*.pdb" target = "lib\WinRT" />
+        <file src="..\..\..\Bin\Release\win8\*.dll" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\*.xml" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\*.pdb" target = "lib\win8" />
         <file src="..\..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
         <file src="..\..\..\Bin\Release\net40-client\*.xml" target = "lib\net40-client" />
         <file src="..\..\..\Bin\Release\net40-client\*.pdb" target = "lib\net40-client" />
@@ -34,8 +34,8 @@
         <file src="..\..\..\Bin\Release\sl5\*.dll" target = "lib\sl5" />
         <file src="..\..\..\Bin\Release\sl5\*.xml" target = "lib\sl5" />
         <file src="..\..\..\Bin\Release\sl5\*.pdb" target = "lib\sl5" />
-        <file src="..\..\..\Bin\Release\sl4-windowsphone71\*.dll" target = "lib\sl4-windowsphone71" />
-        <file src="..\..\..\Bin\Release\sl4-windowsphone71\*.xml" target = "lib\sl4-windowsphone71" />
-        <file src="..\..\..\Bin\Release\sl4-windowsphone71\*.pdb" target = "lib\sl4-windowsphone71" />
+        <file src="..\..\..\Bin\Release\wp71\*.dll" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp71\*.xml" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp71\*.pdb" target = "lib\wp71" />
     </files>
 </package>
