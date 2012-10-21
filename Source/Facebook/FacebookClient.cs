@@ -574,6 +574,7 @@ namespace Facebook
             {
                 object result = null;
 
+                Exception exception = null;
                 if (httpHelper == null)
                 {
                     // batch row
@@ -589,7 +590,13 @@ namespace Facebook
                     if (response.ContentType.Contains("text/javascript") ||
                         response.ContentType.Contains("application/json"))
                     {
-                        result = DeserializeJson(responseString, resultType);
+                        result = DeserializeJson(responseString, null);
+                        exception = GetException(httpHelper, result);
+                        if (exception == null)
+                        {
+                            if (resultType != null)
+                                result = DeserializeJson(responseString, resultType);
+                        }
                     }
                     else if (response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
                     {
@@ -621,7 +628,6 @@ namespace Facebook
                     }
                 }
 
-                var exception = GetException(httpHelper, result);
                 if (exception == null)
                 {
                     if (containsEtag && httpHelper != null)
