@@ -247,7 +247,6 @@ namespace Facebook
         /// Sets the default http web request factory.
         /// </summary>
         /// <param name="httpWebRequestFactory"></param>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void SetDefaultHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
         {
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
