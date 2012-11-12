@@ -613,7 +613,7 @@ namespace Facebook
                             if (body.ContainsKey("expires"))
                                 body["expires"] = Convert.ToInt64(body["expires"], CultureInfo.InvariantCulture);
 
-                            result = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
+                            result = DeserializeJson(body.ToString(), resultType);
 
                             return result;
                         }
