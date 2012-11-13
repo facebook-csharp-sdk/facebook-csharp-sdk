@@ -20,17 +20,17 @@
         <file src="..\..\..\Build\NuGet\Facebook\serializers\*" target = "serializers" />
         <file src="..\..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
         <file src="..\..\..\Bin\Release\net45\*.xml" target = "lib\net45" />
-        <file src="..\..\..\Bin\Release\WinRT\*.dll" target = "lib\WinRT" />
-        <file src="..\..\..\Bin\Release\WinRT\*.xml" target = "lib\WinRT" />
+        <file src="..\..\..\Bin\Release\win8\*.dll" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\*.xml" target = "lib\win8" />
         <file src="..\..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
         <file src="..\..\..\Bin\Release\net40-client\*.xml" target = "lib\net40-client" />
         <file src="..\..\..\Bin\Release\net35-client\*.dll" target = "lib\net35-client" />
         <file src="..\..\..\Bin\Release\net35-client\*.xml" target = "lib\net35-client" />
         <file src="..\..\..\Bin\Release\sl5\*.dll" target = "lib\sl5" />
         <file src="..\..\..\Bin\Release\sl5\*.xml" target = "lib\sl5" />
-        <file src="..\..\..\Bin\Release\sl4-windowsphone71\*.dll" target = "lib\sl4-windowsphone71" />
-        <file src="..\..\..\Bin\Release\sl4-windowsphone71\*.xml" target = "lib\sl4-windowsphone71" />
-        <file src="..\..\..\Bin\Release\windowsphone8\*.dll" target = "lib\windowsphone8" />
-        <file src="..\..\..\Bin\Release\windowsphone8\*.xml" target = "lib\windowsphone8" />
+        <file src="..\..\..\Bin\Release\wp8\*.dll" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\wp8\*.xml" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\wp71\*.dll" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp71\*.xml" target = "lib\wp71" />
     </files>
 </package>

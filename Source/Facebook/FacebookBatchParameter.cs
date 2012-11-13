@@ -113,7 +113,6 @@ namespace Facebook
         /// <summary>
         /// Gets or sets the raw data parameter.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public object Data { get; set; }
     }
 }

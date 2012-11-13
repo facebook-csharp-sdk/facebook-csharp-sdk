@@ -144,6 +144,9 @@
     <Compile Include="FacebookClient.SignedRequest.cs">
       <DependentUpon>FacebookClient.cs</DependentUpon>
     </Compile>
+    <Compile Include="FacebookClient.Subscription.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
     <Compile Include="FacebookClient.OAuthResult.cs">
       <DependentUpon>FacebookClient.cs</DependentUpon>
     </Compile>
@@ -168,6 +171,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="SimpleJson.cs" />
+    <Compile Include="TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">

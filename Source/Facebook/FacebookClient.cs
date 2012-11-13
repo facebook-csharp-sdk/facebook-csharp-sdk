@@ -247,7 +247,6 @@ namespace Facebook
         /// Sets the default http web request factory.
         /// </summary>
         /// <param name="httpWebRequestFactory"></param>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void SetDefaultHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
         {
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
@@ -574,6 +573,7 @@ namespace Facebook
             {
                 object result = null;
 
+                Exception exception = null;
                 if (httpHelper == null)
                 {
                     // batch row
@@ -589,7 +589,13 @@ namespace Facebook
                     if (response.ContentType.Contains("text/javascript") ||
                         response.ContentType.Contains("application/json"))
                     {
-                        result = DeserializeJson(responseString, resultType);
+                        result = DeserializeJson(responseString, null);
+                        exception = GetException(httpHelper, result);
+                        if (exception == null)
+                        {
+                            if (resultType != null)
+                                result = DeserializeJson(responseString, resultType);
+                        }
                     }
                     else if (response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
                     {
@@ -606,7 +612,7 @@ namespace Facebook
                             if (body.ContainsKey("expires"))
                                 body["expires"] = Convert.ToInt64(body["expires"], CultureInfo.InvariantCulture);
 
-                            result = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
+                            result = DeserializeJson(body.ToString(), resultType);
 
                             return result;
                         }
@@ -621,7 +627,6 @@ namespace Facebook
                     }
                 }
 
-                var exception = GetException(httpHelper, result);
                 if (exception == null)
                 {
                     if (containsEtag && httpHelper != null)
