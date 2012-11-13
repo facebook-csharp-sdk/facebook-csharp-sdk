@@ -252,6 +252,15 @@ namespace Facebook
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
         }
 
+        /// <summary>
+        /// Sets the http web request factory for the current instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        /// <param name="httpWebRequestFactory"></param>
+        public virtual void SetHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
+        {
+            HttpWebRequestFactory = httpWebRequestFactory;
+        }
+
         [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmantainableCode")]
