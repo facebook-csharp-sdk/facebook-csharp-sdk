@@ -24,13 +24,13 @@ namespace Facebook
 
     public partial class FacebookClient
     {
-        private const string SubscriptionHttpXHubSigntureKey = "HTTP_X_HUB_SIGNATURE";
+        private const string SubscriptionXHubSigntureRequestHeaderKey = "X-Hub-Signature";
 
         private const string SubscriptionHubChallengeKey = "hub.challenge";
         private const string SubscriptionHubVerifyTokenKey = "hub.verify_token";
         private const string SubscriptionHubModeKey = "hub.mode";
 
-        private const string InvalidHttpXHubSignature = "Invalid " + SubscriptionHttpXHubSigntureKey;
+        private const string InvalidHttpXHubSignature = "Invalid " + SubscriptionXHubSigntureRequestHeaderKey + " request header";
         private const string InvalidHubChallenge = "Invalid " + SubscriptionHubChallengeKey;
         private const string InvalidVerifyToken = "Invalid " + SubscriptionHubVerifyTokenKey;
         private const string InvalidHubMode = "Invalid " + SubscriptionHubModeKey;
