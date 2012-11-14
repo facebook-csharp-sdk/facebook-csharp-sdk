@@ -194,6 +194,7 @@ namespace Facebook
         /// Http web request factory.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use SetHttpWebRequestFactory.")]
         public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
         {
             get { return _httpWebRequestFactory; }
