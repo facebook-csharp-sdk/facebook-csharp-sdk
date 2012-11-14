@@ -235,12 +235,24 @@ namespace Facebook
         /// Sets the default json seriazliers and deserializers.
         /// </summary>
         /// <param name="jsonSerializer">Json serializer</param>
-        /// <param name="jsonDeserializer">Jsonn deserializer</param>
+        /// <param name="jsonDeserializer">Json deserializer</param>
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
         public static void SetDefaultJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
         {
             _defaultJsonSerializer = jsonSerializer ?? SimpleJson.SerializeObject;
             _defaultJsonDeserializer = jsonDeserializer ?? SimpleJson.DeserializeObject;
+        }
+
+        /// <summary>
+        /// Sets the json seriazliers and deserializers for the current instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        /// <param name="jsonSerializer">Json serializer</param>
+        /// <param name="jsonDeserializer">Json deserializer</param>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        public virtual void SetJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
+        {
+            SerializeJson = jsonSerializer;
+            DeserializeJson = jsonDeserializer;
         }
 
         /// <summary>
