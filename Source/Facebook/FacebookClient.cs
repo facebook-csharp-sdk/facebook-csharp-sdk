@@ -175,6 +175,8 @@ namespace Facebook
         /// <summary>
         /// Serialize object to json.
         /// </summary>
+        [Obsolete("Use SetJsonSerializers")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<object, string> SerializeJson
         {
             get { return _serializeJson ?? (_serializeJson = _defaultJsonSerializer); }
@@ -184,6 +186,8 @@ namespace Facebook
         /// <summary>
         /// Deserialize json to object.
         /// </summary>
+        [Obsolete("Use SetJsonSerializers")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<string, Type, object> DeserializeJson
         {
             get { return _deserializeJson; }
