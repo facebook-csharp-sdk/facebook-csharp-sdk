@@ -137,6 +137,9 @@
     <Compile Include="FacebookClient.SignedRequest.cs">
       <DependentUpon>FacebookClient.cs</DependentUpon>
     </Compile>
+    <Compile Include="FacebookClient.Subscription.cs">
+      <DependentUpon>FacebookClient.cs</DependentUpon>
+    </Compile>
     <Compile Include="FacebookClient.OAuthResult.cs">
       <DependentUpon>FacebookClient.cs</DependentUpon>
     </Compile>
