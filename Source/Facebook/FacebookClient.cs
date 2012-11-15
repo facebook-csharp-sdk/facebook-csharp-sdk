@@ -194,6 +194,7 @@ namespace Facebook
         /// Http web request factory.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use SetHttpWebRequestFactory.")]
         public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
         {
             get { return _httpWebRequestFactory; }
@@ -250,6 +251,15 @@ namespace Facebook
         public static void SetDefaultHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
         {
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
+        }
+
+        /// <summary>
+        /// Sets the http web request factory for the current instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        /// <param name="httpWebRequestFactory"></param>
+        public virtual void SetHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
+        {
+            HttpWebRequestFactory = httpWebRequestFactory;
         }
 
         [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
