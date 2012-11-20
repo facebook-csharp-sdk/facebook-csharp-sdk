@@ -158,13 +158,13 @@ task('clean', ['clean:all'], function () {
 
 namespace('tests', function () {
 
-    task('net40', ['build:net40'], function () {
+    task('net45', ['build:net45'], function () {
         xunit({
             assembly: 'Bin/Tests/Release/Facebook.Tests.dll'
         })
     }, { async: true })
 
-    task('all', ['tests:net40'])
+    task('all', ['tests:net45'])
 
 })
 
