@@ -1,6 +1,7 @@
 # Visual Studio Ignores
 [Bb]in/
 obj/
+TestResults/
 
 *.sln.cache
 *.docstates
