@@ -3,6 +3,8 @@ The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windo
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
+[![Build Status](http://ci.csharpsdk.org/job/Facebook%20SDK%20Master/badge/icon)](http://ci.csharpsdk.org/job/Facebook%20SDK%20Master/)
+
 ## NuGet
 
     Install-Package Facebook
