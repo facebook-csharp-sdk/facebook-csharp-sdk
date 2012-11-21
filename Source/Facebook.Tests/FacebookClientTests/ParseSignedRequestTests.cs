@@ -76,5 +76,25 @@ namespace Facebook.Tests.FacebookClient
 
             Assert.Throws<ArgumentNullException>(() => fb.ParseSignedRequest(AppSecret, string.Empty));
         }
+
+        public class JsonNetTests
+        {
+            [Fact]
+            public void CorrectlyParsesSignedRequest()
+            {
+                var fb = new FacebookClient();
+                fb.SetJsonSerializers(Newtonsoft.Json.JsonConvert.SerializeObject, Newtonsoft.Json.JsonConvert.DeserializeObject);
+
+                var signedRequest = (Newtonsoft.Json.Linq.JObject)fb.ParseSignedRequest(AppSecret, SignedRequest);
+
+                Assert.IsAssignableFrom<IDictionary<string, Newtonsoft.Json.Linq.JToken>>(signedRequest);
+                Assert.IsType<Newtonsoft.Json.Linq.JObject>(signedRequest);
+
+                Assert.Equal("HMAC-SHA256", signedRequest["algorithm"]);
+                Assert.Equal(1336845600L, signedRequest["expires"]);
+                Assert.Equal(1336841938L, signedRequest["issued_at"]);
+                Assert.Equal("AAAB3grfTrXwBAIYmsIDKbgepKdL6M5IK3v4pMGAi6OEKWLzX91bZBC4ZATzadiLnbK4k8CBrSbo5ZCqW5a7aZA3F5DSHMIh3WarnNVLRGTg2TWLbpJ4z", signedRequest["oauth_token"]);
+            }
+        }
     }
 }
