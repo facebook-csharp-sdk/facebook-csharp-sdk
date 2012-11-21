@@ -40,6 +40,11 @@ Website: https://github.com/facebook-csharp-sdk/simple-json
 Copyright: N/A
 License: MIT License
 
+JSON.NET
+-----------------
+Website: https://github.com/JamesNK/Newtonsoft.Json
+Copyright: N/A
+License: MIT License
 
 Additional Notices:
 The software was originally conceived and created by Nathan Totten,

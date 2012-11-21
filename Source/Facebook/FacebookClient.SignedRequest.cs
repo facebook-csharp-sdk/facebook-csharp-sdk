@@ -21,7 +21,6 @@ namespace Facebook
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
     using System.Diagnostics.CodeAnalysis;
@@ -38,7 +37,7 @@ namespace Facebook
         /// <param name="signedRequest">The parsed signed request.</param>
         /// <returns>True if signed request parsed successfully otherwise false.</returns>
         [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]           
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public virtual bool TryParseSignedRequest(string appSecret, string signedRequestValue, out object signedRequest)
         {
             signedRequest = null;
@@ -95,7 +94,17 @@ namespace Facebook
                 throw new InvalidOperationException(InvalidSignedRequest);
 
             var base64UrlDecoded = Base64UrlDecode(encodedEnvelope);
-            var envelope = (IDictionary<string, object>)DeserializeJson(Encoding.UTF8.GetString(base64UrlDecoded, 0, base64UrlDecoded.Length), null);
+
+            var jsonString = Encoding.UTF8.GetString(base64UrlDecoded, 0, base64UrlDecoded.Length);
+            var originalDeserializedJson = DeserializeJson(jsonString, null);
+            var envelope = originalDeserializedJson as IDictionary<string, object>;
+            if (envelope == null)
+            {
+                // we are using a non-standard json deserializer
+                // so fallback to using SimpleJson deserializer.
+                envelope = (IDictionary<string, object>)SimpleJson.DeserializeObject(jsonString, null);
+            }
+
             var algorithm = (string)envelope["algorithm"];
             if (!algorithm.Equals("HMAC-SHA256"))
                 throw new InvalidOperationException("Unknown algorithm. Expected HMAC-SHA256");
@@ -104,23 +113,23 @@ namespace Facebook
             byte[] digest = ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
 
             var decodedSignature = Base64UrlDecode(encodedSignature);
-            if (digest.Length != decodedSignature.Length) 
+            if (digest.Length != decodedSignature.Length)
             {
                 throw new InvalidOperationException(InvalidSignedRequest);
             }
 
             bool result = true;
-            for (int i = 0; i < digest.Length; i++) 
+            for (int i = 0; i < digest.Length; i++)
             {
                 result = result & (digest[i] == decodedSignature[i]);
             }
 
-            if (!result) 
+            if (!result)
             {
                 throw new InvalidOperationException(InvalidSignedRequest);
             }
-                
-            return envelope;
+
+            return originalDeserializedJson;
         }
 
         /// <summary>
