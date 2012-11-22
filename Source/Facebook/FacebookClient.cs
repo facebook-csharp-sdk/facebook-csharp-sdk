@@ -175,6 +175,8 @@ namespace Facebook
         /// <summary>
         /// Serialize object to json.
         /// </summary>
+        [Obsolete("Use SetJsonSerializers")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<object, string> SerializeJson
         {
             get { return _serializeJson ?? (_serializeJson = _defaultJsonSerializer); }
@@ -184,6 +186,8 @@ namespace Facebook
         /// <summary>
         /// Deserialize json to object.
         /// </summary>
+        [Obsolete("Use SetJsonSerializers")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<string, Type, object> DeserializeJson
         {
             get { return _deserializeJson; }
@@ -194,6 +198,7 @@ namespace Facebook
         /// Http web request factory.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use SetHttpWebRequestFactory.")]
         public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
         {
             get { return _httpWebRequestFactory; }
@@ -235,12 +240,24 @@ namespace Facebook
         /// Sets the default json seriazliers and deserializers.
         /// </summary>
         /// <param name="jsonSerializer">Json serializer</param>
-        /// <param name="jsonDeserializer">Jsonn deserializer</param>
+        /// <param name="jsonDeserializer">Json deserializer</param>
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
         public static void SetDefaultJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
         {
             _defaultJsonSerializer = jsonSerializer ?? SimpleJson.SerializeObject;
             _defaultJsonDeserializer = jsonDeserializer ?? SimpleJson.DeserializeObject;
+        }
+
+        /// <summary>
+        /// Sets the json seriazliers and deserializers for the current instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        /// <param name="jsonSerializer">Json serializer</param>
+        /// <param name="jsonDeserializer">Json deserializer</param>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        public virtual void SetJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
+        {
+            SerializeJson = jsonSerializer;
+            DeserializeJson = jsonDeserializer;
         }
 
         /// <summary>
@@ -250,6 +267,15 @@ namespace Facebook
         public static void SetDefaultHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
         {
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
+        }
+
+        /// <summary>
+        /// Sets the http web request factory for the current instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        /// <param name="httpWebRequestFactory"></param>
+        public virtual void SetHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
+        {
+            HttpWebRequestFactory = httpWebRequestFactory;
         }
 
         [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
