@@ -95,10 +95,7 @@ namespace Facebook
                 throw new InvalidOperationException(InvalidSignedRequest);
 
             var base64UrlDecoded = Base64UrlDecode(encodedEnvelope);
-            var envelope = (IDictionary<string, object>)DeserializeJson(Encoding.UTF8.GetString(base64UrlDecoded, 0, base64UrlDecoded.Length), null);
-            var algorithm = (string)envelope["algorithm"];
-            if (!algorithm.Equals("HMAC-SHA256"))
-                throw new InvalidOperationException("Unknown algorithm. Expected HMAC-SHA256");
+            var envelope = DeserializeJson(Encoding.UTF8.GetString(base64UrlDecoded, 0, base64UrlDecoded.Length), null);
 
             byte[] key = Encoding.UTF8.GetBytes(appSecret);
             byte[] digest = ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
