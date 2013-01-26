@@ -79,6 +79,14 @@ namespace('build', function () {
         })
     }, { async: true })
 
+    desc('Build Windows Phone 8 binaries')
+    task('wp8', ['assemblyinfo:facebook'], function () {
+        msbuild({
+            file: 'Source/Facebook-WP8.sln',
+            targets: ['Build']
+        })
+    }, { async: true })
+
     desc('Build Silverlight 5 binaries')
     task('sl5', ['assemblyinfo:facebook'], function () {
         msbuild({
@@ -87,7 +95,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:sl5', 'build:winstore'])
+    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:wp8', 'build:sl5', 'build:winstore'])
 
     task('mono', function (xbuildPath) {
         msbuild({
@@ -139,6 +147,13 @@ namespace('clean', function () {
         })
     }, { async: true })
 
+    task('wp8', function () {
+        msbuild({
+            file: 'Source/Facebook-WP8.sln',
+            targets: ['Clean']
+        })
+    }, { async: true })
+
     task('sl5', function () {
         msbuild({
             file: 'Source/Facebook-SL5.sln',
@@ -146,7 +161,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:sl5', 'clean:winstore'])
+    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:wp8', 'clean:sl5', 'clean:winstore'])
 
 })
 
