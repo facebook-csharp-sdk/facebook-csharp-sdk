@@ -142,7 +142,7 @@ namespace Facebook
         /// <param name="userState">The user state.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task of json result with headers.</returns>
-        public virtual Task<object> ApiTaskAsync(HttpMethod httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken)
+        protected virtual Task<object> ApiTaskAsync(HttpMethod httpMethod, string path, object parameters, Type resultType, object userState, CancellationToken cancellationToken)
         {
             return ApiTaskAsync(httpMethod, path, parameters, resultType, userState, cancellationToken, null);
         }
