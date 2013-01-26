@@ -6,7 +6,7 @@
         <title/>
         <authors>Outercurve Foundation</authors>
         <owners>Nathan Totten, Prabir Shrestha, Jim Zimmerman</owners>
-        <description>The Facebook C# SDK helps .Net developers build web, desktop, phone and windows store applications that integrate with Facebook.</description>
+        <description>The Facebook C# SDK helps .Net developers build web, desktop, phone and Windows Store applications that integrate with Facebook.</description>
         <language>en-US</language>
         <licenseUrl>https://raw.github.com/facebook-csharp-sdk/facebook-csharp-sdk/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/facebook-csharp-sdk/facebook-csharp-sdk</projectUrl>
@@ -30,5 +30,7 @@
         <file src="..\..\..\Bin\Release\sl5\*.xml" target = "lib\sl5" />
         <file src="..\..\..\Bin\Release\wp71\*.dll" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp71\*.xml" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp8\*.dll" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\wp8\*.xml" target = "lib\wp8" />
     </files>
 </package>
