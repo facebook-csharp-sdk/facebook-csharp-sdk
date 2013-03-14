@@ -1,5 +1,5 @@
-# Facebook C# SDK
-The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windows Phone and Windows 8 Store applications that integrate with Facebook.
+# Facebook SDK for .NET
+The Facebook SDK for .NET helps developers build web, desktop, Silverlight, Windows Phone and Windows Store applications that integrate with Facebook.
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
@@ -9,7 +9,7 @@ The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windo
 
     Install-Package Facebook
 
-*Binaries for Facebook C# SDK are only distributed via nuget. For those using older versions of Visual Studio that
+*The Facebook SDK for .NET binaries are only distributed via nuget. For those using older versions of Visual Studio that
 does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
 command.*
 
@@ -41,11 +41,11 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * .NET 3.5 (Client Profile and Full Profile)
 * .NET 4.0 (Client Profile and Full Profile)
 * .NET 4.5
-* Windows 8 Store Apps
+* Windows Store Apps
 * Silverlight 5
 * Windows Phone 7.1 (Mango)
 * Windows Phone 8
  
 ## Contribute
 
-Please refer to our official docs on [Contributing to Facebook C# SDK](http://csharpsdk.org/docs/contribute) for more details.
+Please refer to our official docs on [Contributing to Facebook SDK for .NET](http://csharpsdk.org/docs/contribute) for more details.
