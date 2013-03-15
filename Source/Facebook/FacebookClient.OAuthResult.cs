@@ -88,19 +88,24 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets the Facebook OAuth login url.
+        /// Gets the Facebook dialog url.
         /// </summary>
+        /// <param name="dialog">
+        /// The dialog name. Values can be oauth, feed, pagetab, friends, pay, apprequests, and send.
+        /// </param>
         /// <param name="parameters">
-        /// The parameters.
+        ///  The parameters.
         /// </param>
         /// <returns>
-        /// The login url.
+        /// The dialog url.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// If parameters is null.
+        /// If dialog or parameters is null.
         /// </exception>
-        public virtual Uri GetLoginUrl(object parameters)
+        public virtual Uri GetDialogUrl(string dialog, object parameters)
         {
+            if (String.IsNullOrEmpty(dialog))
+                throw new ArgumentNullException("dialog");
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
 
@@ -116,12 +121,13 @@ namespace Facebook
             }
 
             // Automatically add client_id if not present in the parameters
-            if (!dictionary.ContainsKey("client_id") && !string.IsNullOrEmpty(this.AppId)) {
+            if (!dictionary.ContainsKey("client_id") && !string.IsNullOrEmpty(this.AppId))
+            {
                 dictionary.Add("client_id", this.AppId);
             }
 
             var sb = new StringBuilder();
-            sb.Append(isMobile ? "https://m.facebook.com/dialog/oauth?" : "https://www.facebook.com/dialog/oauth?");
+            sb.AppendFormat(isMobile ? "https://m.facebook.com/dialog/{0}?" : "https://www.facebook.com/dialog/{0}?", dialog.ToLower());
 
             foreach (var kvp in dictionary)
                 sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
@@ -129,6 +135,23 @@ namespace Facebook
             sb.Length--;
 
             return new Uri(sb.ToString());
+        }
+
+        /// <summary>
+        /// Gets the Facebook OAuth login url.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// The login url.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// If parameters is null.
+        /// </exception>
+        public virtual Uri GetLoginUrl(object parameters)
+        {
+            return GetDialogUrl("oauth", parameters);
         }
 
         /// <summary>
