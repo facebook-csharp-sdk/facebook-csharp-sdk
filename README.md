@@ -3,7 +3,7 @@ The Facebook SDK for .NET helps developers build web, desktop, Silverlight, Wind
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
-[![Build Status](http://ci.csharpsdk.org/job/Facebook%20SDK%20Master/badge/icon)](http://ci.csharpsdk.org/job/Facebook%20SDK%20Master/)
+[![Build Status](http://ci.csharpsdk.org/job/FacebookSDK-master/badge/icon)](http://ci.csharpsdk.org/job/FacebookSDK-master/)
 
 ## NuGet
 
