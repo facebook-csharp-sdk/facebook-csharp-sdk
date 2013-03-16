@@ -104,7 +104,7 @@ namespace Facebook
         /// </exception>
         public virtual Uri GetDialogUrl(string dialog, object parameters)
         {
-            if (String.IsNullOrEmpty(dialog))
+            if (string.IsNullOrEmpty(dialog))
                 throw new ArgumentNullException("dialog");
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
@@ -120,14 +120,20 @@ namespace Facebook
                 dictionary.Remove("mobile");
             }
 
-            // Automatically add client_id if not present in the parameters
-            if (!dictionary.ContainsKey("client_id") && !string.IsNullOrEmpty(this.AppId))
+            // Automatically add client_id if not present in the parameters for the oauth dialog
+            if (dialog.Equals("oauth", StringComparison.OrdinalIgnoreCase) && !dictionary.ContainsKey("client_id") && !string.IsNullOrEmpty(this.AppId))
             {
                 dictionary.Add("client_id", this.AppId);
             }
 
+            // Automatically add app_id if not present in the parameters
+            if (!dialog.Equals("oauth", StringComparison.OrdinalIgnoreCase) && !dictionary.ContainsKey("app_id") && !string.IsNullOrEmpty(this.AppId))
+            {
+                dictionary.Add("app_id", this.AppId);
+            }
+
             var sb = new StringBuilder();
-            sb.AppendFormat(isMobile ? "https://m.facebook.com/dialog/{0}?" : "https://www.facebook.com/dialog/{0}?", dialog.ToLower());
+            sb.AppendFormat(isMobile ? "https://m.facebook.com/dialog/{0}?" : "https://www.facebook.com/dialog/{0}?", dialog);
 
             foreach (var kvp in dictionary)
                 sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
