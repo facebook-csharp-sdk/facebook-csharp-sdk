@@ -48,6 +48,20 @@ namespace Facebook.Tests.FacebookClient
         }
 
         [Fact]
+        public void AddsClientIdCorrectlyWhenSetOnFacebookClient()
+        {
+            _fb.AppId = "appid";
+            var loginParameters = new Dictionary<string, object>();
+            loginParameters["client_secret"] = "clientsecret";
+            loginParameters["response_type"] = "code token";
+            loginParameters["redirect_uri"] = "https://www.facebook.com/connect/login_success.html";
+            var loginUrl = _fb.GetLoginUrl(loginParameters);
+
+            Assert.Equal("https://www.facebook.com/dialog/oauth?client_secret=clientsecret&response_type=code%20token&redirect_uri=https%3A%2F%2Fwww.facebook.com%2Fconnect%2Flogin_success.html&client_id=appid",
+                loginUrl.AbsoluteUri);
+        }
+
+        [Fact]
         public void GivenParameterAsNull_ShouldThrowArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => _fb.GetLoginUrl(null));
