@@ -43,7 +43,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * .NET 4.5
 * Windows Store Apps
 * Silverlight 5
-* Windows Phone 7.1 (Mango)
+* Windows Phone 7.1
 * Windows Phone 8
  
 ## Contribute
