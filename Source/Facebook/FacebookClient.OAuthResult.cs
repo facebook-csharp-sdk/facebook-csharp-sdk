@@ -88,6 +88,26 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Parses the dialog callback url to an object of the resulting data.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
+        public virtual object ParseDialogCallbackUrl(Uri uri)
+        {
+            var parameters = new Dictionary<string, object>();
+            ParseUrlQueryString(uri.Query, parameters, true);
+
+            // We are serializing and deserializing here so that
+            // the result of this object is consistent with whatever
+            // serializer is being used. If we hard coded to JsonObject
+            // the result would be inconsistent with the rest of the SDK.
+            var json = SerializeJson(parameters);
+            return DeserializeJson(json, null);
+        }
+
+        /// <summary>
         /// Gets the Facebook dialog url.
         /// </summary>
         /// <param name="dialog">
