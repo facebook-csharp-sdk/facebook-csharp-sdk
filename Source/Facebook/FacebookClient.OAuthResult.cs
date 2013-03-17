@@ -96,13 +96,15 @@ namespace Facebook
         [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
         public virtual object ParseDialogCallbackUrl(Uri uri)
         {
-#if SIMPLE_JSON_DYNAMIC
-            var parameters = new System.Dynamic.ExpandoObject();
-#else
             var parameters = new Dictionary<string, object>();
-#endif
             ParseUrlQueryString(uri.Query, parameters, true);
-            return parameters;
+
+            // We are serializing and deserializing here so that
+            // the result of this object is consistent with whatever
+            // serializer is being used. If we hard coded to JsonObject
+            // the result would be inconsistent with the rest of the SDK.
+            var json = SerializeJson(parameters);
+            return DeserializeJson(json, null);
         }
 
         /// <summary>
