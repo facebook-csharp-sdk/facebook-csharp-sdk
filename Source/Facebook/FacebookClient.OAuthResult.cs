@@ -88,6 +88,24 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Parses the dialog callback url to an object of the resulting data.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
+        public virtual object ParseDialogCallbackUrl(Uri uri)
+        {
+#if SIMPLE_JSON_DYNAMIC
+            var parameters = new System.Dynamic.ExpandoObject();
+#else
+            var parameters = new Dictionary<string, object>();
+#endif
+            ParseUrlQueryString(uri.Query, parameters, true);
+            return parameters;
+        }
+
+        /// <summary>
         /// Gets the Facebook dialog url.
         /// </summary>
         /// <param name="dialog">
