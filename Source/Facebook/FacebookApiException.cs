@@ -57,7 +57,7 @@ namespace Facebook
         public FacebookApiException(string message, string errorType)
             : this(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message))
         {
-            ErrorType = errorType;
+            _errorType = errorType;
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace Facebook
         public FacebookApiException(string message, string errorType, int errorCode)
             : this(String.Format(CultureInfo.InvariantCulture, "({0} - #{1}) {2}", errorType ?? "Unknown", errorCode, message))
         {
-            ErrorType = errorType;
-            ErrorCode = errorCode;
+            _errorType = errorType;
+            _errorCode = errorCode;
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Facebook
         public FacebookApiException(string message, string errorType, int errorCode, int errorSubcode)
             : this(message, errorType, errorCode)
         {
-            ErrorSubcode = errorSubcode;
+            _errorSubCode = errorSubcode;
         }
 
         /// <summary>
@@ -107,25 +107,58 @@ namespace Facebook
         protected FacebookApiException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            if (info != null)
+            {
+                _errorCode = info.GetInt32("ErrorCode");
+                _errorSubCode = info.GetInt32("ErrorSubCode");
+                _errorType = info.GetString("ErrorType");
+            }
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            if (info != null)
+            {
+                info.AddValue("ErrorCode", _errorCode);
+                info.AddValue("ErrorSubCode", _errorSubCode);
+                info.AddValue("ErrorType", _errorType);
+            }
         }
 #endif
+
+        private string _errorType;
 
         /// <summary>
         /// Gets or sets the type of the error.
         /// </summary>
         /// <value>The type of the error.</value>
-        public string ErrorType { get; set; }
+        public string ErrorType
+        {
+            get { return _errorType; }
+            set { _errorType = value; }
+        }
+
+        private int _errorCode;
 
         /// <summary>
         /// Gets or sets the code of the error.
         /// </summary>
         /// <value>The code of the error.</value>
-        public int ErrorCode { get; set; }
+        public int ErrorCode { get { return _errorCode}
+            set { _errorCode = value; }
+        }
+
+        private int _errorSubCode;
 
         /// <summary>
         /// Gets or sets the error subcode.
         /// </summary>
         /// <value>The code of the error subcode.</value>
-        public int ErrorSubcode { get; set; }
+        public int ErrorSubcode
+        {
+            get { return _errorSubCode; }
+            set { _errorSubCode = value; }
+        }
     }
 }
