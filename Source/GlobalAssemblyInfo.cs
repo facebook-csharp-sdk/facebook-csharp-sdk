@@ -51,7 +51,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Facebook.Tests")]
 #endif
 
-[assembly: InternalsVisibleTo("Facebook.Client")]
 
 internal static class GlobalAssemblyInfo
 {
