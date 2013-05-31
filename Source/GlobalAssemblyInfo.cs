@@ -51,6 +51,14 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Facebook.Tests")]
 #endif
 
+// Expose Internals to Client SDKs for WinRT and Windows Phone
+#if WINDOWS_PHONE
+[assembly: InternalsVisibleTo("Facebook.Client")]
+#endif
+#if NETFX_CORE
+[assembly: InternalsVisibleTo("Facebook.Client, PublicKey=" + GlobalAssemblyInfo.PublicKey)]
+#endif
+
 
 internal static class GlobalAssemblyInfo
 {

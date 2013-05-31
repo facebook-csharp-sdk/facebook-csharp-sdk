@@ -3,8 +3,6 @@ The Facebook SDK for .NET helps developers build web, desktop, Silverlight, Wind
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
-[![Build Status](http://ci.csharpsdk.org/job/FacebookSDK-master/badge/icon)](http://ci.csharpsdk.org/job/FacebookSDK-master/)
-
 ## NuGet
 
     Install-Package Facebook
@@ -20,7 +18,7 @@ If you would like to get an older version of the the binaries please use the fol
     nuget install Facebook -v 5.4.1
     
 ## Documentation
-You can find the documentation for this project at [http://csharpsdk.org](http://csharpsdk.org).
+You can find the documentation for this project at [http://facebooksdk.net](http://facebooksdk.net).
 
 ## Help and Support
 Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and support. We answer questions there regularly. Use the tags '[facebook-c#-sdk](http://stackoverflow.com/questions/tagged/facebook-c%23-sdk)' and '[facebook](http://stackoverflow.com/questions/tagged/facebook)' plus any other tags that are relevant. If you have a feature request or bug create an issue.
@@ -48,4 +46,4 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
  
 ## Contribute
 
-Please refer to our official docs on [Contributing to Facebook SDK for .NET](http://csharpsdk.org/docs/contribute) for more details.
+Please refer to our official docs on [Contributing to Facebook SDK for .NET](http://facebooksdk.net/docs/contribute) for more details.
