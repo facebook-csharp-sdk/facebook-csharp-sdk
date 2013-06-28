@@ -595,11 +595,12 @@ namespace Facebook
 
             request.TrySetUserAgent("Facebook C# SDK");
 
+#if !WINDOWS_PHONE
             if (Timeout.HasValue)
             {
                 request.Timeout = Timeout.Value;
             }
-
+#endif
             return new HttpHelper(request);
         }
 
