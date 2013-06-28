@@ -206,6 +206,11 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or set the time in milliseconds, before the request times out.
+        /// </summary>
+        public int? Timeout { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FacebookClient"/> class.
         /// </summary>
         static FacebookClient()
@@ -589,6 +594,11 @@ namespace Facebook
                 request.TrySetContentLength(contentLength.Value);
 
             request.TrySetUserAgent("Facebook C# SDK");
+
+            if (Timeout.HasValue)
+            {
+                request.Timeout = Timeout.Value;
+            }
 
             return new HttpHelper(request);
         }
