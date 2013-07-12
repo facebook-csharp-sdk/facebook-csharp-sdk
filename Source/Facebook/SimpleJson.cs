@@ -17,7 +17,7 @@
 // <website>https://github.com/facebook-csharp-sdk/simple-json</website>
 //-----------------------------------------------------------------------
 
-// VERSION: 0.20.1-alpha
+// VERSION: 0.25.0
 
 // NOTE: uncomment the following line to make SimpleJson class internal.
 //#define SIMPLE_JSON_INTERNAL
@@ -46,6 +46,7 @@
 #endif
 
 using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 #if !SIMPLE_JSON_NO_LINQ_EXPRESSION
@@ -70,6 +71,7 @@ namespace Facebook
     /// <summary>
     /// Represents the json array.
     /// </summary>
+    [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
@@ -103,6 +105,7 @@ namespace Facebook
     /// <summary>
     /// Represents the json object.
     /// </summary>
+    [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
@@ -119,7 +122,24 @@ namespace Facebook
         /// <summary>
         /// The internal member dictionary.
         /// </summary>
-        private readonly Dictionary<string, object> _members = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _members;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="JsonObject"/>.
+        /// </summary>
+        public JsonObject()
+        {
+            _members = new Dictionary<string, object>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="JsonObject"/>.
+        /// </summary>
+        /// <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> implementation to use when comparing keys, or null to use the default <see cref="T:System.Collections.Generic.EqualityComparer`1"/> for the type of the key.</param>
+        public JsonObject(IEqualityComparer<string> comparer)
+        {
+            _members = new Dictionary<string, object>(comparer);
+        }
 
         /// <summary>
         /// Gets the <see cref="System.Object"/> at the specified index.
@@ -157,7 +177,7 @@ namespace Facebook
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>
-        /// 	<c>true</c> if the specified key contains key; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified key contains key; otherwise, <c>false</c>.
         /// </returns>
         public bool ContainsKey(string key)
         {
@@ -249,6 +269,7 @@ namespace Facebook
         /// <param name="arrayIndex">Index of the array.</param>
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
+            if (array == null) throw new ArgumentNullException("array");
             int num = Count;
             foreach (KeyValuePair<string, object> kvp in this)
             {
@@ -375,6 +396,7 @@ namespace Facebook
         /// </returns>
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
+            if (indexes == null) throw new ArgumentNullException("indexes");
             if (indexes.Length == 1)
             {
                 result = ((IDictionary<string, object>)this)[(string)indexes[0]];
@@ -415,6 +437,7 @@ namespace Facebook
         /// </returns>
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
+            if (indexes == null) throw new ArgumentNullException("indexes");
             if (indexes.Length == 1)
             {
                 ((IDictionary<string, object>)this)[(string)indexes[0]] = value;
@@ -465,12 +488,13 @@ namespace Facebook
     /// JSON uses Arrays and Objects. These correspond here to the datatypes JsonArray(IList&lt;object>) and JsonObject(IDictionary&lt;string,object>).
     /// All numbers are parsed to doubles.
     /// </summary>
+    [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
     public
 #endif
- class SimpleJson
+ static class SimpleJson
     {
         private const int TOKEN_NONE = 0;
         private const int TOKEN_CURLY_OPEN = 1;
@@ -511,6 +535,7 @@ namespace Facebook
         /// <returns>
         /// Returns true if successfull otherwise false.
         /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification="Need to support .NET 2")]
         public static bool TryDeserializeObject(string json, out object obj)
         {
             bool success = true;
@@ -625,7 +650,7 @@ namespace Facebook
             return sb.ToString();
         }
 
-        protected static IDictionary<string, object> ParseObject(char[] json, ref int index, ref bool success)
+        static IDictionary<string, object> ParseObject(char[] json, ref int index, ref bool success)
         {
             IDictionary<string, object> table = new JsonObject();
             int token;
@@ -678,7 +703,7 @@ namespace Facebook
             return table;
         }
 
-        protected static JsonArray ParseArray(char[] json, ref int index, ref bool success)
+        static JsonArray ParseArray(char[] json, ref int index, ref bool success)
         {
             JsonArray array = new JsonArray();
 
@@ -712,7 +737,7 @@ namespace Facebook
             return array;
         }
 
-        protected static object ParseValue(char[] json, ref int index, ref bool success)
+        static object ParseValue(char[] json, ref int index, ref bool success)
         {
             switch (LookAhead(json, index))
             {
@@ -740,7 +765,7 @@ namespace Facebook
             return null;
         }
 
-        protected static string ParseString(char[] json, ref int index, ref bool success)
+        static string ParseString(char[] json, ref int index, ref bool success)
         {
             StringBuilder s = new StringBuilder(BUILDER_CAPACITY);
             char c;
@@ -846,7 +871,7 @@ namespace Facebook
             return new string(new char[] { (char)((utf32 >> 10) + 0xD800), (char)(utf32 % 0x0400 + 0xDC00) });
         }
 
-        protected static object ParseNumber(char[] json, ref int index, ref bool success)
+        static object ParseNumber(char[] json, ref int index, ref bool success)
         {
             EatWhitespace(json, ref index);
             int lastIndex = GetLastIndexOfNumber(json, index);
@@ -869,7 +894,7 @@ namespace Facebook
             return returnNumber;
         }
 
-        protected static int GetLastIndexOfNumber(char[] json, int index)
+        static int GetLastIndexOfNumber(char[] json, int index)
         {
             int lastIndex;
             for (lastIndex = index; lastIndex < json.Length; lastIndex++)
@@ -877,20 +902,20 @@ namespace Facebook
             return lastIndex - 1;
         }
 
-        protected static void EatWhitespace(char[] json, ref int index)
+        static void EatWhitespace(char[] json, ref int index)
         {
             for (; index < json.Length; index++)
                 if (" \t\n\r\b\f".IndexOf(json[index]) == -1) break;
         }
 
-        protected static int LookAhead(char[] json, int index)
+        static int LookAhead(char[] json, int index)
         {
             int saveIndex = index;
             return NextToken(json, ref saveIndex);
         }
 
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        protected static int NextToken(char[] json, ref int index)
+        static int NextToken(char[] json, ref int index)
         {
             EatWhitespace(json, ref index);
             if (index == json.Length)
@@ -958,40 +983,51 @@ namespace Facebook
             return TOKEN_NONE;
         }
 
-        protected static bool SerializeValue(IJsonSerializerStrategy jsonSerializerStrategy, object value, StringBuilder builder)
+        static bool SerializeValue(IJsonSerializerStrategy jsonSerializerStrategy, object value, StringBuilder builder)
         {
             bool success = true;
-            if (value is string)
-                success = SerializeString((string)value, builder);
-            else if (value is IDictionary<string, object>)
-            {
-                IDictionary<string, object> dict = (IDictionary<string, object>)value;
-                success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
-            }
-            else if (value is IDictionary<string, string>)
-            {
-                IDictionary<string, string> dict = (IDictionary<string, string>)value;
-                success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
-            }
-            else if (value is IEnumerable)
-                success = SerializeArray(jsonSerializerStrategy, (IEnumerable)value, builder);
-            else if (IsNumeric(value))
-                success = SerializeNumber(value, builder);
-            else if (value is Boolean)
-                builder.Append((bool)value ? "true" : "false");
-            else if (value == null)
-                builder.Append("null");
+            string stringValue = value as string;
+            if (stringValue != null)
+                success = SerializeString(stringValue, builder);
             else
             {
-                object serializedObject;
-                success = jsonSerializerStrategy.SerializeNonPrimitiveObject(value, out serializedObject);
-                if (success)
-                    SerializeValue(jsonSerializerStrategy, serializedObject, builder);
+                IDictionary<string, object> dict = value as IDictionary<string, object>;
+                if (dict != null)
+                {
+                    success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
+                }
+                else
+                {
+                    IDictionary<string, string> stringDictionary = value as IDictionary<string, string>;
+                    if (stringDictionary != null)
+                    {
+                        success = SerializeObject(jsonSerializerStrategy, stringDictionary.Keys, stringDictionary.Values, builder);
+                    }
+                    else
+                    {
+                        IEnumerable enumerableValue = value as IEnumerable;
+                        if (enumerableValue != null)
+                            success = SerializeArray(jsonSerializerStrategy, enumerableValue, builder);
+                        else if (IsNumeric(value))
+                            success = SerializeNumber(value, builder);
+                        else if (value is bool)
+                            builder.Append((bool)value ? "true" : "false");
+                        else if (value == null)
+                            builder.Append("null");
+                        else
+                        {
+                            object serializedObject;
+                            success = jsonSerializerStrategy.TrySerializeNonPrimitiveObject(value, out serializedObject);
+                            if (success)
+                                SerializeValue(jsonSerializerStrategy, serializedObject, builder);
+                        }
+                    }
+                }
             }
             return success;
         }
 
-        protected static bool SerializeObject(IJsonSerializerStrategy jsonSerializerStrategy, IEnumerable keys, IEnumerable values, StringBuilder builder)
+        static bool SerializeObject(IJsonSerializerStrategy jsonSerializerStrategy, IEnumerable keys, IEnumerable values, StringBuilder builder)
         {
             builder.Append("{");
             IEnumerator ke = keys.GetEnumerator();
@@ -1003,8 +1039,9 @@ namespace Facebook
                 object value = ve.Current;
                 if (!first)
                     builder.Append(",");
-                if (key is string)
-                    SerializeString((string)key, builder);
+                string stringKey = key as string;
+                if (stringKey != null)
+                    SerializeString(stringKey, builder);
                 else
                     if (!SerializeValue(jsonSerializerStrategy, value, builder)) return false;
                 builder.Append(":");
@@ -1016,7 +1053,7 @@ namespace Facebook
             return true;
         }
 
-        protected static bool SerializeArray(IJsonSerializerStrategy jsonSerializerStrategy, IEnumerable anArray, StringBuilder builder)
+        static bool SerializeArray(IJsonSerializerStrategy jsonSerializerStrategy, IEnumerable anArray, StringBuilder builder)
         {
             builder.Append("[");
             bool first = true;
@@ -1032,7 +1069,7 @@ namespace Facebook
             return true;
         }
 
-        protected static bool SerializeString(string aString, StringBuilder builder)
+        static bool SerializeString(string aString, StringBuilder builder)
         {
             builder.Append("\"");
             char[] charArray = aString.ToCharArray();
@@ -1060,7 +1097,7 @@ namespace Facebook
             return true;
         }
 
-        protected static bool SerializeNumber(object number, StringBuilder builder)
+        static bool SerializeNumber(object number, StringBuilder builder)
         {
             if (number is long)
                 builder.Append(((long)number).ToString(CultureInfo.InvariantCulture));
@@ -1083,7 +1120,7 @@ namespace Facebook
         /// Determines if a given object is numeric in any way
         /// (can be integer, double, null, etc).
         /// </summary>
-        protected static bool IsNumeric(object value)
+        static bool IsNumeric(object value)
         {
             if (value is sbyte) return true;
             if (value is byte) return true;
@@ -1143,7 +1180,8 @@ namespace Facebook
 
 #endif
     }
-
+    
+    [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1151,10 +1189,12 @@ namespace Facebook
 #endif
  interface IJsonSerializerStrategy
     {
-        bool SerializeNonPrimitiveObject(object input, out object output);
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification="Need to support .NET 2")]
+        bool TrySerializeNonPrimitiveObject(object input, out object output);
         object DeserializeObject(object value, Type type);
     }
 
+    [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1183,6 +1223,11 @@ namespace Facebook
             SetCache = new ReflectionUtils.ThreadSafeDictionary<Type, IDictionary<string, KeyValuePair<Type, ReflectionUtils.SetDelegate>>>(SetterValueFactory);
         }
 
+        protected virtual string MapClrMemberNameToJsonFieldName(string clrPropertyName)
+        {
+            return clrPropertyName;
+        }
+
         internal virtual ReflectionUtils.ConstructorDelegate ContructorDelegateFactory(Type key)
         {
             return ReflectionUtils.GetContructor(key, key.IsArray ? ArrayConstructorParameterTypes : EmptyTypes);
@@ -1198,14 +1243,14 @@ namespace Facebook
                     MethodInfo getMethod = ReflectionUtils.GetGetterMethodInfo(propertyInfo);
                     if (getMethod.IsStatic || !getMethod.IsPublic)
                         continue;
-                    result[propertyInfo.Name] = ReflectionUtils.GetGetMethod(propertyInfo);
+                    result[MapClrMemberNameToJsonFieldName(propertyInfo.Name)] = ReflectionUtils.GetGetMethod(propertyInfo);
                 }
             }
             foreach (FieldInfo fieldInfo in ReflectionUtils.GetFields(type))
             {
                 if (fieldInfo.IsStatic || !fieldInfo.IsPublic)
                     continue;
-                result[fieldInfo.Name] = ReflectionUtils.GetGetMethod(fieldInfo);
+                result[MapClrMemberNameToJsonFieldName(fieldInfo.Name)] = ReflectionUtils.GetGetMethod(fieldInfo);
             }
             return result;
         }
@@ -1220,19 +1265,19 @@ namespace Facebook
                     MethodInfo setMethod = ReflectionUtils.GetSetterMethodInfo(propertyInfo);
                     if (setMethod.IsStatic || !setMethod.IsPublic)
                         continue;
-                    result[propertyInfo.Name] = new KeyValuePair<Type, ReflectionUtils.SetDelegate>(propertyInfo.PropertyType, ReflectionUtils.GetSetMethod(propertyInfo));
+                    result[MapClrMemberNameToJsonFieldName(propertyInfo.Name)] = new KeyValuePair<Type, ReflectionUtils.SetDelegate>(propertyInfo.PropertyType, ReflectionUtils.GetSetMethod(propertyInfo));
                 }
             }
             foreach (FieldInfo fieldInfo in ReflectionUtils.GetFields(type))
             {
                 if (fieldInfo.IsInitOnly || fieldInfo.IsStatic || !fieldInfo.IsPublic)
                     continue;
-                result[fieldInfo.Name] = new KeyValuePair<Type, ReflectionUtils.SetDelegate>(fieldInfo.FieldType, ReflectionUtils.GetSetMethod(fieldInfo));
+                result[MapClrMemberNameToJsonFieldName(fieldInfo.Name)] = new KeyValuePair<Type, ReflectionUtils.SetDelegate>(fieldInfo.FieldType, ReflectionUtils.GetSetMethod(fieldInfo));
             }
             return result;
         }
 
-        public virtual bool SerializeNonPrimitiveObject(object input, out object output)
+        public virtual bool TrySerializeNonPrimitiveObject(object input, out object output)
         {
             return TrySerializeKnownTypes(input, out output) || TrySerializeUnknownTypes(input, out output);
         }
@@ -1240,18 +1285,28 @@ namespace Facebook
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public virtual object DeserializeObject(object value, Type type)
         {
+            if (type == null) throw new ArgumentNullException("type");
+            string str = value as string;
+
+            if (type == typeof (Guid) && string.IsNullOrEmpty(str))
+                return default(Guid);
+
+            if (value == null)
+                return null;
+            
             object obj = null;
-            if (value is string)
+
+            if (str != null)
             {
-                string str = value as string;
-                if (!string.IsNullOrEmpty(str))
+                if (str.Length != 0) // We know it can't be null now.
                 {
                     if (type == typeof(DateTime) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(DateTime)))
-                        obj = DateTime.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
-                    else if (type == typeof(Guid) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(Guid)))
-                        obj = new Guid(str);
-                    else
-                        obj = str;
+                        return DateTime.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                    if (type == typeof(DateTimeOffset) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(DateTimeOffset)))
+                        return DateTimeOffset.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                    if (type == typeof(Guid) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(Guid)))
+                        return new Guid(str);
+                    return str;
                 }
                 else
                 {
@@ -1262,14 +1317,18 @@ namespace Facebook
                     else
                         obj = str;
                 }
+                // Empty string case
+                if (!ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(Guid))
+                    return str;
             }
             else if (value is bool)
-                obj = value;
-            else if (value == null)
-                obj = null;
-            else if ((value is long && type == typeof(long)) || (value is double && type == typeof(double)))
-                obj = value;
-            else if ((value is double && type != typeof(double)) || (value is long && type != typeof(long)))
+                return value;
+            
+            bool valueIsLong = value is long;
+            bool valueIsDouble = value is double;
+            if ((valueIsLong && type == typeof(long)) || (valueIsDouble && type == typeof(double)))
+                return value;
+            if ((valueIsDouble && type != typeof(double)) || (valueIsLong && type != typeof(long)))
             {
                 obj =
 #if NETFX_CORE
@@ -1281,9 +1340,10 @@ namespace Facebook
             }
             else
             {
-                if (value is IDictionary<string, object>)
+                IDictionary<string, object> objects = value as IDictionary<string, object>;
+                if (objects != null)
                 {
-                    IDictionary<string, object> jsonObject = (IDictionary<string, object>)value;
+                    IDictionary<string, object> jsonObject = objects;
 
                     if (ReflectionUtils.IsTypeDictionary(type))
                     {
@@ -1320,37 +1380,36 @@ namespace Facebook
                         }
                     }
                 }
-                else if (value is IList<object>)
+                else
                 {
-                    IList<object> jsonObject = (IList<object>)value;
-                    IList list = null;
+                    IList<object> valueAsList = value as IList<object>;
+                    if (valueAsList != null)
+                    {
+                        IList<object> jsonObject = valueAsList;
+                        IList list = null;
 
-                    if (type.IsArray)
-                    {
-                        list = (IList)ConstructorCache[type](jsonObject.Count);
-                        int i = 0;
-                        foreach (object o in jsonObject)
-                            list[i++] = DeserializeObject(o, type.GetElementType());
+                        if (type.IsArray)
+                        {
+                            list = (IList)ConstructorCache[type](jsonObject.Count);
+                            int i = 0;
+                            foreach (object o in jsonObject)
+                                list[i++] = DeserializeObject(o, type.GetElementType());
+                        }
+                        else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || ReflectionUtils.IsAssignableFrom(typeof(IList), type))
+                        {
+                            Type innerType = ReflectionUtils.GetGenericTypeArguments(type)[0];
+                            Type genericType = typeof(List<>).MakeGenericType(innerType);
+                            list = (IList)ConstructorCache[genericType](jsonObject.Count);
+                            foreach (object o in jsonObject)
+                                list.Add(DeserializeObject(o, innerType));
+                        }
+                        obj = list;
                     }
-                    else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || ReflectionUtils.IsAssignableFrom(typeof(IList), type))
-                    {
-                        Type innerType = ReflectionUtils.GetGenericTypeArguments(type)[0];
-                        Type genericType = typeof(List<>).MakeGenericType(innerType);
-                        list = (IList)ConstructorCache[genericType](jsonObject.Count);
-                        foreach (object o in jsonObject)
-                            list.Add(DeserializeObject(o, innerType));
-                    }
-                    obj = list;
                 }
                 return obj;
             }
             if (ReflectionUtils.IsNullableType(type))
                 return ReflectionUtils.ToNullableType(obj, type);
-            if (obj == null)
-            {
-                if (type == typeof(Guid))
-                    return default(Guid);
-            }
             return obj;
         }
 
@@ -1359,27 +1418,35 @@ namespace Facebook
             return Convert.ToDouble(p, CultureInfo.InvariantCulture);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification="Need to support .NET 2")]
         protected virtual bool TrySerializeKnownTypes(object input, out object output)
         {
             bool returnValue = true;
             if (input is DateTime)
                 output = ((DateTime)input).ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
+            else if (input is DateTimeOffset)
+                output = ((DateTimeOffset)input).ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
             else if (input is Guid)
                 output = ((Guid)input).ToString("D");
             else if (input is Uri)
                 output = input.ToString();
-            else if (input is Enum)
-                output = SerializeEnum((Enum)input);
             else
             {
-                returnValue = false;
-                output = null;
+                Enum inputEnum = input as Enum;
+                if (inputEnum != null)
+                    output = SerializeEnum(inputEnum);
+                else
+                {
+                    returnValue = false;
+                    output = null;
+                }
             }
             return returnValue;
         }
-
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification="Need to support .NET 2")]
         protected virtual bool TrySerializeUnknownTypes(object input, out object output)
         {
+            if (input == null) throw new ArgumentNullException("input");
             output = null;
             Type type = input.GetType();
             if (type.FullName == null)
@@ -1389,7 +1456,7 @@ namespace Facebook
             foreach (KeyValuePair<string, ReflectionUtils.GetDelegate> getter in getters)
             {
                 if (getter.Value != null)
-                    obj.Add(getter.Key, getter.Value(input));
+                    obj.Add(MapClrMemberNameToJsonFieldName(getter.Key), getter.Value(input));
             }
             output = obj;
             return true;
@@ -1397,6 +1464,7 @@ namespace Facebook
     }
 
 #if SIMPLE_JSON_DATACONTRACT
+    [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1476,6 +1544,9 @@ namespace Facebook
 
     namespace Reflection
     {
+        // This class is meant to be copied into other libraries. So we want to exclude it from Code Analysis rules
+ 	    // that might be in place in the target project.
+        [GeneratedCode("reflection-utils", "1.0.0")]
 #if SIMPLE_JSON_REFLECTION_UTILS_PUBLIC
         public
 #else

@@ -25,9 +25,6 @@ namespace Facebook
     /// <summary>
     /// Represents errors that occur as a result of problems with the OAuth access token.
     /// </summary>
-#if !(SILVERLIGHT || NETFX_CORE)
-    [Serializable]
-#endif
     public class FacebookOAuthException : FacebookApiException
     {
         /// <summary>

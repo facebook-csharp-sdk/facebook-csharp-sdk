@@ -26,9 +26,6 @@ namespace Facebook
     /// <summary>
     /// Represent errors that occur while calling a Facebook API.
     /// </summary>
-#if !(SILVERLIGHT || NETFX_CORE)
-    [Serializable]
-#endif
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly",
         Justification = "There are security issues associated with this method that make it difficult to support when running in partial trust.")]
     public class FacebookApiException : Exception
@@ -95,20 +92,6 @@ namespace Facebook
             : base(message, innerException)
         {
         }
-
-#if !(SILVERLIGHT || NETFX_CORE)
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
-        /// </summary>
-        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
-        /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
-        /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        protected FacebookApiException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-#endif
 
         /// <summary>
         /// Gets or sets the type of the error.
