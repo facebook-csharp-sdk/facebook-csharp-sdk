@@ -815,8 +815,6 @@ namespace Facebook
 
             var dictionary = parameters as IDictionary<string, object>;
 
-            // todo: IEnumerable<KeyValuePair<T1,T2>> and IEnumerable<Tuple<T1, T2>>
-
             if (dictionary == null)
             {
                 if (parameters == null)
@@ -824,18 +822,69 @@ namespace Facebook
 
                 // convert anonymous objects / unknown objects to IDictionary<string, object>
                 dictionary = new Dictionary<string, object>();
+
+                // IEnumerable<KeyValuePair<T1,T2>> and IEnumerable<Tuple<T1, T2>>
+                var enumerableParams = parameters as IEnumerable;
+
+                if (enumerableParams != null)
+                {
+                    foreach (var param in enumerableParams)
+                    {
+                        var paramType = param.GetType();
+                        string key = string.Empty;
+                        object obj = null;
+
+                        if (paramType.IsGenericType)
+                        {
+                            if (paramType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+                            {
+                                var keyInfo = param.GetType().GetProperty("Key");
+
+                                if (keyInfo.PropertyType != typeof(string))
+                                {
+                                    continue;
+                                }
+
+                                var value = param.GetType().GetProperty("Value");
+                                key = (string)keyInfo.GetValue(param, null);
+
+                                obj = value.GetValue(param, null);
+                            }
+                            else if (paramType.GetGenericTypeDefinition() == typeof(Tuple<,>))
+                            {
+                                var keyInfo = param.GetType().GetProperty("Item1");
+
+                                if (keyInfo.PropertyType != typeof(string))
+                                {
+                                    continue;
+                                }
+
+                                var value = param.GetType().GetProperty("Item2");
+                                var keyObj = (string)keyInfo.GetValue(param, null);
+                                var valueObj = value.GetValue(param, null);
+
+                                dictionary[keyObj] = valueObj;
+                            }
+
+                            dictionary[key] = obj;
+                        }
+                    }
+                }
+                else
+                {
 #if TYPEINFO
                 foreach (var propertyInfo in parameters.GetType().GetTypeInfo().DeclaredProperties.Where(p => p.CanRead))
                 {
                     dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
                 }
 #else
-                foreach (var propertyInfo in parameters.GetType().GetProperties())
-                {
-                    if (!propertyInfo.CanRead) continue;
-                    dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
-                }
+                    foreach (var propertyInfo in parameters.GetType().GetProperties())
+                    {
+                        if (!propertyInfo.CanRead) continue;
+                        dictionary[propertyInfo.Name] = propertyInfo.GetValue(parameters, null);
+                    }
 #endif
+                }
             }
 
             foreach (var parameter in dictionary)
