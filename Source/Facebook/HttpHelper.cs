@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="HttpHelper.cs.pp" company="The Outercurve Foundation">
 //    Copyright (c) 2011, The Outercurve Foundation. 
 //
@@ -1306,7 +1306,19 @@ namespace Facebook
         /// <returns>The url encoded string.</returns>
         public static string UrlEncode(string s)
         {
-            return Uri.EscapeDataString(s);
+            const int MAX_LIMIT = 1000;
+            if(s == null || s.Length <= MAX_LIMIT) 
+                return Uri.EscapeDataString(s);
+            var sb = new StringBuilder();
+            int loops = s.Length / MAX_LIMIT;
+
+            for (int i = 0; i <= loops; i++)
+            {
+                sb.Append(i < loops
+                    ? Uri.EscapeDataString(s.Substring(MAX_LIMIT*i, MAX_LIMIT))
+                    : Uri.EscapeDataString(s.Substring(MAX_LIMIT*i)));
+            }
+            return s;
         }
 
         /// <summary>
