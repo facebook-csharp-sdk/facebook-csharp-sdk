@@ -14,7 +14,10 @@ var fs = require('fs'),
 console.log('Facebook C# SDK v' + config.version + ' (' + config.fileVersion + ')')
 
 msbuild.setDefaults({
-    properties: { Configuration: 'Release' },
+    properties: {
+        Configuration: 'Release'
+        /*, VisualStudioVersion: '12.0' */ // add this as an environment variable or uncomment
+    },
     processor: 'x86',
     version: 'net4.0'
 })
