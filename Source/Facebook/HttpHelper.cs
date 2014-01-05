@@ -14,28 +14,35 @@
 //    limitations under the License.
 // </copyright>
 // <author>Prabir Shrestha (prabir.me)</author>
-// <website>https://github.com/facebook-csharp-sdk/HttpHelper</website>
+// <website>https://github.com/facebook-csharp-sdk/http-helper</website>
 //-----------------------------------------------------------------------
 
-// Install-Package FluentHttpHelper
+// Install-Package HttpHelper
 
-//#define FLUENTHTTP_STRING_HELPERS
-//#define FLUENTHTTP_CORE_TPL
-//#define FLUENTHTTP_CORE_STREAM
-//#define FLUENTHTTP_URLENCODING
-//#define FLUENTHTTP_HTMLENCODING
-//#define FLUENTHTTP_HTTPBASIC_AUTHENTICATION
-//#define FLUENTHTTP_HTTPHELPER_PUBLIC
+//#define HTTPHELPER_PORTABLE_LIBRARY
+//#define HTTPHELPER_TPL
+//#define HTTPHELPER_HELPERS
+//#define HTTPHELPER_STREAM
+//#define HTTPHELPER_NO_URLENCODING
+//#define HTTPHELPER_HTMLENCODING
+//#define HTTPHELPER_NO_HTTPBASIC_AUTHENTICATION
+//#define HTTPHELPER_NO_OAUTH
+//#define HTTPHELPER_PUBLIC
+
+#if NETFX_CORE
+#define HTTPHELPER_TPL
+#endif
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
-#if FLUENTHTTP_CORE_TPL
+#if HTTPHELPER_TPL
 using System.Threading.Tasks;
 #endif
 
@@ -100,27 +107,27 @@ namespace Facebook
             set { _httpWebRequest.Headers = value; }
         }
 
-#if !NETFX_CORE
-		/// <summary>
-		/// Gets or sets a value that indicates whether the request should follow redirection responses.
-		/// </summary>
-		public virtual bool AllowAutoRedirect
-		{
-			get { return _httpWebRequest.AllowAutoRedirect; }
-			set { _httpWebRequest.AllowAutoRedirect = value; }
-		}
+#if !(NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
+        /// <summary>
+        /// Gets or sets a value that indicates whether the request should follow redirection responses.
+        /// </summary>
+        public virtual bool AllowAutoRedirect
+        {
+                get { return _httpWebRequest.AllowAutoRedirect; }
+                set { _httpWebRequest.AllowAutoRedirect = value; }
+        }
 #endif
 
-#if !(WINDOWS_PHONE || NETFX_CORE)
+#if !(WINDOWS_PHONE || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
-		/// <summary>
-		/// Gets or sets the content length.
-		/// </summary>
-		public virtual long ContentLength
-		{
-			get { return _httpWebRequest.ContentLength; }
-			set { _httpWebRequest.ContentLength = value; }
-		}
+        /// <summary>
+        /// Gets or sets the content length.
+        /// </summary>
+        public virtual long ContentLength
+        {
+                get { return _httpWebRequest.ContentLength; }
+                set { _httpWebRequest.ContentLength = value; }
+        }
 
         /// <summary>
         /// True to enable buffering of the data sent to the Internet resource; false to disable buffering. The default is true.
@@ -132,15 +139,15 @@ namespace Facebook
         }
 #endif
 
-#if !NETFX_CORE
-		/// <summary>
-		/// Gets or sets the user agent.
-		/// </summary>
-		public virtual string UserAgent
-		{
-			get { return _httpWebRequest.UserAgent; }
-			set { _httpWebRequest.UserAgent = value; }
-		}
+#if !(NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
+        /// <summary>
+        /// Gets or sets the user agent.
+        /// </summary>
+        public virtual string UserAgent
+        {
+                get { return _httpWebRequest.UserAgent; }
+                set { _httpWebRequest.UserAgent = value; }
+        }
 #endif
 
         /// <summary>
@@ -182,88 +189,7 @@ namespace Facebook
 
 #if !NETFX_CORE
 
-		/// <summary>
-		/// Gets the service point to use for the request.
-		/// </summary>
-		public virtual ServicePoint ServicePoint
-		{
-			get { return _httpWebRequest.ServicePoint; }
-		}
-
-		/// <summary>
-		/// Gets or sets the decompression method.
-		/// </summary>
-		public virtual DecompressionMethods AutomaticDecompression
-		{
-			get { return _httpWebRequest.AutomaticDecompression; }
-			set { _httpWebRequest.AutomaticDecompression = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets the connection.
-		/// </summary>
-		public virtual string Connection
-		{
-			get { return _httpWebRequest.Connection; }
-			set { _httpWebRequest.Connection = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets the expect.
-		/// </summary>
-		public virtual string Expect
-		{
-			get { return _httpWebRequest.Expect; }
-			set { _httpWebRequest.Expect = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets the if modified since.
-		/// </summary>
-		public virtual DateTime IfModifiedSince
-		{
-			get { return _httpWebRequest.IfModifiedSince; }
-			set { _httpWebRequest.IfModifiedSince = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets the read write timeout.
-		/// </summary>
-		public virtual int ReadWriteTimeout
-		{
-			get { return _httpWebRequest.ReadWriteTimeout; }
-			set { _httpWebRequest.ReadWriteTimeout = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets the referrer.
-		/// </summary>
-		public virtual string Referer
-		{
-			get { return _httpWebRequest.Referer; }
-			set { _httpWebRequest.Referer = value; }
-		}
-
-		/// <summary>
-		/// Gets or set the time in milliseconds, before the request times out.
-		/// </summary>
-		public virtual int Timeout
-		{
-			get { return _httpWebRequest.Timeout; }
-			set { _httpWebRequest.Timeout = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets the transfer encoding.
-		/// </summary>
-		public virtual string TransferEncoding
-		{
-			get { return _httpWebRequest.TransferEncoding; }
-			set { _httpWebRequest.TransferEncoding = value; }
-		}
-
-#endif
-
+#if !HTTPHELPER_PORTABLE_LIBRARY
         /// <summary>
         /// Gets or sets the proxy.
         /// </summary>
@@ -272,6 +198,89 @@ namespace Facebook
             get { return _httpWebRequest.Proxy; }
             set { _httpWebRequest.Proxy = value; }
         }
+
+        /// <summary>
+        /// Gets the service point to use for the request.
+        /// </summary>
+        public virtual ServicePoint ServicePoint
+        {
+                get { return _httpWebRequest.ServicePoint; }
+        }
+
+        /// <summary>
+        /// Gets or sets the decompression method.
+        /// </summary>
+        public virtual DecompressionMethods AutomaticDecompression
+        {
+                get { return _httpWebRequest.AutomaticDecompression; }
+                set { _httpWebRequest.AutomaticDecompression = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the connection.
+        /// </summary>
+        public virtual string Connection
+        {
+                get { return _httpWebRequest.Connection; }
+                set { _httpWebRequest.Connection = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the expect.
+        /// </summary>
+        public virtual string Expect
+        {
+                get { return _httpWebRequest.Expect; }
+                set { _httpWebRequest.Expect = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the if modified since.
+        /// </summary>
+        public virtual DateTime IfModifiedSince
+        {
+                get { return _httpWebRequest.IfModifiedSince; }
+                set { _httpWebRequest.IfModifiedSince = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the read write timeout.
+        /// </summary>
+        public virtual int ReadWriteTimeout
+        {
+                get { return _httpWebRequest.ReadWriteTimeout; }
+                set { _httpWebRequest.ReadWriteTimeout = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the referrer.
+        /// </summary>
+        public virtual string Referer
+        {
+                get { return _httpWebRequest.Referer; }
+                set { _httpWebRequest.Referer = value; }
+        }
+
+        /// <summary>
+        /// Gets or set the time in milliseconds, before the request times out.
+        /// </summary>
+        public virtual int Timeout
+        {
+                get { return _httpWebRequest.Timeout; }
+                set { _httpWebRequest.Timeout = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the transfer encoding.
+        /// </summary>
+        public virtual string TransferEncoding
+        {
+                get { return _httpWebRequest.TransferEncoding; }
+                set { _httpWebRequest.TransferEncoding = value; }
+        }
+#endif
+
+#endif
 
 #endif
 
@@ -286,9 +295,9 @@ namespace Facebook
         /// </returns>
         public virtual bool TrySetContentLength(long contentLength)
         {
-#if !(WINDOWS_PHONE || NETFX_CORE)
-			ContentLength = contentLength;
-			return true;
+#if !(WINDOWS_PHONE || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
+            ContentLength = contentLength;
+            return true;
 #else
             return false;
 #endif
@@ -305,7 +314,7 @@ namespace Facebook
         /// </returns>
         public virtual bool TrySetUserAgent(string userAgent)
         {
-#if (!(SILVERLIGHT || NETFX_CORE) || WINDOWS_PHONE)
+#if (!(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY) || WINDOWS_PHONE)
             UserAgent = userAgent;
             return true;
 #else
@@ -377,7 +386,7 @@ namespace Facebook
             return _httpWebRequest.EndGetRequestStream(asyncResult);
         }
 
-#if FLUENTHTTP_CORE_TPL
+#if HTTPHELPER_TPL
 
         /// <summary>
         /// Asynchronously gets the response.
@@ -399,25 +408,25 @@ namespace Facebook
 
 #endif
 
-#if !(SILVERLIGHT || NETFX_CORE)
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
-		/// <summary>
-		/// Gets the response.
-		/// </summary>
-		/// <returns></returns>
-		public virtual HttpWebResponseWrapper GetResponse()
-		{
-			return new HttpWebResponseWrapper((HttpWebResponse)_httpWebRequest.GetResponse());
-		}
+        /// <summary>
+        /// Gets the response.
+        /// </summary>
+        /// <returns></returns>
+        public virtual HttpWebResponseWrapper GetResponse()
+        {
+                return new HttpWebResponseWrapper((HttpWebResponse)_httpWebRequest.GetResponse());
+        }
 
-		/// <summary>
-		/// Gets the request stream.
-		/// </summary>
-		/// <returns></returns>
-		public virtual Stream GetRequestStream()
-		{
-			return _httpWebRequest.GetRequestStream();
-		}
+        /// <summary>
+        /// Gets the request stream.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Stream GetRequestStream()
+        {
+                return _httpWebRequest.GetRequestStream();
+        }
 
 #endif
 
@@ -549,55 +558,55 @@ namespace Facebook
         }
 
 #if !SILVERLIGHT
-#if !NETFX_CORE
+#if !(NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
-		/// <summary>
-		/// Gets the content encoding.
-		/// </summary>
-		public virtual string ContentEncoding
-		{
-			get { return _httpWebResponse.ContentEncoding; }
-		}
+        /// <summary>
+        /// Gets the content encoding.
+        /// </summary>
+        public virtual string ContentEncoding
+        {
+                get { return _httpWebResponse.ContentEncoding; }
+        }
 
-		/// <summary>
-		/// Gets the character set.
-		/// </summary>
-		public virtual string CharacterSet
-		{
-			get { return _httpWebResponse.CharacterSet; }
-		}
+        /// <summary>
+        /// Gets the character set.
+        /// </summary>
+        public virtual string CharacterSet
+        {
+                get { return _httpWebResponse.CharacterSet; }
+        }
 
-		/// <summary>
-		/// Gets a value indicating whether response is mutually authenticated.
-		/// </summary>
-		public virtual bool IsMutuallyAuthenticated
-		{
-			get { return _httpWebResponse.IsMutuallyAuthenticated; }
-		}
+        /// <summary>
+        /// Gets a value indicating whether response is mutually authenticated.
+        /// </summary>
+        public virtual bool IsMutuallyAuthenticated
+        {
+                get { return _httpWebResponse.IsMutuallyAuthenticated; }
+        }
 
-		/// <summary>
-		/// Gets the last modified date and time.
-		/// </summary>
-		public virtual DateTime LastModified
-		{
-			get { return _httpWebResponse.LastModified; }
-		}
+        /// <summary>
+        /// Gets the last modified date and time.
+        /// </summary>
+        public virtual DateTime LastModified
+        {
+                get { return _httpWebResponse.LastModified; }
+        }
 
-		/// <summary>
-		/// Gets the protocol version.
-		/// </summary>
-		public virtual Version ProtocolVersion
-		{
-			get { return _httpWebResponse.ProtocolVersion; }
-		}
+        /// <summary>
+        /// Gets the protocol version.
+        /// </summary>
+        public virtual Version ProtocolVersion
+        {
+                get { return _httpWebResponse.ProtocolVersion; }
+        }
 
-		/// <summary>
-		/// Gets the server.
-		/// </summary>
-		public virtual string Server
-		{
-			get { return _httpWebResponse.Server; }
-		}
+        /// <summary>
+        /// Gets the server.
+        /// </summary>
+        public virtual string Server
+        {
+                get { return _httpWebResponse.Server; }
+        }
 
 #endif
 
@@ -617,8 +626,8 @@ namespace Facebook
     /// <summary>
     /// Wrapper for web exceptions.
     /// </summary>
-#if !(NETFX_CORE || SILVERLIGHT)
-	[Serializable]
+#if !(NETFX_CORE || SILVERLIGHT || HTTPHELPER_PORTABLE_LIBRARY)
+        [Serializable]
 #endif
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class WebExceptionWrapper : Exception
@@ -634,6 +643,16 @@ namespace Facebook
         /// <summary>
         /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
         /// </summary>
+        /// <param name="message">Error message.</param>
+        /// <param name="innerException">The inner exception.</param>
+        protected WebExceptionWrapper(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
+        /// </summary>
         public WebExceptionWrapper(WebException webException)
             : base(webException == null ? null : webException.Message, webException == null ? null : webException.InnerException)
         {
@@ -641,18 +660,18 @@ namespace Facebook
             _status = webException == null ? WebExceptionStatus.UnknownError : webException.Status;
         }
 
-#if !(NETFX_CORE || SILVERLIGHT)
-		/// <summary>
-		/// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
-		/// </summary>
-		/// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-		/// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
-		/// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
-		/// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-		protected WebExceptionWrapper(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
-			: base(info, context)
-		{
-		}
+#if !(NETFX_CORE || SILVERLIGHT || HTTPHELPER_PORTABLE_LIBRARY)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebExceptionWrapper"/> class.
+        /// </summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+        /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        protected WebExceptionWrapper(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+                : base(info, context)
+        {
+        }
 #endif
 
         /// <summary>
@@ -693,8 +712,8 @@ namespace Facebook
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-#if FLUENTHTTP_HTTPHELPER_PUBLIC
-	public
+#if HTTPHELPER_PUBLIC
+        public
 #else
     internal
 #endif
@@ -705,8 +724,8 @@ namespace Facebook
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-#if FLUENTHTTP_HTTPHELPER_PUBLIC
-	public
+#if HTTPHELPER_PUBLIC
+        public
 #else
     internal
 #endif
@@ -715,8 +734,8 @@ namespace Facebook
     /// <summary>
     /// Open read completed event args.
     /// </summary>
-#if FLUENTHTTP_HTTPHELPER_PUBLIC
-	public
+#if HTTPHELPER_PUBLIC
+        public
 #else
     internal
 #endif
@@ -753,8 +772,8 @@ namespace Facebook
     /// <summary>
     /// Open write completed event args.
     /// </summary>
-#if FLUENTHTTP_HTTPHELPER_PUBLIC
-	public
+#if HTTPHELPER_PUBLIC
+        public
 #else
     internal
 #endif
@@ -791,14 +810,36 @@ namespace Facebook
     /// <summary>
     /// Http helper.
     /// </summary>
-#if FLUENTHTTP_HTTPHELPER_PUBLIC
-	public
+#if HTTPHELPER_PUBLIC
+        public
 #else
     internal
 #endif
  class HttpHelper
     {
         private const string ErrorPerformingHttpRequest = "An error occurred performing a http web request.";
+
+        /// <summary>
+        /// application/form-url-encoded content type
+        /// </summary>
+        public const string ApplicationFormUrlEncodedContentType = "application/form-url-encoded";
+
+        /// <summary>
+        /// application/x-www-form-urlencoded content type
+        /// </summary>
+        public const string ApplicationXWWWFormUrlEncodedContentType = "application/x-www-form-urlencoded";
+
+        /// <summary>
+        /// Returns multipart/form-data; boundary=.....
+        /// </summary>
+        /// <param name="boundary">The multipart boundary</param>
+        /// <returns>
+        /// multipart/form-data; boundary=... content type
+        /// </returns>
+        public static string GetMultipartFormDataBoundaryContentType(string boundary)
+        {
+            return string.Concat("multipart/form-data; boundary=", boundary);
+        }
 
         /// <summary>
         /// Gets the inner exception.
@@ -870,72 +911,83 @@ namespace Facebook
             get { return _httpWebResponse; }
         }
 
-#if !(SILVERLIGHT || NETFX_CORE)
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
 
-		/// <summary>
-		/// Opens the request stream synchronously for write.
-		/// </summary>
-		/// <returns></returns>
-		/// <exception cref="WebExceptionWrapper"></exception>
-		/// <exception cref="Exception"></exception>
-		public virtual Stream OpenWrite()
-		{
-			try
-			{
-				return _httpWebRequest.GetRequestStream();
-			}
-			catch (WebException webException)
-			{
-				if (webException.Response != null)
-					_httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
-				_innerException = webException;
-				throw new WebExceptionWrapper(webException);
-			}
-			catch (WebExceptionWrapper webException)
-			{
-				_httpWebResponse = webException.GetResponse();
-				_innerException = webException;
-				throw;
-			}
-			catch (Exception ex)
-			{
-				_innerException = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
-				throw _innerException;
-			}
-		}
+        /// <summary>
+        /// Opens the request stream synchronously for write.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="WebExceptionWrapper"></exception>
+        /// <exception cref="Exception"></exception>
+        public virtual Stream OpenWrite()
+        {
+            try
+            {
+                    return _httpWebRequest.GetRequestStream();
+            }
+            catch (WebException webException)
+            {
+                    if (webException.Response != null)
+                            _httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
+                    _innerException = webException;
+                    throw new WebExceptionWrapper(webException);
+            }
+            catch (WebExceptionWrapper webException)
+            {
+                    _httpWebResponse = webException.GetResponse();
+                    _innerException = webException;
+                    throw;
+            }
+            catch (Exception ex)
+            {
+                    _innerException = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
+                    throw _innerException;
+            }
+        }
 
-		/// <summary>
-		/// Opens the response stream synchronously for read.
-		/// </summary>
-		/// <returns></returns>
-		/// <exception cref="Exception"></exception>
-		public virtual Stream OpenRead()
-		{
-			try
-			{
-				if (_httpWebResponse == null)
-					_httpWebResponse = _httpWebRequest.GetResponse();
-				return _httpWebResponse.GetResponseStream();
-			}
-			catch (WebException webException)
-			{
-				if (webException.Response != null)
-					_httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
-				_innerException = new WebExceptionWrapper(webException);
-				throw _innerException;
-			}
-			catch (WebExceptionWrapper webException)
-			{
-				_httpWebResponse = webException.GetResponse();
-				_innerException = webException;
-				throw _innerException;
-			}
-			catch (Exception ex)
-			{
-				_innerException = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
-				throw _innerException;
-			}
-		}
+        /// <summary>
+        /// Opens the response stream synchronously for read.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public virtual Stream OpenRead()
+        {
+            try
+            {
+                if (_httpWebResponse == null)
+                        _httpWebResponse = _httpWebRequest.GetResponse();
+                return _httpWebResponse.GetResponseStream();
+            }
+            catch (WebException webException)
+            {
+                _innerException = new WebExceptionWrapper(webException);
+                if (webException.Response != null)
+                {
+                    _httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse) webException.Response);
+                    var stream = _httpWebResponse.GetResponseStream();
+                    if (stream != null)
+                        return stream;
+                }
+                throw _innerException;
+            }
+            catch (WebExceptionWrapper webException)
+            {
+                _innerException = webException;
+                _httpWebResponse = webException.GetResponse();
+                if(_httpWebResponse!=null)
+                {
+                    var stream = _httpWebResponse.GetResponseStream();
+                    if (stream != null)
+                        return stream;
+                }
+                throw _innerException;
+            }
+            catch (Exception ex)
+            {
+                _innerException = new WebExceptionWrapper(new WebException(ErrorPerformingHttpRequest, ex));
+                throw _innerException;
+            }
+        }
 
 #endif
 
@@ -954,9 +1006,9 @@ namespace Facebook
 
                     int timeout = 0;
 
-#if !(SILVERLIGHT || NETFX_CORE)
-					if (HttpWebRequest.Timeout > 0)
-						timeout = HttpWebRequest.Timeout;
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
+                    if (HttpWebRequest.Timeout > 0)
+                            timeout = HttpWebRequest.Timeout;
 #endif
 
                     if (Timeout > 0)
@@ -964,7 +1016,7 @@ namespace Facebook
 
                     if (timeout > 0)
                     {
-#if NETFX_CORE
+#if NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY
                         // todo
 #else
                         ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, ScanTimoutCallback, userToken, timeout, true);
@@ -1092,13 +1144,18 @@ namespace Facebook
             catch (WebException webException)
             {
                 if (webException.Response != null)
+                {
                     _httpWebResponse = new HttpWebResponseWrapper((HttpWebResponse)webException.Response);
+                    stream = _httpWebResponse.GetResponseStream();
+                }
                 webExceptionWrapper = new WebExceptionWrapper(webException);
                 _innerException = webExceptionWrapper;
             }
             catch (WebExceptionWrapper webException)
             {
                 _httpWebResponse = webException.GetResponse();
+                if (_httpWebResponse != null)
+                    stream = _httpWebResponse.GetResponseStream();
                 webExceptionWrapper = webException;
                 _innerException = webExceptionWrapper;
             }
@@ -1108,7 +1165,7 @@ namespace Facebook
                 _innerException = webExceptionWrapper;
             }
 
-            OnOpenReadCompleted(new OpenReadCompletedEventArgs(stream, webExceptionWrapper, webExceptionWrapper != null && webExceptionWrapper.Status == WebExceptionStatus.RequestCanceled, userToken));
+            OnOpenReadCompleted(new OpenReadCompletedEventArgs(stream, stream == null ? webExceptionWrapper : null, webExceptionWrapper != null && webExceptionWrapper.Status == WebExceptionStatus.RequestCanceled, userToken));
         }
 
         private void ScanTimoutCallback(object state, bool timedOut)
@@ -1117,7 +1174,7 @@ namespace Facebook
                 HttpWebRequest.Abort();
         }
 
-#if FLUENTHTTP_CORE_TPL
+#if HTTPHELPER_TPL
 
         static void TransferCompletionToTask<T>(TaskCompletionSource<T> tcs, AsyncCompletedEventArgs e, Func<T> getResult, Action unregisterHandler)
         {
@@ -1282,7 +1339,17 @@ namespace Facebook
         protected virtual void OnOpenReadCompleted(OpenReadCompletedEventArgs args)
         {
             if (OpenReadCompleted != null)
-                OpenReadCompleted(this, args);
+            {
+                try
+                {
+                    OpenReadCompleted(this, args);
+                }
+                catch
+                {
+                    // user is supposed to handle their own exception.
+                    // this also prevents OnOpenReadCompleted being called multiple times.
+                }
+            }
         }
 
         /// <summary>
@@ -1292,12 +1359,22 @@ namespace Facebook
         protected virtual void OnOpenWriteCompleted(OpenWriteCompletedEventArgs args)
         {
             if (OpenWriteCompleted != null)
-                OpenWriteCompleted(this, args);
+            {
+                try
+                {
+                    OpenWriteCompleted(this, args);
+                }
+                catch
+                {
+                    // user is supposed to handle their own exception.
+                    // this also prevents OnOpenWriteCompleted being called multiple times.
+                }
+            }
         }
 
         #region UrlEncoding/UrlDecoding
 
-#if FLUENTHTTP_URLENCODING
+#if !HTTPHELPER_NO_URLENCODING
 
         /// <summary>
         /// Url encodes the specified string.
@@ -1309,6 +1386,17 @@ namespace Facebook
             return Uri.EscapeDataString(s);
         }
 
+        public static string UrlEncodeRfc3986(string s)
+        {
+            // todo: optimize
+            return UrlEncode(s)
+                .Replace("!", "%21")
+                .Replace("*", "%2A")
+                .Replace("'", "%27")
+                .Replace("(", "%28")
+                .Replace(")", "%29");
+        }
+
         /// <summary>
         /// Url decodes the specified string.
         /// </summary>
@@ -1317,9 +1405,9 @@ namespace Facebook
         public static string UrlDecode(string s)
         {
 #if WINDOWS_PHONE
-			return System.Net.HttpUtility.UrlDecode(s);
+            return System.Net.HttpUtility.UrlDecode(s);
 #elif SILVERLIGHT
-			return System.Windows.Browser.HttpUtility.UrlDecode(s);
+            return System.Windows.Browser.HttpUtility.UrlDecode(s);
 #else
             return UrlDecode(s, Encoding.UTF8);
 #endif
@@ -1435,7 +1523,7 @@ namespace Facebook
 
         #region HtmlDecoding
 
-#if FLUENTHTTP_HTMLENCODING
+#if HTTPHELPER_HTMLENCODING
 
 #if !(SILVERLIGHT || WINDOWS_PHONE)
 
@@ -1729,9 +1817,9 @@ namespace Facebook
         public static string HtmlDecode(string s)
         {
 #if WINDOWS_PHONE
-			return System.Net.HttpUtility.HtmlDecode(s);
+            return System.Net.HttpUtility.HtmlDecode(s);
 #elif SILVERLIGHT
-			return System.Windows.Browser.HttpUtility.HtmlDecode(s);
+            return System.Windows.Browser.HttpUtility.HtmlDecode(s);
 #else
             if (s == null)
                 return null;
@@ -1742,7 +1830,7 @@ namespace Facebook
             if (s.IndexOf('&') == -1)
                 return s;
 #if NET_4_0
-			StringBuilder rawEntity = new StringBuilder ();
+            StringBuilder rawEntity = new StringBuilder ();
 #endif
             StringBuilder entity = new StringBuilder();
             StringBuilder output = new StringBuilder();
@@ -1765,7 +1853,7 @@ namespace Facebook
                     {
                         entity.Append(c);
 #if NET_4_0
-						rawEntity.Append (c);
+                        rawEntity.Append (c);
 #endif
                         state = 1;
                     }
@@ -1814,7 +1902,7 @@ namespace Facebook
                         }
                         entity.Append(c);
 #if NET_4_0
-						rawEntity.Append (c);
+                        rawEntity.Append (c);
 #endif
                     }
                 }
@@ -1831,7 +1919,7 @@ namespace Facebook
                         state = 0;
                         entity.Length = 0;
 #if NET_4_0
-						rawEntity.Length = 0;
+                        rawEntity.Length = 0;
 #endif
                     }
                 }
@@ -1840,9 +1928,9 @@ namespace Facebook
                     if (c == ';')
                     {
 #if NET_4_0
-						if (number == 0)
-							output.Append (rawEntity.ToString () + ";");
-						else
+                        if (number == 0)
+                                output.Append (rawEntity.ToString () + ";");
+                        else
 #endif
                         if (number > 65535)
                         {
@@ -1857,24 +1945,24 @@ namespace Facebook
                         state = 0;
                         entity.Length = 0;
 #if NET_4_0
-						rawEntity.Length = 0;
+                        rawEntity.Length = 0;
 #endif
                         have_trailing_digits = false;
                     }
 #if NETFX_CORE
                     else if (is_hex_value && IsHexDigit(c))
 #else
-					else if (is_hex_value && Uri.IsHexDigit(c))
+                    else if (is_hex_value && Uri.IsHexDigit(c))
 #endif
                     {
 #if NETFX_CORE
                         number = number * 16 + FromHex(c);
 #else
-						number = number * 16 + Uri.FromHex(c);
+                        number = number * 16 + Uri.FromHex(c);
 #endif
                         have_trailing_digits = true;
 #if NET_4_0
-						rawEntity.Append (c);
+                        rawEntity.Append (c);
 #endif
                     }
                     else if (Char.IsDigit(c))
@@ -1882,14 +1970,14 @@ namespace Facebook
                         number = number * 10 + ((int)c - '0');
                         have_trailing_digits = true;
 #if NET_4_0
-						rawEntity.Append (c);
+                        rawEntity.Append (c);
 #endif
                     }
                     else if (number == 0 && (c == 'x' || c == 'X'))
                     {
                         is_hex_value = true;
 #if NET_4_0
-						rawEntity.Append (c);
+                        rawEntity.Append (c);
 #endif
                     }
                     else
@@ -1948,194 +2036,194 @@ namespace Facebook
 
         #region Utils
 
-#if FLUENTHTTP_HELPERS
+#if HTTPHELPER_HELPERS
 
-		/// <summary>
-		/// Add starting slash if not present.
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		public static string AddStartingSlashIfNotPresent(string input)
-		{
-			if (string.IsNullOrEmpty(input))
-			{
-				return "/";
-			}
+        /// <summary>
+        /// Add starting slash if not present.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string AddStartingSlashIfNotPresent(string input)
+        {
+                if (string.IsNullOrEmpty(input))
+                {
+                        return "/";
+                }
 
-			// if not null or empty
-			if (input[0] != '/')
-			{
-				// if doesn't start with / then add /
-				return "/" + input;
-			}
-			else
-			{
-				// else return the original input.
-				return input;
-			}
-		}
+                // if not null or empty
+                if (input[0] != '/')
+                {
+                        // if doesn't start with / then add /
+                        return "/" + input;
+                }
+                else
+                {
+                        // else return the original input.
+                        return input;
+                }
+        }
 
-		/// <summary>
-		/// Builds the request url.
-		/// </summary>
-		/// <param name="baseUrl"></param>
-		/// <param name="resourcePath"></param>
-		/// <param name="queryStrings"></param>
-		/// <typeparam name="TKey"></typeparam>
-		/// <typeparam name="TValue"></typeparam>
-		/// <returns></returns>
-		/// <exception cref="ArgumentNullException"></exception>
-		public static string BuildRequestUrl<TKey, TValue>(string baseUrl, string resourcePath, IEnumerable<KeyValuePair<TKey, TValue>> queryStrings)
-		{
-			var sb = new StringBuilder();
+        /// <summary>
+        /// Builds the request url.
+        /// </summary>
+        /// <param name="baseUrl"></param>
+        /// <param name="resourcePath"></param>
+        /// <param name="queryStrings"></param>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string BuildRequestUrl<TKey, TValue>(string baseUrl, string resourcePath, IEnumerable<KeyValuePair<TKey, TValue>> queryStrings)
+        {
+                var sb = new StringBuilder();
 
-			if (string.IsNullOrEmpty(baseUrl))
-				throw new ArgumentNullException("baseUrl");
+                if (string.IsNullOrEmpty(baseUrl))
+                        throw new ArgumentNullException("baseUrl");
 
-			sb.Append(baseUrl);
-			if (!string.IsNullOrEmpty(resourcePath))
-				sb.Append(AddStartingSlashIfNotPresent(resourcePath));
-			sb.Append("?");
+                sb.Append(baseUrl);
+                if (!string.IsNullOrEmpty(resourcePath))
+                        sb.Append(AddStartingSlashIfNotPresent(resourcePath));
+                sb.Append("?");
 
-			if (queryStrings != null)
-			{
-				foreach (var queryString in queryStrings)
-				{
-					// note: assume queryString is already url encoded.
-					sb.AppendFormat("{0}={1}&", queryString.Key, queryString.Value);
-				}
-			}
+                if (queryStrings != null)
+                {
+                        foreach (var queryString in queryStrings)
+                        {
+                                // note: assume queryString is already url encoded.
+                                sb.AppendFormat("{0}={1}&", queryString.Key, queryString.Value);
+                        }
+                }
 
-			// remote the last & or ?
-			--sb.Length;
+                // remote the last & or ?
+                --sb.Length;
 
-			return sb.ToString();
-		}
+                return sb.ToString();
+        }
 
-		/*
-		public virtual void SetHeaders<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> requestHeaders)
-			where TKey : class
-			where TValue : class
-		{
-			foreach (var requestHeader in requestHeaders)
-			{
-				if (requestHeader.Key == null)
-					throw new ArgumentNullException("key");
-				if (requestHeader.Value == null)
-					throw new ArgumentNullException("value");
+        /*
+        public virtual void SetHeaders<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> requestHeaders)
+                where TKey : class
+                where TValue : class
+        {
+                foreach (var requestHeader in requestHeaders)
+                {
+                        if (requestHeader.Key == null)
+                                throw new ArgumentNullException("key");
+                        if (requestHeader.Value == null)
+                                throw new ArgumentNullException("value");
 
-				string name = requestHeader.Key.ToString();
-				string value = requestHeader.Value.ToString();
+                        string name = requestHeader.Key.ToString();
+                        string value = requestHeader.Value.ToString();
 
-				// todo: add more special headers
-				if (name.Equals("content-type", StringComparison.OrdinalIgnoreCase))
-				{
-					_httpWebRequest.ContentType = value;
-				}
-				else if (name.Equals("content-length", StringComparison.OrdinalIgnoreCase))
-				{
+                        // todo: add more special headers
+                        if (name.Equals("content-type", StringComparison.OrdinalIgnoreCase))
+                        {
+                                _httpWebRequest.ContentType = value;
+                        }
+                        else if (name.Equals("content-length", StringComparison.OrdinalIgnoreCase))
+                        {
 #if (WINDOWS_PHONE || NETFX_CORE)
-					throw new Exception("Cannot set content-length.");
+                                throw new Exception("Cannot set content-length.");
 #else
-					_httpWebRequest.ContentLength = Convert.ToInt64(value);
+                                _httpWebRequest.ContentLength = Convert.ToInt64(value);
 #endif
-				}
-				else if (name.Equals("user-agent", StringComparison.OrdinalIgnoreCase))
-				{
+                        }
+                        else if (name.Equals("user-agent", StringComparison.OrdinalIgnoreCase))
+                        {
 #if NETFX_CORE
-					throw new Exception("Cannot set user-agent.");
+                                throw new Exception("Cannot set user-agent.");
 #else
-					_httpWebRequest.UserAgent = value;
+                                _httpWebRequest.UserAgent = value;
 #endif
-				}
-				else
-				{
-					_httpWebRequest.Headers[name] = value;
-				}
-			}
-		}
-		
-		*/
+                        }
+                        else
+                        {
+                                _httpWebRequest.Headers[name] = value;
+                        }
+                }
+        }
+        
+        */
 
 #endif
 
-#if FLUENTHTTP_CORE_STREAM
+#if HTTPHELPER_STREAM
 
-		/// <summary>
-		/// Action delegate.
-		/// </summary>
-		private delegate void Action();
+        /// <summary>
+        /// Action delegate.
+        /// </summary>
+        private delegate void Action();
 
-		/// <summary>
-		/// Copy stream.
-		/// </summary>
-		/// <param name="source">The source stream.</param>
-		/// <param name="destination">The destination stream.</param>
-		/// <param name="bufferSize">The buffer size.</param>
-		/// <param name="flushInput">Indicates whether to flush the input after every buffer read.</param>
-		/// <param name="flushOutput">Indicates whether to flush the output after every buffer write.</param>
-		public void CopyStream(Stream source, Stream destination, int? bufferSize, bool flushInput, bool flushOutput)
-		{
-			byte[] buffer = new byte[bufferSize ?? 1024 * 4]; // 4 kb
-			Action inputFlushAction = flushInput ? (Action)(source.Flush) : () => { };
-			Action outputFlushAction = flushOutput ? (Action)(destination.Flush) : () => { };
-			while (true)
-			{
-				int read = source.Read(buffer, 0, buffer.Length);
-				inputFlushAction();
-				if (read <= 0)
-					return;
-				destination.Write(buffer, 0, read);
-				outputFlushAction();
-			}
-		}
+        /// <summary>
+        /// Copy stream.
+        /// </summary>
+        /// <param name="source">The source stream.</param>
+        /// <param name="destination">The destination stream.</param>
+        /// <param name="bufferSize">The buffer size.</param>
+        /// <param name="flushInput">Indicates whether to flush the input after every buffer read.</param>
+        /// <param name="flushOutput">Indicates whether to flush the output after every buffer write.</param>
+        public void CopyStream(Stream source, Stream destination, int? bufferSize, bool flushInput, bool flushOutput)
+        {
+                byte[] buffer = new byte[bufferSize ?? 1024 * 4]; // 4 kb
+                Action inputFlushAction = flushInput ? (Action)(source.Flush) : () => { };
+                Action outputFlushAction = flushOutput ? (Action)(destination.Flush) : () => { };
+                while (true)
+                {
+                        int read = source.Read(buffer, 0, buffer.Length);
+                        inputFlushAction();
+                        if (read <= 0)
+                                return;
+                        destination.Write(buffer, 0, read);
+                        outputFlushAction();
+                }
+        }
 
-		/// <summary>
-		/// Reads the stream to end.
-		/// </summary>
-		/// <param name="input">The input stream.</param>
-		/// <param name="bufferSize">The buffer size.</param>
-		/// <param name="flushInput">Indicates whether to flush the input after every buffer read.</param>
-		public void ReadStreamToEnd(Stream input, int? bufferSize, bool flushInput)
-		{
-			byte[] buffer = new byte[bufferSize ?? 1024 * 4]; // 4 kb
-			while (true)
-			{
-				int read = input.Read(buffer, 0, buffer.Length);
-				if (flushInput)
-					input.Flush();
-				if (read <= 0)
-					return;
-			}
-		}
+        /// <summary>
+        /// Reads the stream to end.
+        /// </summary>
+        /// <param name="input">The input stream.</param>
+        /// <param name="bufferSize">The buffer size.</param>
+        /// <param name="flushInput">Indicates whether to flush the input after every buffer read.</param>
+        public void ReadStreamToEnd(Stream input, int? bufferSize, bool flushInput)
+        {
+                byte[] buffer = new byte[bufferSize ?? 1024 * 4]; // 4 kb
+                while (true)
+                {
+                        int read = input.Read(buffer, 0, buffer.Length);
+                        if (flushInput)
+                                input.Flush();
+                        if (read <= 0)
+                                return;
+                }
+        }
 
-#if FLUENTHTTP_CORE_TPL
+#if HTTPHELPER_TPL
 
-		/// <summary>
-		/// Asynchronously reads the stream.
-		/// </summary>
-		/// <param name="stream"></param>
-		/// <param name="buffer"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		/// <returns></returns>
-		public static Task<int> ReadTask(Stream stream, byte[] buffer, int offset, int count)
-		{
-			return Task<int>.Factory.FromAsync(stream.BeginRead, stream.EndRead, buffer, offset, count, null, TaskCreationOptions.None);
-		}
+        /// <summary>
+        /// Asynchronously reads the stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static Task<int> ReadTask(Stream stream, byte[] buffer, int offset, int count)
+        {
+                return Task<int>.Factory.FromAsync(stream.BeginRead, stream.EndRead, buffer, offset, count, null, TaskCreationOptions.None);
+        }
 
-		/// <summary>
-		/// Asynchronously writes to the stream.
-		/// </summary>
-		/// <param name="stream"></param>
-		/// <param name="buffer"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		/// <returns></returns>
-		public static Task WriteTask(Stream stream, byte[] buffer, int offset, int count)
-		{
-			return Task.Factory.FromAsync(stream.BeginWrite, stream.EndWrite, buffer, offset, count, null, TaskCreationOptions.None);
-		}
+        /// <summary>
+        /// Asynchronously writes to the stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static Task WriteTask(Stream stream, byte[] buffer, int offset, int count)
+        {
+                return Task.Factory.FromAsync(stream.BeginWrite, stream.EndWrite, buffer, offset, count, null, TaskCreationOptions.None);
+        }
 
 #endif
 
@@ -2145,19 +2233,181 @@ namespace Facebook
 
         #region Authentication
 
-#if FLUENTHTTP_HTTPBASIC_AUTHENTICATION
+#if !HTTPHELPER_NO_HTTPBASIC_AUTHENTICATION
 
-		/// <summary>
-		/// Sets the http basic authorization header on the http web request.
-		/// </summary>
-		/// <param name="username">The username</param>
-		/// <param name="password">the password</param>
-		public void AuthenticateUsingHttpBasicAuthentication(string username, string password)
-		{
-			_httpWebRequest.Headers["Authorization"] = string.Concat("Basic ", Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password))));
-		}
+        /// <summary>
+        /// Sets the http basic authorization header on the http web request.
+        /// </summary>
+        /// <param name="username">The username</param>
+        /// <param name="password">the password</param>
+        public void AuthenticateUsingHttpBasicAuthentication(string username, string password)
+        {
+                _httpWebRequest.Headers["Authorization"] = string.Concat("Basic ", Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password))));
+        }
 
 #endif
+
+#if !HTTPHELPER_NO_OAUTH
+
+        /// <summary>
+        /// Generate OAuth Nonce
+        /// </summary>
+        public static string GenerateOAuthNonce()
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture)));
+        }
+
+        /// <summary>
+        /// Generate OAuth time stamp
+        /// </summary>
+        public static string GenerateOAuthTimestamp()
+        {
+            return Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds).ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static string GenerateOAuthAuthenticationHeader(string httpMethod, Uri urlWithoutQuery, IEnumerable<KeyValuePair<string, string>> parameters, string consumerKey, string consumerSecret, string token, string tokenSecret, string oauthSignatureMethod, string oauthNonce, string oauthTimestamp, string oauthVersion, HmacSha1Delegate hmacSha1)
+        {
+            if (string.IsNullOrEmpty(oauthNonce))
+                oauthNonce = GenerateOAuthNonce();
+            if (string.IsNullOrEmpty(oauthTimestamp))
+                oauthTimestamp = GenerateOAuthTimestamp();
+            if (string.IsNullOrEmpty(oauthVersion))
+                oauthVersion = "1.0";
+
+            string oauthSignature = GenerateOAuthSignature(httpMethod, urlWithoutQuery, parameters, consumerKey, consumerSecret, token, tokenSecret, oauthSignatureMethod, oauthNonce, oauthTimestamp, oauthVersion, hmacSha1);
+
+            var sb = new StringBuilder();
+            sb.AppendFormat("OAuth oauth_consumer_key=\"{0}\",oauth_nonce=\"{1}\",oauth_signature_method=\"{2}\",oauth_timestamp=\"{3}\",oauth_version=\"{4}\",oauth_signature=\"{5}\"",
+               UrlEncodeRfc3986(consumerKey), UrlEncodeRfc3986(oauthNonce), UrlEncodeRfc3986(oauthSignatureMethod), UrlEncodeRfc3986(oauthTimestamp), UrlEncodeRfc3986(oauthVersion), UrlEncodeRfc3986(oauthSignature));
+
+            if (!string.IsNullOrEmpty(token))
+                sb.AppendFormat(",oauth_token=\"{0}\"", UrlEncodeRfc3986(token));
+
+            if (parameters != null)
+            {
+                foreach (var kvp in parameters)
+                {
+                    if (kvp.Key.StartsWith("oauth_"))
+                        sb.AppendFormat(",{0}=\"{1}\"", UrlEncodeRfc3986(kvp.Key), UrlEncodeRfc3986(kvp.Value));
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public static string GenerateOAuthSignature(string httpMethod, Uri uriWithoutQuery, IEnumerable<KeyValuePair<string, string>> parameters, string consumerKey, string consumerSecret, string token, string tokenSecret, string oauthSignatureMethod, string oauthNonce, string oauthTimestamp, string oauthVersion, HmacSha1Delegate hmacSha1)
+        {
+            if (string.IsNullOrEmpty(httpMethod))
+                throw new ArgumentNullException("httpMethod");
+            if (uriWithoutQuery == null)
+                throw new ArgumentNullException("uriWithoutQuery");
+            if (string.IsNullOrEmpty(consumerKey))
+                throw new ArgumentNullException("consumerKey");
+            if (string.IsNullOrEmpty(oauthSignatureMethod))
+                throw new ArgumentNullException("oauthSignatureMethod");
+            if (string.IsNullOrEmpty(oauthNonce))
+                oauthNonce = GenerateOAuthNonce();
+            if (string.IsNullOrEmpty(oauthTimestamp))
+                oauthTimestamp = GenerateOAuthTimestamp();
+
+            if (string.IsNullOrEmpty(oauthVersion))
+                oauthVersion = "1.0";
+
+            var sortedParameters = new List<KeyValuePair<string, string>>
+                                    {
+                                        new KeyValuePair<string, string>("oauth_consumer_key", consumerKey),
+                                        new KeyValuePair<string, string>("oauth_nonce", oauthNonce),
+                                        new KeyValuePair<string, string>("oauth_signature_method", oauthSignatureMethod),
+                                        new KeyValuePair<string, string>("oauth_timestamp", oauthTimestamp),
+                                        new KeyValuePair<string, string>("oauth_version", oauthVersion)
+                                    };
+
+            if (!string.IsNullOrEmpty(token))
+                sortedParameters.Add(new KeyValuePair<string, string>("oauth_token", token));
+
+            if (parameters != null)
+                sortedParameters.AddRange(parameters);
+
+            sortedParameters.Sort(new OAuthQueryParameterComparer());
+
+            var normalizedUrl = new StringBuilder();
+            normalizedUrl.AppendFormat("{0}://{1}", uriWithoutQuery.Scheme, uriWithoutQuery.Host);
+            if (!((uriWithoutQuery.Scheme == "http" && uriWithoutQuery.Port == 80) || (uriWithoutQuery.Scheme == "https" && uriWithoutQuery.Port == 443)))
+                normalizedUrl.AppendFormat(":{0}", uriWithoutQuery.Port);
+            normalizedUrl.Append(uriWithoutQuery.AbsolutePath);
+
+            var normalizedRequestParameters = new StringBuilder();
+            foreach (var kvp in sortedParameters)
+                normalizedRequestParameters.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
+
+            if (normalizedRequestParameters.Length > 0)
+                normalizedRequestParameters.Length--;
+
+            var signatureBase = new StringBuilder();
+            signatureBase.AppendFormat("{0}&", httpMethod);
+            signatureBase.AppendFormat("{0}&", UrlEncodeRfc3986(normalizedUrl.ToString()));
+            signatureBase.AppendFormat("{0}", UrlEncodeRfc3986(normalizedRequestParameters.ToString()));
+
+            if (oauthSignatureMethod.Equals("HMAC-SHA1"))
+            {
+                if (string.IsNullOrEmpty(consumerSecret))
+                    throw new ArgumentNullException("consumerSecret");
+
+#if !HTTPHELPER_PORTABLE_LIBRARY
+                // HMACSHA1 for portable library can be found in the contrib project at http://pclcontrib.codeplex.com
+                if (hmacSha1 == null)
+                    hmacSha1 = HmacSha1;
+#endif
+
+                byte[] key = Encoding.UTF8.GetBytes(string.Format("{0}&{1}", UrlEncodeRfc3986(consumerSecret), string.IsNullOrEmpty(tokenSecret) ? string.Empty : UrlEncodeRfc3986(tokenSecret)));
+                return Convert.ToBase64String(hmacSha1(key, Encoding.UTF8.GetBytes(signatureBase.ToString())));
+            }
+
+            throw new NotSupportedException("Only HMAC-SHA1 supported.");
+        }
+
+        private class OAuthQueryParameterComparer : IComparer<KeyValuePair<string, string>>
+        {
+            public int Compare(KeyValuePair<string, string> x, KeyValuePair<string, string> y)
+            {
+                return x.Key == y.Key ? string.CompareOrdinal(x.Value, y.Value) : string.CompareOrdinal(x.Key, y.Key);
+            }
+        }
+
+#endif
+
+        public delegate byte[] HmacSha1Delegate(byte[] key, byte[] data);
+
+#if NETFX_CORE
+
+        public static byte[] HmacSha1(byte[] key, byte[] data)
+        {
+            var crypt = Windows.Security.Cryptography.Core.MacAlgorithmProvider.OpenAlgorithm("HMAC_SHA1");
+            var keyBuffer = Windows.Security.Cryptography.CryptographicBuffer.CreateFromByteArray(key);
+            var cryptKey = crypt.CreateKey(keyBuffer);
+
+            var dataBuffer = Windows.Security.Cryptography.CryptographicBuffer.CreateFromByteArray(data);
+            var signBuffer = Windows.Security.Cryptography.Core.CryptographicEngine.Sign(cryptKey, dataBuffer);
+
+            byte[] result;
+            Windows.Security.Cryptography.CryptographicBuffer.CopyToByteArray(signBuffer, out result);
+
+            return result;
+        }
+
+#elif !HTTPHELPER_PORTABLE_LIBRARY
+
+        /// <remarks>HMACSHA1 for portable library can be found in the contrib project at http://pclcontrib.codeplex.com</remarks>
+        public static byte[] HmacSha1(byte[] key, byte[] data)
+        {
+            using (var hmacSha1 = new System.Security.Cryptography.HMACSHA1(key))
+            {
+                return hmacSha1.ComputeHash(data);
+            }
+        }
+        
+#endif
+
         #endregion
     }
 }
