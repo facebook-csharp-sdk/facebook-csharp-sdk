@@ -1,0 +1,35 @@
+{
+  "projects" : [
+    {
+      "path": ".\\Source\\Facebook\\Facebook-Net35.csproj",
+      "id": ".NET Framework 3.5"
+    },
+    {
+      "path": ".\\Source\\Facebook\\Facebook-Net40.csproj",
+      "id": ".NET Framework 4.0"
+    },
+    {
+      "path": ".\\Source\\Facebook\\Facebook-Net45.csproj",
+      "id": ".NET Framework 4.5"
+    },
+    {
+      "path": ".\\Source\\Facebook\\Facebook-SL5.csproj",
+      "id": "Silverlight 5"
+    },
+    {
+      "path": ".\\Source\\Facebook\\Facebook-WindowsStore.csproj",
+      "id": ".NET for Windows Store apps"
+    },
+    {
+      "path": ".\\Source\\Facebook\\Facebook-WP7.csproj",
+      "id": "Windows Phone 7"
+    },
+    {
+      "path": ".\\Source\\Facebook\\Facebook-WP8.csproj",
+      "id": "Windows Phone 8"
+    }
+  ],
+  "filteredNamespaces": [
+    "Facebook",
+  ]
+}

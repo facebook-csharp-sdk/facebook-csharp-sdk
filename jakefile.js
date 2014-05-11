@@ -1,5 +1,6 @@
 var fs = require('fs'),
     path = require('path'),
+    exec = require('child_process').exec,
     njake = require('./Build/njake'),
     msbuild = njake.msbuild,
     xunit = njake.xunit,
@@ -9,6 +10,10 @@ var fs = require('fs'),
         rootPath: __dirname,
         version: fs.readFileSync('VERSION', 'utf-8').split('\r\n')[0],
         fileVersion: fs.readFileSync('VERSION', 'utf-8').split('\r\n')[1]
+    };
+    docConfig = {
+        docConfigFilePath: "doc-config.json",
+        outputDir: "doc_output"
     };
 
 console.log('Facebook C# SDK v' + config.version + ' (' + config.fileVersion + ')')
@@ -33,7 +38,7 @@ assemblyinfo.setDefaults({
 })
 
 desc('Build all binaries, run tests and create nuget and symbolsource packages')
-task('default', ['build', 'test', 'nuget:pack'])
+task('default', ['build', 'test', 'nuget:pack', 'sdkreference:generate'])
 
 directory('Dist/')
 
@@ -262,3 +267,39 @@ namespace('assemblyinfo', function () {
     }, { async: true })
 
 })
+
+
+namespace('sdkreference', function () {
+
+    desc('Generate the SDK Reference documentation')
+    task('generate',['sdkreference:clean'], function () {
+        console.log('generate doc');
+        console.log('Generating using the "%s" config file.', path.resolve(docConfig.docConfigFilePath));
+        console.log('Output directory: "%s".', path.resolve(docConfig.outputDir) + '\\');
+
+        if (!fs.existsSync(docConfig.outputDir)){
+            fs.mkdirSync(docConfig.outputDir);
+            
+        }
+
+        var command = 'netdoc fromConfig ' + path.resolve(docConfig.docConfigFilePath) + ' ' + path.resolve(docConfig.outputDir) + '\\' ;
+        exec(command, function dir(error, stdout, stderr) { console.log(stdout); });
+        
+    }, { async: true })
+
+    desc('Remove the SDK Reference documentation')
+    task('clean', function () {
+        console.log('clean doc');
+        if (fs.existsSync(docConfig.outputDir)){
+            var files = fs.readdirSync(docConfig.outputDir);
+            for(var i = 0; i < files.length; i++) {
+                fs.unlinkSync(path.join(docConfig.outputDir,files[i]));
+            }
+
+            fs.rmdirSync(docConfig.outputDir);
+        }
+    })
+
+})
+
+
