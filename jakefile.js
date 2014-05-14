@@ -92,6 +92,22 @@ namespace('build', function () {
         })
     }, { async: true })
 
+    desc('Build Windows Phone 8.1 Silverlight binaries')
+    task('wp81sl', ['assemblyinfo:facebook'], function () {
+        msbuild({
+            file: 'Source/Facebook-WP8.1-SL.sln',
+            targets: ['Build']
+        })
+    }, { async: true })
+
+    desc('Build Windows Phone 8.1 .NET CORE binaries')
+    task('wp81netcore', ['assemblyinfo:facebook'], function () {
+        msbuild({
+            file: 'Source/Facebook-WP8.1-netcore.sln',
+            targets: ['Build']
+        })
+    }, { async: true })
+
     desc('Build Silverlight 5 binaries')
     task('sl5', ['assemblyinfo:facebook'], function () {
         msbuild({
@@ -100,7 +116,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:wp8', 'build:sl5', 'build:winstore'])
+    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:wp8', 'build:sl5', 'build:winstore', 'build:wp81sl', 'build:wp81netcore'])
 
     task('mono', function (xbuildPath) {
         msbuild({
@@ -159,6 +175,20 @@ namespace('clean', function () {
         })
     }, { async: true })
 
+    task('wp81sl', function () {
+        msbuild({
+            file: 'Source/Facebook-WP8.1-SL.sln',
+            targets: ['Clean']
+        })
+    }, { async: true })
+
+    task('wp81netcore', function () {
+        msbuild({
+            file: 'Source/Facebook-WP8.1-netcore.sln',
+            targets: ['Clean']
+        })
+    }, { async: true })
+
     task('sl5', function () {
         msbuild({
             file: 'Source/Facebook-SL5.sln',
@@ -166,7 +196,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:wp8', 'clean:sl5', 'clean:winstore'])
+    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:wp8', 'clean:sl5', 'clean:winstore', 'clean:wp81sl', 'clean:wp81netcore'])
 
 })
 
