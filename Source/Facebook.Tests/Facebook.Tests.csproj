@@ -83,6 +83,7 @@
     <Compile Include="FacebookClientTests\ParseUrlQueryStringTests.cs" />
     <Compile Include="FacebookClientTests\SerializeJsonTests.cs" />
     <Compile Include="FacebookOAuthResultTests.cs" />
+    <Compile Include="HttpHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
