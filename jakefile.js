@@ -101,9 +101,9 @@ namespace('build', function () {
     }, { async: true })
 
     desc('Build Windows Phone 8.1 .NET CORE binaries')
-    task('wp81netcore', ['assemblyinfo:facebook'], function () {
+    task('win81universal', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook-WP8.1-netcore.sln',
+            file: 'Source/Facebook-Universal-8.1.sln',
             targets: ['Build']
         })
     }, { async: true })
@@ -116,7 +116,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:wp8', 'build:sl5', 'build:winstore', 'build:wp81sl', 'build:wp81netcore'])
+    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:wp8', 'build:sl5', 'build:winstore', 'build:wp81sl', 'build:win81universal'])
 
     task('mono', function (xbuildPath) {
         msbuild({
@@ -182,9 +182,9 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('wp81netcore', function () {
+    task('win81universal', function () {
         msbuild({
-            file: 'Source/Facebook-WP8.1-netcore.sln',
+            file: 'Source/Facebook-Universal-8.1.sln',
             targets: ['Clean']
         })
     }, { async: true })
@@ -196,7 +196,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:wp8', 'clean:sl5', 'clean:winstore', 'clean:wp81sl', 'clean:wp81netcore'])
+    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:wp8', 'clean:sl5', 'clean:winstore', 'clean:wp81sl', 'clean:win81universal'])
 
 })
 
