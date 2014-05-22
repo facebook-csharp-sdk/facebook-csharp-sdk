@@ -24,7 +24,7 @@
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;FLUENTHTTP_CORE_TPL;ASYNC_AWAIT;TYPEINFO;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Bin\Debug\win81universal\Facebook.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Debug\win81universal\Facebook.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +33,7 @@
     <DefineConstants>TRACE;NETFX_CORE;CODE_ANALYSIS;SIMPLE_JSON_INTERNAL;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_DATACONTRACT;FLUENTHTTP_URLENCODING;FLUENTHTTP_HTMLENCODING;FLUENTHTTP_CORE_TPL;ASYNC_AWAIT;TYPEINFO;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Bin\Release\win81universal\Facebook.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Release\win81universal\Facebook.xml</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
