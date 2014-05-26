@@ -5,7 +5,7 @@
         <version>$version$</version>
         <title/>
         <authors>Outercurve Foundation</authors>
-        <owners>Nathan Totten, Prabir Shrestha, Jim Zimmerman</owners>
+        <owners>Sanjeev Dwivedi, Prabir Shrestha</owners>
         <description>The Facebook SDK for .NET helps developers build web, desktop, phone and windows store applications that integrate with Facebook.</description>
         <language>en-US</language>
         <licenseUrl>https://raw.github.com/facebook-csharp-sdk/facebook-csharp-sdk/master/LICENSE.txt</licenseUrl>
@@ -40,5 +40,14 @@
         <file src="..\..\..\Bin\Release\wp8\*.dll" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\*.xml" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\*.pdb" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\wp81sl\*.dll" target = "lib\wp81" />
+        <file src="..\..\..\Bin\Release\wp81sl\*.xml" target = "lib\wp81" />
+        <file src="..\..\..\Bin\Release\wp81sl\*.pdb" target = "lib\wp81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.dll" target = "lib\wpa81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.pdb" target = "lib\wpa81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.xml" target = "lib\wpa81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.dll" target = "lib\win81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.pdb" target = "lib\win81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.xml" target = "lib\win81" />
     </files>
 </package>
