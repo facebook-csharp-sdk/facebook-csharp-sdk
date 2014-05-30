@@ -52,6 +52,7 @@
     <Compile Include="FacebookClient.Batch.Async.cs" />
     <Compile Include="FacebookClient.Batch.Async.Tasks.cs" />
     <Compile Include="FacebookClient.cs" />
+    <Compile Include="FacebookClient.OAuthResult.cs" />
     <Compile Include="FacebookMediaObject.cs" />
     <Compile Include="FacebookMediaStream.cs" />
     <Compile Include="FacebookOAuthException.cs" />
