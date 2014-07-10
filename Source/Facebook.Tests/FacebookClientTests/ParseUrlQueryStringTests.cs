@@ -153,7 +153,7 @@ namespace Facebook.Tests.FacebookClientTests
                         }
 
                         [Fact]
-                        public void DoesNotThrowArgumentExceptoin_IfContainsNoValueForQueryParameter()
+                        public void DoesNotThrowArgumentException_IfContainsNoValueForQueryParameter()
                         {
                             var parameters = new Dictionary<string, object>();
                             Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("?hello&hi=he", parameters, true));
@@ -295,7 +295,7 @@ namespace Facebook.Tests.FacebookClientTests
                         }
 
                         [Fact]
-                        public void DoesNotThrowArgumentExceptoin_IfContainsNoValueForQueryParameter()
+                        public void DoesNotThrowArgumentException_IfContainsNoValueForQueryParameter()
                         {
                             var parameters = new Dictionary<string, object>();
                             Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com/me?hello&hi=he", parameters, true));
