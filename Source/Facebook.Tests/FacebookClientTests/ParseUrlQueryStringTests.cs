@@ -149,7 +149,25 @@ namespace Facebook.Tests.FacebookClientTests
                             parameters = new Dictionary<string, object>();
                             Assert.Throws<ArgumentException>(() => FacebookClient.ParseUrlQueryString("me?hello=wor=ld&hi=he", parameters, true));
                             parameters = new Dictionary<string, object>();
-                            Assert.Throws<ArgumentException>(() => FacebookClient.ParseUrlQueryString("/me?hello&hi=he", parameters, true));
+                            Assert.Throws<ArgumentException>(() => FacebookClient.ParseUrlQueryString("/me?hello=wor=ld&hi=he", parameters, true));
+                        }
+
+                        [Fact]
+                        public void DoesNotThrowArgumentExceptoin_IfContainsNoValueForQueryParameter()
+                        {
+                            var parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("?hello&hi=he", parameters, true));
+                            parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("me?hello&hi=he", parameters, true));
+                            parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("/me?hello&hi=he", parameters, true));
+
+                            parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("?hi=he&hello", parameters, true));
+                            parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("me?hi=he&hello", parameters, true));
+                            parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("/me?hi=he&hello", parameters, true));
                         }
                     }
                 }
@@ -274,8 +292,19 @@ namespace Facebook.Tests.FacebookClientTests
                             Assert.Throws<ArgumentException>(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com?hello=wor=ld&hi=he", parameters, true));
                             parameters = new Dictionary<string, object>();
                             Assert.Throws<ArgumentException>(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com/me?hello=wor=ld&hi=he", parameters, true));
+                        }
+
+                        [Fact]
+                        public void DoesNotThrowArgumentExceptoin_IfContainsNoValueForQueryParameter()
+                        {
+                            var parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com/me?hello&hi=he", parameters, true));
                             parameters = new Dictionary<string, object>();
-                            Assert.Throws<ArgumentException>(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com/me?hello&hi=he", parameters, true));
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com/me?hi=he&hello", parameters, true));
+                            parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com?hello&hi=he", parameters, true));
+                            parameters = new Dictionary<string, object>();
+                            Assert.DoesNotThrow(() => FacebookClient.ParseUrlQueryString("https://graph.facebook.com?hi=he&hello", parameters, true));
                         }
                     }
                 }

@@ -997,6 +997,13 @@ namespace Facebook
                     if (!string.IsNullOrEmpty(kvp))
                     {
                         var qsPart = kvp.Split('=');
+                        if (qsPart.Length < 2)
+                        {
+                            // Issue #287. In some cases, facebook returns a URL with a query parameter that
+                            // has no value. In such cases, better to ignore and continue than throw an exception
+                            continue;
+                        }
+
                         if (qsPart.Length == 2 && !string.IsNullOrEmpty(qsPart[0]))
                         {
                             var key = HttpHelper.UrlDecode(qsPart[0]);
