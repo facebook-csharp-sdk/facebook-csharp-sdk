@@ -16,54 +16,54 @@
     </metadata>
     <files>
         
-		<!-- Sources, licenses and README -->
-		<file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
+        <!-- Sources, licenses and README -->
+        <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
         <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
         <file src="..\..\..\Source\Facebook\**\*.cs" target = "src\Facebook" />
         <file src="..\..\..\Source\Facebook\**\*.resx" target = "src\Facebook" />
         
-		<!-- .NET 4.5 architecture -->
-		<file src="..\..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
+        <!-- .NET 4.5 architecture -->
+        <file src="..\..\..\Bin\Release\net45\*.dll" target = "lib\net45" />
         <file src="..\..\..\Bin\Release\net45\*.xml" target = "lib\net45" />
         <file src="..\..\..\Bin\Release\net45\*.pdb" target = "lib\net45" />
         
-		<!-- .net 4.0 architecture -->
-		<file src="..\..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
+        <!-- .net 4.0 architecture -->
+        <file src="..\..\..\Bin\Release\net40-client\*.dll" target = "lib\net40-client" />
         <file src="..\..\..\Bin\Release\net40-client\*.xml" target = "lib\net40-client" />
         <file src="..\..\..\Bin\Release\net40-client\*.pdb" target = "lib\net40-client" />
         
-		<!-- .net 3.5 architecture -->
-		<file src="..\..\..\Bin\Release\net35-client\*.dll" target = "lib\net35-client" />
+        <!-- .net 3.5 architecture -->
+        <file src="..\..\..\Bin\Release\net35-client\*.dll" target = "lib\net35-client" />
         <file src="..\..\..\Bin\Release\net35-client\*.xml" target = "lib\net35-client" />
         <file src="..\..\..\Bin\Release\net35-client\*.pdb" target = "lib\net35-client" />
         
-		<!-- Silverlight architecture -->
-		<file src="..\..\..\Bin\Release\sl5\*.dll" target = "lib\sl5" />
+        <!-- Silverlight architecture -->
+        <file src="..\..\..\Bin\Release\sl5\*.dll" target = "lib\sl5" />
         <file src="..\..\..\Bin\Release\sl5\*.xml" target = "lib\sl5" />
         <file src="..\..\..\Bin\Release\sl5\*.pdb" target = "lib\sl5" />
         
-		<!-- Windows Phone 7 architecture -->
-		<file src="..\..\..\Bin\Release\wp71\*.dll" target = "lib\wp71" />
+        <!-- Windows Phone 7 architecture -->
+        <file src="..\..\..\Bin\Release\wp71\*.dll" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp71\*.xml" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp71\*.pdb" target = "lib\wp71" />
-		
-		<!-- Windows Phone 8.0 architecture -->
+        
+        <!-- Windows Phone 8.0 architecture -->
         <file src="..\..\..\Bin\Release\wp8\*.dll" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\*.xml" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\*.pdb" target = "lib\wp8" />
-		
-		<!-- win8 architecture -->
-		<file src="..\..\..\Bin\Release\win8\*.dll" target = "lib\win8" />
+    
+        <!-- win8 architecture -->
+        <file src="..\..\..\Bin\Release\win8\*.dll" target = "lib\win8" />
         <file src="..\..\..\Bin\Release\win8\*.xml" target = "lib\win8" />
         <file src="..\..\..\Bin\Release\win8\*.pdb" target = "lib\win8" />
 
-		
-		<!-- Windows Phone silverlight 8.1 architecture -->
+    
+        <!-- Windows Phone silverlight 8.1 architecture -->
         <file src="..\..\..\Bin\Release\wp81sl\*.dll" target = "lib\wp81" />
         <file src="..\..\..\Bin\Release\wp81sl\*.xml" target = "lib\wp81" />
         <file src="..\..\..\Bin\Release\wp81sl\*.pdb" target = "lib\wp81" />
         
-		<!-- portable Windows and phone 8.1 architecture -->
+        <!-- portable Windows and phone 8.1 architecture -->
         <file src="..\..\..\Bin\Release\win81universal\*.dll" target = "lib\portable-win81+wpa81" />
         <file src="..\..\..\Bin\Release\win81universal\*.pdb" target = "lib\portable-win81+wpa81" />
         <file src="..\..\..\Bin\Release\win81universal\*.xml" target = "lib\portable-win81+wpa81" />
