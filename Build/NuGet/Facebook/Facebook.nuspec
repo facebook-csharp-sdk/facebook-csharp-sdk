@@ -34,9 +34,7 @@
         <file src="..\..\..\Bin\Release\wp8\*.xml" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp81sl\*.dll" target = "lib\wp81" />
         <file src="..\..\..\Bin\Release\wp81sl\*.xml" target = "lib\wp81" />
-        <file src="..\..\..\Bin\Release\win81universal\*.dll" target = "lib\wpa81" />
-        <file src="..\..\..\Bin\Release\win81universal\*.xml" target = "lib\wpa81" />
-        <file src="..\..\..\Bin\Release\win81universal\*.dll" target = "lib\win81" />
-        <file src="..\..\..\Bin\Release\win81universal\*.xml" target = "lib\win81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.dll" target = "lib\portable-win81+wpa81" />
+        <file src="..\..\..\Bin\Release\win81universal\*.xml" target = "lib\portable-win81+wpa81" />
     </files>
 </package>
