@@ -756,6 +756,8 @@ namespace Facebook
                 {
                     var errorType = error["type"] as string;
                     var errorMessage = error["message"] as string;
+                    var errorUserTitle = error["error_user_title"] as string;
+                    var errorUserMsg = error["error_user_msg"] as string;
                     int errorCode = 0;
 
                     if (error.ContainsKey("code"))
@@ -771,11 +773,11 @@ namespace Facebook
                         // We don't include the inner exception because it is not needed and is always a WebException.
                         // It is easier to understand the error if we use Facebook's error message.
                         if (errorType == "OAuthException")
-                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode, errorSubcode);
+                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode, errorSubcode, errorUserTitle, errorUserMsg);
                         else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage.Contains("request limit reached")))
                             resultException = new FacebookApiLimitException(errorMessage, errorType);
                         else
-                            resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
+                            resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode, errorUserTitle, errorUserMsg);
                     }
                 }
                 else
