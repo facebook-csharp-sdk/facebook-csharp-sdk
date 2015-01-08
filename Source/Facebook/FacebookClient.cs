@@ -765,17 +765,29 @@ namespace Facebook
                     if (error.ContainsKey("error_subcode"))
                         int.TryParse(error["error_subcode"].ToString(), out errorSubcode);
 
+                    var errorUserTitle = string.Empty;
+                    if (error.ContainsKey("error_user_title"))
+                    {
+                        errorUserTitle = error["error_user_title"].ToString();
+                    }
+
+                    var errorUserMsg = string.Empty;
+                    if (error.ContainsKey("error_user_msg"))
+                    {
+                        errorUserMsg = error["error_user_msg"].ToString();
+                    }
+
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
                     {
                         // We don't include the inner exception because it is not needed and is always a WebException.
                         // It is easier to understand the error if we use Facebook's error message.
                         if (errorType == "OAuthException")
-                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode, errorSubcode);
+                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode, errorSubcode, errorUserTitle, errorUserMsg);
                         else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage.Contains("request limit reached")))
                             resultException = new FacebookApiLimitException(errorMessage, errorType);
                         else
-                            resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
+                            resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode, errorUserTitle, errorUserMsg);
                     }
                 }
                 else
