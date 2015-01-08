@@ -756,8 +756,6 @@ namespace Facebook
                 {
                     var errorType = error["type"] as string;
                     var errorMessage = error["message"] as string;
-                    var errorUserTitle = error["error_user_title"] as string;
-                    var errorUserMsg = error["error_user_msg"] as string;
                     int errorCode = 0;
 
                     if (error.ContainsKey("code"))
@@ -766,6 +764,18 @@ namespace Facebook
                     var errorSubcode = 0;
                     if (error.ContainsKey("error_subcode"))
                         int.TryParse(error["error_subcode"].ToString(), out errorSubcode);
+
+                    var errorUserTitle = string.Empty;
+                    if (error.ContainsKey("error_user_title"))
+                    {
+                        errorUserTitle = error["error_user_title"].ToString();
+                    }
+
+                    var errorUserMsg = string.Empty;
+                    if (error.ContainsKey("error_user_msg"))
+                    {
+                        errorUserMsg = error["error_user_msg"].ToString();
+                    }
 
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
