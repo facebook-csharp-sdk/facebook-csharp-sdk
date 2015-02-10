@@ -655,7 +655,7 @@ namespace Facebook
                     }
                     else if (response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
                     {
-                        if (response.ResponseUri.AbsolutePath == "/oauth/access_token")
+                        if (response.ResponseUri.AbsolutePath.EndsWith("/oauth/access_token"))
                         {
                             var body = new JsonObject();
                             foreach (var kvp in responseString.Split('&'))
