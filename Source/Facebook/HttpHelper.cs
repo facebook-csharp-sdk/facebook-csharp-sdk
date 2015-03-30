@@ -1318,7 +1318,7 @@ namespace Facebook
                     ? Uri.EscapeDataString(s.Substring(MAX_LIMIT*i, MAX_LIMIT))
                     : Uri.EscapeDataString(s.Substring(MAX_LIMIT*i)));
             }
-            return s;
+            return sb.ToString();
         }
 
         /// <summary>
