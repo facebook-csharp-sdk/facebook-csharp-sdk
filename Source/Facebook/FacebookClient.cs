@@ -795,6 +795,14 @@ namespace Facebook
                     if (error.ContainsKey("error_subcode"))
                         int.TryParse(error["error_subcode"].ToString(), out errorSubcode);
 
+                    string errorUserTitle = null;
+                    if (error.ContainsKey("error_user_title"))
+                        errorUserTitle = (string)error["error_user_title"];
+
+                    string errorUserMsg = null;
+                    if (error.ContainsKey("error_user_title"))
+                        errorUserMsg = (string)error["error_user_title"];
+
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
                     {
@@ -807,6 +815,9 @@ namespace Facebook
                         else
                             resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
                     }
+
+                    resultException.ErrorUserTitle = errorUserTitle;
+                    resultException.ErrorUserMsg = errorUserMsg;
                 }
                 else
                 {
