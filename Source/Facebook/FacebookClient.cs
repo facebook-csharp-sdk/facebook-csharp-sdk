@@ -800,8 +800,8 @@ namespace Facebook
                         errorUserTitle = (string)error["error_user_title"];
 
                     string errorUserMsg = null;
-                    if (error.ContainsKey("error_user_title"))
-                        errorUserMsg = (string)error["error_user_title"];
+                    if (error.ContainsKey("error_user_msg"))
+                        errorUserMsg = (string)error["error_user_msg"];
 
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
