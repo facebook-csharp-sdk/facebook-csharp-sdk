@@ -8,4 +8,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright (c) 2011, The Outercurve Foundation.")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyVersion("6.0.10")]
-[assembly: AssemblyFileVersion("7.0.7-beta")]
+[assembly: AssemblyFileVersion("7.0.9-beta")]
