@@ -115,6 +115,9 @@ namespace Facebook
         private bool _isSecureConnection;
         private bool _useFacebookBeta;
 
+        private string _version;
+        private static string _defaultVersion;
+
         private Func<object, string> _serializeJson;
         private static Func<object, string> _defaultJsonSerializer;
 
@@ -173,6 +176,24 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Get or sets the graph api version to use.
+        /// </summary>
+        public virtual string Version
+        {
+            get { return _version; }
+            set { _version = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the default graph api version to use when initializing a new instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        public static string DefaultVersion
+        {
+            get { return _defaultVersion; }
+            set { _defaultVersion = value; }
+        }
+
+        /// <summary>
         /// Serialize object to json.
         /// </summary>
         [Obsolete("Use SetJsonSerializers")]
@@ -218,6 +239,7 @@ namespace Facebook
         /// </summary>
         public FacebookClient()
         {
+            _version = _defaultVersion;
             _deserializeJson = _defaultJsonDeserializer;
             _httpWebRequestFactory = _defaultHttpWebRequestFactory;
         }
@@ -306,8 +328,9 @@ namespace Facebook
             }
 
             Uri uri;
-            bool isLegacyRestApi = false;
-            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri, out isLegacyRestApi);
+            bool isLegacyRestApi;
+            bool isAbsolutePath;
+            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri, out isLegacyRestApi, out isAbsolutePath);
 
             if (parametersWithoutMediaObjects.ContainsKey("format"))
                 parametersWithoutMediaObjects["format"] = "json-strings";
@@ -414,7 +437,14 @@ namespace Facebook
                 uriBuilder = new UriBuilder { Host = uri.Host, Scheme = uri.Scheme };
             }
 
-            uriBuilder.Path = path;
+            if (isAbsolutePath || string.IsNullOrEmpty(Version))
+            {
+                uriBuilder.Path = path;
+            }
+            else
+            {
+                uriBuilder.Path = Version + "/" + path;
+            }
 
             string contentType = null;
             long? contentLength = null;
@@ -625,7 +655,7 @@ namespace Facebook
                     }
                     else if (response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
                     {
-                        if (response.ResponseUri.AbsolutePath == "/oauth/access_token")
+                        if (response.ResponseUri.AbsolutePath.EndsWith("/oauth/access_token"))
                         {
                             var body = new JsonObject();
                             foreach (var kvp in responseString.Split('&'))
@@ -765,6 +795,14 @@ namespace Facebook
                     if (error.ContainsKey("error_subcode"))
                         int.TryParse(error["error_subcode"].ToString(), out errorSubcode);
 
+                    string errorUserTitle = null;
+                    if (error.ContainsKey("error_user_title"))
+                        errorUserTitle = (string)error["error_user_title"];
+
+                    string errorUserMsg = null;
+                    if (error.ContainsKey("error_user_msg"))
+                        errorUserMsg = (string)error["error_user_msg"];
+
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
                     {
@@ -777,6 +815,9 @@ namespace Facebook
                         else
                             resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
                     }
+
+                    resultException.ErrorUserTitle = errorUserTitle;
+                    resultException.ErrorUserMsg = errorUserMsg;
                 }
                 else
                 {
@@ -923,15 +964,17 @@ namespace Facebook
             return sb.ToString();
         }
 
-        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri, out bool isLegacyRestApi)
+        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri, out bool isLegacyRestApi, out bool isAbsolutePath)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
 
             isLegacyRestApi = false;
+            isAbsolutePath = false;
             uri = null;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
+                isAbsolutePath = true;
                 if (forceParseAllUrls)
                 {
                     path = string.Concat(uri.AbsolutePath, uri.Query);
@@ -1027,7 +1070,8 @@ namespace Facebook
         {
             Uri uri;
             bool isLegacyRestApi;
-            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri, out isLegacyRestApi);
+            bool isAbsolutePath;
+            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri, out isLegacyRestApi, out isAbsolutePath);
         }
     }
 }
