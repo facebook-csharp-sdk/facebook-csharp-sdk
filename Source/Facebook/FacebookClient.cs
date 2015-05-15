@@ -602,10 +602,8 @@ namespace Facebook
                     throw new ArgumentOutOfRangeException("httpMethod");
             }
 
-            if (contentType != null)
-            {
+            if (!string.IsNullOrEmpty(contentType))
                 request.ContentType = contentType;
-            }
 
             if (!string.IsNullOrEmpty(etag))
                 request.Headers[HttpRequestHeader.IfNoneMatch] = string.Concat('"', etag, '"');
