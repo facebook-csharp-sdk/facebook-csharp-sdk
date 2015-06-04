@@ -127,6 +127,7 @@ namespace Facebook
         private Func<Uri, HttpWebRequestWrapper> _httpWebRequestFactory;
         private static Func<Uri, HttpWebRequestWrapper> _defaultHttpWebRequestFactory;
 
+        private bool _forceMultipartFormData;
         /// <remarks>For unit testing</remarks>
         internal Func<string> Boundary { get; set; }
 
@@ -224,6 +225,12 @@ namespace Facebook
         {
             get { return _httpWebRequestFactory; }
             set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
+        }
+
+        public bool ForceMultipartFormData
+        {
+            get { return _forceMultipartFormData; }
+            set { _forceMultipartFormData = value; }
         }
 
         /// <summary>
@@ -479,7 +486,7 @@ namespace Facebook
             }
             else
             {
-                if (mediaObjects.Count == 0 && mediaStreams.Count == 0)
+                if (mediaObjects.Count == 0 && mediaStreams.Count == 0 && !ForceMultipartFormData)
                 {
                     contentType = "application/x-www-form-urlencoded";
                     var sb = new StringBuilder();
