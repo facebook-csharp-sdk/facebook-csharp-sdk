@@ -127,5 +127,15 @@ namespace Facebook
         /// </summary>
         /// <value>The code of the error subcode.</value>
         public int ErrorSubcode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the error user title.
+        /// </summary>
+        public string ErrorUserTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the error user message.
+        /// </summary>
+        public string ErrorUserMsg { get; set; }
     }
 }
