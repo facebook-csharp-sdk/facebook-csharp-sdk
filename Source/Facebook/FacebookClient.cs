@@ -817,6 +817,22 @@ namespace Facebook
                             resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
                     }
 
+                    if (!resultException.IsTransient.HasValue)
+                    {
+                        object objValue;
+                        if (error.TryGetValue("is_transient", out objValue))
+                        {
+                            resultException.IsTransient = objValue as bool?;
+                            if (!resultException.IsTransient.HasValue)
+                            {
+                                bool boolValue;
+                                if (bool.TryParse(objValue.ToString(), out boolValue))
+                                    resultException.IsTransient = boolValue;
+                            }
+                        }
+                    }
+
+                    resultException.ErrorResponse = error;
                     resultException.ErrorUserTitle = errorUserTitle;
                     resultException.ErrorUserMsg = errorUserMsg;
                 }
