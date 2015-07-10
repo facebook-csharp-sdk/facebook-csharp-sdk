@@ -804,18 +804,15 @@ namespace Facebook
                     if (error.ContainsKey("error_user_msg"))
                         errorUserMsg = (string)error["error_user_msg"];
 
-                    // Check to make sure the correct data is in the response
-                    if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
-                    {
-                        // We don't include the inner exception because it is not needed and is always a WebException.
-                        // It is easier to understand the error if we use Facebook's error message.
-                        if (errorType == "OAuthException")
-                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode, errorSubcode);
-                        else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage.Contains("request limit reached")))
-                            resultException = new FacebookApiLimitException(errorMessage, errorType);
-                        else
-                            resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
-                    }
+                    // We don't include the inner exception because it is not needed and is always a WebException.
+                    // It is easier to understand the error if we use Facebook's error message.
+                    if (errorType == "OAuthException" || errorCode == 102 || errorCode == 190)
+                        resultException = new FacebookOAuthException(errorMessage, errorType, errorCode, errorSubcode);
+                    else if (errorType == "API_EC_TOO_MANY_CALLS" || errorCode == 4 || errorCode == 17
+                        || (null != errorMessage && errorMessage.Contains("request limit reached")))
+                        resultException = new FacebookApiLimitException(errorMessage, errorType);
+                    else
+                        resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
 
                     if (!resultException.IsTransient.HasValue)
                     {
