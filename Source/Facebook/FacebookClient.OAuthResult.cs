@@ -168,6 +168,25 @@ namespace Facebook
 
             return new Uri(sb.ToString());
         }
+        public enum response_type
+        {
+        token
+        }
+        /// <summary>
+        /// Gets the Facebook login url using the default parameters.
+        /// </summary>
+        /// <param name="responsetype">Response type</param>
+        /// <param name="client_id">Client ID</param>
+        /// <param name="redirect_uri">Redirect URI</param>
+        /// <returns></returns>
+        public virtual Uri GetLoginUrl(response_type responsetype, string client_id, Uri redirect_uri)
+        {
+            Dictionary<string, object> loginParams = new Dictionary<string, object>();
+            loginParams.Add("client_id", client_id);
+            loginParams.Add("response_type", responsetype.ToString());
+            loginParams.Add("redirect_uri", redirect_uri.ToString());
+            return GetLoginUrl(loginParams);
+        }
 
         /// <summary>
         /// Gets the Facebook OAuth login url.
