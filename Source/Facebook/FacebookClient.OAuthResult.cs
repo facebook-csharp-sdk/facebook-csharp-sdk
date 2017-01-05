@@ -146,8 +146,8 @@ namespace Facebook
                 dictionary.Add("client_id", this.AppId);
             }
 
-            // Automatically add app_id if not present in the parameters
-            if (!dialog.Equals("oauth", StringComparison.OrdinalIgnoreCase) && !dictionary.ContainsKey("app_id") && !string.IsNullOrEmpty(this.AppId))
+            // Automatically add app_id if not present in the parameters for non-oauth method
+            if (!dictionary.ContainsKey("app_id") && !string.IsNullOrEmpty(this.AppId))
             {
                 dictionary.Add("app_id", this.AppId);
             }
