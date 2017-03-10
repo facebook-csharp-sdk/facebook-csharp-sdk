@@ -46,7 +46,11 @@ namespace Facebook
             {
                 try
                 {
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
                     using (var stream = httpHelper.OpenWrite())
+#else
+                    using (var stream = httpHelper.OpenWriteTaskAsync().GetAwaiter().GetResult())
+#endif
                     {
                         // write input to requestStream
                         var buffer = new byte[BufferSize];
@@ -75,7 +79,11 @@ namespace Facebook
             bool read = false;
             try
             {
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
                 responseStream = httpHelper.OpenRead();
+#else
+                responseStream = httpHelper.OpenReadTaskAsync().GetAwaiter().GetResult();
+#endif
                 read = true;
             }
             catch (WebExceptionWrapper ex)
@@ -95,7 +103,11 @@ namespace Facebook
                 }
                 else
                 {
+#if !(SILVERLIGHT || NETFX_CORE || HTTPHELPER_PORTABLE_LIBRARY)
                     responseStream = httpHelper.OpenRead();
+#else
+                    responseStream = httpHelper.OpenReadTaskAsync().GetAwaiter().GetResult();
+#endif
                     read = true;
                 }
             }

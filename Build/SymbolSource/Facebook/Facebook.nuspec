@@ -67,5 +67,11 @@
         <file src="..\..\..\Bin\Release\win81universal\*.dll" target = "lib\portable-win81+wpa81" />
         <file src="..\..\..\Bin\Release\win81universal\*.pdb" target = "lib\portable-win81+wpa81" />
         <file src="..\..\..\Bin\Release\win81universal\*.xml" target = "lib\portable-win81+wpa81" />
+		
+        <!-- .NET Core 1.1 architecture -->
+        <file src="..\..\..\Bin\Release\netcoreapp1.1\*.dll" target = "lib\netcoreapp1.1" />
+        <file src="..\..\..\Bin\Release\netcoreapp1.1\*.pdb" target = "lib\netcoreapp1.1" />
+        <file src="..\..\..\Bin\Release\netcoreapp1.1\*.xml" target = "lib\netcoreapp1.1" />
+		
     </files>
 </package>

@@ -196,34 +196,43 @@ namespace Facebook
         /// <summary>
         /// Serialize object to json.
         /// </summary>
-        [Obsolete("Use SetJsonSerializers")]
+        /// <see cref="SetJsonSerializers"/>
+        /// <see cref="SetDefaultJsonSerializers"/>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<object, string> SerializeJson
         {
-            get { return _serializeJson ?? (_serializeJson = _defaultJsonSerializer); }
-            set { _serializeJson = value; }
+            get
+            {
+                return _serializeJson ?? (_serializeJson = _defaultJsonSerializer);
+            }
+
+            private set { _serializeJson = value ?? (_serializeJson = _defaultJsonSerializer); }
         }
 
         /// <summary>
         /// Deserialize json to object.
         /// </summary>
-        [Obsolete("Use SetJsonSerializers")]
+        /// <see cref="SetJsonSerializers"/>
+        /// <see cref="SetDefaultJsonSerializers"/>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<string, Type, object> DeserializeJson
         {
-            get { return _deserializeJson; }
-            set { _deserializeJson = value ?? (_deserializeJson = _defaultJsonDeserializer); ; }
+            get
+            {
+                return _deserializeJson ?? (_deserializeJson = _defaultJsonDeserializer);
+            }
+
+            private set { _deserializeJson = value ?? (_deserializeJson = _defaultJsonDeserializer); }
         }
 
         /// <summary>
         /// Http web request factory.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use SetHttpWebRequestFactory.")]
         public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
         {
             get { return _httpWebRequestFactory; }
-            set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
+            private set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
         }
 
         /// <summary>
@@ -241,6 +250,7 @@ namespace Facebook
         {
             _version = _defaultVersion;
             _deserializeJson = _defaultJsonDeserializer;
+            _serializeJson = _defaultJsonSerializer;
             _httpWebRequestFactory = _defaultHttpWebRequestFactory;
         }
 
