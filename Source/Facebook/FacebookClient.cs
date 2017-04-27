@@ -574,7 +574,6 @@ namespace Facebook
                         streams.Add(stream);
 
                         indexOfDisposableStreams.Add(streams.Count);
-                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
                     }
 
                     indexOfDisposableStreams.Add(streams.Count);
