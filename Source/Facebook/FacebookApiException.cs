@@ -17,6 +17,8 @@
 // <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 //-----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Facebook
 {
     using System;
@@ -141,6 +143,6 @@ namespace Facebook
         /// <summary>
         /// HTTP Headers, if response received
         /// </summary>
-        public dynamic Headers { get; internal set; }
+        public IDictionary<string, string> Headers { get; internal set; }
     }
 }

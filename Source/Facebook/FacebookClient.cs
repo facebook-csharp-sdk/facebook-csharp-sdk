@@ -736,11 +736,11 @@ namespace Facebook
             }
         }
 
-        private static JsonObject GetHeaders(HttpHelper httpHelper)
+        private static IDictionary<string, string> GetHeaders(HttpHelper httpHelper)
         {
             var response = httpHelper.HttpWebResponse;
 
-            var headers = new JsonObject();
+            var headers = new Dictionary<string, string>();
             foreach (var headerName in response.Headers.AllKeys)
                 headers[headerName] = response.Headers[headerName];
 
