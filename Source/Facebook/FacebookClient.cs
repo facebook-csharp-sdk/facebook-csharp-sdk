@@ -711,13 +711,8 @@ namespace Facebook
                     if ((containsEtag || _alwaysReturnHeaders) && httpHelper != null)
                     {
                         var json = new JsonObject();
-                        var response = httpHelper.HttpWebResponse;
 
-                        var headers = new JsonObject();
-                        foreach (var headerName in response.Headers.AllKeys)
-                            headers[headerName] = response.Headers[headerName];
-
-                        json["headers"] = headers;
+                        json["headers"] = GetHeaders(httpHelper);
                         json["body"] = result;
 
                         return json;
@@ -739,6 +734,17 @@ namespace Facebook
 
                 throw;
             }
+        }
+
+        private static JsonObject GetHeaders(HttpHelper httpHelper)
+        {
+            var response = httpHelper.HttpWebResponse;
+
+            var headers = new JsonObject();
+            foreach (var headerName in response.Headers.AllKeys)
+                headers[headerName] = response.Headers[headerName];
+
+            return headers;
         }
 
         private void SerializeParameters(IDictionary<string, object> parameters)
@@ -860,6 +866,12 @@ namespace Facebook
                             resultException = new FacebookApiException(errorDescription, errorNumber.Value.ToString(CultureInfo.InvariantCulture));
                     }
                 }
+            }
+
+            // If we have an exception to return, add any HTTP response headers to it
+            if (resultException != null && httpHelper != null)
+            {
+                resultException.Headers = GetHeaders(httpHelper);
             }
 
             return resultException;

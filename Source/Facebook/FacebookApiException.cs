@@ -137,5 +137,10 @@ namespace Facebook
         /// Gets or sets the error user message.
         /// </summary>
         public string ErrorUserMsg { get; set; }
+
+        /// <summary>
+        /// HTTP Headers, if response received
+        /// </summary>
+        public dynamic Headers { get; internal set; }
     }
 }
