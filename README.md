@@ -25,7 +25,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 
 [Facebook Platform Status](https://developers.facebook.com/live_status)
 
-[Facebook Change Log](https://developers.facebook.com/docs/changelog/)
+[Facebook Change Log](https://developers.facebook.com/docs/graph-api/changelog)
 
 ## Features
 * NuGet Packages Available ([Facebook](http://nuget.org/packages/Facebook) and [Facebook.channel](http://nuget.org/packages/Facebook.channel))
