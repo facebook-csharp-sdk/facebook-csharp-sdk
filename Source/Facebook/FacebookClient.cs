@@ -118,6 +118,9 @@ namespace Facebook
         private string _version;
         private static string _defaultVersion;
 
+        private bool _alwaysReturnHeaders;
+        private static bool _defaultAlwaysReturnHeaders;
+
         private Func<object, string> _serializeJson;
         private static Func<object, string> _defaultJsonSerializer;
 
@@ -194,6 +197,24 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or sets whether the response headers for an API request should be returned in addition to the body
+        /// </summary>
+        public bool AlwaysReturnHeaders
+        {
+            get { return _alwaysReturnHeaders; }
+            set { _alwaysReturnHeaders = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the default value for AlwaysReturnHeaders to use when initializing a new instance of <see cref="FacebookClient"/> 
+        /// </summary>
+        public static bool DefaultAlwaysReturnHeaders
+        {
+            get { return _defaultAlwaysReturnHeaders; }
+            set { _defaultAlwaysReturnHeaders = value; }
+        }
+
+        /// <summary>
         /// Serialize object to json.
         /// </summary>
         [Obsolete("Use SetJsonSerializers")]
@@ -241,6 +262,7 @@ namespace Facebook
         {
             _version = _defaultVersion;
             _deserializeJson = _defaultJsonDeserializer;
+            _alwaysReturnHeaders = _defaultAlwaysReturnHeaders;
             _httpWebRequestFactory = _defaultHttpWebRequestFactory;
         }
 
@@ -686,16 +708,11 @@ namespace Facebook
 
                 if (exception == null)
                 {
-                    if (containsEtag && httpHelper != null)
+                    if ((containsEtag || _alwaysReturnHeaders) && httpHelper != null)
                     {
                         var json = new JsonObject();
-                        var response = httpHelper.HttpWebResponse;
 
-                        var headers = new JsonObject();
-                        foreach (var headerName in response.Headers.AllKeys)
-                            headers[headerName] = response.Headers[headerName];
-
-                        json["headers"] = headers;
+                        json["headers"] = GetHeaders(httpHelper);
                         json["body"] = result;
 
                         return json;
@@ -717,6 +734,17 @@ namespace Facebook
 
                 throw;
             }
+        }
+
+        private static IDictionary<string, string> GetHeaders(HttpHelper httpHelper)
+        {
+            var response = httpHelper.HttpWebResponse;
+
+            var headers = new Dictionary<string, string>();
+            foreach (var headerName in response.Headers.AllKeys)
+                headers[headerName] = response.Headers[headerName];
+
+            return headers;
         }
 
         private void SerializeParameters(IDictionary<string, object> parameters)
@@ -838,6 +866,12 @@ namespace Facebook
                             resultException = new FacebookApiException(errorDescription, errorNumber.Value.ToString(CultureInfo.InvariantCulture));
                     }
                 }
+            }
+
+            // If we have an exception to return, add any HTTP response headers to it
+            if (resultException != null && httpHelper != null)
+            {
+                resultException.Headers = GetHeaders(httpHelper);
             }
 
             return resultException;
