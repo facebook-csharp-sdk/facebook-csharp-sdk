@@ -17,6 +17,8 @@
 // <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 //-----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Facebook
 {
     using System;
@@ -137,5 +139,15 @@ namespace Facebook
         /// Gets or sets the error user message.
         /// </summary>
         public string ErrorUserMsg { get; set; }
+
+        /// <summary>
+        /// Gets or sets the flag indicating whether the error is known to be transient or permanent.
+        /// </summary>
+        public bool? IsTransient { get; set; }
+
+        /// <summary>
+        /// Gets or sets the original error response, to allow users to extract custom information.
+        /// </summary>
+        public IDictionary<string, object> ErrorResponse { get; set; }
     }
 }
