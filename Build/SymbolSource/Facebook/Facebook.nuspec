@@ -73,5 +73,10 @@
         <file src="..\..\..\Bin\Release\netcoreapp1.1\*.pdb" target = "lib\netcoreapp1.1" />
         <file src="..\..\..\Bin\Release\netcoreapp1.1\*.xml" target = "lib\netcoreapp1.1" />
 		
+        <!-- .NET Core 2.0 architecture -->
+        <file src="..\..\..\Bin\Release\netcoreapp2.0\*.dll" target = "lib\netcoreapp2.0" />
+        <file src="..\..\..\Bin\Release\netcoreapp2.0\*.pdb" target = "lib\netcoreapp2.0" />
+        <file src="..\..\..\Bin\Release\netcoreapp2.0\*.xml" target = "lib\netcoreapp2.0" />
+		
     </files>
 </package>

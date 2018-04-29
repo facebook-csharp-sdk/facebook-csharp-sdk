@@ -124,7 +124,10 @@ namespace Facebook
                 RemoveTaskAsyncHandlers(httpMethod, handler);
                 HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
 #if ASYNC_AWAIT
-                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+                if (uploadProgressHandler != null)
+                {
+                    UploadProgressChanged -= uploadProgressHandler;
+                }
 #endif
                 throw;
             }
@@ -250,8 +253,7 @@ namespace Facebook
         /// <returns>The json result task.</returns>
         public virtual Task<TResult> GetTaskAsync<TResult>(string path, object parameters, CancellationToken cancellationToken)
         {
-            return GetTaskAsync(path, parameters, cancellationToken, typeof (TResult))
-                .Then(result => (TResult) result);
+            return GetTaskAsync(path, parameters, cancellationToken, typeof (TResult)).Then(result => (TResult) result);
         }
 
         /// <summary>
