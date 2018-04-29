@@ -129,8 +129,8 @@ namespace Facebook
                             {
 #if NETFX_CORE
                                 bool compressed = false;
-                                
-                                var contentEncoding = httpHelper.HttpWebResponse.Headers.AllKeys.Contains("Content-Encoding") ? httpHelper.HttpWebResponse.Headers["Content-Encoding"] : null;
+
+                                string contentEncoding = httpHelper.HttpWebResponse.Headers.TryGet("Content-Encoding", true, null);
                                 if (contentEncoding != null)
                                 {
                                     if (contentEncoding.IndexOf("gzip") != -1)
