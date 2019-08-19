@@ -461,7 +461,7 @@ namespace Facebook
                 parametersWithoutMediaObjects.Remove("access_token");
             }
 
-            if (httpMethod != HttpMethod.Post)
+            if ((httpMethod != HttpMethod.Post) && (httpMethod != HttpMethod.Delete))
             {
                 if (containsEtag && httpMethod != HttpMethod.Get)
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "{0} is only supported for http get method.", ETagKey), "httpMethod");
