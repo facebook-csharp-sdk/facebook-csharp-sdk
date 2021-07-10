@@ -38,6 +38,8 @@ namespace Facebook
             return BatchTaskAsync(batchParameters, null, CancellationToken.None);
         }
 
+
+
         /// <summary>
         /// Makes an asynchronous batch request to the Facebook server.
         /// </summary>
@@ -50,6 +52,9 @@ namespace Facebook
         /// <param name="cancellationToken">
         /// The cancellation token.
         /// </param>
+#if ASYNC_AWAIT
+        /// <param name="uploadProgress">The upload progress</param>
+#endif
         /// <returns>
         /// The json result task.
         /// </returns>
@@ -81,6 +86,9 @@ namespace Facebook
         /// <param name="cancellationToken">
         /// The cancellation token.
         /// </param>
+#if ASYNC_AWAIT
+        /// <param name="uploadProgress">The upload progress</param>
+#endif
         /// <returns>
         /// The json result task.
         /// </returns>
@@ -100,11 +108,26 @@ namespace Facebook
 
 #if ASYNC_AWAIT
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="batchParameters"></param>
+        /// <param name="userToken"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, CancellationToken cancellationToken)
         {
             return BatchTaskAsync(batchParameters, userToken, null, cancellationToken);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="batchParameters"></param>
+        /// <param name="userToken"></param>
+        /// <param name="parameters"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public virtual Task<object> BatchTaskAsync(FacebookBatchParameter[] batchParameters, object userToken, object parameters, CancellationToken cancellationToken)
         {
             return BatchTaskAsync(batchParameters, userToken, parameters, cancellationToken, null);

@@ -46,69 +46,6 @@ namespace Facebook
         private const string MultiPartNewLine = "\r\n";
         private const string ETagKey = "_etag_";
 
-        internal static readonly string[] LegacyRestApiReadOnlyCalls = new[] {
-            "admin.getallocation",
-            "admin.getappproperties",
-            "admin.getbannedusers",
-            "admin.getlivestreamvialink",
-            "admin.getmetrics",
-            "admin.getrestrictioninfo",
-            "application.getpublicinfo",
-            "auth.getapppublickey",
-            "auth.getsession",
-            "auth.getsignedpublicsessiondata",
-            "comments.get",
-            "connect.getunconnectedfriendscount",
-            "dashboard.getactivity",
-            "dashboard.getcount",
-            "dashboard.getglobalnews",
-            "dashboard.getnews",
-            "dashboard.multigetcount",
-            "dashboard.multigetnews",
-            "data.getcookies",
-            "events.get",
-            "events.getmembers",
-            "fbml.getcustomtags",
-            "feed.getappfriendstories",
-            "feed.getregisteredtemplatebundlebyid",
-            "feed.getregisteredtemplatebundles",
-            "fql.multiquery",
-            "fql.query",
-            "friends.arefriends",
-            "friends.get",
-            "friends.getappusers",
-            "friends.getlists",
-            "friends.getmutualfriends",
-            "gifts.get",
-            "groups.get",
-            "groups.getmembers",
-            "intl.gettranslations",
-            "links.get",
-            "notes.get",
-            "notifications.get",
-            "pages.getinfo",
-            "pages.isadmin",
-            "pages.isappadded",
-            "pages.isfan",
-            "permissions.checkavailableapiaccess",
-            "permissions.checkgrantedapiaccess",
-            "photos.get",
-            "photos.getalbums",
-            "photos.gettags",
-            "profile.getinfo",
-            "profile.getinfooptions",
-            "stream.get",
-            "stream.getcomments",
-            "stream.getfilters",
-            "users.getinfo",
-            "users.getloggedinuser",
-            "users.getstandardinfo",
-            "users.hasapppermission",
-            "users.isappuser",
-            "users.isverified",
-            "video.getuploadlimits" 
-        };
-
         private string _accessToken;
         private string _appId;
         private string _appSecret;
@@ -196,34 +133,43 @@ namespace Facebook
         /// <summary>
         /// Serialize object to json.
         /// </summary>
-        [Obsolete("Use SetJsonSerializers")]
+        /// <see cref="SetJsonSerializers"/>
+        /// <see cref="SetDefaultJsonSerializers"/>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<object, string> SerializeJson
         {
-            get { return _serializeJson ?? (_serializeJson = _defaultJsonSerializer); }
-            set { _serializeJson = value; }
+            get
+            {
+                return _serializeJson ?? (_serializeJson = _defaultJsonSerializer);
+            }
+
+            private set { _serializeJson = value ?? (_serializeJson = _defaultJsonSerializer); }
         }
 
         /// <summary>
         /// Deserialize json to object.
         /// </summary>
-        [Obsolete("Use SetJsonSerializers")]
+        /// <see cref="SetJsonSerializers"/>
+        /// <see cref="SetDefaultJsonSerializers"/>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<string, Type, object> DeserializeJson
         {
-            get { return _deserializeJson; }
-            set { _deserializeJson = value ?? (_deserializeJson = _defaultJsonDeserializer); ; }
+            get
+            {
+                return _deserializeJson ?? (_deserializeJson = _defaultJsonDeserializer);
+            }
+
+            private set { _deserializeJson = value ?? (_deserializeJson = _defaultJsonDeserializer); }
         }
 
         /// <summary>
         /// Http web request factory.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use SetHttpWebRequestFactory.")]
         public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
         {
             get { return _httpWebRequestFactory; }
-            set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
+            private set { _httpWebRequestFactory = value ?? (_httpWebRequestFactory = _defaultHttpWebRequestFactory); }
         }
 
         /// <summary>
@@ -241,6 +187,7 @@ namespace Facebook
         {
             _version = _defaultVersion;
             _deserializeJson = _defaultJsonDeserializer;
+            _serializeJson = _defaultJsonSerializer;
             _httpWebRequestFactory = _defaultHttpWebRequestFactory;
         }
 
@@ -328,109 +275,78 @@ namespace Facebook
             }
 
             Uri uri;
-            bool isLegacyRestApi;
             bool isAbsolutePath;
-            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri, out isLegacyRestApi, out isAbsolutePath);
+            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri, out isAbsolutePath);
 
             if (parametersWithoutMediaObjects.ContainsKey("format"))
                 parametersWithoutMediaObjects["format"] = "json-strings";
-
-            string restMethod = null;
-            if (parametersWithoutMediaObjects.ContainsKey("method"))
-            {
-                restMethod = (string)parametersWithoutMediaObjects["method"];
-                if (restMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
-                    throw new ArgumentException("Parameter cannot contain method=delete. Use Delete or DeleteAsync or DeleteTaskAsync methods instead.", "parameters");
-                parametersWithoutMediaObjects.Remove("method");
-                isLegacyRestApi = true;
-            }
-            else if (isLegacyRestApi)
-            {
-                throw new ArgumentException("Parameters should contain rest 'method' name", "parameters");
-            }
 
             UriBuilder uriBuilder;
             if (uri == null)
             {
                 uriBuilder = new UriBuilder { Scheme = "https" };
 
-                if (isLegacyRestApi)
+                if (parametersWithoutMediaObjects.ContainsKey("batch"))
                 {
-                    if (string.IsNullOrEmpty(restMethod))
-                        throw new InvalidOperationException("Legacy rest api 'method' in parameters is null or empty.");
-                    path = string.Concat("method/", restMethod);
-                    parametersWithoutMediaObjects["format"] = "json-strings";
-                    if (restMethod.Equals("video.upload"))
-                        uriBuilder.Host = UseFacebookBeta ? "api-video.beta.facebook.com" : "api-video.facebook.com";
-                    else if (LegacyRestApiReadOnlyCalls.Contains(restMethod))
-                        uriBuilder.Host = UseFacebookBeta ? "api-read.beta.facebook.com" : "api-read.facebook.com";
-                    else
-                        uriBuilder.Host = UseFacebookBeta ? "api.beta.facebook.com" : "api.facebook.com";
-                }
-                else
-                {
-                    if (parametersWithoutMediaObjects.ContainsKey("batch"))
+                    var processBatchResponse = !parametersWithoutMediaObjects.ContainsKey("_process_batch_response_") ||
+                                            (bool)parametersWithoutMediaObjects["_process_batch_response_"];
+
+                    if (processBatchResponse)
                     {
-                        var processBatchResponse = !parametersWithoutMediaObjects.ContainsKey("_process_batch_response_") ||
-                                               (bool)parametersWithoutMediaObjects["_process_batch_response_"];
-
-                        if (processBatchResponse)
+                        batchEtags = new List<int>();
+                        var batch = parametersWithoutMediaObjects["batch"] as IList<object>;
+                        if (batch != null)
                         {
-                            batchEtags = new List<int>();
-                            var batch = parametersWithoutMediaObjects["batch"] as IList<object>;
-                            if (batch != null)
+                            int i;
+                            for (i = 0; i < batch.Count; i++)
                             {
-                                int i;
-                                for (i = 0; i < batch.Count; i++)
+                                var batchParameter = batch[i] as IDictionary<string, object>;
+                                if (batchParameter != null)
                                 {
-                                    var batchParameter = batch[i] as IDictionary<string, object>;
-                                    if (batchParameter != null)
+                                    IDictionary<string, object> headers = null;
+                                    if (batchParameter.ContainsKey("headers"))
+                                        headers = (IDictionary<string, object>)batchParameter["headers"];
+
+                                    bool containsBatchEtag = batchParameter.ContainsKey(ETagKey);
+                                    if (containsBatchEtag)
                                     {
-                                        IDictionary<string, object> headers = null;
-                                        if (batchParameter.ContainsKey("headers"))
-                                            headers = (IDictionary<string, object>)batchParameter["headers"];
-
-                                        bool containsBatchEtag = batchParameter.ContainsKey(ETagKey);
-                                        if (containsBatchEtag)
+                                        if (string.IsNullOrEmpty((string)batchParameter[ETagKey]))
                                         {
-                                            if (string.IsNullOrEmpty((string)batchParameter[ETagKey]))
-                                            {
-                                                batchEtags.Add(i);
-                                                batchParameter.Remove(ETagKey);
-                                                continue;
-                                            }
-                                            else if (headers == null)
-                                            {
-                                                headers = new Dictionary<string, object>();
-                                                batchParameter["headers"] = headers;
-                                            }
-                                        }
-
-                                        if (containsBatchEtag)
-                                        {
-                                            if (!headers.ContainsKey("If-None-Match"))
-                                                headers["If-None-Match"] = string.Concat('"', batchParameter[ETagKey], '"');
-                                            batchParameter.Remove(ETagKey);
                                             batchEtags.Add(i);
+                                            batchParameter.Remove(ETagKey);
+                                            continue;
                                         }
-                                        else
+                                        else if (headers == null)
                                         {
-                                            if (headers != null && headers.ContainsKey("If-None-Match"))
-                                                batchEtags.Add(i);
+                                            headers = new Dictionary<string, object>();
+                                            batchParameter["headers"] = headers;
                                         }
+                                    }
+
+                                    if (containsBatchEtag)
+                                    {
+                                        if (!headers.ContainsKey("If-None-Match"))
+                                            headers["If-None-Match"] = string.Concat('"', batchParameter[ETagKey], '"');
+                                        batchParameter.Remove(ETagKey);
+                                        batchEtags.Add(i);
+                                    }
+                                    else
+                                    {
+                                        if (headers != null && headers.ContainsKey("If-None-Match"))
+                                            batchEtags.Add(i);
                                     }
                                 }
                             }
                         }
                     }
-
-                    path = path ?? string.Empty;
-
-                    if (httpMethod == HttpMethod.Post && path.EndsWith("/videos", StringComparison.OrdinalIgnoreCase))
-                        uriBuilder.Host = UseFacebookBeta ? "graph-video.beta.facebook.com" : "graph-video.facebook.com";
-                    else
-                        uriBuilder.Host = UseFacebookBeta ? "graph.beta.facebook.com" : "graph.facebook.com";
                 }
+
+                path = path ?? string.Empty;
+
+                if (httpMethod == HttpMethod.Post && path.EndsWith("/videos", StringComparison.OrdinalIgnoreCase))
+                    uriBuilder.Host = UseFacebookBeta ? "graph-video.beta.facebook.com" : "graph-video.facebook.com";
+                else
+                    uriBuilder.Host = UseFacebookBeta ? "graph.beta.facebook.com" : "graph.facebook.com";
             }
             else
             {
@@ -564,7 +480,6 @@ namespace Facebook
                         streams.Add(stream);
 
                         indexOfDisposableStreams.Add(streams.Count);
-                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
                     }
 
                     indexOfDisposableStreams.Add(streams.Count);
@@ -744,41 +659,6 @@ namespace Facebook
 
             FacebookApiException resultException = null;
 
-            if (httpHelper != null)
-            {
-                var response = httpHelper.HttpWebResponse;
-                var responseUri = response.ResponseUri;
-
-                // legacy rest api
-                if (responseUri.Host == "api.facebook.com" ||
-                    responseUri.Host == "api-read.facebook.com" ||
-                    responseUri.Host == "api-video.facebook.com" ||
-                    responseUri.Host == "api.beta.facebook.com" ||
-                    responseUri.Host == "api-read.beta.facebook.com" ||
-                    responseUri.Host == "api-video.facebook.com")
-                {
-                    if (responseDict.ContainsKey("error_code"))
-                    {
-                        string errorCode = responseDict["error_code"].ToString();
-                        string errorMsg = null;
-                        if (responseDict.ContainsKey("error_msg"))
-                            errorMsg = responseDict["error_msg"] as string;
-
-                        // Error Details: http://wiki.developers.facebook.com/index.php/Error_codes
-                        if (errorCode == "190")
-                            resultException = new FacebookOAuthException(errorMsg, errorCode);
-                        else if (errorCode == "4" || errorCode == "API_EC_TOO_MANY_CALLS" ||
-                                 (errorMsg != null && errorMsg.Contains("request limit reached")))
-                            resultException = new FacebookApiLimitException(errorMsg, errorCode);
-                        else
-                            resultException = new FacebookApiException(errorMsg, errorCode);
-                        return resultException;
-                    }
-
-                    return null;
-                }
-            }
-
             // graph api error
             if (responseDict.ContainsKey("error"))
             {
@@ -815,10 +695,10 @@ namespace Facebook
                             resultException = new FacebookApiLimitException(errorMessage, errorType);
                         else
                             resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
-                    }
 
-                    resultException.ErrorUserTitle = errorUserTitle;
-                    resultException.ErrorUserMsg = errorUserMsg;
+                        resultException.ErrorUserTitle = errorUserTitle;
+                        resultException.ErrorUserMsg = errorUserMsg;
+                    }
                 }
                 else
                 {
@@ -965,12 +845,11 @@ namespace Facebook
             return sb.ToString();
         }
 
-        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri, out bool isLegacyRestApi, out bool isAbsolutePath)
+        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri, out bool isAbsolutePath)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
 
-            isLegacyRestApi = false;
             isAbsolutePath = false;
             uri = null;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
@@ -991,18 +870,6 @@ namespace Facebook
                         case "graph-video.beta.facebook.com":
                             // If the host is graph.facebook.com the user has passed in the full url.
                             // We remove the host part and continue with the parsing.
-                            path = string.Concat(uri.AbsolutePath, uri.Query);
-                            break;
-                        // legacy rest api
-                        case "api.facebook.com":
-                        case "api-read.facebook.com":
-                        case "api-video.facebook.com":
-                        case "api.beta.facebook.com":
-                        case "api-read.beta.facebook.com":
-                        case "api-video.beta.facebook.com":
-                            // If the host is graph.facebook.com the user has passed in the full url.
-                            // We remove the host part and continue with the parsing.
-                            isLegacyRestApi = true;
                             path = string.Concat(uri.AbsolutePath, uri.Query);
                             break;
                         default:
@@ -1043,7 +910,7 @@ namespace Facebook
                         var qsPart = kvp.Split('=');
                         if (qsPart.Length < 2)
                         {
-                            // Issue #287. In some cases, facebook returns a URL with a query parameter that
+                            // Issue # 287. In some cases, facebook returns a URL with a query parameter that
                             // has no value. In such cases, better to ignore and continue than throw an exception
                             continue;
                         }
@@ -1070,9 +937,8 @@ namespace Facebook
         internal static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls)
         {
             Uri uri;
-            bool isLegacyRestApi;
             bool isAbsolutePath;
-            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri, out isLegacyRestApi, out isAbsolutePath);
+            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri, out isAbsolutePath);
         }
     }
 }
