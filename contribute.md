@@ -36,7 +36,7 @@ as the guidance he gives applies well to the Facebook SDK for .NET.
 The first order of business is to get yourself familiar with the product (and depending on the type of contribution you wish to make, the code).
 
 1. Download the latest release and try the product out.
-2. Read up on the docs at [facebooksdk.net](http://facebooksdk.net).
+2. Read up on the docs at [https://github.com/facebook-csharp-sdk/facebook-csharp-sdk.github.com](https://github.com/facebook-csharp-sdk/facebook-csharp-sdk.github.com).
 3. Get your [development environment set up](/docs/setting-up-the-development-environment). 
 4. Familiarize yourself with the source code. Make sure you can build it. 
 5. Consider answering questions on Stackoverflow, to build on your understanding of the code. 
