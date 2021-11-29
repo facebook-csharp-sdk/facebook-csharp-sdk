@@ -538,7 +538,6 @@ namespace Facebook
                         indexOfDisposableStreams.Add(streams.Count);
                         streams.Add(new MemoryStream(fileData));
                         indexOfDisposableStreams.Add(streams.Count);
-                        streams.Add(new MemoryStream(Encoding.UTF8.GetBytes(MultiPartNewLine)));
                     }
 
                     foreach (var facebookMediaStream in mediaStreams)
