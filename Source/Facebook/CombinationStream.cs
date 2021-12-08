@@ -101,7 +101,7 @@ namespace Facebook
 
 #if NETFX_CORE
 
-        public async override System.Threading.Tasks.Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        public override async System.Threading.Tasks.Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             int result = 0;
             int buffPostion = offset;

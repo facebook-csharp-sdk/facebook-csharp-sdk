@@ -24,9 +24,13 @@
       "path": ".\\Source\\Facebook\\Facebook-WP7.csproj",
       "id": "Windows Phone 7"
     },
-    {
+	{
       "path": ".\\Source\\Facebook\\Facebook-WP8.csproj",
-      "id": "Windows Phone 8"
+-     "id": "Windows Phone 8"	
+	},
+    {
+      "path": ".\\Source\\Facebook\\Facebook-NetCore1.1.csproj",
+      "id": ".Net Core 1.1"
     }
   ],
   "filteredNamespaces": [

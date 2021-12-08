@@ -115,14 +115,19 @@ namespace Facebook
 
             try
             {
+#pragma warning disable 618
                 ApiAsync(httpMethod, path, parameters, resultType, tcs);
+#pragma warning restore 618
             }
             catch
             {
                 RemoveTaskAsyncHandlers(httpMethod, handler);
                 HttpWebRequestWrapperCreated -= httpWebRequestCreatedHandler;
 #if ASYNC_AWAIT
-                    if (uploadProgressHandler != null) UploadProgressChanged -= uploadProgressHandler;
+                if (uploadProgressHandler != null)
+                {
+                    UploadProgressChanged -= uploadProgressHandler;
+                }
 #endif
                 throw;
             }
@@ -248,8 +253,7 @@ namespace Facebook
         /// <returns>The json result task.</returns>
         public virtual Task<TResult> GetTaskAsync<TResult>(string path, object parameters, CancellationToken cancellationToken)
         {
-            return GetTaskAsync(path, parameters, cancellationToken, typeof (TResult))
-                .Then(result => (TResult) result);
+            return GetTaskAsync(path, parameters, cancellationToken, typeof (TResult)).Then(result => (TResult) result);
         }
 
         /// <summary>
@@ -340,9 +344,7 @@ namespace Facebook
         /// <param name="parameters">The parameters</param>
         /// <param name="userState">The user state.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-#if ASYNC_AWAIT
         /// <param name="uploadProgress">The upload progress</param>
-#endif
         /// <returns>The json result task.</returns>
         public virtual Task<object> PostTaskAsync(string path, object parameters, object userState, CancellationToken cancellationToken, IProgress<FacebookUploadProgressChangedEventArgs> uploadProgress)
         {
