@@ -17,6 +17,8 @@
 // <website>https://github.com/facebook-csharp-sdk/facbook-csharp-sdk</website>
 //-----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Facebook
 {
     using System;
@@ -137,5 +139,10 @@ namespace Facebook
         /// Gets or sets the error user message.
         /// </summary>
         public string ErrorUserMsg { get; set; }
+
+        /// <summary>
+        /// HTTP Headers, if response received
+        /// </summary>
+        public IDictionary<string, string> Headers { get; internal set; }
     }
 }
